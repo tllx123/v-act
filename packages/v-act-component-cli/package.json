@@ -1,0 +1,31 @@
+{
+  "author": "",
+  "bin": {
+    "vact": "bin/index.js"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "commander": "^8.3.0",
+    "inquirer": "^8.2.0",
+    "react-app-rewired": "^2.1.8",
+    "react-dev-utils": "^11.0.4",
+    "react-scripts": "^4.0.3",
+    "require-all": "^3.0.0",
+    "@v-act/api": "^1.0.0",
+    "@v-act/bundle": "^1.0.0",
+    "@v-act/install": "^1.0.0",
+    "@v-act/utils": "^1.0.0"
+  },
+  "deprecated": false,
+  "description": "",
+  "license": "ISC",
+  "main": "index.js",
+  "name": "@v-act/component-cli",
+  "scripts": {
+    "clear": "node scripts/clear.js",
+    "debug": "node scripts/deploy.js",
+    "start": "react-app-rewired start --config-overrides D:\\Workspace\\nodejs\\react-projs\\v-act-component-cli\\build\\v-act\\v-act-config-overrides.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}

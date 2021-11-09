@@ -1,0 +1,53 @@
+{
+  "name": "@v-act/component-template",
+  "groupId": "com.yindangu.v-act",
+  "version": "1.0.0",
+  "description": "V-Act React组件样例",
+  "main": "src/index.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "vact:start": "vact start",
+    "vact:deploy": "vact deploy",
+    "vact:test": "vact test",
+    "vact:doc": "vact doc",
+    "vact:install": "vact install component",
+    "vact:clear": "vact clear",
+    "vact:pack": "vact pack"
+  },
+  "author": "",
+  "license": "ISC",
+  "config-overrides-path": "config/v-act/v-act-config-overrides.js",
+  "homepage": "./",
+  "templateVersion": "1.0",
+  "dependencies": {
+    "i18next": "^21.4.0",
+    "react-i18next": "^11.13.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.15.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.6",
+    "@types/react": "^17.0.34",
+    "@types/react-dom": "^17.0.11",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@v-act/component-cli": "^1.0.0",
+    "web-vitals": "^2.1.2"
+  }
+}

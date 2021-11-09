@@ -1,0 +1,23 @@
+{
+  "name": "@v-act/bundle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "typescript": "tslint -p tsconfig.json \"{src,test}/**/*.{d,spec}.{ts}\" && tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/archiver": "^5.1.1",
+    "@types/decompress": "^4.2.4",
+    "@types/node": "^16.11.6",
+    "@types/rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "archiver": "^5.3.0",
+    "decompress": "^4.2.1",
+    "rimraf": "^3.0.2",
+    "@v-act/utils": "^1.0.0"
+  }
+}
