@@ -2,9 +2,12 @@
   "name": "@v-act/install",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "typescript": "tslint -p tsconfig.json \"{src,test}/**/*.{d,spec}.{ts}\" && tsc -p tsconfig.json"
+    "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
+    "build:clean": "rimraf dist && mkdirp dist",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:copy": "cp-cli ./src ./dist"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +16,8 @@
     "@v-act/api": "^1.0.0",
     "@v-act/bundle": "^1.0.0",
     "@v-act/utils": "^1.0.0",
-    "inquirer": "^8.2.0"
+    "inquirer": "^8.2.0",
+    "rollup": "^2.59.0",
+    "rollup-plugin-dts": "^4.0.1"
   }
 }

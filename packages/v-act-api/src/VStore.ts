@@ -3,7 +3,7 @@ import URL from "./const/Const";
 import * as needle from "needle";
 import * as fs from "fs";
 import * as p from "path";
-import * as archiver from "archiver";
+import {create} from "archiver";
 import vTeam from "./VTeam";
 
 /**
@@ -131,7 +131,7 @@ const uploadToVStore = function (account: string, pwd: string, pluginCode: strin
             const url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_DEPLOY_URL : URL.VSTORE_HOST + '/' + URL.VSTORE_DEPLOY_URL;
             const zipPath = p.resolve(jarPath, "..", "publishFiles.zip");
             const output = fs.createWriteStream(zipPath);
-            const archive = archiver('zip', {
+            const archive = create('zip',{
                 zlib: { level: 9 } // Sets the compression level.
             });
             output.on('close', function () {

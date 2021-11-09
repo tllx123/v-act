@@ -4,7 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "typescript": "tslint -p tsconfig.json \"{src,test}/**/*.{d,spec}.{ts}\" && tsc -p tsconfig.json"
+    "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
+    "build:clean": "rimraf dist && mkdirp dist",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:copy": "cp-cli ./src ./dist"
   },
   "author": "",
   "license": "ISC",
@@ -12,12 +15,13 @@
     "@types/archiver": "^5.1.1",
     "@types/decompress": "^4.2.4",
     "@types/node": "^16.11.6",
-    "@types/rimraf": "^3.0.2"
+    "@types/rimraf": "^3.0.2",
+    "rollup": "^2.59.0",
+    "rollup-plugin-dts": "^4.0.1"
   },
   "dependencies": {
+    "@v-act/utils": "^1.0.0",
     "archiver": "^5.3.0",
-    "decompress": "^4.2.1",
-    "rimraf": "^3.0.2",
-    "@v-act/utils": "^1.0.0"
+    "decompress": "^4.2.1"
   }
 }

@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as p from "path";
-import * as rimraf from "rimraf";
+
 
 /**
  * 创建文件夹
@@ -27,7 +27,7 @@ const _rmDir = function(dir: string, listener?: (file: string)=> void): Promise<
                     promises.push(_rmDir(absPath));
                 }else{
                     promises.push(new Promise((reso,rej)=>{
-                        rimraf(absPath,(err)=>{
+                        fs.rm(absPath,(err)=>{
                             if(err){
                                 return rej(err);
                             }
@@ -38,7 +38,7 @@ const _rmDir = function(dir: string, listener?: (file: string)=> void): Promise<
                 }
             });
             Promise.all(promises).then(()=>{
-                rimraf(dir,()=>{
+                fs.rm(dir,()=>{
                     listener&&listener(dir);
                     resolve();
                 })

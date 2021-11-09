@@ -43,11 +43,20 @@ const genSignature = function (args: Array<string>, needSort: boolean): string {
     }
     return toSHA1(srcSignature.join(''));
 }
+/**
+ * 处理nodejs插件名称
+ * @param name nodejs插件名称
+ * @returns 
+ */
+const enhancePluginName = function(name: string): string{
+    return name.replace('@','').replace('/','-');
+}
 
 export {
     toMD5,
     toSHA1,
     toBASE64,
     getRandomCode,
-    genSignature
+    genSignature,
+    enhancePluginName
 }

@@ -9,6 +9,7 @@ const scripts = [
   'start',
   'test',
   'clear',
+  'deploy',
   'install',
   'pack',
   'preinstall'

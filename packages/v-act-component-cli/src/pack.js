@@ -40,7 +40,7 @@ const p = require("path");
         utils.Console.log("开始生成平台应用服务构件");
         const pluginPath = process.cwd();
         const packageJson = require(p.resolve(pluginPath, "package.json"));
-        const pluginCode = packageJson.name;
+        const pluginCode = utils.String.enhancePluginName(packageJson.name);
         const pluginVersion = packageJson.version;
         const vactComponent = new vActBundle.VActComponentBundle(null, pluginCode, pluginVersion, account, tgzPath);
         const symbolicName = vactComponent.getSymblicName();

@@ -5,16 +5,18 @@
   },
   "bundleDependencies": false,
   "dependencies": {
+    "@v-act/api": "^1.0.0",
+    "@v-act/bundle": "^1.0.0",
+    "@v-act/install": "^1.0.0",
+    "@v-act/utils": "^1.0.0",
     "commander": "^8.3.0",
     "inquirer": "^8.2.0",
     "react-app-rewired": "^2.1.8",
     "react-dev-utils": "^11.0.4",
     "react-scripts": "^4.0.3",
     "require-all": "^3.0.0",
-    "@v-act/api": "^1.0.0",
-    "@v-act/bundle": "^1.0.0",
-    "@v-act/install": "^1.0.0",
-    "@v-act/utils": "^1.0.0"
+    "rollup": "^2.59.0",
+    "rollup-plugin-dts": "^4.0.1"
   },
   "deprecated": false,
   "description": "",

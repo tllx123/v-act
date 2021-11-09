@@ -1,14 +1,13 @@
 import VActBundle from "./model/VActBundle";
 import VActComponentBundle from "./model/VActComponentBundle";
 import VActProjectBundle from "./model/VActProjectBundle";
-import * as archiver from "archiver";
+import {create} from "archiver";
 import * as fs from 'fs'
 import * as decompress from "decompress";
 import * as p from "path";
-import * as rimraf from "rimraf";
 import * as childProcess from "child_process";
-import { VActCfg, Dependency, DependencyType } from "./types/VActCfg";
-import {Path,File} from "@v-act/utils";
+import type { VActCfg, Dependency, DependencyType } from "./types/VActCfg";
+import {Path,File,String} from "@v-act/utils";
 
 export default VActBundle;
 
@@ -20,7 +19,7 @@ const persistence = function (bundle: VActBundle, distDir: string): Promise<stri
             const dist = p.resolve(distDir, `${bundle.getSymblicName()}-${bundle.getVersion()}.jar`);
             File.mkDir(distDir);
             const output = fs.createWriteStream(dist);
-            const archive = archiver('zip', {
+            const archive = create('zip', {
                 zlib: {
                     level: 9
                 }
@@ -100,7 +99,7 @@ const clearPluginTgz = function (pluginPath: string): Promise<void> {
                             const allPromises:Array<Promise<void>> = [];
                             tgzPaths.forEach(tgzPath => {
                                 const promise = new Promise<void>((reso, rej) => {
-                                    rimraf(tgzPath, (err) => {
+                                    fs.rm(tgzPath, (err) => {
                                         if (err) {
                                             return rej(err);
                                         }
@@ -156,7 +155,7 @@ const clearV3ExEBundle = function (pluginPath: string): Promise<void> {
                             const allPromises:Array<Promise<void>> = [];
                             jarPaths.forEach(tgzPath => {
                                 const promise = new Promise<void>((reso, rej) => {
-                                    rimraf(tgzPath, (err) => {
+                                    fs.rm(tgzPath, (err) => {
                                         if (err) {
                                             return rej(err);
                                         }
@@ -231,7 +230,7 @@ const packPluginTgz = function (pluginPath: string): Promise<string> {
                         if (err) {
                             return reject(err);
                         }
-                        resolve(p.resolve(pluginPath, `${packageJson.name}-${packageJson.version}.tgz`));
+                        resolve(p.resolve(pluginPath, `${String.enhancePluginName(packageJson.name)}-${packageJson.version}.tgz`));
                     });
                     if(proc.stdout){
                         proc.stdout.on('data', (data) => {
