@@ -1,6 +1,6 @@
 import * as decompress from "decompress";
 import { existsSync } from "fs";
-import { Path, Console, IO } from "v-act-utils";
+import { Path, Console, IO } from "@v-act/utils";
 import { exec } from "child_process";
 import { basename, resolve } from "path";
 
@@ -36,8 +36,8 @@ class TGZPluginsInstaller {
 
     _genActNames(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const actNames = [];
-            const promises = [];
+            const actNames:Array<string> = [];
+            const promises:Array<Promise<void>> = [];
             this.tgzPaths.forEach(tgzPath => {
                 promises.push(new Promise<void>((reso, rej) => {
                     this._getVActNameFromTgzPath(tgzPath).then((actName) => {
@@ -87,13 +87,16 @@ class TGZPluginsInstaller {
                 }
                 resolve();
             });
-            proc.stdout.on('data', (data) => {
-                Console.log(data);
-            });
-
-            proc.stderr.on('data', (data) => {
-                Console.error(data);
-            });
+            if(proc&&proc.stdout){
+                proc.stdout.on('data', (data) => {
+                    Console.log(data);
+                });
+            }
+            if(proc&&proc.stderr){
+                proc.stderr.on('data', (data) => {
+                    Console.error(data);
+                });
+            }
         });
     }
 
@@ -126,17 +129,17 @@ class TGZPluginsInstaller {
         return new Promise((resolve, reject) => {
             const tempDir = Path.getVActRandomDir();
             decompress(tgzPath, {
-                filter: file => {
+                filter: (file:decompress.File) => {
                     return basename(file.path) === "package.json";
                 }
-            }).then((files) => {
+            }).then((files:Array<decompress.File>) => {
                 try {
                     const packageJson = JSON.parse(files[0].data.toString());
                     resolve(packageJson.name);
                 } catch (err) {
                     reject(err);
                 }
-            }).catch(err => {
+            }).catch((err:Error) => {
                 reject(err);
             });
         });

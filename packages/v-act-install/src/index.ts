@@ -1,11 +1,13 @@
 import * as p from "path";
 import * as fs from "fs";
-import FileVActBundleInstaller from "./model/searcher/FileVActBundleSearcher";
-import { create } from "./VActBundleInstallerFactory";
-import BatchVActBundleInstaller from "./model/BatchVActBundleInstaller";
-import { VStore } from "v-act-api";
-import { Cache, Console } from "v-act-utils";
+import FileVActBundleSearcher from "./model/searcher/FileVActBundleSearcher";
+import SearcherContext from "./model/SearcherContext";
+import TGZPluginsInstaller from "./model/TGZPluginsInstaller";
+import {create} from "./VActBundleSearcherFactory";
+import { VStore } from "@v-act/api";
+import { Cache, Console } from "@v-act/utils";
 import {prompt} from 'inquirer';
+import VActBundleSearcher from "./model/VActBundleSearcher";
 
 
 const install = function (vactName?: string): Promise<void> {
@@ -22,32 +24,37 @@ const install = function (vactName?: string): Promise<void> {
 const _getAccountAndPwd = function (): Promise<{ account: string, pwd: string, }> {
     return new Promise((resolve, reject) => {
         Cache.get().then((cache) => {
+            cache = cache||{};
             const account = cache.account, pwd = cache.pwd;
             if (!account || !pwd) {
                 const questions = [{
                     type: 'input',
                     message: '请输入VStore账号：',
                     name: 'account',
-                    validate: function (input) {
-                        var done = this.async();
+                    validate: function (input: any) {
+                        //var done = this.async();
                         if (!input || !input.trim()) {
-                            done('请输入VStore账号：');
-                            return;
+                            //done('请输入VStore账号：');
+                            //return;
+                            return '请输入VStore账号：';
                         } else {
-                            done(null, true);
+                            //done(null, true);
+                            return true;
                         }
                     }
                 }, {
                     type: 'password',
                     message: '请输入VStore密码：',
                     name: 'pwd',
-                    validate: function (input) {
-                        var done = this.async();
+                    validate: function (input: any) {
+                        //var done = this.async();
                         if (!input || !input.trim()) {
-                            done('请输入VStore密码：');
-                            return;
+                            //done('请输入VStore密码：');
+                            //return;
+                            return '请输入VStore密码：';
                         } else {
-                            done(null, true);
+                            //done(null, true);
+                            return true;
                         }
                     }
                 }];
@@ -58,6 +65,7 @@ const _getAccountAndPwd = function (): Promise<{ account: string, pwd: string, }
                     const promise = VStore.checkAccountAndPwd(answer.account, answer.pwd);
                     promise.then(() => {
                         Console.log("VStore账号、密码校验完成");
+                        cache = cache||{};
                         cache.account = answer.account;
                         cache.pwd = answer.pwd;
                         Cache.put(cache).then(() => {
@@ -100,7 +108,7 @@ const installVActPlugins = function (vactName: string): Promise<void> {
             _getAccountAndPwd().then((result) => {
                 //从vstore查找
                 VStore.searchVActComponent(result.account,result.pwd,vactName).then((components) => {
-                    const actNames = [];
+                    const actNames:Array<string> = [];
                     components.forEach(component => {
                         actNames.push(component.compName+"（"+component.compCode+"）");
                     });
@@ -135,10 +143,20 @@ const installVActPlugins = function (vactName: string): Promise<void> {
 
 const installLocalVAct = function (absPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        const installer = new FileVActBundleInstaller(absPath);
-        installer.install().then(() => {
-            resolve();
-        }).catch(err => {
+        const context = new SearcherContext();
+        const searcher = new FileVActBundleSearcher(context,absPath);
+        searcher.getLocalVActNames().then((deps)=>{
+            const tgzPaths: Array<string> = [];
+            deps.forEach(dep=>{
+                tgzPaths.push(dep.path);
+            });
+            const installer = new TGZPluginsInstaller(tgzPaths);
+            installer.install().then(()=>{
+                resolve();
+            }).catch(err=>{
+                reject(err);
+            });
+        }).catch(err=>{
             reject(err);
         });
     });
@@ -158,14 +176,30 @@ const installAll = function (): Promise<void> {
                         const vactCfg = JSON.parse(data.toString());
                         const dependencies = vactCfg.dependencies;
                         if (dependencies && dependencies.length > 0) {
-                            const installers = [];
-                            dependencies.forEach(dep => {
-                                installers.push(create(dep));
+                            const searchers:Array<VActBundleSearcher> = [];
+                            const context = new SearcherContext();
+                            dependencies.forEach((dep: any) => {
+                                searchers.push(create(context,dep));
                             });
-                            const installer = new BatchVActBundleInstaller(installers);
-                            installer.install().then(() => {
-                                resolve();
-                            }).catch(err => {
+                            const promises:Array<Promise<void>> = [];
+                            const tgzPaths:Array<string> = [];
+                            searchers.forEach(searcher =>{
+                                promises.push(new Promise((reso,rej)=>{
+                                    searcher.getLocalVActNames().then((res: any)=>{
+                                        tgzPaths.push(res.path);
+                                    }).catch(err=>{
+                                        rej(err);
+                                    });
+                                }));
+                            });
+                            Promise.all(promises).then(()=>{
+                                const installer = new TGZPluginsInstaller(tgzPaths);
+                                installer.install().then(()=>{
+                                    resolve();
+                                }).catch(err=>{
+                                    reject(err);
+                                });
+                            }).catch(err=>{
                                 reject(err);
                             });
                         } else {

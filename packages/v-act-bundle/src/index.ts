@@ -6,7 +6,7 @@ import * as fs from 'fs'
 import * as decompress from "decompress";
 import * as p from "path";
 import * as childProcess from "child_process";
-import type { VActCfg, Dependency, DependencyType } from "./types/VActCfg";
+import {VActCfg, Dependency, DependencyType } from "./types/VActCfg";
 import {Path,File,String} from "@v-act/utils";
 
 export default VActBundle;
