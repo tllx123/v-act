@@ -2,10 +2,10 @@ import VActBundle from "./model/VActBundle";
 import VActComponentBundle from "./model/VActComponentBundle";
 import VActProjectBundle from "./model/VActProjectBundle";
 import {create} from "archiver";
-import * as fs from 'fs'
-import * as decompress from "decompress";
-import * as p from "path";
-import * as childProcess from "child_process";
+import {createWriteStream,readdir,existsSync,rm} from 'fs'
+import decompress from "decompress";
+import p from "path";
+import childProcess from "child_process";
 import {VActCfg, Dependency, DependencyType } from "./types/VActCfg";
 import {Path,File,String} from "@v-act/utils";
 
@@ -18,7 +18,7 @@ const persistence = function (bundle: VActBundle, distDir: string): Promise<stri
             const resources = jar.getResources();
             const dist = p.resolve(distDir, `${bundle.getSymblicName()}-${bundle.getVersion()}.jar`);
             File.mkDir(distDir);
-            const output = fs.createWriteStream(dist);
+            const output = createWriteStream(dist);
             const archive = create('zip', {
                 zlib: {
                     level: 9
@@ -59,13 +59,13 @@ const pickNodejsPlugin = function (bundlePath: string): Promise<string> {
             const tmpDir = Path.getVActRandomDir();
             File.mkDir(tmpDir);
             decompress(bundlePath, tmpDir, {
-                filter: file => {
+                filter: (file: decompress.File) => {
                     return p.extname(file.path) === '.tgz'
                 }
-            }).then(files => {
+            }).then((files: Array<decompress.File>) => {
                 const relativePath = files[0].path;
                 resolve(p.resolve(tmpDir,relativePath));
-            }).catch(e => {
+            }).catch((e:Error) => {
                 reject(e);
             });
         } catch (e) {
@@ -81,11 +81,11 @@ const clearPluginTgz = function (pluginPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         try {
             const packagePath = p.resolve(p.resolve(pluginPath, "package.json"));
-            if (fs.existsSync(packagePath)) {
+            if (existsSync(packagePath)) {
                 const packageJson = require(packagePath);
                 const packageName = packageJson.name;
                 if (packageName) {
-                    fs.readdir(pluginPath, (err, files) => {
+                    readdir(pluginPath, (err, files) => {
                         if (err) {
                             return reject(err);
                         }
@@ -99,7 +99,7 @@ const clearPluginTgz = function (pluginPath: string): Promise<void> {
                             const allPromises:Array<Promise<void>> = [];
                             tgzPaths.forEach(tgzPath => {
                                 const promise = new Promise<void>((reso, rej) => {
-                                    fs.rm(tgzPath, (err) => {
+                                    rm(tgzPath, (err) => {
                                         if (err) {
                                             return rej(err);
                                         }
@@ -137,11 +137,11 @@ const clearV3ExEBundle = function (pluginPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         try {
             const packagePath = p.resolve(p.resolve(pluginPath, "package.json"));
-            if (fs.existsSync(packagePath)) {
+            if (existsSync(packagePath)) {
                 const packageJson = require(packagePath);
                 const packageName = packageJson.name;
                 if (packageName) {
-                    fs.readdir(pluginPath, (err, files) => {
+                    readdir(pluginPath, (err, files) => {
                         if (err) {
                             return reject(err);
                         }
@@ -155,7 +155,7 @@ const clearV3ExEBundle = function (pluginPath: string): Promise<void> {
                             const allPromises:Array<Promise<void>> = [];
                             jarPaths.forEach(tgzPath => {
                                 const promise = new Promise<void>((reso, rej) => {
-                                    fs.rm(tgzPath, (err) => {
+                                    rm(tgzPath, (err) => {
                                         if (err) {
                                             return rej(err);
                                         }
@@ -223,7 +223,7 @@ const packPluginTgz = function (pluginPath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         try {
             const packagePath = p.resolve(p.resolve(pluginPath, "package.json"));
-            if (fs.existsSync(packagePath)) {
+            if (existsSync(packagePath)) {
                 const packageJson = require(packagePath);
                 validatePackageJson(packageJson).then(() => {
                     const proc = childProcess.exec("npm pack", { cwd: pluginPath }, (err, stdout, stderr) => {

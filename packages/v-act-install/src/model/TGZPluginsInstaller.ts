@@ -1,4 +1,4 @@
-import * as decompress from "decompress";
+import decompress from "decompress";
 import { existsSync } from "fs";
 import { Path, Console, IO } from "@v-act/utils";
 import { exec } from "child_process";
@@ -127,7 +127,6 @@ class TGZPluginsInstaller {
 
     _getVActNameFromTgzPath(tgzPath: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            const tempDir = Path.getVActRandomDir();
             decompress(tgzPath, {
                 filter: (file:decompress.File) => {
                     return basename(file.path) === "package.json";

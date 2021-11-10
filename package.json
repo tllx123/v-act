@@ -2,7 +2,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "dev": "lerna run dev"
   },
   "workspaces": [
     "packages/*"

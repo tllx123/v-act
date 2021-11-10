@@ -310,5 +310,6 @@ export default {
     checkAccountAndPwd,
     uploadToVStore,
     searchVActComponent,
-    downloadBundle
+    downloadBundle,
+    getVActComponent
 }

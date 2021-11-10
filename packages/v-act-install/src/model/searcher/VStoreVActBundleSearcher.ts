@@ -1,6 +1,6 @@
 import VActBundleSearcher from "../VActBundleSearcher";
 import SearcherContext from "../SearcherContext";
-import {Dependency} from "v-act-bundle";
+import {Dependency} from "@v-act/bundle";
 
 class VStoreVActBundleSearcher extends VActBundleSearcher{
 
@@ -19,7 +19,7 @@ class VStoreVActBundleSearcher extends VActBundleSearcher{
 
     getLocalVActNames(): Promise<Array<Dependency>>{
         return new Promise((resolve,reject)=>{
-            const vacts = [];
+            const vacts:Array<Dependency> = [];
             resolve(vacts);
         });
     }

@@ -1,5 +1,5 @@
 
-import {Dependency} from "v-act-bundle";
+import {Dependency} from "@v-act/bundle";
 
 class SearcherContext{
 

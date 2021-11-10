@@ -1,12 +1,12 @@
 import VActBundleSearcher from "../VActBundleSearcher";
 import SearcherContext from "../SearcherContext";
-import {Dependency} from "v-act-bundle";
+import {Dependency} from "@v-act/bundle";
 
 class FileVActBundleSearcher extends VActBundleSearcher{
 
     jarPath: string;
 
-    tgzPath: string;
+    tgzPath: string = '';
 
     constructor(searcherContext: SearcherContext, jarPath: string){
         super(searcherContext)
@@ -15,7 +15,7 @@ class FileVActBundleSearcher extends VActBundleSearcher{
 
     getLocalVActNames(): Promise<Array<Dependency>>{
         return new Promise((resolve,reject)=>{
-            const vacts = [];
+            const vacts:Array<Dependency> = [];
             resolve(vacts);
         });
     }

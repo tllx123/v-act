@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.build.json",
@@ -15,9 +16,7 @@
     "@types/archiver": "^5.1.1",
     "@types/decompress": "^4.2.4",
     "@types/node": "^16.11.6",
-    "@types/rimraf": "^3.0.2",
-    "rollup": "^2.59.0",
-    "rollup-plugin-dts": "^4.0.1"
+    "@types/rimraf": "^3.0.2"
   },
   "dependencies": {
     "@v-act/utils": "^1.0.0",

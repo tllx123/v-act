@@ -23,9 +23,7 @@
   "templateVersion": "1.0",
   "dependencies": {
     "i18next": "^21.4.0",
-    "react-i18next": "^11.13.0",
-    "rollup": "^2.59.0",
-    "rollup-plugin-dts": "^4.0.1"
+    "react-i18next": "^11.13.0"
   },
   "browserslist": {
     "production": [

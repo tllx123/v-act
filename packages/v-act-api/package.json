@@ -3,16 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "dependencies": {
-    "@types/gulp-zip": "^4.0.2",
-    "@v-act/utils": "^1.0.0",
-    "archiver": "^5.3.0",
-    "crypto-js": "^4.1.1",
-    "needle": "^3.0.0",
-    "rollup": "^2.59.0",
-    "rollup-plugin-dts": "^4.0.1"
-  },
   "scripts": {
+    "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.build.json",
@@ -20,7 +12,14 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@v-act/utils": "^1.0.0",
+    "archiver": "^5.3.0",
+    "crypto-js": "^4.1.1",
+    "needle": "^3.0.0"
+  },
   "devDependencies": {
+    "@types/gulp-zip": "^4.0.2",
     "@types/archiver": "^5.1.1",
     "@types/crypto-js": "^4.0.2",
     "@types/needle": "^2.5.2",

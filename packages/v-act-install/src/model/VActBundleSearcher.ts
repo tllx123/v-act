@@ -1,4 +1,4 @@
-import {Dependency} from "v-act-bundle";
+import {Dependency} from "@v-act/bundle";
 import SearcherContext from "./SearcherContext";
 
 abstract class VActBundleSearcher {
