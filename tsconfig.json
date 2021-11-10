@@ -5,7 +5,13 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "paths": {
+      "@v-act/bundle":["packages/v-act-bundle/src"],
+      "@v-act/api":["packages/v-act-api/src"],
+      "@v-act/utils":["packages/v-act-utils/src"],
+      "@v-act/install":["packages/v-act-install/src"]
+    }
   },
   "include": ["packages/**/src"]
 }

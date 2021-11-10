@@ -8,9 +8,16 @@ const create = function(context: SearcherContext,dep: Dependency): VActBundleSea
     const type = dep.type;
     switch(type){
         case DependencyType.local: 
+            if(!dep.path){
+                throw Error(".vactCfg文件中依赖信息不正确，path为空！");
+            }
             return new FileVActBundleSearcher(context,dep.path);
         case DependencyType.vstore:
-            return new VStoreVActBundleSearcher(context,dep.libCode,dep.symbolicName,dep.vactName);
+            if(dep.libCode&&dep.symbolicName&&dep.vactName){
+                return new VStoreVActBundleSearcher(context,dep.libCode,dep.symbolicName,dep.vactName);
+            }else{
+                throw Error(".vactCfg文件中依赖信息不正确，libCode、symbolicName、vactName中有空值！");
+            }
         default: 
             throw Error("未设别VAct插件依赖类型：" + type);
     }
