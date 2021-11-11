@@ -1,10 +1,11 @@
-import { String } from "@v-act/utils";
+import { Path, String, IO } from "@v-act/utils";
 import URL from "./const/Const";
 import * as needle from "needle";
 import * as fs from "fs";
 import * as p from "path";
-import {create} from "archiver";
+import { create } from "archiver";
 import vTeam from "./VTeam";
+import Bundle from "./types/Bundle";
 
 /**
  * 对账号密码进行加盐处理
@@ -131,12 +132,12 @@ const uploadToVStore = function (account: string, pwd: string, pluginCode: strin
             const url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_DEPLOY_URL : URL.VSTORE_HOST + '/' + URL.VSTORE_DEPLOY_URL;
             const zipPath = p.resolve(jarPath, "..", "publishFiles.zip");
             const output = fs.createWriteStream(zipPath);
-            const archive = create('zip',{
+            const archive = create('zip', {
                 zlib: { level: 9 } // Sets the compression level.
             });
             output.on('close', function () {
                 needle.post(url, {
-                    "compCodeVer": symbolicName + '-'+version+'.SNAPSHOT',
+                    "compCodeVer": symbolicName + '-' + version + '.SNAPSHOT',
                     "libCode": libCode,
                     "stageCode": "dev",
                     "compType": "RuntimeJava",
@@ -169,59 +170,68 @@ const uploadToVStore = function (account: string, pwd: string, pluginCode: strin
     });
 }
 
-const searchVActComponent = function (account: string, pwd: string, code: string): Promise<Array<any>> {
+const _toBundleObj = function (comp: { [prop: string]: any }): Bundle {
+    return {
+        id: comp.id,
+        compCode: comp.compCode,
+        compName: comp.compName,
+        symbolicName: comp.compCode,
+        libCode: comp.belongLib,
+        createTime: comp.createTime,
+        createOwnerCode: comp.createOwnerCode,
+        updateTime: comp.updateTime,
+        updateOwnerCode: comp.updateOwnerCode,
+        fileDownUrl: comp.fileDownUrl
+    };
+}
+
+const searchVActComponent = function (account: string, pwd: string, code: string): Promise<Array<Bundle>> {
     return new Promise((resolve, reject) => {
         try {
             vTeam.getProjectsByAccount(account, pwd).then((projects) => {
                 try {
-                    const libCodes:Array<string> = [];
+                    const libCodes: Array<string> = [];
                     projects.forEach(project => {
                         libCodes.push(project.libCode);
                     });
-                    const params = {
-                        stageCodes: "dev",
-                        compTypes:"RuntimeJava",
-                        isLastVer: true,
-                        libCodes: libCodes.join(','),
-                        attributeExtendEntity: [{
-                            attributeKey: "devType",
-                            queryFlag: "=",
-                            attributeValue: "v-act"
-                        }, {
-                            attributeKey: "devEnv",
-                            queryFlag: "=",
-                            attributeValue: "nodejs"
-                        }, {
-                            attributeKey: 'pluginCode',
-                            queryFlag: "like",
-                            attributeValue: code
-                        }]
-                    }
+                    const params = [{
+                        attributeKey: "devType",
+                        queryFlag: "=",
+                        attributeValue: "v-act"
+                    }, {
+                        attributeKey: "devEnv",
+                        queryFlag: "=",
+                        attributeValue: "nodejs"
+                    }, {
+                        attributeKey: 'pluginCode',
+                        queryFlag: "like",
+                        attributeValue: code
+                    }]
                     let url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_GET_COMPONENTS : URL.VSTORE_HOST + '/' + URL.VSTORE_GET_COMPONENTS;
                     url += '?';
                     url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
                     url += `&libCodes=${libCodes.join(',')}`;
-                    url += `&attributeExtendEntity=${JSON.stringify(params.attributeExtendEntity)}`;
-                    needle.post(url,
-                        {},
-                        {
-                            timeout: 10000
-                        }, (err, resp, body) => {
-                            if (err) {  
-                                reject(err);
-                                return;
-                            }
-                            if (!body.success) {
-                                return reject(Error(body.msg));
-                            }
-                            /* 请求成功 */
-                            const data = body.data;
-                            if (data.isSuccess) {
-                                resolve(data.compInstEntity);
-                            } else {
-                                return reject(Error(data.errorMsg));
-                            }
-                        });
+                    url += `&attributeExtendEntity=${JSON.stringify(params)}`;
+                    needle.post(url, {}, { timeout: 10000 }, (err, resp, body) => {
+                        if (err) {
+                            reject(err);
+                            return;
+                        }
+                        if (!body.success) {
+                            return reject(Error(body.msg));
+                        }
+                        /* 请求成功 */
+                        const data = body.data;
+                        if (data.isSuccess) {
+                            const bundles = [];
+                            data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
+                                bundles.push(_toBundleObj(comp));
+                            });
+                            resolve(data.compInstEntity);
+                        } else {
+                            return reject(Error(data.errorMsg));
+                        }
+                    });
                 } catch (err) {
                     reject(err);
                 }
@@ -234,64 +244,42 @@ const searchVActComponent = function (account: string, pwd: string, code: string
     });
 }
 
-const getVActComponent = function(account: string, pwd: string, vactCode: string){
+const getVActComponent = function (libCode: string, symbolicName: string): Promise<Bundle> {
     return new Promise((resolve, reject) => {
         try {
-            vTeam.getProjectsByAccount(account, pwd).then((projects) => {
-                try {
-                    const libCodes:Array<string> = [];
-                    projects.forEach(project => {
-                        libCodes.push(project.libCode);
-                    });
-                    const params = {
-                        stageCodes: "dev",
-                        compTypes:"RuntimeJava",
-                        isLastVer: true,
-                        libCodes: libCodes.join(','),
-                        attributeExtendEntity: [{
-                            attributeKey: "devType",
-                            queryFlag: "=",
-                            attributeValue: "v-act"
-                        }, {
-                            attributeKey: "devEnv",
-                            queryFlag: "=",
-                            attributeValue: "nodejs"
-                        }, {
-                            attributeKey: 'pluginCode',
-                            queryFlag: "=",
-                            attributeValue: vactCode
-                        }]
-                    }
-                    let url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_GET_COMPONENTS : URL.VSTORE_HOST + '/' + URL.VSTORE_GET_COMPONENTS;
-                    url += '?';
-                    url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
-                    url += `&libCodes=${libCodes.join(',')}`;
-                    url += `&attributeExtendEntity=${JSON.stringify(params.attributeExtendEntity)}`;
-                    needle.post(url,
-                        {},
-                        {
-                            timeout: 10000
-                        }, (err, resp, body) => {
-                            if (err) {  
-                                reject(err);
-                                return;
-                            }
-                            if (!body.success) {
-                                return reject(Error(body.msg));
-                            }
-                            /* 请求成功 */
-                            const data = body.data;
-                            if (data.isSuccess) {
-                                resolve(data.compInstEntity);
-                            } else {
-                                return reject(Error(data.errorMsg));
-                            }
-                        });
-                } catch (err) {
+            const params = [{
+                attributeKey: "devType",
+                queryFlag: "=",
+                attributeValue: "v-act"
+            }, {
+                attributeKey: "devEnv",
+                queryFlag: "=",
+                attributeValue: "nodejs"
+            }]
+            let url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_GET_COMPONENTS : URL.VSTORE_HOST + '/' + URL.VSTORE_GET_COMPONENTS;
+            url += '?';
+            url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
+            url += `&libCodes=${libCode}`;
+            url += `&compCodes=${symbolicName}`;
+            url += `&attributeExtendEntity=${JSON.stringify(params)}`;
+            needle.post(url, {}, { timeout: 10000 }, (err, resp, body) => {
+                if (err) {
                     reject(err);
+                    return;
                 }
-            }).catch(err => {
-                reject(err);
+                if (!body.success) {
+                    return reject(Error(body.msg));
+                }
+                /* 请求成功 */
+                const data = body.data;
+                if (data.isSuccess) {
+                    if (data.compInstEntity.length == 0) {
+                        reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${symbolicName}`));
+                    }
+                    resolve(_toBundleObj(data.compInstEntity[0]));
+                } else {
+                    return reject(Error(data.errorMsg));
+                }
             });
         } catch (err) {
             reject(err);
@@ -299,9 +287,43 @@ const getVActComponent = function(account: string, pwd: string, vactCode: string
     });
 }
 
-const downloadBundle = function(url: string): Promise<string>{
-    return new Promise((resolve,reject)=>{
-
+/**
+ * 下载构件
+ * @param url 文件路径
+ * @returns Promise
+ */
+const downloadBundle = function (url: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        try {
+            needle.get(url, (error, response, body) => {
+                if (error) {
+                    return reject(error);
+                }
+                const headers = response.headers;
+                let filename = "tmp.jar";
+                if (headers && headers["content-disposition"]) {
+                    const contentDisposition = headers["content-disposition"];
+                    const list = contentDisposition.split(';');
+                    if (list[0] == "attachment") {
+                        const pair = list[1];
+                        try {
+                            filename = pair.split('=')[1];
+                        } catch (err) { }
+                        const tmpDir = Path.getVActRandomDir();
+                        const absPath = p.resolve(tmpDir, filename);
+                        IO.write(absPath, body).then(() => {
+                            resolve(absPath);
+                        }).catch(err => {
+                            reject(err);
+                        });
+                    } else {
+                        reject(Error("当前请求未下载任何文件！url：" + url));
+                    }
+                }
+            });
+        } catch (err) {
+            reject(err);
+        }
     });
 }
 

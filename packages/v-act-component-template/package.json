@@ -12,7 +12,7 @@
     "vact:deploy": "vact deploy",
     "vact:test": "vact test",
     "vact:doc": "vact doc",
-    "vact:install": "vact install component",
+    "vact:install": "vact install v-act-component",
     "vact:clear": "vact clear",
     "vact:pack": "vact pack"
   },
@@ -22,8 +22,13 @@
   "homepage": "./",
   "templateVersion": "1.0",
   "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/core": "^5.0.0-beta.5",
+    "@material-ui/styled-engine-sc": "^5.0.0-beta.5",
     "i18next": "^21.4.0",
-    "react-i18next": "^11.13.0"
+    "react-i18next": "^11.13.0",
+    "styled-components": "^5.3.3"
   },
   "browserslist": {
     "production": [

@@ -8,7 +8,8 @@
     "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.build.json",
-    "build:copy": "cp-cli ./src ./dist"
+    "build:copy": "cp-cli ./src ./dist",
+    "test": "node test/index.js"
   },
   "author": "",
   "license": "ISC",
