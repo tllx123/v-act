@@ -121,7 +121,7 @@ const getVTeamTaskNo = function (context) {
                             }
                         }
                     }];
-                    const recentTaskNo = cache.recentTaskNo;
+                    const recentTaskNo = cache ? cache.recentTaskNo:null;
                     if (recentTaskNo) {
                         questions[0].default = recentTaskNo;
                     }
