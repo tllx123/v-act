@@ -21,7 +21,7 @@ const themeObjs = themeVars.map((item:Object)=>{
 
 /**
  * 获取主题列表
- * @returns {Object}
+ * @returns {Array<Object}
  * {
  *  code    主题编码
  *  name    主题名称
@@ -45,7 +45,7 @@ function setTheme(theme:Object) {
     }
 }
 /**
- * 获取默认主题
+ * 创建默认主题
  * @returns 
  */
 function createVactTheme(props:Object|null) {

@@ -3,7 +3,7 @@
  */
 class VactEventManager {
 
-    pool = []
+    pool:Array<Function> = []
     /**
      * 注册事件回调
      * @param theme 主题对象

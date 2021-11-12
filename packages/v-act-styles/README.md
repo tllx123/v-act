@@ -5,7 +5,7 @@
 ## Usage
 
 ```
-const styles = require('@v-act/styles');
+const {ThemeProvider} = require('@v-act/styles');
 
 // TODO: DEMONSTRATE API
 ```
