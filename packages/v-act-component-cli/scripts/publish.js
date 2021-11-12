@@ -23,7 +23,7 @@ const getAccountAndPwd = function (context, options) {
     return new Promise((resolve, reject) => {
         utils.Cache.get().then((cache) => {
             const questions = [];
-            const account = options.account || cache.account;
+            const account = options.account || (cache ? cache.account: null);
             //vteam账号
             if (!account) {
                 questions.push({
@@ -44,7 +44,7 @@ const getAccountAndPwd = function (context, options) {
             //vteam密码
             let pwd = options.pwd;
             if (!pwd) {
-                pwd = cache.pwd;
+                pwd = cache ? cache.pwd:null;
                 if (!pwd) {
                     questions.push({
                         type: 'password',
