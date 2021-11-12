@@ -14,7 +14,9 @@ const defaultThemeCode = mockData.defaultTheme;
 //第三方主题变量
 const themeVars = mockData.themes;
 //转换成vact主题对象
-const themeObjs = themeVars.map(item => createTheme(item));
+const themeObjs = themeVars.map((item:Object)=>{
+    return createTheme(item);
+});
 
 
 /**
@@ -33,8 +35,11 @@ function getThemes() {
  * 设置主题
  * @param {Object} theme 主题对象
  */
-function setTheme(theme) {
-    const newThemes = themeObjs.filter(item => item.code == theme.code);
+function setTheme(theme:Object) {
+    const themeCode = theme.code;
+    const newThemes = themeObjs.filter((item:Object)=>{
+        return item.code == themeCode;
+    });
     if (newThemes.length > 0) {
         EventManager.fire(newThemes[0]);
     }
@@ -43,12 +48,14 @@ function setTheme(theme) {
  * 获取默认主题
  * @returns 
  */
-function createVactTheme(props) {
+function createVactTheme(props:Object|null) {
     let theme;
     if (props) {
         theme = createTheme(props);
     } else {
-        const newThemes = themeObjs.filter(item => item.code == defaultThemeCode);
+        const newThemes = themeObjs.filter((item:Object)=>{
+            return item.code == defaultThemeCode
+        });
         if (newThemes.length > 0) {
             theme = newThemes[0]
         }

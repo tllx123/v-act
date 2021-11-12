@@ -11,7 +11,7 @@ class VactThemeProvider extends React.Component {
     }
     componentDidMount(){
         const {theme} = this.state;
-        this.themeHandler = (newTheme)=>{
+        this.themeHandler = (newTheme:Object)=>{
             console.log("setState", newTheme);
             this.setState({theme:newTheme});
         }
