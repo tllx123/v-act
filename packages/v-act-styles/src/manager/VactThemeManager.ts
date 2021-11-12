@@ -1,25 +1,24 @@
-import { createTheme } from '@mui/material';
+import { createTheme, ThemeOptions } from '@mui/material';
 import { VactThemeProvider } from '../components/VactThemeProvider';
-import {EventManager} from './EventManager';
+import { EventManager } from './EventManager';
 import mockData from '../mock/mockData.json';
 import Theme from "../types/Theme";
-import { ThemeOptions } from '@mui/styles';
 
 export * from '@mui/styles'
 
-declare module '@mui/styles' {
+declare module '@mui/material' {
     interface Theme {
-      status: {
-        danger: string;
-      };
+        status: {
+            danger: string;
+        };
     }
     // allow configuration using `createTheme`
-    interface ThemeOptions {
-      vars?: {
-        [pro:string]: string;
-      };
+    interface ThemeOptions{
+        vars?: {
+            [pro: string]: any;
+        };
     }
-  }
+}
 
 /**
  * 当前使用主题
@@ -30,14 +29,14 @@ const defaultThemeCode = mockData.defaultTheme;
 //第三方主题变量
 const themeVars = mockData.themes;
 //转换成vact主题对象
-const themeObjs: Theme[] = themeVars.map((item:Object)=>{
+const themeObjs: Theme[] = themeVars.map((item: Object) => {
     return <Theme>createTheme(item);
 });
 
 
 /**
  * 获取主题列表
- * @returns {Array<Object}
+ * @returns {Array<Object>}
  * {
  *  code    主题编码
  *  name    主题名称
@@ -51,9 +50,9 @@ function getThemes(): Theme[] {
  * 设置主题
  * @param {Object} theme 主题对象
  */
-function setTheme(theme:Theme) {
+function setTheme(theme: Theme) {
     const themeCode = theme.code;
-    const newThemes = themeObjs.filter((item:Theme)=>{
+    const newThemes = themeObjs.filter((item: Theme) => {
         return item.code == themeCode;
     });
     if (newThemes.length > 0) {
@@ -68,11 +67,11 @@ function createVactTheme(props: Object | null) {
     let theme;
     if (props) {
         const temp:ThemeOptions = {
-            vars:props
+            vars: props
         }
         theme = createTheme(temp);
     } else {
-        const newThemes = themeObjs.filter((item:Theme)=>{
+        const newThemes = themeObjs.filter((item: Theme) => {
             return item.code == defaultThemeCode
         });
         if (newThemes.length > 0) {
@@ -85,5 +84,6 @@ export {
     VactThemeProvider as ThemeProvider,//主题提供者
     getThemes,
     setTheme,
+    Theme,
     createVactTheme as createTheme
 }
