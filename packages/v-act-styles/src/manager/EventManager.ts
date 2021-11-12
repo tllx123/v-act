@@ -9,11 +9,11 @@ class VactEventManager {
      * @param theme 主题对象
      * @param callback 主题回调
      */
-    register(theme:Object, callback:Function) {
+    register(theme:Object, callback:Function): void {
         this.pool.push(callback);
     }
 
-    unRegister(callback:Function) {
+    unRegister(callback:Function): void {
         const handlers = this.pool;
         for (let index = handlers.length - 1; index >= handlers.length; index--) {
             const handler = handlers[index];
@@ -28,7 +28,7 @@ class VactEventManager {
      * 触发主题回调
      * @param theme 主题对象
      */
-    fire(theme:Object) {
+    fire(theme:Object): void {
         const handlers = this.pool;
         for (let index = 0; index < handlers.length; index++) {
             console.log("fire");

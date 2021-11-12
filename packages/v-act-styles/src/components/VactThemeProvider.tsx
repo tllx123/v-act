@@ -8,12 +8,11 @@ import { EventManager } from '../manager/EventManager';
 class VactThemeProvider extends React.Component {
     themeHandler: Function | null = null
     state = {
-        theme: this.props.theme
+        theme: Object
     }
     componentDidMount() {
         const { theme } = this.state;
         this.themeHandler = (newTheme: Object) => {
-            console.log("setState", newTheme);
             this.setState({
                 theme: newTheme
             });
@@ -24,7 +23,7 @@ class VactThemeProvider extends React.Component {
         this.themeHandler != null && EventManager.unRegister(this.themeHandler);
     }
     render() {
-        const { theme: { vars } } = this.state;
+        const { theme: { ...vars } } = this.state;
         return (
             <ThemeProvider theme= { vars } >
             {

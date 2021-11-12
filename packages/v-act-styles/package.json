@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "dev": "tsc -p tsconfig.build.json -w",
+    "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
+    "build:clean": "rimraf dist && mkdirp dist",
+    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:copy": "cp-cli ./src ./dist"
   },
   "dependencies": {
     "@mui/styles": "^5.1.0",
