@@ -30,7 +30,6 @@ class TGZPluginsInstaller {
             }).catch(err => {
                 reject(err);
             });
-
         });
     }
 
@@ -76,28 +75,28 @@ class TGZPluginsInstaller {
     */
     _installNodejsPlugins(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const scripts = ["npm", "install"];
+            const scripts = ["npm", "install"]
             this.tgzPaths.forEach(tgzPath => {
-                scripts.push(tgzPath);
-            });
-            const pluginPath = process.cwd();
+                scripts.push(tgzPath)
+            })
+            const pluginPath = process.cwd()
             const proc = exec(scripts.join(' '), { cwd: pluginPath }, (err, stdout, stderr) => {
                 if (err) {
-                    return reject(err);
+                    return reject(err)
                 }
-                resolve();
+                resolve()
             });
             if(proc&&proc.stdout){
                 proc.stdout.on('data', (data) => {
-                    Console.log(data);
-                });
+                    Console.log(data)
+                })
             }
             if(proc&&proc.stderr){
                 proc.stderr.on('data', (data) => {
-                    Console.error(data);
-                });
+                    Console.error(data)
+                })
             }
-        });
+        })
     }
 
     _clearDependencies(): Promise<void> {

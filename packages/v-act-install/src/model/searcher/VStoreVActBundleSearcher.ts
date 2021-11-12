@@ -23,7 +23,6 @@ class VStoreVActBundleSearcher extends VActBundleSearcher{
             resolve(vacts);
         });
     }
-
 }
 
 export default VStoreVActBundleSearcher;

@@ -8,6 +8,8 @@ enum DependencyType{
     vstore = "vstore"
 }
 
+
+
 interface Dependency{
     vactName: string,
     type: DependencyType,
@@ -32,7 +34,7 @@ interface I18N{
     desc?: string
 }
 
-interface VActCfg{
+ interface VActCfg{
 
     npmClient?: NpmClient,
 
