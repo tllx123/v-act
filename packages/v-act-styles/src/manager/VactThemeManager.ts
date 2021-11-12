@@ -3,8 +3,23 @@ import { VactThemeProvider } from '../components/VactThemeProvider';
 import {EventManager} from './EventManager';
 import mockData from '../mock/mockData.json';
 import Theme from "../types/Theme";
+import { ThemeOptions } from '@mui/styles';
 
 export * from '@mui/styles'
+
+declare module '@mui/styles' {
+    interface Theme {
+      status: {
+        danger: string;
+      };
+    }
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+      vars?: {
+        [pro:string]: string;
+      };
+    }
+  }
 
 /**
  * 当前使用主题
@@ -49,10 +64,13 @@ function setTheme(theme:Theme) {
  * 创建默认主题
  * @returns 
  */
-function createVactTheme(props:Theme|null) {
+function createVactTheme(props: Object | null) {
     let theme;
     if (props) {
-        theme = createTheme(props);
+        const temp:ThemeOptions = {
+            vars:props
+        }
+        theme = createTheme(temp);
     } else {
         const newThemes = themeObjs.filter((item:Theme)=>{
             return item.code == defaultThemeCode

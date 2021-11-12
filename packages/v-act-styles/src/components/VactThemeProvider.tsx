@@ -23,7 +23,7 @@ class VactThemeProvider extends React.Component {
         this.themeHandler != null && EventManager.unRegister(this.themeHandler);
     }
     render() {
-        const { theme: { ...vars } } = this.state;
+        const { theme: { vars } } = this.state;
         return (
             <ThemeProvider theme= { vars } >
             {
