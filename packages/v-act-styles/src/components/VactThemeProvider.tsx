@@ -1,12 +1,12 @@
 import React from "react";
 import { ThemeProvider } from '@mui/styles';
 import { EventManager } from '../manager/EventManager';
-import Theme from '../types/Theme';
+import {Theme} from '@mui/material/styles';
 
 /**
  * vact主题提供者
  */
-class VactThemeProvider extends React.Component {
+class VactThemeProvider extends React.Component<{theme: Theme}> {
     themeHandler: Function | null = null
     theme: Theme | null = null
     state = {

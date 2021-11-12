@@ -2,10 +2,9 @@ import { createTheme } from '@mui/material';
 import { VactThemeProvider } from '../components/VactThemeProvider';
 import { EventManager } from './EventManager';
 import mockData from '../mock/mockData.json';
-import Theme from "../types/Theme";
-import ThemeOptions from "../types/ThemeOptions";
+import {Theme} from "@mui/material/styles"
 
-export * from '@mui/styles'
+export * from '@mui/material/styles'
 
 /**
  * 当前使用主题
@@ -53,10 +52,7 @@ function setTheme(theme: Theme) {
 function createVactTheme(props: Object | null) {
     let theme;
     if (props) {
-        const temp:ThemeOptions = {
-            vars: props
-        }
-        theme = createTheme(temp);
+        theme = createTheme(props);
     } else {
         const newThemes = themeObjs.filter((item: Theme) => {
             return item.code == defaultThemeCode
@@ -72,9 +68,4 @@ export {
     getThemes,
     setTheme,
     createVactTheme as createTheme
-}
-
-export type{
-    Theme,
-    ThemeOptions
 }
