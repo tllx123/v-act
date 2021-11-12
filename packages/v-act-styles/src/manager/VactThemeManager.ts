@@ -15,9 +15,10 @@ const defaultThemeCode = mockData.defaultTheme;
 //第三方主题变量
 const themeVars = mockData.themes;
 //转换成vact主题对象
-const themeObjs: Theme[] = themeVars.map((item: Object) => {
-    return createTheme(item);
-});
+const themeObjs: Theme[] = [];
+// themeVars.map((item: Object) => {
+//     return createTheme(item);
+// });
 
 
 /**
@@ -49,7 +50,7 @@ function setTheme(theme: Theme) {
  * 创建默认主题
  * @returns 
  */
-function createVactTheme(props: Object | null):Theme {
+function createVactTheme(props: any) {
     let theme;
     if (props) {
         theme = createTheme(props);

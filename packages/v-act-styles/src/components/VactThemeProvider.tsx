@@ -25,12 +25,12 @@ class VactThemeProvider extends React.Component<{theme: Theme}> {
         this.themeHandler != null && EventManager.unRegister(this.themeHandler);
     }
     render() {
-        const proTheme = this.theme;
+        const props = this.props;
+        console.log("_props ", props.theme);
         const { theme } = this.state;
-        console.log("proTheme： ", proTheme);
         console.log("stateTheme ", theme);
         return (
-            <ThemeProvider theme={theme} >
+            <ThemeProvider theme={props.theme} >
                 {
                     this.props.children
                 }
