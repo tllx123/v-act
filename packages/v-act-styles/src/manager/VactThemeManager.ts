@@ -49,7 +49,7 @@ function setTheme(theme: Theme) {
  * 创建默认主题
  * @returns 
  */
-function createVactTheme(props: Object | null) {
+function createVactTheme(props: Object | null):Theme {
     let theme;
     if (props) {
         theme = createTheme(props);
@@ -59,6 +59,8 @@ function createVactTheme(props: Object | null) {
         });
         if (newThemes.length > 0) {
             theme = newThemes[0]
+        }else{
+            throw new Error("无法创建主题");
         }
     }
     return theme;
