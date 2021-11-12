@@ -2,31 +2,45 @@ import Paper from '@material-ui/core/Paper';
 import Card from '@material-ui/core/Card';
 import logo from "./assets/logo.svg";
 import styles from "./styles/Demo.module.css";
+import { useTheme } from '@v-act/styles';
 
-interface state {
-    skinWatcher: any,
-    skinVars: any,
-    skinIndex: number,
-    langIndex: number
-}
+/*declare module '@v-act/styles' {
+    interface Theme {
+      demo: {
+        color: string,
+        backgroundColor: string
+      };
+    }
+    interface ThemeOptions {
+        demo: {
+            color: string,
+            backgroundColor: string
+      };
+    }
+  }*/
 
 /**
  * @class Demo
  * @description
  */
 function Demo() {
+    const theme = useTheme();
     return (
         <Paper elevation={6}>
-            <Card>
-                <div className={styles.demo}>
-                    <header className={styles.header} style={{
-                        backgroundColor: '#356bbc'
-                    }}>
-                        <button>切换主题</button>
-                        <button>切换语言</button>
-                    </header>
-                    <div className={styles.content} style={{
-                        color: '#356bbc'
+
+            <div className={styles.demo}>
+                <header className={styles.header} style={{
+                    backgroundColor: theme.demo.color
+                }}>
+                    <button>切换主题</button>
+                    <button>切换语言</button>
+                </header>
+                <div className={styles.content} style={{
+                    color: theme.demo.color,
+                    backgroundColor: theme.demo.backgroundColor
+                }}>
+                    <Card style={{
+                        padding:'16px'
                     }}>
                         <img src={logo} className={styles.logo} alt="logo" />
                         <h1>欢迎进行V平台React组件开发</h1>
@@ -44,9 +58,9 @@ function Demo() {
                         >
                             开始学习
                         </a>
-                    </div>
+                    </Card>
                 </div>
-            </Card>
+            </div>
         </Paper>
     )
 }
