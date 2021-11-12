@@ -1,0 +1,32 @@
+{
+    "defaultTheme":"blueTheme",
+    "themes": [
+        {
+            "code": "blueTheme",
+            "name": "蓝色主题",
+            "vars": {
+                "background": "blue",
+                "color": "blue",
+                "fontSize": "12px"
+            }
+        },
+        {
+            "code": "redTheme",
+            "name": "红色主题",
+            "vars": {
+                "background": "red",
+                "color": "red",
+                "fontSize": "12px"
+            }
+        },
+        {
+            "code": "greenTheme",
+            "name": "绿色主题",
+            "vars": {
+                "background": "green",
+                "color": "green",
+                "fontSize": "12px"
+            }
+        }
+    ]
+}
