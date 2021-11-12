@@ -1,12 +1,14 @@
 import React from "react";
 import { ThemeProvider } from '@mui/styles';
 import { EventManager } from '../manager/EventManager';
+import {Theme} from '@mui/material/styles';
 
 /**
  * vact主题提供者
  */
-class VactThemeProvider extends React.Component {
+class VactThemeProvider extends React.Component<{theme: Theme}> {
     themeHandler: Function | null = null
+    theme: Theme | null = null
     state = {
         theme: Object
     }
@@ -23,12 +25,15 @@ class VactThemeProvider extends React.Component {
         this.themeHandler != null && EventManager.unRegister(this.themeHandler);
     }
     render() {
-        const { theme: { vars } } = this.state;
+        const proTheme = this.theme;
+        const { theme } = this.state;
+        console.log("proTheme： ", proTheme);
+        console.log("stateTheme ", theme);
         return (
-            <ThemeProvider theme= { vars } >
-            {
-                this.props.children
-            }
+            <ThemeProvider theme={theme} >
+                {
+                    this.props.children
+                }
             </ThemeProvider>
         );
     }
