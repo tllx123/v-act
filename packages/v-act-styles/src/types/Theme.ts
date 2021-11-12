@@ -1,11 +1,15 @@
 import { Theme } from "@mui/material";
 
-interface VActTheme extends Theme{
-    code: string,
-    name: string,
-    vars: {
-        [proName: string]: string
+declare module '@mui/material' {
+    export interface Theme {
+        status: {
+            danger: string;
+        }
+        code: string,
+        name: string,
+        vars: {
+            [proName: string]: string
+        }
     }
 }
-
-export default VActTheme;
+export default Theme

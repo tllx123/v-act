@@ -1,24 +1,11 @@
-import { createTheme, ThemeOptions } from '@mui/material';
+import { createTheme } from '@mui/material';
 import { VactThemeProvider } from '../components/VactThemeProvider';
 import { EventManager } from './EventManager';
 import mockData from '../mock/mockData.json';
 import Theme from "../types/Theme";
+import ThemeOptions from "../types/ThemeOptions";
 
 export * from '@mui/styles'
-
-declare module '@mui/material' {
-    interface Theme {
-        status: {
-            danger: string;
-        };
-    }
-    // allow configuration using `createTheme`
-    interface ThemeOptions{
-        vars?: {
-            [pro: string]: any;
-        };
-    }
-}
 
 /**
  * 当前使用主题
@@ -30,7 +17,7 @@ const defaultThemeCode = mockData.defaultTheme;
 const themeVars = mockData.themes;
 //转换成vact主题对象
 const themeObjs: Theme[] = themeVars.map((item: Object) => {
-    return <Theme>createTheme(item);
+    return createTheme(item);
 });
 
 
@@ -84,6 +71,10 @@ export {
     VactThemeProvider as ThemeProvider,//主题提供者
     getThemes,
     setTheme,
-    Theme,
     createVactTheme as createTheme
+}
+
+export type{
+    Theme,
+    ThemeOptions
 }
