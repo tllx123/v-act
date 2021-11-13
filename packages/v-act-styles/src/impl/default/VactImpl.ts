@@ -15,7 +15,7 @@ const themes = [defaultTheme];
 class VactImpl implements IThemePackage {
 
     getCode(): string {
-        return "V3";
+        return vactCode;
     }
 
     /**
