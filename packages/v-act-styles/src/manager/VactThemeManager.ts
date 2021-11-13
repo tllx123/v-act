@@ -45,7 +45,7 @@ function setTheme(themeInfo: ThemeInfo) {
  * @param props {Object|undefined} 主题属性
  * @returns 
  */
-function createVactTheme(props: Object|undefined) {
+function createVactTheme(props?: Object|undefined) {
     let themeOptions;
     if (null == props) {
         const defaultTheme: ThemeInfo = defaultImpl.getDefaultTheme();
