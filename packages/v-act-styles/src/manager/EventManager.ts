@@ -34,7 +34,7 @@ class VactEventManager {
             console.log("fire");
             const handler:Function = handlers[index];
             handler(theme);
-            break;
+            // break;
         }
     }
 }
