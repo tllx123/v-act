@@ -175,7 +175,7 @@ const _toBundleObj = function (comp: { [prop: string]: any }): Bundle {
         id: comp.id,
         compCode: comp.compCode,
         compName: comp.compName,
-        symbolicName: comp.compCode,
+        symbolicName: comp.compName,
         libCode: comp.belongLib,
         createTime: comp.createTime,
         createOwnerCode: comp.createOwnerCode,
@@ -244,7 +244,7 @@ const searchVActComponent = function (account: string, pwd: string, code: string
     });
 }
 
-const getVActComponent = function (libCode: string, symbolicName: string): Promise<Bundle> {
+const getVActComponent = function (libCode: string, vActName: string): Promise<Bundle> {
     return new Promise((resolve, reject) => {
         try {
             const params = [{
@@ -255,12 +255,15 @@ const getVActComponent = function (libCode: string, symbolicName: string): Promi
                 attributeKey: "devEnv",
                 queryFlag: "=",
                 attributeValue: "nodejs"
+            },{
+                attributeKey: 'pluginCode',
+                queryFlag: "like",
+                attributeValue: vActName
             }]
             let url = URL.VSTORE_HOST.substring(URL.VSTORE_HOST.length - 1) == '/' ? URL.VSTORE_HOST + URL.VSTORE_GET_COMPONENTS : URL.VSTORE_HOST + '/' + URL.VSTORE_GET_COMPONENTS;
             url += '?';
             url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
             url += `&libCodes=${libCode}`;
-            url += `&compCodes=${symbolicName}`;
             url += `&attributeExtendEntity=${JSON.stringify(params)}`;
             needle.post(url, {}, { timeout: 10000 }, (err, resp, body) => {
                 if (err) {
@@ -274,7 +277,7 @@ const getVActComponent = function (libCode: string, symbolicName: string): Promi
                 const data = body.data;
                 if (data.isSuccess) {
                     if (data.compInstEntity.length == 0) {
-                        reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${symbolicName}`));
+                        reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${vActName}`));
                     }
                     resolve(_toBundleObj(data.compInstEntity[0]));
                 } else {
