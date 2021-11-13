@@ -4,7 +4,7 @@ import { VactThemeProvider } from '../components/VactThemeProvider';
 import { EventManager } from './EventManager';
 import ThemeInfo from "../types/ThemeInfo";
 
-import defaultImpl from '../impl/v3/V3Impl';
+import defaultImpl from '../impl/default/VactImpl';
 
 export * from '@mui/material/styles'
 
@@ -45,7 +45,7 @@ function setTheme(themeInfo: ThemeInfo) {
  * @param props {Object|null} 主题属性
  * @returns 
  */
-function createVactTheme(props: Object) {
+function createVactTheme(props: Object|null) {
     let themeOptions;
     if (null == props) {
         const defaultTheme: ThemeInfo = defaultImpl.getDefaultTheme();
