@@ -1,7 +1,5 @@
 declare module "@mui/material/styles" {
     interface Theme {
-        code: string,
-        name: string,
         vact: {
             /**
              * 主色

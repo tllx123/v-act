@@ -1,8 +1,10 @@
-import { createTheme } from '@mui/material';
+import { Theme } from "@mui/material/styles"
+import { createTheme, ThemeOptions } from '@mui/material';
 import { VactThemeProvider } from '../components/VactThemeProvider';
 import { EventManager } from './EventManager';
-import mockData from '../mock/mockData.json';
-import {Theme} from "@mui/material/styles"
+import ThemeInfo from "../types/ThemeInfo";
+
+import defaultImpl from '../impl/v3/V3Impl';
 
 export * from '@mui/material/styles'
 
@@ -10,65 +12,57 @@ export * from '@mui/material/styles'
  * 当前使用主题
  */
 // let nowTheme;
-//默认主题
-const defaultThemeCode = mockData.defaultTheme;
-//第三方主题变量
-const themeVars = mockData.themes;
-//转换成vact主题对象
-const themeObjs: Theme[] = [];
-// themeVars.map((item: Object) => {
-//     return createTheme(item);
-// });
-
 
 /**
  * 获取主题列表
- * @returns {Array<Object>}
+ * @returns {Array<ThemeInfo>}
  * {
  *  code    主题编码
  *  name    主题名称
  * }
  */
-function getThemes(): Theme[] {
-    return themeObjs;
+function getThemes(): Array<ThemeInfo> {
+    return defaultImpl.getThemes();
 }
-
 /**
  * 设置主题
- * @param {Object} theme 主题对象
+ * @param {ThemeInfo} themeInfo 主题对象
  */
-function setTheme(theme: Theme) {
-    const themeCode = theme.code;
-    const newThemes = themeObjs.filter((item: Theme) => {
-        return item.code == themeCode;
+function setTheme(themeInfo: ThemeInfo) {
+    const themeCode = themeInfo.getCode();
+    const themes: Array<ThemeInfo> = defaultImpl.getThemes();
+    const newThemes = themes.filter((item: ThemeInfo) => {
+        return item.getCode() == themeCode;
     });
     if (newThemes.length > 0) {
-        EventManager.fire(newThemes[0]);
+        const themeOption = <ThemeOptions>(newThemes[0].toMap());
+        const newTheme = createTheme(themeOption);
+        EventManager.fire(newTheme);
     }
 }
 /**
- * 创建默认主题
+ * 创建主题
+ * @param props {Object|null} 主题属性
  * @returns 
  */
-function createVactTheme(props: any) {
-    let theme;
-    if (props) {
-        theme = createTheme(props);
-    } else {
-        const newThemes = themeObjs.filter((item: Theme) => {
-            return item.code == defaultThemeCode
-        });
-        if (newThemes.length > 0) {
-            theme = newThemes[0]
-        }else{
-            throw new Error("无法创建主题");
+function createVactTheme(props: Object) {
+    let themeOptions;
+    if (null == props) {
+        const defaultTheme: ThemeInfo = defaultImpl.getDefaultTheme();
+        if (defaultTheme) {
+            const map: Object = defaultTheme.toMap();
+            themeOptions = <ThemeOptions>map;
         }
+    } else {
+        themeOptions = <ThemeOptions>props;
     }
+    let theme = createTheme(themeOptions);
     return theme;
 }
 export {
     VactThemeProvider as ThemeProvider,//主题提供者
     getThemes,
     setTheme,
+    ThemeInfo,
     createVactTheme as createTheme
 }

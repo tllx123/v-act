@@ -6,10 +6,7 @@ declare module '@mui/material' {
             danger: string;
         }
         code: string,
-        name: string,
-        vars: {
-            [proName: string]: string
-        }
+        name: string
     }
 }
-export default Theme
+export default {}
