@@ -42,10 +42,10 @@ function setTheme(themeInfo: ThemeInfo) {
 }
 /**
  * 创建主题
- * @param props {Object|null} 主题属性
+ * @param props {Object|undefined} 主题属性
  * @returns 
  */
-function createVactTheme(props: Object|null) {
+function createVactTheme(props: Object|undefined) {
     let themeOptions;
     if (null == props) {
         const defaultTheme: ThemeInfo = defaultImpl.getDefaultTheme();
