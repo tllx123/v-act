@@ -1,6 +1,7 @@
 {
   "name": "@v-act/i18n",
   "version": "1.0.1",
+  "private": false,
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -21,5 +22,15 @@
   "dependencies": {
     "i18next": "^21.4.2",
     "react-i18next": "^11.14.2"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-i18n"
+  },
+  "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }

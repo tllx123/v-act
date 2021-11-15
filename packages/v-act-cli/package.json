@@ -45,5 +45,15 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "jest": "^27.1.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-cli"
+  },
+  "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }

@@ -1,6 +1,7 @@
 {
   "name": "@v-act/scripts",
   "version": "1.0.1",
+  "private": false,
   "description": "",
   "license": "MIT",
   "engines": {
@@ -92,5 +93,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-scripts"
+  },
+  "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }
