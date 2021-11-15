@@ -5,10 +5,10 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "@v-act/api": "^1.0.1",
-    "@v-act/bundle": "^1.0.1",
-    "@v-act/install": "^1.0.1",
-    "@v-act/utils": "^1.0.1",
+    "@v-act/api": "^1.0.2",
+    "@v-act/bundle": "^1.0.2",
+    "@v-act/install": "^1.0.2",
+    "@v-act/utils": "^1.0.2",
     "commander": "^8.3.0",
     "inquirer": "^8.2.0",
     "react-app-rewired": "^2.1.8",
@@ -27,12 +27,12 @@
     "start": "react-app-rewired start --config-overrides D:\\Workspace\\nodejs\\react-projs\\v-act-component-cli\\build\\v-act\\v-act-config-overrides.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "publishConfig": {
     "access": "public"
   },
-  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",

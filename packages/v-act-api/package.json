@@ -1,6 +1,6 @@
 {
   "name": "@v-act/api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -15,7 +15,7 @@
   "author": "opensource.vplatform",
   "license": "ISC",
   "dependencies": {
-    "@v-act/utils": "^1.0.1",
+    "@v-act/utils": "^1.0.2",
     "archiver": "^5.3.0",
     "crypto-js": "^4.1.1",
     "needle": "^3.0.0"
@@ -31,7 +31,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",

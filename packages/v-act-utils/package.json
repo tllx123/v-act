@@ -1,6 +1,6 @@
 {
   "name": "@v-act/utils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -27,7 +27,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage":"https://github.com/opensource-vplatform/v-act",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",
