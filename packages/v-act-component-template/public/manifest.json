@@ -1,6 +1,6 @@
 {
-  "short_name": "v平台组件",
-  "name": "v平台React组件样例",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
