@@ -1,4 +1,4 @@
-import decompress from "decompress";
+import * as decompress from "decompress";
 import { existsSync } from "fs";
 import { Path, Console, IO } from "@v-act/utils";
 import { exec } from "child_process";

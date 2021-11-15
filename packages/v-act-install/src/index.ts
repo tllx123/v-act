@@ -3,25 +3,24 @@ import * as fs from "fs";
 import FileVActBundleSearcher from "./model/searcher/FileVActBundleSearcher";
 import SearcherContext from "./model/SearcherContext";
 import TGZPluginsInstaller from "./model/TGZPluginsInstaller";
-import { create } from "./VActBundleSearcherFactory";
-import { VStore } from "@v-act/api";
+import { VStore } from "../../v-act-api/dist";
 import { Cache, Console } from "@v-act/utils";
 import { prompt } from 'inquirer';
-import VActBundleSearcher from "./model/VActBundleSearcher";
-import { createWriteStream, readdir, existsSync, rm } from 'fs'
-import { Path, File, String } from "@v-act/utils";
+import { Path, File } from "@v-act/utils";
 import decompress from "decompress";
-import { Dependency, } from "../../v-act-bundle/src/types/VActCfg";
+const decompressFile = require('decompress');
+import { Dependency } from "../../v-act-bundle/dist/types/VActCfg";
 import Bundle from "../../v-act-api/src/types/Bundle";
+
 const install = function (vactName?: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        const promise = vactName ? installVActPlugins(vactName) : installAll();
+        const promise = vactName ? installVActPlugins(vactName) : installAll()
         promise.then(() => {
-            resolve();
+            resolve()
         }).catch(err => {
-            reject(err);
-        });
-    });
+            reject(err)
+        })
+    })
 }
 
 
@@ -30,12 +29,7 @@ const installVActPlugins = function (vactName: string): Promise<any> {
     return new Promise((resolve, reject) => {
         const exists = fs.existsSync(vactName);
         if (exists) {
-            //本地vact插件
-            installLocalVAct(vactName).then(() => {
-                resolve("success");
-            }).catch(err => {
-                reject(err);
-            });
+              installLocalVAct(vactName)
         } else {
             _getAccountAndPwd().then((result) => {
                 //从vstore查找
@@ -88,6 +82,12 @@ const installVActPlugins = function (vactName: string): Promise<any> {
         }
     });
 }
+
+
+
+
+
+
 
 
 //获取用户
@@ -162,34 +162,27 @@ const _getAccountAndPwd = function (): Promise<{ account: string, pwd: string, }
 //安装构建
 const installLocalVAct = function (absPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
-
-        const context = new SearcherContext();
-
-
+        const context = new SearcherContext()
         //根据路径获取构建信息，并将路径加到tgzPaths
-        const searcher = new FileVActBundleSearcher(context, absPath);
+        const searcher = new FileVActBundleSearcher(context, absPath)
         searcher.getLocalVActNames().then((deps) => {
-            const tgzPaths: Array<string> = [];
+            const tgzPaths: Array<string> = []
             deps.forEach((dep: any) => {
                 tgzPaths.push(dep.path)
             });
-
             //获取依赖构建路径数组
             getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
                 needInstallDep.push(tgzPaths[0])
                 //批量安装
-                const installer = new TGZPluginsInstaller(needInstallDep);
+                const installer = new TGZPluginsInstaller(needInstallDep)
                 installer.install().then(() => {
-                    resolve();
+                    resolve()
                 }).catch(err => {
-                    reject(err);
+                    reject(err)
                 });
             })
-
-
-
         }).catch(err => {
-            reject(err);
+            reject(err)
         });
     });
 }
@@ -201,34 +194,46 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
     return new Promise((resolve, reject) => {
         try {
             const needInstallDep: Array<string> = []
-
-
-            getDependenciesByAbsPath(absPath).then((dependencies) => {
-                if (dependencies && dependencies.length > 0) {
-                    getDependencies(dependencies)
+            getDependenciesByAbsPath(absPath).then((val) => {
+                if(JSON.stringify(val) !== '{}'){
+                    needInstallDep.push(val.relativePath)
+                    if (val.dependencies && val.dependencies.length > 0) {
+                        getDependencies(val.dependencies)
+                    }
                 }
+
             })
 
-
-            function getDependencies(dependencies: Array<Dependency>) {
+            const getDependencies = function(dependencies: Array<Dependency>) {
                 dependencies.some((item: any) => {
                     if (item.type === "local") {
-                        needInstallDep.push(item.path)
-                        getDependenciesByAbsPath(item.path)
+                        if (fs.existsSync(item.path)) {
+                            getDependenciesByAbsPath(item.path).then((val) => {
+                                needInstallDep.push(val.relativePath)
+                                if (val.dependencies && val.dependencies.length > 0) {
+                                    getDependencies(val.dependencies)
+                                }
+                            })
+                        }
                     } else {
                         item.type === "vstore"
-                        VStore.getVActComponent(item.libCode, item.symbolicName).then((componentInfo) => {
-                            VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
-                                installLocalVAct(componentPath)
-                            })
+                        VStore.getVActComponent(item.libCode, item.vactName).then((componentInfo) => {
+                            if(componentInfo.id !== "none"){
+                                VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
+                                    getDependenciesByAbsPath(componentPath).then((val) => {
+                                        needInstallDep.push(val.relativePath)
+                                        if (val.dependencies && val.dependencies.length > 0) {
+                                            getDependencies(val.dependencies)
+                                        }
+                                    })
+                                })
+                            }
+
                         })
                     }
                 })
             }
-
-
-            return needInstallDep
-
+            resolve(needInstallDep) 
         } catch (err) {
             reject(err)
         }
@@ -237,40 +242,44 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
 
 
 
-//返回当前构建的依赖
-const getDependenciesByAbsPath = function (absPath: string): Promise<Array<Dependency>> {
+//返回当前构建的依赖以及tgz文件路径
+const getDependenciesByAbsPath = function (absPath: string): Promise<any> {
     return new Promise((resolve, reject) => {
         const tmpDir = Path.getVActRandomDir()
         File.mkDir(tmpDir)
-        decompress(absPath, tmpDir, {
-            filter: (file: decompress.File) => {
-                return p.extname(file.path) === '.tgz'
-            }
-        }).then((files: Array<decompress.File>) => {
-            const relativePath = files[0].path
+        decompressFile(absPath, tmpDir).then((files: Array<decompress.File>) => {
+            files = files.filter((item) => { return p.extname(item.path) === '.tgz' })
+            const relativePath = p.resolve(tmpDir, files[0].path)
             const DepTmpDir = Path.getVActRandomDir();
             File.mkDir(DepTmpDir);
-            decompress(relativePath, DepTmpDir, {
-                filter: (fileDep: decompress.File) => {
-                    return p.extname(fileDep.path) === '.vactCfg'
+            decompressFile(relativePath, DepTmpDir).then((filesDep: Array<decompress.File>) => {
+
+                filesDep = filesDep.filter((item) => { return (item.path.indexOf('.vactCfg') > -1) })
+                if(filesDep.length ==0){
+                    resolve({})
+                }else{
+                    const DepPath = filesDep[0].path;
+                    const DepPathTemp = p.resolve(DepTmpDir, DepPath)
+                    if (fs.existsSync(DepPathTemp)) {
+                        fs.readFile(DepPathTemp, (err, data) => {
+                            if (err) {
+                                return reject(err);
+                            }
+                            try {
+                                const DepObj = JSON.parse(data.toString())
+                                const dependencies: Array<Dependency> = DepObj.dependencies
+                                let param = {
+                                    dependencies: dependencies,
+                                    relativePath: relativePath
+                                }
+                                resolve(param)
+                            } catch (err) {
+                                reject(err)
+                            }
+                        })
+                    }
                 }
-            }).then((filesDep: Array<decompress.File>) => {
-                const DepPath = filesDep[0].path;
-                const DepPathTemp = p.resolve(DepPath, ".vactCfg")
-                if (fs.existsSync(DepPathTemp)) {
-                    fs.readFile(DepPathTemp, (err, data) => {
-                        if (err) {
-                            return reject(err);
-                        }
-                        try {
-                            const DepObj = JSON.parse(data.toString())
-                            const dependencies: Array<Dependency> = DepObj.dependencies
-                            resolve(dependencies)
-                        } catch (err) {
-                            reject(err)
-                        }
-                    })
-                }
+    
             })
         })
     })
@@ -281,6 +290,10 @@ const getDependenciesByAbsPath = function (absPath: string): Promise<Array<Depen
 
 
 //安装所有
+
+
+
+
 const installAll = function (): Promise<void> {
     return new Promise((resolve, reject) => {
         try {
@@ -296,46 +309,17 @@ const installAll = function (): Promise<void> {
                         //获取依赖
                         const dependencies = vactCfg.dependencies
                         if (dependencies && dependencies.length > 0) {
-                            const searchers: Array<VActBundleSearcher> = []
-                            const context = new SearcherContext()
                             dependencies.forEach((dep: any) => {
-                                // searchers.push(create(context, dep))
-                         
-
                                 if (dep.type === "local") {
                                     installLocalVAct(dep.path)
                                 } else {
-                               
-                                    VStore.getVActComponent(dep.libCode, dep.symbolicName).then((componentInfo) => {
+                                    VStore.getVActComponent(dep.libCode, dep.vactName).then((componentInfo) => {
                                         VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
-
                                             installLocalVAct(componentPath)
                                         })
                                     })
                                 }
-
                             })
-                            // const promises: Array<Promise<void>> = []
-                            // const tgzPaths: Array<string> = []
-                            // searchers.forEach(searcher => {
-                            //     promises.push(new Promise((reso, rej) => {
-                            //         searcher.getLocalVActNames().then((res: any) => {
-                            //             tgzPaths.push(res.path)
-                            //         }).catch(err => {
-                            //             rej(err)
-                            //         })
-                            //     }))
-                            // })
-                            // Promise.all(promises).then(() => {
-                            //     const installer = new TGZPluginsInstaller(tgzPaths)
-                            //     installer.install().then(() => {
-                            //         resolve()
-                            //     }).catch(err => {
-                            //         reject(err)
-                            //     })
-                            // }).catch(err => {
-                            //     reject(err)
-                            // })
                         } else {
                             resolve()
                         }

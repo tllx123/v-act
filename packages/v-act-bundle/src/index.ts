@@ -3,66 +3,70 @@ import VActComponentBundle from "./model/VActComponentBundle";
 import VActProjectBundle from "./model/VActProjectBundle";
 import {create} from "archiver";
 import {createWriteStream,readdir,existsSync,rm} from 'fs'
-import * as decompress from "decompress";
+import  decompress from "decompress";
+const decompressFile = require('decompress');
 import * as p from "path";
+
 import * as childProcess from "child_process";
 import {VActCfg, Dependency, DependencyType } from "./types/VActCfg";
 import {Path,File,String} from "@v-act/utils";
 
 export default VActBundle;
-
+// const decompressFile = require('decompress');
 const persistence = function (bundle: VActBundle, distDir: string): Promise<string> {
     return new Promise((resolve, reject) => {
         try {
-            const jar = bundle.toJar();
-            const resources = jar.getResources();
-            const dist = p.resolve(distDir, `${bundle.getSymblicName()}-${bundle.getVersion()}.jar`);
-            File.mkDir(distDir);
-            const output = createWriteStream(dist);
+            const jar = bundle.toJar()
+            const resources = jar.getResources()
+            const dist = p.resolve(distDir, `${bundle.getSymblicName()}-${bundle.getVersion()}.jar`)
+            File.mkDir(distDir)
+            const output = createWriteStream(dist)
             const archive = create('zip', {
                 zlib: {
                     level: 9
                 }
             });
             output.on('close', () => {
-                resolve(dist);
+                resolve(dist)
             });
-            archive.on('error', reject);
-            archive.pipe(output);
+            archive.on('error', reject)
+            archive.pipe(output)
             const promises:Array<Promise<void>> = [];
             resources.forEach(resource => {
                 const entryPath = resource.getEntryPath();
                 const pro = new Promise<void>((reso, rej) => {
                     resource.getContent().then((content) => {
                         archive.append(content, { name: entryPath });
-                        reso();
+                        reso()
                     }).catch(err => {
-                        rej(err);
-                    });
-                });
-                promises.push(pro);
-            });
+                        rej(err)
+                    })
+                })
+                promises.push(pro)
+            })
             Promise.all(promises).then(() => {
-                archive.finalize();
+                archive.finalize()
             }).catch(err => {
-                reject(err);
-            });
+                reject(err)
+            })
         } catch (err) {
-            reject(err);
+            reject(err)
         }
     });
 }
+
 
 const pickNodejsPlugin = function (bundlePath: string): Promise<string> {
     return new Promise((resolve, reject) => {
         try {
             const tmpDir = Path.getVActRandomDir();
             File.mkDir(tmpDir);
-            decompress(bundlePath, tmpDir, {
-                filter: (file: decompress.File) => {
-                    return p.extname(file.path) === '.tgz'
-                }
-            }).then((files: Array<decompress.File>) => {
+           
+
+            decompressFile(bundlePath, tmpDir).then((files: Array<decompress.File>) => {
+                files  =  files.filter((item)=>{
+                      return  p.extname(item.path) === '.tgz'
+                })
                 const relativePath = files[0].path;
                 resolve(p.resolve(tmpDir,relativePath));
             }).catch((e:Error) => {
