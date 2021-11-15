@@ -1,5 +1,5 @@
 {
-  "author": "",
+  "author": "opensource.vplatform",
   "bin": {
     "vact": "bin/index.js"
   },

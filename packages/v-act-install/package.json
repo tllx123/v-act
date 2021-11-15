@@ -10,7 +10,7 @@
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:copy": "cp-cli ./src ./dist"
   },
-  "author": "",
+  "author": "opensource.vplatform",
   "license": "ISC",
   "devDependencies": {
     "@types/inquirer": "^8.1.3",

@@ -11,7 +11,7 @@
     "build:copy": "cp-cli ./src ./dist",
     "test": "node test/index.js"
   },
-  "author": "",
+  "author": "opensource.vplatform",
   "license": "ISC",
   "dependencies": {
     "@v-act/utils": "^1.0.0",
