@@ -3,9 +3,9 @@ import VActComponentBundle from "./model/VActComponentBundle";
 import VActProjectBundle from "./model/VActProjectBundle";
 import {create} from "archiver";
 import {createWriteStream,readdir,existsSync,rm} from 'fs'
-import decompress from "decompress";
-import p from "path";
-import childProcess from "child_process";
+import * as decompress from "decompress";
+import * as p from "path";
+import * as childProcess from "child_process";
 import {VActCfg, Dependency, DependencyType } from "./types/VActCfg";
 import {Path,File,String} from "@v-act/utils";
 
