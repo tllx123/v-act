@@ -1,6 +1,6 @@
 {
   "name": "@v-act/i18n",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "cp-cli": "^2.0.0"
   },
   "dependencies": {
-    "react-i18next": "^11.14.2",
-    "i18next": "^21.4.2"
+    "i18next": "^21.4.2",
+    "react-i18next": "^11.14.2"
   }
 }
