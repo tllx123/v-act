@@ -1,2 +1,2 @@
-import './declares/VActVars';
+import "./declares/VActVars";
 export * from './manager/VactThemeManager'

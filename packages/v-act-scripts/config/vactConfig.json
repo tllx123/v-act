@@ -1,0 +1,6 @@
+{
+    "Desc":"TemplateSlot的key是占位符中间的数据, value[0]是前缀占位符，value[1]是后缀占位符,例如：${__ProjectName__}",
+    "TemplateSlot":{
+        "ProjectName":["${__","__}"]
+    }
+}

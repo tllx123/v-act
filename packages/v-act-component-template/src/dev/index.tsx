@@ -4,14 +4,10 @@ import ReactDOM from 'react-dom';
 import Index from '../index';
 import reportWebVitals from './reportWebVitals';
 import "./index.css";
-import { ThemeProvider,createTheme } from "@v-act/styles";
+//import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@v-act/styles';
 
-const theme = createTheme({
-    demo:{
-        color:'#356bbc',
-        backgroundColor:'#eee'
-    }
-});
+const theme = createTheme();
 
 ReactDOM.render(
     <React.StrictMode>

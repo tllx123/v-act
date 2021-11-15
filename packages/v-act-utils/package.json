@@ -1,6 +1,7 @@
 {
   "name": "@v-act/utils",
   "version": "1.0.0",
+  "private": false,
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +11,7 @@
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:copy": "cp-cli ./src ./dist"
   },
-  "author": "",
+  "author": "opensource.vplatform",
   "license": "ISC",
   "devDependencies": {
     "@types/chalk": "^2.2.0",
@@ -22,5 +23,15 @@
     "chalk": "^4.1.2",
     "crypto-js": "^4.1.1",
     "del": "^6.0.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-utils"
+  },
+  "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }

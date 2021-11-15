@@ -1,0 +1,9 @@
+{
+    "ProjectTypes":{
+        "win":"窗体组件",
+        "pro":"项目组件"
+    },
+    "Templates": {
+        "win":"react-v3-app-template"
+    }
+}

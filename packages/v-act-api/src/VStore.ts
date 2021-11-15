@@ -277,7 +277,7 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
                 const data = body.data;
                 if (data.isSuccess) {
                     if (data.compInstEntity.length == 0) {
-                        reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${symbolicName}`));
+                        reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${vActName}`));
                     }
                     resolve(_toBundleObj(data.compInstEntity[0]));
                 } else {

@@ -1,16 +1,18 @@
 {
   "name": "@v-act/bundle",
   "version": "1.0.0",
+  "private": false,
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "debug": "node test/index.js",
     "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.build.json",
     "build:copy": "cp-cli ./src ./dist"
   },
-  "author": "",
+  "author": "opensource.vplatform",
   "license": "ISC",
   "devDependencies": {
     "@types/archiver": "^5.1.1",
@@ -19,8 +21,18 @@
     "@types/rimraf": "^3.0.2"
   },
   "dependencies": {
-    "@v-act/utils": "^1.0.0",
+    "@v-act/utils": "^1.0.2",
     "archiver": "^5.3.0",
     "decompress": "^4.2.1"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-bundle"
+  },
+  "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }
