@@ -171,7 +171,9 @@ const installLocalVAct = function (absPath: string): Promise<void> {
                 tgzPaths.push(dep.path)
             });
             //获取依赖构建路径数组
+            console.log(0)
             getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
+           
                 needInstallDep.push(tgzPaths[0])
                 //批量安装
                 const installer = new TGZPluginsInstaller(needInstallDep)
@@ -194,14 +196,16 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
     return new Promise((resolve, reject) => {
         try {
             const needInstallDep: Array<string> = []
+            console.log(111111)
+
             getDependenciesByAbsPath(absPath).then((val) => {
+                console.log(222222)
                 if(JSON.stringify(val) !== '{}'){
                     needInstallDep.push(val.relativePath)
                     if (val.dependencies && val.dependencies.length > 0) {
                         getDependencies(val.dependencies)
                     }
                 }
-
             })
 
             const getDependencies = function(dependencies: Array<Dependency>) {
@@ -228,11 +232,11 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
                                     })
                                 })
                             }
-
                         })
                     }
                 })
             }
+            console.log(3333)
             resolve(needInstallDep) 
         } catch (err) {
             reject(err)
@@ -290,10 +294,6 @@ const getDependenciesByAbsPath = function (absPath: string): Promise<any> {
 
 
 //安装所有
-
-
-
-
 const installAll = function (): Promise<void> {
     return new Promise((resolve, reject) => {
         try {
@@ -336,13 +336,69 @@ const installAll = function (): Promise<void> {
     });
 }
 
-const uninstall = function (vactName?: string): Promise<void> {
-    return new Promise((resolve, reject) => {
 
-    });
-}
+
+
+
+
+// const uninstall = function (vactName?: string): Promise<void> {
+//     return new Promise((resolve, reject) => {
+
+//         const promise = vactName ? uninstallVActPlugins(vactName) : uninstallAll()
+//         promise.then(() => {
+//             resolve()
+//         }).catch(err => {
+//             reject(err)
+//         })
+ 
+//     });
+// }
+
+
+// const uninstallVActPlugins = function (vactName: string): Promise<void>{
+//     return new Promise((resolve, reject) => {
+        
+//     })
+// }
+
+// const uninstallAll = function (): Promise<void>{
+//     return new Promise((resolve, reject) => {})
+// }
+
+
+
+// //安装构建
+// const installLocalVAct = function (absPath: string): Promise<void> {
+//     return new Promise((resolve, reject) => {
+//         const context = new SearcherContext()
+//         //根据路径获取构建信息，并将路径加到tgzPaths
+//         const searcher = new FileVActBundleSearcher(context, absPath)
+//         searcher.getLocalVActNames().then((deps) => {
+//             const tgzPaths: Array<string> = []
+//             deps.forEach((dep: any) => {
+//                 tgzPaths.push(dep.path)
+//             });
+//             //获取依赖构建路径数组
+//             console.log(0)
+//             getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
+//                 console.log(444444)
+//                 needInstallDep.push(tgzPaths[0])
+//                 //批量安装
+//                 const installer = new TGZPluginsInstaller(needInstallDep)
+//                 installer.install().then(() => {
+//                     resolve()
+//                 }).catch(err => {
+//                     reject(err)
+//                 });
+//             })
+//         }).catch(err => {
+//             reject(err)
+//         });
+//     });
+// }
+
 
 export {
     install,
-    uninstall
+    // uninstall
 }
