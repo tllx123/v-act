@@ -171,11 +171,11 @@ const installLocalVAct = function (absPath: string): Promise<void> {
                 tgzPaths.push(dep.path)
             });
             //获取依赖构建路径数组
-            console.log(0)
             getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
-           
                 needInstallDep.push(tgzPaths[0])
                 //批量安装
+                console.log("needInstallDep")
+                console.log(needInstallDep)
                 const installer = new TGZPluginsInstaller(needInstallDep)
                 installer.install().then(() => {
                     resolve()
@@ -192,27 +192,19 @@ const installLocalVAct = function (absPath: string): Promise<void> {
 
 
 //递归获取构建依赖路径
-const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<string>> {
+const getDependenciesPathByAbsPath =   function (absPath: string): Promise<Array<string>> {
+
     return new Promise((resolve, reject) => {
         try {
             const needInstallDep: Array<string> = []
             console.log(111111)
 
-            getDependenciesByAbsPath(absPath).then((val) => {
-                console.log(222222)
-                if(JSON.stringify(val) !== '{}'){
-                    needInstallDep.push(val.relativePath)
-                    if (val.dependencies && val.dependencies.length > 0) {
-                        getDependencies(val.dependencies)
-                    }
-                }
-            })
-
-            const getDependencies = function(dependencies: Array<Dependency>) {
-                dependencies.some((item: any) => {
+    
+            const getDependencies = async function(item: Dependency) {
+                    console.log(222222)
                     if (item.type === "local") {
-                        if (fs.existsSync(item.path)) {
-                            getDependenciesByAbsPath(item.path).then((val) => {
+                        if (fs.existsSync(<string>item.path)) {
+                              getDependenciesByAbsPath(<string>item.path).then((val) => {
                                 needInstallDep.push(val.relativePath)
                                 if (val.dependencies && val.dependencies.length > 0) {
                                     getDependencies(val.dependencies)
@@ -221,12 +213,14 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
                         }
                     } else {
                         item.type === "vstore"
-                        VStore.getVActComponent(item.libCode, item.vactName).then((componentInfo) => {
+                        VStore.getVActComponent(<string>item.libCode, item.vactName).then((componentInfo) => {
                             if(componentInfo.id !== "none"){
                                 VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
                                     getDependenciesByAbsPath(componentPath).then((val) => {
                                         needInstallDep.push(val.relativePath)
                                         if (val.dependencies && val.dependencies.length > 0) {
+                                            console.log("val.dependencies")  
+                                            console.log(val.dependencies)  
                                             getDependencies(val.dependencies)
                                         }
                                     })
@@ -234,10 +228,32 @@ const getDependenciesPathByAbsPath = function (absPath: string): Promise<Array<s
                             }
                         })
                     }
-                })
+              
             }
-            console.log(3333)
-            resolve(needInstallDep) 
+           
+            getDependenciesByAbsPath(absPath).then(async (val) => {
+                if(JSON.stringify(val) !== '{}'){
+                    needInstallDep.push(val.relativePath)
+                    if (val.dependencies && val.dependencies.length > 0) {
+                        val.dependencies.some(async(item: any) => {
+                            await getDependencies(item)
+                        })
+                        console.log(33331)
+                        console.log(needInstallDep)
+                        resolve(needInstallDep) 
+                    }else{
+                        console.log(33332)
+                        console.log(needInstallDep)
+                        resolve(needInstallDep) 
+                    }
+                }else{
+                    console.log(33334)
+                    console.log(needInstallDep)
+                    resolve([]) 
+                }
+            })
+         
+           
         } catch (err) {
             reject(err)
         }
