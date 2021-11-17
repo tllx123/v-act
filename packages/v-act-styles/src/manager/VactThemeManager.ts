@@ -3,6 +3,7 @@ import { createTheme, ThemeOptions } from '@mui/material';
 import { VactThemeProvider } from '../components/VactThemeProvider';
 import { EventManager } from './EventManager';
 import ThemeInfo from "../types/ThemeInfo";
+import { ThemePackageFactroy } from '../interface/IThemePackage'
 
 import defaultImpl from '../impl/default/VactImpl';
 
@@ -61,6 +62,7 @@ function createVactTheme(props?: Object|undefined) {
 }
 export {
     VactThemeProvider as ThemeProvider,//主题提供者
+    ThemePackageFactroy as ThemeFactory,
     getThemes,
     setTheme,
     ThemeInfo,

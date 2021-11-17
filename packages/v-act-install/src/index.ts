@@ -1,9 +1,7 @@
 import * as p from "path";
 import * as fs from "fs";
-import FileVActBundleSearcher from "./model/searcher/FileVActBundleSearcher";
-import SearcherContext from "./model/SearcherContext";
 import TGZPluginsInstaller from "./model/TGZPluginsInstaller";
-import { VStore } from "../../v-act-api/dist";
+import { VStore, VTeam } from "../../v-act-api/dist";
 import { Cache, Console } from "@v-act/utils";
 import { prompt } from 'inquirer';
 import { Path, File } from "@v-act/utils";
@@ -11,25 +9,29 @@ import decompress from "decompress";
 const decompressFile = require('decompress');
 import { Dependency } from "../../v-act-bundle/dist/types/VActCfg";
 import Bundle from "../../v-act-api/src/types/Bundle";
+const utils = require("@v-act/utils");
 
-const install = function (vactName?: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const promise = vactName ? installVActPlugins(vactName) : installAll()
-        promise.then(() => {
-            resolve()
-        }).catch(err => {
-            reject(err)
-        })
-    })
+
+
+
+const install = async function (vactName?: string) {
+    vactName ? installVActPlugins(vactName) : installAll()
 }
 
 
-
 const installVActPlugins = function (vactName: string): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         const exists = fs.existsSync(vactName);
         if (exists) {
-              installLocalVAct(vactName)
+
+            let params = await decompressByJarPath(vactName)
+            let res:string = ""
+            if (params.dependencies.length > 0) {
+                  installLibLine(params.dependencies,params.relativePath)
+            } else {
+                let libList = [params.relativePath]
+                  installLib(libList)
+            }
         } else {
             _getAccountAndPwd().then((result) => {
                 //从vstore查找
@@ -38,12 +40,15 @@ const installVActPlugins = function (vactName: string): Promise<any> {
                     components.forEach(item => {
                         actNames.push(item.compName + "（" + item.compCode + "）");
                     });
+                    if(components.length==0){
+                        utils.Console.log("没检索到构件，已退出安装")
+                    }else{
                     prompt([{
                         type: 'list',
                         message: '共检索到 ' + components.length + ' 个构件,请选择要安装的构件:',
                         choices: actNames,
                         name: 'selected'
-                    }]).then(answers => {
+                    }]).then( answers => {
                         const selected = answers.selected;
                         let componentCode = selected.split("（")[1];
                         componentCode = componentCode.substring(0, componentCode.length - 1);
@@ -66,13 +71,18 @@ const installVActPlugins = function (vactName: string): Promise<any> {
                                 break;
                             }
                         }
-
-                        VStore.downloadBundle(component.fileDownUrl).then((componentPath) => {
-                            installLocalVAct(componentPath)
+                        VStore.downloadBundle(component.fileDownUrl).then(async(componentPath) => {
+                            let params = await decompressByJarPath(componentPath)
+                            if (params.dependencies.length > 0) {
+                                installLibLine(params.dependencies,params.relativePath)
+                            } else {
+                                let libList = [params.relativePath]
+                                installLib(libList)
+                            }
                         })
-
-
                     });
+                  }
+
                 }).catch(err => {
                     reject(err);
                 });
@@ -159,259 +169,229 @@ const _getAccountAndPwd = function (): Promise<{ account: string, pwd: string, }
 
 
 
-//安装构建
-const installLocalVAct = function (absPath: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const context = new SearcherContext()
-        //根据路径获取构建信息，并将路径加到tgzPaths
-        const searcher = new FileVActBundleSearcher(context, absPath)
-        searcher.getLocalVActNames().then((deps) => {
-            const tgzPaths: Array<string> = []
-            deps.forEach((dep: any) => {
-                tgzPaths.push(dep.path)
-            });
-            //获取依赖构建路径数组
-            getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
-                needInstallDep.push(tgzPaths[0])
-                //批量安装
-                console.log("needInstallDep")
-                console.log(needInstallDep)
-                const installer = new TGZPluginsInstaller(needInstallDep)
-                installer.install().then(() => {
-                    resolve()
-                }).catch(err => {
-                    reject(err)
-                });
-            })
-        }).catch(err => {
-            reject(err)
-        });
-    });
+
+//安装所有
+const installAll = async function () {
+    const pluginPath = process.cwd()
+    const vactCfgPath = p.resolve(pluginPath, ".vactCfg");
+    if (fs.existsSync(vactCfgPath)) {
+        let data = await readFile(vactCfgPath)
+        const vactCfg = JSON.parse(data.toString())
+        const dependencies = vactCfg.dependencies 
+        if (dependencies && dependencies.length > 0) {
+            //获取所有依赖
+            installLibLine(dependencies)
+        }
+    }
 }
 
 
-
-//递归获取构建依赖路径
-const getDependenciesPathByAbsPath =   function (absPath: string): Promise<Array<string>> {
-
-    return new Promise((resolve, reject) => {
-        try {
-            const needInstallDep: Array<string> = []
-            console.log(111111)
-
-    
-            const getDependencies = async function(item: Dependency) {
-                    console.log(222222)
-                    if (item.type === "local") {
-                        if (fs.existsSync(<string>item.path)) {
-                              getDependenciesByAbsPath(<string>item.path).then((val) => {
-                                needInstallDep.push(val.relativePath)
-                                if (val.dependencies && val.dependencies.length > 0) {
-                                    getDependencies(val.dependencies)
-                                }
-                            })
-                        }
-                    } else {
-                        item.type === "vstore"
-                        VStore.getVActComponent(<string>item.libCode, item.vactName).then((componentInfo) => {
-                            if(componentInfo.id !== "none"){
-                                VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
-                                    getDependenciesByAbsPath(componentPath).then((val) => {
-                                        needInstallDep.push(val.relativePath)
-                                        if (val.dependencies && val.dependencies.length > 0) {
-                                            console.log("val.dependencies")  
-                                            console.log(val.dependencies)  
-                                            getDependencies(val.dependencies)
-                                        }
-                                    })
-                                })
-                            }
-                        })
-                    }
-              
-            }
-           
-            getDependenciesByAbsPath(absPath).then(async (val) => {
-                if(JSON.stringify(val) !== '{}'){
-                    needInstallDep.push(val.relativePath)
-                    if (val.dependencies && val.dependencies.length > 0) {
-                        val.dependencies.some(async(item: any) => {
-                            await getDependencies(item)
-                        })
-                        console.log(33331)
-                        console.log(needInstallDep)
-                        resolve(needInstallDep) 
-                    }else{
-                        console.log(33332)
-                        console.log(needInstallDep)
-                        resolve(needInstallDep) 
-                    }
-                }else{
-                    console.log(33334)
-                    console.log(needInstallDep)
-                    resolve([]) 
-                }
+const installLibLine = async function (dependencies: Dependency[],path?:string) {
+    return new Promise(async(resolve,reject)=>{
+        let params = await getAllDepByJarPath(dependencies)
+        let hasVStoreDep = params.deps.filter((item: Dependency) => { return item.type == "vstore" })
+        if (hasVStoreDep.length > 0) {
+            let login = await _getAccountAndPwd()
+            let libCode = await VTeam.getProjectsByAccount(login.account, login.pwd)
+            // console.log("libCode------------")
+            // console.log(libCode)
+            let libCodeList: Array<string> = []
+            libCode.some((item) => {
+                libCodeList.push(item.libCode)
             })
-         
-           
-        } catch (err) {
-            reject(err)
+            let libNameList =[]
+            for (const item of params.deps) {
+                if (libCodeList.indexOf(item.libCode) < 0) {
+                    libNameList.push(item.vactName)
+                } 
+            }
+    
+            if(libNameList.length==0){
+                if(path){
+                    params.tgzPath.push(path)
+                }
+                installLib(params.tgzPath)
+              
+            }else{
+                utils.Console.log("安装失败")
+                utils.Console.log("你没权限安装构件：" + libNameList.toString())
+                utils.Console.log("安装已终止")
+            }
         }
     })
 }
 
 
 
-//返回当前构建的依赖以及tgz文件路径
-const getDependenciesByAbsPath = function (absPath: string): Promise<any> {
+const installLib = function (arr: Array<string>): Promise<string> {
     return new Promise((resolve, reject) => {
-        const tmpDir = Path.getVActRandomDir()
-        File.mkDir(tmpDir)
-        decompressFile(absPath, tmpDir).then((files: Array<decompress.File>) => {
-            files = files.filter((item) => { return p.extname(item.path) === '.tgz' })
-            const relativePath = p.resolve(tmpDir, files[0].path)
-            const DepTmpDir = Path.getVActRandomDir();
-            File.mkDir(DepTmpDir);
-            decompressFile(relativePath, DepTmpDir).then((filesDep: Array<decompress.File>) => {
+        const installer = new TGZPluginsInstaller(arr)
+        installer.install().then(() => {
+            utils.Console.log("安装成功")  
+        }).catch(err => {
+            reject(err)
+        })
+    })
+}
 
+
+//根绝路径获取其所有依赖信息
+const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+        let deps: Array<Dependency> = []
+        let depsArray: Array<string> = []
+        let tgzPath: Array<string> = []
+        let params = {
+            deps: deps, //依赖信息
+            depsArray: depsArray,  //用于校验用户是否有权限安装
+            tgzPath: tgzPath      //用于安装
+        }
+        const getPath = async function (dependencies: Array<Dependency>): Promise<void> {
+            return new Promise(async (resolve, reject) => {
+                for (const dep of dependencies) {
+                    if (dep.type === "local") {
+                        if (fs.existsSync(<string>dep.path)) {
+
+                            let isRepeat = false
+                            for(const item of deps){
+                                 if(item.vactName == dep.vactName && item.path == dep.path){
+                                    isRepeat = true
+                                 }
+                            }
+                            if(!isRepeat){
+                                deps.push(dep)
+                                resolve(await decompressFileByJarPath(<string>dep.path))
+                            }else{
+                                resolve()
+                            }
+                        }
+                    } else {
+                        let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName, "=")
+                        let componentPath = await VStore.downloadBundle(componentInfo.fileDownUrl)
+                        if (fs.existsSync(componentPath)) {
+                            let isRepeat = false
+                            for(const item of deps){
+                                 if(item.vactName == dep.vactName && item.libCode == dep.libCode &&item.symbolicName == dep.symbolicName){
+                                    isRepeat = true
+                                 }
+                            }
+                            if(!isRepeat){
+                                deps.push(dep) 
+                                depsArray.push(<string>dep.libCode)
+                                resolve(await decompressFileByJarPath(componentPath))
+                            }else{
+                                resolve()
+                            }
+     
+                        }
+                    }
+                    resolve()
+                }
+                resolve()
+            })
+        }
+
+
+        //解压文件获取插件信息
+        const decompressFileByJarPath = async function (jarPath: string): Promise<void> {
+            return new Promise(async (resolve, reject) => {
+                const tmpDir = Path.getVActRandomDir()
+                File.mkDir(tmpDir)
+                //解压jar
+                let files: Array<decompress.File> = await decompressFile(jarPath, tmpDir)
+                files = files.filter((item) => { return p.extname(item.path) === '.tgz' })
+                const relativePath = p.resolve(tmpDir, files[0].path)
+                 if(tgzPath.indexOf(relativePath) > 0){
+                    resolve()
+                 }else{
+                    tgzPath.push(relativePath)
+                 }
+               
+
+                const DepTmpDir = Path.getVActRandomDir();
+                File.mkDir(DepTmpDir);
+                //解压tgz
+
+                let filesDep: Array<decompress.File> = await decompressFile(relativePath, DepTmpDir)
                 filesDep = filesDep.filter((item) => { return (item.path.indexOf('.vactCfg') > -1) })
-                if(filesDep.length ==0){
-                    resolve({})
-                }else{
+                if (filesDep.length == 0) {
+                    resolve()
+                } else {
                     const DepPath = filesDep[0].path;
                     const DepPathTemp = p.resolve(DepTmpDir, DepPath)
                     if (fs.existsSync(DepPathTemp)) {
-                        fs.readFile(DepPathTemp, (err, data) => {
-                            if (err) {
-                                return reject(err);
-                            }
-                            try {
-                                const DepObj = JSON.parse(data.toString())
-                                const dependencies: Array<Dependency> = DepObj.dependencies
-                                let param = {
-                                    dependencies: dependencies,
-                                    relativePath: relativePath
-                                }
-                                resolve(param)
-                            } catch (err) {
-                                reject(err)
-                            }
-                        })
+                        let data = await readFile(DepPathTemp)
+                        const DepObj = JSON.parse(data.toString())
+                        const dependencies: Array<Dependency> = DepObj.dependencies
+                        if (dependencies && dependencies.length > 0) {
+                            resolve(await getPath(dependencies))
+                        } else {
+                            resolve()
+                        }
                     }
                 }
-    
             })
+        }
+
+
+        await getPath(dependencies)
+
+        resolve(params)
+    })
+}
+
+
+
+const readFile = async function (DepPathTemp: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        fs.readFile(DepPathTemp, (err, data) => {
+            resolve(data)
         })
     })
 }
 
 
 
+//解压文件获取插件信息
+const decompressByJarPath = async function (jarPath: string): Promise<{ relativePath: string, dependencies: Array<Dependency>, }> {
+    return new Promise(async (resolve, reject) => {
+        
 
-
-//安装所有
-const installAll = function (): Promise<void> {
-    return new Promise((resolve, reject) => {
-        try {
-            const pluginPath = process.cwd()
-            const vactCfgPath = p.resolve(pluginPath, ".vactCfg");
-            if (fs.existsSync(vactCfgPath)) {
-                fs.readFile(vactCfgPath, (err, data) => {
-                    if (err) {
-                        return reject(err)
-                    }
-                    try {
-                        const vactCfg = JSON.parse(data.toString())
-                        //获取依赖
-                        const dependencies = vactCfg.dependencies
-                        if (dependencies && dependencies.length > 0) {
-                            dependencies.forEach((dep: any) => {
-                                if (dep.type === "local") {
-                                    installLocalVAct(dep.path)
-                                } else {
-                                    VStore.getVActComponent(dep.libCode, dep.vactName).then((componentInfo) => {
-                                        VStore.downloadBundle(componentInfo.fileDownUrl).then((componentPath) => {
-                                            installLocalVAct(componentPath)
-                                        })
-                                    })
-                                }
-                            })
-                        } else {
-                            resolve()
-                        }
-                    } catch (err) {
-                        reject(err)
-                    }
+        const tmpDir = Path.getVActRandomDir()
+        File.mkDir(tmpDir)
+        //解压jar
+        let files: Array<decompress.File> = await decompressFile(jarPath, tmpDir)
+        files = files.filter((item) => { return p.extname(item.path) === '.tgz' })
+        const relativePath = p.resolve(tmpDir, files[0].path)
+        const DepTmpDir = Path.getVActRandomDir();
+        File.mkDir(DepTmpDir);
+        //解压tgz
+        let filesDep: Array<decompress.File> = await decompressFile(relativePath, DepTmpDir)
+        filesDep = filesDep.filter((item) => { return (item.path.indexOf('.vactCfg') > -1) })
+        if (filesDep.length == 0) {
+            let dependencies: Array<Dependency> = []
+            resolve({
+                relativePath: relativePath,
+                dependencies: dependencies
+            })
+        } else {
+            const DepPath = filesDep[0].path;
+            const DepPathTemp = p.resolve(DepTmpDir, DepPath)
+            if (fs.existsSync(DepPathTemp)) {
+                let data = await readFile(DepPathTemp)
+                const DepObj = JSON.parse(data.toString())
+                const dependencies: Array<Dependency> = DepObj.dependencies
+                resolve({
+                    relativePath: relativePath,
+                    dependencies: dependencies
                 })
-            } else {
-                resolve()
             }
-        } catch (err) {
-            reject(err)
         }
-    });
+    })
 }
 
 
 
-
-
-
-// const uninstall = function (vactName?: string): Promise<void> {
-//     return new Promise((resolve, reject) => {
-
-//         const promise = vactName ? uninstallVActPlugins(vactName) : uninstallAll()
-//         promise.then(() => {
-//             resolve()
-//         }).catch(err => {
-//             reject(err)
-//         })
- 
-//     });
-// }
-
-
-// const uninstallVActPlugins = function (vactName: string): Promise<void>{
-//     return new Promise((resolve, reject) => {
-        
-//     })
-// }
-
-// const uninstallAll = function (): Promise<void>{
-//     return new Promise((resolve, reject) => {})
-// }
-
-
-
-// //安装构建
-// const installLocalVAct = function (absPath: string): Promise<void> {
-//     return new Promise((resolve, reject) => {
-//         const context = new SearcherContext()
-//         //根据路径获取构建信息，并将路径加到tgzPaths
-//         const searcher = new FileVActBundleSearcher(context, absPath)
-//         searcher.getLocalVActNames().then((deps) => {
-//             const tgzPaths: Array<string> = []
-//             deps.forEach((dep: any) => {
-//                 tgzPaths.push(dep.path)
-//             });
-//             //获取依赖构建路径数组
-//             console.log(0)
-//             getDependenciesPathByAbsPath(absPath).then((needInstallDep) => {
-//                 console.log(444444)
-//                 needInstallDep.push(tgzPaths[0])
-//                 //批量安装
-//                 const installer = new TGZPluginsInstaller(needInstallDep)
-//                 installer.install().then(() => {
-//                     resolve()
-//                 }).catch(err => {
-//                     reject(err)
-//                 });
-//             })
-//         }).catch(err => {
-//             reject(err)
-//         });
-//     });
-// }
 
 
 export {
