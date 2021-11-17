@@ -1,6 +1,6 @@
 {
   "name": "@v-act/cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "opensource.vplatform",
   "keywords": [
     "v3",
@@ -25,6 +25,7 @@
     "vact-app": "./index.js"
   },
   "dependencies": {
+    "@v-act/scripts": "^1.0.1",
     "chalk": "^4.1.0",
     "commander": "^4.1.1",
     "cross-spawn": "^7.0.3",
@@ -35,7 +36,6 @@
     "prompts": "^2.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "@v-act/scripts": "^1.0.0",
     "semver": "^7.3.2",
     "supports-color": "^9.0.2",
     "tar-pack": "^3.4.1",
