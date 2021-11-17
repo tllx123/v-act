@@ -54,10 +54,11 @@ function getFiles(dir, excludeDirNames) {
  * @param {String} sourceDir 来源文件夹
  * @param {String} targetDir 目标文件夹
  * @param {Function} handle 文件处理回调
+ * @param {Function} handleDir 目标文件路径处理回调
  * @returns 
  */
-function copy(sourceDir, targetDir, handle) {
-    if(typeof(handle) != "function"){//如果不需要指定处理函数，则直接使用node fs的复制接口
+function copy(sourceDir, targetDir, handle, handleDir) {
+    if(typeof(handle) != "function" && typeof(handleDir) != "function"){//如果不需要指定处理函数，则直接使用node fs的复制接口
         return fs.copySync(templateDir, appPath);
     }
     if (!fs.existsSync(sourceDir)) {//来源目录不存在则抛错
@@ -74,6 +75,9 @@ function copy(sourceDir, targetDir, handle) {
         let tarPath = path.join(targetDir, relPath);
         if(!tarPath){
             return;
+        }
+        if(typeof(handleDir) == "function"){
+            tarPath = handleDir(tarPath);
         }
         const index = tarPath.replace(/\\/g, "/").lastIndexOf("/");
         const temPath = tarPath.substring(0,index);
