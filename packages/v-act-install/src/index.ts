@@ -242,32 +242,52 @@ const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<a
         let depsArray: Array<string> = []
         let tgzPath: Array<string> = []
         let params = {
-            deps: deps,
-            depsArray: depsArray,
-            tgzPath: tgzPath
+            deps: deps, //依赖信息
+            depsArray: depsArray,  //用于校验用户是否有权限安装
+            tgzPath: tgzPath      //用于安装
         }
         const getPath = async function (dependencies: Array<Dependency>): Promise<void> {
             return new Promise(async (resolve, reject) => {
                 for (const dep of dependencies) {
-                    // async dependencies.some((dep: any) => {
                     if (dep.type === "local") {
                         if (fs.existsSync(<string>dep.path)) {
-                            deps.push(dep)
-                            resolve(await decompressFileByJarPath(<string>dep.path))
+
+                            let isRepeat = false
+                            for(const item of deps){
+                                 if(item.vactName == dep.vactName && item.path == dep.path){
+                                    isRepeat = true
+                                 }
+                            }
+                            if(!isRepeat){
+                                deps.push(dep)
+                                resolve(await decompressFileByJarPath(<string>dep.path))
+                            }else{
+                                resolve()
+                            }
                         }
                     } else {
                         let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName, "=")
                         let componentPath = await VStore.downloadBundle(componentInfo.fileDownUrl)
                         if (fs.existsSync(componentPath)) {
-                            deps.push(dep)
-                            depsArray.push(<string>dep.libCode)
-                            resolve(await decompressFileByJarPath(componentPath))
+                            let isRepeat = false
+                            for(const item of deps){
+                                 if(item.vactName == dep.vactName && item.libCode == dep.libCode &&item.symbolicName == dep.symbolicName){
+                                    isRepeat = true
+                                 }
+                            }
+                            if(!isRepeat){
+                                deps.push(dep) 
+                                depsArray.push(<string>dep.libCode)
+                                resolve(await decompressFileByJarPath(componentPath))
+                            }else{
+                                resolve()
+                            }
+     
                         }
                     }
                     resolve()
                 }
                 resolve()
-
             })
         }
 
@@ -281,7 +301,13 @@ const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<a
                 let files: Array<decompress.File> = await decompressFile(jarPath, tmpDir)
                 files = files.filter((item) => { return p.extname(item.path) === '.tgz' })
                 const relativePath = p.resolve(tmpDir, files[0].path)
-                tgzPath.push(relativePath)
+                 if(tgzPath.indexOf(relativePath) > 0){
+                    resolve()
+                 }else{
+                    tgzPath.push(relativePath)
+                 }
+               
+
                 const DepTmpDir = Path.getVActRandomDir();
                 File.mkDir(DepTmpDir);
                 //解压tgz
@@ -309,6 +335,7 @@ const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<a
 
 
         await getPath(dependencies)
+
         resolve(params)
     })
 }
