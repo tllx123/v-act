@@ -208,8 +208,8 @@ function init() {
         console.log();
         console.error(
           chalk.yellow(
-            `You are running \`create-vact-app\` ${packageJson.version}, which is behind the latest release (${latest}).\n\n` +
-              'We no longer support global installation of Create React App.'
+            `You are running \`@v-act/cli\` ${packageJson.version}, which is behind the latest release (${latest}).\n\n` +
+              'We no longer support global installation of Create VAct App.'
           )
         );
         console.log();
