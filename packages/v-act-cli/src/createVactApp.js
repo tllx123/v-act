@@ -136,7 +136,7 @@ function init() {
       );
       console.log(
         `      ${chalk.cyan(
-          'https://github.com/v3/create-react-v3-app/issues/new'
+          'https://github.com/opensource-vplatform/v-act/issues/new'
         )}`
       );
       console.log();
@@ -162,7 +162,7 @@ function init() {
             'Safari',
           ],
           npmPackages: ['react', 'react-dom', '@v-act/scripts'],
-          npmGlobalPackages: ['create-react-v3-app'],
+          npmGlobalPackages: ['@v-act/cli'],
         },
         {
           duplicates: true,
@@ -198,7 +198,7 @@ function init() {
   checkForLatestVersion()
     .catch(() => {
       try {
-        return execSync('npm view create-react-v3-app version').toString().trim();
+        return execSync('npm view @v-act/cli version').toString().trim();
       } catch (e) {
         return null;
       }
@@ -208,20 +208,20 @@ function init() {
         console.log();
         console.error(
           chalk.yellow(
-            `You are running \`create-react-v3-app\` ${packageJson.version}, which is behind the latest release (${latest}).\n\n` +
+            `You are running \`create-vact-app\` ${packageJson.version}, which is behind the latest release (${latest}).\n\n` +
               'We no longer support global installation of Create React App.'
           )
         );
         console.log();
         console.log(
           'Please remove any global installs with one of the following commands:\n' +
-            '- npm uninstall -g create-react-v3-app\n' +
-            '- yarn global remove create-react-v3-app'
+            '- npm uninstall -g @v-act/cli\n' +
+            '- yarn global remove @v-act/cli'
         );
         console.log();
         console.log(
           'The latest instructions for creating a new app can be found here:\n' +
-            'https://create-react-v3-app.dev/docs/getting-started/'
+            'https://create-vact-app.dev/docs/getting-started/'
         );
         console.log();
         process.exit(1);
@@ -370,7 +370,7 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
       [].push.apply(args, dependencies);
 
       // Explicitly set cwd() to work around issues like
-      // https://github.com/v3/create-react-v3-app/issues/3326.
+      // https://github.com/opensource-vplatform/v-act/issues/3326.
       // Unfortunately we can only do this for Yarn because npm support for
       // equivalent --prefix flag doesn't help with this issue.
       // This is why for npm, we run checkThatNpmCanReadCwd() early instead.
@@ -386,7 +386,7 @@ function install(root, useYarn, usePnp, dependencies, verbose, isOnline) {
       command = 'npm';
       args = [
         'install',
-        '--no-audit', // https://github.com/v3/create-react-v3-app/issues/11174
+        '--no-audit', // https://github.com/opensource-vplatform/v-act/issues/11174
         '--save',
         '--save-exact',
         '--loglevel',
@@ -445,11 +445,7 @@ function run(
       initDefaultDependenciesVersion()
     ])
       .then(([packageInfo, templateInfo]) =>
-        checkIfOnline(useYarn).then(isOnline => ({
-          isOnline,
-          packageInfo,
-          templateInfo,
-        }))
+        checkIfOnline(useYarn, packageInfo, templateInfo)
       )
       .then(({ isOnline, packageInfo, templateInfo }) => {
         let packageVersion = semver.coerce(packageInfo.version);
@@ -513,7 +509,7 @@ function run(
         const nodeArgs = fs.existsSync(pnpPath) ? ['--require', pnpPath] : [];
         // reactV3ScriptInit(root, appName, verbose, originalDirectory, templateName);
         await executeChildPlugin(//executeNodeScript(
-          path.join(__dirname,"node_modules/@v-act/scripts/scripts/index.js"),
+          path.join(__dirname,"../","node_modules/@v-act/scripts/scripts/index.js"),
           [root, appName, verbose, originalDirectory, templateName]
         );
 
@@ -651,7 +647,7 @@ function getTemplateInstallPackage(template, originalDirectory) {
     } else {
       // Add prefix 'cra-template-' to non-prefixed templates, leaving any
       // @scope/ and @version intact.
-      const packageMatch = template.match(/^(@[^/]+\/)?([^@]+)?(@.+)?$/);
+      /*const packageMatch = template.match(/^(@[^/]+\/)?([^@]+)?(@.+)?$/);
       const scope = packageMatch[1] || '';
       const templateName = packageMatch[2] || '';
       const version = packageMatch[3] || '';
@@ -675,7 +671,8 @@ function getTemplateInstallPackage(template, originalDirectory) {
         // - @SCOPE/NAME
         // templateToInstall = `${scope}${templateToInstall}-${templateName}${version}`;
         templateToInstall = `${templateName}${version}`;
-      }
+      }*/
+      templateToInstall = template;
     }
   }
 
@@ -831,7 +828,7 @@ function checkYarnVersion() {
 function checkNodeVersion(packageName) {
   const packageJsonPath = path.resolve(
     process.cwd(),
-    "../node_modules/create-react-v3-app/",
+    "../node_modules/@v-act/cli/",
     'node_modules',
     packageName,
     'package.json'
@@ -950,7 +947,7 @@ function setCaretRangeForRuntimeDeps(packageName) {
 // Also, if project contains remnant error logs from a previous
 // installation, lets remove them now.
 // We also special case IJ-based products .idea because it integrates with CRA:
-// https://github.com/v3/create-react-v3-app/pull/368#issuecomment-243446094
+// https://github.com/opensource-vplatform/v-act/pull/368#issuecomment-243446094
 function isSafeToCreateProjectIn(root, name) {
   const validFiles = [
     '.DS_Store',
@@ -1037,7 +1034,7 @@ function getProxy() {
   }
 }
 
-// See https://github.com/v3/create-react-v3-app/pull/3355
+// See https://github.com/opensource-vplatform/v-act/pull/3355
 function checkThatNpmCanReadCwd() {
   const cwd = process.cwd();
   let childOutput = null;
@@ -1099,11 +1096,15 @@ function checkThatNpmCanReadCwd() {
   return false;
 }
 
-function checkIfOnline(useYarn) {
+function checkIfOnline(useYarn, packageInfo, templateInfo) {
   if (!useYarn) {
     // Don't ping the Yarn registry.
     // We'll just assume the best case.
-    return Promise.resolve(true);
+    return Promise.resolve({
+      isOnline: true,
+      packageInfo, 
+      templateInfo
+    });
   }
 
   return new Promise(resolve => {
@@ -1113,10 +1114,18 @@ function checkIfOnline(useYarn) {
         // If a proxy is defined, we likely can't resolve external hostnames.
         // Try to resolve the proxy name as an indication of a connection.
         dns.lookup(url.parse(proxy).hostname, proxyErr => {
-          resolve(proxyErr == null);
+          resolve({
+            isOnline: proxyErr == null,
+            packageInfo, 
+            templateInfo
+          });
         });
       } else {
-        resolve(err == null);
+        resolve({
+          isOnline: err == null,
+          packageInfo, 
+          templateInfo
+        });
       }
     });
   });
@@ -1156,7 +1165,7 @@ function checkForLatestVersion() {
   return new Promise((resolve, reject) => {
     https
       .get(
-        'https://registry.npmjs.org/-/package/create-react-v3-app/dist-tags',
+        'https://registry.npmjs.org/-/package/@v-act/cli/dist-tags',
         res => {
           if (res.statusCode === 200) {
             let body = '';

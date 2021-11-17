@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const path = require("path");
 const configUtils = require("../utils/configUtils.js");
 /**
  * 获取可以选择的项目类型信息
@@ -21,7 +22,7 @@ const questions = [{
     "name": "ProjectName",
     "type": "input",
     "message": "请输入项目编码：",
-    "default": "demo"
+    "default": path.basename(process.cwd())
 }];
 module.exports = {
     /**

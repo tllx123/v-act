@@ -1,5 +1,13 @@
 .demo {
     text-align: center;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.paper{
+    height: 100%;
 }
 
 .demo h1{
@@ -22,33 +30,17 @@
     pointer-events: none;
 }
 .header{
-    height: 5vmin;
-    min-height: 50px;
-    text-align: right;
-}
-
-.header button{
-    color: #fff;
-    border: 0px;
-    background-color: transparent;
-    margin: 16px;
-    cursor: pointer;
-}
-
-.header button:hover{
-    color:aquamarine;
+    width: 100%;
+    top: 0px;
+    min-height: 60px;
 }
 
 .content {
-    min-height: calc(100vh - 50px);
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    height: 100%;
 }
 
 .link {
     color: #61dafb;
 }
+

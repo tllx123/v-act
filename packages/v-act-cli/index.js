@@ -51,6 +51,6 @@ if (major < 14) {
   process.exit(1);
 }
 
-const { init } = require('./src/createReactVactApp');
+const { init } = require('./src/createVactApp');
 
 init();

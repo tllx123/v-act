@@ -1,7 +1,7 @@
 {
     "ProjectTypes":{
-        "component":"窗体组件",
-        "project":"项目组件"
+        "component":"VAct组件",
+        "project":"VAct项目"
     },
     "Templates": {
         "component":"@v-act/component-template",

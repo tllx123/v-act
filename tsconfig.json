@@ -6,6 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
+    "incremental":true,
     "target": "ESNext",
     "paths": {
       "@v-act/*":["packages/*/src"]

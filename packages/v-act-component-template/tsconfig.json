@@ -21,6 +21,6 @@
     "allowJs": true
   },
   "include": [
-    "src"
+    "src","vactCfg.ts"
   ]
 }
