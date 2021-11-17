@@ -1,4 +1,4 @@
-import * as decompress from "decompress";
+import decompress from "decompress";
 import { existsSync } from "fs";
 import { Path, Console, IO } from "@v-act/utils";
 import { exec } from "child_process";
@@ -7,14 +7,12 @@ const decompressFile = require('decompress');
 /**
  * 批量安装
  */
-class TGZPluginsInstaller {
-
-    tgzPaths: Array<string> = [];
+class TGZPluginsUninstaller {
 
     actNames: Array<string> = [];
 
-    constructor(tgzPaths: Array<string>) {
-        this.tgzPaths = tgzPaths;
+    constructor(actNames: Array<string>) {
+        this.actNames = actNames;
     }
 
     install(): Promise<void> {
@@ -33,28 +31,6 @@ class TGZPluginsInstaller {
         });
     }
 
-    _genActNames(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const actNames:Array<string> = [];
-            const promises:Array<Promise<void>> = [];
-            this.tgzPaths.forEach(tgzPath => {
-                promises.push(new Promise<void>((reso, rej) => {
-                    this._getVActNameFromTgzPath(tgzPath).then((actName) => {
-                        actNames.push(actName);
-                        reso();
-                    }).catch(err => {
-                        rej(err);
-                    });
-                }));
-            });
-            Promise.all(promises).then(() => {
-                this.actNames = actNames;
-                resolve();
-            }).catch(err => {
-                reject(err);
-            });
-        });
-    }
 
     _check(): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -75,7 +51,7 @@ class TGZPluginsInstaller {
     */
     _installNodejsPlugins(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const scripts = ["npm", "install"]
+            const scripts = ["npm", "install"] 
             this.tgzPaths.forEach(tgzPath => {
                 scripts.push(tgzPath)
             })
