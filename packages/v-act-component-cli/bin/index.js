@@ -12,7 +12,8 @@ const scripts = [
   'publish',
   'install',
   'pack',
-  'preinstall'
+  'preinstall',
+  'uninstall'
 ];
 
 const scriptIndex = args.findIndex(
