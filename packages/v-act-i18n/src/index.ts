@@ -7,6 +7,7 @@
 
  import Language from './model/Language';
  import LanguageManager from './manager/LanguageManager';
+ import LanguageFactory from './manager/LanguageFactory';
  //初始化i18n
  import './init';
  
@@ -52,5 +53,6 @@
      Language,
      setLanguage,
      getLanguage,
+     LanguageFactory as I18nFactory,
      getLanguages
  };
