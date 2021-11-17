@@ -1,6 +1,6 @@
 {
   "name": "@v-act/cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "opensource.vplatform",
   "keywords": [
     "v3",
@@ -35,7 +35,7 @@
     "prompts": "^2.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-vact-scripts": "^1.0.0",
+    "@v-act/scripts": "^1.0.0",
     "semver": "^7.3.2",
     "supports-color": "^9.0.2",
     "tar-pack": "^3.4.1",
