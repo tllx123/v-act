@@ -221,12 +221,6 @@ module.exports = function (
   // Setup the script rules
   const templateScripts = templatePackage.scripts || {};
   appPackage.scripts = Object.assign(
-    {
-      start: 'vact-scripts start',
-      build: 'vact-scripts build',
-      test: 'vact-scripts test',
-      eject: 'vact-scripts eject',
-    },
     templateScripts
   );
 
@@ -398,38 +392,21 @@ module.exports = function (
     cdpath = appPath;
   }
 
-  // Change displayed command to yarn instead of yarnpkg
-  const displayedCommand = useYarn ? 'yarn' : 'npm';
-
   console.log();
-  console.log(`Success! Created ${appName} at ${appPath}`);
-  console.log('Inside that directory, you can run several commands:');
+  console.log(`成功! 成功创建 ${appName} ，路径： ${appPath}`);
+  console.log('在该目录下，您可以执行以下命令:');
   console.log();
-  console.log(chalk.cyan(`  ${displayedCommand} start`));
-  console.log('    Starts the development server.');
+  displayCommand(useYarn,"vact:start","启动开发环境。");
+  displayCommand(useYarn,"vact:publish","部署构件到VTeam。");
+  displayCommand(useYarn,"vact:test","运行自动化测试脚本。");
+  displayCommand(useYarn,"vact:install","从VTeam中安装VAct组件。");
+  displayCommand(useYarn,"vact:clear","清除缓存信息。");
+  displayCommand(useYarn,"vact:pack","打包成应用服务构件。");
   console.log();
-  console.log(
-    chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}build`)
-  );
-  console.log('    Bundles the app into static files for production.');
-  console.log();
-  console.log(chalk.cyan(`  ${displayedCommand} test`));
-  console.log('    Starts the test runner.');
-  console.log();
-  console.log(
-    chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}eject`)
-  );
-  console.log(
-    '    Removes this tool and copies build dependencies, configuration files'
-  );
-  console.log(
-    '    and scripts into the app directory. If you do this, you can’t go back!'
-  );
-  console.log();
-  console.log('We suggest that you begin by typing:');
+  console.log('建议按照以下步骤开始开发：');
   console.log();
   console.log(chalk.cyan('  cd'), cdpath);
-  console.log(`  ${chalk.cyan(`${displayedCommand} start`)}`);
+  console.log(`  ${chalk.cyan(getRunCommand(useYarn,"vact:start"))}`);
   if (readmeExists) {
     console.log();
     console.log(
@@ -441,6 +418,17 @@ module.exports = function (
   console.log();
   console.log('Happy hacking!');
 };
+
+function getRunCommand(useYarn,command){
+  const displayedCommand = useYarn ? 'yarn' : 'npm';
+  return `  ${displayedCommand}${useYarn ? '' : 'run '} ${command}`;
+}
+
+function displayCommand(useYarn,command,desc){
+  console.log(chalk.cyan(getRunCommand(useYarn,command)));
+  console.log(`    ${desc}`);
+  console.log();
+}
 
 function isReactInstalled(appPackage) {
   const dependencies = appPackage.dependencies || {};
