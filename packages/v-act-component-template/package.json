@@ -1,6 +1,6 @@
 {
   "name": "@v-act/component-template",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": false,
   "dependencies": {
     "@emotion/react": "^11.5.0",
@@ -16,6 +16,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@v-act/component-cli": "^1.0.2",
+    "@v-act/styles": "^1.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
