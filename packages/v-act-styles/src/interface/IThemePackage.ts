@@ -35,7 +35,7 @@ class ThemePackageFactroy {
      * 注册主题包
      * @param pack 主题包对象
      */
-    resiger(pack: IThemePackage): void {
+    register(pack: IThemePackage): void {
         this.packs[pack.getCode()] = pack;
     }
 
@@ -43,7 +43,7 @@ class ThemePackageFactroy {
      * 卸载主题包
      * @param packObj 主题包对象
      */
-    unResiger(packObj: IThemePackage): void {
+    unRegister(packObj: IThemePackage): void {
         delete this.packs[packObj.getCode()];
     }
     /**

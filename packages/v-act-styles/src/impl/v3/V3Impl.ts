@@ -56,6 +56,6 @@ class V3Impl implements IThemePackage {
 
 const instance = new V3Impl();
 
-ThemePackageFactroy.resiger(instance);
+ThemePackageFactroy.register(instance);
 
 export default instance as V3Impl

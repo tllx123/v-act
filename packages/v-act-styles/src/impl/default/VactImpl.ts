@@ -35,6 +35,6 @@ class VactImpl implements IThemePackage {
 }
 const instance = new VactImpl();
 
-ThemePackageFactroy.resiger(instance);
+ThemePackageFactroy.register(instance);
 
 export default instance as VactImpl
