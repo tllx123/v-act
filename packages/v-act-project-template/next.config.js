@@ -5,5 +5,6 @@ module.exports = {
   reactStrictMode: true,
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     return overrides(config, { buildId, dev, isServer, defaultLoaders, webpack });
-  }
+  },
+  basePath: '/v-act-project-template'
 }

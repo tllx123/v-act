@@ -19,9 +19,14 @@ const getVActTempDir = function(){
     return p.resolve(tmpDir,"vact");
 }
 
+const getExportPath = function(pluginPath:string){
+    return `${pluginPath}/out`;
+}
+
 export {
     toComponentSymbolicName,
     toProjectSymbolicName,
     getManifestEntryPath,
+    getExportPath,
     getVActTempDir
 }

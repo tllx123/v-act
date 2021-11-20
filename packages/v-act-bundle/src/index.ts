@@ -3,7 +3,9 @@ import VActComponentBundle from "./model/VActComponentBundle";
 import VActProjectBundle from "./model/VActProjectBundle";
 import {create} from "archiver";
 import {createWriteStream,readdir,existsSync,rm} from 'fs'
-import  decompress from "decompress";
+import * as decompress from "decompress";
+import { getExportPath } from "./utils/Utils";
+import FileJarResource from "./model/jar/resources/FileJarResource";
 const decompressFile = require('decompress');
 import * as p from "path";
 
@@ -258,6 +260,62 @@ const packPluginTgz = function (pluginPath: string): Promise<string> {
         }
     });
 }
+/**
+ * 获取导出文件的绝对路径
+ * @param pluginPath 插件路径
+ * @returns 
+ */
+const getExportFiles = function (pluginPath: string): string[] {
+    let filePaths:string[] = [];
+    try {
+        //获取导出路径
+        const exportPath = getExportPath(pluginPath);
+        //获取导出文件路径
+        filePaths = File.getFiles(exportPath);
+    } catch (error) {
+        throw Error(`无法获取项目导出资源：` + error);
+    }
+    return filePaths;
+}
+/**
+ * 清除导出文件夹
+ * @param pluginPath 插件路径
+ * @returns 
+ */
+const clearExportFile = function (pluginPath: string): Promise<void> {
+    return new Promise((resolve, reject)=>{
+        try {
+            //获取导出路径
+            const exportPath = getExportPath(pluginPath);
+            File.rmDirSync(exportPath);
+            resolve();
+        } catch (error) {
+            reject(Error(`无法清除项目导出资源：` + error))
+        }
+    });
+}
+
+/**
+ * 创建文件资源
+ * @param entryPath 目标路径
+ * @param srcPath 来源路径
+ * @returns 
+ */
+const createFileResource = function(entryPath:string, srcPath:string):FileJarResource{
+    return new FileJarResource(entryPath, srcPath)
+}
+
+/**
+ * 生成资源相对jar的路径
+ * @param pluginPath 插件路径
+ * @param srcPath 资源的绝对路径
+ */
+const genEntryPath = function(pluginCode:string, pluginPath:string, srcPath:string){
+    //获取导出目录
+    const exportPath = getExportPath(pluginPath);
+    const relPath = p.relative(exportPath, srcPath);
+    return `resources/page/${pluginCode}/${relPath}`;
+}
 
 export {
     persistence,
@@ -267,6 +325,11 @@ export {
     clearPluginTgz,
     clearV3ExEBundle,
     packPluginTgz,
+    createFileResource,
+    getExportPath,
+    getExportFiles,
+    genEntryPath,
+    clearExportFile,
     VActCfg,
     Dependency,
     DependencyType

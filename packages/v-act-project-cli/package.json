@@ -8,7 +8,16 @@
     "vact": "bin/index.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clear": "node scripts/clear.js",
+    "install": "node scripts/install.js",
+    "pack": "node scripts/pack.js",
+    "preinstall": "node scripts/preinstall.js",
+    "publish": "node scripts/publish.js",
+    "start": "node scripts/start.js",
+    "test": "node scripts/test.js"
+  },
+  "dependencies": {
+    "@v-act/cli-utils":"^1.0.0"
   },
   "author": "opensource.vplatform",
   "license": "ISC",
