@@ -4,23 +4,30 @@
 
 import mockData from './mockData.json';
 import IThemePackage, { ThemePackageFactroy } from '../../interface/IThemePackage';
+import {VActThemeOptions} from "../../declares/VActVars";
+import defaultVars from '../../var/default';
 import ThemeInfo from '../../types/ThemeInfo'
 
 //主题列表
 const themes: Array<{
     code: string
     name: string
-    vact: {
-        [proName: string]: Object
-    }
-}> = mockData.themes;
+    vact: VActThemeOptions
+}> = [];
+
+mockData.themes.forEach((theme)=>{
+    let vact:VActThemeOptions = Object.assign({},defaultVars,theme.vact);
+    themes.push({
+        code: theme.code,
+        name: theme.name,
+        vact
+    });
+});
 
 const newThemes: Array<ThemeInfo> = themes ? themes.map((item: {
     code: string
     name: string
-    vact: {
-        [proName: string]: Object
-    }
+    vact: VActThemeOptions
 }) => {
     return new ThemeInfo(item.code, item.name, item.vact);
 }) : []

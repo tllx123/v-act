@@ -1,12 +1,11 @@
 import vars from  '../../var/default';
 import IThemePackage, { ThemePackageFactroy } from '../../interface/IThemePackage';
-import ThemeInfo from '../../types/ThemeInfo'
+import ThemeInfo from '../../types/ThemeInfo';
+import {VActThemeOptions} from '../../declares/VActVars';
 
 const vactCode:string = "Vact";
 const vactName:string = "Vact默认主题";
-const vact:{
-    [proName:string]:Object
-} = vars;
+const vact:VActThemeOptions = vars;
 
 const defaultTheme = new ThemeInfo(vactCode, vactName, vact);
 

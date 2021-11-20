@@ -1,0 +1,20 @@
+{
+  "name": "@v-act/v3dev-component-watcher",
+  "version": "1.0.0",
+  "description": "v平台开发系统构件监听",
+  "main": "index.js",
+  "bin": {
+    "vactWatch": "bin/index.js"
+  },
+  "scripts": {
+    "debug": "node index.js E:\\开发系统\\开发系统业务构件\\demo\\vact"
+  },
+  "v3devCmpDir": "E:\\开发系统\\开发系统业务构件\\demo\\vact",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chokidar": "^3.5.2",
+    "juicer": "^0.6.15",
+    "xml2js": "^0.4.23"
+  }
+}

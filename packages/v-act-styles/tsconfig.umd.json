@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "outDir": "./dist/umd",
+    "rootDir": "src",
+    "target": "es5",
+    "module": "Commonjs"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

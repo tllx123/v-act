@@ -1,3 +1,6 @@
+import { VActThemeOptions } from '../declares/VActVars';
+import { ThemeOptions } from "@mui/material/styles";
+
 /**
  * 第三方对接的主题对象
  */
@@ -7,13 +10,9 @@ class ThemeInfo {
     //主题名称
     name: string = "默认主题"
     //主题变量
-    vact: {
-        [proName: string]: object
-    } = {}
+    vact: VActThemeOptions;
 
-    constructor(code: string, name: string, vact: {
-        [proName: string]: object
-    }) {
+    constructor(code: string, name: string, vact: VActThemeOptions) {
         this.code = code;
         this.name = name;
         this.vact = vact;
@@ -39,7 +38,7 @@ class ThemeInfo {
      * 设置主题变量
      * @param vact 主题变量
      */
-    setVact(vact: { [proName: string]: object }) {
+    setVact(vact: VActThemeOptions) {
         this.vact = vact;
     }
 
@@ -68,13 +67,7 @@ class ThemeInfo {
     /**
      * 转成map对象
      */
-    toMap():{
-        code:string,
-        name:string,
-        vact:{
-            [proName:string]:Object
-        }
-    }{
+    toMap():ThemeOptions{
         return {
             code: this.code,
             name: this.name,

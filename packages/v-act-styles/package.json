@@ -1,16 +1,18 @@
 {
   "name": "@v-act/styles",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "description": "",
   "license": "ISC",
-  "main": "dist/index.js",
+  "main": "dist/umd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.td.ts",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
+    "build": "npm run build:clean && npm run build:esm && npm run build:umd",
     "build:clean": "rimraf dist && mkdirp dist",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:copy": "cp-cli ./src ./dist"
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:umd": "tsc -p tsconfig.umd.json"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.3",
