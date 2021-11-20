@@ -198,22 +198,25 @@ const v3WindowToScript = function(form){
         for (const type in controls) {
             if (Object.hasOwnProperty.call(controls, type) && ["JGTextBox","JGButton"].indexOf(type) != -1) {
                 const widget = controls[type];
-                const attrs = widget.$;
-                script.push("<");
-                script.push(type);
-                script.push(" ");
-                for (const attr in attrs) {
-                    if (Object.hasOwnProperty.call(attrs, attr)) {
-                        const attrVal = attrs[attr];
-                        script.push(attr);
-                        script.push("=\"");
-                        script.push(attrVal);
-                        script.push("\" ");
+                const widgets = Array.isArray(widget) ? widget:[widget];
+                widgets.forEach(wd => {
+                    const attrs = wd.$;
+                    script.push("<");
+                    script.push(type);
+                    script.push(" ");
+                    for (const attr in attrs) {
+                        if (Object.hasOwnProperty.call(attrs, attr)) {
+                            const attrVal = attrs[attr];
+                            script.push(attr);
+                            script.push("=\"");
+                            script.push(attrVal);
+                            script.push("\" ");
+                        }
                     }
-                }
-                script.push("></");
-                script.push(type);
-                script.push(">");
+                    script.push("></");
+                    script.push(type);
+                    script.push(">");
+                });
             }
         }
     }
