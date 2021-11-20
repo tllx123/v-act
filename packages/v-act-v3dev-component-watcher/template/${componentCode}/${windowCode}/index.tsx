@@ -8,7 +8,7 @@ const theme = createTheme();
 function Index(){
     return (
         <ThemeProvider theme={theme}>
-            ${windowScript}
+            $${windowScript}
         </ThemeProvider>
     );
 }

@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 {@if componentCode&&windowCode}
-import Index from "./${componentCode}/${windowCode}/index";
+import Index from "./$${componentCode}/$${windowCode}/index";
 {@/if}
 import styles from '../styles/Home.module.css';
 
@@ -15,7 +15,7 @@ const Home: NextPage = () => {
       </Head>
       {@if componentCode&&windowCode}
       <Index></Index>
-      ${@/if}
+      {@/if}
     </div>
   )
 };
