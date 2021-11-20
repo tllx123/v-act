@@ -4,13 +4,13 @@ const fs = require("fs");
 const juicer = require("juicer");
 const xml2js = require("xml2js");
 const os = require("os");
+let currentWindow = null;
+let watcherReady = false;
 
 exports.watch = function(v3devCmpDir){
-    if(v3devCmpDir){
+    if(!v3devCmpDir){
         throw Error("未传递开发系统业务构件目录，监听失败!");
     }
-    let currentWindow = null;
-    let watcherReady = false;
     if(fs.existsSync(v3devCmpDir)){
         const cmpDir = path.resolve(v3devCmpDir,"Component");
         if(fs.existsSync(cmpDir)){
@@ -63,10 +63,10 @@ exports.watch = function(v3devCmpDir){
                 }
             });
             watcher.on("add",(p)=>{
-                handleV3WindowChanged(p);
+                handleV3WindowChanged(p,v3devCmpDir);
             });
             watcher.on("change",(p)=>{
-                handleV3WindowChanged(p);
+                handleV3WindowChanged(p,v3devCmpDir);
             });
         }
     }
@@ -119,7 +119,7 @@ const isWindowDir = function(dir){
     return fs.existsSync(path.resolve(dir,"index.tsx"));
 }
 
-const handleV3WindowChanged = function(p){
+const handleV3WindowChanged = function(p, v3devCmpDir){
     if(isWindowConfigChanged(p)){
         const promise = parseV3DevWindow(p);
         promise.then((win)=>{
