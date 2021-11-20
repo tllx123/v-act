@@ -1,0 +1,64 @@
+{
+  "name": "@v-act/jgbutton",
+  "version": "1.0.0",
+  "module": "dist/esm/index.js",
+  "dependencies": {
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.1.1",
+    "@v-act/cra-template-component": "1.0.0",
+    "@v-act/styles": "file:../../../github/v-act/packages/v-act-styles/v-act-styles-1.0.2.tgz",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^2.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "vact:start": "vact start",
+    "vact:publish": "vact publish",
+    "vact:build": "rimraf dist && mkdirp dist && tsc -p tsconfig.esm.json",
+    "vact:test": "vact test",
+    "vact:doc": "vact doc",
+    "vact:install": "vact install",
+    "vact:clear": "vact clear",
+    "vact:pack": "vact pack"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:jsx-a11y/recommended"
+    ],
+    "plugins": [
+      "jsx-a11y"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@v-act/component-cli": "^1.0.3",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.2"
+  }
+}

@@ -1,49 +1,33 @@
-import {Component} from "react";
-import {withTranslation} from 'react-i18next';
 import logo from "./img/logo.svg";
-import "./css/intro.module.css";
+import styles from "./css/intro.module.css";
+import {useTheme} from "@v-act/styles";
 
-interface state {
-    skinVars: any,
-    skinIndex: number,
-    langIndex: number
-}
-
-class Intro extends Component<any, state>{
-
-    render(){
-        return (
-            <div className="demo">
-                <header className="header" style={{
-                    backgroundColor: this.state.skinVars.vPrimaryColor
-                }}>
-                    <button>{t("changeTheme")}</button>
-                    <button>{t("changeLang")}</button>
-                </header>
-                <div className="content" style={{
-                    color: this.state.skinVars.vPrimaryColor
-                }}>
-                    <img src={logo} className="logo" alt="logo" />
-                    <h1>{t("welcome")}</h1>
-                    <h6>{t("desc")}</h6>
-                    <p>
-                        {t("edit")}
-                        <code>src/components/Demo/Index.tsx</code>
-                        {t("tips")}
-                    </p>
-                    <a
-                        className="link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {t("startLearn")}
-                    </a>
-                </div>
+function Intro(){
+    const theme = useTheme();
+    return (
+        <div className={styles.demo}>
+            <div className={styles.content} style={{
+                color: theme.vact.primaryColor
+            }}>
+                <img src={logo} className={styles.logo} alt="logo" />
+                <h1>欢迎进行VAct项目开发</h1>
+                <h6>这是你是天马行空的创作天地</h6>
+                <p>
+                    编辑
+                    <code>pages/intro/Index.tsx</code>
+                    文件试试吧！
+                </p>
+                <a
+                    className="link"
+                    href="https://reactjs.org"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    开始学习
+                </a>
             </div>
-        );
-    }
-
+        </div>
+    );
 }
 
-export default withTranslation()(Intro);
+export default Intro;
