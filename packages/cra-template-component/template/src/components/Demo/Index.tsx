@@ -2,7 +2,6 @@ import * as React from "react";
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import PopMenu from "../PopMenu/Index";
 import Grid from '@mui/material/Grid';
 
 import logo from "./assets/logo.svg";
@@ -15,9 +14,6 @@ import { useTheme, getThemes, ThemeInfo } from '@v-act/styles';
  * @description
  */
 function Demo() {
-    const changeSkin = (code: string) => {
-        
-    };
     const theme = useTheme();
     const menus:Array<{code:string,title:string}> = [];
     const menusObj = getThemes();
@@ -30,12 +26,6 @@ function Demo() {
     return (
         <Paper elevation={6} className={styles.paper}>
             <div className={styles.demo}>
-                <header className={styles.header} style={{
-                    backgroundColor: theme.vact.primaryColor
-                }}>
-                    <PopMenu menus={menus} handleClick={changeSkin} title={"切换皮肤"}></PopMenu>
-                    <PopMenu menus={menus} handleClick={changeSkin} title={"切换语言"}></PopMenu>
-                </header>
                 <div className={styles.content} style={{
                     color: theme.vact.primaryColor,
                     backgroundColor: theme.vact.backgroundBaseColor

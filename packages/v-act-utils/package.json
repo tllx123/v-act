@@ -3,12 +3,15 @@
   "version": "1.0.3",
   "private": false,
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/umd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.td.ts",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
-    "build": "npm run build:clean && npm run build:tsc",
+    "build": "npm run build:clean && npm run build:esm && npm run build:umd",
     "build:clean": "rimraf dist && mkdirp dist",
-    "build:tsc": "tsc -p tsconfig.build.json"
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:umd": "tsc -p tsconfig.umd.json"
   },
   "author": "opensource.vplatform",
   "license": "ISC",

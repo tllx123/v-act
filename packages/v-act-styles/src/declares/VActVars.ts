@@ -94,5 +94,5 @@ declare module "@mui/material/styles" {
     }
 }
 export{
-    VActThemeOptions
+    type VActThemeOptions
 }

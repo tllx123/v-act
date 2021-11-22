@@ -7,7 +7,7 @@
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.1.1",
     "@v-act/cra-template-component": "1.0.0",
-    "@v-act/styles": "file:../../../github/v-act/packages/v-act-styles/v-act-styles-1.0.2.tgz",
+    "@v-act/styles": "^1.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",

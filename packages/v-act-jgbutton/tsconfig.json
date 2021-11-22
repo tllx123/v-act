@@ -7,7 +7,8 @@
       "esnext"
     ],
     "outDir": "dist/esm",
-    "declaration": true,
+    "jsx": "react-jsx",
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -18,13 +19,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "allowJs": true
+    "noEmit": true,
+    "noImplicitAny": false
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "node_modules"
   ]
 }

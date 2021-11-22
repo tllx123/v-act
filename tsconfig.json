@@ -9,7 +9,7 @@
     "incremental":true,
     "target": "ESNext",
     "paths": {
-      "@v-act/*":["packages/*/src"]
+      "@v-act/styles":["packages/v-act-styles/src"]
     }
   },
   "include": ["packages/**/src"]

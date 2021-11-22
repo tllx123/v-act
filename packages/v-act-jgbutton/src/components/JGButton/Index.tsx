@@ -1,5 +1,5 @@
 import React,{CSSProperties} from "react";
-import { useTheme } from "@v-act/styles";
+import {useTheme} from "@v-act/styles";
 
 interface JGButtonProps {
     Left: string;

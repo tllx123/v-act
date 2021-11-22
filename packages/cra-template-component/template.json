@@ -1,6 +1,6 @@
 {
   "package": {
-      "module":"dist/esm/index.js",
+      "main":"dist/index.js",
       "dependencies": {
           "@emotion/react": "^11.5.0",
           "@emotion/styled": "^11.3.0",
@@ -28,7 +28,7 @@
       },
       "scripts": {
           "vact:start": "vact start",
-          "vact:build": "rimraf dist && mkdirp dist && tsc -p tsconfig.esm.json",
+          "vact:build": "rimraf dist && mkdirp dist && tsc -p tsconfig.build.json",
           "vact:publish": "vact publish",
           "vact:test": "vact test",
           "vact:doc": "vact doc",
