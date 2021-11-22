@@ -97,14 +97,14 @@ import FileJarResource from "./jar/resources/FileJarResource";
         this.appendDefaultManifestHeaders(manifest);
         manifest.setHeader("Bundle-SymbolicName",this.getSymblicName());
         const headers = manifest.getHeaders();
-        const buff = [];
+        const buff:string[] = [];
         for (const name in headers) {
             if (Object.prototype.hasOwnProperty.call(headers, name)) {
                 const value = headers[name];
-				var str = name +': ' + value;
+				let str = name +': ' + value;
 				if(str.length>70){
 					do{
-						var line = str.substring(0,70);
+						let line = str.substring(0,70);
 						buff.push(line);
 						buff.push('\n');
 						str = ' '+str.substring(70);

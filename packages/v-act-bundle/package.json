@@ -1,6 +1,6 @@
 {
   "name": "@v-act/bundle",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc",
     "build:clean": "rimraf dist && mkdirp dist",
-    "build:tsc": "tsc -p tsconfig.build.json"
+    "build:tsc": "tsc -p tsconfig.json"
   },
   "author": "opensource.vplatform",
   "license": "ISC",
@@ -30,6 +30,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": ["dist/**/**.*"],
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
