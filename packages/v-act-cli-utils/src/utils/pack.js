@@ -1,4 +1,5 @@
 const pack = require("../pack");
+const { executeCommand } = require("./utils");
 const utils = require("@v-act/utils");
 
 /**
@@ -46,11 +47,16 @@ const _pack = function(isProject){
         utils.Console.error(err);
     });
 }
+
 module.exports = {
     packComponent:function(){
         _pack(false);
     },
     packProject:function(){
-        _pack(true);
+        executeCommand("next export").then(()=>{
+            _pack(true);
+        }).catch((err)=>{
+            throw Error("项目打包失败，err: " + err);
+        })
     }
 }
