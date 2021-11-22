@@ -1,2 +1,2 @@
-const { start } = require("@v-act/cli-utils");
-start();
+const { startProject } = require("@v-act/cli-utils");
+startProject();

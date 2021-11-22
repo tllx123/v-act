@@ -3,8 +3,9 @@ const install = require("./src/utils/install");
 const { packComponent, packProject } = require("./src/utils/pack");
 const preinstall = require("./src/utils/preinstall");
 const { publishComponent, publishProject } = require("./src/utils/publish");
-const start = require("./src/utils/start");
+const { startProject, startComponent } = require("./src/utils/start");
 const test = require("./src/utils/test");
+
 
 module.exports = {
     clear,
@@ -14,6 +15,7 @@ module.exports = {
     preinstall,
     publishComponent,
     publishProject,
-    start,
+    startProject,
+    startComponent,
     test
 }

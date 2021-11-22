@@ -46,7 +46,7 @@ const packToV3ExEBundle = function(account,tgzPath,distDir, isProject){
         let vactComponent;
         let resources;
         if(isProject === true){
-            resources = vActBundle.getExportFiles(distDir);
+            resources = vActBundle.getExportFiles(pluginPath);
             const resourceObjs = resources.map((resource)=>{
                 const entryPath = vActBundle.genEntryPath(pluginCode, pluginPath, resource);
                 return vActBundle.createFileResource(entryPath, resource);
@@ -69,7 +69,7 @@ const packToV3ExEBundle = function(account,tgzPath,distDir, isProject){
                     });
                 }
                 if(resources && resources.length > 0){
-                    vActBundle.clearExportFile(distDir).then(resolve).catch(reject);
+                    vActBundle.clearExportFile(pluginPath).then(handle).catch(reject);
                 }else{
                     handle();
                 }

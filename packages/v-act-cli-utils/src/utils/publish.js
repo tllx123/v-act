@@ -96,7 +96,7 @@ const getVTeamTaskNo = function (context) {
         try {
             utils.Cache.get().then((cache) => {
                 //vteam单号
-                let taskNo = options.taskNo || "";
+                let taskNo = context.options && context.options.taskNo || "";
                 taskNo = taskNo.trim();
                 if (!taskNo) {
                     const questions = [{
@@ -291,10 +291,11 @@ const publish =  function(type){
 
     program.parse(process.argv);
 
-    const options = program.opts();
+    const options = program.opts() || {};
 
     const context = {
-        isProject: type === "project"
+        isProject: type === "project",
+        options: options
     };
     
     //组装车间
