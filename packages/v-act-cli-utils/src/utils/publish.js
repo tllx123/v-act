@@ -5,6 +5,7 @@ const vActApi = require('@v-act/api');
 const vActBundle = require("@v-act/bundle");
 const utils = require("@v-act/utils");
 const pack = require("../pack");
+const { executeCommand } = require("./utils");
 
 /**
  * 获取账号、密码，如未设置或缓存中不存在，将以向导的方式要求输入
@@ -283,7 +284,7 @@ const appendInfoToVTeamTask = function (context) {
     });
 }
 
-const publish =  function(type){
+const publish =  function(isProject){
 
     program.option('-a, --account <account>', '账号名')
     .option('-p, --pwd <pwd>', '密码')
@@ -294,7 +295,7 @@ const publish =  function(type){
     const options = program.opts() || {};
 
     const context = {
-        isProject: type === "project",
+        isProject,
         options: options
     };
     
@@ -334,10 +335,20 @@ const publish =  function(type){
 
 
 module.exports = {
+    /**
+     * 部署组件
+     */
     publishComponent:function(){
-        publish("component");
+        publish(false);
     },
+    /**
+     * 部署项目
+     */
     publishProject:function(){
-        publish("project");
+        executeCommand("next export").then(()=>{
+            publish(true);
+        }).catch((err)=>{
+            throw Error("项目打包失败，err: " + err);
+        })
     }
 }
