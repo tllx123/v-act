@@ -1,4 +1,4 @@
 const { executeCommand } = require('./utils');
 module.exports = function(){
-    return executeCommand("next export");
+    return executeCommand("next build");
 }
