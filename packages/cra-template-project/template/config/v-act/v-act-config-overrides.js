@@ -1,4 +1,5 @@
 const requireAll = require("require-all");
+const fs = require("fs");
 const extraOverride = require("../v-act-project-config-overrides");
 
 /**
@@ -12,19 +13,21 @@ module.exports = function (config, {
   defaultLoaders,
   webpack
 }) {
-  let overrides = requireAll({
-    dirname: __dirname + "/overrides",
-    recursive: true
-  });
-  if (overrides) {
-    Object.values(overrides).forEach(function (handlers) {
-      handlers = Array.isArray(handlers) ? handlers : [handlers];
-      if (handlers && handlers.length > 0) {
-        handlers.forEach(handler => {
-          config = handler(config, env);
-        });
-      }
+  if (fs.existsSync(__dirname + "/overrides")) {
+    let overrides = requireAll({
+      dirname: __dirname + "/overrides",
+      recursive: true
     });
+    if (overrides) {
+      Object.values(overrides).forEach(function (handlers) {
+        handlers = Array.isArray(handlers) ? handlers : [handlers];
+        if (handlers && handlers.length > 0) {
+          handlers.forEach(handler => {
+            config = handler(config, env);
+          });
+        }
+      });
+    }
   }
   config = extraOverride(config, {
     buildId,

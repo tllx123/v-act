@@ -21,7 +21,7 @@ function _start(command){
 module.exports = {
 
     startProject:function(){
-        _start("next start");
+        _start("next dev");
     },
 
     startComponent:function(){
