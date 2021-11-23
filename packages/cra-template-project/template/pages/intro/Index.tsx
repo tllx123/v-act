@@ -1,5 +1,4 @@
 import {Component} from "react";
-import {withTranslation} from 'react-i18next';
 import logo from "./img/logo.svg";
 import "./css/intro.module.css";
 
@@ -10,26 +9,19 @@ interface state {
 }
 
 class Intro extends Component<any, state>{
-
     render(){
         return (
             <div className="demo">
-                <header className="header" style={{
-                    backgroundColor: this.state.skinVars.vPrimaryColor
-                }}>
-                    <button>{t("changeTheme")}</button>
-                    <button>{t("changeLang")}</button>
-                </header>
                 <div className="content" style={{
-                    color: this.state.skinVars.vPrimaryColor
+                    color: "#356abb"
                 }}>
-                    <img src={logo} className="logo" alt="logo" />
-                    <h1>{t("welcome")}</h1>
-                    <h6>{t("desc")}</h6>
+                    <img src={logo.src} className="logo" alt="logo" />
+                    <h1>welcome</h1>
+                    <h6>desc</h6>
                     <p>
-                        {t("edit")}
-                        <code>src/components/Demo/Index.tsx</code>
-                        {t("tips")}
+                        edit&nbsp;
+                        <code>src/components/Demo/Index.tsx</code>&nbsp;
+                        tips
                     </p>
                     <a
                         className="link"
@@ -37,7 +29,7 @@ class Intro extends Component<any, state>{
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {t("startLearn")}
+                        startLearn
                     </a>
                 </div>
             </div>
@@ -46,4 +38,4 @@ class Intro extends Component<any, state>{
 
 }
 
-export default withTranslation()(Intro);
+export default Intro;
