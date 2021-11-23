@@ -142,7 +142,12 @@ const getProjectInfo = function(projectId: string): Promise<{code: string,name: 
 const addInfoToVteam = function (account: string, data: {symbolicName: string,version: string,taskIds: Array<string>}): Promise<void> {
     return new Promise((resolve, reject) => {
         const url = (Const.VTEAM_HOST.endsWith('/') ? Const.VTEAM_HOST:Const.VTEAM_HOST+"/") + (Const.VTEAM_TASK_REF_URL.startsWith("/") ? Const.VTEAM_TASK_REF_URL.substring(1):Const.VTEAM_TASK_REF_URL);
-        let taskRefEntities = [];
+        let taskRefEntities:{
+            memberCode: string,
+            taskId: string,
+            componentCode: string,
+            componentVersion: string
+        }[] = [];
         let taskIds = data.taskIds;
         for (let i = 0, l = taskIds.length; i < l; i++) {
             let taskId = taskIds[i];

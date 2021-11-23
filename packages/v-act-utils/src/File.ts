@@ -70,7 +70,7 @@ const rmDir = function(dir: string,listener?: (file: string)=>void): Promise<voi
  * @param dir 文件夹目录
  */
 const rmDirSync = function(dir: string){
-    let files = [];
+    let files:string[] = [];
     if( fs.existsSync(dir) ) {
         files = fs.readdirSync(dir);
         files.forEach(function(file){

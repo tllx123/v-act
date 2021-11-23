@@ -223,7 +223,7 @@ const searchVActComponent = function (account: string, pwd: string, code: string
                         /* 请求成功 */
                         const data = body.data;
                         if (data.isSuccess) {
-                            const bundles = [];
+                            const bundles: { [prop: string]: any }[] = [];
                             data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
                                 bundles.push(_toBundleObj(comp));
                             });
@@ -319,7 +319,7 @@ const downloadBundle = function (url: string): Promise<string> {
                         const absPath = p.resolve(tmpDir, filename);
                         IO.write(absPath, body).then(() => {
                             resolve(absPath);
-                        }).catch(err => {
+                        }).catch((err: Error) => {
                             reject(err);
                         });
                     } else {

@@ -1,9 +1,10 @@
 {
   "name": "@v-act/bundle",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "private": false,
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.td.ts",
   "scripts": {
     "debug": "node test/index.js",
     "dev": "tsc -p tsconfig.build.json -w",

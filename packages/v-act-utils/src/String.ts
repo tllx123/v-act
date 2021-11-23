@@ -17,7 +17,7 @@ const toMD5 = function(content: string): string{
 const getRandomCode = function (len: number): string {
     const chr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     Math.random();
-    const buffer = [];
+    const buffer:string[] = [];
     for (let i = 0; i < len; i++) {
         buffer.push(chr[Math.floor(Math.random() * 10)]);
     }
@@ -34,7 +34,7 @@ const toBASE64 = function(content: string,charset?: BufferEncoding): string{
 }
 
 const genSignature = function (args: Array<string>, needSort: boolean): string {
-    const srcSignature = [];
+    const srcSignature:string[] = [];
     if (typeof (needSort) != 'boolean' || needSort) {
         args = args.sort();
     }

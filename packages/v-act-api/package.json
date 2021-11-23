@@ -1,6 +1,6 @@
 {
   "name": "@v-act/api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -8,7 +8,7 @@
     "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc",
     "build:clean": "rimraf dist && mkdirp dist",
-    "build:tsc": "tsc -p tsconfig.build.json",
+    "build:tsc": "tsc -p tsconfig.json",
     "test": "node test/index.js"
   },
   "author": "opensource.vplatform",
@@ -38,5 +38,6 @@
     "url": "https://github.com/opensource-vplatform/v-act.git",
     "directory": "packages/v-act-api"
   },
+  "files": ["dist/**/**.*"],
   "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }
