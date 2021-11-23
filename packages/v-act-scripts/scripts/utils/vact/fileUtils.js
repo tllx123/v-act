@@ -72,20 +72,22 @@ function copy(sourceDir, targetDir, handle, handleDir) {
     }
     let filePaths = getFiles(sourceDir);//获取全部文件列表
     filePaths.forEach((relPath)=>{
+        //目标路径
         let tarPath = path.join(targetDir, relPath);
-        if(!tarPath){
+        //来源路径
+        const sourcePath = path.join(sourceDir, relPath);
+        if(typeof(handle) == "function"){
+            tarPath = handle(sourcePath, tarPath);
+        }
+        if(!tarPath){//如果不返回目标路径，则不需要复制此文件
             return;
         }
-        if(typeof(handleDir) == "function"){
-            tarPath = handleDir(tarPath);
-        }
         const index = tarPath.replace(/\\/g, "/").lastIndexOf("/");
-        const temPath = tarPath.substring(0,index);
+        let temPath = tarPath.substring(0,index);
         if (!fs.existsSync(temPath)) {//构件目录函数
             mkdir(temPath);
         }
-        fs.copyFileSync(path.join(sourceDir, relPath), tarPath);
-        handle(tarPath);//由用户自行处理复制后的文件
+        fs.copyFileSync(sourcePath, tarPath);
     })
 }
 module.exports = {

@@ -4,6 +4,7 @@ const { packComponent, packProject } = require("./src/utils/pack");
 const preinstall = require("./src/utils/preinstall");
 const { publishComponent, publishProject } = require("./src/utils/publish");
 const { startProject, startComponent } = require("./src/utils/start");
+const build = require("./src/utils/build");
 const test = require("./src/utils/test");
 
 
@@ -17,5 +18,6 @@ module.exports = {
     publishProject,
     startProject,
     startComponent,
+    build,
     test
 }

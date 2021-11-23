@@ -138,13 +138,17 @@ module.exports = function (
   const juicerObj = getJuicerObj({
     ProjectName: templateName
   })
-  //v3: 优先复制
-  fileUtils.copy(templatePath, appPath,(filePath)=>{
-    if(filePath == path.join(appPath, "template.json")){
-      fs.removeSync(filePath);
+  let templateDir = path.join(templatePath, 'template');
+  if (fs.existsSync(templateDir)) {
+    templateDir = templatePath;
+  }
+  //vact: 优先复制
+  fileUtils.copy(templateDir, appPath,(sourcePath, targetPath)=>{
+    if(sourcePath == path.join(appPath, "template.json")){
+      return;//不用复制template.json
+    }else{
+      return juicerObj.parse(targetPath);
     }
-  },(dir)=>{
-    return juicerObj.parse(dir);
   });
   // Copy the files for the user
   // const templateDir = path.join(templatePath, 'template');
@@ -168,8 +172,8 @@ module.exports = function (
     //=====================v3 replace package end =================================
     // templateJson = require(templateJsonPath);
   }
-  //v3: 不限制只在package
-  const templatePackage = templateJson;//templateJson.package || {};
+  //vact: 不限制只在package
+  const templatePackage = templateJson.package ? templateJson.package : templateJson;//templateJson.package || {};
 
   // This was deprecated in CRA v5.
   if (templateJson.dependencies || templateJson.scripts) {

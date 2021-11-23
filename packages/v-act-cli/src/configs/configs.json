@@ -5,6 +5,6 @@
     },
     "Templates": {
         "component":"@v-act/component-template",
-        "project":"@v-act/project-template"
+        "project":"@v-act/cra-template-project"
     }
 }
