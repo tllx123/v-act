@@ -139,7 +139,7 @@ module.exports = function (
     ProjectName: templateName
   })
   let templateDir = path.join(templatePath, 'template');
-  if (fs.existsSync(templateDir)) {
+  if (!fs.existsSync(templateDir)) {
     templateDir = templatePath;
   }
   //vact: 优先复制
@@ -147,7 +147,8 @@ module.exports = function (
     if(sourcePath == path.join(appPath, "template.json")){
       return;//不用复制template.json
     }else{
-      return juicerObj.parse(targetPath);
+      const tarPath = juicerObj.parse(targetPath).replace(templateDir, templatePath);//把template去掉
+      return tarPath
     }
   });
   // Copy the files for the user
