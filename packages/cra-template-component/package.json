@@ -1,11 +1,12 @@
 {
   "name": "@v-act/cra-template-component",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "dependencies": {
   },
   "scripts": {
 
   },
+  "keywords": ["v-act","react","react template","v-act template"],
   "publishConfig": {
     "access": "public"
   },
