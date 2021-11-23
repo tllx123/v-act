@@ -1,6 +1,6 @@
 {
   "name": "@v-act/cli",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "opensource.vplatform",
   "keywords": [
     "v3",
@@ -25,7 +25,7 @@
     "vact-app": "./index.js"
   },
   "dependencies": {
-    "@v-act/scripts": "^1.0.2",
+    "@v-act/scripts": "^1.0.3",
     "chalk": "^4.1.0",
     "commander": "^4.1.1",
     "cross-spawn": "^7.0.3",
