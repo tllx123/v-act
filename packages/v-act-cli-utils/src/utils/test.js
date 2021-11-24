@@ -1,7 +1,7 @@
 var childProcess = require("child_process");
 
 module.exports = function(){
-    var proc = childProcess.exec("react-app-rewired test",{cwd:process.cwd()},function(err,stdout,stderr){
+    var proc = childProcess.exec("next lint",{cwd:process.cwd()},function(err,stdout,stderr){
         if(err){
             throw err;
         }
