@@ -228,7 +228,7 @@ module.exports = function (
   });
 
   // Copy over some of the devDependencies
-  appPackage.dependencies = templateJson.dependencies || {};
+  appPackage.dependencies = templateJson.package && templateJson.package.dependencies || templateJson.dependencies || appPackage.dependencies || {};
 
   // Setup the script rules
   const templateScripts = templatePackage.scripts || {};
