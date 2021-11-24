@@ -41,17 +41,20 @@ npm run vact:publish
 
 npm run vact:publish -u=test -p=*** -n=Task20211015048
 ```
+注意，如果当前构件存在vact:build命令，会自动执行该命令。
 ## vact:build
 构建VAct组件，因VAct组件以 [Typescript](https://www.typescriptlang.org/)方式编写，需要进行tsc编译；使用样例：
 ```sh
 npm run vact:build
 ```
+注意：在执行vact:pack、vact:publish命令时，会自动执行该命令。
 ## vact:test
 运行测试脚本，该命令会自动搜索src目录下文件名以test.tsx结尾的所有文件并执行。
 使用样例：
 ```sh
 npm run vact:test
 ```
+详细信息请参考：[React Testing](https://create-react-app.dev/docs/running-tests)
 ## vact:doc
 生成组件说明文档（暂未实现，敬请期待）；使用样例：
 ```sh
@@ -74,3 +77,4 @@ npm run vact:clear
 ```sh
 npm run vact:pack
 ```
+注意，如果当前构件存在vact:build命令，会自动执行该命令。
