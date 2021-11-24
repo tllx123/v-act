@@ -345,8 +345,12 @@ module.exports = {
      * 部署项目
      */
     publishProject:function(){
-        executeCommand("next export").then(()=>{
-            publish(true);
+        executeCommand("next build").then(()=>{
+            executeCommand("next export").then(()=>{
+                publish(true);
+            }).catch((err)=>{
+                throw Error("项目打包失败，err: " + err);
+            })
         }).catch((err)=>{
             throw Error("项目打包失败，err: " + err);
         })
