@@ -13,15 +13,12 @@ class Intro extends Component<any, state>{
         return (
             <div className="demo">
                 <div className="content" style={{
-                    color: "#356abb"
+                    color: "white"
                 }}>
                     <img src={logo.src} className="logo" alt="logo" />
-                    <h1>welcome</h1>
-                    <h6>desc</h6>
+                    <h1>欢迎</h1>
                     <p>
-                        edit&nbsp;
-                        <code>src/components/Demo/Index.tsx</code>&nbsp;
-                        tips
+                        编辑&nbsp;<code>pages/intro/Index.tsx</code>&nbsp;开启项目之旅
                     </p>
                     <a
                         className="link"
@@ -29,7 +26,7 @@ class Intro extends Component<any, state>{
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        startLearn
+                        学习指南
                     </a>
                 </div>
             </div>
