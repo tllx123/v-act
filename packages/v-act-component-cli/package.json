@@ -27,7 +27,7 @@
     "start": "react-app-rewired start --config-overrides D:\\Workspace\\nodejs\\react-projs\\v-act-component-cli\\build\\v-act\\v-act-config-overrides.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "publishConfig": {
     "access": "public"

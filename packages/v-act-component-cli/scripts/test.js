@@ -1,5 +1,7 @@
+var path = require("path");
 var childProcess = require("child_process");
-var proc = childProcess.exec("react-app-rewired test",{cwd:process.cwd()},function(err,stdout,stderr){
+
+var proc = childProcess.exec("react-app-rewired test --config-overrides "+path.resolve(__dirname,"../build/v-act/v-act-config-overrides.js"),{cwd:process.cwd()},function(err,stdout,stderr){
     if(err){
         throw err;
     }
