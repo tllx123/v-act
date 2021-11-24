@@ -230,22 +230,11 @@ const validatePackageJson = function (packageJson: { [propName: string]: any }):
         try{
             const scripts = packageJson.scripts;
             if(scripts&&scripts["vact:build"]){
-                const proc = childProcess.exec("npm run vact:build", { cwd: pluginPath }, (err, stdout, stderr) => {
-                    if (err) {
-                        return reject(err);
-                    }
-                    resolve();
+                childProcess.execSync("npm run vact:build", { 
+                    cwd: pluginPath,
+                    stdio:"inherit"
                 });
-                if(proc.stdout){
-                    proc.stdout.on('data', (data) => {
-                        console.log(data);
-                    });
-                }
-                if(proc.stderr){
-                    proc.stderr.on('data', (data) => {
-                        console.log(data);
-                    });
-                }
+                resolve();
             }else{
                 resolve();
             }
@@ -266,21 +255,14 @@ const packPluginTgz = function (pluginPath: string): Promise<string> {
                 const packageJson = require(packagePath);
                 validatePackageJson(packageJson).then(() => {
                     exeVActbuildCommand(packageJson,pluginPath).then(()=>{
-                        const proc = childProcess.exec("npm pack", { cwd: pluginPath }, (err, stdout, stderr) => {
-                            if (err) {
-                                return reject(err);
-                            }
+                        try{
+                            childProcess.execSync("npm pack", { 
+                                cwd: pluginPath,
+                                stdio: 'inherit'
+                            });
                             resolve(p.resolve(pluginPath, `${String.enhancePluginName(packageJson.name)}-${packageJson.version}.tgz`));
-                        });
-                        if(proc.stdout){
-                            proc.stdout.on('data', (data) => {
-                                console.log(data);
-                            });
-                        }
-                        if(proc.stderr){
-                            proc.stderr.on('data', (data) => {
-                                console.log(data);
-                            });
+                        }catch(err){
+                            reject(err);
                         }
                     }).catch(err=>{
                         reject(err);
