@@ -20,7 +20,6 @@
         "mkdirp": "^1.0.4"
       },
       "scripts": {
-          "vact:build": "vact build",
           "vact:start": "vact start",
           "vact:publish": "vact publish",
           "vact:test": "vact test",
