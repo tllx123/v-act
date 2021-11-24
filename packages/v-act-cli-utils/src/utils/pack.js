@@ -53,8 +53,12 @@ module.exports = {
         _pack(false);
     },
     packProject:function(){
-        executeCommand("next export").then(()=>{
-            _pack(true);
+        executeCommand("next build").then(()=>{
+            executeCommand("next export").then(()=>{
+                _pack(true);
+            }).catch((err)=>{
+                throw Error("项目打包失败，err: " + err);
+            })
         }).catch((err)=>{
             throw Error("项目打包失败，err: " + err);
         })
