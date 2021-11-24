@@ -7,8 +7,7 @@ import { prompt } from 'inquirer';
 import { Path, File } from "@v-act/utils";
 import decompress from "decompress";
 const decompressFile = require('decompress');
-import { Dependency } from "../../v-act-bundle/dist/types/VActCfg";
-import Bundle from "../../v-act-api/src/types/Bundle";
+import {Bundle,Dependency} from "@v-act/bundle";
 const utils = require("@v-act/utils");
 
 
@@ -199,7 +198,7 @@ const installLibLine = async function (dependencies: Dependency[],path?:string) 
             libCode.some((item) => {
                 libCodeList.push(item.libCode)
             })
-            let libNameList =[]
+            let libNameList: string[] =[]
             for (const item of params.deps) {
                 if (libCodeList.indexOf(item.libCode) < 0) {
                     libNameList.push(item.vactName)
@@ -266,7 +265,7 @@ const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<a
                             }
                         }
                     } else {
-                        let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName, "=")
+                        let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName)
                         let componentPath = await VStore.downloadBundle(componentInfo.fileDownUrl)
                         if (fs.existsSync(componentPath)) {
                             let isRepeat = false

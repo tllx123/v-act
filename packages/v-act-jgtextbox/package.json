@@ -1,7 +1,8 @@
 {
   "name": "@v-act/jgtextbox",
-  "version": "0.1.0",
-  "module": "dist/esm/index",
+  "version": "0.1.1",
+  "module": "dist/index.js",
+  "types": "dist/index.td.ts",
   "dependencies": {
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
@@ -22,7 +23,7 @@
     "eject": "react-scripts eject",
     "vact:start": "vact start",
     "vact:publish": "vact publish",
-    "vact:build": "rimraf dist && mkdirp dist && tsc -p tsconfig.esm.json",
+    "vact:build": "rimraf dist && mkdirp dist && tsc -p tsconfig.build.json",
     "vact:test": "vact test",
     "vact:doc": "vact doc",
     "vact:install": "vact install",
@@ -50,6 +51,10 @@
       "last 1 safari version"
     ]
   },
+  "files": ["dist/**/**.*"],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -59,8 +64,8 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@v-act/component-cli": "^1.0.3",
+    "typescript": "^4.1.2",
     "mkdirp": "^1.0.4",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.1.2"
+    "rimraf": "^3.0.2"
   }
 }
