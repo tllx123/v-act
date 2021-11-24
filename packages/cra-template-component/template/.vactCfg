@@ -1,5 +1,5 @@
 {
-    theme:[],
-    i18n:{},
-    dependencies:[]
+    "theme":[],
+    "i18n":{},
+    "dependencies":[]
 }
