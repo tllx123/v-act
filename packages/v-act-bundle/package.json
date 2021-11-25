@@ -7,7 +7,7 @@
   "types": "dist/index.td.ts",
   "scripts": {
     "debug": "node test/index.js",
-    "dev": "tsc -p tsconfig.build.json -w",
+    "dev": "tsc -p tsconfig.json -w",
     "build": "npm run build:clean && npm run build:tsc",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.json"

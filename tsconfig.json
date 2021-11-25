@@ -6,7 +6,6 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "incremental":true,
     "target": "ESNext",
     "paths": {
       "@v-act/styles":["packages/v-act-styles/src"]
