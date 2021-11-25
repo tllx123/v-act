@@ -6,10 +6,22 @@
  import { getI18n } from 'react-i18next';
 
  import Language from './model/Language';
- import LanguageManager from './manager/LanguageManager';
- import LanguageFactory from './manager/LanguageFactory';
+ import I18nFactory from './manager/I18nFactory';
+ 
  //初始化i18n
- import './init';
+ import { init } from './init';
+
+ function _getI18n(){
+    let i18n = getI18n();
+    if(!i18n){
+        init();
+    }
+    i18n = getI18n();
+    if(!i18n){
+        console.error("i18n init fail.");
+    }
+    return i18n;
+ }
  
  //#region vact提供的i18n接口
  /**
@@ -17,12 +29,13 @@
   * @returns 语言对象
   */
  function getLanguage(): Language | undefined {
-     const languageProvider = LanguageManager.getCurrentLanguageProvider();
-     const languages = languageProvider.getLanguages();
-     const i18n = getI18n();
+    const languages = I18nFactory.getLanguages();
+     const i18n = _getI18n();
      if (i18n) {
          const code = i18n.language;
          return languages.filter((language: Language) => language.getCode() == code)[0]
+     }else{
+         return languages[0];
      }
  }
  
@@ -32,7 +45,7 @@
   */
  function setLanguage(language: string | Language): void {
      const code = language instanceof Language ? language.getCode() : language;
-     const i18n = getI18n();
+     const i18n = _getI18n();
      if (i18n) {
          i18n.changeLanguage(code);
      }
@@ -42,17 +55,16 @@
   * @returns 获取列表
   */
  function getLanguages() {
-     const languageProvider = LanguageManager.getCurrentLanguageProvider();
-     return languageProvider.getLanguages();
+     return I18nFactory.getLanguages();
  }
- 
+
  //#endregion
  
  export * from 'react-i18next';
  export {
-     Language,
-     setLanguage,
-     getLanguage,
-     LanguageFactory as I18nFactory,
-     getLanguages
+    Language,
+    setLanguage,
+    getLanguage,
+    I18nFactory,
+    getLanguages
  };

@@ -7,9 +7,9 @@ class Language{
     code!:string
 
     //语言名称
-    name!:string
+    name?:string
 
-    constructor(code:string, name:string){
+    constructor(code:string, name?:string){
         this.code = code;
         this.name = name;
     }
@@ -18,7 +18,7 @@ class Language{
      * 获取语言编码
      * @returns 语言编码
      */
-    getCode(){
+    getCode():string{
         return this.code;
     }
     
@@ -26,8 +26,8 @@ class Language{
      * 获取语言名称
      * @returns 语言名称
      */
-    getName(){
-        return this.name;
+    getName():string{
+        return this.name || this.code;
     }
 }
 

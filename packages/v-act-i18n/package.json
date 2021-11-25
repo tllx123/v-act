@@ -1,6 +1,6 @@
 {
   "name": "@v-act/i18n",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -17,6 +17,8 @@
     "@types/chalk": "^2.2.0",
     "@types/node": "^16.11.6",
     "@types/rimraf": "^3.0.2",
+    "mkdirp": "^1.0.4",
+    "rimraf": "^3.0.2",
     "cp-cli": "^2.0.0"
   },
   "dependencies": {

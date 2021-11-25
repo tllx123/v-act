@@ -224,10 +224,13 @@ const searchVActComponent = function (account: string, pwd: string, code: string
                         const data = body.data;
                         if (data.isSuccess) {
                             const bundles: { [prop: string]: any }[] = [];
-                            data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
-                                bundles.push(_toBundleObj(comp));
-                            });
-                            resolve(data.compInstEntity);
+                 
+                                data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
+                                    bundles.push(_toBundleObj(comp));
+                                });
+                                resolve(data.compInstEntity);
+                            
+             
                         } else {
                             return reject(Error(data.errorMsg));
                         }
@@ -280,8 +283,10 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
                 if (data.isSuccess) {
                     if (data.compInstEntity.length == 0) {
                         reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${vActName}`));
+                    }else{
+                        resolve(_toBundleObj(data.compInstEntity[0]));
                     }
-                    resolve(_toBundleObj(data.compInstEntity[0]));
+                   
                 } else {
                     return reject(Error(data.errorMsg));
                 }

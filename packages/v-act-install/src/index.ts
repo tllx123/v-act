@@ -10,7 +10,7 @@ import * as decompress from "decompress";
 const decompressFile = require('decompress');
 import { Dependency, DependencyType } from "@v-act/bundle";
 const utils = require("@v-act/utils");
-import {chooseInstallType} from './model/PromptInstallType'
+
 
 const uninstall = async function (vactName: string) {
     if (vactName) {
