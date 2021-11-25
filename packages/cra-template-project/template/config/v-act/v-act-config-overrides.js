@@ -27,7 +27,7 @@ module.exports = function (config, {
   defaultLoaders,
   webpack
 }) {
-  // addVactLoader(config);
+  addVactLoader(config);
   if (fs.existsSync(__dirname + "/overrides")) {
     let overrides = requireAll({
       dirname: __dirname + "/overrides",
