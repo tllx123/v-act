@@ -108,15 +108,15 @@ class TGZPluginsInstaller {
         return new Promise((resolve, reject) => {
             try {
                 let scripts: Array<string> = [];
-                if (installType == "npm") {
-                    scripts = ["npm", "install"]
-                } else if (installType == "yarn") {
+                installType = installType.toLowerCase().replace(/\s*/g,"")
+               if (installType == "yarn" || installType=="yarnadd") {
                     if (this.tgzPaths.length == 0) {
                         scripts = ["yarn"]
                     } else {
                         scripts = ["yarn", "add"]
                     }
-
+                }else{
+                      scripts = ["npm", "install"]
                 }
                 this.tgzPaths.forEach(tgzPath => {
                     scripts.push(tgzPath)
