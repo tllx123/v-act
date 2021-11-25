@@ -2,7 +2,7 @@ import * as p from "path";
 import * as fs from "fs";
 import TGZPluginsInstaller from "./model/TGZPluginsInstaller";
 import TGZPlugUninsInstaller from "./model/TGZPluginsUninstaller";
-import { VStore, VTeam } from "@v-act/api/src";
+import { VStore, VTeam } from "@v-act/api";
 import { Cache, Console } from "@v-act/utils";
 import { prompt } from 'inquirer';
 import { Path, File } from "@v-act/utils";
