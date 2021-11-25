@@ -29,8 +29,8 @@ class TGZPluginsInstaller {
                 const yarnPath = p.resolve(pluginPath, "yarn.lock");
                 const npmPath = p.resolve(pluginPath, "package-lock.json");
 
-                let isYarnPath = true
-                let isNpmPath = true
+                let isYarnPath = false
+                let isNpmPath = false
 
                 if (fs.existsSync(yarnPath)) {
                     isYarnPath = true
