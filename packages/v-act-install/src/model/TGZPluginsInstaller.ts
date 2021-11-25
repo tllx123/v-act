@@ -1,18 +1,20 @@
 import * as decompress from "decompress";
+import * as p from "path";
+const decompressFile = require('decompress');
 import { existsSync } from "fs";
 import { Path, Console, IO } from "@v-act/utils";
 import { exec } from "child_process";
 import { basename, resolve } from "path";
-const decompressFile = require('decompress');
+import { chooseInstallType, inputInstallType } from './PromptInstallType'
+import * as fs from "fs";
+
 /**
  * 批量安装
  */
 class TGZPluginsInstaller {
 
     tgzPaths: Array<string> = [];
-
     actNames: Array<string> = [];
-
     constructor(tgzPaths: Array<string>) {
         this.tgzPaths = tgzPaths;
     }
@@ -21,22 +23,51 @@ class TGZPluginsInstaller {
         return new Promise((resolve, reject) => {
             this._check().then(() => {
                 return this._genActNames();
-            }).then(() => {
-                return this._installNodejsPlugins();
-            }).then(() => {
-                return this._clearDependencies();
+            }).then(async () => {
+
+                const pluginPath = process.cwd()
+                const yarnPath = p.resolve(pluginPath, "yarn.lock");
+                const npmPath = p.resolve(pluginPath, "package-lock.json");
+
+                let isYarnPath = true
+                let isNpmPath = true
+
+                if (fs.existsSync(yarnPath)) {
+                    isYarnPath = true
+                }
+                if (fs.existsSync(npmPath)) {
+                    isNpmPath = true
+                }
+
+                let installType: any = ""
+                if (isYarnPath && isNpmPath) {
+                    installType = await chooseInstallType()
+                } else if (isYarnPath) {
+                    installType = "yarn"
+                } else if (isNpmPath) {
+                    installType = "npm"
+                } else if (!(isYarnPath && isNpmPath)) {
+                    installType = await inputInstallType()
+                }
+           
+
+                return this._installNodejsPlugins(installType)
             }).then(() => {
                 resolve();
             }).catch(err => {
                 reject(err);
             });
+
+
         });
     }
 
+
+
     _genActNames(): Promise<void> {
         return new Promise((resolve, reject) => {
-            const actNames:Array<string> = [];
-            const promises:Array<Promise<void>> = [];
+            const actNames: Array<string> = [];
+            const promises: Array<Promise<void>> = [];
             this.tgzPaths.forEach(tgzPath => {
                 promises.push(new Promise<void>((reso, rej) => {
                     this._getVActNameFromTgzPath(tgzPath).then((actName) => {
@@ -73,31 +104,46 @@ class TGZPluginsInstaller {
     * @param absPath 绝对路径
     * @returns 
     */
-    _installNodejsPlugins(): Promise<void> {
+    _installNodejsPlugins(installType: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            const scripts = ["npm", "install"]
+            let scripts: Array<string> = [];
+            if (installType == "npm") {
+                scripts = ["npm", "install"]
+            } else if(installType == "yarn"){
+                 if( this.tgzPaths.length == 0){
+                    scripts = ["yarn"]
+                 }else{
+                    scripts = ["yarn","add"]
+                 }
+               
+            }
+
             this.tgzPaths.forEach(tgzPath => {
                 scripts.push(tgzPath)
             })
             const pluginPath = process.cwd()
-            const proc = exec(scripts.join(' '), { cwd: pluginPath }, (err, stdout, stderr) => {
+            const proc = exec(scripts.join(' '),{ cwd: pluginPath },(err, stdout, stderr) => {
                 if (err) {
-                    return reject(err)
+                    return reject(err);
                 }
                 resolve()
-            });
-            if(proc&&proc.stdout){
+            })
+
+
+            if (proc && proc.stdout) {
                 proc.stdout.on('data', (data) => {
                     Console.log(data)
-                })
+                });
             }
-            if(proc&&proc.stderr){
+            if (proc && proc.stderr) {
                 proc.stderr.on('data', (data) => {
                     Console.error(data)
-                })
+                });
             }
-        })
+        });
     }
+
+
 
     _clearDependencies(): Promise<void> {
         return new Promise((reso, reject) => {
@@ -127,17 +173,17 @@ class TGZPluginsInstaller {
     _getVActNameFromTgzPath(tgzPath: string): Promise<string> {
         return new Promise((resolve, reject) => {
             decompressFile(tgzPath, {
-                filter: (file:decompress.File) => {
+                filter: (file: decompress.File) => {
                     return basename(file.path) === "package.json";
                 }
-            }).then((files:Array<decompress.File>) => {
+            }).then((files: Array<decompress.File>) => {
                 try {
                     const packageJson = JSON.parse(files[0].data.toString());
                     resolve(packageJson.name);
                 } catch (err) {
                     reject(err);
                 }
-            }).catch((err:Error) => {
+            }).catch((err: Error) => {
                 reject(err);
             });
         });

@@ -1,6 +1,6 @@
 import VActBundleSearcher from "../VActBundleSearcher";
 import SearcherContext from "../SearcherContext";
-import {Dependency,DependencyType,pickNodejsPlugin} from "../../../../v-act-bundle/src";
+import {Dependency,DependencyType,pickNodejsPlugin} from "@v-act/bundle";
 
 class FileVActBundleSearcher extends VActBundleSearcher{
     jarPath: string;
