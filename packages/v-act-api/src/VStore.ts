@@ -265,8 +265,7 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
             url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
             url += `&libCodes=${libCode}`;
             url += `&attributeExtendEntity=${JSON.stringify(params)}`;
-            console.log("url")
-             console.log(url)
+    
 
             needle.post(url, {}, { timeout: 10000 }, (err, resp, body) => {
                 if (err) {
