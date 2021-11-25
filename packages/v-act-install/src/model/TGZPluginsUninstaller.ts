@@ -33,8 +33,8 @@ class TGZPlugUninsInstaller {
             const yarnPath = p.resolve(pluginPath, "yarn.lock");
             const npmPath = p.resolve(pluginPath, "package-lock.json");
 
-            let isYarnPath = true
-            let isNpmPath = true
+            let isYarnPath = false
+            let isNpmPath = false
 
             if (fs.existsSync(yarnPath)) {
                 isYarnPath = true
@@ -46,7 +46,7 @@ class TGZPlugUninsInstaller {
             let installType: any = ""
             if (isYarnPath && isNpmPath) {
                 installType = await chooseInstallType()
-            } else if (isYarnPath) {
+            } if (isYarnPath) {
                 installType = "yarn"
             } else if (isNpmPath) {
                 installType = "npm"
@@ -54,11 +54,13 @@ class TGZPlugUninsInstaller {
                 installType = await inputInstallType()
             }
 
+            installType = installType.toLowerCase().replace(/\s*/g,"")
+
             let scripts: Array<string> = [];
-            if (installType == "yarn") {
-                scripts= ["npm", "uninstall"]
-            }else{
+            if (installType == "yarn" || installType == "yarnremove" ) {
                 scripts= ["yarn", "remove"]
+            }else{
+                scripts= ["npm", "uninstall"]
             }
           
             this.actNames.forEach(actNames => {
