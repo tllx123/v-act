@@ -56,7 +56,7 @@ exports.watch = function(v3devCmpDir){
                                 }
                             }
                         }
-                        markCurrentWindow(info.windowCode);
+                        markCurrentWindow(info ? info.windowCode:null);
                     }).catch(err=>{
                         console.error(err);
                     });
@@ -85,7 +85,7 @@ const getPreWinodw = function(){
                     const windowCodes = fs.readdirSync(componentCodePath);
                     for (let i = 0; i < windowCodes.length; i++) {
                         const windowCode = windowCodes[i];
-                        if(isWindowDir(path.resolve(componentCodePath,windowCode))){
+                        if(isWindowDir(path.resolve(componentCodePath,windowCode))&&!currentWindowChanged(windowCode)){
                             return {
                                 componentCode: componentCode,
                                 windowCode: windowCode
