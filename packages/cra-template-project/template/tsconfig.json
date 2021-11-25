@@ -19,7 +19,8 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch":true,
     "allowSyntheticDefaultImports":true,
-    "incremental": true
+    "incremental": true,
+    "noImplicitAny": false
   },
   "include": [
     "next-env.d.ts",
