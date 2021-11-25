@@ -25,8 +25,8 @@ const uninstallVActPlugins = async function (vactName: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
         let deps = await getDependencies()
         let hasPlugin = false
-        let needUnistallArr = []
-        let needSaveArr = []
+        let needUnistallArr: Dependency[] = []
+        let needSaveArr: Dependency[] = []
         if (deps && deps.length > 0) {
             for (const item of deps) {
                 if (item.vactName == vactName) {
@@ -356,7 +356,7 @@ const installLibLine = async function (dependencies: Dependency[], path?: string
             libCode.some((item) => {
                 libCodeList.push(item.libCode)
             })
-            let libNameList = []
+            let libNameList: string[] = []
             for (const item of params.deps) {
                 if (libCodeList.indexOf(item.libCode) < 0) {
                     libNameList.push(item.vactName)
@@ -424,7 +424,7 @@ const getAllDepByJarPath = function (dependencies: Array<Dependency>): Promise<a
                             }
                         }
                     } else {
-                        let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName, "=")
+                        let componentInfo = await VStore.getVActComponent(<string>dep.libCode, dep.vactName)
                         let componentPath = await VStore.downloadBundle(componentInfo.fileDownUrl)
                         if (fs.existsSync(componentPath)) {
                             let isRepeat = false

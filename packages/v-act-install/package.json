@@ -4,12 +4,12 @@
   "private": false,
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.td.ts",
   "scripts": {
-    "dev": "tsc -p tsconfig.build.json -w",
-    "build": "npm run build:clean && npm run build:tsc && npm run build:copy",
+    "dev": "tsc -p tsconfig.json -w",
+    "build": "npm run build:clean && npm run build:tsc",
     "build:clean": "rimraf dist && mkdirp dist",
-    "build:tsc": "tsc -p tsconfig.build.json",
-    "build:copy": "cp-cli ./src ./dist"
+    "build:tsc": "tsc -p tsconfig.json"
   },
   "author": "opensource.vplatform",
   "license": "ISC",
@@ -25,6 +25,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": ["dist/**/**.*"],
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",

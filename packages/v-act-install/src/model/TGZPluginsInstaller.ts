@@ -3,7 +3,7 @@ import * as p from "path";
 const decompressFile = require('decompress');
 import { existsSync } from "fs";
 import { Path, Console, IO } from "@v-act/utils";
-import { exec } from "child_process";
+import { execSync } from "child_process";
 import { basename, resolve } from "path";
 import { chooseInstallType, inputInstallType } from './PromptInstallType'
 import * as fs from "fs";
@@ -49,7 +49,7 @@ class TGZPluginsInstaller {
                 } else if (!(isYarnPath && isNpmPath)) {
                     installType = await inputInstallType()
                 }
-           
+
 
                 return this._installNodejsPlugins(installType)
             }).then(() => {
@@ -106,39 +106,29 @@ class TGZPluginsInstaller {
     */
     _installNodejsPlugins(installType: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            let scripts: Array<string> = [];
-            if (installType == "npm") {
-                scripts = ["npm", "install"]
-            } else if(installType == "yarn"){
-                 if( this.tgzPaths.length == 0){
-                    scripts = ["yarn"]
-                 }else{
-                    scripts = ["yarn","add"]
-                 }
-               
-            }
+            try {
+                let scripts: Array<string> = [];
+                if (installType == "npm") {
+                    scripts = ["npm", "install"]
+                } else if (installType == "yarn") {
+                    if (this.tgzPaths.length == 0) {
+                        scripts = ["yarn"]
+                    } else {
+                        scripts = ["yarn", "add"]
+                    }
 
-            this.tgzPaths.forEach(tgzPath => {
-                scripts.push(tgzPath)
-            })
-            const pluginPath = process.cwd()
-            const proc = exec(scripts.join(' '),{ cwd: pluginPath },(err, stdout, stderr) => {
-                if (err) {
-                    return reject(err);
                 }
-                resolve()
-            })
-
-
-            if (proc && proc.stdout) {
-                proc.stdout.on('data', (data) => {
-                    Console.log(data)
+                this.tgzPaths.forEach(tgzPath => {
+                    scripts.push(tgzPath)
+                })
+                const pluginPath = process.cwd()
+                execSync(scripts.join(' '), { 
+                    cwd: pluginPath, 
+                    stdio: 'inherit' 
                 });
-            }
-            if (proc && proc.stderr) {
-                proc.stderr.on('data', (data) => {
-                    Console.error(data)
-                });
+                resolve();
+            } catch (err) {
+                reject(err);
             }
         });
     }
