@@ -33,7 +33,7 @@ class I18nFactory {
                 for (const code in config) {
                     if (Object.prototype.hasOwnProperty.call(config, code)) {
                         const itemMap = config[code];
-                        const items = [];
+                        const items: LanguageItem[] = [];
                         for (const itemCode in itemMap) {
                             if (Object.prototype.hasOwnProperty.call(itemMap, itemCode)) {
                                 items.push(new LanguageItem(itemCode, itemCode, itemMap[itemCode]))
