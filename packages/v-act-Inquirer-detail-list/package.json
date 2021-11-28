@@ -4,7 +4,7 @@
   "description": "an inquirer plugin",
   "main": "index.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node examples/base.js"
   },
   "keywords": [
     "command",
