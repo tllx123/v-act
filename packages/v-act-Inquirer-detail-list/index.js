@@ -20,8 +20,6 @@ class DetailList extends Base {
         promise.then(result=>{
             cliCursor.show();
             callback(result);
-        }).catch(e=>{
-
         });
         cliCursor.hide();
         this.choicePanel.render();

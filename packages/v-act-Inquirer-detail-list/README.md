@@ -19,3 +19,6 @@ inquirer.prompt({
 ```
 Change detailList to whatever you might prefer.
 # Options
+See [inquirer Querstion](https://www.npmjs.com/package/inquirer#question)
+# examples
+More [examples](https://github.com/opensource-vplatform/v-act/tree/main/packages/v-act-Inquirer-detail-list/examples)
