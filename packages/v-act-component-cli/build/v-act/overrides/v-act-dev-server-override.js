@@ -18,6 +18,8 @@ module.exports = function (config, env) {
         entries = Array.isArray(entries) ? entries : [entries];
         let rootPath = process.cwd();
         let srcIndexPath = path.resolve(rootPath, "src/index.tsx");
+        config.module.rules[1].oneOf[2].include = [path.resolve(rootPath, "src"),path.resolve(rootPath, "public")]
+
         for (let i = 0, l = entries.length; i < l; i++) {
             let entry = entries[i];
             if (entry == srcIndexPath) {
