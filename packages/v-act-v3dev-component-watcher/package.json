@@ -1,6 +1,6 @@
 {
   "name": "@v-act/v3dev-component-watcher",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "v平台开发系统构件监听",
   "main": "index.js",
   "private": false,

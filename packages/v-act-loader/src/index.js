@@ -32,7 +32,7 @@ function getVactCfg(configFilePath) {
  */
 module.exports = function (content) {
   const { resourcePath, rootContext } = this;
-  const baseSrc = path.join(rootContext, "\\pages");
+  const baseSrc = path.resolve(rootContext,"pages");//path.join(rootContext, path.sep, "pages");
   const configFilePath = path.join(rootContext, ".vactCfg");
   if (!resourcePath.startsWith(baseSrc) || !fs.existsSync(configFilePath)) {//跳过非项目入口文件或者不存在配置文件的项目
     return content;

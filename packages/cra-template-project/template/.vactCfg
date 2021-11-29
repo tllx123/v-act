@@ -1,5 +1,36 @@
 {
     "theme":[],
-    "i18n":[],
+    "i18n":{
+        "en":{
+            "welcome":"welcome",
+            "edit":"edit",
+            "start":"start project",
+            "study":"study guide",
+            "en":"to English",
+            "zh":"to Chinese",
+            "de":"to Deutsch",
+            "title":"V-Platform React Project Exapmle"
+        },
+        "zh":{
+            "welcome":"欢迎",
+            "edit":"编辑",
+            "start":"开始项目之旅",
+            "study":"学习指南",
+            "en":"切换英语",
+            "zh":"切换中文",
+            "de":"切换德语",
+            "title":"V平台React项目样例"
+        },
+        "de":{
+            "welcome":"Willkommen",
+            "edit":"edit",
+            "start":"Projekt starten",
+            "study":"Leitfaden zur Studie",
+            "en":"Englisch wechseln",
+            "zh":"Chinese wechseln",
+            "de":"Deutsch wechseln",
+            "title":"Beispiel eines V-Plattform-Reaktionsprojekts"
+        }
+    },
     "dependencies":[]
 }

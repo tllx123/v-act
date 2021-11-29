@@ -6,13 +6,13 @@ class LanguageItem {
     //语言项编码
     code!: string
 
-    //语言项文字
-    name!: string
+    //语言项描述文字
+    name?: string
 
     //翻译值
     value?: string | null
 
-    constructor(code: string, name: string, value?: string | null) {
+    constructor(code: string, name?: string, value?: string | null) {
         this.code = code;
         this.name = name;
         this.value = value;
@@ -31,7 +31,7 @@ class LanguageItem {
      * @returns 语言项文字
      */
     getName() {
-        return this.name;
+        return this.name || this.code;
     }
 
     /**

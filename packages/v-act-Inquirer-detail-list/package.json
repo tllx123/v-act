@@ -1,0 +1,36 @@
+{
+  "name": "@v-act/inquirer-detail-list",
+  "version": "1.0.1",
+  "description": "an inquirer plugin",
+  "main": "index.js",
+  "private": false,
+  "scripts": {
+    "test": "node examples/base.js"
+  },
+  "keywords": [
+    "command",
+    "prompt",
+    "inquirer",
+    "detail list"
+  ],
+  "author": "opesource.vplatform",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cli-cursor": "^3.1.0",
+    "rxjs": "^7.2.0",
+    "run-async": "^2.4.0",
+    "lodash": "^4.17.21",
+    "figures": "^3.0.0",
+    "inquirer": "^8.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/opensource-vplatform/v-act/tree/main/packages/v-act-Inquirer-detail-list",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-Inquirer-detail-list"
+  }
+}
