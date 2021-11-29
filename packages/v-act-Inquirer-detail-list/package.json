@@ -1,8 +1,9 @@
 {
   "name": "@v-act/inquirer-detail-list",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "an inquirer plugin",
   "main": "index.js",
+  "private": false,
   "scripts": {
     "test": "node examples/base.js"
   },
@@ -22,5 +23,14 @@
     "lodash": "^4.17.21",
     "figures": "^3.0.0",
     "inquirer": "^8.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/opensource-vplatform/v-act/tree/main/packages/v-act-Inquirer-detail-list",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-Inquirer-detail-list"
   }
 }
