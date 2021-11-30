@@ -4,13 +4,14 @@ import TGZPluginsInstaller from "./model/TGZPluginsInstaller";
 import TGZPlugUninsInstaller from "./model/TGZPluginsUninstaller";
 import { VStore, VTeam } from "@v-act/api";
 import { Cache, Console } from "@v-act/utils";
-import { prompt } from 'inquirer';
+// import { prompt } from 'inquirer';
 import { Path, File } from "@v-act/utils";
 import * as decompress from "decompress";
 const decompressFile = require('decompress');
 import { Dependency, DependencyType } from "@v-act/bundle";
 const utils = require("@v-act/utils");
-
+const inquirer = require('inquirer');
+inquirer.registerPrompt('detailList', require('@v-act/inquirer-detail-list'));
 
 const uninstall = async function (vactName: string) {
     if (vactName) {
@@ -188,7 +189,7 @@ const installVActPlugins = function (vactName: string): Promise<any> {
                     if (components.length == 0) {
                         utils.Console.log("没检索到构件，已退出安装")
                     } else {
-                        prompt([{
+                        inquirer.prompt([{
                             type: 'list',
                             message: '共检索到 ' + components.length + ' 个构件,请选择要安装的构件:',
                             choices: actNames,
@@ -291,7 +292,7 @@ const _getAccountAndPwd = function (): Promise<{ account: string, pwd: string, }
                         }
                     }
                 }];
-                prompt(questions).then((answer) => {
+                inquirer.prompt(questions).then((answer) => {
                     Console.log("正在进VStore账号、密码校验");
                     //对密码进行加盐处理
                     answer.pwd = VStore.enhancePwd(answer.pwd);
