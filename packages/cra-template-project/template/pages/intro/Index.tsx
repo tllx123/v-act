@@ -1,20 +1,15 @@
 import logo from "./img/logo.svg";
 import "./css/intro.module.css";
 import { useTranslation } from '@v-act/i18n';
-
-interface state {
-    skinVars: any,
-    skinIndex: number,
-    langIndex: number
-}
+import { Theme, useTheme } from '@v-act/styles';
 
 function Intro() {
     const { t } = useTranslation();
+    const theme: Theme = useTheme();
+    const { text: { color } } = theme;
     return (
         <div className="demo">
-            <div className="content" style={{
-                color: "white"
-            }}>
+            <div className="content" style={{ color: color, borderColor: color }}>
                 <img src={logo.src} className="logo" alt="logo" />
                 <h1>{t('welcome')}</h1>
                 <p>

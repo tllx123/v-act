@@ -1,3 +1,4 @@
+import { Theme } from "@mui/material/styles";
 /**
  * 事件管理者
  */
@@ -28,7 +29,7 @@ class VactEventManager {
      * 触发主题回调
      * @param theme 主题对象
      */
-    fire(theme:Object): void {
+    fire(theme:Theme): void {
         const handlers = this.pool;
         for (let index = 0; index < handlers.length; index++) {
             console.log("fire");

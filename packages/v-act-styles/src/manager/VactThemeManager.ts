@@ -1,18 +1,9 @@
-import { Theme } from "@mui/material/styles"
+import "../declares/VActVars";
+import { Theme } from "@mui/material/styles";
 import { createTheme, ThemeOptions } from '@mui/material';
-import { VactThemeProvider } from '../components/VactThemeProvider';
-import { EventManager } from './EventManager';
-import ThemeInfo from "../types/ThemeInfo";
-import { ThemePackageFactroy } from '../interface/IThemePackage'
-
-import defaultImpl from '../impl/default/VactImpl';
-
-export * from '@mui/material/styles'
-
-/**
- * 当前使用主题
- */
-// let nowTheme;
+import { EventManager } from '../manager/EventManager';
+import ThemeFactory from '../manager/ThemeFactory';
+import ThemeInfo from '../types/ThemeInfo';
 
 /**
  * 获取主题列表
@@ -23,48 +14,39 @@ export * from '@mui/material/styles'
  * }
  */
 function getThemes(): Array<ThemeInfo> {
-    return defaultImpl.getThemes();
+    return ThemeFactory.getThemes();
 }
 /**
  * 设置主题
- * @param {ThemeInfo} themeInfo 主题对象
+ * @param {String} themeCode 主题对象
  */
-function setTheme(themeInfo: ThemeInfo) {
-    const themeCode = themeInfo.getCode();
-    const themes: Array<ThemeInfo> = defaultImpl.getThemes();
-    const newThemes = themes.filter((item: ThemeInfo) => {
-        return item.getCode() == themeCode;
-    });
-    if (newThemes.length > 0) {
-        const themeOption = <ThemeOptions>(newThemes[0].toMap());
-        const newTheme = createTheme(themeOption);
-        EventManager.fire(newTheme);
+function setTheme(themeCode: string):void {
+    const vars = ThemeFactory.getVars(themeCode);
+    if(vars != undefined){
+        const theme = createTheme(vars);
+        EventManager.fire(theme);
     }
 }
 /**
  * 创建主题
- * @param props {Object|undefined} 主题属性
+ * @param props {Object|string} 主题属性
  * @returns 
  */
-function createVactTheme(props?: Object|undefined) {
+function createVactTheme(props?: Object|string): Theme {
     let themeOptions;
-    if (null == props) {
-        const defaultTheme: ThemeInfo = defaultImpl.getDefaultTheme();
-        if (defaultTheme) {
-            const map: Object = defaultTheme.toMap();
-            themeOptions = <ThemeOptions>map;
+    if (null == props || typeof(props) =="string") {
+        const infos = ThemeFactory.getThemes();
+        const info = typeof(props) =="string" ? infos.filter(info => info.code == props)[0] : infos[0];
+        if(info){
+            themeOptions = ThemeFactory.getVars(info.getCode());
         }
     } else {
-        themeOptions = <ThemeOptions>props;
+        themeOptions = props;
     }
-    let theme = createTheme(themeOptions);
-    return theme;
+    return (themeOptions ? createTheme(<ThemeOptions>themeOptions) : createTheme());
 }
 export {
-    VactThemeProvider as ThemeProvider,//主题提供者
-    ThemePackageFactroy as ThemeFactory,
     getThemes,
     setTheme,
-    ThemeInfo,
-    createVactTheme as createTheme
+    createVactTheme
 }

@@ -82,17 +82,19 @@ interface VActThemeOptions{
      /**
       * 禁用背景色
       **/
-     disabledBg: string
+     disabledBg: string,
+     //默许所有变量可以写入
+     [proName:string]:string | number
 }
 
 declare module "@mui/material/styles" {
     interface Theme {
-        vact: VActThemeOptions;
+        vact: VActThemeOptions
     }
     interface ThemeOptions {
         vact: VActThemeOptions
     }
 }
-export{
-    type VActThemeOptions
+export type {
+    VActThemeOptions
 }
