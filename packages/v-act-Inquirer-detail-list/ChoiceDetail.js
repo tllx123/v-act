@@ -26,12 +26,14 @@ class ChoiceDetail{
         }
         const script = [this.prefix];
         if(this.status === ChoiceDetailStatus.Loading){
-            script.push(this.getLoadingDisplayText());
+            let loadingText = this.getLoadingDisplayText();
+            loadingText = chalk.hex('#999')(loadingText);
+            script.push(loadingText);
         }else if(this.status === ChoiceDetailStatus.Loaded || this.status === ChoiceDetailStatus.Error){
             script.push(this.detail);
         }
         script.push('\n');
-        return chalk.hex('#999')(script.join(''));
+        return script.join('');
     }
 
     getLoadingDisplayText(){

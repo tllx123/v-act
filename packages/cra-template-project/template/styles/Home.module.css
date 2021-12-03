@@ -23,6 +23,16 @@
   cursor: pointer;
   outline: none;
 }
+.topselect{
+  outline: none;
+  margin: 0 6px;
+  height: 32px;
+  border-radius: 5px;
+  width: 96px;
+  cursor: pointer;
+  padding: 0px 6px;
+  border:0;
+}
 .topbtn:not(:first-child){
   margin-left: 6px;
 }

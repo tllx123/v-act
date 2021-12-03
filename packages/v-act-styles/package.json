@@ -1,11 +1,11 @@
 {
   "name": "@v-act/styles",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": false,
   "description": "",
   "license": "ISC",
   "main": "dist/index.js",
-  "types": "dist/index.td.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc",

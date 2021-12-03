@@ -40,10 +40,10 @@ module.exports = function (content) {
   try {
     const datas = [];
     const config = getVactCfg(configFilePath);
-    const { theme, i18n } = config;
+    const { themeList, i18n } = config;//themeList 是本地模拟数据 theme是提交到v3的数据
     let script;
-    if (theme) {
-      script = ThemeHandler(theme);
+    if (themeList) {
+      script = ThemeHandler(themeList);
       if (script) {
         datas.push(script);
       }

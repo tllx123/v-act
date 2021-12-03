@@ -1,0 +1,7 @@
+{
+  "name": "@v-act/widget-docs",
+  "private": true,
+  "scripts": {
+    "dev": "vite"
+  }
+}

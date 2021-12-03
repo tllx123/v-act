@@ -1,15 +1,14 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "target": "ESNext",
-    "paths": {
-      "@v-act/styles":["packages/v-act-styles/src"]
-    }
+    "target": "ESNext"
   },
-  "include": ["packages/**/src"]
+  "include": ["packages/**/src", "packages/**/dev"]
 }

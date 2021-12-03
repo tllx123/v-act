@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeProvider } from '@mui/styles';
 import { EventManager } from '../manager/EventManager';
-import {Theme, ThemeOptions} from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
 
 /**
  * vact主题提供者
