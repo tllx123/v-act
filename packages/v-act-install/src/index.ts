@@ -12,7 +12,7 @@ import { Dependency, DependencyType } from "@v-act/bundle";
 const utils = require("@v-act/utils");
 const inquirer = require('inquirer');
 inquirer.registerPrompt('detailList', require('@v-act/inquirer-detail-list'));
-
+const chalk = require('chalk');
 const uninstall = async function (vactName: string) {
     if (vactName) {
         await uninstallVActPlugins(vactName)
@@ -54,7 +54,6 @@ const uninstallVActPlugins = async function (vactName: string): Promise<void> {
         }
         resolve()
     })
-
 }
 
 
@@ -106,16 +105,9 @@ const getNeedUninstallDeps = async function (needUnistallArr: Array<Dependency>,
 }
 
 
-
-
-
 const install = async function (vactName?: string) {
     vactName ? installVActPlugins(vactName) : installAll()
 }
-
-
-
-
 
 
 const writeFile = async function (param: Dependency) {
@@ -147,10 +139,7 @@ const getVactNameByPath = async function (jarPath: string) {
         let data = await readFile(DepPathTemp)
         const DepObj = JSON.parse(data.toString())
         return DepObj.name
-
     }
-    // console.log(122222222)
-
 }
 
 const installVActPlugins = function (vactName: string): Promise<any> {
@@ -179,6 +168,12 @@ const installVActPlugins = function (vactName: string): Promise<any> {
             }
 
         } else {
+            const details = {
+                npm: 'some npm details',
+                yarn: 'some yarn details',
+                jspm: 'some jspm details'
+            };
+
             _getAccountAndPwd().then((result) => {
                 //从vstore查找
                 VStore.searchVActComponent(result.account, result.pwd, vactName).then((components) => {
@@ -190,10 +185,36 @@ const installVActPlugins = function (vactName: string): Promise<any> {
                         utils.Console.log("没检索到构件，已退出安装")
                     } else {
                         inquirer.prompt([{
-                            type: 'list',
+                            type: 'detailList',
                             message: '共检索到 ' + components.length + ' 个构件,请选择要安装的构件:',
                             choices: actNames,
-                            name: 'selected'
+                            name: 'selected',
+                            query: function (val) {
+                                return new Promise(async (resolve) => {
+                                 
+                                        let compCode = val.substring(val.indexOf("（") + 1, val.indexOf("）"));
+                                        let compInfo = components.filter((item) => { return item.compCode === compCode })
+                                        let desc = compInfo[0].attributeExtendStr.substring(compInfo[0].attributeExtendStr.indexOf("pluginDescription=") + 18);
+                            
+                                     VTeam.getProjectNameByLibCode(compInfo[0].belongLib).then((res)=>{
+                                        console.log("res")
+                                   
+                                        console.log(res)
+                                        resolve(
+                                            chalk.rgb(255, 255, 255)("描述:") + chalk.green(desc + "\n      ") +
+                                            chalk.rgb(255, 255, 255)("项目名称:") + chalk.green(res.name + "\n      ") +
+                                            chalk.rgb(255, 255, 255)("最后修改人:") + chalk.green(compInfo[0].updateOwnerName + "\n      ") +
+                                            chalk.rgb(255, 255, 255)("最后修改时间:") + chalk.green(compInfo[0].updateTime + "\n      ") +
+                                            chalk.rgb(255, 255, 255)("创建人:") + chalk.green(compInfo[0].createOwnerName + "\n      ") +
+                                            chalk.rgb(255, 255, 255)("创建时间:") + chalk.green(compInfo[0].createTime + "\n      ")
+                                        )
+                                     })
+                           
+                             
+
+
+                                });
+                            }
                         }]).then(answers => {
                             const selected = answers.selected;
                             let componentCode = selected.split("（")[1];

@@ -8,7 +8,6 @@ import { getExportPath } from "./utils/Utils";
 import FileJarResource from "./model/jar/resources/FileJarResource";
 const decompressFile = require('decompress');
 import * as p from "path";
-
 import * as childProcess from "child_process";
 import {VActCfg, Dependency, DependencyType } from "./types/VActCfg";
 import {Path,File,String} from "@v-act/utils";
@@ -63,8 +62,6 @@ const pickNodejsPlugin = function (bundlePath: string): Promise<string> {
         try {
             const tmpDir = Path.getVActRandomDir();
             File.mkDir(tmpDir);
-           
-
             decompressFile(bundlePath, tmpDir).then((files: Array<decompress.File>) => {
                 files  =  files.filter((item)=>{
                       return  p.extname(item.path) === '.tgz'

@@ -83,7 +83,7 @@ const getAuthCode = function (account: string, password: string, libCode: string
     return authCode;
 }
 
-const getExtendAttr = function (pluginCode: string, pluginType: string) {
+const getExtendAttr = function (pluginCode: string, pluginType: string, description: string) {
     const attributeExtend = [{
         "key": "pluginType",
         "value": pluginType
@@ -93,11 +93,16 @@ const getExtendAttr = function (pluginCode: string, pluginType: string) {
     }, {
         "key": "devEnv",
         "value": "nodejs"
-    }];
-    attributeExtend.push({
+    }, {
         "key": "pluginCode",
         "value": pluginCode
-    });
+    }, {
+        "key": "pluginDescription",
+        "value": description
+    }];
+
+
+
     const packageJsonPath = p.resolve(process.cwd(), 'package.json');
     const packageJson = module.require(packageJsonPath);
     const keywords = packageJson.keywords;
@@ -123,7 +128,7 @@ const getExtendAttr = function (pluginCode: string, pluginType: string) {
  * 上传构件到vstore
  * @returns 
  */
-const uploadToVStore = function (account: string, pwd: string, pluginCode: string, pluginType: string, libCode: string, jarPath: string, symbolicName: string, version: string): Promise<void> {
+const uploadToVStore = function (account: string, pwd: string, pluginCode: string, pluginType: string, libCode: string, jarPath: string, symbolicName: string, version: string, description: string): Promise<void> {
     return new Promise((resolve, reject) => {
         try {
             if (!libCode) {
@@ -142,7 +147,7 @@ const uploadToVStore = function (account: string, pwd: string, pluginCode: strin
                     "stageCode": "dev",
                     "compType": "RuntimeJava",
                     "authCode": getAuthCode(account, pwd, libCode),
-                    "compAdditionalPropJson": getExtendAttr(pluginCode, pluginType),
+                    "compAdditionalPropJson": getExtendAttr(pluginCode, pluginType, description),
                     "publishFiles": fs.readFileSync(zipPath)
                 }, {
                     timeout: 180000,
@@ -181,9 +186,18 @@ const _toBundleObj = function (comp: { [prop: string]: any }): Bundle {
         createOwnerCode: comp.createOwnerCode,
         updateTime: comp.updateTime,
         updateOwnerCode: comp.updateOwnerCode,
-        fileDownUrl: comp.fileDownUrl
+        fileDownUrl: comp.fileDownUrl,
+        createOwnerName: comp.createOwnerName,
+        updateOwnerName: comp.updateOwnerName,
+        attributeExtendStr:comp.attributeExtendStr,
+        belongLib: comp.belongLib,
     };
 }
+
+
+
+
+
 
 const searchVActComponent = function (account: string, pwd: string, code: string): Promise<Array<Bundle>> {
     return new Promise((resolve, reject) => {
@@ -224,13 +238,13 @@ const searchVActComponent = function (account: string, pwd: string, code: string
                         const data = body.data;
                         if (data.isSuccess) {
                             const bundles: { [prop: string]: any }[] = [];
-                 
-                                data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
-                                    bundles.push(_toBundleObj(comp));
-                                });
-                                resolve(data.compInstEntity);
-                            
-             
+
+                            data.compInstEntity.forEach((comp: { [prop: string]: any }) => {
+                                bundles.push(_toBundleObj(comp));
+                            });
+                            resolve(data.compInstEntity);
+
+
                         } else {
                             return reject(Error(data.errorMsg));
                         }
@@ -258,7 +272,7 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
                 attributeKey: "devEnv",
                 queryFlag: "=",
                 attributeValue: "nodejs"
-            },{
+            }, {
                 attributeKey: 'pluginCode',
                 queryFlag: "like",
                 attributeValue: vActName
@@ -268,7 +282,7 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
             url += `stageCodes=dev&compTypes=RuntimeJava&isLastVer=true`;
             url += `&libCodes=${libCode}`;
             url += `&attributeExtendEntity=${JSON.stringify(params)}`;
-    
+
 
             needle.post(url, {}, { timeout: 10000 }, (err, resp, body) => {
                 if (err) {
@@ -283,10 +297,10 @@ const getVActComponent = function (libCode: string, vActName: string): Promise<B
                 if (data.isSuccess) {
                     if (data.compInstEntity.length == 0) {
                         reject(Error(`未找到v-act组件，请检查！仓库编码：${libCode}，插件标识名称：${vActName}`));
-                    }else{
+                    } else {
                         resolve(_toBundleObj(data.compInstEntity[0]));
                     }
-                   
+
                 } else {
                     return reject(Error(data.errorMsg));
                 }

@@ -130,6 +130,39 @@ const getProjectInfo = function(projectId: string): Promise<{code: string,name: 
     });
 }
 
+
+
+
+const getProjectNameByLibCode = function(libCode: string): Promise<{name: string}>{
+    return new Promise((resolve,reject)=>{
+        const url = (Const.VTEAM_HOST.endsWith('/') ? Const.VTEAM_HOST:Const.VTEAM_HOST+"/") + (Const.VTEAM_GET_PROJECTNAME.startsWith("/") ? Const.VTEAM_GET_PROJECTNAME.substring(1):Const.VTEAM_GET_PROJECTNAME);
+        needle.post(url, {
+            "libCode": libCode
+        }, {
+            timeout: 5000
+        }, (err, res, body) => {
+            if (err) {
+                return reject(err);
+            }
+            if (body.success) {
+                let data = body.data;
+                let QueryProjectNameByLibCode = data.QueryProjectNameByLibCode;
+                if(QueryProjectNameByLibCode&&QueryProjectNameByLibCode.length>0){
+                    resolve({
+                        name : QueryProjectNameByLibCode[0].projectName,
+                    });
+                }else{
+                    reject(Error("未找到指定项目信息！仓库编码为："+libCode));
+                }
+            } else {
+                reject(Error(body.message));
+            }
+        });
+    });
+}
+
+
+
 /**
  * 添加信息到vteam
  * @param {Object} data 
@@ -189,7 +222,7 @@ export default {
     getProjectsByAccount,
 
     getEnterpriseInfo,
-
-    addInfoToVteam
+    addInfoToVteam,
+    getProjectNameByLibCode
 
 }
