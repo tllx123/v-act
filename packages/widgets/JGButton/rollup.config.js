@@ -28,6 +28,7 @@ const entryConfig = defineConfig({
   plugins: [
     babel({
       babelHelpers: 'bundled',
+      exclude: 'node_modules/**',
       extensions,
       presets: [
         '@babel/preset-env',
