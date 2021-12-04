@@ -1,0 +1,10 @@
+{
+    "ProjectTypes":{
+        "component":"VAct组件",
+        "project":"VAct项目"
+    },
+    "Templates": {
+        "component":"@v-act/component-template",
+        "project":"@v-act/cra-template-project"
+    }
+}

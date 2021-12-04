@@ -1,0 +1,18 @@
+{
+  "name": "@v-act/cra-template-project",
+  "version": "1.0.12",
+  "dependencies": {
+  },
+  "scripts": {
+
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/cra-template-project"
+  }
+}

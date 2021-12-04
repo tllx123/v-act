@@ -1,0 +1,44 @@
+{
+    "code":"v-act",
+    "languages":[{
+        "code":"en",
+        "name":"英语",
+        "items":[{
+            "code":"home_code",
+            "name":"home",
+            "value":"VactHome"
+        },{
+            "code":"welcome_code",
+            "name":"welcome",
+            "value":"Welcome To VactHome"
+        },{
+            "code":"zh_code",
+            "name":"zh",
+            "value":"VactSwitch Chinese"
+        },{
+            "code":"en_code",
+            "name":"en",
+            "value":"VactSwitch English"
+        }]
+    },{
+        "code":"zh",
+        "name":"中文",
+        "items":[{
+            "code":"home_code",
+            "name":"home",
+            "value":"Vact首页"
+        },{
+            "code":"welcome_code",
+            "name":"welcome",
+            "value":"欢迎来Vact首页"
+        },{
+            "code":"zh_code",
+            "name":"zh",
+            "value":"Vact切换中文"
+        },{
+            "code":"en_code",
+            "name":"en",
+            "value":"Vact切换英文"
+        }]
+    }]
+}
