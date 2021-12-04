@@ -20,8 +20,9 @@ enum Url {
 
     VTEAM_TASK_REF_URL = "webapi/vteam_task_rel_component/API_SaveTasksRefComponentLog",
 
-    VTEAM_GET_PROJECTS = "webapi/vteam_platform/API_GetProjectInfoByAccount"
-
+    VTEAM_GET_PROJECTS = "webapi/vteam_platform/API_GetProjectInfoByAccount",
+   
+    VTEAM_GET_PROJECTNAME = "webapi/vteam_task_rel_component/API_GetProjectNameByLibCode"
 }
 
 export default Url;
