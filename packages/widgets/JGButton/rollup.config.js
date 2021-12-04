@@ -8,7 +8,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 
 import pkg from './package.json'
 
-const extensions = ['.ts', '.tsx']
+const extensions = ['.js', '.ts', '.tsx']
 
 const entryConfig = defineConfig({
   external: ['react', 'react-dom', '@mui/material'],
@@ -28,14 +28,21 @@ const entryConfig = defineConfig({
   plugins: [
     babel({
       babelHelpers: 'bundled',
+      exclude: /node_modules/,
       extensions,
       presets: [
-        '@babel/preset-env',
-        '@babel/preset-typescript',
-        '@babel/preset-react'
+        ['@babel/preset-env'],
+        ['@babel/preset-react', { runtime: 'automatic' }],
+        ['@babel/preset-typescript']
       ]
     }),
-    commonjs(),
+    commonjs({
+      include: /node_modules/,
+      namedExports: {
+        'react/jsx-runtime': ['jsx', 'jsxs'],
+        'react/jsx-dev-runtime': ['jsx', 'jsxs', 'jsxDEV']
+      }
+    }),
     json(),
     nodeResolve({
       extensions,
