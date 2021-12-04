@@ -1,4 +1,4 @@
-import JGButton from '@v-act/jgbutton'
+import { JGButton } from '@v-act/jgbutton'
 
 const Button = () => {
   return <JGButton>hello react!</JGButton>

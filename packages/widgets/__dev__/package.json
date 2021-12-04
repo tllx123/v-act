@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/widget-docs",
+  "name": "@v-act/widgets-dev",
   "private": true,
   "scripts": {
     "dev": "vite"
