@@ -6,19 +6,34 @@ import commonjs from '@rollup/plugin-commonjs'
 import json from '@rollup/plugin-json'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 
+import pkg from './package.json'
+
 const extensions = ['.ts', '.tsx']
 
 const entryConfig = defineConfig({
+  external: ['react', 'react-dom', '@mui/material'],
   input: 'src/index.ts',
-  output: {
-    dir: 'dist',
-    format: 'cjs'
-  },
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs',
+      sourcemap: true
+    },
+    {
+      file: pkg.module,
+      format: 'esm',
+      sourcemap: true
+    }
+  ],
   plugins: [
     babel({
       babelHelpers: 'bundled',
       extensions,
-      rootMode: 'upward'
+      presets: [
+        '@babel/preset-env',
+        '@babel/preset-typescript',
+        '@babel/preset-react'
+      ]
     }),
     commonjs(),
     json(),
