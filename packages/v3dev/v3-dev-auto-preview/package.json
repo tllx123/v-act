@@ -1,0 +1,63 @@
+{
+  "name": "@v-act/v3-dev-auto-preview",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.6.0",
+    "@emotion/styled": "^11.6.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "17.0.32",
+    "@types/react-dom": "^17.0.0",
+    "@v-act/i18n": "^1.0.6",
+    "@v-act/loader": "^1.0.7",
+    "@v-act/project-cli": "^1.0.2",
+    "@v-act/styles": "^1.0.5",
+    "eslint": "<8.0.0",
+    "eslint-config-next": "11.1.2",
+    "mkdirp": "^1.0.4",
+    "next": "^12.0.3",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-scripts": "4.0.3",
+    "require-all": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "4.4.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "vact:start": "vact start",
+    "vact:publish": "vact publish",
+    "vact:test": "vact test",
+    "vact:doc": "vact doc",
+    "vact:install": "vact install",
+    "vact:clear": "vact clear",
+    "vact:pack": "vact pack"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "17.0.32",
+    "eslint": "<8.0.0",
+    "eslint-config-next": "11.1.2",
+    "mkdirp": "^1.0.4",
+    "require-all": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "4.4.4"
+  }
+}
