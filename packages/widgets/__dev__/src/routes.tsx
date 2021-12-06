@@ -1,6 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 
 import JGButton from './widgets/JGButton'
+import JGImage from './widgets/JGImage'
 import JGLabel from './widgets/JGLabel'
 
 const Routes = () =>
@@ -12,6 +13,10 @@ const Routes = () =>
     {
       path: '/JGLabel',
       element: <JGLabel />
+    },
+    {
+      path: '/JGImage',
+      element: <JGImage />
     }
   ])
 
