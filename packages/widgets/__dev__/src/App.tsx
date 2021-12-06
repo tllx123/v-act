@@ -1,18 +1,21 @@
 import { FC } from 'react'
 
-import { createTheme, ThemeProvider } from '@mui/material'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 
 import Button from './widgets/JGButton'
 
 const App: FC = () => {
   // https://mui.com/customization/typography/#font-family
   const theme = createTheme({
-    typography: {}
+    spacing: 4
   })
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Button></Button>
+        <CssBaseline />
+        <div style={{ position: 'absolute', top: 16, left: 16 }}>
+          <Button></Button>
+        </div>
       </ThemeProvider>
     </>
   )

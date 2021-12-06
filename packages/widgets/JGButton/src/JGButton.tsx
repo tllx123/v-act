@@ -12,9 +12,12 @@ interface JGButtonProps extends ButtonProps {
 const JGButtonRoot = styled(Button, {
   name: 'JGButton',
   slot: 'Root'
-})({
-  padding: 0
-})
+})(({ theme }) => ({
+  backgroundColor: '#356abb',
+  fontWeight: 400,
+  letterSpacing: 0,
+  padding: theme.spacing(0, 0.25)
+}))
 
 const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
   (inProps, ref) => {
