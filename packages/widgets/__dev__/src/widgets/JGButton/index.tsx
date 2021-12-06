@@ -4,7 +4,12 @@ import { JGComponent } from '@v-act/jgcomponent'
 const Button = () => {
   return (
     <JGComponent>
-      <JGButton height="32px">按钮大师法师打发斯蒂芬阿斯顿发水电费</JGButton>
+      <JGButton top="33px" left="57px" height="26px" width="59px">
+        按钮1
+      </JGButton>
+      <JGButton top="65px" left="57px" height="26px" width="188px">
+        这里是一串很长很长的字符串
+      </JGButton>
     </JGComponent>
   )
 }
