@@ -54,7 +54,7 @@ const entryConfig = defineConfig({
 })
 
 const dtsConfig = defineConfig({
-  input: './src/index.ts',
+  input: './src/index.tsx',
   output: {
     file: './dist/index.d.ts',
     format: 'es'
