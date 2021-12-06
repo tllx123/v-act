@@ -7,10 +7,47 @@ import { styled } from '@mui/system'
 import { Height, Width } from '@v-act/schema-types'
 
 interface JGTextBoxProps extends InputUnstyledProps {
+  /**
+   * 左边距
+   */
+  left?: number
+  /**
+   * 上边距
+   */
+  top?: number
+  /**
+   * 高度
+   */
   multiHeight?: Height
+  /**
+   * 宽度
+   */
   multiWidth?: Width
+  /**
+   * 标题
+   */
   labelText?: string
+  /**
+   * 标题宽度
+   */
   labelWidth?: number
+  /**
+   * 提醒文字
+   */
+  placeholder?: string
+  /**
+   * 必填
+   */
+  isMust?: boolean
+  /**
+   * 显示
+   */
+  visible?: boolean
+
+  /**
+   * 显示标题
+   */
+  labelVisible?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -46,40 +83,63 @@ const CustomInput = forwardRef(function (
 })
 
 const JGTextBox = function (props: JGTextBoxProps) {
+  if (!props.visible) {
+    return null
+  }
   const wrapStyles: CSSProperties = {
     width: props.multiWidth,
     height: props.multiHeight,
     fontSize: '14px',
+    position: 'absolute',
+    left: props.left,
+    top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
+  const labelWidth = props.labelVisible
+    ? props.labelWidth === undefined
+      ? 94
+      : props.labelWidth
+    : 0
   const labelStyles: CSSProperties = {
-    width: props.labelWidth,
+    width: labelWidth,
     height: props.multiHeight,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
   }
   const inputStyles = {
-    width:
-      props.multiWidth -
-      (props.labelWidth == undefined ? 94 : props.labelWidth),
+    width: props.multiWidth - labelWidth,
     height: props.multiHeight,
     display: 'inline-block'
   }
   return (
     <div style={wrapStyles}>
-      <span style={labelStyles}>{props.labelText}:</span>
-      <CustomInput style={inputStyles} placeholder="Type something..." />
+      {labelWidth > 0 ? (
+        <span style={labelStyles}>
+          {props.labelText}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
+        </span>
+      ) : (
+        ''
+      )}
+      <CustomInput style={inputStyles} placeholder={props.placeholder} />
     </div>
   )
 }
 
 JGTextBox.defaultProps = {
+  left: 0,
+  top: 0,
   multiHeight: 26,
   multiWidth: 235,
   labelWidth: 94,
-  labelText: '文本'
+  labelText: '文本',
+  placeholder: '',
+  isMust: false,
+  visible: true,
+  labelVisible: true
 }
 
 export default JGTextBox
+export { JGTextBox, JGTextBoxProps }

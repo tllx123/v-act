@@ -1,11 +1,22 @@
-import { Control } from '@v-act/schema-types'
-import JGTextBox from './JGTextBox'
+import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import { JGTextBox, JGTextBoxProps } from './JGTextBox'
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => string
-): string {
-  return ''
+  render: (controls: Array<Control>) => JSX.Element
+): JSX.Element {
+  const pros = control.properties
+  const props: JGTextBoxProps = {
+    top: toNumber(pros.top),
+    left: toNumber(pros.left),
+    labelText: pros.labelText,
+    isMust: toBoolean(pros.isMust),
+    placeholder: pros.placeholder,
+    visible: toBoolean(pros.visible),
+    labelWidth: toNumber(pros.labelWidth),
+    labelVisible: toBoolean(pros.labelVisible, true)
+  }
+  return <JGTextBox {...props}></JGTextBox>
 }
 
 export default JGTextBox

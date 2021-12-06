@@ -1,12 +1,12 @@
-import {MD5,SHA1} from "crypto-js";
+import { MD5, SHA1 } from 'crypto-js'
 
 /**
  * 转换成md5
  * @param content 字符串内容
  * @returns String
  */
-const toMD5 = function(content: string): string{
-    return MD5(content).toString();
+const toMD5 = function (content: string): string {
+  return MD5(content).toString()
 }
 
 /**
@@ -15,48 +15,73 @@ const toMD5 = function(content: string): string{
  * @returns String
  */
 const getRandomCode = function (len: number): string {
-    const chr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    Math.random();
-    const buffer:string[] = [];
-    for (let i = 0; i < len; i++) {
-        buffer.push(chr[Math.floor(Math.random() * 10)]);
-    }
-    return buffer.join('');
+  const chr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+  Math.random()
+  const buffer: string[] = []
+  for (let i = 0; i < len; i++) {
+    buffer.push(chr[Math.floor(Math.random() * 10)])
+  }
+  return buffer.join('')
 }
 
 const toSHA1 = function (content: string): string {
-    return SHA1(content).toString()
+  return SHA1(content).toString()
 }
 
-const toBASE64 = function(content: string,charset?: BufferEncoding): string{
-    charset = charset||"utf-8";
-    return Buffer.from(content,charset).toString('base64')
+const toBASE64 = function (content: string, charset?: BufferEncoding): string {
+  charset = charset || 'utf-8'
+  return Buffer.from(content, charset).toString('base64')
 }
 
 const genSignature = function (args: Array<string>, needSort: boolean): string {
-    const srcSignature:string[] = [];
-    if (typeof (needSort) != 'boolean' || needSort) {
-        args = args.sort();
-    }
-    for (let i = 0, l = args.length; i < l; i++) {
-        srcSignature.push(args[i]);
-    }
-    return toSHA1(srcSignature.join(''));
+  const srcSignature: string[] = []
+  if (typeof needSort != 'boolean' || needSort) {
+    args = args.sort()
+  }
+  for (let i = 0, l = args.length; i < l; i++) {
+    srcSignature.push(args[i])
+  }
+  return toSHA1(srcSignature.join(''))
 }
 /**
  * 处理nodejs插件名称
  * @param name nodejs插件名称
- * @returns 
+ * @returns
  */
-const enhancePluginName = function(name: string): string{
-    return name.replace('@','').replace('/','-');
+const enhancePluginName = function (name: string): string {
+  return name.replace('@', '').replace('/', '-')
+}
+
+/**
+ * 转换成数值,转换失败将返回def值
+ * @param val 转换值
+ * @param def 默认值
+ */
+const toNumber = function (val: string, def?: number): number | undefined {
+  let res = parseFloat(val)
+  return isNaN(res) ? def : res
+}
+
+/**
+ * 转换成布尔值
+ * @param val 转换值
+ */
+const toBoolean = function (val: string, def?: boolean): boolean {
+  def = def === undefined ? false : def
+  if (val === undefined) {
+    return def
+  }
+  val = val.toLowerCase()
+  return val == 'true' ? true : false
 }
 
 export {
-    toMD5,
-    toSHA1,
-    toBASE64,
-    getRandomCode,
-    genSignature,
-    enhancePluginName
+  toMD5,
+  toSHA1,
+  toBASE64,
+  getRandomCode,
+  genSignature,
+  enhancePluginName,
+  toNumber,
+  toBoolean
 }
