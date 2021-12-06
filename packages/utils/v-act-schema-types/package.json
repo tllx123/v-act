@@ -1,0 +1,31 @@
+{
+  "name": "@v-act/schema-types",
+  "version": "1.0.0",
+  "private": false,
+  "description": "",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-schema-types"
+  },
+  "license": "ISC",
+  "author": "opensource.vplatform",
+  "main": "dist/index.js",
+  "types": "dist/index.td.ts",
+  "files": [
+    "dist/**/**.*"
+  ],
+  "scripts": {
+    "build": "npm run build:clean && npm run build:tsc",
+    "build:clean": "rimraf dist && mkdirp dist",
+    "build:tsc": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.build.json -w"
+  },
+  "dependencies": {
+    "csstype": "^3.0.10"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

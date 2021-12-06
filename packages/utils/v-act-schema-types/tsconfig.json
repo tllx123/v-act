@@ -1,0 +1,22 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "rootDir": "src",
+    "target": "es5",
+    "module": "Commonjs",
+    "skipLibCheck": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "noEmit": false,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
