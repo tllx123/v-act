@@ -9,9 +9,9 @@
   ],
   "scripts": {
     "build": "lerna run build",
-    "build: widgets": "lerna run build --scope='@v-act/schema-types' --scope='@v-act/jg*' --scope='@v-act/jg*'",
+    "build: widgets": "lerna run build --scope='@v-act/schema-types' --scope='@v-act/jg*'",
     "dev": "lerna run dev",
-    "dev: widgets": "lerna run dev --scope='@v-act/schema-types' --scope='@v-act/jg*' --scope='@v-act/jg*' --scope='@v-act/widgets-dev'",
+    "dev: widgets": "lerna run dev --scope='@v-act/schema-types' --scope='@v-act/jg*' --scope='@v-act/widgets-dev'",
     "prepare": "husky install"
   },
   "devDependencies": {
