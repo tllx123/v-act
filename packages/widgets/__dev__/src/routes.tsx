@@ -5,6 +5,7 @@ import JGImage from './widgets/JGImage'
 import JGLabel from './widgets/JGLabel'
 import JGNewList from './widgets/JGNewList'
 import JGRecordPaging from './widgets/JGRecordPaging'
+import JGSteps from './widgets/JGSteps'
 import JGTextBox from './widgets/JGTextBox'
 
 const Routes = () =>
@@ -32,6 +33,10 @@ const Routes = () =>
     {
       path: '/JGRecordPaging',
       element: <JGRecordPaging />
+    },
+    {
+      path: '/JGSteps',
+      element: <JGSteps />
     }
   ])
 
