@@ -48,6 +48,11 @@ interface JGTextBoxProps extends InputUnstyledProps {
    * 显示标题
    */
   labelVisible?: boolean
+
+  /**
+   * 禁用
+   */
+  disabled?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -66,6 +71,10 @@ const StyledInputElement = styled('input')`
     border-color: #356abb;
     background: #fff;
     box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
+  }
+
+  [disabled] {
+    background: #f6f7fb;
   }
 `
 
@@ -123,7 +132,11 @@ const JGTextBox = function (props: JGTextBoxProps) {
       ) : (
         ''
       )}
-      <CustomInput style={inputStyles} placeholder={props.placeholder} />
+      <CustomInput
+        style={inputStyles}
+        disabled={props.disabled}
+        placeholder={props.placeholder}
+      />
     </div>
   )
 }
@@ -138,7 +151,8 @@ JGTextBox.defaultProps = {
   placeholder: '',
   isMust: false,
   visible: true,
-  labelVisible: true
+  labelVisible: true,
+  disabled: false
 }
 
 export default JGTextBox
