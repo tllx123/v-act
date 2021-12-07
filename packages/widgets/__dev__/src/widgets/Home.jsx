@@ -19,6 +19,10 @@ const Home = () => {
       <br />
       <Link href="/JGTextBox">JGTextBox</Link>
       <br />
+      <Link href="/JGFloatBox">JGFloatBox</Link>
+      <br />
+      <Link href="/JGPassword">JGPassword</Link>
+      <br />
     </>
   )
 }
