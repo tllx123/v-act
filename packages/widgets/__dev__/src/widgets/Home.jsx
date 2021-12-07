@@ -11,6 +11,8 @@ const Home = () => {
       <br />
       <Link href="/JGNewList">JGNewList</Link>
       <br />
+      <Link href="/JGPortal">JGPortal</Link>
+      <br />
       <Link href="/JGRecordPaging">JGRecordPaging</Link>
       <br />
       <Link href="/JGSteps">JGSteps</Link>
