@@ -11,7 +11,13 @@ import pkg from './package.json'
 const extensions = ['.js', '.ts', '.tsx']
 
 const entryConfig = defineConfig({
-  external: ['react', 'react-dom', '@mui/material'],
+  external: [
+    'react',
+    'react-dom',
+    '@mui/system',
+    '@mui/material',
+    '@mui/icons-material'
+  ],
   input: 'src/index.ts',
   output: [
     {
@@ -34,12 +40,6 @@ const entryConfig = defineConfig({
         ['@babel/preset-env'],
         ['@babel/preset-react', { runtime: 'automatic' }],
         ['@babel/preset-typescript']
-      ],
-      plugins: [
-        [
-          'babel-plugin-direct-import',
-          { modules: ['@mui/material', '@mui/icons-material'] }
-        ]
       ]
     }),
     commonjs({
