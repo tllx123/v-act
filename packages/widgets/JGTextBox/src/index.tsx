@@ -14,7 +14,8 @@ const convert = function (
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible),
     labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    labelVisible: toBoolean(pros.labelVisible, true),
+    disabled: !toBoolean(pros.enabled, true)
   }
   return <JGTextBox {...props}></JGTextBox>
 }

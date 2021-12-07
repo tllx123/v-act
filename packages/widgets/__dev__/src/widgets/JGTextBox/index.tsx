@@ -40,6 +40,16 @@ const TextBox = () => {
         labelText="邮箱"
         labelVisible={false}
       ></JGTextBox>
+      <JGTextBox
+        top="129px"
+        left="57px"
+        height="26px"
+        width="188px"
+        isMust={true}
+        placeholder="请输入手机号"
+        labelText="手机号"
+        disabled={true}
+      ></JGTextBox>
     </JGComponent>
   )
 }
