@@ -5,6 +5,7 @@ import JGButton from './widgets/JGButton'
 import JGImage from './widgets/JGImage'
 import JGLabel from './widgets/JGLabel'
 import JGNewList from './widgets/JGNewList'
+import JGPortal from './widgets/JGPortal'
 import JGRecordPaging from './widgets/JGRecordPaging'
 import JGSteps from './widgets/JGSteps'
 import JGTextBox from './widgets/JGTextBox'
@@ -34,6 +35,10 @@ const Routes = () =>
     {
       path: '/JGNewList',
       element: <JGNewList />
+    },
+    {
+      path: '/JGPortal',
+      element: <JGPortal />
     },
     {
       path: '/JGRecordPaging',
