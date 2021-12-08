@@ -23,6 +23,8 @@ const Home = () => {
       <br />
       <Link href="/JGPassword">JGPassword</Link>
       <br />
+      <Link href="/JGIntegerBox">JGIntegerBox</Link>
+      <br />
     </>
   )
 }

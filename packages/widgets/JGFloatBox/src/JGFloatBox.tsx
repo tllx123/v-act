@@ -1,4 +1,4 @@
-import React, { forwardRef, CSSProperties } from 'react'
+import React, { forwardRef, CSSProperties, useState } from 'react'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 
@@ -109,6 +109,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
   if (!props.visible) {
     return null
   }
+  const [inputVal, setInputVal] = useState('')
   const wrapStyles: CSSProperties = {
     width: props.width || props.multiWidth,
     height: props.height || props.multiHeight,
@@ -136,6 +137,21 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     height: props.height || props.multiHeight,
     display: 'inline-block'
   }
+  const isInteger = (e) => {
+    if (props.inputType === 'integer') {
+      let filterVal = e.target.value.replace(/[^(-?\d)]/gi, '')
+      if (
+        filterVal.lastIndexOf('-') !== -1 &&
+        filterVal.lastIndexOf('-') !== 0
+      ) {
+        filterVal = '-' + filterVal.replace(/[^\d]/gi, '')
+      }
+      setInputVal(filterVal)
+    }
+  }
+  const handleChange = (e) => {
+    isInteger(e)
+  }
   return (
     <div style={wrapStyles}>
       {labelWidth > 0 ? (
@@ -149,7 +165,9 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
       <CustomInput
         style={inputStyles}
         placeholder={props.placeholder}
-        type={props.inputType}
+        type={props.inputType === 'integer' ? 'text' : props.inputType}
+        onChange={handleChange}
+        value={inputVal}
       />
     </div>
   )

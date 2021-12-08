@@ -11,7 +11,7 @@ import JGSteps from './widgets/JGSteps'
 import JGTextBox from './widgets/JGTextBox'
 import JGFloatBox from './widgets/JGFloatBox'
 import JGPassword from './widgets/JGPassword'
-
+import JGIntegerBox from './widgets/JGIntegerBox'
 const Routes = () =>
   useRoutes([
     {
@@ -57,6 +57,10 @@ const Routes = () =>
     {
       path: '/JGPassword',
       element: <JGPassword />
+    },
+    {
+      path: '/JGIntegerBox',
+      element: <JGIntegerBox />
     }
   ])
 
