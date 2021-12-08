@@ -12,6 +12,7 @@ import JGTextBox from './widgets/JGTextBox'
 import JGFloatBox from './widgets/JGFloatBox'
 import JGPassword from './widgets/JGPassword'
 import JGIntegerBox from './widgets/JGIntegerBox'
+import JGAttachment from './widgets/JGAttachment'
 const Routes = () =>
   useRoutes([
     {
@@ -61,6 +62,10 @@ const Routes = () =>
     {
       path: '/JGIntegerBox',
       element: <JGIntegerBox />
+    },
+    {
+      path: '/JGAttachment',
+      element: <JGAttachment />
     }
   ])
 

@@ -8,7 +8,9 @@ import { Height, Width } from '@v-act/schema-types'
 
 import { Property } from 'csstype'
 
-interface JGFloatBoxProps extends InputUnstyledProps {
+import { Button } from '@mui/material'
+
+interface JGAttachmentProps extends InputUnstyledProps {
   /**
    * 左边距
    */
@@ -93,7 +95,7 @@ const StyledInputElement = styled('input')`
 `
 
 const CustomInput = forwardRef(function (
-  props: JGFloatBoxProps,
+  props: JGAttachmentProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
   return (
@@ -105,7 +107,11 @@ const CustomInput = forwardRef(function (
   )
 })
 
-const JGFloatBox = function (props: JGFloatBoxProps) {
+const UploadInput = styled('input')({
+  display: 'none'
+})
+
+const JGAttachment = function (props: JGAttachmentProps) {
   if (!props.visible) {
     return null
   }
@@ -132,11 +138,13 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     display: 'inline-block',
     paddingRight: '6px'
   }
+  console.log('labelStyles', labelStyles)
   const inputStyles = {
-    width: (props.width || props.multiWidth) - labelWidth,
+    width: (props.width || props.multiWidth) - labelWidth - 61,
     height: props.height || props.multiHeight,
     display: 'inline-block'
   }
+
   const isInteger = (e) => {
     if (props.inputType === 'integer') {
       let filterVal = e.target.value.replace(/[^(-?\d)]/gi, '')
@@ -169,15 +177,41 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
         onChange={handleChange}
         value={inputVal}
       />
+      <label htmlFor="contained-button-file">
+        <UploadInput
+          accept="image/*"
+          id="contained-button-file"
+          multiple
+          type="file"
+        />
+        <Button
+          variant="contained"
+          component="span"
+          sx={{
+            'display': 'inline-block',
+            'minWidth': '56px',
+            'height': props.height || props.multiHeight,
+            'padding': 0,
+            'marginLeft': '5px',
+            'textAlign': 'center',
+            '&:hover': {
+              color: '#fff',
+              background: '#558fe8'
+            }
+          }}
+        >
+          选择
+        </Button>
+      </label>
     </div>
   )
 }
 
-JGFloatBox.defaultProps = {
+JGAttachment.defaultProps = {
   left: 0,
   top: 0,
   multiHeight: 26,
-  multiWidth: 235,
+  multiWidth: 294,
   labelWidth: 94,
   labelText: '文本',
   placeholder: '',
@@ -187,5 +221,5 @@ JGFloatBox.defaultProps = {
   inputType: 'number'
 }
 
-export default JGFloatBox
-export { JGFloatBox, JGFloatBoxProps }
+export default JGAttachment
+export { JGAttachment, JGAttachmentProps }

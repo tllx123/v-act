@@ -25,6 +25,8 @@ const Home = () => {
       <br />
       <Link href="/JGIntegerBox">JGIntegerBox</Link>
       <br />
+      <Link href="/JGAttachment">JGAttachment</Link>
+      <br />
     </>
   )
 }
