@@ -5,6 +5,10 @@ import Property from './Property'
  */
 interface Control {
   /**
+   * 控件类型
+   */
+  type: string
+  /**
    * 属性
    */
   properties: Property
