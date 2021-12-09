@@ -11,14 +11,8 @@ import pkg from './package.json'
 const extensions = ['.js', '.ts', '.tsx']
 
 const entryConfig = defineConfig({
-  external: [
-    'react',
-    'react-dom',
-    '@mui/system',
-    '@mui/material',
-    '@mui/icons-material'
-  ],
-  input: 'src/index.ts',
+  external: ['react', 'react-dom', '@mui/material'],
+  input: 'src/index.tsx',
   output: [
     {
       file: pkg.main,
@@ -60,7 +54,7 @@ const entryConfig = defineConfig({
 })
 
 const dtsConfig = defineConfig({
-  input: './src/index.ts',
+  input: './src/index.tsx',
   output: {
     file: './dist/index.d.ts',
     format: 'es'
