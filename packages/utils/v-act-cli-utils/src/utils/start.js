@@ -25,7 +25,8 @@ function _start(command) {
 
 module.exports = {
   startProject: function () {
-    const options = program.parse(process.argv)
+    program.parse(process.argv)
+    const options = program.opts()
     const port = options.port
     _start(port ? `next dev -p ${port}` : 'next dev')
   },
