@@ -13,6 +13,7 @@ import JGFloatBox from './widgets/JGFloatBox'
 import JGPassword from './widgets/JGPassword'
 import JGIntegerBox from './widgets/JGIntegerBox'
 import JGAttachment from './widgets/JGAttachment'
+import JGPeriod from './widgets/JGPeriod'
 const Routes = () =>
   useRoutes([
     {
@@ -66,6 +67,10 @@ const Routes = () =>
     {
       path: '/JGAttachment',
       element: <JGAttachment />
+    },
+    {
+      path: '/JGPeriod',
+      element: <JGPeriod />
     }
   ])
 
