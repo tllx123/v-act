@@ -1,7 +1,5 @@
 {
   "name": "@v-act/widgets-dev",
   "private": true,
-  "scripts": {
-    "dev": "vite"
-  }
+  "license": "MIT"
 }

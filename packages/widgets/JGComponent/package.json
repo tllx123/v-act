@@ -1,6 +1,6 @@
 {
   "name": "@v-act/jgcomponent",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,5 +10,11 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -wc"
+  },
+  "dependencies": {
+    "@v-act/schema-types": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

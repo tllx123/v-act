@@ -1,29 +1,30 @@
 {
   "name": "@v-act/v3dev-component-watcher",
-  "version": "1.0.6",
-  "description": "v平台开发系统构件监听",
-  "main": "index.js",
+  "version": "1.0.7",
   "private": false,
-  "bin": {
-    "vactWatch": "bin/index.js"
-  },
-  "scripts": {
-    "debug": "node bin/index.js"
-  },
-  "author": "opensource.vplatform",
-  "license": "ISC",
-  "publishConfig": {
-    "access": "public"
-  },
+  "description": "v平台开发系统构件监听",
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",
     "directory": "packages/v-act-styles"
   },
+  "license": "ISC",
+  "author": "opensource.vplatform",
+  "main": "src/index.js",
+  "bin": {
+    "vactWatch": "bin/index.js"
+  },
+  "scripts": {
+    "debug": "node bin/index.js"
+  },
   "dependencies": {
+    "art-template": "^4.13.2",
     "chokidar": "^3.5.2",
     "juicer": "^0.6.15",
     "xml2js": "^0.4.23"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
