@@ -5,12 +5,9 @@
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -wc"
-  },
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
   },
