@@ -3,7 +3,7 @@ import { JGComponent, JGComponentProps } from './JGComponent'
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
   const pros = control.properties
   const props: JGComponentProps = {
