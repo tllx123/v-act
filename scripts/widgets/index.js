@@ -5,30 +5,31 @@ import vite from 'vite'
 
 import vitePluginReact from '@vitejs/plugin-react'
 
-const rootDir = path.resolve('./packages/widgets')
-const devServDir = path.resolve(rootDir, '__dev__')
+const rootDir = path.resolve('./packages')
+const devServDir = path.resolve(rootDir, 'widgets/__dev__')
 
-const scanWidgets = () => glob.sync(`${rootDir}/JG*`)
-const scanWidgetEntry = (widgetDir) => glob.sync(`${widgetDir}/src/index.ts*`)
+const scanRegex = `{${rootDir}/utils/*/,${rootDir}/widgets/JG*/}`
+const scanDeps = () => glob.sync(scanRegex)
+const scanDepEntry = (widgetDir) => glob.sync(`${widgetDir}/src/index.ts*`)
 
 const build = () => {}
 
 const dev = async () => {
-  const widgetAlias = {}
-  const widgets = scanWidgets()
+  const depAlias = {}
+  const depDirs = scanDeps()
 
-  widgets.forEach((widget) => {
-    const widgetPkg = fs.readJSONSync(`${widget}/package.json`)
-    const name = widgetPkg.name
-    const entry = scanWidgetEntry(widget)[0]
-    widgetAlias[name] = entry
+  depDirs.forEach((dep) => {
+    const pkg = fs.readJSONSync(`${dep}/package.json`)
+    const name = pkg.name
+    const entry = scanDepEntry(dep)[0]
+    depAlias[name] = entry
   })
 
   const serv = await vite.createServer({
     configFile: false,
     mode: 'development',
     plugins: [vitePluginReact()],
-    resolve: { alias: widgetAlias },
+    resolve: { alias: depAlias },
     root: devServDir,
     server: { open: '/' }
   })
