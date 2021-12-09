@@ -14,6 +14,7 @@ import JGPassword from './widgets/JGPassword'
 import JGIntegerBox from './widgets/JGIntegerBox'
 import JGAttachment from './widgets/JGAttachment'
 import JGPeriod from './widgets/JGPeriod'
+import JGTabControl from './widgets/JGTabControl'
 const Routes = () =>
   useRoutes([
     {
@@ -71,6 +72,10 @@ const Routes = () =>
     {
       path: '/JGPeriod',
       element: <JGPeriod />
+    },
+    {
+      path: '/JGTabControl',
+      element: <JGTabControl />
     }
   ])
 

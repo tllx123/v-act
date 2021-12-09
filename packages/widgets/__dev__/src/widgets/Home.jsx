@@ -29,6 +29,8 @@ const Home = () => {
       <br />
       <Link href="/JGPeriod">JGPeriod</Link>
       <br />
+      <Link href="/JGTabControl">JGTabControl</Link>
+      <br />
     </>
   )
 }

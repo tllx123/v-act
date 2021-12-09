@@ -7,7 +7,6 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGTextBoxProps = {
-    key: pros.code,
     top: toNumber(pros.top),
     left: toNumber(pros.left),
     labelText: pros.labelText,
