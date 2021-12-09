@@ -1,10 +1,10 @@
 import type Component from './Component'
-import type Window from './Window'
 import type Control from './Control'
+import type Height from './Height'
 import type Property from './Property'
 import ReactEnum from './ReactEnum'
 import type Width from './Width'
-import type Height from './Height'
+import type Window from './Window'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -29,15 +29,14 @@ const toBoolean = function (val: string, def?: boolean): boolean {
   return val == 'true' ? true : false
 }
 
-export default Component
-
 export {
-  Window,
+  Component,
   Control,
+  Height,
   Property,
   ReactEnum,
-  Height,
-  Width,
+  toBoolean,
   toNumber,
-  toBoolean
+  Width,
+  Window
 }
