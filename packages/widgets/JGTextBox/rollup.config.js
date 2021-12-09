@@ -11,7 +11,14 @@ import pkg from './package.json'
 const extensions = ['.js', '.ts', '.tsx']
 
 const entryConfig = defineConfig({
-  external: ['react', 'react-dom', '@mui/material', '@v-act/schema-types'],
+  external: [
+    'react',
+    'react-dom',
+    '@mui/material',
+    '@mui/system',
+    '@mui/base/InputUnstyled',
+    '@v-act/schema-types'
+  ],
   input: 'src/index.tsx',
   output: [
     {

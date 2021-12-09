@@ -47,3 +47,4 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
 )
 
 export default JGButton
+export { JGButton, JGButtonProps }

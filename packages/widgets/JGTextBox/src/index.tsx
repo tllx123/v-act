@@ -3,16 +3,17 @@ import { JGTextBox, JGTextBoxProps } from './JGTextBox'
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
   const pros = control.properties
   const props: JGTextBoxProps = {
+    key: pros.code,
     top: toNumber(pros.top),
     left: toNumber(pros.left),
     labelText: pros.labelText,
-    isMust: toBoolean(pros.isMust),
+    isMust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible),
+    visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
     disabled: !toBoolean(pros.enabled, true)
