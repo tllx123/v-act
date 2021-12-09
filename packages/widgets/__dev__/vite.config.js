@@ -3,21 +3,6 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  server: {
-    open: '/'
-  },
-  plugins: [
-    react({
-      babel: {
-        plugins: [
-          [
-            'babel-plugin-direct-import',
-            {
-              modules: ['@mui/system', '@mui/material', '@mui/icons-material']
-            }
-          ]
-        ]
-      }
-    })
-  ]
+  server: { open: '/' },
+  plugins: [react()]
 })
