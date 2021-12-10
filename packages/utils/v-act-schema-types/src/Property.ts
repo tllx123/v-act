@@ -43,6 +43,10 @@ interface Property {
    */
   enabled?: string
   /**
+   * 只读
+   */
+  readOnly?: string
+  /**
    * 显示
    */
   visible?: string

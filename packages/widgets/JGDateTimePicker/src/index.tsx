@@ -7,16 +7,13 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGDateTimePickerProps = {
-    left: pros.left,
-    top: pros.top,
-    height: pros.height,
-    width: pros.width,
-    position: pros.position,
-    margin: pros.margin,
-    padding: pros.padding,
-
-    labeltext: pros.labeltext,
-    readonly: toBoolean(pros.readonly, false),
+    left: pros.left + 'px',
+    top: pros.top + 'px',
+    height: pros.multiHeight + 'px',
+    width: pros.multiWidth + 'px',
+    position: 'absolute',
+    labeltext: pros.labelText,
+    readonly: toBoolean(pros.readOnly, false),
     ismust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
     disabled: !toBoolean(pros.enabled, true)
