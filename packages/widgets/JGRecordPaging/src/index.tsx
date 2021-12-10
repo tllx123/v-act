@@ -8,10 +8,10 @@ export const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGRecordPagingProps = {
-    top: toNumber(pros.top) + '',
-    left: toNumber(pros.left) + '',
-    width: toNumber(pros.multiWidth) + '',
-    height: toNumber(pros.multiHeight) + ''
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
+    height: toNumber(pros.multiHeight) + 'px'
   }
   return <JGRecordPaging {...props} />
 }
