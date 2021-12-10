@@ -7,8 +7,8 @@
     "packages/**"
   ],
   "scripts": {
-    "build": "node scripts/vact.js build",
-    "dev: widgets": "node scripts/vact.js dev widgets",
+    "build: widgets": "node scripts/index.js build -s @v-act/jg*",
+    "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -16,9 +16,11 @@
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.1",
+    "@mui/lab": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.3",
     "@mui/styles": "^5.2.3",
     "@mui/system": "^5.2.3",
+    "date-fns": "^2.27.0",
     "dayjs": "^1.10.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -29,7 +31,6 @@
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
-    "@mui/lab": "^5.0.0-alpha.59",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",
