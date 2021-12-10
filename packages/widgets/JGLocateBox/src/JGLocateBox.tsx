@@ -1,31 +1,27 @@
-import * as React from 'react'
-import Paper from '@mui/material/Paper'
-import InputBase from '@mui/material/InputBase'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
-import DirectionsIcon from '@mui/icons-material/Directions'
+import { Property } from 'csstype'
 
-import { Height, Width } from '@v-act/schema-types'
+import SearchIcon from '@mui/icons-material/Search'
+import IconButton from '@mui/material/IconButton'
+import InputBase from '@mui/material/InputBase'
+import Paper from '@mui/material/Paper'
 
 interface JGLocateBoxProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
-  multiHeight?: Height
+  height?: Property.Height
   /**
    * 宽度
    */
-  multiWidth?: Width
+  width?: Property.Width
   /**
    * 提示文字
    */
@@ -53,8 +49,8 @@ const JGLocateBox = function (props: JGLocateBoxProps) {
         top: props.top,
         display: 'flex',
         alignItems: 'center',
-        width: props.multiWidth,
-        height: props.multiHeight
+        width: props.width,
+        height: props.height
       }}
     >
       <InputBase

@@ -2,10 +2,11 @@
   "name": "@v-act/jgdatetimepicker",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "dependencies": {
     "@mui/lab": "^5.0.0-alpha.59",

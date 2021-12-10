@@ -1,4 +1,5 @@
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+
 import { JGPassword, JGPasswordProps } from './JGPassword'
 
 const convert = function (
@@ -7,8 +8,10 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGPasswordProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
+    height: toNumber(pros.multiHeight) + 'px',
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
@@ -21,4 +24,4 @@ const convert = function (
 
 export default JGPassword
 
-export { JGPassword, convert }
+export { convert, JGPassword }

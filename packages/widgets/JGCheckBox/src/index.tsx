@@ -1,5 +1,6 @@
+import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+
 import { JGCheckBox, JGCheckBoxProps } from './JGCheckBox'
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
 
 const convert = function (
   control: Control,
@@ -7,19 +8,14 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGCheckBoxProps = {
-    left: pros.left,
-    top: pros.top,
-    height: pros.height,
-    width: pros.width,
-    position: pros.position,
-    margin: pros.margin,
-    padding: pros.padding,
-    labeltext: pros.labeltext,
-    readonly: toBoolean(pros.readonly, false),
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
+    height: toNumber(pros.multiHeight) + 'px',
     ismust: toBoolean(pros.isMust, false),
     disabled: !toBoolean(pros.enabled, true)
   }
   return <JGCheckBox {...props}></JGCheckBox>
 }
 
-export { JGCheckBox, convert }
+export { convert, JGCheckBox }
