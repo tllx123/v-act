@@ -41,7 +41,9 @@ class Window {
   toSchemaProperty(propertys) {
     const properties = {}
     if (propertys && propertys.property) {
-      propertys.property.forEach((property) => {
+      let property = propertys.property
+      property = Array.isArray(property) ? property : [property]
+      property.forEach((property) => {
         let attr = property.$.code
         if (attr.length > 1) {
           attr = attr.substring(0, 2).toLowerCase() + attr.substring(2)
@@ -57,10 +59,14 @@ class Window {
 
   toSchemaControl(controlObj) {
     const controls = []
-    const controlObjs = controlObj.controls
-    if (controlObjs && controlObjs.length > 0) {
-      controlObjs.forEach((controlObj) => {
-        controls.push(this.toSchemaControl(controlObj))
+    let controlObjs =
+      controlObj.controls && controlObj.controls.control
+        ? controlObj.controls.control
+        : null
+    if (controlObjs) {
+      controlObjs = Array.isArray(controlObjs) ? controlObjs : [controlObjs]
+      controlObjs.forEach((con) => {
+        controls.push(this.toSchemaControl(con))
       })
     }
     return {
@@ -75,8 +81,10 @@ class Window {
       const properties = this.toSchemaProperty(this.obj.propertys)
       const controls = []
       if (this.obj.controls && this.obj.controls.control) {
-        this.obj.controls.control.forEach((control) => {
-          controls.push(this.toSchemaControl(control))
+        let control = this.obj.controls.control
+        control = Array.isArray(control) ? control : [control]
+        control.forEach((con) => {
+          controls.push(this.toSchemaControl(con))
         })
       }
       this.windowJsonObj = {
