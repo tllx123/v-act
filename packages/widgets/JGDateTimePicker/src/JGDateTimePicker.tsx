@@ -4,16 +4,17 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { DatePicker, DatePickerProps } from '@mui/lab'
 import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
-
+import { Property } from 'csstype'
 interface JGDateTimePickerProps extends DatePickerProps {
-  left?: number
-  top?: number
-  width?: number
-  isMust?: boolean
+  left?: Property.Left
+  top?: Property.Top
+  width?: Property.Width
+  height?: Property.Height
+  position?: Property.Position
+  margin?: Property.Margin
+  padding?: Property.Padding
+  ismust?: boolean
   labeltext?: string
-  position?: string
-  margin?: string
-  padding?: string
   placeholder?: string
   readonly?: boolean
 }
@@ -23,7 +24,8 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     left,
     top,
     width,
-    isMust,
+    height,
+    ismust,
     labeltext,
     position,
     margin,
@@ -32,7 +34,7 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     readonly,
     ...restProps
   } = props
-  const [value, setValue] = React.useState<Date | null>(null)
+  const [value, setValue] = React.useState<any>(null)
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
       <DatePicker
@@ -47,12 +49,13 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               display: 'flex',
               alignItems: 'center',
               width: width,
+              height: height,
               position: position,
               left: left,
               top: top,
               margin: margin,
               padding: padding,
-              height: '26px',
+              // height: '26px',
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
@@ -69,7 +72,7 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               }}
             >
               {labeltext}
-              {isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
             </Box>
             <Box
               sx={{
@@ -127,3 +130,5 @@ JGDateTimePicker.defaultProps = {
 }
 
 export default JGDateTimePicker
+
+export { JGDateTimePicker, JGDateTimePickerProps }

@@ -3,15 +3,11 @@ import { useRoutes } from 'react-router-dom'
 import Home from './widgets/Home'
 import JGAttachment from './widgets/JGAttachment'
 import JGButton from './widgets/JGButton'
-import JGCheckBox from './widgets/JGCheckBox'
-import JGDateTimePicker from './widgets/JGDateTimePicker'
 import JGFloatBox from './widgets/JGFloatBox'
 import JGImage from './widgets/JGImage'
 import JGIntegerBox from './widgets/JGIntegerBox'
 import JGLabel from './widgets/JGLabel'
 import JGLocateBox from './widgets/JGLocateBox'
-import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
-import JGLongTextBox from './widgets/JGLongTextBox'
 import JGNewList from './widgets/JGNewList'
 import JGPassword from './widgets/JGPassword'
 import JGPeriod from './widgets/JGPeriod'
@@ -20,6 +16,11 @@ import JGRecordPaging from './widgets/JGRecordPaging'
 import JGSteps from './widgets/JGSteps'
 import JGTabControl from './widgets/JGTabControl'
 import JGTextBox from './widgets/JGTextBox'
+import JGLongTextBox from './widgets/JGLongTextBox'
+import JGCheckBox from './widgets/JGCheckBox'
+import JGDateTimePicker from './widgets/JGDateTimePicker'
+import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
+import JGQrcode from './widgets/JGQrcode'
 
 const Routes = () =>
   useRoutes([
@@ -98,6 +99,10 @@ const Routes = () =>
     {
       path: '/JGLongDateTimePicker',
       element: <JGLongDateTimePicker />
+    },
+    {
+      path: '/JGQrcode',
+      element: <JGQrcode />
     },
     {
       path: '/JGLocateBox',

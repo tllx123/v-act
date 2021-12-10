@@ -4,16 +4,15 @@ import { Property } from 'csstype'
 
 import {
   AppBar,
-  Box,
-  BoxProps,
   Card,
+  CardProps,
   Grid,
   styled,
   Toolbar,
   Typography
 } from '@mui/material'
 
-interface JGPortalProps extends BoxProps {
+export interface JGPortalProps extends CardProps {
   bottom?: Property.Bottom
   height?: Property.Height
   left?: Property.Left
@@ -22,7 +21,7 @@ interface JGPortalProps extends BoxProps {
   width?: Property.Width
 }
 
-const JGPortalRoot = styled(Box, {
+const JGPortalRoot = styled(Card, {
   name: 'JGPortal',
   slot: 'Root'
 })(({ theme }) => ({
@@ -30,7 +29,7 @@ const JGPortalRoot = styled(Box, {
 }))
 
 const JGPortal = forwardRef<HTMLDivElement, JGPortalProps>((inProps, ref) => {
-  const props: BoxProps = {
+  const props: JGPortalProps = {
     sx: {
       width: inProps.width,
       top: inProps.top,
