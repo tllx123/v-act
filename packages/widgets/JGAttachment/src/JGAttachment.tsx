@@ -122,6 +122,8 @@ const JGAttachment = function (props: JGAttachmentProps) {
     fontSize: '14px',
     position: 'absolute',
     left: props.left,
+    display: 'flex',
+    alignItems: 'center',
     top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
@@ -140,9 +142,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
   }
   console.log('labelStyles', labelStyles)
   const inputStyles = {
-    width: (props.width || props.multiWidth) - labelWidth - 61,
-    height: props.height || props.multiHeight,
-    display: 'inline-block'
+    height: props.height || props.multiHeight
   }
 
   const isInteger = (e) => {
@@ -191,6 +191,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
             'display': 'inline-block',
             'minWidth': '56px',
             'height': props.height || props.multiHeight,
+            'lineHeight': props.height || props.multiHeight,
             'padding': 0,
             'marginLeft': '5px',
             'textAlign': 'center',
