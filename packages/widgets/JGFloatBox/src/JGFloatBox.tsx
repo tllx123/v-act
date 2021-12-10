@@ -115,6 +115,8 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     height: props.height || props.multiHeight,
     fontSize: '14px',
     position: 'absolute',
+    display: 'flex',
+    alignItems: 'center',
     left: props.left,
     top: props.top,
     fontFamily:
@@ -128,14 +130,13 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
   const labelStyles: CSSProperties = {
     width: labelWidth,
     height: props.height || props.multiHeight,
+    lineHeight: props.height || props.multiHeight,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
   }
   const inputStyles = {
-    width: (props.width || props.multiWidth) - labelWidth,
-    height: props.height || props.multiHeight,
-    display: 'inline-block'
+    height: props.height || props.multiHeight
   }
   const isInteger = (e) => {
     console.log(props.inputType)
