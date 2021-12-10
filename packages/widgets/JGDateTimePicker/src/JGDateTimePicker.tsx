@@ -5,7 +5,7 @@ import { DatePicker, DatePickerProps } from '@mui/lab'
 import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-interface JGDateTimePickerProps extends DatePickerProps {
+interface JGDateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
   width?: Property.Width
@@ -17,6 +17,7 @@ interface JGDateTimePickerProps extends DatePickerProps {
   labeltext?: string
   placeholder?: string
   readonly?: boolean
+  disabled?: boolean
 }
 
 const JGDateTimePicker = (props: JGDateTimePickerProps) => {
