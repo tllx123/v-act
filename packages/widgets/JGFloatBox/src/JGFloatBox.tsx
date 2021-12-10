@@ -138,6 +138,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     display: 'inline-block'
   }
   const isInteger = (e) => {
+    console.log(props.inputType)
     if (props.inputType === 'integer') {
       let filterVal = e.target.value.replace(/[^(-?\d)]/gi, '')
       if (
@@ -147,6 +148,8 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
         filterVal = '-' + filterVal.replace(/[^\d]/gi, '')
       }
       setInputVal(filterVal)
+    } else {
+      setInputVal(e.target.value)
     }
   }
   const handleChange = (e) => {
@@ -166,7 +169,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
         style={inputStyles}
         placeholder={props.placeholder}
         type={props.inputType === 'integer' ? 'text' : props.inputType}
-        onChange={handleChange}
+        onChange={(e) => handleChange(e)}
         value={inputVal}
       />
     </div>

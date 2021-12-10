@@ -2,13 +2,13 @@
   "name": "@v-act/jgbutton",
   "version": "1.0.0-alpha.2",
   "main": "dist/index.js",
-  "module": "dist/index.esm.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "@v-act/schema-types": "^1.0.0"
   },
   "publishConfig": {

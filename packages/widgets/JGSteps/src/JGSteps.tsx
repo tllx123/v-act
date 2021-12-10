@@ -12,7 +12,7 @@ import {
   Typography
 } from '@mui/material'
 
-interface JGStepsProps extends StepperProps {
+export interface JGStepsProps extends StepperProps {
   bottom?: Property.Bottom
   height?: Property.Height
   left?: Property.Left
