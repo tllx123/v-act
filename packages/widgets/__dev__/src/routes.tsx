@@ -1,5 +1,5 @@
 import { useRoutes } from 'react-router-dom'
-
+import Home from './widgets/Home'
 import JGButton from './widgets/JGButton'
 import JGImage from './widgets/JGImage'
 import JGLabel from './widgets/JGLabel'
@@ -13,6 +13,10 @@ import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
 import JGLocateBox from './widgets/JGLocateBox'
 const Routes = () =>
   useRoutes([
+    {
+      path: '/',
+      element: <Home />
+    },
     {
       path: '/JGButton',
       element: <JGButton />
