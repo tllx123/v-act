@@ -1,6 +1,6 @@
 import { Property } from 'csstype'
 import ReactEnum from './ReactEnum'
 
-type Width = Property.Height | ReactEnum
+type Height = Property.Height | ReactEnum
 
-export default Width
+export default Height

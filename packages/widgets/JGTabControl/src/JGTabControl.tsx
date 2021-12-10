@@ -5,64 +5,7 @@ import Box from '@mui/material/Box'
 import { Height, Width } from '@v-act/schema-types'
 
 import { JGTabPage } from './JGTabPage'
-
-/**
- * 页签头显示位置
- */
-enum Aligment {
-  /**
-   * 顶部
-   */
-  Top = 'top',
-  /**
-   * 左边
-   */
-  Left = 'left',
-  /**
-   * 底部
-   */
-  Bottom = 'bottom',
-  /**
-   * 右边
-   */
-  Right = 'right'
-}
-
-/**
- * 滚动条位置
- */
-enum ScrollbarDirection {
-  /**
-   * 垂直
-   */
-  Vertical = 'vertical',
-
-  /**
-   * 水平
-   */
-  Horizontal = 'horizontal',
-
-  /**
-   * 垂直及水平
-   */
-  Both = 'both'
-}
-
-/**
- * 页签外观
- */
-enum TabAppearance {
-  /**
-   * 简洁
-   */
-  Line = 'line',
-  /**
-   * 卡式外框
-   * @todo
-   */
-  Card = 'card'
-}
-
+import { Aligment, ScrollbarDirection, TabAppearance } from './Enums'
 interface JGTabControlProps {
   /**
    * 左边距
@@ -103,7 +46,7 @@ interface JGTabControlProps {
    */
   tabAppearance?: TabAppearance
 
-  children?: Array<any>
+  children?: Array<JSX.Element> | null
 }
 
 const JGTabControl = function (props: JGTabControlProps) {
@@ -179,10 +122,4 @@ JGTabControl.defaultProps = {
 }
 
 export default JGTabControl
-export {
-  JGTabControl,
-  JGTabControlProps,
-  Aligment,
-  ScrollbarDirection,
-  TabAppearance
-}
+export { JGTabControl, JGTabControlProps }
