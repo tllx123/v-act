@@ -21,13 +21,13 @@ export async function viteBuild(scopes) {
   return filteredPackages.map((pkg) => {
     const root = pkg.location
     const name = pkg.name
-    const fileName = 'index'
+    const fileName = (fmt) => (fmt === 'umd' ? 'index.js' : `index.${fmt}.js`)
     const entry = `${root}/src`
 
     return build({
       build: {
         emptyOutDir: true,
-        lib: { entry, name, fileName, formats: ['es'] },
+        lib: { entry, name, fileName, formats: ['umd', 'es'] },
         rollupOptions: { external },
         sourcemap: true
       },
