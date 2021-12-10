@@ -10,6 +10,7 @@ import JGLongTextBox from './widgets/JGLongTextBox'
 import JGCheckBox from './widgets/JGCheckBox'
 import JGDateTimePicker from './widgets/JGDateTimePicker'
 import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
+import JGLocateBox from './widgets/JGLocateBox'
 const Routes = () =>
   useRoutes([
     {
@@ -51,6 +52,10 @@ const Routes = () =>
     {
       path: '/JGLongDateTimePicker',
       element: <JGLongDateTimePicker />
+    },
+    {
+      path: '/JGLocateBox',
+      element: <JGLocateBox />
     }
   ])
 

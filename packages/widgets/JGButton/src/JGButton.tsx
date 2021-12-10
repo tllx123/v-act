@@ -5,12 +5,12 @@ import { Property } from 'csstype'
 import { Button, ButtonProps, styled } from '@mui/material'
 
 interface JGButtonProps extends ButtonProps {
-  bottom?: Property.Bottom
-  height?: Property.Height
-  left?: Property.Left
-  right?: Property.Right
-  top?: Property.Top
-  width?: Property.Width
+  bottom?: Property.Bottom | undefined
+  height?: Property.Height | undefined
+  left?: Property.Left | undefined
+  right?: Property.Right | undefined
+  top?: Property.Top | undefined
+  width?: Property.Width | undefined
 }
 
 const JGButtonRoot = styled(Button, {
