@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { Pagination, PaginationProps, styled } from '@mui/material'
 
-interface JGRecordPagingProps extends PaginationProps {
+export interface JGRecordPagingProps extends PaginationProps {
   bottom?: Property.Bottom
   count?: number
   height?: Property.Height
@@ -21,28 +21,26 @@ const JGRecordPagingRoot = styled(Pagination, {
   position: 'relative'
 }))
 
-const JGRecordPaging = forwardRef<HTMLDivElement, JGRecordPagingProps>(
-  (inProps, ref) => {
-    const props: PaginationProps = {
-      count: inProps.count ?? 10,
-      shape: inProps.shape ?? 'rounded',
-      showFirstButton: inProps.showFirstButton ?? true,
-      showLastButton: inProps.showLastButton ?? true,
-      siblingCount: inProps.siblingCount ?? 0,
-      boundaryCount: inProps.boundaryCount ?? 0,
-      size: inProps.size ?? 'small',
-      variant: inProps.variant ?? 'outlined',
-      sx: {
-        width: inProps.width,
-        top: inProps.top,
-        right: inProps.right,
-        left: inProps.left,
-        height: inProps.height,
-        bottom: inProps.bottom
-      }
+const JGRecordPaging = forwardRef<any, JGRecordPagingProps>((inProps, ref) => {
+  const props: PaginationProps = {
+    count: inProps.count ?? 10,
+    shape: inProps.shape ?? 'rounded',
+    showFirstButton: inProps.showFirstButton ?? true,
+    showLastButton: inProps.showLastButton ?? true,
+    siblingCount: inProps.siblingCount ?? 0,
+    boundaryCount: inProps.boundaryCount ?? 0,
+    size: inProps.size ?? 'small',
+    variant: inProps.variant ?? 'outlined',
+    sx: {
+      width: inProps.width,
+      top: inProps.top,
+      right: inProps.right,
+      left: inProps.left,
+      height: inProps.height,
+      bottom: inProps.bottom
     }
-    return <JGRecordPagingRoot {...props} ref={ref} />
   }
-)
+  return <JGRecordPagingRoot {...props} ref={ref} />
+})
 
 export default JGRecordPaging

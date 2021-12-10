@@ -1,7 +1,8 @@
-import JGButton, { JGButtonProps } from './JGButton'
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import { Control, toBoolean, toNumber } from '@v-act/schema-types'
 
-const convert = function (
+import JGButton, { JGButtonProps } from './JGButton'
+
+export const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
@@ -16,4 +17,4 @@ const convert = function (
   return <JGButton {...props}>{pros.labelText}</JGButton>
 }
 
-export { JGButton, convert }
+export { JGButton }

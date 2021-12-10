@@ -1,15 +1,16 @@
 import Box from '@mui/material/Box'
 import { Checkbox, CheckboxProps } from '@mui/material'
+import { Property } from 'csstype'
 
 interface JGCheckBoxProps extends CheckboxProps {
-  left?: number
-  top?: number
-  height?: number
-  width?: number
+  left?: Property.Left
+  top?: Property.Top
+  height?: Property.Height
+  width?: Property.Width
+  position?: Property.Position
+  margin?: Property.Margin
+  padding?: Property.Padding
   labeltext?: string
-  position?: string
-  margin?: string
-  padding?: string
   readonly?: boolean
   ismust?: boolean
 }
@@ -96,5 +97,5 @@ JGCheckBox.defaultProps = {
   left: 0,
   top: 0
 }
-
 export default JGCheckBox
+export { JGCheckBox, JGCheckBoxProps }

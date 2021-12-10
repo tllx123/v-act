@@ -14,7 +14,7 @@ import {
   Typography
 } from '@mui/material'
 
-interface JGNewListProps extends CardProps {
+export interface JGNewListProps extends CardProps {
   title?: string
   bottom?: Property.Bottom
   height?: Property.Height
