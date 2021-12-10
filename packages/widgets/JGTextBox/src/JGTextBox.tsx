@@ -114,6 +114,7 @@ const JGTextBox = function (props: JGTextBoxProps) {
     : 0
   const labelStyles: CSSProperties = {
     width: labelWidth,
+    lineHeight: props.multiHeight,
     textAlign: 'right',
     paddingRight: '6px'
   }

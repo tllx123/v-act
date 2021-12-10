@@ -9,6 +9,8 @@ const convert = function (
   const props: JGTextBoxProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
+    multiWidth: toNumber(pros.multiWidth) + 'px',
+    multiHeight: toNumber(pros.multiHeight) + 'px',
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
