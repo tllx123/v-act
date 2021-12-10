@@ -3,6 +3,12 @@ const str = require('../utils/String')
 const template = require('art-template')
 const path = require('path')
 const File = require('../utils/File')
+const fs = require('fs')
+const render = template.compile(
+  new String(
+    fs.readFileSync(path.resolve(__dirname, '../template/window.tpl'))
+  ).toString()
+)
 
 class Window {
   constructor(componentCode, obj, vactWidgetMap) {
@@ -161,10 +167,7 @@ class Window {
           controlConvertMap: this.getControlConverMapScript(),
           importScripts: this.toImportScripts()
         }
-        const content = template(
-          path.resolve(__dirname, '../template/window.tpl'),
-          params
-        )
+        const content = render(params)
         resolve(content)
       } catch (err) {
         reject(err)
