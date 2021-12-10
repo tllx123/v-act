@@ -1,16 +1,18 @@
 import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
-
+import { Property } from 'csstype'
 interface JGLongTextBoxProps extends TextareaAutosizeProps {
-  left?: number
-  top?: number
-  height?: number
-  width?: number
-  isMust?: boolean
+  left?: Property.Left
+  top?: Property.Top
+  height?: Property.Height
+  width?: Property.Width
+  position?: Property.Position
+  margin?: Property.Margin
+  padding?: Property.Padding
+
+  readonly?: boolean
+  ismust?: boolean
   labeltext?: string
-  position?: string
-  margin?: string
-  padding?: string
   placeholder?: string
 }
 
@@ -20,12 +22,12 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     top,
     height,
     width,
-    isMust,
+    ismust,
     labeltext,
     position,
     margin,
     padding,
-    placeholder,
+    readonly,
     ...restProps
   } = props
   return (
@@ -40,7 +42,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
         top: top,
         margin: margin,
         padding: padding,
-        placeholder: placeholder
+        pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
       <Box
@@ -56,7 +58,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
         }}
       >
         {labeltext}
-        {isMust ? <label style={{ color: 'red' }}>*</label> : ''}{' '}
+        {ismust ? <label style={{ color: 'red' }}>*</label> : ''}{' '}
       </Box>
       <Box
         sx={{
@@ -98,3 +100,4 @@ JGLongTextBox.defaultProps = {
 }
 
 export default JGLongTextBox
+export { JGLongTextBox, JGLongTextBoxProps }

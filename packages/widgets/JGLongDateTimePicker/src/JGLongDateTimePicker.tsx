@@ -4,15 +4,17 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
 import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
+import { Property } from 'csstype'
 interface JGLongDateTimePickerProps extends DateTimePickerProps {
-  left?: number
-  top?: number
-  width?: number
-  isMust?: boolean
+  left?: Property.Left
+  top?: Property.Top
+  width?: Property.Width
+  height?: Property.Height
+  position?: Property.Position
+  margin?: Property.Margin
+  padding?: Property.Padding
+  ismust?: boolean
   labeltext?: string
-  position?: string
-  margin?: string
-  padding?: string
   placeholder?: string
   readonly?: boolean
 }
@@ -22,7 +24,8 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     left,
     top,
     width,
-    isMust,
+    height,
+    ismust,
     labeltext,
     position,
     margin,
@@ -31,7 +34,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     readonly,
     ...restProps
   } = props
-  const [value, setValue] = React.useState<Date | null>(null)
+  const [value, setValue] = React.useState<any>(null)
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
       <DateTimePicker
@@ -51,7 +54,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
               top: top,
               margin: margin,
               padding: padding,
-              height: '26px',
+              height: height,
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
@@ -68,7 +71,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
               }}
             >
               {labeltext}
-              {isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
             </Box>
             <Box
               sx={{
@@ -126,3 +129,4 @@ JGLongDateTimePicker.defaultProps = {
 }
 
 export default JGLongDateTimePicker
+export { JGLongDateTimePicker, JGLongDateTimePickerProps }

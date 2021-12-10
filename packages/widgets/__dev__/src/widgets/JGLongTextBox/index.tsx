@@ -4,7 +4,7 @@ const Longtextbox = () => {
   return (
     <JGComponent>
       <JGLongTextBox labeltext="超出省略号超出省略号" />
-      <JGLongTextBox top={70} disabled />
+      <JGLongTextBox top={70} disabled labeltext="disabled" />
       <JGLongTextBox placeholder="请填写" top={130} />
 
       <JGLongTextBox
@@ -14,6 +14,8 @@ const Longtextbox = () => {
         top={210}
         isMust
       />
+
+      <JGLongTextBox top={500} readonly labeltext="只读" />
     </JGComponent>
   )
 }

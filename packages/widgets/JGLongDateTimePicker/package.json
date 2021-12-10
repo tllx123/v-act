@@ -7,10 +7,6 @@
   "files": [
     "dist"
   ],
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -wc"
-  },
   "dependencies": {
     "@mui/lab": "^5.0.0-alpha.59",
     "@v-act/schema-types": "^1.0.0",
@@ -19,5 +15,6 @@
     "dayjs": "^1.10.7",
     "luxon": "^2.1.1",
     "moment": "^2.29.1"
-  }
+  },
+  "widgetType": "JGLongDateTimePicker"
 }
