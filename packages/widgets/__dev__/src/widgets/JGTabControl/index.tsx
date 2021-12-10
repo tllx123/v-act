@@ -5,13 +5,19 @@ import { JGComponent } from '@v-act/jgcomponent'
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGTabControl top={50} left={50} multiWidth="500px" multiHeight="500px">
+      <JGTabControl
+        top={50}
+        left={50}
+        multiWidth="500px"
+        multiHeight="500px"
+        selectedIndex={2}
+      >
         <JGTabPage code="JGTabPage1" labelText="页签1">
           <JGTextBox
             top={33}
             left={57}
             multiHeight="26px"
-            multiWidth="59px"
+            multiWidth="188px"
             labelText="账号"
           ></JGTextBox>
           <JGTextBox

@@ -1,9 +1,12 @@
+import { CSSProperties } from 'react'
 import { Control, toNumber, toBoolean } from '@v-act/schema-types'
 import { Height, Width } from '@v-act/schema-types'
 import Box from '@mui/material/Box'
 
 interface JGTabPageProps {
   code: string
+
+  index?: number
 
   value?: string
   /**
@@ -36,16 +39,19 @@ const convert = function (
 }
 
 function JGTabPage(props: JGTabPageProps) {
-  const { children, code, value, ...other } = props
+  const { children, index, value } = props
+  const styles: CSSProperties = {
+    position: 'absolute'
+  }
   return (
     <div
+      style={styles}
       role="tabpanel"
-      hidden={code !== value}
-      id={`vertical-tabpanel-${code}`}
-      aria-labelledby={`vertical-tab-${code}`}
-      {...other}
+      hidden={index !== value}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
     >
-      {value === code && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }

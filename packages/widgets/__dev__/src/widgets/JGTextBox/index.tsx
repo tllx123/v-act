@@ -8,7 +8,7 @@ const TextBox = () => {
         top={33}
         left={57}
         multiHeight="26px"
-        multiWidth="59px"
+        multiWidth="188px"
         labelText="账号"
       ></JGTextBox>
       <JGTextBox

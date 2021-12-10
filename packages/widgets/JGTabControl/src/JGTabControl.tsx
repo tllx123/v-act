@@ -116,9 +116,9 @@ const JGTabControl = function (props: JGTabControlProps) {
         return child.props.code
       })
     : []
-  const [value, setValue] = React.useState(childrenCodes[index])
+  const [value, setValue] = React.useState(index)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(childrenCodes[newValue])
+    setValue(newValue)
   }
   return (
     <Box
@@ -139,24 +139,25 @@ const JGTabControl = function (props: JGTabControlProps) {
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
-        sx={{ borderRight: 1, borderColor: 'divider' }}
       >
         {props.children
           ? props.children.map((child) => {
               return (
-                <Tab key={child.props.code} label={child.props.labelText}>
-                  {child.children}
-                </Tab>
+                <Tab key={child.props.code} label={child.props.labelText}></Tab>
               )
             })
           : null}
       </Tabs>
       {props.children
-        ? props.children.map((child) => {
+        ? props.children.map((child, i) => {
             return (
-              <JGTabPage key={child.props.code} {...child.props}>
-                {child.children}
+              <JGTabPage
+                key={child.props.code}
+                {...child.props}
+                value={value}
+                index={i}
+              >
+                {child.props.children}
               </JGTabPage>
             )
           })
