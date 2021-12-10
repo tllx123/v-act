@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { CardMedia, CardMediaProps, styled } from '@mui/material'
 
-interface JGImageProps extends CardMediaProps {
+export interface JGImageProps extends CardMediaProps {
   bottom?: Property.Bottom
   height?: Property.Height
   left?: Property.Left

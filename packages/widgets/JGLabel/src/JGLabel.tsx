@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { styled, Typography, TypographyProps } from '@mui/material'
 
-interface JGLabelProps extends TypographyProps {
+export interface JGLabelProps extends TypographyProps {
   bottom?: Property.Bottom
   height?: Property.Height
   left?: Property.Left
@@ -25,8 +25,9 @@ const JGLabelRoot = styled(Typography, {
   position: 'absolute',
   verticalAlign: 'middle'
 }))
-const JGLabel = forwardRef<HTMLLabelElement, JGLabelProps>((inProps, ref) => {
-  const props: TypographyProps = {
+
+const JGLabel = forwardRef<HTMLElement, JGLabelProps>((inProps, ref) => {
+  const props: JGLabelProps = {
     variant: 'body2',
     sx: {
       width: inProps.width,
