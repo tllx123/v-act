@@ -1,10 +1,10 @@
-import { JGFloatBox } from '@v-act/jgfloatbox'
+import { JGPassword } from '@v-act/jgpassword'
 import { JGComponent } from '@v-act/jgcomponent'
 
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGFloatBox top="10px" labelText="密码" inputType="password"></JGFloatBox>
+      <JGPassword top="10px" labelText="密码"></JGPassword>
     </JGComponent>
   )
 }
