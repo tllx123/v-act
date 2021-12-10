@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { Control, toNumber, toBoolean } from '@v-act/schema-types'
-import { Height, Width } from '@v-act/schema-types'
+import { Height, Width, ReactEnum } from '@v-act/schema-types'
 import Box from '@mui/material/Box'
 
 interface JGTabPageProps {
@@ -22,7 +22,7 @@ interface JGTabPageProps {
    */
   multiWidth?: Width
 
-  children?: any
+  children?: JSX.Element | null
 }
 
 const convert = function (
@@ -32,8 +32,8 @@ const convert = function (
   const pros = control.properties
   const props: JGTabPageProps = {
     code: pros.code,
-    multiHeight: pros.multiHeight ? pros.multiHeight : 'content',
-    multiWidth: pros.multiWidth ? pros.multiWidth : 'space'
+    multiHeight: pros.multiHeight ? pros.multiHeight : ReactEnum.Content,
+    multiWidth: pros.multiWidth ? pros.multiWidth : ReactEnum.Space
   }
   return <JGTabPage {...props}>{render(control.controls)}</JGTabPage>
 }

@@ -7,13 +7,13 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGButtonProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
-    width: toNumber(pros.multiWidth),
-    height: toNumber(pros.multiHeight),
+    top: toNumber(pros.top) + '',
+    left: toNumber(pros.left) + '',
+    width: toNumber(pros.multiWidth) + '',
+    height: toNumber(pros.multiHeight) + '',
     disabled: !toBoolean(pros.enabled, true)
   }
-  return <JGButton {...props}>{pros.lableText}</JGButton>
+  return <JGButton {...props}>{pros.labelText}</JGButton>
 }
 
 export { JGButton, convert }

@@ -1,7 +1,6 @@
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
-import JGAttachment from './widgets/JGAttachment'
 import JGButton from './widgets/JGButton'
 import JGCheckBox from './widgets/JGCheckBox'
 import JGDateTimePicker from './widgets/JGDateTimePicker'
@@ -97,6 +96,10 @@ const Routes = () =>
     {
       path: '/JGLongDateTimePicker',
       element: <JGLongDateTimePicker />
+    },
+    {
+      path: '/JGLocateBox',
+      element: <JGLocateBox />
     }
   ])
 

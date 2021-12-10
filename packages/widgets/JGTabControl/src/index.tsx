@@ -1,13 +1,15 @@
 import React from 'react'
 import { Control, toNumber, toBoolean } from '@v-act/schema-types'
-import {
-  JGTabControl,
-  JGTabControlProps,
-  Aligment,
-  ScrollbarDirection,
-  TabAppearance
-} from './JGTabControl'
+import { JGTabControl, JGTabControlProps } from './JGTabControl'
 import { JGTabPage, convert as convertJGTabPage } from './JGTabPage'
+import {
+  Aligment,
+  valueofAligment,
+  ScrollbarDirection,
+  valueofScrollbarDirection,
+  TabAppearance,
+  valueofTabAppearance
+} from './Enums'
 
 const convert = function (
   control: Control,
@@ -18,18 +20,20 @@ const convert = function (
     top: toNumber(pros.top),
     left: toNumber(pros.left),
     visible: toBoolean(pros.visible, true),
-    alignment: pros.alignment ? pros.alignment : Aligment.Top,
+    alignment: pros.alignment ? valueofAligment(pros.alignment) : Aligment.Top,
     scrollbarDir: pros.scrollbarDir
-      ? pros.scrollbarDir
+      ? valueofScrollbarDirection(pros.scrollbarDir)
       : ScrollbarDirection.Both,
-    tabAppearance: pros.tabAppearance ? pros.tabAppearance : TabAppearance.Line
+    tabAppearance: pros.tabAppearance
+      ? valueofTabAppearance(pros.tabAppearance)
+      : TabAppearance.Line
   }
   return (
     <JGTabControl {...props}>
       {control.controls
         ? control.controls.map((control: Control) => {
             return (
-              <React.Fragment key={control.code}>
+              <React.Fragment key={control.properties.code}>
                 {convertJGTabPage(control, render)}
               </React.Fragment>
             )
