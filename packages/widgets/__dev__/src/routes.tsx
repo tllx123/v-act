@@ -21,6 +21,10 @@ import JGCheckBox from './widgets/JGCheckBox'
 import JGDateTimePicker from './widgets/JGDateTimePicker'
 import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
 import JGQrcode from './widgets/JGQrcode'
+import JGComboBox from './widgets/JGComboBox'
+import JGCheckBoxGroup from './widgets/JGCheckBoxGroup'
+import JGRadioGroup from './widgets/JGRadioGroup'
+import JGPercent from './widgets/JGPercent'
 const Routes = () =>
   useRoutes([
     {
@@ -110,6 +114,18 @@ const Routes = () =>
     {
       path: '/JGTabControl',
       element: <JGTabControl />
+    },{
+      path: '/JGComboBox',
+      element: <JGComboBox />
+    },{
+      path: '/JGCheckBoxGroup',
+      element: <JGCheckBoxGroup />
+    },{
+      path: '/JGRadioGroup',
+      element: <JGRadioGroup />
+    },{
+      path: '/JGPercent',
+      element: <JGPercent />
     }
   ])
 
