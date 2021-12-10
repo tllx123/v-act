@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "module": "ESNext",
@@ -9,5 +8,6 @@
     "strict": true,
     "target": "ESNext"
   },
+  "extends": "./tsconfig.path.json",
   "include": ["packages/**/src"]
 }

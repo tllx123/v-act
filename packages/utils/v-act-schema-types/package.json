@@ -13,7 +13,7 @@
   "author": "opensource.vplatform",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
-  "types": "dist/index.td.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
