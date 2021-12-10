@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/jgnewlist",
+  "name": "@v-act/jgnewslist",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -14,5 +14,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "widgetType": "JGNewList"
+  "widgetType": "JGNewsList"
 }
