@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { Box, BoxProps, styled } from '@mui/material'
 
-interface JGComponentProps extends BoxProps {
+interface JGComponentProps {
   bottom?: Property.Bottom
   height?: Property.Height
   left?: Property.Left

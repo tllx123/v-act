@@ -7,10 +7,12 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGComponentProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left)
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
+    height: toNumber(pros.multiHeight) + 'px'
   }
-  return <JGComponent key={pros.code}>{render(control.controls)}</JGComponent>
+  return <JGComponent {...props}>{render(control.controls)}</JGComponent>
 }
 
 export { JGComponent, convert }

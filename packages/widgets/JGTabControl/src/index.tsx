@@ -19,6 +19,8 @@ const convert = function (
   const props: JGTabControlProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
+    multiWidth: pros.multiWidth,
+    multiHeight: pros.multiHeight,
     visible: toBoolean(pros.visible, true),
     alignment: pros.alignment ? valueofAligment(pros.alignment) : Aligment.Top,
     scrollbarDir: pros.scrollbarDir
@@ -31,12 +33,8 @@ const convert = function (
   return (
     <JGTabControl {...props}>
       {control.controls
-        ? control.controls.map((control: Control) => {
-            return (
-              <React.Fragment key={control.properties.code}>
-                {convertJGTabPage(control, render)}
-              </React.Fragment>
-            )
+        ? control.controls.map((con: Control) => {
+            return convertJGTabPage(con, render)
           })
         : null}
     </JGTabControl>

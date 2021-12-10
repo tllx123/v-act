@@ -11,6 +11,7 @@ import JGCheckBox from './widgets/JGCheckBox'
 import JGDateTimePicker from './widgets/JGDateTimePicker'
 import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
 import JGLocateBox from './widgets/JGLocateBox'
+import JGTabControl from './widgets/JGTabControl'
 const Routes = () =>
   useRoutes([
     {
@@ -60,6 +61,10 @@ const Routes = () =>
     {
       path: '/JGLocateBox',
       element: <JGLocateBox />
+    },
+    {
+      path: '/JGTabControl',
+      element: <JGTabControl />
     }
   ])
 

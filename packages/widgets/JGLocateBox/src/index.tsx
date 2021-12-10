@@ -1,4 +1,10 @@
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import {
+  Control,
+  toNumber,
+  toBoolean,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/schema-types'
 import { JGLocateBox, JGLocateBoxProps } from './JGLocateBox'
 
 const convert = function (
@@ -11,7 +17,9 @@ const convert = function (
     left: toNumber(pros.left),
     hint: pros.hint ? pros.hint : undefined,
     visible: toBoolean(pros.visible, true),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    multiHeight: pros.multiHeight + '',
+    multiWidth: pros.multiWidth + ''
   }
   return <JGLocateBox {...props}></JGLocateBox>
 }

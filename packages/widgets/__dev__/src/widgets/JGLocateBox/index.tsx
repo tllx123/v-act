@@ -42,8 +42,8 @@ const TextBox = () => {
       <JGLocateBox
         top={129}
         left={57}
-        multiHeight="26px"
-        multiWidth="188px"
+        multiHeight="50px"
+        multiWidth="300px"
         isMust={true}
         placeholder="请输入手机号"
         labelText="手机号"

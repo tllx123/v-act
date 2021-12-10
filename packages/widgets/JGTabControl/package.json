@@ -7,6 +7,10 @@
   "files": [
     "dist"
   ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -wc"
+  },
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
   },

@@ -32,10 +32,15 @@ const convert = function (
   const pros = control.properties
   const props: JGTabPageProps = {
     code: pros.code,
+    labelText: pros.labelText,
     multiHeight: pros.multiHeight ? pros.multiHeight : ReactEnum.Content,
     multiWidth: pros.multiWidth ? pros.multiWidth : ReactEnum.Space
   }
-  return <JGTabPage {...props}>{render(control.controls)}</JGTabPage>
+  return (
+    <JGTabPage key={pros.code} {...props}>
+      {render(control.controls)}
+    </JGTabPage>
+  )
 }
 
 function JGTabPage(props: JGTabPageProps) {

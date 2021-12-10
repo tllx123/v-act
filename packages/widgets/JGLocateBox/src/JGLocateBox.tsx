@@ -57,7 +57,11 @@ const JGLocateBox = function (props: JGLocateBoxProps) {
         height: props.multiHeight
       }}
     >
-      <InputBase sx={{ ml: 1, flex: 1 }} placeholder={props.hint} />
+      <InputBase
+        sx={{ ml: 1, flex: 1 }}
+        disabled={props.disabled}
+        placeholder={props.hint}
+      />
       <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />
       </IconButton>
