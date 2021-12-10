@@ -7,6 +7,7 @@
     "packages/**"
   ],
   "scripts": {
+    "build": "node scripts/vact.js build",
     "dev: widgets": "node scripts/vact.js dev widgets",
     "prepare": "husky install"
   },
@@ -29,6 +30,10 @@
     "@babel/preset-react": "^7.16.0",
     "@babel/preset-typescript": "^7.16.0",
     "@mui/lab": "^5.0.0-alpha.59",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@types/yargs": "^17.0.7",
@@ -39,6 +44,7 @@
     "lint-staged": "^12.1.2",
     "prettier": "^2.5.1",
     "rollup": "^2.60.2",
+    "rollup-plugin-dts": "^4.0.1",
     "sort-package-json": "^1.53.1",
     "tslib": "^2.3.1",
     "typescript": "^4.5.2",
