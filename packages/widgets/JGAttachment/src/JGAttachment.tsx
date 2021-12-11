@@ -115,6 +115,10 @@ const JGAttachment = function (props: JGAttachmentProps) {
   if (!props.visible) {
     return null
   }
+  let lineHeight =
+    String(props.height || props.multiHeight).indexOf('px') !== -1
+      ? props.height || props.multiHeight
+      : (props.height || props.multiHeight) + 'px'
   const [inputVal, setInputVal] = useState('')
   const wrapStyles: CSSProperties = {
     width: props.width || props.multiWidth,
@@ -138,9 +142,9 @@ const JGAttachment = function (props: JGAttachmentProps) {
     height: props.height || props.multiHeight,
     textAlign: 'right',
     display: 'inline-block',
-    paddingRight: '6px'
+    paddingRight: '6px',
+    lineHeight: lineHeight
   }
-  console.log('labelStyles', labelStyles)
   const inputStyles = {
     height: props.height || props.multiHeight
   }
@@ -191,7 +195,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
             'display': 'inline-block',
             'minWidth': '56px',
             'height': props.height || props.multiHeight,
-            'lineHeight': props.height || props.multiHeight,
+            'lineHeight': lineHeight,
             'padding': 0,
             'marginLeft': '5px',
             'textAlign': 'center',

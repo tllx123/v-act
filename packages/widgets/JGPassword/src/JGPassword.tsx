@@ -127,10 +127,14 @@ const JGPassword = function (props: JGPasswordProps) {
       ? 94
       : props.labelWidth
     : 0
+  let lineHeight =
+    String(props.height || props.multiHeight).indexOf('px') !== -1
+      ? props.height || props.multiHeight
+      : (props.height || props.multiHeight) + 'px'
   const labelStyles: CSSProperties = {
     width: labelWidth,
     height: props.height || props.multiHeight,
-    lineHeight: props.height || props.multiHeight,
+    lineHeight: lineHeight,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'

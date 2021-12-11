@@ -12,6 +12,8 @@ const convert = function (
     left: toNumber(pros.left) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
+    multiWidth: toNumber(pros.multiWidth) + 'px',
+    multiHeight: toNumber(pros.multiHeight) + 'px',
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,

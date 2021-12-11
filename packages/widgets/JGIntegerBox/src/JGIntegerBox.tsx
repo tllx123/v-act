@@ -127,10 +127,14 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
       ? 94
       : props.labelWidth
     : 0
+  let lineHeight =
+    String(props.height || props.multiHeight).indexOf('px') !== -1
+      ? props.height || props.multiHeight
+      : (props.height || props.multiHeight) + 'px'
   const labelStyles: CSSProperties = {
     width: labelWidth,
     height: props.height || props.multiHeight,
-    lineHeight: props.height || props.multiHeight,
+    lineHeight: lineHeight,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
@@ -138,20 +142,11 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
   const inputStyles = {
     height: props.height || props.multiHeight
   }
-  const isInteger = (e) => {
-    if (props.inputType === 'integer') {
-      let filterVal = e.target.value.replace(/[^(-?\d)]/gi, '')
-      if (
-        filterVal.lastIndexOf('-') !== -1 &&
-        filterVal.lastIndexOf('-') !== 0
-      ) {
-        filterVal = '-' + filterVal.replace(/[^\d]/gi, '')
-      }
-      setInputVal(filterVal)
-    }
-  }
   const handleChange = (e) => {
-    isInteger(e)
+    let hasMinus = e.target.value.indexOf('-') === 0
+    let filterVal = e.target.value.replace(/[^0-9]/gi, '')
+    if (hasMinus) filterVal = '-' + filterVal
+    setInputVal(filterVal)
   }
   return (
     <div style={wrapStyles}>
