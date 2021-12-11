@@ -9,8 +9,8 @@ const convert = function (
   const props: JGDateTimePickerProps = {
     left: pros.left + 'px',
     top: pros.top + 'px',
-    height: pros.multiHeight + 'px',
-    width: pros.multiWidth + 'px',
+    height: toNumber(pros.multiHeight) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
     position: 'absolute',
     labeltext: pros.labelText,
     readonly: toBoolean(pros.readOnly, false),

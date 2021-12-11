@@ -1,5 +1,5 @@
 import { JGComponent } from '@v-act/jgcomponent'
-import { JGNewList } from '@v-act/jgnewlist'
+import { JGNewList } from 'packages/widgets/JGNewsList/dist'
 
 const Button = () => {
   return (
