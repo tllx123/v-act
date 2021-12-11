@@ -1,13 +1,14 @@
-import React, { forwardRef, CSSProperties, useState } from 'react'
+import React, { forwardRef, CSSProperties, useState, useRef } from 'react'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 
-import TextField from '@mui/material/TextField'
+import { IconButton } from '@mui/material'
+import EventIcon from '@mui/icons-material/Event'
 
-import AdapterDateFns from '@mui/lab/AdapterDayjs'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import YearPicker, { YearPickerProps } from '@mui/lab/YearPicker'
-// import DatePicker, { DatePickerProps } from "@mui/lab/DatePicker";
+import Menu from '@mui/material/Menu'
 
 import { styled } from '@mui/system'
 
@@ -112,20 +113,6 @@ const CustomInput = forwardRef(function (
   )
 })
 
-// const CustomDatePicker = forwardRef(function (
-//   props: YearPickerProps,
-//   ref: React.ForwardedRef<HTMLDivElement>
-// ) {
-//   return (
-
-//     <YearPicker
-//       // components={{ Input: StyledInputElement }}
-//       {...props}
-//       ref={ref}
-//     />
-//   )
-// })
-
 const minDate = new Date('2020-01-01T00:00:00.000')
 const maxDate = new Date('2034-01-01T00:00:00.000')
 
@@ -133,7 +120,17 @@ const JGPeriod = function (props: JGPeriodProps) {
   if (!props.visible) {
     return null
   }
-  const [inputVal, setInputVal] = useState<Date | null>(new Date())
+  const [inputVal, setInputVal] = useState<any>('')
+  const [inputDateVal, setInputDateVal] = useState<Date | null>(new Date())
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const menuWrapScope = useRef(null)
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(menuWrapScope.current)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
   const wrapStyles: CSSProperties = {
     width: props.width || props.multiWidth,
     height: props.height || props.multiHeight,
@@ -161,6 +158,30 @@ const JGPeriod = function (props: JGPeriodProps) {
     height: props.height || props.multiHeight,
     display: 'inline-block'
   }
+  const yearPickerWrap: CSSProperties = {
+    width: '350px',
+    fontSize: '14px'
+  }
+  const calendarBoxStyles: CSSProperties = {
+    display: 'inline-block',
+    position: 'relative'
+  }
+  const calendarIconStyles: CSSProperties = {
+    position: 'absolute',
+    right: '-3px',
+    top: '-4px'
+  }
+  const calendarOperateWrapStyles: CSSProperties = {
+    display: 'flex',
+    justifyContent: 'space-around'
+  }
+  const calendarOperateIconStyles: CSSProperties = {
+    padding: '2px 14px',
+    borderRadius: '25px',
+    backgroundColor: '#1976d2',
+    color: '#fff',
+    cursor: 'pointer'
+  }
   return (
     <div style={wrapStyles}>
       {labelWidth > 0 ? (
@@ -171,24 +192,52 @@ const JGPeriod = function (props: JGPeriodProps) {
       ) : (
         ''
       )}
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        {/* <CustomDatePicker
-          // style={inputStyles}
-          views={["year"]}
-          // placeholder={props.placeholder}
-          // type={props.inputType === 'integer' ? 'text' : props.inputType}
-          onChange={(val) => { setInputVal(val) }}
+      <div
+        style={calendarBoxStyles}
+        id="menuWrapScope"
+        aria-controls="menuScope"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        ref={menuWrapScope}
+      >
+        <CustomInput
+          style={inputStyles}
+          placeholder={props.placeholder}
+          type={'text'}
+          onChange={(e) => setInputVal(e.target.value)}
           value={inputVal}
-          renderInput={(params) => <TextField {...params} helperText={null} />}
-        /> */}
-        <YearPicker
-          date={inputVal}
-          isDateDisabled={() => false}
-          minDate={minDate}
-          maxDate={maxDate}
-          onChange={(newDate) => setInputVal(newDate)}
         />
-      </LocalizationProvider>
+        <IconButton
+          aria-label="日期按钮"
+          component="span"
+          style={calendarIconStyles}
+          onClick={handleClick}
+        >
+          <EventIcon fontSize="small" />
+        </IconButton>
+      </div>
+      <Menu
+        style={yearPickerWrap}
+        onClose={handleClose}
+        open={open}
+        anchorEl={anchorEl}
+        id="menuScope"
+      >
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <YearPicker
+            date={inputDateVal}
+            isDateDisabled={() => false}
+            minDate={minDate}
+            maxDate={maxDate}
+            onChange={(newDate) => setInputDateVal(newDate)}
+          />
+        </LocalizationProvider>
+        <div style={calendarOperateWrapStyles}>
+          <span style={calendarOperateIconStyles}>本年</span>
+          <span style={calendarOperateIconStyles}>确定</span>
+          <span style={calendarOperateIconStyles}>清空</span>
+        </div>
+      </Menu>
     </div>
   )
 }
