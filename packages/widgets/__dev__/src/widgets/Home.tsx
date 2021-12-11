@@ -33,6 +33,8 @@ const Home = () => {
       <br />
       <Link href="/JGLocateBox">JGLocateBox</Link>
       <br />
+      <Link href="/JGQrcode">JGQrcode</Link>
+      <br />
     </>
   )
 }
