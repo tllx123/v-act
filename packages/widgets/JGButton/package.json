@@ -8,10 +8,6 @@
     "dist",
     "src"
   ],
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -wc"
-  },
   "peerDependencies": {
     "@v-act/schema-types": "^1.0.0"
   },

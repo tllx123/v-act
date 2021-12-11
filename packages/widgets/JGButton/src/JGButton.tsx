@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { Button, ButtonProps, styled } from '@mui/material'
 
-interface JGButtonProps extends ButtonProps {
+export interface JGButtonProps extends ButtonProps {
   bottom?: Property.Bottom | undefined
   height?: Property.Height | undefined
   left?: Property.Left | undefined
@@ -47,4 +47,3 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
 )
 
 export default JGButton
-export { JGButton, JGButtonProps }
