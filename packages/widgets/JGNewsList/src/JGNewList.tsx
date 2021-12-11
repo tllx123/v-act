@@ -14,7 +14,7 @@ import {
   Typography
 } from '@mui/material'
 
-export interface JGNewListProps extends CardProps {
+export interface JGNewsListProps extends CardProps {
   title?: string
   bottom?: Property.Bottom
   height?: Property.Height
@@ -24,7 +24,7 @@ export interface JGNewListProps extends CardProps {
   width?: Property.Width
 }
 
-const JGNewListRoot = styled(Card, {
+const JGNewsListRoot = styled(Card, {
   name: 'JGNewList',
   slot: 'Root',
   shouldForwardProp: (prop) => prop !== 'title'
@@ -33,41 +33,43 @@ const JGNewListRoot = styled(Card, {
   border: '1px solid #356abb'
 }))
 
-const JGNewListToolbar = styled(Toolbar)(({ theme }) => ({
+const JGNewsListToolbar = styled(Toolbar)(({ theme }) => ({
   height: 30,
   minHeight: 30,
   margin: theme.spacing(0, -2)
 }))
 
-const JGNewList = forwardRef<HTMLDivElement, JGNewListProps>((inProps, ref) => {
-  const props: JGNewListProps = {
-    sx: {
-      bottom: inProps.bottom,
-      height: inProps.height,
-      left: inProps.left ?? 0,
-      right: inProps.right,
-      top: inProps.top ?? 0,
-      width: inProps.width
+const JGNewsList = forwardRef<HTMLDivElement, JGNewsListProps>(
+  (inProps, ref) => {
+    const props: JGNewsListProps = {
+      sx: {
+        bottom: inProps.bottom,
+        height: inProps.height,
+        left: inProps.left ?? 0,
+        right: inProps.right,
+        top: inProps.top ?? 0,
+        width: inProps.width
+      }
     }
+    return (
+      <JGNewsListRoot {...props} ref={ref}>
+        <AppBar
+          variant="outlined"
+          elevation={0}
+          position="static"
+          sx={{ background: '#356abb' }}
+        >
+          <JGNewsListToolbar variant="dense">
+            <Typography variant="body2">文本</Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <IconButton edge="end" size="small" color="inherit">
+              <MoreHoriz />
+            </IconButton>
+          </JGNewsListToolbar>
+        </AppBar>
+      </JGNewsListRoot>
+    )
   }
-  return (
-    <JGNewListRoot {...props} ref={ref}>
-      <AppBar
-        variant="outlined"
-        elevation={0}
-        position="static"
-        sx={{ background: '#356abb' }}
-      >
-        <JGNewListToolbar variant="dense">
-          <Typography variant="body2">文本</Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton edge="end" size="small" color="inherit">
-            <MoreHoriz />
-          </IconButton>
-        </JGNewListToolbar>
-      </AppBar>
-    </JGNewListRoot>
-  )
-})
+)
 
-export default JGNewList
+export default JGNewsList
