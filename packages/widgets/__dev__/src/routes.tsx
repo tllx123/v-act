@@ -3,28 +3,28 @@ import { useRoutes } from 'react-router-dom'
 import Home from './widgets/Home'
 import JGAttachment from './widgets/JGAttachment'
 import JGButton from './widgets/JGButton'
+import JGCheckBox from './widgets/JGCheckBox'
+import JGCheckBoxGroup from './widgets/JGCheckBoxGroup'
+import JGComboBox from './widgets/JGComboBox'
+import JGDateTimePicker from './widgets/JGDateTimePicker'
 import JGFloatBox from './widgets/JGFloatBox'
 import JGImage from './widgets/JGImage'
 import JGIntegerBox from './widgets/JGIntegerBox'
 import JGLabel from './widgets/JGLabel'
 import JGLocateBox from './widgets/JGLocateBox'
+import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
+import JGLongTextBox from './widgets/JGLongTextBox'
 import JGNewList from './widgets/JGNewList'
 import JGPassword from './widgets/JGPassword'
+import JGPercent from './widgets/JGPercent'
 import JGPeriod from './widgets/JGPeriod'
 import JGPortal from './widgets/JGPortal'
+import JGRadioGroup from './widgets/JGRadioGroup'
 import JGRecordPaging from './widgets/JGRecordPaging'
 import JGSteps from './widgets/JGSteps'
 import JGTabControl from './widgets/JGTabControl'
 import JGTextBox from './widgets/JGTextBox'
-import JGLongTextBox from './widgets/JGLongTextBox'
-import JGCheckBox from './widgets/JGCheckBox'
-import JGDateTimePicker from './widgets/JGDateTimePicker'
-import JGLongDateTimePicker from './widgets/JGLongDateTimePicker'
-import JGQrcode from './widgets/JGQrcode'
-import JGComboBox from './widgets/JGComboBox'
-import JGCheckBoxGroup from './widgets/JGCheckBoxGroup'
-import JGRadioGroup from './widgets/JGRadioGroup'
-import JGPercent from './widgets/JGPercent'
+
 const Routes = () =>
   useRoutes([
     {
@@ -104,26 +104,26 @@ const Routes = () =>
       element: <JGLongDateTimePicker />
     },
     {
-      path: '/JGQrcode',
-      element: <JGQrcode />
-    },
-    {
       path: '/JGLocateBox',
       element: <JGLocateBox />
     },
     {
       path: '/JGTabControl',
       element: <JGTabControl />
-    },{
+    },
+    {
       path: '/JGComboBox',
       element: <JGComboBox />
-    },{
+    },
+    {
       path: '/JGCheckBoxGroup',
       element: <JGCheckBoxGroup />
-    },{
+    },
+    {
       path: '/JGRadioGroup',
       element: <JGRadioGroup />
-    },{
+    },
+    {
       path: '/JGPercent',
       element: <JGPercent />
     }
