@@ -48,7 +48,8 @@
       "@v-act/jgsteps": ["./packages/widgets/JGSteps/src"],
       "@v-act/jgtabcontrol": ["./packages/widgets/JGTabControl/src"],
       "@v-act/jgtextbox": ["./packages/widgets/JGTextBox/src"],
-      "@v-act/widgets-dev": ["./packages/widgets/__dev__/src"]
+      "@v-act/widgets-dev": ["./packages/widgets/__dev__/src"],
+      "@v-act/vite-plugin-dts": ["./packages/plugins/vite-plugin-dts/src"]
     }
   }
 }

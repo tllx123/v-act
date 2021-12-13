@@ -2,12 +2,14 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "isolatedModules": true,
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": ["vite/client"]
   },
-  "extends": "./tsconfig.path.json",
+  "extends": "./tsconfig.paths.json",
   "include": ["packages/**/src"]
 }

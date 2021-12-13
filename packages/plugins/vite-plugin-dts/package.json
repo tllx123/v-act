@@ -1,6 +1,7 @@
 {
-  "name": "@v-act/jgattachment",
+  "name": "@v-act/vite-plugin-dts",
   "version": "1.0.0-alpha.1",
+  "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,8 +9,7 @@
     "dist",
     "src"
   ],
-  "dependencies": {
-    "@v-act/schema-types": "^1.0.0"
-  },
-  "widgetType": "JGAttachment"
+  "peerDependencies": {
+    "vite": ">=2.7.1"
+  }
 }
