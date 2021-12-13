@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@v-act/schema-types": ["packages/utils/v-act-schema-types/src"]
-    }
-  }
-}

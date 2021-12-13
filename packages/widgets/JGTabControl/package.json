@@ -2,7 +2,7 @@
   "name": "@v-act/jgtabcontrol",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
-  "module": "dist/index.es.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",

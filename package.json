@@ -9,7 +9,7 @@
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg*",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
-    "prepare": "husky install"
+    "prepare": "husky install && node scripts/index.js tsc"
   },
   "dependencies": {
     "@emotion/react": "^11.7.0",

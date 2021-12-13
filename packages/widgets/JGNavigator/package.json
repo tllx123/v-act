@@ -1,8 +1,8 @@
 {
-  "name": "@v-act/jgattachment",
+  "name": "@v-act/jgnavigator",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
@@ -11,5 +11,5 @@
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
   },
-  "widgetType": "JGAttachment"
+  "widgetType": "JGNavigator"
 }

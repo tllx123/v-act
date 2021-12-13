@@ -3,6 +3,7 @@ import { hideBin } from 'yargs/helpers'
 
 import { viteBuild } from './build.js'
 import { viteServ } from './dev.js'
+import { buildTsConfigPaths } from './env.js'
 
 yargs(hideBin(process.argv))
   /**
@@ -21,4 +22,12 @@ yargs(hideBin(process.argv))
     handler: async (argv) => viteBuild(argv.scope)
   })
   .option('scope', { alias: 's' })
+
+  /**
+   * TSC
+   */
+  .command({
+    command: 'tsc',
+    handler: async () => buildTsConfigPaths()
+  })
   .parse()
