@@ -24,7 +24,7 @@ import JGRecordPaging from './widgets/JGRecordPaging'
 import JGSteps from './widgets/JGSteps'
 import JGTabControl from './widgets/JGTabControl'
 import JGTextBox from './widgets/JGTextBox'
-
+import JGNavigator from './widgets/JGNavigator'
 const Routes = () =>
   useRoutes([
     {
@@ -124,8 +124,8 @@ const Routes = () =>
       element: <JGRadioGroup />
     },
     {
-      path: '/JGPercent',
-      element: <JGPercent />
+      path: '/JGNavigator',
+      element: <JGNavigator />
     }
   ])
 
