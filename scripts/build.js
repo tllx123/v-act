@@ -4,7 +4,7 @@ import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
 
-const external = [
+const publicExternal = [
   '@mui/icons-material',
   '@mui/material',
   '@mui/styles',
@@ -15,18 +15,21 @@ const external = [
 
 export async function viteBuild(scopes) {
   const packages = await getPackages()
+  const localExternal = packages.map((pkg) => pkg.name)
+  const external = [...publicExternal, ...localExternal]
+
   const filteredPackages = filterPackages(packages, scopes)
 
   return filteredPackages.map((pkg) => {
     const root = pkg.location
     const name = pkg.name
-    const fileName = (fmt) => (fmt === 'umd' ? 'index.js' : `index.${fmt}.js`)
+    const fileName = (fmt) => 'index.js'
     const entry = `${root}/src`
 
     return build({
       build: {
         emptyOutDir: true,
-        lib: { entry, name, fileName, formats: ['umd', 'es'] },
+        lib: { entry, name, fileName, formats: ['es'] },
         rollupOptions: { external },
         sourcemap: true
       },
