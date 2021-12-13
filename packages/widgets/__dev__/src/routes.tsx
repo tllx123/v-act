@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
+import JGDropdownMenu from './widgets/JGDropdownMenu'
 import JGNavigator from './widgets/JGNavigator'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
@@ -136,6 +137,10 @@ const Routes = () =>
     {
       path: '/JGNavigator',
       element: <JGNavigator />
+    },
+    {
+      path: '/JGDropdownMenu',
+      element: <JGDropdownMenu />
     }
   ])
 
