@@ -4,10 +4,10 @@ import prettier from 'prettier'
 
 import { getPackages } from '@lerna/project'
 
-export async function buildTsConfigPath() {
+export async function buildTsConfigPaths() {
   const packages = await getPackages()
   const root = path.resolve('./')
-  const tscPath = path.resolve(root, 'tsconfig.path.json')
+  const tscPath = path.resolve(root, 'tsconfig.paths.json')
 
   const tsc = fs.readJSONSync(tscPath, { encoding: 'utf-8' })
   const paths = tsc.compilerOptions.paths

@@ -9,7 +9,6 @@ const external = [
   '@mui/material',
   '@mui/styles',
   '@mui/system',
-  '@v-act/schema-types',
   'react',
   'react-dom'
 ]
