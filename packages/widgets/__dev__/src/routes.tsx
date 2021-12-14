@@ -33,6 +33,8 @@ const JGSteps = lazy(() => import('./widgets/JGSteps'))
 const JGTabControl = lazy(() => import('./widgets/JGTabControl'))
 const JGTextBox = lazy(() => import('./widgets/JGTextBox'))
 
+const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
+
 const Routes = () =>
   useRoutes([
     {
@@ -146,6 +148,10 @@ const Routes = () =>
     {
       path: '/JGLinkLabel',
       element: <JGLinkLabel />
+    },
+    {
+      path: '/JGQrcode',
+      element: <JGQrcode />
     }
   ])
 
