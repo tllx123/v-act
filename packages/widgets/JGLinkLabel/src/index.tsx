@@ -13,11 +13,8 @@ const convert = function (
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
     labelText: pros.labelText,
-    isMust: toBoolean(pros.isMust),
-    placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
-    labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    textAlign: pros.textAlign
   }
   return <JGLinkLabel {...props}></JGLinkLabel>
 }
