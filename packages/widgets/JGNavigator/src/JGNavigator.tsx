@@ -15,7 +15,7 @@ type navNode = {
   text: string
 }
 
-interface navData {
+interface navDataItem {
   panelText: string
   nodes?: Array<navNode>
 }
@@ -53,7 +53,7 @@ interface JGNavigatorProps extends AccordionProps {
 
   children: NonNullable<React.ReactNode>
 
-  navData?: Array<navData>
+  navData?: Array<navDataItem>
 }
 
 const Accordion = styled((props: JGNavigatorProps) => (
@@ -128,7 +128,8 @@ const JGNavigator = function (props: JGNavigatorProps) {
   }
   return (
     <div style={navWrap}>
-      {props.navData.length &&
+      {props.navData &&
+        props.navData.length &&
         props.navData.map((val, i) => (
           <Accordion
             expanded={expanded === 'panel' + i}
@@ -142,9 +143,10 @@ const JGNavigator = function (props: JGNavigatorProps) {
               <Typography>{val.panelText}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {val.nodes.map((nodeVal, nodeIndex) => (
-                <Typography key={nodeIndex}>{nodeVal.text}</Typography>
-              ))}
+              {val.nodes &&
+                val.nodes.map((nodeVal, nodeIndex) => (
+                  <Typography key={nodeIndex}>{nodeVal.text}</Typography>
+                ))}
             </AccordionDetails>
           </Accordion>
         ))}
