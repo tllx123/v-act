@@ -4,6 +4,7 @@ import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
 import JGDropdownMenu from './widgets/JGDropdownMenu'
+import JGLinkLabel from './widgets/JGLinkLabel'
 import JGNavigator from './widgets/JGNavigator'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
@@ -141,6 +142,10 @@ const Routes = () =>
     {
       path: '/JGDropdownMenu',
       element: <JGDropdownMenu />
+    },
+    {
+      path: '/JGLinkLabel',
+      element: <JGLinkLabel />
     }
   ])
 
