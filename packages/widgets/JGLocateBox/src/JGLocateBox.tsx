@@ -1,9 +1,10 @@
 import { Property } from 'csstype'
 
 import SearchIcon from '@mui/icons-material/Search'
+import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import InputBase from '@mui/material/InputBase'
-import Paper from '@mui/material/Paper'
+import { useContext, withContext } from '@v-act/widget-context'
 
 interface JGLocateBoxProps {
   /**
@@ -36,44 +37,63 @@ interface JGLocateBoxProps {
   disabled?: boolean
 }
 
-const JGLocateBox = function (props: JGLocateBoxProps) {
+const JGLocateBoxDef = function (props: JGLocateBoxProps) {
   if (!props.visible) {
     return null
   }
+  const context = useContext()
   return (
-    <Paper
+    <Box
       component="form"
       sx={{
-        position: 'absolute',
-        left: props.left,
-        top: props.top,
-        display: 'flex',
-        alignItems: 'center',
-        width: props.width,
-        height: props.height
+        'position': context.position,
+        'left': props.left,
+        'top': props.top,
+        'display': 'flex',
+        'alignItems': 'center',
+        'width': props.width,
+        'border': '1px solid #808080',
+        'borderRadius': '4px',
+        'fontSize': '14px',
+        'fontFamily':
+          'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif',
+        'height': props.height,
+        'backgroundColor': '#fff',
+        '&:hover': { borderColor: '#356abb' },
+        '&:focus': {
+          borderColor: '#356abb',
+          background: '#fff',
+          boxShadow: '0 0 0 2px rgba(53, 106, 187, 0.3)'
+        }
       }}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1, fontSize: '14px' }}
         disabled={props.disabled}
         placeholder={props.hint}
       />
-      <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+      <IconButton
+        type="submit"
+        sx={{ p: '10px', fontSize: '14px' }}
+        aria-label="search"
+      >
         <SearchIcon />
       </IconButton>
-    </Paper>
+    </Box>
   )
 }
 
-JGLocateBox.defaultProps = {
-  left: 0,
-  top: 0,
-  multiHeight: 28,
-  multiWidth: 220,
+JGLocateBoxDef.defaultProps = {
+  left: '0px',
+  top: '0px',
+  height: '28px',
+  width: '220px',
   hint: '请输入关键字搜索',
   visible: true,
   disabled: false
 }
 
+const JGLocateBox = withContext(JGLocateBoxDef)
+
 export default JGLocateBox
-export { JGLocateBox, JGLocateBoxProps }
+export { JGLocateBox, type JGLocateBoxProps }

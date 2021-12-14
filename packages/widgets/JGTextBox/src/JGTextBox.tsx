@@ -1,10 +1,15 @@
-import React, { forwardRef, CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
-
 import { styled } from '@mui/system'
-
-import { Height, Width } from '@v-act/schema-types'
+import {
+  Height,
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  Width
+} from '@v-act/schema-types'
+import { WidgetContextProps, withContext } from '@v-act/widget-context'
 
 interface JGTextBoxProps extends InputUnstyledProps {
   /**
@@ -53,6 +58,20 @@ interface JGTextBoxProps extends InputUnstyledProps {
    * 禁用
    */
   disabled?: boolean
+  /**
+   * 占用网格宽度
+   */
+  colSpan?: string
+  /**
+   * 是否结束行
+   */
+  endRow?: string
+  /**
+   * 布局位置
+   */
+  position?: string
+
+  context?: WidgetContextProps
 }
 
 const StyledInputElement = styled('input')`
@@ -91,34 +110,40 @@ const CustomInput = forwardRef(function (
   )
 })
 
-const JGTextBox = function (props: JGTextBoxProps) {
+const JGTextBoxDef = function (props: JGTextBoxProps) {
   if (!props.visible) {
     return null
   }
+  const context = props.context
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+  const labelWidth = props.labelVisible
+    ? toLabelWidth(props.labelWidth, context, 94)
+    : 0
   const wrapStyles: CSSProperties = {
-    width: props.multiWidth,
-    height: props.multiHeight,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
     display: 'flex',
     alignItems: 'center',
+    position: context ? context.position : 'absolute',
     left: props.left,
+    overflow: 'visible',
     top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
-      ? 94
-      : props.labelWidth
-    : 0
   const labelStyles: CSSProperties = {
     width: labelWidth,
     lineHeight: props.multiHeight,
     textAlign: 'right',
-    paddingRight: '6px'
+    paddingRight: '6px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   }
   const inputStyles = {
+    width: '100%',
     height: props.multiHeight
   }
   return (
@@ -140,11 +165,11 @@ const JGTextBox = function (props: JGTextBoxProps) {
   )
 }
 
-JGTextBox.defaultProps = {
+JGTextBoxDef.defaultProps = {
   left: 0,
   top: 0,
-  multiHeight: 26,
-  multiWidth: 235,
+  multiHeight: '26px',
+  multiWidth: '235px',
   labelWidth: 94,
   labelText: '文本',
   placeholder: '',
@@ -154,5 +179,6 @@ JGTextBox.defaultProps = {
   disabled: false
 }
 
+const JGTextBox = withContext(JGTextBoxDef)
 export default JGTextBox
-export { JGTextBox, JGTextBoxProps }
+export { JGTextBox, type JGTextBoxProps }

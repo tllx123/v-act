@@ -1,5 +1,5 @@
-import { JGTextBox } from '@v-act/jgtextbox'
 import { JGComponent } from '@v-act/jgcomponent'
+import { JGTextBox } from '@v-act/jgtextbox'
 
 const TextBox = () => {
   return (
@@ -9,7 +9,7 @@ const TextBox = () => {
         left={57}
         multiHeight="26px"
         multiWidth="188px"
-        labelText="账号"
+        labelText="账号1111111111111111111111111111"
       ></JGTextBox>
       <JGTextBox
         top={65}
