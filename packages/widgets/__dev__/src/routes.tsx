@@ -4,6 +4,7 @@ import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
 import JGDropdownMenu from './widgets/JGDropdownMenu'
+import JGLinkLabel from './widgets/JGLinkLabel'
 import JGNavigator from './widgets/JGNavigator'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
@@ -35,6 +36,8 @@ const JGFormLayout = lazy(() => import('./widgets/JGFormLayout'))
 const JGQueryConditionPanel = lazy(
   () => import('./widgets/JGQueryConditionPanel')
 )
+
+const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
 
 const Routes = () =>
   useRoutes([
@@ -153,7 +156,12 @@ const Routes = () =>
     {
       path: '/JGQueryConditionPanel',
       element: <JGQueryConditionPanel />
-    }
+    },
+    {
+      path: '/JGQrcode',
+      element: <JGQrcode />
+    },
+    { path: '/JGLinkLabel', element: <JGLinkLabel /> }
   ])
 
 export default Routes

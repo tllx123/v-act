@@ -39,6 +39,8 @@ const Home = () => {
       <br />
       <Link href="/JGDropdownMenu">JGDropdownMenu</Link>
       <br />
+      <Link href="/JGLinkLabel">JGLinkLabel</Link>
+      <br />
     </>
   )
 }
