@@ -1,3 +1,4 @@
+import chalk from 'chalk'
 import { build } from 'vite'
 
 import { filterPackages } from '@lerna/filter-packages'
@@ -13,6 +14,23 @@ const publicExternal = [
   'react-dom'
 ]
 
+const vitePluginDts = () => {
+  const plugin = {
+    name: 'vite:dts',
+    apply: 'build',
+    async generateBundle({ format }) {
+      if (format !== 'es') return
+      this.emitFile({
+        type: 'asset',
+        fileName: 'index.d.ts',
+        source: `export * from './../src'`
+      })
+    }
+  }
+
+  return plugin
+}
+
 export async function viteBuild(scopes) {
   const packages = await getPackages()
   const localExternal = packages.map((pkg) => pkg.name)
@@ -20,13 +38,13 @@ export async function viteBuild(scopes) {
 
   const filteredPackages = filterPackages(packages, scopes)
 
-  return filteredPackages.map((pkg) => {
+  return await filteredPackages.map(async (pkg) => {
     const root = pkg.location
     const name = pkg.name
-    const fileName = (fmt) => 'index.js'
+    const fileName = () => 'index.js'
     const entry = `${root}/src`
 
-    return build({
+    return await build({
       build: {
         emptyOutDir: true,
         lib: { entry, name, fileName, formats: ['es'] },
@@ -35,21 +53,10 @@ export async function viteBuild(scopes) {
       },
       configFile: false,
       root,
-      plugins: [
-        vitePluginReact(),
-        {
-          name: '@v-act/vite-plugin-dts',
-          apply: 'build',
-          async generateBundle({ format }) {
-            if (format !== 'es') return
-            this.emitFile({
-              type: 'asset',
-              fileName: 'index.d.ts',
-              source: `export * from './../src'`
-            })
-          }
-        }
-      ]
+      plugins: [vitePluginReact(), vitePluginDts()]
+    }).then((result) => {
+      console.log(chalk.greenBright(`${name} Builded! \n`))
+      return result
     })
   })
 }

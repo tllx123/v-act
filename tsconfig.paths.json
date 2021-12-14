@@ -49,7 +49,10 @@
       "@v-act/jgtabcontrol": ["./packages/widgets/JGTabControl/src"],
       "@v-act/jgtextbox": ["./packages/widgets/JGTextBox/src"],
       "@v-act/widgets-dev": ["./packages/widgets/__dev__/src"],
-      "@v-act/vite-plugin-dts": ["./packages/plugins/vite-plugin-dts/src"]
+      "@v-act/vite-plugin-dts": ["./packages/plugins/vite-plugin-dts/src"],
+      "@v-act/jgdropdownmenu": ["./packages/widgets/JGDropdownMenu/src"],
+      "@v-act/jgnavigator": ["./packages/widgets/JGNavigator/src"],
+      "@v-act/jgqrcode": ["./packages/widgets/JGQrcode/src"]
     }
   }
 }
