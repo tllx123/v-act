@@ -1,26 +1,13 @@
 import * as React from 'react'
 
 import { Property } from 'csstype'
+import styled from 'styled-components'
 
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp'
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion'
-import MuiAccordionDetails from '@mui/material/AccordionDetails'
-import MuiAccordionSummary, {
-  AccordionSummaryProps
-} from '@mui/material/AccordionSummary'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
+import { Box } from '@mui/system'
 
-type navNode = {
-  text: string
-}
-
-interface navData {
-  panelText: string
-  nodes?: Array<navNode>
-}
-
-interface JGDropdownMenuProps extends AccordionProps {
+interface JGDropdownMenuProps {
   /**
    * 左边距
    */
@@ -50,137 +37,113 @@ interface JGDropdownMenuProps extends AccordionProps {
    * 显示高度
    */
   height?: Property.Height
-
-  children: NonNullable<React.ReactNode>
-
-  navData?: Array<navData>
 }
 
-const Accordion = styled((props: JGDropdownMenuProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  'backgroundColor': 'transparent',
-  '&:before': {
-    display: 'none'
-  }
-}))
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-    {...props}
-  />
-))(({ theme }) => ({
-  'backgroundColor': 'transparent',
-  'flexDirection': 'row-reverse',
-  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-    transform: 'rotate(90deg)'
-  },
-  '& .MuiAccordionSummary-content': {
-    marginLeft: theme.spacing(1)
-  },
-  'minHeight': '38px',
-  '& .css-wc12p6-MuiButtonBase-root-MuiAccordionSummary-root .MuiAccordionSummary-content':
-    {
-      padding: 0,
-      margin: '0 0 0 8px'
-    },
-  '& .css-ahj2mt-MuiTypography-root': {
-    'fontSize': '14px',
-    '&:hover': {
-      color: '#356abb'
-    }
-  }
-}))
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  'padding': 0,
-  '& .css-ahj2mt-MuiTypography-root': {
-    fontSize: '14px',
-    height: '32px',
-    display: 'flex',
-    alignItems: 'center',
-    paddingLeft: '42px'
-  },
-  '& .css-ahj2mt-MuiTypography-root:hover': {
-    color: '#356abb',
-    cursor: ''
-  }
-}))
-
 const JGDropdownMenu = function (props: JGDropdownMenuProps) {
-  const [expanded, setExpanded] = React.useState<string | false>('panel1')
-
-  const handleChange =
-    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-      setExpanded(newExpanded ? panel : false)
-    }
-  const navWrap: React.CSSProperties = {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(event, event.currentTarget, event.target)
+    if (event.currentTarget) setAnchorEl(event.currentTarget || event.target)
+  }
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+  const wrapStyle: React.CSSProperties = {
     width: props.width || props.multiWidth,
     height: props.height || props.multiHeight,
     fontSize: '14px',
-    backgroundColor: '#ececec',
     position: 'absolute',
     left: props.left,
     top: props.top,
     fontFamily:
-      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
+      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif',
+    backgroundColor: '#5586cf'
+  }
+  const anchorActive: React.CSSProperties = {
+    backgroundColor: '#558fe8'
+  }
+  const anchorWrap = {
+    'height': '26px',
+    'display': 'inline-flex',
+    'alignItems': 'center',
+    'justifyContent': 'center',
+    'color': '#fff',
+    'padding': '0 10px',
+    'cursor': 'pointer',
+    '&.active': {
+      backgroundColor: '#558fe8'
+    }
+  }
+  const AnchorSpan = styled('span')({
+    'height': '26px',
+    'display': 'inline-block',
+    'alignItems': 'center',
+    'justifyContent': 'center',
+    'color': '#fff',
+    'backgroundColor': '#000',
+    'padding': '0 10px',
+    'cursor': 'pointer',
+    '&.active': {
+      backgroundColor: '#558fe8'
+    }
+  })
+
+  const menuItemSX = {
+    'minWidth': '182px',
+    'cursor': 'auto',
+    '&:hover': {
+      backgroundColor: '#f6f7fb',
+      color: '#356abb'
+    },
+    '&:active,&:visited,&:focus': {
+      backgroundColor: '#fff !important'
+    }
   }
   return (
-    <div style={navWrap}>
-      {props.navData.length &&
-        props.navData.map((val, i) => (
-          <Accordion
-            expanded={expanded === 'panel' + i}
-            onChange={handleChange('panel' + i)}
-            key={i}
-          >
-            <AccordionSummary
-              aria-controls={'panel-content' + i}
-              id={'panel-header' + i}
-            >
-              <Typography>{val.panelText}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              {val.nodes.map((nodeVal, nodeIndex) => (
-                <Typography key={nodeIndex}>{nodeVal.text}</Typography>
-              ))}
-            </AccordionDetails>
-          </Accordion>
-        ))}
+    <div style={wrapStyle}>
+      <Box
+        sx={anchorWrap}
+        id="demo-positioned-button"
+        aria-controls="demo-positioned-menu"
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+        className="active"
+      >
+        菜单1
+      </Box>
+      <Menu
+        id="demo-positioned-menu"
+        aria-labelledby="demo-positioned-button"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left'
+        }}
+      >
+        <MenuItem onClick={handleClose} sx={menuItemSX}>
+          子项1
+        </MenuItem>
+        <MenuItem onClick={handleClose} sx={menuItemSX}>
+          子项2
+        </MenuItem>
+        <MenuItem onClick={handleClose} sx={menuItemSX}>
+          子项3
+        </MenuItem>
+      </Menu>
     </div>
   )
 }
+
 JGDropdownMenu.defaultProps = {
   left: 0,
   top: 0,
-  multiHeight: 419,
-  multiWidth: 194,
-  visible: true,
-  navData: [
-    {
-      panelText: '看板21',
-      nodes: [
-        {
-          text: '看板1 - 子项1'
-        },
-        {
-          text: '看板1 - 子项2'
-        }
-      ]
-    },
-    {
-      panelText: '看板2',
-      nodes: [
-        {
-          text: '看板2 - 子项1'
-        },
-        {
-          text: '看板2 - 子项2'
-        }
-      ]
-    }
-  ]
+  multiHeight: 26,
+  multiWidth: 235,
+  visible: true
 }
 export default JGDropdownMenu
 export { JGDropdownMenu, JGDropdownMenuProps }

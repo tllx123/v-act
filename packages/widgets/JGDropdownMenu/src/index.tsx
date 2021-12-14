@@ -12,9 +12,7 @@ const convert = function (
     left: toNumber(pros.left) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
-    placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible, true),
-    children: pros.children
+    visible: toBoolean(pros.visible, true)
   }
   return <JGDropdownMenu {...props}></JGDropdownMenu>
 }

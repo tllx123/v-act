@@ -4,7 +4,7 @@ import { JGDropdownMenu } from '@v-act/jgdropdownmenu'
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGDropdownMenu top="10px" children={true} left="10px"></JGDropdownMenu>
+      <JGDropdownMenu top={10} left={10}></JGDropdownMenu>
     </JGComponent>
   )
 }
