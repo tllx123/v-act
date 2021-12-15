@@ -1,14 +1,7 @@
 import { Property as CSSProperty } from 'csstype'
 
+import { Height, ReactEnum, Width } from '@v-act/schema-types'
 import { WidgetContextProps } from '@v-act/widget-context'
-
-import type Component from './Component'
-import type Control from './Control'
-import type Height from './Height'
-import type Property from './Property'
-import ReactEnum from './ReactEnum'
-import type Width from './Width'
-import type Window from './Window'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -107,19 +100,42 @@ const toLabelWidth = function (
   return typeof val == 'number' ? val : def
 }
 
+const maxTitleWidth = 196
+
+const calTitleWidth = function (title: string): number {
+  title = title || ''
+  const domId = 'test_' + new Date().getTime()
+  const span = document.createElement('span')
+  span.id = domId
+  span.style.top = '-10px'
+  span.style.position = 'absolute'
+  span.innerText = title
+  document.body.appendChild(span)
+  let width = span.offsetWidth + 30
+  width = width > maxTitleWidth ? maxTitleWidth : width
+  document.body.removeChild(span)
+  return width
+}
+
+const getChildrenTitleWidth = function (children: JSX.Element[]): number {
+  let titleWidth = 0
+  for (let index = 0; index < children.length; index++) {
+    const child = children[index]
+    const childProps = child.props
+    const w = calTitleWidth(childProps.labelText)
+    titleWidth = titleWidth > w ? titleWidth : w
+  }
+  return titleWidth
+}
+
 export {
-  Component,
-  Control,
-  Height,
-  Property,
-  ReactEnum,
+  calTitleWidth,
+  getChildrenTitleWidth,
   toBoolean,
   toHeight,
   toLabelWidth,
   toNumber,
   toWidth,
   valueofHeight,
-  valueofWidth,
-  Width,
-  Window
+  valueofWidth
 }

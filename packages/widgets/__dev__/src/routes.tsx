@@ -29,6 +29,10 @@ const JGRecordPaging = lazy(() => import('./widgets/JGRecordPaging'))
 const JGSteps = lazy(() => import('./widgets/JGSteps'))
 const JGTabControl = lazy(() => import('./widgets/JGTabControl'))
 const JGTextBox = lazy(() => import('./widgets/JGTextBox'))
+const JGFormLayout = lazy(() => import('./widgets/JGFormLayout'))
+const JGQueryConditionPanel = lazy(
+  () => import('./widgets/JGQueryConditionPanel')
+)
 
 const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
 
@@ -149,8 +153,12 @@ const Routes = () =>
       element: <JGDropdownMenu />
     },
     {
-      path: '/JGLinkLabel',
-      element: <JGLinkLabel />
+      path: '/JGFormLayout',
+      element: <JGFormLayout />
+    },
+    {
+      path: '/JGQueryConditionPanel',
+      element: <JGQueryConditionPanel />
     },
     {
       path: '/JGQrcode',
@@ -159,7 +167,8 @@ const Routes = () =>
     {
       path: '/JGStartMenu',
       element: <JGStartMenu />
-    }
+    },
+    { path: '/JGLinkLabel', element: <JGLinkLabel /> }
   ])
 
 export default Routes

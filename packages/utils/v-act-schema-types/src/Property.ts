@@ -78,6 +78,18 @@ interface Property {
    * 页签显示风格
    */
   tabAppearance?: string
+  /**
+   * 列数
+   */
+  numCols?: string
+  /**
+   * 标题宽度（表单布局）
+   */
+  titleWidth?: string
+  /**
+   * 分组标题
+   */
+  groupTitle?: string
 }
 
 export default Property

@@ -41,4 +41,4 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 )
 
 export default JGComponent
-export { JGComponent, JGComponentProps }
+export { JGComponent, type JGComponentProps }

@@ -1,4 +1,11 @@
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import {
+  Control,
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/schema-types'
+
 import { JGTextBox, JGTextBoxProps } from './JGTextBox'
 
 const convert = function (
@@ -9,8 +16,8 @@ const convert = function (
   const props: JGTextBoxProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
-    multiWidth: toNumber(pros.multiWidth) + 'px',
-    multiHeight: toNumber(pros.multiHeight) + 'px',
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
@@ -24,4 +31,4 @@ const convert = function (
 
 export default JGTextBox
 
-export { JGTextBox, convert }
+export { convert, JGTextBox }
