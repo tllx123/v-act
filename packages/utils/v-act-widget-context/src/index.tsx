@@ -54,7 +54,7 @@ const createContext = function (
 }
 
 const ContextProvider = function (props: ContextProviderProps) {
-  const context = props.context || Object.assign(WidgetContext)
+  const context = props.context || { position: 'absolute' }
   const children = props.children
   return (
     <WidgetContext.Provider value={context}>{children}</WidgetContext.Provider>

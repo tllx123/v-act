@@ -1,5 +1,7 @@
 import React, { CSSProperties, forwardRef } from 'react'
 
+import { Property } from 'csstype'
+
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import {
@@ -9,17 +11,17 @@ import {
   toWidth,
   Width
 } from '@v-act/schema-types'
-import { WidgetContextProps, withContext } from '@v-act/widget-context'
+import { useContext } from '@v-act/widget-context'
 
 interface JGTextBoxProps extends InputUnstyledProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
@@ -70,8 +72,6 @@ interface JGTextBoxProps extends InputUnstyledProps {
    * 布局位置
    */
   position?: string
-
-  context?: WidgetContextProps
 }
 
 const StyledInputElement = styled('input')`
@@ -110,11 +110,11 @@ const CustomInput = forwardRef(function (
   )
 })
 
-const JGTextBoxDef = function (props: JGTextBoxProps) {
+const JGTextBox = function (props: JGTextBoxProps) {
   if (!props.visible) {
     return null
   }
-  const context = props.context
+  const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -126,7 +126,7 @@ const JGTextBoxDef = function (props: JGTextBoxProps) {
     fontSize: '14px',
     display: 'flex',
     alignItems: 'center',
-    position: context ? context.position : 'absolute',
+    position: context.position,
     left: props.left,
     overflow: 'visible',
     top: props.top,
@@ -165,9 +165,9 @@ const JGTextBoxDef = function (props: JGTextBoxProps) {
   )
 }
 
-JGTextBoxDef.defaultProps = {
-  left: 0,
-  top: 0,
+JGTextBox.defaultProps = {
+  left: '0px',
+  top: '0px',
   multiHeight: '26px',
   multiWidth: '235px',
   labelWidth: 94,
@@ -179,6 +179,5 @@ JGTextBoxDef.defaultProps = {
   disabled: false
 }
 
-const JGTextBox = withContext(JGTextBoxDef)
 export default JGTextBox
 export { JGTextBox, type JGTextBoxProps }

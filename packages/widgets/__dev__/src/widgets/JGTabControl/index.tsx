@@ -1,28 +1,28 @@
+import { JGComponent } from '@v-act/jgcomponent'
 import { JGTabControl, JGTabPage } from '@v-act/jgtabcontrol'
 import { JGTextBox } from '@v-act/jgtextbox'
-import { JGComponent } from '@v-act/jgcomponent'
 
 const TextBox = () => {
   return (
     <JGComponent>
       <JGTabControl
-        top={50}
-        left={50}
+        top="50px"
+        left="50px"
         multiWidth="500px"
         multiHeight="500px"
         selectedIndex={2}
       >
         <JGTabPage code="JGTabPage1" labelText="页签1">
           <JGTextBox
-            top={33}
-            left={57}
+            top="33px"
+            left="57px"
             multiHeight="26px"
             multiWidth="188px"
             labelText="账号"
           ></JGTextBox>
           <JGTextBox
-            top={65}
-            left={57}
+            top="65px"
+            left="57px"
             multiHeight="26px"
             multiWidth="188px"
             isMust={true}
@@ -32,8 +32,8 @@ const TextBox = () => {
         </JGTabPage>
         <JGTabPage code="JGTabPage2" labelText="页签2">
           <JGTextBox
-            top={97}
-            left={57}
+            top="97px"
+            left="57px"
             multiHeight="26px"
             multiWidth="188px"
             isMust={true}
@@ -42,8 +42,8 @@ const TextBox = () => {
             visible={false}
           ></JGTextBox>
           <JGTextBox
-            top={97}
-            left={57}
+            top="97px"
+            left="57px"
             multiHeight="26px"
             multiWidth="188px"
             isMust={true}
@@ -54,8 +54,8 @@ const TextBox = () => {
         </JGTabPage>
         <JGTabPage code="JGTabPage3" labelText="页签3">
           <JGTextBox
-            top={129}
-            left={57}
+            top="129px"
+            left="57px"
             multiHeight="26px"
             multiWidth="188px"
             isMust={true}

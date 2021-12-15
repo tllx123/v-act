@@ -67,7 +67,7 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     const children = props.children ? props.children : []
     titleWidth = getChildrenTitleWidth(children) + ''
   }
-  const childContext = Object.assign(context, {
+  const childContext = Object.assign({}, context, {
     position: 'static',
     multiHeight: '32px',
     multiWidth: ReactEnum.Space,

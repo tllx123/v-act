@@ -5,15 +5,15 @@ const TextBox = () => {
   return (
     <JGComponent>
       <JGTextBox
-        top={33}
-        left={57}
+        top="33px"
+        left="57px"
         multiHeight="26px"
         multiWidth="188px"
         labelText="账号1111111111111111111111111111"
       ></JGTextBox>
       <JGTextBox
-        top={65}
-        left={57}
+        top="65px"
+        left="57px"
         multiHeight="26px"
         multiWidth="188px"
         isMust={true}
@@ -21,8 +21,8 @@ const TextBox = () => {
         labelText="密码"
       ></JGTextBox>
       <JGTextBox
-        top={97}
-        left={57}
+        top="97px"
+        left="57px"
         multiHeight="26px"
         multiWidth="188px"
         isMust={true}
@@ -31,8 +31,8 @@ const TextBox = () => {
         visible={false}
       ></JGTextBox>
       <JGTextBox
-        top={97}
-        left={57}
+        top="97px"
+        left="57px"
         multiHeight="26px"
         multiWidth="188px"
         isMust={true}
@@ -41,8 +41,8 @@ const TextBox = () => {
         labelVisible={false}
       ></JGTextBox>
       <JGTextBox
-        top={129}
-        left={57}
+        top="129px"
+        left="57px"
         multiHeight="26px"
         multiWidth="188px"
         isMust={true}

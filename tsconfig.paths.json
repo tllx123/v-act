@@ -30,6 +30,8 @@
       "kitchensink": [
         ".\\packages\\utils\\v-act-scripts\\fixtures\\kitchensink/src"
       ],
+      "@v-act/widget-context": [".\\packages\\utils\\v-act-widget-context/src"],
+      "@v-act/widget-utils": [".\\packages\\utils\\v-act-widget-utils/src"],
       "@v-act/scripts": [".\\packages\\utils\\v-act-scripts/src"],
       "@v-act/styles": [".\\packages\\utils\\v-act-styles/src"],
       "@v-act/utils": [".\\packages\\utils\\v-act-utils/src"],

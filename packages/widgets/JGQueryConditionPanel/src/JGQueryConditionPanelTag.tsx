@@ -3,26 +3,34 @@ import { JGLabel } from '@v-act/jglabel'
 import { JGLocateBox } from '@v-act/jglocatebox'
 
 interface JGQueryConditionPanelTagProps {
+  searchBoxEnabled?: boolean
   placeholder?: string
 }
 
 function JGQueryConditionPanelTag(props: JGQueryConditionPanelTagProps) {
+  let spacerSpan = 8 - 1
+  if (props.searchBoxEnabled) {
+    spacerSpan -= 1
+  }
   return (
     <Box
       display="grid"
       gridTemplateColumns={'repeat(8, 1fr)'}
       gap={1}
       sx={{
-        borderBottom: '1px solid #DCDEE2'
+        borderBottom: '1px solid #DCDEE2',
+        alignItems: 'center'
       }}
     >
       <Box gridColumn="span 1">
         <JGLabel height="40px">条件筛选</JGLabel>
       </Box>
-      <Box gridColumn="span 6"></Box>
-      <Box gridColumn="span 1">
-        <JGLocateBox height="32px" hint={props.placeholder}></JGLocateBox>
-      </Box>
+      <Box gridColumn={'span ' + spacerSpan}></Box>
+      {props.searchBoxEnabled ? (
+        <Box gridColumn="span 1">
+          <JGLocateBox height="32px" hint={props.placeholder}></JGLocateBox>
+        </Box>
+      ) : null}
     </Box>
   )
 }
