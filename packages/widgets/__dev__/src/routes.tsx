@@ -3,9 +3,6 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
-import JGDropdownMenu from './widgets/JGDropdownMenu'
-import JGLinkLabel from './widgets/JGLinkLabel'
-import JGNavigator from './widgets/JGNavigator'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -34,6 +31,12 @@ const JGTabControl = lazy(() => import('./widgets/JGTabControl'))
 const JGTextBox = lazy(() => import('./widgets/JGTextBox'))
 
 const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
+
+const JGStartMenu = lazy(() => import('./widgets/JGStartMenu'))
+
+const JGDropdownMenu = lazy(() => import('./widgets/JGDropdownMenu'))
+const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
+const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
 
 const Routes = () =>
   useRoutes([
@@ -152,6 +155,10 @@ const Routes = () =>
     {
       path: '/JGQrcode',
       element: <JGQrcode />
+    },
+    {
+      path: '/JGStartMenu',
+      element: <JGStartMenu />
     }
   ])
 
