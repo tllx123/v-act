@@ -43,6 +43,7 @@ const JGDropdownMenu = lazy(() => import('./widgets/JGDropdownMenu'))
 const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
 const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
 const JGWebBrowser = lazy(() => import('./widgets/JGWebBrowser'))
+const JGPortalEdit = lazy(() => import('./widgets/JGPortalEdit'))
 const Routes = () =>
   useRoutes([
     {
@@ -180,6 +181,10 @@ const Routes = () =>
     {
       path: '/JGWebBrowser',
       element: <JGWebBrowser />
+    },
+    {
+      path: '/JGPortalEdit',
+      element: <JGPortalEdit />
     }
   ])
 

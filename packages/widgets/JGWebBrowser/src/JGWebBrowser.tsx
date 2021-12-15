@@ -49,12 +49,7 @@ JGWebBrowser.defaultProps = {
   top: '50px',
   width: '200px',
   height: '200px',
-  position: 'absolute',
-  url: 'https://www.npmjs.com/package/react-iframe',
-  param: {
-    a: 1,
-    b: 2
-  }
+  position: 'absolute'
 }
 
 export default JGWebBrowser

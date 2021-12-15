@@ -3,7 +3,7 @@ import { JGComponent } from '@v-act/jgcomponent'
 const WebBrowser = () => {
   return (
     <JGComponent>
-      <JGWebBrowser />
+      <JGWebBrowser url="" />
     </JGComponent>
   )
 }

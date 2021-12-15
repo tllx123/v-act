@@ -90,6 +90,10 @@ interface Property {
    * 分组标题
    */
   groupTitle?: string
+  /**
+   * 背景色
+   */
+  //  backColor?: string
 }
 
 export default Property

@@ -60,7 +60,8 @@
       "@v-act/jgformlayout": ["packages/widgets/JGFormLayout/src"],
       "@v-act/jgqueryconditionpanel": ["packages/widgets/JGQueryConditionPanel/src"],
       "@v-act/jgstartmenu": ["packages/widgets/JGStartMenu/src"],
-      "@v-act/jgwebbrowser": ["packages/widgets/JGWebBrowser/src"]
+      "@v-act/jgwebbrowser": ["packages/widgets/JGWebBrowser/src"],
+      "@v-act/jgportaledit": ["packages/widgets/JGPortalEdit/src"]
     }
   }
 }

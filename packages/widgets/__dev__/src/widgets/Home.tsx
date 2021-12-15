@@ -47,6 +47,8 @@ const Home = () => {
       <br />
       <Link href="/JGWebBrowser">JGWebBrowser</Link>
       <br />
+      <Link href="/JGPortalEdit">JGPortalEdit</Link>
+      <br />
     </>
   )
 }
