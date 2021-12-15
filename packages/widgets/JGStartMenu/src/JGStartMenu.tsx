@@ -1,12 +1,18 @@
 import * as React from 'react'
 
 import { Property } from 'csstype'
-import styled from 'styled-components'
 
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp'
+// import { Box } from '@mui/system'
+import Button from '@mui/material/Button'
+// import styled from 'styled-components'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { Box } from '@mui/system'
 
+interface MenuData {
+  labelText: string
+}
 interface JGStartMenuProps {
   /**
    * 左边距
@@ -37,82 +43,67 @@ interface JGStartMenuProps {
    * 显示高度
    */
   height?: Property.Height
+
+  labelText?: string
+
+  menuData?: Array<MenuData>
 }
 
 const JGStartMenu = function (props: JGStartMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event, event.currentTarget, event.target)
     if (event.currentTarget) setAnchorEl(event.currentTarget || event.target)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
-  const wrapStyle: React.CSSProperties = {
-    width: props.width || props.multiWidth,
-    height: props.height || props.multiHeight,
+  const anchorWidth = props.width || props.multiWidth
+  const anchorHeight = props.height || props.multiHeight
+  const anchorWrap: React.CSSProperties = {
+    width: anchorWidth,
+    height: anchorHeight,
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#fff',
+    padding: '0 10px',
+    cursor: 'pointer',
     fontSize: '14px',
     position: 'absolute',
     left: props.left,
     top: props.top,
     fontFamily:
-      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif',
-    backgroundColor: '#5586cf'
+      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const anchorActive: React.CSSProperties = {
-    backgroundColor: '#558fe8'
-  }
-  const anchorWrap = {
-    'height': '26px',
-    'display': 'inline-flex',
-    'alignItems': 'center',
-    'justifyContent': 'center',
-    'color': '#fff',
-    'padding': '0 10px',
-    'cursor': 'pointer',
-    '&.active': {
-      backgroundColor: '#558fe8'
-    }
-  }
-  const AnchorSpan = styled('span')({
-    'height': '26px',
-    'display': 'inline-block',
-    'alignItems': 'center',
-    'justifyContent': 'center',
-    'color': '#fff',
-    'backgroundColor': '#000',
-    'padding': '0 10px',
-    'cursor': 'pointer',
-    '&.active': {
-      backgroundColor: '#558fe8'
-    }
-  })
 
   const menuItemSX = {
     'minWidth': '182px',
     'cursor': 'auto',
-    '&:hover': {
-      backgroundColor: '#f6f7fb',
-      color: '#356abb'
-    },
     '&:active,&:visited,&:focus': {
+      backgroundColor: '#fff !important'
+    },
+    '&:hover': {
+      cursor: 'pointer',
+      color: '#356abb',
       backgroundColor: '#fff !important'
     }
   }
   return (
-    <div style={wrapStyle}>
-      <Box
-        sx={anchorWrap}
+    <div>
+      <Button
         id="demo-positioned-button"
-        aria-controls="demo-positioned-menu"
+        aria-controls="demo-positioned-button"
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        variant="contained"
+        disableElevation
         onClick={handleClick}
-        className="active"
+        endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        style={anchorWrap}
       >
-        菜单1
-      </Box>
+        {props.labelText}
+      </Button>
       <Menu
         id="demo-positioned-menu"
         aria-labelledby="demo-positioned-button"
@@ -124,15 +115,12 @@ const JGStartMenu = function (props: JGStartMenuProps) {
           horizontal: 'left'
         }}
       >
-        <MenuItem onClick={handleClose} sx={menuItemSX}>
-          子项1
-        </MenuItem>
-        <MenuItem onClick={handleClose} sx={menuItemSX}>
-          子项2
-        </MenuItem>
-        <MenuItem onClick={handleClose} sx={menuItemSX}>
-          子项3
-        </MenuItem>
+        {props.menuData &&
+          props.menuData.map((val, index) => (
+            <MenuItem onClick={handleClose} sx={menuItemSX} key={index}>
+              {val.labelText}
+            </MenuItem>
+          ))}
       </Menu>
     </div>
   )
@@ -141,9 +129,21 @@ const JGStartMenu = function (props: JGStartMenuProps) {
 JGStartMenu.defaultProps = {
   left: 0,
   top: 0,
-  multiHeight: 26,
-  multiWidth: 235,
-  visible: true
+  multiHeight: 24,
+  multiWidth: 87,
+  visible: true,
+  labelText: '菜单',
+  menuData: [
+    {
+      labelText: '子项1'
+    },
+    {
+      labelText: '子项2'
+    },
+    {
+      labelText: '子项2'
+    }
+  ]
 }
 export default JGStartMenu
 export { JGStartMenu, JGStartMenuProps }
