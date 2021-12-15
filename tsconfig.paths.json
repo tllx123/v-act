@@ -52,7 +52,8 @@
       "@v-act/vite-plugin-dts": [".\\packages\\plugins\\vite-plugin-dts/src"],
       "@v-act/jgdropdownmenu": [".\\packages\\widgets\\JGDropdownMenu/src"],
       "@v-act/jgnavigator": [".\\packages\\widgets\\JGNavigator/src"],
-      "@v-act/jgqrcode": [".\\packages\\widgets\\JGQrcode/src"]
+      "@v-act/jgqrcode": [".\\packages\\widgets\\JGQrcode/src"],
+      "@v-act/jgbarcode": [".\\packages\\widgets\\JGBarcode/src"]
     }
   }
 }

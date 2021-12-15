@@ -33,7 +33,7 @@ const JGTabControl = lazy(() => import('./widgets/JGTabControl'))
 const JGTextBox = lazy(() => import('./widgets/JGTextBox'))
 
 const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
-
+const JGBarcode = lazy(() => import('./widgets/JGBarcode'))
 const Routes = () =>
   useRoutes([
     {
@@ -147,6 +147,10 @@ const Routes = () =>
     {
       path: '/JGQrcode',
       element: <JGQrcode />
+    },
+    {
+      path: '/JGBarcode',
+      element: <JGBarcode />
     }
   ])
 

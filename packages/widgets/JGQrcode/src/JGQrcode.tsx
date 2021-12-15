@@ -90,7 +90,7 @@ const JGQrcode = (props: JGQrcodeProps) => {
 }
 
 JGQrcode.defaultProps = {
-  qrcontent: 'www.baidu.com',
+  qrcontent: '',
   left: '20px',
   top: '50px',
   width: '200px',

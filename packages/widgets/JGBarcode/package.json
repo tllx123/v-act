@@ -1,6 +1,7 @@
 {
-  "name": "@v-act/jgqrcode",
+  "name": "@v-act/jgbarcode",
   "version": "1.0.0-alpha.1",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -8,9 +9,8 @@
     "dist"
   ],
   "dependencies": {
-    "@types/qrcode.react": "^1.0.2",
     "@v-act/schema-types": "^1.0.0",
-    "qrcode.react": "^1.0.1"
+    "react-barcode": "^1.4.1"
   },
-  "widgetType": "JGQrcode"
+  "widgetType": "JGBarcode"
 }
