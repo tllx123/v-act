@@ -73,7 +73,12 @@
       "@v-act/jgdropdownmenu": [".\\packages\\widgets\\JGDropdownMenu/src"],
       "@v-act/jgnavigator": [".\\packages\\widgets\\JGNavigator/src"],
       "@v-act/jgqrcode": [".\\packages\\widgets\\JGQrcode/src"],
-      "@v-act/jglinklabel": [".\\packages\\widgets\\JGLinkLabel/src"]
+      "@v-act/jglinklabel": [".\\packages\\widgets\\JGLinkLabel/src"],
+      "@v-act/jgbarcode": ["packages/widgets/JGBarcode/src"],
+      "@v-act/jgformlayout": ["packages/widgets/JGFormLayout/src"],
+      "@v-act/jgqueryconditionpanel": ["packages/widgets/JGQueryConditionPanel/src"],
+      "@v-act/jgstartmenu": ["packages/widgets/JGStartMenu/src"],
+      "@v-act/jgwebbrowser": ["packages/widgets/JGWebBrowser/src"]
     }
   }
 }

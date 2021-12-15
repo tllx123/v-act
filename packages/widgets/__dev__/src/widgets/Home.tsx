@@ -39,7 +39,13 @@ const Home = () => {
       <br />
       <Link href="/JGDropdownMenu">JGDropdownMenu</Link>
       <br />
+      <Link href="/JGBarcode">JGBarcode</Link>
+      <br />
       <Link href="/JGLinkLabel">JGLinkLabel</Link>
+      <br />
+      <Link href="/JGStartMenu">JGStartMenu</Link>
+      <br />
+      <Link href="/JGWebBrowser">JGWebBrowser</Link>
       <br />
     </>
   )

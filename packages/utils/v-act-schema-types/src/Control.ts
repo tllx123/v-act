@@ -1,5 +1,6 @@
 import Property from './Property'
 import JGQrcodeProperty from './JGQrcodeProperty'
+import JGBarcodeProperty from './JGBarcodeProperty'
 /**
  * 控件定义
  */
@@ -14,10 +15,13 @@ interface Control {
   properties: Property
 
   /**
-   * 属性
+   * 二维码属性
    */
   jgqrcodeproperties: JGQrcodeProperty
-
+  /**
+   *条形码属性
+   */
+  JGBarcodeProperty: JGBarcodeProperty
   /**
    *
    * 子控件

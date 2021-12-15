@@ -104,7 +104,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   },
   '& .css-ahj2mt-MuiTypography-root:hover': {
     color: '#356abb',
-    cursor: ''
+    cursor: 'pointer'
   }
 }))
 

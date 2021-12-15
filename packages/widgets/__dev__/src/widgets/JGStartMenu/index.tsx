@@ -1,10 +1,10 @@
 import { JGComponent } from '@v-act/jgcomponent'
-import { JGDropdownMenu } from '@v-act/jgdropdownmenu'
+import { JGStartMenu } from '@v-act/jgstartmenu'
 
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGDropdownMenu top={'10px'} left={'10px'}></JGDropdownMenu>
+      <JGStartMenu top={'10px'} left={'10px'}></JGStartMenu>
     </JGComponent>
   )
 }

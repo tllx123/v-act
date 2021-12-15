@@ -10941,6 +10941,11 @@ js-yaml@^4.1.0:
   dependencies:
     argparse "^2.0.1"
 
+jsbarcode@^3.8.0:
+  version "3.11.5"
+  resolved "https://registry.nlark.com/jsbarcode/download/jsbarcode-3.11.5.tgz#390b3efd0271f35b9d68c7b8af6e972445969014"
+  integrity sha1-OQs+/QJx81udaMe4r26XJEWWkBQ=
+
 jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
@@ -14534,6 +14539,14 @@ react-app-rewired@^2.1.8:
   dependencies:
     semver "^5.6.0"
 
+react-barcode@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.nlark.com/react-barcode/download/react-barcode-1.4.1.tgz#516bdd97c09ece44b631c0790260e0cd2c6bc977"
+  integrity sha1-UWvdl8CezkS2McB5AmDgzSxryXc=
+  dependencies:
+    jsbarcode "^3.8.0"
+    prop-types "^15.6.2"
+
 react-dev-utils@^11.0.3, react-dev-utils@^11.0.4:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.4.tgz#a7ccb60257a1ca2e0efe7a83e38e6700d17aa37a"
@@ -14585,6 +14598,13 @@ react-i18next@^11.12.0, react-i18next@^11.14.2:
   dependencies:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
+
+react-iframe@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.npm.taobao.org/react-iframe/download/react-iframe-1.8.0.tgz#8c78f2c59b894ca5605fa7e45e61e27e57e96091"
+  integrity sha1-jHjyxZuJTKVgX6fkXmHiflfpYJE=
+  dependencies:
+    object-assign "^4.1.1"
 
 react-is@17.0.2, "react-is@^16.8.0 || ^17.0.0", react-is@^17.0.1, react-is@^17.0.2:
   version "17.0.2"

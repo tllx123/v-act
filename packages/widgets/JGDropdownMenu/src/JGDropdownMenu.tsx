@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import { Property } from 'csstype'
-import styled from 'styled-components'
 
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -43,7 +42,6 @@ const JGDropdownMenu = function (props: JGDropdownMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(event, event.currentTarget, event.target)
     if (event.currentTarget) setAnchorEl(event.currentTarget || event.target)
   }
   const handleClose = () => {
@@ -60,9 +58,6 @@ const JGDropdownMenu = function (props: JGDropdownMenuProps) {
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif',
     backgroundColor: '#5586cf'
   }
-  const anchorActive: React.CSSProperties = {
-    backgroundColor: '#558fe8'
-  }
   const anchorWrap = {
     'height': '26px',
     'display': 'inline-flex',
@@ -75,29 +70,16 @@ const JGDropdownMenu = function (props: JGDropdownMenuProps) {
       backgroundColor: '#558fe8'
     }
   }
-  const AnchorSpan = styled('span')({
-    'height': '26px',
-    'display': 'inline-block',
-    'alignItems': 'center',
-    'justifyContent': 'center',
-    'color': '#fff',
-    'backgroundColor': '#000',
-    'padding': '0 10px',
-    'cursor': 'pointer',
-    '&.active': {
-      backgroundColor: '#558fe8'
-    }
-  })
 
   const menuItemSX = {
     'minWidth': '182px',
     'cursor': 'auto',
-    '&:hover': {
-      backgroundColor: '#f6f7fb',
-      color: '#356abb'
-    },
     '&:active,&:visited,&:focus': {
       backgroundColor: '#fff !important'
+    },
+    '&:hover': {
+      backgroundColor: '#f6f7fb !important',
+      color: '#356abb'
     }
   }
   return (
