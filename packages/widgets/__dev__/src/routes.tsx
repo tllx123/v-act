@@ -42,7 +42,7 @@ const JGStartMenu = lazy(() => import('./widgets/JGStartMenu'))
 const JGDropdownMenu = lazy(() => import('./widgets/JGDropdownMenu'))
 const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
 const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
-
+const JGWebBrowser = lazy(() => import('./widgets/JGWebBrowser'))
 const Routes = () =>
   useRoutes([
     {
@@ -173,7 +173,14 @@ const Routes = () =>
       path: '/JGStartMenu',
       element: <JGStartMenu />
     },
-    { path: '/JGLinkLabel', element: <JGLinkLabel /> }
+    {
+      path: '/JGLinkLabel',
+      element: <JGLinkLabel />
+    },
+    {
+      path: '/JGWebBrowser',
+      element: <JGWebBrowser />
+    }
   ])
 
 export default Routes
