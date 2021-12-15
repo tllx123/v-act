@@ -44,6 +44,7 @@ const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
 const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
 const JGWebBrowser = lazy(() => import('./widgets/JGWebBrowser'))
 const JGPortalEdit = lazy(() => import('./widgets/JGPortalEdit'))
+const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const Routes = () =>
   useRoutes([
     {
@@ -185,6 +186,10 @@ const Routes = () =>
     {
       path: '/JGPortalEdit',
       element: <JGPortalEdit />
+    },
+    {
+      path: '/JGDiv',
+      element: <JGDiv />
     }
   ])
 

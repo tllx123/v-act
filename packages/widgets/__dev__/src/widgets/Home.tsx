@@ -49,6 +49,8 @@ const Home = () => {
       <br />
       <Link href="/JGPortalEdit">JGPortalEdit</Link>
       <br />
+      <Link href="/JGDiv">JGDiv</Link>
+      <br />
     </>
   )
 }
