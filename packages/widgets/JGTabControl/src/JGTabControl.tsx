@@ -1,20 +1,24 @@
-import React, { forwardRef, CSSProperties } from 'react'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
+import React from 'react'
+
+import { Property } from 'csstype'
+
 import Box from '@mui/material/Box'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
 import { Height, Width } from '@v-act/schema-types'
 
-import { JGTabPage } from './JGTabPage'
 import { Aligment, ScrollbarDirection, TabAppearance } from './Enums'
+import { JGTabPage } from './JGTabPage'
+
 interface JGTabControlProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
@@ -110,8 +114,8 @@ const JGTabControl = function (props: JGTabControlProps) {
 }
 
 JGTabControl.defaultProps = {
-  left: 0,
-  top: 0,
+  left: '0px',
+  top: '0px',
   multiHeight: '100px',
   multiWidth: '200px',
   selectedIndex: 0,
@@ -122,4 +126,4 @@ JGTabControl.defaultProps = {
 }
 
 export default JGTabControl
-export { JGTabControl, JGTabControlProps }
+export { JGTabControl, type JGTabControlProps }

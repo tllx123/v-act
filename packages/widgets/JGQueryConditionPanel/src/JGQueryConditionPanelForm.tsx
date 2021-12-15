@@ -2,18 +2,17 @@ import React from 'react'
 
 import Box from '@mui/material/Box'
 import { JGButton } from '@v-act/jgbutton'
-import { ReactEnum } from '@v-act/schema-types'
-import {
-  ContextProvider,
-  createContext,
-  WidgetContextProps,
-  withContext
-} from '@v-act/widget-context'
-import { getChildrenTitleWidth } from '@v-act/widget-utils'
+import { Control, ReactEnum } from '@v-act/schema-types'
+import { ContextProvider, createContext } from '@v-act/widget-context'
+import { getChildrenTitleWidth, toBoolean, toNumber } from '@v-act/widget-utils'
 
 import { JGQueryConditionPanelTag } from './JGQueryConditionPanelTag'
 
 interface JGQueryConditionPanelFormProps {
+  /**
+   * 快速检索
+   */
+  searchBoxEnabled?: boolean
   /**
    * 查询按钮标题
    */
@@ -33,11 +32,9 @@ interface JGQueryConditionPanelFormProps {
   quickSearchHint?: string
 
   children?: Array<JSX.Element> | null
-
-  context?: WidgetContextProps
 }
 
-const JGQueryConditionPanelForm = withContext(function (
+const JGQueryConditionPanelForm = function (
   props: JGQueryConditionPanelFormProps
 ) {
   const columnCount = props.columnCount || 3
@@ -103,18 +100,67 @@ const JGQueryConditionPanelForm = withContext(function (
       }}
     >
       <JGQueryConditionPanelTag
+        searchBoxEnabled={props.searchBoxEnabled}
         placeholder={props.quickSearchHint}
       ></JGQueryConditionPanelTag>
       <Box
         display="grid"
         gridTemplateColumns={'repeat(' + columnCount + ', 1fr)'}
         gap={2}
+        sx={{
+          marginTop: '4px'
+        }}
       >
         {children}
       </Box>
     </div>
   )
-})
+}
+
+JGQueryConditionPanelForm.defaultProps = {
+  searchBoxEnabled: true,
+  queryButtonText: '查询',
+  itemLabelWidth: ReactEnum.Content,
+  columnCount: 3,
+  quickSearchHint: ''
+}
+
+const convert = function (
+  control: Control,
+  render: (controls: Array<Control>) => JSX.Element | null
+) {
+  const pros = control.properties
+  const formProps = {
+    searchBoxEnabled: toBoolean(pros.searchBoxEnabled, true),
+    queryButtonText: pros.queryButtonText || '查询',
+    columnCount: toNumber(pros.columnCount, 3),
+    itemLabelWidth:
+      pros.itemLabelWidth == ReactEnum.Content
+        ? ReactEnum.Content
+        : toNumber(pros.itemLabelWidth, 94),
+    quickSearchHint: ''
+  }
+  const controls = control.controls
+  const formControls: Control[] = []
+  if (controls && controls.length > 0) {
+    controls.forEach((con) => {
+      if (con.properties.code == 'JGLocateBox_quickSearch') {
+        formProps.quickSearchHint = con.properties.hint || ''
+      } else {
+        formControls.push(con)
+      }
+    })
+  }
+  return (
+    <JGQueryConditionPanelForm {...formProps}>
+      {render(formControls)}
+    </JGQueryConditionPanelForm>
+  )
+}
 
 export default JGQueryConditionPanelForm
-export { JGQueryConditionPanelForm, type JGQueryConditionPanelFormProps }
+export {
+  convert,
+  JGQueryConditionPanelForm,
+  type JGQueryConditionPanelFormProps
+}
