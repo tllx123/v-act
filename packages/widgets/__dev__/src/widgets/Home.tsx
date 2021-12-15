@@ -41,6 +41,10 @@ const Home = () => {
       <br />
       <Link href="/JGBarcode">JGBarcode</Link>
       <br />
+      <Link href="/JGLinkLabel">JGLinkLabel</Link>
+      <br />
+      <Link href="/JGStartMenu">JGStartMenu</Link>
+      <br />
     </>
   )
 }

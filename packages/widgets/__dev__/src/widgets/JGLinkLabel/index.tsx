@@ -1,10 +1,10 @@
 import { JGComponent } from '@v-act/jgcomponent'
-import { JGDropdownMenu } from '@v-act/jgdropdownmenu'
+import { JGLinkLabel } from '@v-act/jglinklabel'
 
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGDropdownMenu top={'10px'} left={'10px'}></JGDropdownMenu>
+      <JGLinkLabel top="10px" labelText="链接" left="10px"></JGLinkLabel>
     </JGComponent>
   )
 }

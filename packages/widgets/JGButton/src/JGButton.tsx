@@ -3,6 +3,7 @@ import { forwardRef } from 'react'
 import { Property } from 'csstype'
 
 import { Button, ButtonProps, styled } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
 
 export interface JGButtonProps extends ButtonProps {
   bottom?: Property.Bottom | undefined
@@ -21,21 +22,24 @@ const JGButtonRoot = styled(Button, {
   fontWeight: 400,
   letterSpacing: 0,
   minWidth: 0,
-  padding: theme.spacing(0, 0.25),
-  position: 'absolute'
+  padding: theme.spacing(0, 0.25)
 }))
 
 const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
   (inProps, ref) => {
+    const context = useContext()
+    const sx = inProps.sx || {}
     const props: ButtonProps = {
       variant: 'contained',
       sx: {
+        ...sx,
         width: inProps.width,
         top: inProps.top ?? 0,
         right: inProps.right,
         left: inProps.left ?? 0,
         height: inProps.height,
-        bottom: inProps.bottom
+        bottom: inProps.bottom,
+        position: context ? context.position : 'absolute'
       }
     }
     return (

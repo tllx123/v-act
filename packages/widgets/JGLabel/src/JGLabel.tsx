@@ -3,6 +3,7 @@ import { forwardRef } from 'react'
 import { Property } from 'csstype'
 
 import { styled, Typography, TypographyProps } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
 
 export interface JGLabelProps extends TypographyProps {
   bottom?: Property.Bottom
@@ -22,11 +23,11 @@ const JGLabelRoot = styled(Typography, {
   flexWrap: 'wrap',
   letterSpacing: 0,
   overflow: 'hidden',
-  position: 'absolute',
   verticalAlign: 'middle'
 }))
 
 const JGLabel = forwardRef<HTMLElement, JGLabelProps>((inProps, ref) => {
+  const context = useContext()
   const props: JGLabelProps = {
     variant: 'body2',
     sx: {
@@ -35,6 +36,7 @@ const JGLabel = forwardRef<HTMLElement, JGLabelProps>((inProps, ref) => {
       right: inProps.right,
       left: inProps.left ?? 0,
       height: inProps.height,
+      position: context ? context.position : 'absolute',
       bottom: inProps.bottom
     }
   }

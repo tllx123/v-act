@@ -3,8 +3,6 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
-import JGDropdownMenu from './widgets/JGDropdownMenu'
-import JGNavigator from './widgets/JGNavigator'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -31,9 +29,20 @@ const JGRecordPaging = lazy(() => import('./widgets/JGRecordPaging'))
 const JGSteps = lazy(() => import('./widgets/JGSteps'))
 const JGTabControl = lazy(() => import('./widgets/JGTabControl'))
 const JGTextBox = lazy(() => import('./widgets/JGTextBox'))
+const JGFormLayout = lazy(() => import('./widgets/JGFormLayout'))
+const JGQueryConditionPanel = lazy(
+  () => import('./widgets/JGQueryConditionPanel')
+)
 
 const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
 const JGBarcode = lazy(() => import('./widgets/JGBarcode'))
+
+const JGStartMenu = lazy(() => import('./widgets/JGStartMenu'))
+
+const JGDropdownMenu = lazy(() => import('./widgets/JGDropdownMenu'))
+const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
+const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
+
 const Routes = () =>
   useRoutes([
     {
@@ -145,13 +154,26 @@ const Routes = () =>
       element: <JGDropdownMenu />
     },
     {
+      path: '/JGFormLayout',
+      element: <JGFormLayout />
+    },
+    {
+      path: '/JGQueryConditionPanel',
+      element: <JGQueryConditionPanel />
+    },
+    {
       path: '/JGQrcode',
       element: <JGQrcode />
     },
     {
       path: '/JGBarcode',
       element: <JGBarcode />
-    }
+    },
+    {
+      path: '/JGStartMenu',
+      element: <JGStartMenu />
+    },
+    { path: '/JGLinkLabel', element: <JGLinkLabel /> }
   ])
 
 export default Routes

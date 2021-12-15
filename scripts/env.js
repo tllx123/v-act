@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import path from 'path'
 import prettier from 'prettier'
+import { normalizePath } from 'vite'
 
 import { getPackages } from '@lerna/project'
 
@@ -13,9 +14,9 @@ export async function buildTsConfigPaths() {
   const paths = tsc.compilerOptions.paths
 
   packages.forEach((pkg) => {
-    const pkgroot = pkg.location.replace(root, '.')
+    const pkgroot = pkg.location.replace(root, '.').replace(/\\\\/g, '/')
     const name = pkg.name
-    paths[name] = [`${pkgroot}/src`]
+    paths[name] = [normalizePath(`${pkgroot}/src`)]
   })
 
   const formatedTsc = await prettier
