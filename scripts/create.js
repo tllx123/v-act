@@ -8,6 +8,8 @@ export async function createWidget(arg) {
     console.log('--------无效命令---------')
   } else if (arg._.length !== 2) {
     console.log('--------无效命令---------')
+  } else if (!/[A-Z]/.test(arg._[1].substring(0, 1))) {
+    console.log('--------首字母要大写---------')
   } else {
     let dirName = arg._[1]
     let dirNameLowerCase = arg._[1].toLowerCase()
@@ -18,10 +20,6 @@ export async function createWidget(arg) {
     const widgetsDir = p.resolve(rootDir, 'packages', 'widgets')
     const wNewDir = p.resolve(widgetsDir, '__dev__', 'src', 'widgets', dirName)
     const newDir = p.resolve(widgetsDir, dirName)
-
-    // console.log(typeof dataTemp[8])
-    // console.log(dataTemp[8])
-    // console.log(dataTemp[8].indexOf("lazy("))
 
     if (fs.existsSync(newDir) || fs.existsSync(wNewDir)) {
       console.log('该组件已存在,请检查目录')

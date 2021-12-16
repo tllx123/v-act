@@ -63,7 +63,9 @@
       "@v-act/jgwebbrowser": ["packages/widgets/JGWebBrowser/src"],
       "@v-act/jgportaledit": ["packages/widgets/JGPortalEdit/src"],
       "@v-act/jgdiv": ["packages/widgets/JGDiv/src"],
-      "@v-act/jggrouppanel": ["packages/widgets/JGGroupPanel/src"]
+      "@v-act/jggrouppanel": ["packages/widgets/JGGroupPanel/src"],
+      "@v-act/jgbasedictbox": ["packages/widgets/JGBaseDictBox/src"],
+      "@v-act/qwer": ["packages/widgets/qwer/src"]
     }
   }
 }
