@@ -51,6 +51,12 @@ const Home = () => {
       <br />
       <Link href="/JGDiv">JGDiv</Link>
       <br />
+      <Link href="/JGFormLayout">JGFormLayout</Link>
+      <br />
+      <Link href="/JGQueryConditionPanel">JGQueryConditionPanel</Link>
+      <br />
+      <Link href="/JGGroupPanel">JGGroupPanel</Link>
+      <br />
     </>
   )
 }

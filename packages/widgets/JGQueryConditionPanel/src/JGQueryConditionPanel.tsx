@@ -81,7 +81,7 @@ const JGQueryConditionPanel = function (props: JGQueryConditionPanelProps) {
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
   const pros = control.properties
   const props: JGQueryConditionPanelProps = {

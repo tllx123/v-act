@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import { JGLabel } from '@v-act/jglabel'
 import { JGLocateBox } from '@v-act/jglocatebox'
+import { ContextProvider, createContext } from '@v-act/widget-context'
 
 interface JGQueryConditionPanelTagProps {
   searchBoxEnabled?: boolean
@@ -12,26 +13,29 @@ function JGQueryConditionPanelTag(props: JGQueryConditionPanelTagProps) {
   if (props.searchBoxEnabled) {
     spacerSpan -= 1
   }
+  const context = createContext({ position: 'static' })
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={'repeat(8, 1fr)'}
-      gap={1}
-      sx={{
-        borderBottom: '1px solid #DCDEE2',
-        alignItems: 'center'
-      }}
-    >
-      <Box gridColumn="span 1">
-        <JGLabel height="40px">条件筛选</JGLabel>
-      </Box>
-      <Box gridColumn={'span ' + spacerSpan}></Box>
-      {props.searchBoxEnabled ? (
+    <ContextProvider context={context}>
+      <Box
+        display="grid"
+        gridTemplateColumns={'repeat(8, 1fr)'}
+        gap={1}
+        sx={{
+          borderBottom: '1px solid #DCDEE2',
+          alignItems: 'center'
+        }}
+      >
         <Box gridColumn="span 1">
-          <JGLocateBox height="32px" hint={props.placeholder}></JGLocateBox>
+          <JGLabel height="40px">条件筛选</JGLabel>
         </Box>
-      ) : null}
-    </Box>
+        <Box gridColumn={'span ' + spacerSpan}></Box>
+        {props.searchBoxEnabled ? (
+          <Box gridColumn="span 1">
+            <JGLocateBox height="32px" hint={props.placeholder}></JGLocateBox>
+          </Box>
+        ) : null}
+      </Box>
+    </ContextProvider>
   )
 }
 

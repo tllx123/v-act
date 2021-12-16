@@ -75,18 +75,22 @@ const JGQueryConditionPanelForm = function (
       children.push(<Box gridColumn={'span ' + (columnCount - 1)}></Box>)
       children.push(
         <Box>
-          <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
-            {props.queryButtonText}
-          </JGButton>
+          <ContextProvider context={context}>
+            <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
+              {props.queryButtonText}
+            </JGButton>
+          </ContextProvider>
         </Box>
       )
     } else {
       children.push(<Box gridColumn={'span ' + (remainNumCols - 1)}></Box>)
       children.push(
         <Box>
-          <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
-            {props.queryButtonText}
-          </JGButton>
+          <ContextProvider context={context}>
+            <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
+              {props.queryButtonText}
+            </JGButton>
+          </ContextProvider>
         </Box>
       )
     }
@@ -111,7 +115,11 @@ const JGQueryConditionPanelForm = function (
           marginTop: '4px'
         }}
       >
-        {children}
+        {children
+          ? children.map((child, i) => {
+              return <React.Fragment key={i}>{child}</React.Fragment>
+            })
+          : null}
       </Box>
     </div>
   )
@@ -127,7 +135,7 @@ JGQueryConditionPanelForm.defaultProps = {
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
   const pros = control.properties
   const formProps = {
@@ -137,7 +145,7 @@ const convert = function (
     itemLabelWidth:
       pros.itemLabelWidth == ReactEnum.Content
         ? ReactEnum.Content
-        : toNumber(pros.itemLabelWidth, 94),
+        : toNumber(pros.itemLabelWidth, 94) + 'px',
     quickSearchHint: ''
   }
   const controls = control.controls

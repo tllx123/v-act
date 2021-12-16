@@ -1,4 +1,3 @@
-import Control from './Control'
 import ReactEnum from './ReactEnum'
 
 /**
@@ -115,10 +114,6 @@ interface Property {
    * 快速检索（查询面板）
    */
   searchBoxEnabled?: string
-  /**
-   * 工具栏(查询面板)
-   */
-  headerControls?: Control[]
   /**
    * 工具栏设置（查询面板）
    */

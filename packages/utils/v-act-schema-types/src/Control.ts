@@ -1,7 +1,8 @@
-import Property from './Property'
-import JGQrcodeProperty from './JGQrcodeProperty'
 import JGBarcodeProperty from './JGBarcodeProperty'
+import JGQrcodeProperty from './JGQrcodeProperty'
 import JGWebBrowserProperty from './JGWebBrowserProperty'
+import Property from './Property'
+
 /**
  * 控件定义
  */
@@ -33,6 +34,11 @@ interface Control {
    * 子控件
    */
   controls: Array<Control>
+
+  /**
+   * 工具栏(查询面板)
+   */
+  headerControls?: Control[]
 }
 
 export default Control
