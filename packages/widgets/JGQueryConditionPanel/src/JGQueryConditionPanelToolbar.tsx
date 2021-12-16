@@ -101,14 +101,18 @@ function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
   const children = [...leftChildren, ...rightChildren]
   return (
     <Box display="grid" gridTemplateColumns={'repeat(24, 1fr)'} gap={2}>
-      <ContextProvider context={context}>{children}</ContextProvider>
+      <ContextProvider context={context}>
+        {children.map((child, i) => {
+          return <React.Fragment key={i}>{child}</React.Fragment>
+        })}
+      </ContextProvider>
     </Box>
   )
 }
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
   const toolbarSetStr = control.properties.toolbarSetting
   const setting: Setting[] = []
@@ -129,7 +133,7 @@ const convert = function (
   }
   return (
     <JGQueryConditionPanelToolbar {...toolbarProps}>
-      {render(control.headerControls)}
+      {render(control.headerControls ? control.headerControls : [])}
     </JGQueryConditionPanelToolbar>
   )
 }

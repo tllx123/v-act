@@ -1,4 +1,3 @@
-import Control from './Control'
 import ReactEnum from './ReactEnum'
 
 /**
@@ -116,13 +115,21 @@ interface Property {
    */
   searchBoxEnabled?: string
   /**
-   * 工具栏(查询面板)
-   */
-  headerControls?: Control[]
-  /**
    * 工具栏设置（查询面板）
    */
   toolbarSetting?: string
+  /**
+   * 内容排列(编组)
+   */
+  contentAlignment?: string
+  /**
+   * 水平位置（编组）
+   */
+  horizontalAlign?: string
+  /**
+   * 垂直位置（编组）
+   */
+  verticalAlign?: string
 }
 
 export default Property

@@ -50,7 +50,7 @@ const useContext = function () {
 const createContext = function (
   context: WidgetContextProps | undefined | null
 ) {
-  return Object.assign(defaultContext, context || {})
+  return Object.assign({}, defaultContext, context || {})
 }
 
 const ContextProvider = function (props: ContextProviderProps) {
