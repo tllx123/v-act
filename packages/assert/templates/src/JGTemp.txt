@@ -1,0 +1,34 @@
+import Box from '@mui/material/Box'
+import { Property } from 'csstype'
+
+
+interface {{dirNameProps}} {
+  left?: Property.Left
+  top?: Property.Top
+  position?: Property.Position
+  height?: Property.Height
+  width?: Property.Width
+}
+
+
+const  {{dirName}} = (props: {{dirNameProps}}) => {
+  const { left, top, height, width, position, ...resprops } = props
+
+
+  return (
+    <Box>
+     
+    </Box>
+  )
+}
+
+{{dirName}}.defaultProps = {
+  left: '20px',
+  top: '50px',
+  width: '200px',
+  height: '200px',
+  position: 'absolute'
+}
+
+export default  {{dirName}}
+export {  {{dirName}}, {{dirNameProps}} }

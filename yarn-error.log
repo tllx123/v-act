@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add -W art-template
 
 PATH: 
   C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\TortoiseGit\bin;C:\Program Files (x86)\Yarn\bin\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Local\Yarn\bin
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  SyntaxError: C:\Users\Administrator\Desktop\v-act-work\v-act\packages\widgets\JGPortalEdit\package.json: Unexpected token } in JSON at position 250
+  SyntaxError: C:\Users\Administrator\Desktop\v-act-work\v-act\packages\widgets\wawa\package.json: Unexpected end of JSON input
       at JSON.parse (<anonymous>)
       at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -33,7 +33,8 @@ npm manifest:
     "scripts": {
       "build: widgets": "node scripts/index.js build -s @v-act/jg*",
       "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
-      "prepare": "husky install && node scripts/index.js tsc"
+      "prepare": "husky install && node scripts/index.js tsc",
+      "create": "node scripts/index.js create wawa"
     },
     "dependencies": {
       "@emotion/react": "^11.7.0",

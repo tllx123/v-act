@@ -1,0 +1,11 @@
+import { {{dirName}} } from '@v-act/{{dirNameLowerCase}}'
+import { JGComponent } from '@v-act/jgcomponent'
+const {{dirNameExport}} = () => {
+  return (
+    <JGComponent>
+      <{{dirName}} />
+    </JGComponent>
+  )
+}
+
+export default {{dirNameExport}}
