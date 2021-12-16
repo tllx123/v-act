@@ -1,0 +1,13 @@
+{
+  "name": "@v-act/jgbasedictbox",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/schema-types": "^1.0.0"
+  }
+}
