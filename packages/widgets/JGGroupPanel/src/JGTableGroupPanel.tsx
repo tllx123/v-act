@@ -24,6 +24,29 @@ const JGTableGroupPanel = function (props: JGGroupPanelProps) {
   })
 
   const containerProps = getGroupPanelProps(props, context)
+  const parseChild = (child: JSX.Element, i: number) => {
+    let key = child.key
+    if (!key) {
+      key = child.props.code
+    }
+    if (key) {
+      const childSetting = settingMap[key]
+      const colSpan = childSetting ? childSetting.colSpan || 1 : 1
+      remainNumCols = remainNumCols - colSpan
+      remainNumCols = remainNumCols == 0 ? numCols : remainNumCols
+      const endRow = childSetting ? !!childSetting.endRow : false
+      return (
+        <Fragment key={i}>
+          <ContextProvider context={childContext}>
+            <Box gridColumn={'span ' + colSpan}>{child}</Box>
+            {endRow && remainNumCols > 0 && remainNumCols != numCols ? (
+              <Box gridColumn={'span ' + remainNumCols}></Box>
+            ) : null}
+          </ContextProvider>
+        </Fragment>
+      )
+    }
+  }
   return (
     <Box
       display="grid"
@@ -32,29 +55,11 @@ const JGTableGroupPanel = function (props: JGGroupPanelProps) {
       sx={containerProps}
     >
       {props.children
-        ? props.children.map((child, i) => {
-            let key = child.key
-            if (!key) {
-              key = child.props.code
-            }
-            if (key) {
-              const childSetting = settingMap[key]
-              const colSpan = childSetting ? childSetting.colSpan || 1 : 1
-              remainNumCols = remainNumCols - colSpan
-              remainNumCols = remainNumCols == 0 ? numCols : remainNumCols
-              const endRow = childSetting ? !!childSetting.endRow : false
-              return (
-                <Fragment key={i}>
-                  <ContextProvider context={childContext}>
-                    <Box gridColumn={'span ' + colSpan}>{child}</Box>
-                    {endRow && remainNumCols > 0 && remainNumCols != numCols ? (
-                      <Box gridColumn={'span ' + remainNumCols}></Box>
-                    ) : null}
-                  </ContextProvider>
-                </Fragment>
-              )
-            }
-          })
+        ? Array.isArray(props.children)
+          ? props.children.map((child, i) => {
+              return parseChild(child, i)
+            })
+          : parseChild(props.children, 0)
         : null}
     </Box>
   )

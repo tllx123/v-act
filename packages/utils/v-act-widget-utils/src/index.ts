@@ -1,6 +1,6 @@
 import { Property as CSSProperty } from 'csstype'
 
-import { Height, ReactEnum, Width } from '@v-act/schema-types'
+import { Dock, Height, ReactEnum, Width } from '@v-act/schema-types'
 import { WidgetContextProps } from '@v-act/widget-context'
 
 /**
@@ -128,6 +128,23 @@ const getChildrenTitleWidth = function (children: JSX.Element[]): number {
   return titleWidth
 }
 
+const valueofDock = function (dock?: string): Dock {
+  switch (dock) {
+    case 'Top':
+      return Dock.Top
+    case 'Left':
+      return Dock.Left
+    case 'Right':
+      return Dock.Right
+    case 'Bottom':
+      return Dock.Bottom
+    case 'Fill':
+      return Dock.Fill
+    default:
+      return Dock.None
+  }
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
@@ -136,6 +153,7 @@ export {
   toLabelWidth,
   toNumber,
   toWidth,
+  valueofDock,
   valueofHeight,
   valueofWidth
 }

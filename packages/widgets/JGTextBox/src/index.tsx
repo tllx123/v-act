@@ -1,10 +1,10 @@
+import { Control } from '@v-act/schema-types'
 import {
-  Control,
   toBoolean,
   toNumber,
   valueofHeight,
   valueofWidth
-} from '@v-act/schema-types'
+} from '@v-act/widget-utils'
 
 import { JGTextBox, JGTextBoxProps } from './JGTextBox'
 
