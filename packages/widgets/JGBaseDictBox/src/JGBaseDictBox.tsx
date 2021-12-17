@@ -4,9 +4,9 @@ import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { IconButton } from '@mui/material'
 import { styled } from '@mui/system'
-import { Height, toWidth, Width } from '@v-act/schema-types'
-import { WidgetContextProps, withContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth } from '@v-act/widget-utils'
+import { Height, Width } from '@v-act/schema-types'
+import { WidgetContextProps } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGBaseDictBoxProps extends InputUnstyledProps {
   /**
@@ -90,7 +90,7 @@ const CustomInput = forwardRef(function (
   )
 })
 
-const JGBaseDictBoxDef = function (props: JGBaseDictBoxProps) {
+const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   if (!props.visible) {
     return null
   }
@@ -145,7 +145,7 @@ const JGBaseDictBoxDef = function (props: JGBaseDictBoxProps) {
   )
 }
 
-JGBaseDictBoxDef.defaultProps = {
+JGBaseDictBox.defaultProps = {
   left: 0,
   top: 0,
   multiHeight: 26,
@@ -159,6 +159,5 @@ JGBaseDictBoxDef.defaultProps = {
   readOnly: true
 }
 
-const JGBaseDictBox = withContext(JGBaseDictBoxDef)
 export default JGBaseDictBox
 export { JGBaseDictBox, JGBaseDictBoxProps }
