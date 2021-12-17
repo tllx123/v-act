@@ -1,11 +1,8 @@
 import { Control, toBoolean, toNumber } from '@v-act/schema-types'
 
-import { JGLongTextBox, JGLongTextBoxProps } from './JGLongTextBox'
+import JGLongTextBox, { JGLongTextBoxProps } from './JGLongTextBox'
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
-): JSX.Element {
+export const convert = function (control: Control): JSX.Element {
   const pros = control.properties
   const props: JGLongTextBoxProps = {
     top: toNumber(pros.top) + 'px',
@@ -19,4 +16,4 @@ const convert = function (
   return <JGLongTextBox {...props}></JGLongTextBox>
 }
 
-export { convert, JGLongTextBox }
+export { JGLongTextBox }

@@ -1,7 +1,7 @@
 import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-interface JGLongTextBoxProps extends TextareaAutosizeProps {
+export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   left?: Property.Left
   top?: Property.Top
   height?: Property.Height
@@ -9,7 +9,6 @@ interface JGLongTextBoxProps extends TextareaAutosizeProps {
   position?: Property.Position
   margin?: Property.Margin
   padding?: Property.Padding
-
   readonly?: boolean
   ismust?: boolean
   labeltext?: string
@@ -100,4 +99,3 @@ JGLongTextBox.defaultProps = {
 }
 
 export default JGLongTextBox
-export { JGLongTextBox, JGLongTextBoxProps }
