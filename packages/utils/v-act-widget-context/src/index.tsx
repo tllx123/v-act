@@ -50,11 +50,11 @@ const useContext = function () {
 const createContext = function (
   context: WidgetContextProps | undefined | null
 ) {
-  return Object.assign(defaultContext, context || {})
+  return Object.assign({}, defaultContext, context || {})
 }
 
 const ContextProvider = function (props: ContextProviderProps) {
-  const context = props.context || Object.assign(WidgetContext)
+  const context = props.context || { position: 'absolute' }
   const children = props.children
   return (
     <WidgetContext.Provider value={context}>{children}</WidgetContext.Provider>

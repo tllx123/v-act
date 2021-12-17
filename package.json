@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg*",
+    "create": "node scripts/index.js create ",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
     "prepare": "husky install && node scripts/index.js tsc"
   },
@@ -19,6 +20,7 @@
     "@mui/material": "^5.2.3",
     "@mui/styles": "^5.2.3",
     "@mui/system": "^5.2.3",
+    "art-template": "^4.13.2",
     "date-fns": "^2.27.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

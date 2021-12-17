@@ -1,7 +1,5 @@
 import { lazy } from 'react'
-
 import { useRoutes } from 'react-router-dom'
-
 import Home from './widgets/Home'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
@@ -33,15 +31,16 @@ const JGFormLayout = lazy(() => import('./widgets/JGFormLayout'))
 const JGQueryConditionPanel = lazy(
   () => import('./widgets/JGQueryConditionPanel')
 )
-
 const JGQrcode = lazy(() => import('./widgets/JGQrcode'))
 const JGBarcode = lazy(() => import('./widgets/JGBarcode'))
-
 const JGStartMenu = lazy(() => import('./widgets/JGStartMenu'))
-
 const JGDropdownMenu = lazy(() => import('./widgets/JGDropdownMenu'))
 const JGLinkLabel = lazy(() => import('./widgets/JGLinkLabel'))
 const JGNavigator = lazy(() => import('./widgets/JGNavigator'))
+const JGWebBrowser = lazy(() => import('./widgets/JGWebBrowser'))
+const JGPortalEdit = lazy(() => import('./widgets/JGPortalEdit'))
+const JGDiv = lazy(() => import('./widgets/JGDiv'))
+const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 
 const Routes = () =>
   useRoutes([
@@ -173,7 +172,26 @@ const Routes = () =>
       path: '/JGStartMenu',
       element: <JGStartMenu />
     },
-    { path: '/JGLinkLabel', element: <JGLinkLabel /> }
+    {
+      path: '/JGLinkLabel',
+      element: <JGLinkLabel />
+    },
+    {
+      path: '/JGWebBrowser',
+      element: <JGWebBrowser />
+    },
+    {
+      path: '/JGPortalEdit',
+      element: <JGPortalEdit />
+    },
+    {
+      path: '/JGDiv',
+      element: <JGDiv />
+    },
+    {
+      path: '/JGGroupPanel',
+      element: <JGGroupPanel />
+    }
   ])
 
 export default Routes

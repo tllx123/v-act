@@ -1,19 +1,30 @@
 import React, { CSSProperties } from 'react'
 
+import { Property } from 'csstype'
+
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
-import { Height, Width } from '@v-act/schema-types'
-import { useContext, withContext } from '@v-act/widget-context'
+import { Control, Height, Width } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
+
+import { convert as JGQueryConditionPanelFormConvert } from './JGQueryConditionPanelForm'
+import { convert as JGQueryConditionPanelToolbarConvert } from './JGQueryConditionPanelToolbar'
 
 interface JGQueryConditionPanelProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
@@ -38,9 +49,7 @@ interface JGQueryConditionPanelProps {
   children?: Array<JSX.Element> | null
 }
 
-const JGQueryConditionPanel = withContext(function (
-  props: JGQueryConditionPanelProps
-) {
+const JGQueryConditionPanel = function (props: JGQueryConditionPanelProps) {
   if (typeof props.visible == 'boolean' && !props.visible) {
     return null
   }
@@ -68,7 +77,28 @@ const JGQueryConditionPanel = withContext(function (
         : null}
     </div>
   )
-})
+}
+
+const convert = function (
+  control: Control,
+  render: (controls: Array<Control>) => JSX.Element[] | null
+) {
+  const pros = control.properties
+  const props: JGQueryConditionPanelProps = {
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    multiWidth: valueofWidth(pros.multiWidth, '500px'),
+    multiHeight: valueofHeight(pros.multiHeight, '40px'),
+    visible: toBoolean(pros.visible, true),
+    defaultExpand: toBoolean(pros.defaultExpand, true)
+  }
+  const children = [
+    JGQueryConditionPanelToolbarConvert(control, render),
+    JGQueryConditionPanelFormConvert(control, render)
+  ]
+
+  return <JGQueryConditionPanel {...props}>{children}</JGQueryConditionPanel>
+}
 
 export default JGQueryConditionPanel
-export { JGQueryConditionPanel, type JGQueryConditionPanelProps }
+export { convert, JGQueryConditionPanel, type JGQueryConditionPanelProps }

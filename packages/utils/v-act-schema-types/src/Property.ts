@@ -90,6 +90,46 @@ interface Property {
    * 分组标题
    */
   groupTitle?: string
+  /**
+   * 背景色
+   */
+  backColor?: string
+  /**
+   * 默认展开(查询面板)
+   */
+  defaultExpand?: string
+  /**
+   * 查询按钮标题（查询面板）
+   */
+  queryButtonText?: string
+  /**
+   * 列数(查询面板)
+   */
+  columnCount?: string
+  /**
+   * 标题宽度(查询面板)
+   */
+  itemLabelWidth?: string
+  /**
+   * 快速检索（查询面板）
+   */
+  searchBoxEnabled?: string
+  /**
+   * 工具栏设置（查询面板）
+   */
+  toolbarSetting?: string
+  /**
+   * 内容排列(编组)
+   */
+  contentAlignment?: string
+  /**
+   * 水平位置（编组）
+   */
+  horizontalAlign?: string
+  /**
+   * 垂直位置（编组）
+   */
+  verticalAlign?: string
 }
 
 export default Property

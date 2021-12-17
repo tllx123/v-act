@@ -45,6 +45,19 @@ const Home = () => {
       <br />
       <Link href="/JGStartMenu">JGStartMenu</Link>
       <br />
+      <Link href="/JGWebBrowser">JGWebBrowser</Link>
+      <br />
+      <Link href="/JGPortalEdit">JGPortalEdit</Link>
+      <br />
+      <Link href="/JGDiv">JGDiv</Link>
+      <br />
+      <Link href="/JGFormLayout">JGFormLayout</Link>
+      <br />
+      <Link href="/JGQueryConditionPanel">JGQueryConditionPanel</Link>
+      <br />
+      <Link href="/JGGroupPanel">JGGroupPanel</Link>
+      <br />
+      <Link href="/Jgqw">Jgqw</Link> <br />
     </>
   )
 }

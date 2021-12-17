@@ -1,0 +1,19 @@
+import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+
+import { {{dirName}}, {{dirNameProps}} } from './{{dirName}}'
+
+const convert = function (
+  control: Control,
+  render: (controls: Array<Control>) => JSX.Element | null
+): JSX.Element {
+  const pros = control.properties
+  const props: {{dirNameProps}} = {
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    width: toNumber(pros.multiWidth) + 'px',
+    height: toNumber(pros.multiHeight) + 'px',
+  }
+  return <{{dirName}} {...props}></{{dirName}}>
+}
+
+export { convert,  {{dirName}} }
