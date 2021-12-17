@@ -36,7 +36,7 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
   return (
     <Box
       sx={{
-        position: 'relative',
+        position: 'absolute',
         width: inProps.width,
         top: inProps.top,
         right: inProps.right,
