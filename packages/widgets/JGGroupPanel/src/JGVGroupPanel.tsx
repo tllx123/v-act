@@ -30,7 +30,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
   const childContext = createContext({
     position: 'static'
   })
-  children.forEach((child) => {
+  const parseChild = (child: JSX.Element) => {
     let key = child.key
     if (key === null) {
       key = child.props.code
@@ -79,7 +79,15 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
         bottomChildren.push(<div style={containerProps}>{child}</div>)
       }
     }
-  })
+  }
+  if (Array.isArray(children)) {
+    children.forEach((child) => {
+      parseChild(child)
+    })
+  } else {
+    parseChild(children)
+  }
+
   const containerProps = getGroupPanelProps(props, context)
   return (
     <div

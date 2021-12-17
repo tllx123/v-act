@@ -4,14 +4,9 @@ import { Property } from 'csstype'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
-import {
-  Height,
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  Width
-} from '@v-act/schema-types'
+import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGTextBoxProps extends InputUnstyledProps {
   /**

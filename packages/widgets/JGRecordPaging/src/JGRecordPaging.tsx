@@ -18,7 +18,7 @@ const JGRecordPagingRoot = styled(Pagination, {
   name: 'JGRecordPaging',
   slot: 'Root'
 })(({ theme }) => ({
-  position: 'relative'
+  position: 'absolute'
 }))
 
 const JGRecordPaging = forwardRef<any, JGRecordPagingProps>((inProps, ref) => {

@@ -70,7 +70,7 @@ interface JGGroupPanelProps {
    */
   position?: string
 
-  children?: JSX.Element[] | null
+  children?: JSX.Element[] | JSX.Element | null
 }
 
 const JGGroupPanel = function (props: JGGroupPanelProps) {
