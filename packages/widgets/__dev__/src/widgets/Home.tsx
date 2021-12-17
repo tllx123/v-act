@@ -57,7 +57,11 @@ const Home = () => {
       <br />
       <Link href="/JGGroupPanel">JGGroupPanel</Link>
       <br />
-      <Link href="/Jgqw">Jgqw</Link> <br />
+      <Link href="/Jgqw">Jgqw</Link>
+      <br />
+      <Link href="/JGHyperLink">JGHyperLink</Link>
+      <br />
+      <Link href="/JGBaseDictBox">JGBaseDictBox</Link> <br />
     </>
   )
 }
