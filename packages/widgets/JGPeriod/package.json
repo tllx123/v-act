@@ -10,5 +10,9 @@
   ],
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "widgetType": "JGPeriod"
 }
