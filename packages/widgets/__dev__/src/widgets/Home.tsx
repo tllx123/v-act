@@ -60,6 +60,8 @@ const Home = () => {
       <Link href="/Jgqw">Jgqw</Link> <br />
       <br />
       <Link href="/JGHyperLink">JGHyperLink</Link> <br />
+      <br />
+      <Link href="/JGBaseDictBox">JGBaseDictBox</Link> <br />
     </>
   )
 }

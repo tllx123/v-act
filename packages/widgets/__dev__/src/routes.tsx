@@ -44,6 +44,7 @@ const JGPortalEdit = lazy(() => import('./widgets/JGPortalEdit'))
 const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
+const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
 
 const Routes = () =>
   useRoutes([
@@ -198,6 +199,10 @@ const Routes = () =>
     {
       path: '/JGHyperLink',
       element: <JGHyperLink />
+    },
+    {
+      path: '/JGBaseDictBox',
+      element: <JGBaseDictBox />
     }
   ])
 
