@@ -1,5 +1,7 @@
 import { lazy } from 'react'
+
 import { useRoutes } from 'react-router-dom'
+
 import Home from './widgets/Home'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
@@ -41,6 +43,7 @@ const JGWebBrowser = lazy(() => import('./widgets/JGWebBrowser'))
 const JGPortalEdit = lazy(() => import('./widgets/JGPortalEdit'))
 const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
+const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
 
 const Routes = () =>
   useRoutes([
@@ -191,6 +194,10 @@ const Routes = () =>
     {
       path: '/JGGroupPanel',
       element: <JGGroupPanel />
+    },
+    {
+      path: '/JGHyperLink',
+      element: <JGHyperLink />
     }
   ])
 

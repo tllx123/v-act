@@ -58,6 +58,8 @@ const Home = () => {
       <Link href="/JGGroupPanel">JGGroupPanel</Link>
       <br />
       <Link href="/Jgqw">Jgqw</Link> <br />
+      <br />
+      <Link href="/JGHyperLink">JGHyperLink</Link> <br />
     </>
   )
 }
