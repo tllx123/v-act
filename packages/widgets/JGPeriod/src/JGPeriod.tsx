@@ -1,20 +1,16 @@
-import React, { forwardRef, CSSProperties, useState, useRef } from 'react'
-
-import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
-
-import { IconButton } from '@mui/material'
-import EventIcon from '@mui/icons-material/Event'
-
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import YearPicker, { YearPickerProps } from '@mui/lab/YearPicker'
-import Menu from '@mui/material/Menu'
-
-import { styled } from '@mui/system'
-
-import { Height, Width } from '@v-act/schema-types'
+import React, { CSSProperties, forwardRef, useRef, useState } from 'react'
 
 import { Property } from 'csstype'
+
+import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import EventIcon from '@mui/icons-material/Event'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import YearPicker from '@mui/lab/YearPicker'
+import { IconButton } from '@mui/material'
+import Menu from '@mui/material/Menu'
+import { styled } from '@mui/system'
+import { Height, Width } from '@v-act/schema-types'
 
 interface JGPeriodProps extends InputUnstyledProps {
   /**
@@ -126,11 +122,13 @@ const JGPeriod = function (props: JGPeriodProps) {
   const open = Boolean(anchorEl)
   const menuWrapScope = useRef(null)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log(menuWrapScope.current, menuWrapScope)
     setAnchorEl(menuWrapScope.current)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
+  console.log(props.top)
   const wrapStyles: CSSProperties = {
     width: props.width || props.multiWidth,
     height: props.height || props.multiHeight,
@@ -153,8 +151,11 @@ const JGPeriod = function (props: JGPeriodProps) {
     display: 'inline-block',
     paddingRight: '6px'
   }
+  let inputWidth = String(props.width || props.multiWidth)
+
+  if (inputWidth.indexOf('px') !== -1) inputWidth = inputWidth.replace(/px/, '')
   const inputStyles = {
-    width: (props.width || props.multiWidth) - labelWidth,
+    width: Number(inputWidth) - labelWidth,
     height: props.height || props.multiHeight,
     display: 'inline-block'
   }
@@ -222,6 +223,12 @@ const JGPeriod = function (props: JGPeriodProps) {
         open={open}
         anchorEl={anchorEl}
         id="menuScope"
+        sx={{
+          '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper':
+            {
+              width: '225px'
+            }
+        }}
       >
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <YearPicker

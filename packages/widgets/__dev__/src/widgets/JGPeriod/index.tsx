@@ -1,10 +1,16 @@
-import { JGPeriod } from '@v-act/jgperiod'
 import { JGComponent } from '@v-act/jgcomponent'
+import { JGPeriod } from '@v-act/jgperiod'
 
 const TextBox = () => {
   return (
     <JGComponent>
-      <JGPeriod top="20px" labelText="期次"></JGPeriod>
+      <JGPeriod
+        top="159px"
+        left="615px"
+        labelText="期次"
+        multiHeight="26px"
+        multiWidth="235px"
+      ></JGPeriod>
     </JGComponent>
   )
 }
