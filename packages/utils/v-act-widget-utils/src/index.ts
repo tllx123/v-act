@@ -104,7 +104,8 @@ const maxTitleWidth = 196
 
 const calTitleWidth = function (title: string): number {
   title = title || ''
-  const domId = 'test_' + new Date().getTime()
+  //服务端渲染不支持document
+  /*const domId = 'test_' + new Date().getTime()
   const span = document.createElement('span')
   span.id = domId
   span.style.top = '-10px'
@@ -113,7 +114,9 @@ const calTitleWidth = function (title: string): number {
   document.body.appendChild(span)
   let width = span.offsetWidth + 30
   width = width > maxTitleWidth ? maxTitleWidth : width
-  document.body.removeChild(span)
+  document.body.removeChild(span)*/
+  var width = title.length * 16 + 30
+  width = width > maxTitleWidth ? maxTitleWidth : width
   return width
 }
 
@@ -121,9 +124,19 @@ const getChildrenTitleWidth = function (children: JSX.Element[]): number {
   let titleWidth = 0
   for (let index = 0; index < children.length; index++) {
     const child = children[index]
-    const childProps = child.props
-    const w = calTitleWidth(childProps.labelText)
-    titleWidth = titleWidth > w ? titleWidth : w
+    if (child.type && child.type.toString().indexOf('react.fragment') != -1) {
+      const childList = child.props.children
+      if (childList) {
+        const w = getChildrenTitleWidth(
+          Array.isArray(childList) ? childList : [childList]
+        )
+        titleWidth = titleWidth > w ? titleWidth : w
+      }
+    } else {
+      const childProps = child.props
+      const w = calTitleWidth(childProps.labelText)
+      titleWidth = titleWidth > w ? titleWidth : w
+    }
   }
   return titleWidth
 }

@@ -62,9 +62,21 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
+  let children = props.children
+  if (children) {
+    if (!Array.isArray(children)) {
+      const chid = children as JSX.Element
+      if (chid.type === React.Fragment) {
+        children = chid.props.children
+      }
+    }
+    if (!Array.isArray(children) && children) {
+      children = [children]
+    }
+  }
+
   let titleWidth = props.titleWidth
   if (!titleWidth || titleWidth === ReactEnum.Content) {
-    const children = props.children ? props.children : []
     titleWidth = getChildrenTitleWidth(children) + ''
   }
   const childContext = Object.assign({}, context, {
@@ -73,14 +85,15 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     multiWidth: ReactEnum.Space,
     labelWidth: toNumber(titleWidth, 94)
   })
+
   const contentJSX = (
     <Box
       display="grid"
       gridTemplateColumns={'repeat(' + numCols + ', 1fr)'}
       gap={1}
     >
-      {props.children
-        ? props.children.map((child, i) => {
+      {children
+        ? children.map((child, i) => {
             const childProps = child.props
             let colSpan = parseInt(childProps.colSpan)
             colSpan = isNaN(colSpan) ? 1 : colSpan
@@ -106,14 +119,19 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
       {props.groupTitle ? (
         <fieldset style={wrapStyles}>
           <legend
-            style={{ fontSize: '14px', color: '#8C8C8C', fontWeight: 'bold' }}
+            style={{
+              fontSize: '14px',
+              color: '#8C8C8C',
+              fontWeight: 'bold',
+              border: '1px solid #ddd'
+            }}
           >
             {props.groupTitle}
           </legend>
           {contentJSX}
         </fieldset>
       ) : (
-        <div>{contentJSX}</div>
+        <div style={wrapStyles}>{contentJSX}</div>
       )}
     </React.Fragment>
   )
