@@ -75,10 +75,24 @@ class Window {
         controls.push(this.toSchemaControl(con))
       })
     }
+    let headerControlObjs =
+      controlObj.headerControls && controlObj.headerControls.control
+        ? controlObj.headerControls.control
+        : null
+    const headerControls = []
+    if (headerControlObjs) {
+      headerControlObjs = Array.isArray(headerControlObjs)
+        ? headerControlObjs
+        : [headerControlObjs]
+      headerControlObjs.forEach((con) => {
+        headerControls.push(this.toSchemaControl(con))
+      })
+    }
     const control = {
       type: controlObj.$.type,
       properties: this.toSchemaProperty(controlObj.propertys),
-      controls
+      controls,
+      headerControls
     }
 
     return control
@@ -114,6 +128,7 @@ class Window {
             widgetTypeSet.push(widgetType)
           }
           iter(control.controls)
+          iter(control.headerControls)
         })
       }
     }
