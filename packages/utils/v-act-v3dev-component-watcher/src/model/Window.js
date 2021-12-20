@@ -140,11 +140,23 @@ class Window {
       if (Object.hasOwnProperty.call(existWidgets, widgetType)) {
         const pluginName = existWidgets[widgetType]
         script.push(
-          `import {convert as convert${widgetType}} from '${pluginName}';`
+          `import {${widgetType},convert as convert${widgetType}} from '${pluginName}';`
         )
       }
     }
     return script.join('\n')
+  }
+
+  getControlDefineMapScript(){
+    const existWidgets = this.getWidgetMap()
+    const script = ['{']
+    for (const widgetType in existWidgets) {
+      if (Object.hasOwnProperty.call(existWidgets, widgetType)) {
+        script.push(`"${widgetType}":${widgetType},`)
+      }
+    }
+    script.push('}')
+    return script.join('')
   }
 
   getControlConverMapScript() {
@@ -165,7 +177,8 @@ class Window {
         const params = {
           windowJsonScript: JSON.stringify(this.toSchmemaObj()),
           controlConvertMap: this.getControlConverMapScript(),
-          importScripts: this.toImportScripts()
+          importScripts: this.toImportScripts(),
+          controlDefines: this.getControlDefineMapScript()
         }
         const content = render(params)
         resolve(content)

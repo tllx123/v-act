@@ -17,19 +17,6 @@ interface Control {
   properties: Property
 
   /**
-   * 二维码属性
-   */
-  jgqrcodeproperties: JGQrcodeProperty
-  /**
-   *条形码属性
-   */
-  JGBarcodeProperty: JGBarcodeProperty
-
-  /**
-   *网页属性
-   */
-  JGWebBrowserProperty: JGWebBrowserProperty
-  /**
    *
    * 子控件
    */

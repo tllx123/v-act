@@ -1,12 +1,13 @@
 import { ContentAlignment } from '@v-act/jggrouppanel'
-import { Control } from '@v-act/schema-types'
+import { Control, ControlReact, ReactEnum } from '@v-act/schema-types'
+import { toControlReact } from '.'
 
 /**
  * 布局子控件,根据子控件左边距、上边距、宽、高等信息进行布局
  * @param children 子控件
  * @returns
  */
-const layoutControls = function (children: Control[], parent: Control) {
+const layoutControls = function (children: Control[], contianerReact: ControlReact) {
   if (children && children.length > 0) {
     const sameLeftChildren: { [prop: string]: Control[] } = {}
     const sameTopChildren: { [prop: string]: Control[] } = {}
@@ -36,6 +37,8 @@ const layoutControls = function (children: Control[], parent: Control) {
         const hLayout: Control = {
           type: 'JGGroupPanel',
           properties: {
+            multiHeight: ReactEnum.Space.toString(),
+            multiWidth: ReactEnum.Space.toString(),
             contentAlignment: ContentAlignment.Horizontal,
             code: '_$inner_' + new Date().getTime()
           },
@@ -74,6 +77,52 @@ const getHLayoutFromTopSameChildren = function (sameTopChildren: {
     }
   }
   return result
+}
+
+const getControlHeight = function(control:Control,controlDefines: {[prop:string]:{defaultProps?:{[pro:string]:any}}}):number{
+  if(control.properties.height){
+    return parseInt(control.properties.height);
+  }else{
+    const widgetType = control.type;
+    const widgetDefine = controlDefines[widgetType];
+    if(widgetDefine){
+      const defaultProps = widgetDefine.defaultProps;
+      let height;
+      if(defaultProps){
+        height = defaultProps.height||defaultProps.multiHeight;
+      }
+      height = parseInt(height);
+      if(isNaN(height)){
+        throw Error(`控件未定义height或multiHeight默认值！ 控件类型：${widgetType}`);
+      }
+      return height;
+    }else{
+      throw Error(`未找到控件定义！控件类型：${widgetType}`);
+    }
+  }
+}
+
+const getControlWidth = function(control:Control,controlDefines: {[prop:string]:{defaultProps?:{[pro:string]:any}}}):number{
+  if(control.properties.width){
+    return parseInt(control.properties.width);
+  }else{
+    const widgetType = control.type;
+    const widgetDefine = controlDefines[widgetType];
+    if(widgetDefine){
+      const defaultProps = widgetDefine.defaultProps;
+      let width;
+      if(defaultProps){
+        width = defaultProps.width||defaultProps.multiWidth;
+      }
+      width = parseInt(width);
+      if(isNaN(width)){
+        throw Error(`控件未定义width或multiWidth默认值！ 控件类型：${widgetType}`);
+      }
+      return width;
+    }else{
+      throw Error(`未找到控件定义！控件类型：${widgetType}`);
+    }
+  }
 }
 
 const getVLayoutFromLeftSameChildren = function (
