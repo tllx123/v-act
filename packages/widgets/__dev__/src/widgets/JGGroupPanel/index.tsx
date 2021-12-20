@@ -38,6 +38,7 @@ const GroupPanel = () => {
           }
         ]}
         multiWidth="153px"
+        labelText="文件"
       >
         <JGButton key="JGButton1" height="32px" width="59px">
           按钮1

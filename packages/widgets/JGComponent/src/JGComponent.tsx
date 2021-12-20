@@ -11,7 +11,6 @@ interface JGComponentProps {
   right?: Property.Right
   top?: Property.Top
   width?: Property.Width
-  children?: JSX.Element | JSX.Element[] | null
 }
 
 const JGComponentRoot = styled(Box, {

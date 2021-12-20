@@ -45,12 +45,9 @@ const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
 const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
-const DockSecene = lazy(() => import('./widgets/Dock/Scene'))
-const DockSecene1 = lazy(() => import('./widgets/Dock/Scene1'))
-const DockSecene2 = lazy(() => import('./widgets/Dock/Scene2'))
-const DockSecene3 = lazy(() => import('./widgets/Dock/Scene3'))
-const JGGroupPanelSecene1 = lazy(() => import('./widgets/JGGroupPanel/index1'))
-const JGGroupPanelSecene2 = lazy(() => import('./widgets/JGGroupPanel/index2'))
+
+const JGChart = lazy(() => import('./widgets/JGChart'))
+const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
 
 const Routes = () =>
   useRoutes([
@@ -211,28 +208,12 @@ const Routes = () =>
       element: <JGBaseDictBox />
     },
     {
-      path: '/DockSecene',
-      element: <DockSecene />
+      path: '/JGChart',
+      element: <JGChart />
     },
     {
-      path: '/DockSecene1',
-      element: <DockSecene1 />
-    },
-    {
-      path: '/DockSecene2',
-      element: <DockSecene2 />
-    },
-    {
-      path: '/DockSecene3',
-      element: <DockSecene3 />
-    },
-    {
-      path: '/JGGroupPanelSecene1',
-      element: <JGGroupPanelSecene1 />
-    },
-    {
-      path: '/JGGroupPanelSecene2',
-      element: <JGGroupPanelSecene2 />
+      path: '/JGImageCutter',
+      element: <JGImageCutter />
     }
   ])
 
