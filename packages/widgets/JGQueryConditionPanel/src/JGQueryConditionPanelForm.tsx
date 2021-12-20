@@ -31,7 +31,7 @@ interface JGQueryConditionPanelFormProps {
    */
   quickSearchHint?: string
 
-  children?: Array<JSX.Element> | null
+  children?: Array<JSX.Element> | JSX.Element | null
 }
 
 const JGQueryConditionPanelForm = function (
@@ -40,11 +40,20 @@ const JGQueryConditionPanelForm = function (
   const columnCount = props.columnCount || 3
   let children = null
   let remainNumCols = columnCount
-  if (props.children && props.children.length > 0) {
+  let childList = props.children
+  if (childList) {
+    if (!Array.isArray(childList)) {
+      if (childList.type === React.Fragment) {
+        childList = childList.props.children
+      }
+    }
+    if (!Array.isArray(childList) && childList) {
+      childList = [childList]
+    }
     let labelWidth = 0
     const itemLabelWidth = props.itemLabelWidth || ReactEnum.Content
     if (itemLabelWidth === ReactEnum.Content) {
-      labelWidth = getChildrenTitleWidth(props.children)
+      labelWidth = getChildrenTitleWidth(childList || [])
     } else {
       labelWidth = parseInt(itemLabelWidth)
     }
@@ -53,24 +62,26 @@ const JGQueryConditionPanelForm = function (
       multiWidth: ReactEnum.Space,
       labelWidth: labelWidth
     })
-    children = props.children.map((child, i) => {
-      const childProps = child.props
-      let colSpan = parseInt(childProps.colSpan)
-      colSpan = isNaN(colSpan) ? 1 : colSpan
-      remainNumCols = remainNumCols - colSpan
-      remainNumCols = remainNumCols == 0 ? columnCount : remainNumCols
-      const endRow = child.props.endRow == 'True'
-      return (
-        <React.Fragment key={i}>
-          <ContextProvider context={context}>
-            <Box gridColumn={'span ' + colSpan}>{child}</Box>
-            {endRow && remainNumCols > 0 && remainNumCols != columnCount ? (
-              <Box gridColumn={'span ' + remainNumCols}></Box>
-            ) : null}
-          </ContextProvider>
-        </React.Fragment>
-      )
-    })
+    children = childList
+      ? childList.map((child, i) => {
+          const childProps = child.props
+          let colSpan = parseInt(childProps.colSpan)
+          colSpan = isNaN(colSpan) ? 1 : colSpan
+          remainNumCols = remainNumCols - colSpan
+          remainNumCols = remainNumCols == 0 ? columnCount : remainNumCols
+          const endRow = child.props.endRow == 'True'
+          return (
+            <React.Fragment key={i}>
+              <ContextProvider context={context}>
+                <Box gridColumn={'span ' + colSpan}>{child}</Box>
+                {endRow && remainNumCols > 0 && remainNumCols != columnCount ? (
+                  <Box gridColumn={'span ' + remainNumCols}></Box>
+                ) : null}
+              </ContextProvider>
+            </React.Fragment>
+          )
+        })
+      : []
     if (remainNumCols === columnCount) {
       children.push(<Box gridColumn={'span ' + (columnCount - 1)}></Box>)
       children.push(
@@ -152,7 +163,7 @@ const convert = function (
   const formControls: Control[] = []
   if (controls && controls.length > 0) {
     controls.forEach((con) => {
-      if (con.properties.code == 'JGLocateBox_quickSearch') {
+      if (con.properties.code == 'JGLocateBox_quickSearch1') {
         formProps.quickSearchHint = con.properties.hint || ''
       } else {
         formControls.push(con)

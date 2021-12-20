@@ -75,11 +75,13 @@ class Window {
         controls.push(this.toSchemaControl(con))
       })
     }
-    return {
+    const control = {
       type: controlObj.$.type,
       properties: this.toSchemaProperty(controlObj.propertys),
       controls
     }
+
+    return control
   }
 
   toSchmemaObj() {

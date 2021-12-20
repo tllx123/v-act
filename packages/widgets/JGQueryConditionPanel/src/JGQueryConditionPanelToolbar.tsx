@@ -25,7 +25,7 @@ interface JGQueryConditionPanelFormProps {
 
   onClick?: (status: boolean) => void
 
-  children?: Array<JSX.Element> | null
+  children?: Array<JSX.Element> | JSX.Element | null
 }
 
 function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
@@ -38,20 +38,33 @@ function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
     settings.forEach((setting) => {
       settingMap[setting.key] = setting
     })
-    props.children.forEach((child) => {
-      let key = child.key
-      if (key === null) {
-        key = child.props.code
-      }
-      if (key !== null) {
-        const align = settingMap[key] ? settingMap[key].align : Align.Left
-        if (align === Align.Right) {
-          rightChildren.push(child)
-        } else {
-          leftChildren.push(child)
+    let childList = props.children
+    if (childList) {
+      if (!Array.isArray(childList)) {
+        if (childList.type === React.Fragment) {
+          childList = childList.props.children
         }
       }
-    })
+      if (!Array.isArray(childList) && childList) {
+        childList = [childList]
+      }
+    }
+    if (childList) {
+      childList.forEach((child) => {
+        let key = child.key
+        if (key === null) {
+          key = child.props.code
+        }
+        if (key !== null) {
+          const align = settingMap[key] ? settingMap[key].align : Align.Left
+          if (align === Align.Right) {
+            rightChildren.push(child)
+          } else {
+            leftChildren.push(child)
+          }
+        }
+      })
+    }
   }
   const [status, setStatus] = React.useState(!!props.collapseStatus)
   const onClickHandler = props.onClick ? props.onClick : null

@@ -46,8 +46,16 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           ? childSetting.verticalAlign
           : VerticalAlign.Top
       const containerProps: CSSProperties = {
-        width: toWidth(child.props.multiWidth, context, ReactEnum.Content),
-        height: toHeight(child.props.multiHeight, context, ReactEnum.Content),
+        width: toWidth(
+          child.props.multiWidth || child.props.width,
+          context,
+          ReactEnum.Content
+        ),
+        height: toHeight(
+          child.props.multiHeight || child.props.height,
+          context,
+          ReactEnum.Content
+        ),
         alignSelf:
           hAlign === HorizontalAlign.Left
             ? 'start'
@@ -87,35 +95,117 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
   } else {
     parseChild(children)
   }
-
+  const areaChildren = []
+  if (
+    topChildren.length > 0 ||
+    (middleChildren.length > 0 && bottomChildren.length > 0)
+  ) {
+    areaChildren.push({
+      justifyContent: 'start',
+      children: topChildren
+    })
+  }
+  if (middleChildren.length > 0) {
+    areaChildren.push({
+      justifyContent: 'center',
+      children: middleChildren
+    })
+  }
+  if (
+    bottomChildren.length > 0 ||
+    (topChildren.length > 0 && middleChildren.length > 0)
+  ) {
+    areaChildren.push({
+      justifyContent: 'end',
+      children: bottomChildren
+    })
+  }
   const containerProps = getGroupPanelProps(props, context)
   return (
-    <div
-      style={{
-        ...containerProps,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between'
-      }}
-    >
-      <ContextProvider context={childContext}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {topChildren.map((child, index) => {
-            return <Fragment key={index}>{child}</Fragment>
-          })}
+    <Fragment>
+      {props.groupTitle ? (
+        <fieldset
+          style={{
+            margin: '0px',
+            ...containerProps,
+            padding: '0px',
+            display: 'flex',
+            overflow: 'visible',
+            fontFamily:
+              'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif',
+            border: '1px solid #ddd',
+            boxSizing: 'border-box'
+          }}
+        >
+          <legend
+            style={{
+              fontSize: '14px',
+              color: '#8C8C8C',
+              fontWeight: 'bold'
+            }}
+          >
+            {props.groupTitle}
+          </legend>
+          <div
+            style={{
+              ...containerProps,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between'
+            }}
+          >
+            <ContextProvider context={childContext}>
+              {areaChildren.map((area, i) => {
+                return (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: area.justifyContent,
+                      height: '100%'
+                    }}
+                    key={i}
+                  >
+                    {area.children.map((child, index) => {
+                      return <Fragment key={index}>{child}</Fragment>
+                    })}
+                  </div>
+                )
+              })}
+            </ContextProvider>
+          </div>
+        </fieldset>
+      ) : (
+        <div
+          style={{
+            ...containerProps,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+          }}
+        >
+          <ContextProvider context={childContext}>
+            {areaChildren.map((area, i) => {
+              return (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: area.justifyContent,
+                    height: '100%'
+                  }}
+                  key={i}
+                >
+                  {area.children.map((child, index) => {
+                    return <Fragment key={index}>{child}</Fragment>
+                  })}
+                </div>
+              )
+            })}
+          </ContextProvider>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {middleChildren.map((child, index) => {
-            return <Fragment key={index}>{child}</Fragment>
-          })}
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {bottomChildren.map((child, index) => {
-            return <Fragment key={index}>{child}</Fragment>
-          })}
-        </div>
-      </ContextProvider>
-    </div>
+      )}
+    </Fragment>
   )
 }
 
