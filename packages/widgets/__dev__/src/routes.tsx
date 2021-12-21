@@ -45,9 +45,11 @@ const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
 const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
+const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
 
 const Routes = () =>
   useRoutes([
+    { path: '/JGTreeView', element: <JGTreeView /> },
     {
       path: '/',
       element: <Home />

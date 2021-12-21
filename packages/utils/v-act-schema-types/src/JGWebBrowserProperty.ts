@@ -1,10 +1,9 @@
-import Property from './Property'
+import PropertyTemp from './Property'
 
-interface JGWebBrowserProperty extends Property {
+interface JGWebBrowserProperty extends PropertyTemp {
   /**
    * 链接
    */
-
   url: string
 }
 

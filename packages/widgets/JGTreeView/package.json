@@ -1,0 +1,20 @@
+{
+  "name": "@v-act/jgtreeview",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@v-act/schema-types": "^1.0.0",
+    "array-to-tree": "^3.3.2",
+    "react-iframe": "^1.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "widgetType": "JGTreeView"
+}
