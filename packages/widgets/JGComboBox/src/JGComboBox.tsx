@@ -1,16 +1,15 @@
-import { forwardRef, CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
 import {
   Box,
   BoxProps,
-  Select,
-  MenuItem,
   InputLabel,
+  MenuItem,
+  Select,
   SelectProps
 } from '@mui/material'
-import React from 'react'
 
 /* 自定义下拉框 */
 const CustomSelect = forwardRef(function (
@@ -21,7 +20,7 @@ const CustomSelect = forwardRef(function (
 })
 
 /* 包装器属性 */
-interface JGComboBoxProps extends BoxProps {
+export interface JGComboBoxProps extends BoxProps {
   /**
    * 编码
    */
@@ -30,7 +29,7 @@ interface JGComboBoxProps extends BoxProps {
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
 
   /**
    * 下边距
@@ -40,7 +39,7 @@ interface JGComboBoxProps extends BoxProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
 
   /**
    * 右边距
@@ -113,22 +112,27 @@ const JGComboBox = function (props: JGComboBoxProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-
+  console.log('Zona')
   /* 标签宽度 */
-  const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
+  const labelWidth =
+    props.labelVisible == false
+      ? '0px'
+      : props.labelWidth === undefined
       ? '94px'
       : props.labelWidth
-    : '0px'
 
   /* 标签样式 */
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height,
-    lineHeight: props.height,
+    height: props.multiHeight ? props.multiHeight : props.height,
+    lineHeight: props.multiHeight ? props.multiHeight : props.height,
     textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
+    paddingRight: '6px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: '14px',
+    color: '#333'
   }
 
   /* 下拉框样式 */
@@ -178,9 +182,11 @@ const JGComboBox = function (props: JGComboBoxProps) {
 JGComboBox.defaultProps = {
   left: 0,
   top: 0,
-  height: 26,
-  width: 235,
-  labelWidth: 94,
+  height: '26px',
+  width: '235px',
+  multiHeight: '26px',
+  multiWidth: '235px',
+  labelWidth: '94px',
   labelText: '下拉选择',
   placeholder: '',
   visible: true,
@@ -189,4 +195,4 @@ JGComboBox.defaultProps = {
 }
 
 export default JGComboBox
-export { JGComboBox, JGComboBoxProps }
+export { JGComboBox }

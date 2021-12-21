@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
+import JGActivityPanel from './widgets/JGActivityPanel'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -46,6 +47,9 @@ const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
 const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
 const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
+
+const JGChart = lazy(() => import('./widgets/JGChart'))
+const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
 
 const Routes = () =>
   useRoutes([
@@ -205,6 +209,18 @@ const Routes = () =>
     {
       path: '/JGBaseDictBox',
       element: <JGBaseDictBox />
+    },
+    {
+      path: '/JGChart',
+      element: <JGChart />
+    },
+    {
+      path: '/JGImageCutter',
+      element: <JGImageCutter />
+    },
+    {
+      path: '/JGActivityPanel',
+      element: <JGActivityPanel />
     }
   ])
 

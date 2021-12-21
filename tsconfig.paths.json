@@ -65,7 +65,12 @@
       "@v-act/jgdiv": ["packages/widgets/JGDiv/src"],
       "@v-act/jggrouppanel": ["packages/widgets/JGGroupPanel/src"],
       "@v-act/jgbasedictbox": ["packages/widgets/JGBaseDictBox/src"],
-      "@v-act/qwer": ["packages/widgets/qwer/src"]
+      "@v-act/qwer": ["packages/widgets/qwer/src"],
+      "@v-act/jgchart": ["packages/widgets/JGChart/src"],
+      "@v-act/jgimagecutter": ["packages/widgets/JGImageCutter/src"],
+      "@v-act/jgactivitypanel": ["packages/widgets/JGActivityPanel/src"],
+      "@v-act/jgspacer": ["packages/widgets/JGSpacer/src"],
+      "@v-act/jgtreeview": ["packages/widgets/JGTreeView/src"]
     }
   }
 }

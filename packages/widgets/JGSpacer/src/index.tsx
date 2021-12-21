@@ -6,27 +6,22 @@ import {
   valueofWidth
 } from '@v-act/widget-utils'
 
-import { JGCheckBoxGroup, JGCheckBoxGroupProps } from './JGCheckBoxGroup'
+import { JGSpacer, JGSpacerProps } from './JGSpacer'
 
 const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
   const pros = control.properties
-  const props: JGCheckBoxGroupProps = {
+  const props: JGSpacerProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    labelText: pros.labelText,
-    placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible, true),
-    labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true),
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px')
   }
-  console.log(123)
-  return <JGCheckBoxGroup {...props}></JGCheckBoxGroup>
+  return <JGSpacer {...props}></JGSpacer>
 }
 
-export default JGCheckBoxGroup
-export { convert, JGCheckBoxGroup }
+export default JGSpacer
+
+export { convert, JGSpacer }

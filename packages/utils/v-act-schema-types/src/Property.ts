@@ -9,6 +9,14 @@ interface Property {
    */
   code: string
   /**
+   * 控件原始高度
+   */
+  height?: string
+  /**
+   * 控件原始宽度
+   */
+  width?: string
+  /**
    * 控件宽度
    */
   multiWidth?: string | ReactEnum

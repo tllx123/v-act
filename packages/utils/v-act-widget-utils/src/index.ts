@@ -1,7 +1,15 @@
 import { Property as CSSProperty } from 'csstype'
 
-import { Dock, Height, ReactEnum, Width } from '@v-act/schema-types'
+import {
+  Control,
+  Dock,
+  Height,
+  Property,
+  ReactEnum,
+  Width
+} from '@v-act/schema-types'
 import { WidgetContextProps } from '@v-act/widget-context'
+import { layoutControls } from './layout'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -158,10 +166,19 @@ const valueofDock = function (dock?: string): Dock {
   }
 }
 
+const toControlReact = function (properties: Property) {
+  return {
+    width: properties.width,
+    height: properties.height
+  }
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
+  layoutControls,
   toBoolean,
+  toControlReact,
   toHeight,
   toLabelWidth,
   toNumber,

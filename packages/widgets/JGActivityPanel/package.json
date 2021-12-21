@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/jgcheckboxgroup",
+  "name": "@v-act/jgactivitypanel",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -8,11 +8,8 @@
     "dist",
     "src"
   ],
-  "peerDependencies": {
-    "@v-act/schema-types": "^1.0.0"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "widgetType": "JGCheckBoxGroup"
+  "widgetType": "jgactivitypanel"
 }

@@ -6,6 +6,7 @@ import type Property from './Property'
 import ReactEnum from './ReactEnum'
 import type Width from './Width'
 import type Window from './Window'
+import type ControlReact from './ControlReact'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -76,6 +77,7 @@ const valueofHeight = function (
 export {
   Component,
   Control,
+  ControlReact,
   Dock,
   Height,
   Property,

@@ -6,27 +6,22 @@ import {
   valueofWidth
 } from '@v-act/widget-utils'
 
-import { JGCheckBoxGroup, JGCheckBoxGroupProps } from './JGCheckBoxGroup'
+import { JGActivityPanel, JGActivityPanelProps } from './JGActivityPanel'
 
 const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
   const pros = control.properties
-  const props: JGCheckBoxGroupProps = {
+  const props: JGActivityPanelProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    labelText: pros.labelText,
-    placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
-    labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true),
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px')
   }
-  console.log(123)
-  return <JGCheckBoxGroup {...props}></JGCheckBoxGroup>
+  return <JGActivityPanel {...props}></JGActivityPanel>
 }
 
-export default JGCheckBoxGroup
-export { convert, JGCheckBoxGroup }
+export default JGActivityPanel
+export { convert, JGActivityPanel }

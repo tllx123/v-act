@@ -93,7 +93,7 @@ JGLinkLabel.defaultProps = {
   multiWidth: 68,
   visible: true,
   textAlign: 'Left',
-  foreColor: '#ff0000'
+  foreColor: '#356bbc'
 }
 
 export default JGLinkLabel

@@ -1,4 +1,11 @@
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
+
 import { JGComboBox, JGComboBoxProps } from './JGComboBox'
 
 const convert = function (
@@ -7,17 +14,19 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGComboBoxProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
     labelText: pros.labelText,
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    labelVisible: toBoolean(pros.labelVisible, true),
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px')
   }
   console.log(123)
   return <JGComboBox {...props}></JGComboBox>
 }
 
 export default JGComboBox
-export { JGComboBox, convert }
+export { convert, JGComboBox }

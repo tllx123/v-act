@@ -1,12 +1,11 @@
-import { forwardRef, CSSProperties } from 'react'
+import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Radio, Box, InputLabel, BoxProps } from '@mui/material'
-import React from 'react'
+import { Box, BoxProps, InputLabel, Radio } from '@mui/material'
 
 /* 包装器属性 */
-interface JGRadioGroupProps extends BoxProps {
+export interface JGRadioGroupProps extends BoxProps {
   /**
    * 编码
    */
@@ -15,7 +14,7 @@ interface JGRadioGroupProps extends BoxProps {
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
 
   /**
    * 下边距
@@ -25,7 +24,7 @@ interface JGRadioGroupProps extends BoxProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
 
   /**
    * 右边距
@@ -102,11 +101,15 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   /* 标签样式 */
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height,
-    lineHeight: props.height,
+    height: props.multiHeight ? props.multiHeight : props.height,
+    lineHeight: props.multiHeight ? props.multiHeight : props.height,
     textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
+    paddingRight: '6px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: '14px',
+    color: '#333'
   }
 
   /* 单选框组样式 */
@@ -123,7 +126,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   const radioStyles: CSSProperties = {
     height: props.height,
     margin: 0,
-    padding: '0px 4px'
+    paddingRight: '4px'
   }
 
   /* 编码(唯一) */
@@ -157,7 +160,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
             style={radioStyles}
             size="small"
           />
-          <span style={{ paddingRight: '5px' }}>a</span>
+          <span style={{ paddingRight: '5px' }}>单选A</span>
         </div>
         <div style={{ display: 'inline-block' }}>
           <Radio
@@ -169,7 +172,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
             style={radioStyles}
             size="small"
           />
-          <span>b</span>
+          <span>单选B</span>
         </div>
       </Box>
     </Box>
@@ -180,8 +183,9 @@ JGRadioGroup.defaultProps = {
   left: 0,
   top: 0,
   height: '26px',
-  width: 500,
-  labelWidth: 94,
+  width: '235px',
+  multiWidth: '235px',
+  labelWidth: '94px',
   labelText: '单选组',
   placeholder: '',
   visible: true,
@@ -190,4 +194,4 @@ JGRadioGroup.defaultProps = {
 }
 
 export default JGRadioGroup
-export { JGRadioGroup, JGRadioGroupProps }
+export { JGRadioGroup }

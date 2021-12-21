@@ -1,17 +1,11 @@
-import { forwardRef, CSSProperties } from 'react'
+import { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Box,
-  InputLabel,
-  BoxProps,
-  Checkbox,
-  FormControlLabel
-} from '@mui/material'
+import { Box, BoxProps, Checkbox, InputLabel } from '@mui/material'
 
 /* 包装器属性 */
-interface JGCheckBoxGroupProps extends BoxProps {
+export interface JGCheckBoxGroupProps extends BoxProps {
   /**
    * 编码
    */
@@ -20,7 +14,7 @@ interface JGCheckBoxGroupProps extends BoxProps {
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
 
   /**
    * 下边距
@@ -30,7 +24,7 @@ interface JGCheckBoxGroupProps extends BoxProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
 
   /**
    * 右边距
@@ -117,11 +111,15 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   /* 标签样式 */
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height,
-    lineHeight: props.height,
+    height: props.multiHeight ? props.multiHeight : props.height,
+    lineHeight: props.multiHeight ? props.multiHeight : props.height,
     textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
+    paddingRight: '6px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: '14px',
+    color: '#333'
   }
 
   /* 单选框组样式 */
@@ -157,16 +155,51 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
         ''
       )}
       <Box style={checkboxStyles}>
-        <FormControlLabel
-          control={<Checkbox defaultChecked size="small" />}
-          label="Label"
-          style={checkboxItemStyles}
-        />
-        <FormControlLabel
-          control={<Checkbox size="small" />}
-          label="Disabled"
-          style={checkboxItemStyles}
-        />
+        <span
+          style={{
+            paddingRight: '8px',
+            height: '26px',
+            display: 'inline-flex'
+          }}
+        >
+          <Checkbox
+            defaultChecked
+            size="small"
+            sx={{
+              width: '24px',
+              height: '24px'
+            }}
+          />
+          <span
+            style={{
+              lineHeight: '25px'
+            }}
+          >
+            多选
+          </span>
+        </span>
+        <span
+          style={{
+            paddingRight: '8px',
+            height: '26px',
+            display: 'inline-flex'
+          }}
+        >
+          <Checkbox
+            size="small"
+            sx={{
+              width: '24px',
+              height: '24px'
+            }}
+          />
+          <span
+            style={{
+              lineHeight: '25px'
+            }}
+          >
+            多选1
+          </span>
+        </span>
       </Box>
     </Box>
   )
@@ -176,8 +209,8 @@ JGCheckBoxGroup.defaultProps = {
   left: 0,
   top: 0,
   height: '26px',
-  width: 500,
-  labelWidth: 94,
+  width: '235px',
+  labelWidth: '94px',
   labelText: '多选组',
   placeholder: '',
   visible: true,
@@ -186,4 +219,4 @@ JGCheckBoxGroup.defaultProps = {
 }
 
 export default JGCheckBoxGroup
-export { JGCheckBoxGroup, JGCheckBoxGroupProps }
+export { JGCheckBoxGroup }
