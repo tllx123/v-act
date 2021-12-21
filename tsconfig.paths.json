@@ -67,7 +67,8 @@
       "@v-act/jgbasedictbox": ["packages/widgets/JGBaseDictBox/src"],
       "@v-act/qwer": ["packages/widgets/qwer/src"],
       "@v-act/jgchart": ["packages/widgets/JGChart/src"],
-      "@v-act/jgimagecutter": ["packages/widgets/JGImageCutter/src"]
+      "@v-act/jgimagecutter": ["packages/widgets/JGImageCutter/src"],
+      "@v-act/jgactivitypanel": ["packages/widgets/JGActivityPanel/src"]
     }
   }
 }

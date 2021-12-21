@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
+import JGActivityPanel from './widgets/JGActivityPanel'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -214,6 +215,10 @@ const Routes = () =>
     {
       path: '/JGImageCutter',
       element: <JGImageCutter />
+    },
+    {
+      path: '/JGActivityPanel',
+      element: <JGActivityPanel />
     }
   ])
 
