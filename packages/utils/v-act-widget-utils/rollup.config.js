@@ -11,6 +11,7 @@ import pkg from './package.json'
 const extensions = ['.js', '.ts', '.tsx']
 
 const entryConfig = defineConfig({
+  external: ['react', 'csstype', '@v-act/jggrouppanel', '@v-act/schema-types'],
   input: 'src/index.ts',
   output: [
     {
@@ -31,7 +32,12 @@ const entryConfig = defineConfig({
       extensions,
       presets: [
         ['@babel/preset-env'],
-        ['@babel/preset-react', { runtime: 'automatic' }],
+        [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic'
+          }
+        ],
         ['@babel/preset-typescript']
       ]
     }),

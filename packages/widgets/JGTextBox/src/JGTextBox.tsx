@@ -139,7 +139,7 @@ const JGTextBox = function (props: JGTextBoxProps) {
   }
   const inputStyles = {
     width: '100%',
-    height: props.multiHeight
+    height: height
   }
   return (
     <div style={wrapStyles}>

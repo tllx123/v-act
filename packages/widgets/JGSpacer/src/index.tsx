@@ -1,10 +1,5 @@
 import { Control } from '@v-act/schema-types'
-import {
-  toBoolean,
-  toNumber,
-  valueofHeight,
-  valueofWidth
-} from '@v-act/widget-utils'
+import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 
 import { JGSpacer, JGSpacerProps } from './JGSpacer'
 
@@ -14,8 +9,8 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGSpacerProps = {
-    top: toNumber(pros.top) + 'px',
-    left: toNumber(pros.left) + 'px',
+    top: toNumber(pros.top, 0) + 'px',
+    left: toNumber(pros.left, 0) + 'px',
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px')
   }
