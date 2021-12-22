@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { Height, Width } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
 
 import { Aligment, ScrollbarDirection, TabAppearance } from './Enums'
 import { JGTabPage } from './JGTabPage'
@@ -57,12 +58,8 @@ const JGTabControl = function (props: JGTabControlProps) {
   if (!props.visible) {
     return null
   }
+  const context = useContext()
   const index = props.selectedIndex || 0
-  const childrenCodes = props.children
-    ? props.children.map((child) => {
-        return child.props.code
-      })
-    : []
   const [value, setValue] = React.useState(index)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
@@ -70,7 +67,7 @@ const JGTabControl = function (props: JGTabControlProps) {
   return (
     <Box
       sx={{
-        position: 'absolute',
+        position: context.position,
         left: props.left,
         top: props.top,
         height: props.multiHeight,
