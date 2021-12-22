@@ -1,12 +1,12 @@
-import React, { forwardRef, CSSProperties, useState } from 'react'
-
-import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
-
-import { styled } from '@mui/system'
-
-import { Height, Width } from '@v-act/schema-types'
+import React, { CSSProperties, forwardRef, useState } from 'react'
 
 import { Property } from 'csstype'
+
+import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import { styled } from '@mui/system'
+import { Height, Width } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGIntegerBoxProps extends InputUnstyledProps {
   /**
@@ -65,6 +65,10 @@ interface JGIntegerBoxProps extends InputUnstyledProps {
    * 输入框显示类型
    */
   inputType?: string
+  /**
+   * 禁用
+   */
+  disabled?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -90,6 +94,9 @@ const StyledInputElement = styled('input')`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
+  [disabled] {
+    background: #f6f7fb;
+  }
 `
 
 const CustomInput = forwardRef(function (
@@ -110,11 +117,17 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
     return null
   }
   const [inputVal, setInputVal] = useState('')
+  const context = useContext()
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+  const labelWidth = props.labelVisible
+    ? toLabelWidth(props.labelWidth, context, 94)
+    : 0
   const wrapStyles: CSSProperties = {
-    width: props.width || props.multiWidth,
-    height: props.height || props.multiHeight,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context.position,
     display: 'flex',
     alignItems: 'center',
     left: props.left,
@@ -122,25 +135,18 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
-      ? 94
-      : props.labelWidth
-    : 0
-  let lineHeight =
-    String(props.height || props.multiHeight).indexOf('px') !== -1
-      ? props.height || props.multiHeight
-      : (props.height || props.multiHeight) + 'px'
+
+  let lineHeight = String(height).indexOf('px') !== -1 ? height : height + 'px'
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height || props.multiHeight,
+    height: height,
     lineHeight: lineHeight,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
   }
   const inputStyles = {
-    height: props.height || props.multiHeight
+    height: height
   }
   const handleChange = (e) => {
     let hasMinus = e.target.value.indexOf('-') === 0
@@ -164,23 +170,25 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
         type={'text'}
         onChange={(e) => handleChange(e)}
         value={inputVal}
+        disabled={props.disabled}
       />
     </div>
   )
 }
 
 JGIntegerBox.defaultProps = {
-  left: 0,
-  top: 0,
-  multiHeight: 26,
-  multiWidth: 235,
+  left: '0px',
+  top: '0px',
+  multiHeight: '26px',
+  multiWidth: '235px',
   labelWidth: 94,
   labelText: '文本',
   placeholder: '',
   isMust: false,
   visible: true,
   labelVisible: true,
-  inputType: 'number'
+  inputType: 'number',
+  disabled: false
 }
 
 export default JGIntegerBox
