@@ -50,9 +50,11 @@ const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
 
 const JGChart = lazy(() => import('./widgets/JGChart'))
 const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
+const JGDataGrid = lazy(() => import('./widgets/JGDataGrid'))
 
 const Routes = () =>
   useRoutes([
+    { path: '/JGDataGrid', element: <JGDataGrid /> },
     { path: '/JGTreeView', element: <JGTreeView /> },
     {
       path: '/',
