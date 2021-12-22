@@ -1,3 +1,5 @@
+import '@grapecity/spread-sheets/styles/gc.spread.sheets.excel2013lightGray.css'
+
 import { Fragment } from 'react'
 
 import { Property } from 'csstype'
