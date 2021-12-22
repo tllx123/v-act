@@ -3,6 +3,7 @@ import type Control from './Control'
 import type ControlReact from './ControlReact'
 import Dock from './Dock'
 import type Height from './Height'
+import type JGReportProperty from './properties/JGReportProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
 import type Property from './Property'
 import ReactEnum from './ReactEnum'
@@ -81,6 +82,7 @@ export {
   ControlReact,
   Dock,
   Height,
+  JGReportProperty,
   JGWebBrowserProperty,
   Property,
   ReactEnum,

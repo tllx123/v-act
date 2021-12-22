@@ -59,8 +59,12 @@ const Home = () => {
       <br />
       <Link href="/JGHyperLink">JGHyperLink</Link>
       <br />
-      <Link href="/JGBaseDictBox">JGBaseDictBox</Link> <br />
-      <Link href="/JGTreeView">JGTreeView</Link> <br />
+      <Link href="/JGBaseDictBox">JGBaseDictBox</Link>
+      <br />
+      <Link href="/JGTreeView">JGTreeView</Link>
+      <br />
+      <Link href="/JGReport">JGReport</Link>
+      <br />
     </>
   )
 }

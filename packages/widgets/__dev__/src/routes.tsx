@@ -50,6 +50,7 @@ const JGChart = lazy(() => import('./widgets/JGChart'))
 const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
 const JGGroupPanelSecene1 = lazy(() => import('./widgets/JGGroupPanel/index1'))
 const JGGroupPanelSecene2 = lazy(() => import('./widgets/JGGroupPanel/index2'))
+const JGReport = lazy(() => import('./widgets/JGReport'))
 const Routes = () =>
   useRoutes([
     {
@@ -223,6 +224,10 @@ const Routes = () =>
     {
       path: '/JGGroupPanelSecene2',
       element: <JGGroupPanelSecene2 />
+    },
+    {
+      path: '/JGReport',
+      element: <JGReport />
     }
   ])
 
