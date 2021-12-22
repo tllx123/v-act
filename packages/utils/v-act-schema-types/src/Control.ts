@@ -1,6 +1,3 @@
-import JGBarcodeProperty from './JGBarcodeProperty'
-import JGQrcodeProperty from './JGQrcodeProperty'
-import JGWebBrowserProperty from './JGWebBrowserProperty'
 import Property from './Property'
 
 /**
