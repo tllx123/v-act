@@ -3,6 +3,9 @@ import { forwardRef } from 'react'
 import { Property } from 'csstype'
 
 import { Box, BoxProps, styled } from '@mui/material'
+import { ReactEnum } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 interface JGComponentProps {
   bottom?: Property.Bottom
@@ -11,6 +14,7 @@ interface JGComponentProps {
   right?: Property.Right
   top?: Property.Top
   width?: Property.Width
+  children?: JSX.Element | JSX.Element[] | null
 }
 
 const JGComponentRoot = styled(Box, {
@@ -22,13 +26,14 @@ const JGComponentRoot = styled(Box, {
 
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
+    const context = useContext()
     const props: BoxProps = {
       sx: {
-        width: inProps.width,
+        width: toWidth(inProps.width, context, ReactEnum.Space),
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
-        height: inProps.height,
+        height: toHeight(inProps.height, context, ReactEnum.Space),
         bottom: inProps.bottom
       }
     }
@@ -39,6 +44,11 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     )
   }
 )
+
+JGComponent.defaultProps = {
+  height: '450px',
+  width: '960px'
+}
 
 export default JGComponent
 export { JGComponent, type JGComponentProps }

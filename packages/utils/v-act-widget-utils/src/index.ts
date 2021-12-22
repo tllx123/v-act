@@ -1,14 +1,10 @@
+import { Fragment } from 'react'
+
 import { Property as CSSProperty } from 'csstype'
 
-import {
-  Control,
-  Dock,
-  Height,
-  Property,
-  ReactEnum,
-  Width
-} from '@v-act/schema-types'
+import { Dock, Height, Property, ReactEnum, Width } from '@v-act/schema-types'
 import { WidgetContextProps } from '@v-act/widget-context'
+
 import { layoutControls } from './layout'
 
 /**
@@ -50,7 +46,7 @@ const valueofWidth = function (
     if (val === undefined) {
       return def
     } else {
-      return parseInt(val) + 'px'
+      return val.endsWith('%') ? val : parseInt(val) + 'px'
     }
   }
 }
@@ -62,25 +58,12 @@ const valueofHeight = function (
   return valueofWidth(val, def)
 }
 
-const toReactVal = function (
-  val: Width | Height | undefined,
-  def: CSSProperty.Height | CSSProperty.Width
-) {
-  return val === ReactEnum.Space
-    ? '100%'
-    : val == ReactEnum.Content
-    ? '1px'
-    : val
-    ? val
-    : def
-}
-
 const toHeight = function (
   val: Height | undefined,
   context: WidgetContextProps | undefined,
   def: CSSProperty.Height
 ): CSSProperty.Height {
-  return toReactVal(
+  return toCssAxisVal(
     context ? (context.multiHeight ? context.multiHeight : val) : val,
     def
   )
@@ -91,7 +74,7 @@ const toWidth = function (
   context: WidgetContextProps | undefined,
   def: CSSProperty.Width
 ): CSSProperty.Width {
-  return toReactVal(
+  return toCssAxisVal(
     context ? (context.multiWidth ? context.multiWidth : val) : val,
     def
   )
@@ -173,12 +156,67 @@ const toControlReact = function (properties: Property) {
   }
 }
 
+const getChildrenWithoutFragment = function (
+  element: JSX.Element | JSX.Element[] | null | undefined
+): JSX.Element[] {
+  if (element) {
+    if (Array.isArray(element)) {
+      return element
+    } else {
+      if (element.type === Fragment) {
+        const children = element.props.children
+        if (Array.isArray(children)) {
+          return children
+        } else {
+          return [children]
+        }
+      }
+      return [element]
+    }
+  }
+  return []
+}
+
+const isPercent = function (val: string | null | undefined) {
+  if (typeof val == 'string') {
+    return val.endsWith('%')
+  }
+  return false
+}
+
+/**
+ * 转换从成css坐标信息(宽、高、上边距、左边距等)
+ */
+const toCssAxisVal = function (
+  val: ReactEnum | string | Width | Height | undefined | null,
+  def:
+    | string
+    | CSSProperty.Height
+    | CSSProperty.Width
+    | CSSProperty.Left
+    | CSSProperty.Top
+) {
+  if (val === ReactEnum.Space) {
+    return '100%'
+  } else if (val === ReactEnum.Content) {
+    return 'auto'
+  } else if (typeof val === 'string') {
+    let val1 = parseInt(val)
+    return val1 + '' === val ? val + 'px' : val
+  } else {
+    return def
+  }
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
+  getChildrenWithoutFragment,
+  isPercent,
   layoutControls,
   toBoolean,
   toControlReact,
+  toCssAxisVal,
   toHeight,
   toLabelWidth,
   toNumber,

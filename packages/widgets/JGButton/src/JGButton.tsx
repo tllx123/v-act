@@ -1,7 +1,10 @@
 import { forwardRef } from 'react'
+
 import { Property } from 'csstype'
+
 import { Button, ButtonProps, styled } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 export interface JGButtonProps extends ButtonProps {
   bottom?: Property.Bottom | undefined
@@ -31,11 +34,11 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
       variant: 'contained',
       sx: {
         ...sx,
-        width: inProps.width,
+        width: toWidth(inProps.width, context, '59px'),
         top: inProps.top ?? 0,
         right: inProps.right,
         left: inProps.left ?? 0,
-        height: inProps.height,
+        height: toHeight(inProps.height, context, '26px'),
         bottom: inProps.bottom,
         position: context ? context.position : 'absolute'
       }
@@ -47,5 +50,10 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
     )
   }
 )
+
+JGButton.defaultProps = {
+  height: '26px',
+  width: '59px'
+}
 
 export default JGButton

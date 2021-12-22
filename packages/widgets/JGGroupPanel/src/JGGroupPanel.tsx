@@ -25,11 +25,14 @@ enum VerticalAlign {
 }
 
 interface Setting {
-  key: string
+  key?: string
+  index?: number
   horizontalAlign?: HorizontalAlign
   verticalAlign?: VerticalAlign
   colSpan?: number
   endRow?: boolean
+  percentWidth?: string
+  percentHeight?: string
 }
 
 interface JGGroupPanelProps {
@@ -89,7 +92,7 @@ JGGroupPanel.defaultProps = {
   left: '0px',
   multiWidth: '50px',
   multiHeight: '100px',
-  contnetAlignment: ContentAlignment.Horizontal,
+  contentAlignment: ContentAlignment.Horizontal,
   numCols: 3,
   setting: []
 }

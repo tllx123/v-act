@@ -3,7 +3,6 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
-import JGActivityPanel from './widgets/JGActivityPanel'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -46,11 +45,13 @@ const JGDiv = lazy(() => import('./widgets/JGDiv'))
 const JGGroupPanel = lazy(() => import('./widgets/JGGroupPanel'))
 const JGHyperLink = lazy(() => import('./widgets/JGHyperLink'))
 const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
-const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
 
 const JGChart = lazy(() => import('./widgets/JGChart'))
 const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
 const JGDataGrid = lazy(() => import('./widgets/JGDataGrid'))
+const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
+const JGGroupPanelSecene1 = lazy(() => import('./widgets/JGGroupPanel/index1'))
+const JGGroupPanelSecene2 = lazy(() => import('./widgets/JGGroupPanel/index2'))
 
 const Routes = () =>
   useRoutes([
@@ -221,8 +222,12 @@ const Routes = () =>
       element: <JGImageCutter />
     },
     {
-      path: '/JGActivityPanel',
-      element: <JGActivityPanel />
+      path: '/JGGroupPanelSecene1',
+      element: <JGGroupPanelSecene1 />
+    },
+    {
+      path: '/JGGroupPanelSecene2',
+      element: <JGGroupPanelSecene2 />
     }
   ])
 

@@ -1,10 +1,11 @@
+import { Control, ReactEnum } from '@v-act/schema-types'
 import {
-  Control,
-  ReactEnum,
+  isPercent,
+  toCssAxisVal,
   toNumber,
   valueofHeight,
   valueofWidth
-} from '@v-act/schema-types'
+} from '@v-act/widget-utils'
 
 import {
   ContentAlignment,
@@ -22,8 +23,8 @@ const convert = function (
   const pros = control.properties
   const settings: Setting[] = []
   const props: JGGroupPanelProps = {
-    top: toNumber(pros.top) + 'px',
-    left: toNumber(pros.left) + 'px',
+    top: toCssAxisVal(pros.top, '0px'),
+    left: toCssAxisVal(pros.left, '0px'),
     multiWidth: valueofWidth(pros.multiWidth, ReactEnum.Space),
     multiHeight: valueofHeight(pros.multiHeight, ReactEnum.Space),
     numCols: toNumber(pros.numCols, 3),
@@ -38,10 +39,11 @@ const convert = function (
   }
   const controls = control.controls
   if (controls && controls.length > 0) {
-    controls.forEach((con) => {
+    controls.forEach((con, index) => {
       const childProps = con.properties
       const setting: Setting = {
-        key: childProps.code,
+        //key: childProps.code,
+        index: index,
         horizontalAlign:
           childProps.horizontalAlign == 'Center'
             ? HorizontalAlign.Center
@@ -54,6 +56,14 @@ const convert = function (
             : childProps.verticalAlign == 'Bottom'
             ? VerticalAlign.Bottom
             : VerticalAlign.Top
+      }
+      if (isPercent(childProps.multiWidth)) {
+        setting.percentWidth = childProps.multiWidth
+        childProps.multiWidth = ReactEnum.Space.toString()
+      }
+      if (isPercent(childProps.multiHeight)) {
+        setting.percentHeight = childProps.multiHeight
+        childProps.multiHeight = ReactEnum.Space.toString()
       }
       settings.push(setting)
     })
