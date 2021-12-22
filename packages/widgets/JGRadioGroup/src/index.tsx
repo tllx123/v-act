@@ -24,7 +24,6 @@ const convert = function (
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px')
   }
-  console.log(123)
   return <JGRadioGroup {...props}></JGRadioGroup>
 }
 
