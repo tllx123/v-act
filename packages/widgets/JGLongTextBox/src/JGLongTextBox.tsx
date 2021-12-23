@@ -1,6 +1,8 @@
 import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   left?: Property.Left
   top?: Property.Top
@@ -16,6 +18,8 @@ export interface JGLongTextBoxProps extends TextareaAutosizeProps {
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
+  const context = useContext()
+
   const {
     left,
     top,
@@ -34,9 +38,9 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: width,
-        height: height,
-        position: position,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         left: left,
         top: top,
         margin: margin,

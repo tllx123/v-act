@@ -5,6 +5,8 @@ import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
 import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 interface JGLongDateTimePickerProps extends DateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
@@ -20,6 +22,7 @@ interface JGLongDateTimePickerProps extends DateTimePickerProps {
 }
 
 const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -48,13 +51,13 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: width,
-              position: position,
+              width: toWidth(width, context, '235px'),
+              height: toHeight(height, context, '26px'),
+              position: context.position,
               left: left,
               top: top,
               margin: margin,
               padding: padding,
-              height: height,
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >

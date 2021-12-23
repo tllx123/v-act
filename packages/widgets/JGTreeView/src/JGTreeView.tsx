@@ -5,7 +5,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 export interface JGTreeViewProps extends TreeViewPropsBase {
   left?: Property.Left
   top?: Property.Top
@@ -18,6 +19,7 @@ export interface JGTreeViewProps extends TreeViewPropsBase {
 }
 
 const JGTreeView = (props: JGTreeViewProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -54,11 +56,11 @@ const JGTreeView = (props: JGTreeViewProps) => {
   return (
     <Box
       sx={{
-        position: position,
         left: left,
         top: top,
-        width: width,
-        height: height,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         pointerEvents: isReadonly ? 'none' : 'auto'
       }}
     >

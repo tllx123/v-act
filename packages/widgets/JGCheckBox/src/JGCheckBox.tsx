@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box'
 import { Checkbox, CheckboxProps } from '@mui/material'
 import { Property } from 'csstype'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 interface JGCheckBoxProps extends CheckboxProps {
   left?: Property.Left
   top?: Property.Top
@@ -16,6 +17,7 @@ interface JGCheckBoxProps extends CheckboxProps {
 }
 
 const JGCheckBox = (props: JGCheckBoxProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -35,9 +37,9 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: width,
-        height: height,
-        position: position,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         left: left,
         top: top,
         margin: margin,
