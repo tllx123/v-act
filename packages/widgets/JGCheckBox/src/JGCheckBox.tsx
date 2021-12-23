@@ -17,6 +17,7 @@ interface JGCheckBoxProps extends CheckboxProps {
   labelWidth?: number
   readonly?: boolean
   ismust?: boolean
+  labelVisible?: boolean
 }
 
 const JGCheckBox = (props: JGCheckBoxProps) => {
@@ -31,7 +32,9 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     margin,
     padding,
     ismust,
-    readonly
+    readonly,
+    labelVisible,
+    labelWidth
   } = props
 
   return (
@@ -50,14 +53,15 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     >
       <span
         style={{
-          width: toLabelWidth(props.labelWidth, context, 94),
           lineHeight: toHeight(height, context, '26px'),
           fontSize: '14px',
+          width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
           overflow: 'hidden',
           textAlign: 'right',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          paddingRight: '6px'
+          paddingRight: '6px',
+          display: labelVisible ? 'block' : 'none'
         }}
       >
         {labeltext}
@@ -99,7 +103,8 @@ JGCheckBox.defaultProps = {
   position: 'absolute',
   labelWidth: 94,
   left: 0,
-  top: 0
+  top: 0,
+  labelVisible: true
 }
 export default JGCheckBox
 export { JGCheckBox, type JGCheckBoxProps }

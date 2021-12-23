@@ -24,6 +24,7 @@ interface JGDateTimePickerProps {
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
+  labelVisible?: boolean
 }
 
 const JGDateTimePicker = (props: JGDateTimePickerProps) => {
@@ -40,6 +41,8 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     padding,
     placeholder,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   const [value, setValue] = React.useState<any>(null)
@@ -69,14 +72,16 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
           >
             <span
               style={{
-                width: toLabelWidth(props.labelWidth, context, 94),
                 fontSize: '14px',
+                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
+                fontSize: '12px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 lineHeight: toHeight(height, context, '26px'),
                 textOverflow: 'ellipsis',
                 paddingRight: '6px',
-                textAlign: 'right'
+                textAlign: 'right',
+                display: labelVisible ? 'block' : 'none'
               }}
             >
               {labeltext}
@@ -134,9 +139,11 @@ JGDateTimePicker.defaultProps = {
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: '请选择日期'
+  placeholder: '请选择日期',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGDateTimePicker
 
-export { JGDateTimePicker, JGDateTimePickerProps }
+export { JGDateTimePicker, type JGDateTimePickerProps }

@@ -15,7 +15,8 @@ const convert = function (
     height: toNumber(pros.multiHeight) + 'px',
     ismust: toBoolean(pros.isMust, false),
     disabled: !toBoolean(pros.enabled, true),
-    labelWidth: toNumber(pros.labelWidth, 94)
+    labelWidth: toNumber(pros.labelWidth, 94),
+    labelVisible: toBoolean(pros.labelVisible, true)
   }
   return <JGCheckBox {...props}></JGCheckBox>
 }

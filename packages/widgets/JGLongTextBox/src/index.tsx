@@ -14,7 +14,8 @@ export const convert = function (control: Control): JSX.Element {
     placeholder: pros.placeholder,
     disabled: !toBoolean(pros.enabled, true),
     labeltext: pros.labelText || '',
-    labelWidth: toNumber(pros.labelWidth, 94)
+    labelWidth: toNumber(pros.labelWidth, 94),
+    labelVisible: toBoolean(pros.labelVisible, true)
   }
   return <JGLongTextBox {...props}></JGLongTextBox>
 }

@@ -18,6 +18,7 @@ export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   labeltext?: string
   labelWidth?: number
   placeholder?: string
+  labelVisible?: boolean
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
@@ -34,6 +35,8 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     margin,
     padding,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   return (
@@ -53,14 +56,15 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     >
       <span
         style={{
-          width: toLabelWidth(props.labelWidth, context, 94),
           lineHeight: toHeight(height, context, '26px'),
           fontSize: '14px',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
           paddingRight: '6px',
-          textAlign: 'right'
+          textAlign: 'right',
+          width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
+          display: labelVisible ? 'block' : 'none'
         }}
       >
         {labeltext}
@@ -102,7 +106,9 @@ JGLongTextBox.defaultProps = {
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: ''
+  placeholder: '',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGLongTextBox
