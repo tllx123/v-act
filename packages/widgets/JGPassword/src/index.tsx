@@ -1,4 +1,10 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGPassword, JGPasswordProps } from './JGPassword'
 
@@ -10,14 +16,17 @@ const convert = function (
   const props: JGPasswordProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    width: toNumber(pros.multiWidth) + 'px',
-    height: toNumber(pros.multiHeight) + 'px',
-    labelText: pros.labelText,
-    isMust: toBoolean(pros.isMust),
+    width: valueofWidth(pros.multiWidth, '235px'),
+    height: valueofHeight(pros.multiHeight, '26px'),
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
+    labelText: pros.labelText || '文本',
+    isMust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    labelVisible: toBoolean(pros.labelVisible, true),
+    disabled: !toBoolean(pros.enabled, true)
   }
   return <JGPassword {...props}></JGPassword>
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/jgradiogroup",
+  "name": "@v-act/jgreport",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -8,8 +8,12 @@
     "dist",
     "src"
   ],
+  "dependencies": {
+    "@grapecity/spread-sheets-react": "^14.2.5",
+    "@v-act/schema-types": "^1.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
-  "widgetType": "JGRadioGroup"
+  "widgetType": "JGReport"
 }

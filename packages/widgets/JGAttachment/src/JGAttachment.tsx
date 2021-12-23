@@ -1,14 +1,13 @@
-import React, { forwardRef, CSSProperties, useState } from 'react'
-
-import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
-
-import { styled } from '@mui/system'
-
-import { Height, Width } from '@v-act/schema-types'
+import React, { CSSProperties, forwardRef, useState } from 'react'
 
 import { Property } from 'csstype'
 
+import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { Button } from '@mui/material'
+import { styled } from '@mui/system'
+import { Height, Width } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGAttachmentProps extends InputUnstyledProps {
   /**
@@ -67,6 +66,10 @@ interface JGAttachmentProps extends InputUnstyledProps {
    * 输入框显示类型
    */
   inputType?: string
+  /**
+   * 禁用
+   */
+  disabled?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -92,6 +95,9 @@ const StyledInputElement = styled('input')`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
   }
+  [disabled] {
+    background: #f6f7fb;
+  }
 `
 
 const CustomInput = forwardRef(function (
@@ -115,16 +121,19 @@ const JGAttachment = function (props: JGAttachmentProps) {
   if (!props.visible) {
     return null
   }
-  let lineHeight =
-    String(props.height || props.multiHeight).indexOf('px') !== -1
-      ? props.height || props.multiHeight
-      : (props.height || props.multiHeight) + 'px'
+  const context = useContext()
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+  const labelWidth = props.labelVisible
+    ? toLabelWidth(props.labelWidth, context, 94)
+    : 0
+  let lineHeight = String(height).indexOf('px') !== -1 ? height : height + 'px'
   const [inputVal, setInputVal] = useState('')
   const wrapStyles: CSSProperties = {
-    width: props.width || props.multiWidth,
-    height: props.height || props.multiHeight,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context.position,
     left: props.left,
     display: 'flex',
     alignItems: 'center',
@@ -132,21 +141,17 @@ const JGAttachment = function (props: JGAttachmentProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
-      ? 94
-      : props.labelWidth
-    : 0
+
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height || props.multiHeight,
+    height: height,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px',
     lineHeight: lineHeight
   }
   const inputStyles = {
-    height: props.height || props.multiHeight
+    height: height
   }
 
   const isInteger = (e) => {
@@ -180,6 +185,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
         type={props.inputType === 'integer' ? 'text' : props.inputType}
         onChange={handleChange}
         value={inputVal}
+        disabled={props.disabled}
       />
       <label htmlFor="contained-button-file">
         <UploadInput
@@ -194,7 +200,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
           sx={{
             'display': 'inline-block',
             'minWidth': '56px',
-            'height': props.height || props.multiHeight,
+            'height': height,
             'lineHeight': lineHeight,
             'padding': 0,
             'marginLeft': '5px',
@@ -213,17 +219,18 @@ const JGAttachment = function (props: JGAttachmentProps) {
 }
 
 JGAttachment.defaultProps = {
-  left: 0,
-  top: 0,
-  multiHeight: 26,
-  multiWidth: 294,
+  left: '0px',
+  top: '0px',
+  multiHeight: '26px',
+  multiWidth: '294px',
   labelWidth: 94,
   labelText: '文本',
   placeholder: '',
   isMust: false,
   visible: true,
   labelVisible: true,
-  inputType: 'number'
+  inputType: 'number',
+  disabled: false
 }
 
 export default JGAttachment

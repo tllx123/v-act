@@ -1449,6 +1449,18 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
 
+"@grapecity/spread-sheets-react@^14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets-react/-/spread-sheets-react-14.2.5.tgz#3ad17ea827d25d131a7e7e57e243f825636a0207"
+  integrity sha512-xYf8B4eHnP2muPAxHHAQAZfsV6pdolfCCHNdRReYlkMDwF+heWRoBi7KpVkz8+gboi90sVUgOrQlyq7UpSAnqg==
+  dependencies:
+    "@grapecity/spread-sheets" "14.2.5"
+
+"@grapecity/spread-sheets@14.2.5":
+  version "14.2.5"
+  resolved "https://registry.yarnpkg.com/@grapecity/spread-sheets/-/spread-sheets-14.2.5.tgz#19209df6172f863eb972bd6016ecfacbfe3f412c"
+  integrity sha512-7yahYcO96NEpEZ4gppwuztUUVWOQ9m+k3/TScmjVFz9XKv3FGcPzHIdVXYq2FTz+KKGGWMtAQiynPIDvt6WcLQ==
+
 "@hapi/accept@5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@hapi/accept/-/accept-5.0.2.tgz#ab7043b037e68b722f93f376afb05e85c0699523"

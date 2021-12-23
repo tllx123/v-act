@@ -3,33 +3,32 @@ import React, { CSSProperties } from 'react'
 import { Property } from 'csstype'
 
 import { Box, BoxProps, InputLabel, Radio } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 /* 包装器属性 */
-export interface JGRadioGroupProps extends BoxProps {
+interface JGRadioGroupProps extends BoxProps {
+  /********************** 其它 ************************/
   /**
-   * 编码
+   * 控件编码
    */
   code?: string
 
+  /**
+   * 标题
+   */
+  labelText?: string
+
+  /********************** 格式 ************************/
   /**
    * 上边距
    */
   top?: Property.Top
 
   /**
-   * 下边距
-   */
-  bottom?: Property.Bottom
-
-  /**
    * 左边距
    */
   left?: Property.Left
-
-  /**
-   * 右边距
-   */
-  right?: Property.Right
 
   /**
    * 宽度
@@ -52,14 +51,34 @@ export interface JGRadioGroupProps extends BoxProps {
   multiHeight?: Property.Height
 
   /**
+   * 界面顺序号
+   */
+  tabIndex?: number
+
+  /**
+   * 显示格式
+   */
+  displayFormat?: number
+
+  /**
    * 是否显示
    */
   visible?: boolean
 
   /**
-   * 标签宽度
+   * 锚定
    */
-  labelText?: String
+  anchor?: boolean
+
+  /**
+   * 泊靠
+   */
+  dock?: boolean
+
+  /**
+   * 显示标题
+   */
+  labelVisible?: boolean
 
   /**
    * 标签宽度
@@ -67,9 +86,142 @@ export interface JGRadioGroupProps extends BoxProps {
   labelWidth?: number
 
   /**
-   * 是否显示标签
+   * 标签字体
    */
-  labelVisible?: boolean
+  labelFontStyle?: string
+
+  /**
+   * 标签前景色
+   */
+  labelForeColor?: string
+
+  /**
+   * 标签背景色
+   */
+  labelBackColor?: string
+
+  /**
+   * 标签对齐方式
+   */
+  labelTextAlign?: string
+
+  /**
+   * 值字体
+   */
+  lalueFontStyle?: string
+
+  /**
+   * 值前景色
+   */
+  valueForeColor?: string
+
+  /**
+   * 值背景色
+   */
+  valueBackColor?: string
+
+  /**
+   * 排列方向
+   */
+  flowDirection?: string
+
+  /**
+   * 边框
+   */
+  borderStyles?: string
+
+  /**
+   * 布局位置
+   */
+  position?: any
+
+  /********************** 事件 ************************/
+  /**
+   * 值改变事件
+   */
+  onValueChanged?: string
+
+  /**
+   * 值加载事件
+   */
+  onValueLoaded?: string
+
+  /**
+   * 单击标题
+   */
+  onLabelClick?: string
+
+  /********************** 数据 ************************/
+  /**
+   * 实体
+   */
+  tableName?: string
+
+  /**
+   * 标识字段
+   */
+  idColumnName?: string
+
+  /**
+   * 显示字段
+   */
+  columnName?: string
+
+  /**
+   * 只读
+   */
+  readOnly?: boolean
+
+  /**
+   * 数据来源
+   */
+  dropDownSource?: string
+
+  /**
+   * 浮动提示
+   */
+  toolTip?: string
+
+  /**
+   * 必填
+   */
+  isMust?: boolean
+
+  /**
+   * 使能
+   */
+  enabled?: boolean
+
+  /**
+   * 用enabled还是disabled？？？？？
+   */
+  disabled?: boolean
+
+  /**
+   * 值
+   */
+  value?: string
+
+  /**
+   * 显示值
+   */
+  text?: string
+
+  /********************** 表单布局 ************************/
+  /**
+   * 跨列
+   */
+  colSpan?: string
+
+  /**
+   * 起始行
+   */
+  startRow?: string
+
+  /**
+   * 结束行
+   */
+  endRow?: string
 }
 
 const JGRadioGroup = function (props: JGRadioGroupProps) {
@@ -78,12 +230,16 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
     return null
   }
 
+  const context = useContext()
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
-    width: props.multiWidth ? props.multiWidth : props.width,
-    height: props.multiHeight ? props.multiHeight : props.height,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context.position,
     left: props.left,
     top: props.top,
     display: 'inline-flex',
@@ -93,16 +249,14 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
 
   /* 标签宽度 */
   const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
-      ? '94px'
-      : props.labelWidth
-    : '0px'
+    ? toLabelWidth(props.labelWidth, context, 94)
+    : 0
 
   /* 标签样式 */
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.multiHeight ? props.multiHeight : props.height,
-    lineHeight: props.multiHeight ? props.multiHeight : props.height,
+    height: height,
+    lineHeight: height,
     textAlign: 'right',
     paddingRight: '6px',
     whiteSpace: 'nowrap',
@@ -114,19 +268,22 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
 
   /* 单选框组样式 */
   const radioBoxStyles: CSSProperties = {
-    height: props.height,
+    height: height,
     margin: 0,
     padding: '0px 4px',
     border: '1px solid #0000003b',
     borderRadius: '4px',
+    display: 'inline-block',
+    maxWidth: '100%',
+    overflowY: 'auto',
     flex: 1
   }
 
   /* 单选框样式 */
   const radioStyles: CSSProperties = {
-    height: props.height,
-    margin: 0,
-    paddingRight: '4px'
+    height: '24px',
+    width: '20px',
+    margin: 0
   }
 
   /* 编码(唯一) */
@@ -134,51 +291,81 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
     ? props.code
     : `${Date.now()}${Math.random().toString(32).slice(2)}`
 
-  const [selectedValue, setSelectedValue] = React.useState('a')
+  const [selectedValue, setSelectedValue] = React.useState('1')
 
+  /* change事件 */
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value)
   }
 
+  /* 测试数据 */
+  const radioData = [
+    {
+      id: 1,
+      name: '苹果'
+    },
+    {
+      id: 2,
+      name: '雪梨'
+    },
+    {
+      id: 3,
+      name: '香蕉'
+    }
+  ]
+
   return (
     <Box style={wrapStyles}>
-      {labelWidth !== '0px' ? (
+      {labelWidth > 0 ? (
         <InputLabel id={code} style={labelStyles}>
           {props.labelText}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
         </InputLabel>
       ) : (
         ''
       )}
       <Box style={radioBoxStyles}>
-        <div style={{ display: 'inline-block' }}>
-          <Radio
-            checked={selectedValue === 'a'}
-            onChange={handleChange}
-            value="a"
-            name="radio-buttons"
-            inputProps={{ 'aria-label': 'A' }}
-            style={radioStyles}
-            size="small"
-          />
-          <span style={{ paddingRight: '5px' }}>单选A</span>
-        </div>
-        <div style={{ display: 'inline-block' }}>
-          <Radio
-            checked={selectedValue === 'b'}
-            onChange={handleChange}
-            value="b"
-            name="radio-buttons"
-            inputProps={{ 'aria-label': 'B' }}
-            style={radioStyles}
-            size="small"
-          />
-          <span>单选B</span>
-        </div>
+        {radioData.map((item) => {
+          return (
+            <div style={{ display: 'inline-block' }}>
+              <Radio
+                key={item.id}
+                checked={selectedValue === item.id.toString()}
+                onChange={props.readOnly ? () => {} : handleChange}
+                value={item.id}
+                name="radio-buttons"
+                disabled={props.disabled}
+                style={radioStyles}
+                inputProps={{
+                  readOnly: true
+                }}
+                size="small"
+                sx={{
+                  '& .MuiSvgIcon-root': {
+                    fontSize: 16
+                  }
+                }}
+              />
+              <span
+                style={{
+                  paddingRight: '5px',
+                  display: 'inline-block',
+                  height: '24px',
+                  float: 'right',
+                  lineHeight: '24px',
+                  color: props.disabled ? '#C3C5C6' : '#333'
+                }}
+              >
+                {item.name}
+              </span>
+            </div>
+          )
+        })}
       </Box>
     </Box>
   )
 }
-
+/* 单选框组默认属性 */
 JGRadioGroup.defaultProps = {
   left: 0,
   top: 0,
@@ -190,8 +377,9 @@ JGRadioGroup.defaultProps = {
   placeholder: '',
   visible: true,
   labelVisible: true,
+  readonly: false,
   disabled: false
 }
 
 export default JGRadioGroup
-export { JGRadioGroup }
+export { JGRadioGroup, type JGRadioGroupProps }

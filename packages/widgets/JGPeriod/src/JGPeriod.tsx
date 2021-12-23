@@ -11,6 +11,8 @@ import { IconButton } from '@mui/material'
 import Menu from '@mui/material/Menu'
 import { styled } from '@mui/system'
 import { Height, Width } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGPeriodProps extends InputUnstyledProps {
   /**
@@ -69,6 +71,10 @@ interface JGPeriodProps extends InputUnstyledProps {
    * 输入框显示类型
    */
   inputType?: string
+  /**
+   * 禁用
+   */
+  disabled?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -93,6 +99,9 @@ const StyledInputElement = styled('input')`
   }
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
+  }
+  [disabled] {
+    background: #f6f7fb;
   }
 `
 
@@ -128,35 +137,35 @@ const JGPeriod = function (props: JGPeriodProps) {
   const handleClose = () => {
     setAnchorEl(null)
   }
-  console.log(props.top)
+  const context = useContext()
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+  const labelWidth = props.labelVisible
+    ? toLabelWidth(props.labelWidth, context, 94)
+    : 0
   const wrapStyles: CSSProperties = {
-    width: props.width || props.multiWidth,
-    height: props.height || props.multiHeight,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context.position,
     left: props.left,
     top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelWidth = props.labelVisible
-    ? props.labelWidth === undefined
-      ? 94
-      : props.labelWidth
-    : 0
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.height || props.multiHeight,
+    height: height,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
   }
-  let inputWidth = String(props.width || props.multiWidth)
+  let inputWidth = String(width)
 
   if (inputWidth.indexOf('px') !== -1) inputWidth = inputWidth.replace(/px/, '')
   const inputStyles = {
     width: Number(inputWidth) - labelWidth,
-    height: props.height || props.multiHeight,
+    height: height,
     display: 'inline-block'
   }
   const yearPickerWrap: CSSProperties = {
@@ -207,6 +216,7 @@ const JGPeriod = function (props: JGPeriodProps) {
           type={'text'}
           onChange={(e) => setInputVal(e.target.value)}
           value={inputVal}
+          disabled={props.disabled}
         />
         <IconButton
           aria-label="日期按钮"
@@ -250,17 +260,17 @@ const JGPeriod = function (props: JGPeriodProps) {
 }
 
 JGPeriod.defaultProps = {
-  left: 0,
-  top: 0,
-  multiHeight: 26,
-  multiWidth: 235,
+  left: '0px',
+  top: '0px',
+  multiHeight: '26px',
+  multiWidth: '235px',
   labelWidth: 94,
   labelText: '期次',
   placeholder: '',
   isMust: false,
   visible: true,
   labelVisible: true,
-  inputType: 'number'
+  disabled: false
 }
 
 export default JGPeriod
