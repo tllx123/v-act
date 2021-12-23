@@ -1,5 +1,7 @@
+import { Control } from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
+
 import { JGDateTimePicker, JGDateTimePickerProps } from './JGDateTimePicker'
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
 
 const convert = function (
   control: Control,
@@ -11,8 +13,8 @@ const convert = function (
     top: pros.top + 'px',
     height: toNumber(pros.multiHeight) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
-    position: 'absolute',
     labeltext: pros.labelText,
+    labelWidth: toNumber(pros.labelWidth, 94),
     readonly: toBoolean(pros.readOnly, false),
     ismust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
@@ -21,4 +23,4 @@ const convert = function (
   return <JGDateTimePicker {...props}></JGDateTimePicker>
 }
 
-export { JGDateTimePicker, convert }
+export { convert, JGDateTimePicker }

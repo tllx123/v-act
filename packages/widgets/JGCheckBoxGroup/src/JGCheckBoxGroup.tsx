@@ -255,8 +255,8 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   /* 标签样式 */
   const labelStyles: CSSProperties = {
     width: labelWidth,
-    height: props.multiHeight ? props.multiHeight : props.height,
-    lineHeight: props.multiHeight ? props.multiHeight : props.height,
+    height: height,
+    lineHeight: height,
     textAlign: 'right',
     paddingRight: '6px',
     whiteSpace: 'nowrap',
@@ -305,7 +305,7 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
     <Box style={wrapStyles}>
       {labelWidth > 0 ? (
         <InputLabel id={code} style={labelStyles}>
-          {props.labelText}
+          {props.labelText}:
         </InputLabel>
       ) : (
         ''

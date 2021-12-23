@@ -146,6 +146,7 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
     paddingRight: '6px'
   }
   const inputStyles = {
+    width: '100%',
     height: height
   }
   const handleChange = (e) => {
@@ -159,7 +160,7 @@ const JGIntegerBox = function (props: JGIntegerBoxProps) {
       {labelWidth > 0 ? (
         <span style={labelStyles}>
           {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
         </span>
       ) : (
         ''
@@ -192,4 +193,4 @@ JGIntegerBox.defaultProps = {
 }
 
 export default JGIntegerBox
-export { JGIntegerBox, JGIntegerBoxProps }
+export { JGIntegerBox, type JGIntegerBoxProps }

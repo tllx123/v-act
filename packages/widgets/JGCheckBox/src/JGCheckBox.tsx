@@ -1,8 +1,10 @@
-import Box from '@mui/material/Box'
-import { Checkbox, CheckboxProps } from '@mui/material'
 import { Property } from 'csstype'
+
+import { Checkbox, CheckboxProps } from '@mui/material'
+import Box from '@mui/material/Box'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 interface JGCheckBoxProps extends CheckboxProps {
   left?: Property.Left
   top?: Property.Top
@@ -12,6 +14,7 @@ interface JGCheckBoxProps extends CheckboxProps {
   margin?: Property.Margin
   padding?: Property.Padding
   labeltext?: string
+  labelWidth?: number
   readonly?: boolean
   ismust?: boolean
 }
@@ -28,8 +31,7 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     margin,
     padding,
     ismust,
-    readonly,
-    ...restProps
+    readonly
   } = props
 
   return (
@@ -46,21 +48,21 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
         padding: padding
       }}
     >
-      <Box
-        sx={{
-          width: '100px',
-          fontSize: '12px',
+      <span
+        style={{
+          width: toLabelWidth(props.labelWidth, context, 94),
+          lineHeight: toHeight(height, context, '26px'),
+          fontSize: '14px',
           overflow: 'hidden',
+          textAlign: 'right',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          p: '0px 5px 0px 5px',
-          flexShrink: '0',
-          textAlign: 'right'
+          paddingRight: '6px'
         }}
       >
         {labeltext}
-        {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
-      </Box>
+        {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
+      </span>
 
       <Box
         sx={{
@@ -82,7 +84,6 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
           component={Checkbox}
           size="small"
           disableRipple={true}
-          {...restProps}
         >
           {' '}
         </Box>
@@ -93,11 +94,12 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
 
 JGCheckBox.defaultProps = {
   labeltext: '布尔',
-  width: '250px',
+  width: '235px',
   height: '26px',
   position: 'absolute',
+  labelWidth: 94,
   left: 0,
   top: 0
 }
 export default JGCheckBox
-export { JGCheckBox, JGCheckBoxProps }
+export { JGCheckBox, type JGCheckBoxProps }

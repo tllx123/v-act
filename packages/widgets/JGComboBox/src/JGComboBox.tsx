@@ -323,7 +323,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
     <Box style={wrapStyles}>
       {labelWidth > 0 ? (
         <InputLabel id={code} style={labelStyles}>
-          {props.labelText}
+          {props.labelText}:
         </InputLabel>
       ) : (
         ''

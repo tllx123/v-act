@@ -15,5 +15,6 @@
   "publishConfig": {
     "access": "public"
   },
+  "ssr": false,
   "widgetType": "JGReport"
 }

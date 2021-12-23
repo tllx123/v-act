@@ -1,12 +1,15 @@
 import * as React from 'react'
+
+import { Property } from 'csstype'
+import zhCN from 'date-fns/locale/zh-CN'
+
+import { DatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { DatePicker, DatePickerProps } from '@mui/lab'
-import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
-import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 interface JGDateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
@@ -17,6 +20,7 @@ interface JGDateTimePickerProps {
   padding?: Property.Padding
   ismust?: boolean
   labeltext?: string
+  labelWidth?: number
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
@@ -63,21 +67,21 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
-            <Box
-              sx={{
-                width: '100px',
-                fontSize: '12px',
+            <span
+              style={{
+                width: toLabelWidth(props.labelWidth, context, 94),
+                fontSize: '14px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
+                lineHeight: toHeight(height, context, '26px'),
                 textOverflow: 'ellipsis',
-                p: '0px 5px 0px 5px',
-                textAlign: 'right',
-                flexShrink: '0'
+                paddingRight: '6px',
+                textAlign: 'right'
               }}
             >
               {labeltext}
-              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
-            </Box>
+              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
+            </span>
             <Box
               sx={{
                 'width': '100%',

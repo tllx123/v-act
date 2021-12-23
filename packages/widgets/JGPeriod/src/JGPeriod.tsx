@@ -147,6 +147,7 @@ const JGPeriod = function (props: JGPeriodProps) {
     width: width,
     height: height,
     fontSize: '14px',
+    display: 'flex',
     position: context.position,
     left: props.left,
     top: props.top,
@@ -156,6 +157,7 @@ const JGPeriod = function (props: JGPeriodProps) {
   const labelStyles: CSSProperties = {
     width: labelWidth,
     height: height,
+    lineHeight: height,
     textAlign: 'right',
     display: 'inline-block',
     paddingRight: '6px'
@@ -164,7 +166,7 @@ const JGPeriod = function (props: JGPeriodProps) {
 
   if (inputWidth.indexOf('px') !== -1) inputWidth = inputWidth.replace(/px/, '')
   const inputStyles = {
-    width: Number(inputWidth) - labelWidth,
+    width: '100%',
     height: height,
     display: 'inline-block'
   }
@@ -174,6 +176,7 @@ const JGPeriod = function (props: JGPeriodProps) {
   }
   const calendarBoxStyles: CSSProperties = {
     display: 'inline-block',
+    width: '100%',
     position: 'relative'
   }
   const calendarIconStyles: CSSProperties = {
@@ -197,7 +200,7 @@ const JGPeriod = function (props: JGPeriodProps) {
       {labelWidth > 0 ? (
         <span style={labelStyles}>
           {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
         </span>
       ) : (
         ''
@@ -274,4 +277,4 @@ JGPeriod.defaultProps = {
 }
 
 export default JGPeriod
-export { JGPeriod, JGPeriodProps }
+export { JGPeriod, type JGPeriodProps }

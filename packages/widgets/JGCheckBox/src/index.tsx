@@ -1,4 +1,5 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
 
 import { JGCheckBox, JGCheckBoxProps } from './JGCheckBox'
 
@@ -13,7 +14,8 @@ const convert = function (
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
     ismust: toBoolean(pros.isMust, false),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    labelWidth: toNumber(pros.labelWidth, 94)
   }
   return <JGCheckBox {...props}></JGCheckBox>
 }
