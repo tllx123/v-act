@@ -208,6 +208,12 @@ const getControlHeight = function (
   if (control.properties.height) {
     return parseInt(control.properties.height)
   } else {
+    if (
+      control.properties.multiHeight &&
+      control.properties.multiHeight.endsWith('px')
+    ) {
+      return parseInt(control.properties.multiHeight)
+    }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
     if (widgetDefine) {
@@ -288,6 +294,12 @@ const getControlWidth = function (
   if (control.properties.width) {
     return parseInt(control.properties.width)
   } else {
+    if (
+      control.properties.multiWidth &&
+      control.properties.multiWidth.endsWith('px')
+    ) {
+      return parseInt(control.properties.multiWidth)
+    }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
     if (widgetDefine) {
