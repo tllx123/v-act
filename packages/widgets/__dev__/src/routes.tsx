@@ -48,11 +48,15 @@ const JGBaseDictBox = lazy(() => import('./widgets/JGBaseDictBox'))
 
 const JGChart = lazy(() => import('./widgets/JGChart'))
 const JGImageCutter = lazy(() => import('./widgets/JGImageCutter'))
+const JGDataGrid = lazy(() => import('./widgets/JGDataGrid'))
+const JGTreeView = lazy(() => import('./widgets/JGTreeView'))
 const JGGroupPanelSecene1 = lazy(() => import('./widgets/JGGroupPanel/index1'))
 const JGGroupPanelSecene2 = lazy(() => import('./widgets/JGGroupPanel/index2'))
 const JGReport = lazy(() => import('./widgets/JGReport'))
 const Routes = () =>
   useRoutes([
+    { path: '/JGDataGrid', element: <JGDataGrid /> },
+    { path: '/JGTreeView', element: <JGTreeView /> },
     {
       path: '/',
       element: <Home />

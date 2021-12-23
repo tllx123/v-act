@@ -11,5 +11,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "widgetType": "jgactivitypanel"
+  "widgetType": "JGActivityPanel"
 }
