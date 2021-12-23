@@ -317,7 +317,7 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
               key={item.id}
               style={{
                 paddingRight: '8px',
-                height: '26px',
+                height: '24px',
                 display: 'inline-flex'
               }}
             >

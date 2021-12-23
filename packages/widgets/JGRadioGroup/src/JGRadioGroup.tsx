@@ -270,7 +270,6 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   const radioBoxStyles: CSSProperties = {
     height: height,
     margin: 0,
-    padding: '0px 4px',
     border: '1px solid #0000003b',
     borderRadius: '4px',
     display: 'inline-block',
@@ -311,6 +310,26 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
     {
       id: 3,
       name: '香蕉'
+    },
+    {
+      id: 4,
+      name: '香蕉'
+    },
+    {
+      id: 5,
+      name: '香蕉'
+    },
+    {
+      id: 6,
+      name: '香蕉'
+    },
+    {
+      id: 7,
+      name: '香蕉'
+    },
+    {
+      id: 8,
+      name: '香蕉'
     }
   ]
 
@@ -324,7 +343,26 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
       ) : (
         ''
       )}
-      <Box style={radioBoxStyles}>
+      <Box
+        style={radioBoxStyles}
+        sx={{
+          '&::-webkit-scrollbar': {
+            height: '10px',
+            width: '10px'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: '10px',
+            backgroundColor: '#ddd',
+            backgroundImage:
+              '-webkit-linear-gradient(45deg,rgba(255, 255, 255, 0.2) 25%,transparent 25%,transparent 50%,rgba(255, 255, 255, 0.2) 50%,rgba(255, 255, 255, 0.2) 75%,transparent 75%,transparent)'
+          }
+          /* '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.2)',
+            backgroundColor: 'red',
+            borderRadius: '10px'
+          } */
+        }}
+      >
         {radioData.map((item) => {
           return (
             <div style={{ display: 'inline-block' }}>
@@ -357,6 +395,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
                 }}
               >
                 {item.name}
+                {item.id}
               </span>
             </div>
           )

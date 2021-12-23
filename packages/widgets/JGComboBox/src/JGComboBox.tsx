@@ -285,6 +285,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
     flex: 1,
     height: height,
     margin: 0,
+    fontSize: '14px',
     padding: 0
   }
 

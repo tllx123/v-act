@@ -25,8 +25,8 @@ const RdioGroup = () => {
       </JGFormLayout>
       <JGRadioGroup
         top="30px"
-        multiHeight="200px"
-        multiWidth="200px"
+        multiHeight="50px"
+        multiWidth="170px"
         readOnly={true}
         isMust={true}
       ></JGRadioGroup>
