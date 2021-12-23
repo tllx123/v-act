@@ -1,17 +1,19 @@
-import { forwardRef, CSSProperties } from 'react'
+import { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
 import {
   Box,
   BoxProps,
+  createTheme,
   LinearProgress,
   LinearProgressProps,
-  Typography,
-  createTheme,
-  ThemeProvider
+  ThemeProvider,
+  Typography
 } from '@mui/material'
-import { VActThemeOptions } from 'packages/utils/v-act-styles/src'
+import { VActThemeOptions } from '@v-act/styles'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 /* 进度条属性 */
 interface CustomLinearProgressProps extends LinearProgressProps {
@@ -39,9 +41,29 @@ const CustomLinearProgress = forwardRef(function (
   }
 
   const { backgroundColor = '#e9ecef', frontcolor = '#ef5350' } = props
+  const themeOptions: VActThemeOptions = {
+    successColor: '',
+    primaryColor: '',
+    infoColor: '',
+    warningColor: '',
+    errorColor: '',
+    linkColor: '',
+    textTitleColor: '',
+    textBaseColor: '',
+    textSecondaryColor: '',
+    borderRadiusBase: '',
+    borderRadiusSmall: '',
+    borderBaseColor: '',
+    borderSplitColor: '',
+    backgroundBaseColor: '',
+    backgroundStripeColor: '',
+    disabledColor: '',
+    disabledBg: ''
+  }
 
   /* 进度条主题 */
   const theme = createTheme({
+    vact: themeOptions,
     components: {
       MuiLinearProgress: {
         styleOverrides: {
@@ -87,17 +109,12 @@ interface JGPercentProps extends BoxProps {
   /**
    * 上边距
    */
-  top?: number
-
-  /**
-   * 下边距
-   */
-  bottom?: Property.Bottom
+  top?: Property.Top
 
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
 
   /**
    * 右边距
@@ -173,12 +190,16 @@ const JGPercent = function (props: JGPercentProps) {
     return null
   }
 
+  const context = useContext()
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
-    width: props.multiWidth ? props.multiWidth : props.width,
-    height: props.multiHeight ? props.multiHeight : props.height,
+    width: width,
+    height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context.position,
     left: props.left,
     top: props.top,
     display: 'inline-flex',
@@ -204,13 +225,15 @@ const JGPercent = function (props: JGPercentProps) {
 
   return (
     <Box style={wrapStyles}>
-      <CustomLinearProgress value={props.value}></CustomLinearProgress>
-      <Typography
-        style={progressTextStyles}
-        variant="caption"
-        component="div"
-        color="text.secondary"
-      >{`${props.value}%`}</Typography>
+      <div style={{ width: width, height: height, position: 'relative' }}>
+        <CustomLinearProgress value={props.value}></CustomLinearProgress>
+        <Typography
+          style={progressTextStyles}
+          variant="caption"
+          component="div"
+          color="text.secondary"
+        >{`${props.value}%`}</Typography>
+      </div>
     </Box>
   )
 }
@@ -224,4 +247,4 @@ JGPercent.defaultProps = {
 }
 
 export default JGPercent
-export { JGPercent, JGPercentProps }
+export { JGPercent, type JGPercentProps }
