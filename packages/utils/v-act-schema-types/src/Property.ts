@@ -127,10 +127,6 @@ interface Property {
    */
   toolbarSetting?: string
   /**
-   * 内容排列(编组)
-   */
-  contentAlignment?: string
-  /**
    * 水平位置（编组）
    */
   horizontalAlign?: string

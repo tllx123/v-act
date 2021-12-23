@@ -1,5 +1,10 @@
 import { ContentAlignment } from '@v-act/jggrouppanel'
-import { Control, ControlReact, ReactEnum } from '@v-act/schema-types'
+import {
+  Control,
+  ControlReact,
+  JGGroupPanelProperty,
+  ReactEnum
+} from '@v-act/schema-types'
 
 let SPACER_INST_INDEX = 0
 
@@ -35,29 +40,30 @@ const layoutControls = function (
       controlDefines
     )
     sameHeightChildren.forEach((list) => {
-      if (list.length > 1) {
+      if (list.length > 0) {
         list = list.sort((item, item1) => {
           const l1 = parseInt(item.properties.left || '0')
           const l2 = parseInt(item1.properties.left || '0')
           return l1 - l2
         })
         const controls: Control[] = []
+        const hLayoutProperties: JGGroupPanelProperty = {
+          top:
+            (getControlTop(list[0], controlDefines) / contianerReact.height) *
+              100 +
+            '%',
+          multiHeight:
+            (getControlHeight(list[0], controlDefines) /
+              contianerReact.height) *
+              100 +
+            '%',
+          multiWidth: ReactEnum.Space.toString(),
+          contentAlignment: ContentAlignment.Horizontal,
+          code: '_$inner_hlayout_' + SPACER_INST_INDEX++
+        }
         const hLayout: Control = {
           type: 'JGGroupPanel',
-          properties: {
-            top:
-              (getControlTop(list[0], controlDefines) / contianerReact.height) *
-                100 +
-              '%',
-            multiHeight:
-              (getControlHeight(list[0], controlDefines) /
-                contianerReact.height) *
-                100 +
-              '%',
-            multiWidth: ReactEnum.Space.toString(),
-            contentAlignment: ContentAlignment.Horizontal,
-            code: '_$inner_hlayout_' + SPACER_INST_INDEX++
-          },
+          properties: hLayoutProperties,
           controls: controls
         }
         list.forEach((child, i) => {
@@ -98,29 +104,29 @@ const layoutControls = function (
       used
     )
     sameWidthChildren.forEach((list) => {
-      if (list.length > 1) {
+      if (list.length > 0) {
         list = list.sort((item, item1) => {
           const l1 = parseInt(item.properties.top || '0')
           const l2 = parseInt(item1.properties.top || '0')
           return l1 - l2
         })
         const controls: Control[] = []
+        const vLayoutProperties: JGGroupPanelProperty = {
+          left:
+            (getControlLeft(list[0], controlDefines) / contianerReact.width) *
+              100 +
+            '%',
+          multiHeight: ReactEnum.Space.toString(),
+          multiWidth:
+            (getControlWidth(list[0], controlDefines) / contianerReact.width) *
+              100 +
+            '%',
+          contentAlignment: ContentAlignment.Vertical,
+          code: '_$inner_vlayout_' + SPACER_INST_INDEX++
+        }
         const vLayout: Control = {
           type: 'JGGroupPanel',
-          properties: {
-            left:
-              (getControlLeft(list[0], controlDefines) / contianerReact.width) *
-                100 +
-              '%',
-            multiHeight: ReactEnum.Space.toString(),
-            multiWidth:
-              (getControlWidth(list[0], controlDefines) /
-                contianerReact.width) *
-                100 +
-              '%',
-            contentAlignment: ContentAlignment.Vertical,
-            code: '_$inner_vlayout_' + SPACER_INST_INDEX++
-          },
+          properties: vLayoutProperties,
           controls: controls
         }
         list.forEach((child, i) => {

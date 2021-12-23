@@ -1,4 +1,4 @@
-import { Control, ReactEnum } from '@v-act/schema-types'
+import { Control, JGGroupPanelProperty, ReactEnum } from '@v-act/schema-types'
 import {
   isPercent,
   toCssAxisVal,
@@ -20,7 +20,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element[] | null
 ): JSX.Element {
-  const pros = control.properties
+  const pros = control.properties as JGGroupPanelProperty
   const settings: Setting[] = []
   const props: JGGroupPanelProps = {
     top: toCssAxisVal(pros.top, '0px'),
