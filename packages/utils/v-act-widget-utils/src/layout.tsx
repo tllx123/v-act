@@ -8,6 +8,8 @@ import {
 
 let SPACER_INST_INDEX = 0
 
+let ALLOW_PERCENT_LAYOUT = true
+
 /**
  * 布局子控件,根据子控件左边距、上边距、宽、高等信息进行布局
  * @param children 子控件
@@ -18,7 +20,12 @@ const layoutControls = function (
   contianerReact: ControlReact,
   controlDefines: { [prop: string]: { defaultProps?: { [pro: string]: any } } }
 ) {
-  if (children && children.length > 0 && contianerReact) {
+  if (
+    ALLOW_PERCENT_LAYOUT &&
+    children &&
+    children.length > 0 &&
+    contianerReact
+  ) {
     const sameLeftChildren: { [prop: string]: Control[] } = {}
     const sameTopChildren: { [prop: string]: Control[] } = {}
     //将左边距、上边距一致的控件堆放在数组中
@@ -208,6 +215,12 @@ const getControlHeight = function (
   if (control.properties.height) {
     return parseInt(control.properties.height)
   } else {
+    if (
+      control.properties.multiHeight &&
+      control.properties.multiHeight.endsWith('px')
+    ) {
+      return parseInt(control.properties.multiHeight)
+    }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
     if (widgetDefine) {
@@ -288,6 +301,12 @@ const getControlWidth = function (
   if (control.properties.width) {
     return parseInt(control.properties.width)
   } else {
+    if (
+      control.properties.multiWidth &&
+      control.properties.multiWidth.endsWith('px')
+    ) {
+      return parseInt(control.properties.multiWidth)
+    }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
     if (widgetDefine) {

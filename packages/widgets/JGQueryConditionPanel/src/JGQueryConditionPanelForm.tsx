@@ -4,7 +4,12 @@ import Box from '@mui/material/Box'
 import { JGButton } from '@v-act/jgbutton'
 import { Control, ReactEnum } from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
-import { getChildrenTitleWidth, toBoolean, toNumber } from '@v-act/widget-utils'
+import {
+  getChildrenTitleWidth,
+  getChildrenWithoutFragment,
+  toBoolean,
+  toNumber
+} from '@v-act/widget-utils'
 
 import { JGQueryConditionPanelTag } from './JGQueryConditionPanelTag'
 
@@ -38,13 +43,13 @@ const JGQueryConditionPanelForm = function (
   props: JGQueryConditionPanelFormProps
 ) {
   const columnCount = props.columnCount || 3
-  let children = null
+  let children = getChildrenWithoutFragment(props.children)
   let remainNumCols = columnCount
-  if (props.children && props.children.length > 0) {
+  if (children && children.length > 0) {
     let labelWidth = 0
     const itemLabelWidth = props.itemLabelWidth || ReactEnum.Content
     if (itemLabelWidth === ReactEnum.Content) {
-      labelWidth = getChildrenTitleWidth(props.children)
+      labelWidth = getChildrenTitleWidth(children)
     } else {
       labelWidth = parseInt(itemLabelWidth)
     }
@@ -53,7 +58,7 @@ const JGQueryConditionPanelForm = function (
       multiWidth: ReactEnum.Space,
       labelWidth: labelWidth
     })
-    children = props.children.map((child, i) => {
+    children = children.map((child, i) => {
       const childProps = child.props
       let colSpan = parseInt(childProps.colSpan)
       colSpan = isNaN(colSpan) ? 1 : colSpan
@@ -71,29 +76,21 @@ const JGQueryConditionPanelForm = function (
         </React.Fragment>
       )
     })
-    if (remainNumCols === columnCount) {
-      children.push(<Box gridColumn={'span ' + (columnCount - 1)}></Box>)
-      children.push(
-        <Box>
-          <ContextProvider context={context}>
-            <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
-              {props.queryButtonText}
-            </JGButton>
-          </ContextProvider>
-        </Box>
-      )
-    } else {
+    if (remainNumCols > 1) {
       children.push(<Box gridColumn={'span ' + (remainNumCols - 1)}></Box>)
-      children.push(
-        <Box>
-          <ContextProvider context={context}>
-            <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
-              {props.queryButtonText}
-            </JGButton>
-          </ContextProvider>
-        </Box>
-      )
     }
+    const ctx1 = createContext({
+      position: 'static'
+    })
+    children.push(
+      <Box>
+        <ContextProvider context={ctx1}>
+          <JGButton width="76px" height="32px" sx={{ float: 'right' }}>
+            {props.queryButtonText}
+          </JGButton>
+        </ContextProvider>
+      </Box>
+    )
   }
   return (
     <div
@@ -152,7 +149,10 @@ const convert = function (
   const formControls: Control[] = []
   if (controls && controls.length > 0) {
     controls.forEach((con) => {
-      if (con.properties.code == 'JGLocateBox_quickSearch') {
+      if (
+        con.type === 'JGLocateBox' &&
+        con.properties.code == 'JGLocateBox_quickSearch1'
+      ) {
         formProps.quickSearchHint = con.properties.hint || ''
       } else {
         formControls.push(con)

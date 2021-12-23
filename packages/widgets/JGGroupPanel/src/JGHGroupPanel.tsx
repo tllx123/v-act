@@ -42,75 +42,77 @@ const JGHGroupPanel = function (props: JGGroupPanelProps) {
   let preChildIsSpacer = false
   const parseChild = (child: JSX.Element, index: number) => {
     child = getChildrenWithoutFragment(child)[0]
-    const isSpacerChild = isSpacer(child)
-    let key = child.key
-    if (key === null) {
-      key = child.props.code
-    }
-    if (key !== null) {
-      const childSetting = settingMap[key] || settingIndexList[index]
-      const hAlign =
-        childSetting && childSetting.horizontalAlign
-          ? childSetting.horizontalAlign
-          : HorizontalAlign.Left
-      const vAlign =
-        childSetting && childSetting.verticalAlign
-          ? childSetting.verticalAlign
-          : VerticalAlign.Top
-      const containerProps: CSSProperties = {
-        pointerEvents: isSpacerChild ? 'none' : 'all',
-        position: 'relative',
-        width:
-          childSetting && childSetting.percentWidth
-            ? childSetting.percentWidth
-            : toWidth(
-                child.props.multiWidth || child.props.width,
-                context,
-                ReactEnum.Content
-              ),
-        height:
-          childSetting && childSetting.percentHeight
-            ? childSetting.percentHeight
-            : toHeight(
-                child.props.multiHeight || child.props.height,
-                context,
-                ReactEnum.Content
-              ),
-        alignSelf:
-          vAlign === VerticalAlign.Top
-            ? 'start'
-            : vAlign === VerticalAlign.Middle
-            ? 'center'
-            : 'end'
+    if (child) {
+      const isSpacerChild = isSpacer(child)
+      let key = child.key
+      if (key === null) {
+        key = child.props.code
       }
-      if (hAlign == HorizontalAlign.Left) {
-        if (leftChildren.length > 0) {
-          //添加成员间距8px
-          containerProps.marginLeft =
-            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
+      if (key !== null) {
+        const childSetting = settingMap[key] || settingIndexList[index]
+        const hAlign =
+          childSetting && childSetting.horizontalAlign
+            ? childSetting.horizontalAlign
+            : HorizontalAlign.Left
+        const vAlign =
+          childSetting && childSetting.verticalAlign
+            ? childSetting.verticalAlign
+            : VerticalAlign.Top
+        const containerProps: CSSProperties = {
+          pointerEvents: isSpacerChild ? 'none' : 'all',
+          position: 'relative',
+          width:
+            childSetting && childSetting.percentWidth
+              ? childSetting.percentWidth
+              : toWidth(
+                  child.props.multiWidth || child.props.width,
+                  context,
+                  ReactEnum.Content
+                ),
+          height:
+            childSetting && childSetting.percentHeight
+              ? childSetting.percentHeight
+              : toHeight(
+                  child.props.multiHeight || child.props.height,
+                  context,
+                  ReactEnum.Content
+                ),
+          alignSelf:
+            vAlign === VerticalAlign.Top
+              ? 'start'
+              : vAlign === VerticalAlign.Middle
+              ? 'center'
+              : 'end'
         }
-        leftChildren.push(<div style={containerProps}>{child}</div>)
-      } else if (hAlign == HorizontalAlign.Center) {
-        if (leftChildren.length > 0 || centerChildren.length > 0) {
-          //添加成员间距8px
-          containerProps.marginLeft =
-            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
+        if (hAlign == HorizontalAlign.Left) {
+          if (leftChildren.length > 0) {
+            //添加成员间距8px
+            containerProps.marginLeft =
+              isSpacerChild || preChildIsSpacer ? '0px' : '8px'
+          }
+          leftChildren.push(<div style={containerProps}>{child}</div>)
+        } else if (hAlign == HorizontalAlign.Center) {
+          if (leftChildren.length > 0 || centerChildren.length > 0) {
+            //添加成员间距8px
+            containerProps.marginLeft =
+              isSpacerChild || preChildIsSpacer ? '0px' : '8px'
+          }
+          centerChildren.push(<div style={containerProps}>{child}</div>)
+        } else {
+          if (
+            leftChildren.length > 0 ||
+            centerChildren.length > 0 ||
+            rightChildren.length > 0
+          ) {
+            //添加成员间距8px
+            containerProps.marginLeft =
+              isSpacerChild || preChildIsSpacer ? '0px' : '8px'
+          }
+          rightChildren.push(<div style={containerProps}>{child}</div>)
         }
-        centerChildren.push(<div style={containerProps}>{child}</div>)
-      } else {
-        if (
-          leftChildren.length > 0 ||
-          centerChildren.length > 0 ||
-          rightChildren.length > 0
-        ) {
-          //添加成员间距8px
-          containerProps.marginLeft =
-            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
-        }
-        rightChildren.push(<div style={containerProps}>{child}</div>)
       }
+      preChildIsSpacer = isSpacerChild
     }
-    preChildIsSpacer = isSpacerChild
   }
   let children = getChildrenWithoutFragment(props.children)
   children.forEach((child, index) => {

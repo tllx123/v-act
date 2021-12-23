@@ -6,13 +6,15 @@ import Box from '@mui/material/Box'
 import { JGLabel } from '@v-act/jglabel'
 import { Control } from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
+import { getChildrenWithoutFragment } from '@v-act/widget-utils'
 
 enum Align {
   Left = 'left',
   Right = 'right'
 }
 interface Setting {
-  key: string
+  key?: string
+  index?: number
   align?: Align
 }
 interface JGQueryConditionPanelFormProps {
@@ -32,19 +34,29 @@ function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
   const context = createContext({ position: 'static' })
   const leftChildren: JSX.Element[] = []
   const rightChildren: JSX.Element[] = []
-  if (props.children) {
+  const propsChildren = getChildrenWithoutFragment(props.children)
+  if (propsChildren) {
     const settings = props.setting || []
     const settingMap: { [prop: string]: Setting } = {}
+    const settingList: Setting[] = []
     settings.forEach((setting) => {
-      settingMap[setting.key] = setting
-    })
-    props.children.forEach((child) => {
-      let key = child.key
-      if (key === null) {
-        key = child.props.code
+      if (typeof setting.key == 'string') {
+        settingMap[setting.key] = setting
       }
-      if (key !== null) {
-        const align = settingMap[key] ? settingMap[key].align : Align.Left
+      if (typeof setting.index == 'number') {
+        settingList[setting.index] = setting
+      }
+    })
+    propsChildren.forEach((child, index) => {
+      child = getChildrenWithoutFragment(child)[0]
+      if (child) {
+        let key = child.key
+        if (key === null) {
+          key = child.props.code
+        }
+        const setting =
+          typeof key == 'string' ? settingMap[key] : settingList[index]
+        const align = setting ? setting.align : Align.Left
         if (align === Align.Right) {
           rightChildren.push(child)
         } else {
@@ -120,9 +132,10 @@ const convert = function (
     const toolbarSetting = JSON.parse(toolbarSetStr)
     toolbarSetting.Items &&
       toolbarSetting.Items.forEach(
-        (item: { Align: string; ItemRelevance: string }) => {
+        (item: { Align: string; ItemRelevance: string }, index: number) => {
           setting.push({
             key: item.ItemRelevance,
+            index: index,
             align: item.Align == 'right' ? Align.Right : Align.Left
           })
         }
