@@ -125,6 +125,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
 JGLongDateTimePicker.defaultProps = {
   labeltext: '文本',
   width: '250px',
+
   position: 'absolute',
   left: 0,
   top: 0,
