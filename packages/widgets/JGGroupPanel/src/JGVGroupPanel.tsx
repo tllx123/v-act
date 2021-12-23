@@ -18,7 +18,7 @@ import {
   Setting,
   VerticalAlign
 } from './JGGroupPanel'
-import { getGroupPanelProps } from './utils'
+import { getGroupPanelProps, isSpacer } from './utils'
 
 const JGVGroupPanel = function (props: JGGroupPanelProps) {
   const settings = props.setting || []
@@ -39,8 +39,10 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
   const childContext = createContext({
     position: 'static'
   })
+  let preChildIsSpacer = false
   const parseChild = (child: JSX.Element, index: number) => {
     child = getChildrenWithoutFragment(child)[0]
+    const isSpacerChild = isSpacer(child)
     let key = child.key
     if (key === null) {
       key = child.props.code
@@ -56,6 +58,8 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           ? childSetting.verticalAlign
           : VerticalAlign.Top
       const containerProps: CSSProperties = {
+        pointerEvents: isSpacerChild ? 'none' : 'all',
+        position: 'relative',
         width:
           childSetting && childSetting.percentWidth
             ? childSetting.percentWidth
@@ -82,13 +86,15 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
       if (vAlign == VerticalAlign.Top) {
         if (topChildren.length > 0) {
           //添加成员间距8px
-          containerProps.marginTop = '8px'
+          containerProps.marginTop =
+            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
         }
         topChildren.push(<div style={containerProps}>{child}</div>)
       } else if (vAlign == VerticalAlign.Middle) {
         if (topChildren.length > 0 || middleChildren.length > 0) {
           //添加成员间距8px
-          containerProps.marginTop = '8px'
+          containerProps.marginTop =
+            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
         }
         middleChildren.push(<div style={containerProps}>{child}</div>)
       } else {
@@ -98,11 +104,13 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           bottomChildren.length > 0
         ) {
           //添加成员间距8px
-          containerProps.marginTop = '8px'
+          containerProps.marginTop =
+            isSpacerChild || preChildIsSpacer ? '0px' : '8px'
         }
         bottomChildren.push(<div style={containerProps}>{child}</div>)
       }
     }
+    preChildIsSpacer = isSpacerChild
   }
   let children = getChildrenWithoutFragment(props.children)
   if (Array.isArray(children)) {
@@ -144,6 +152,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           style={{
             margin: '0px',
             ...containerProps,
+            pointerEvents: 'none',
             padding: '0px',
             display: 'flex',
             overflow: 'visible',
@@ -165,6 +174,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           <div
             style={{
               ...containerProps,
+              pointerEvents: 'none',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between'
@@ -176,6 +186,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
                   <div
                     style={{
                       display: 'flex',
+                      pointerEvents: 'none',
                       flexDirection: 'column',
                       justifyContent: area.justifyContent,
                       height: '100%'
@@ -195,6 +206,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
         <div
           style={{
             ...containerProps,
+            pointerEvents: 'none',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between'
@@ -206,6 +218,7 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
                 <div
                   style={{
                     display: 'flex',
+                    pointerEvents: 'none',
                     flexDirection: 'column',
                     justifyContent: area.justifyContent,
                     height: '100%'

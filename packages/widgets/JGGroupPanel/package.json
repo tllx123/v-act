@@ -9,6 +9,7 @@
     "src"
   ],
   "dependencies": {
+    "@v-act/jgspacer": "^1.0.0-alpha.1",
     "@v-act/schema-types": "^1.0.0"
   },
   "publishConfig": {

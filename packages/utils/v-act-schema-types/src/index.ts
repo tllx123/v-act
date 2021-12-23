@@ -3,6 +3,7 @@ import type Control from './Control'
 import type ControlReact from './ControlReact'
 import Dock from './Dock'
 import type Height from './Height'
+import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
 import type Property from './Property'
@@ -82,6 +83,7 @@ export {
   ControlReact,
   Dock,
   Height,
+  JGGroupPanelProperty,
   JGReportProperty,
   JGWebBrowserProperty,
   Property,

@@ -1,3 +1,4 @@
+import { JGSpacer } from '@v-act/jgspacer'
 import { ReactEnum } from '@v-act/schema-types'
 import { WidgetContextProps } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
@@ -17,4 +18,8 @@ const getGroupPanelProps = function (
   }
 }
 
-export { getGroupPanelProps }
+const isSpacer = function (child: JSX.Element) {
+  return child.type === JGSpacer
+}
+
+export { getGroupPanelProps, isSpacer }
