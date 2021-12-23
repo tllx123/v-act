@@ -151,6 +151,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
     lineHeight: lineHeight
   }
   const inputStyles = {
+    width: '100%',
     height: height
   }
 
@@ -234,4 +235,4 @@ JGAttachment.defaultProps = {
 }
 
 export default JGAttachment
-export { JGAttachment, JGAttachmentProps }
+export { JGAttachment, type JGAttachmentProps }
