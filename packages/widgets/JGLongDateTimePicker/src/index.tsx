@@ -19,7 +19,9 @@ const convert = function (
     readonly: toBoolean(pros.readOnly, false),
     ismust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    labelVisible: toBoolean(pros.labelVisible, true),
+    labelWidth: toNumber(pros.labelWidth)
   }
   return <JGLongDateTimePicker {...props}></JGLongDateTimePicker>
 }

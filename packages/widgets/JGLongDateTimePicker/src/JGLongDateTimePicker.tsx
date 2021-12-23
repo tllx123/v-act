@@ -19,6 +19,8 @@ interface JGLongDateTimePickerProps extends DateTimePickerProps {
   labeltext?: string
   placeholder?: string
   readonly?: boolean
+  labelVisible?: boolean
+  labelWidth?: number
 }
 
 const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
@@ -35,6 +37,8 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     padding,
     placeholder,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   const [value, setValue] = React.useState<any>(null)
@@ -63,14 +67,15 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
           >
             <Box
               sx={{
-                width: '100px',
+                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
                 fontSize: '12px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
                 p: '0px 5px 0px 5px',
                 textAlign: 'right',
-                flexShrink: '0'
+                flexShrink: '0',
+                display: labelVisible ? 'block' : 'none'
               }}
             >
               {labeltext}
@@ -125,11 +130,12 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
 JGLongDateTimePicker.defaultProps = {
   labeltext: '文本',
   width: '250px',
-
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: '请选择日期'
+  placeholder: '请选择日期',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGLongDateTimePicker

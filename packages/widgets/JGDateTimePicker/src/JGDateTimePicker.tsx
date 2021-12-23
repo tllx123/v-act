@@ -7,6 +7,7 @@ import Box from '@mui/material/Box'
 import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { display } from '@mui/system'
 interface JGDateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
@@ -20,6 +21,8 @@ interface JGDateTimePickerProps {
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
+  labelVisible?: boolean
+  labelWidth?: number
 }
 
 const JGDateTimePicker = (props: JGDateTimePickerProps) => {
@@ -36,6 +39,8 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     padding,
     placeholder,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   const [value, setValue] = React.useState<any>(null)
@@ -65,14 +70,15 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
           >
             <Box
               sx={{
-                width: '100px',
+                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
                 fontSize: '12px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
                 p: '0px 5px 0px 5px',
                 textAlign: 'right',
-                flexShrink: '0'
+                flexShrink: '0',
+                display: labelVisible ? 'block' : 'none'
               }}
             >
               {labeltext}
@@ -130,7 +136,9 @@ JGDateTimePicker.defaultProps = {
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: '请选择日期'
+  placeholder: '请选择日期',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGDateTimePicker
