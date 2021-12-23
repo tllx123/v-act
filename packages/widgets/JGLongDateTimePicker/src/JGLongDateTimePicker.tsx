@@ -128,7 +128,7 @@ JGLongDateTimePicker.defaultProps = {
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: 'wahaha'
+  placeholder: '请选择日期'
 }
 
 export default JGLongDateTimePicker

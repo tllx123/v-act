@@ -119,10 +119,7 @@ const Routes = () =>
       path: '/JGTabControl',
       element: <JGTabControl />
     },
-    {
-      path: '/JGLongTextBox',
-      element: <JGLongTextBox />
-    },
+
     {
       path: '/JGCheckBox',
       element: <JGCheckBox />
@@ -234,6 +231,10 @@ const Routes = () =>
     {
       path: '/JGReport',
       element: <JGReport />
+    },
+    {
+      path: '/JGLongTextBox',
+      element: <JGLongTextBox />
     }
   ])
 

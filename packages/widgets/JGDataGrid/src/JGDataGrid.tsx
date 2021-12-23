@@ -5,7 +5,8 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 interface dataHeader {
   code: string
   name: string
@@ -24,6 +25,7 @@ export interface JGDataGridProps {
 }
 
 const JGDataGrid = (props: JGDataGridProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -40,11 +42,11 @@ const JGDataGrid = (props: JGDataGridProps) => {
   return (
     <TableContainer
       sx={{
-        position: position,
         left: left,
         top: top,
-        width: width,
-        height: height,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         display: ishide ? 'none' : 'block'
       }}
     >
