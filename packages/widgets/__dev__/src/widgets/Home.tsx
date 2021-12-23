@@ -68,6 +68,7 @@ const Home = () => {
       <br />
       <Link href="/JGReport">JGReport</Link>
       <br />
+      <Link href="/JGTreeGrid">JGTreeGrid</Link> <br />
     </>
   )
 }

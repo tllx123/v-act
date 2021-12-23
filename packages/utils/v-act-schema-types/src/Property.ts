@@ -5,6 +5,12 @@ interface dataHeader {
   name: string
 }
 
+interface dataTreeHeader {
+  title: string
+  dataIndex: string
+  key: string
+}
+
 /**
  * 控件属性
  */
@@ -143,8 +149,14 @@ interface Property {
    * 列表数据
    */
   gridData?: any
-
+  /**
+   * 列表头数据
+   */
   dataHeader?: Array<dataHeader>
+  /**
+   * 树表头数据
+   */
+  dataTreeHeader?: Array<dataTreeHeader>
 }
 
 export default Property

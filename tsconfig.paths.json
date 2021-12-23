@@ -71,7 +71,9 @@
       "@v-act/jgactivitypanel": ["packages/widgets/JGActivityPanel/src"],
       "@v-act/jgspacer": ["packages/widgets/JGSpacer/src"],
       "@v-act/jgtreeview": ["packages/widgets/JGTreeView/src"],
-      "@v-act/jgreport": ["packages/widgets/JGReport/src"]
+      "@v-act/jgreport": ["packages/widgets/JGReport/src"],
+      "@v-act/jgdatagrid": ["packages/widgets/JGDataGrid/src"],
+      "@v-act/jgtreegrid": ["packages/widgets/JGTreeGrid/src"]
     }
   }
 }
