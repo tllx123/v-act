@@ -11,7 +11,9 @@ const convert = function (
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
-    height: toNumber(pros.multiHeight) + 'px'
+    height: toNumber(pros.multiHeight) + 'px',
+    data: pros.gridData,
+    dataHeader: pros.dataHeader
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }

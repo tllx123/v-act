@@ -1,5 +1,10 @@
 import ReactEnum from './ReactEnum'
 
+interface dataHeader {
+  code: string
+  name: string
+}
+
 /**
  * 控件属性
  */
@@ -138,6 +143,12 @@ interface Property {
    * 垂直位置（编组）
    */
   verticalAlign?: string
+  /**
+   * 列表数据
+   */
+  gridData?: any
+
+  dataHeader?: Array<dataHeader>
 }
 
 export default Property

@@ -6,6 +6,11 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
+interface dataHeader {
+  code: string
+  name: string
+}
+
 export interface JGDataGridProps {
   left?: Property.Left
   top?: Property.Top
@@ -13,28 +18,24 @@ export interface JGDataGridProps {
   height?: Property.Height
   width?: Property.Width
   readonly?: boolean
+  ishide?: boolean
+  data?: any
+  dataHeader?: Array<dataHeader>
 }
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
-]
 
 const JGDataGrid = (props: JGDataGridProps) => {
-  const { left, top, height, width, position, readonly, ...resprops } = props
+  const {
+    left,
+    top,
+    height,
+    width,
+    position,
+    readonly,
+    data,
+    dataHeader,
+    ishide,
+    ...resprops
+  } = props
 
   return (
     <TableContainer
@@ -44,32 +45,28 @@ const JGDataGrid = (props: JGDataGridProps) => {
         top: top,
         width: width,
         height: height,
-        pointerEvents: readonly ? 'none' : 'auto'
+        display: ishide ? 'none' : 'block'
       }}
     >
-      <Table>
+      <Table sx={{ minWidth: 650 }} size="small" {...resprops}>
         <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+          <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            {dataHeader?.map((row) => (
+              <TableCell component="th" scope="row" key={row.code}>
+                {row.name}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {data.map((row) => (
             <TableRow
-              key={row.name}
+              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+              {dataHeader?.map((item) => (
+                <TableCell scope="row">{row[item.code]}</TableCell>
+              ))}
             </TableRow>
           ))}
         </TableBody>
@@ -81,9 +78,16 @@ const JGDataGrid = (props: JGDataGridProps) => {
 JGDataGrid.defaultProps = {
   left: '20px',
   top: '50px',
-  width: '200px',
-  height: '200px',
-  position: 'absolute'
+  width: '800px',
+  height: '500px',
+  position: 'absolute',
+  data: [
+    // { 'id': "1", "name": "11", "num": "120" },
+    // { 'id': "2", "name": "22", "num": "122" },
+    // { 'id': "3", "name": "33", "num": "130" },
+    // { 'id': "4", "name": "44", "num": "140" },
+  ],
+  dataHeader: []
 }
 
 export default JGDataGrid
