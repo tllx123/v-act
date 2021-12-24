@@ -5,6 +5,7 @@ import JGLongTextBox, { JGLongTextBoxProps } from './JGLongTextBox'
 
 export const convert = function (control: Control): JSX.Element {
   const pros = control.properties
+
   const props: JGLongTextBoxProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',

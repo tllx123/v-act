@@ -73,7 +73,9 @@
       "@v-act/jgtreeview": ["packages/widgets/JGTreeView/src"],
       "@v-act/jgreport": ["packages/widgets/JGReport/src"],
       "@v-act/jgdatagrid": ["packages/widgets/JGDataGrid/src"],
-      "@v-act/jgtreegrid": ["packages/widgets/JGTreeGrid/src"]
+      "@v-act/jgtreegrid": ["packages/widgets/JGTreeGrid/src"],
+      "@v-act/jgcomponentcontainer": ["packages/widgets/JGComponentContainer/src"],
+      "@v-act/jginputlabel": ["packages/widgets/JGInputLabel/src"]
     }
   }
 }

@@ -10,10 +10,10 @@ const chart = () => {
     <JGComponent>
       <JGChart
         graphSettings={setting2}
-        top={53}
-        left={56}
-        height={213}
-        width={462}
+        top="53"
+        left="56px"
+        height="213"
+        width="462"
       ></JGChart>
     </JGComponent>
   )

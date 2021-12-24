@@ -10,6 +10,7 @@ import YearPicker from '@mui/lab/YearPicker'
 import { IconButton } from '@mui/material'
 import Menu from '@mui/material/Menu'
 import { styled } from '@mui/system'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
@@ -154,14 +155,6 @@ const JGPeriod = function (props: JGPeriodProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    height: height,
-    lineHeight: height,
-    textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
-  }
   let inputWidth = String(width)
 
   if (inputWidth.indexOf('px') !== -1) inputWidth = inputWidth.replace(/px/, '')
@@ -182,7 +175,8 @@ const JGPeriod = function (props: JGPeriodProps) {
   const calendarIconStyles: CSSProperties = {
     position: 'absolute',
     right: '-3px',
-    top: '-4px'
+    top: '50%',
+    transform: 'translateY(-50%)'
   }
   const calendarOperateWrapStyles: CSSProperties = {
     display: 'flex',
@@ -197,14 +191,14 @@ const JGPeriod = function (props: JGPeriodProps) {
   }
   return (
     <div style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <span style={labelStyles}>
-          {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
-        </span>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <div
         style={calendarBoxStyles}
         id="menuWrapScope"
@@ -277,4 +271,4 @@ JGPeriod.defaultProps = {
 }
 
 export default JGPeriod
-export { JGPeriod, type JGPeriodProps }
+export { JGPeriod, JGPeriodProps }

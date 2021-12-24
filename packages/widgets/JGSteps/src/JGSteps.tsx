@@ -11,6 +11,8 @@ import {
   styled,
   Typography
 } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 export interface JGStepsProps extends StepperProps {
   bottom?: Property.Bottom
@@ -33,15 +35,18 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
   }
   const defaultSteps = ['流程开始', '流程过程', '流程结束']
 
+  const context = useContext()
+  const sx = inProps.sx || {}
   return (
     <Box
       sx={{
-        position: 'absolute',
-        width: inProps.width,
+        ...sx,
+        height: toHeight(inProps.height, context, '40px'),
+        width: toWidth(inProps.width, context, '330px'),
+        position: context ? context.position : 'absolute',
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
-        height: inProps.height,
         bottom: inProps.bottom
       }}
     >
@@ -60,5 +65,10 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
     </Box>
   )
 })
+
+JGSteps.defaultProps = {
+  height: '40px',
+  width: '330px'
+}
 
 export default JGSteps

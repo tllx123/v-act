@@ -7,6 +7,7 @@ import { DatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Box from '@mui/material/Box'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
@@ -70,23 +71,14 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
-            <span
-              style={{
-                fontSize: '14px',
-                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
-                fontSize: '12px',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                lineHeight: toHeight(height, context, '26px'),
-                textOverflow: 'ellipsis',
-                paddingRight: '6px',
-                textAlign: 'right',
-                display: labelVisible ? 'block' : 'none'
-              }}
+            <JGInputLabel
+              width={toLabelWidth(labelWidth, context, 94)}
+              height={toHeight(height, context, '26px')}
+              visible={labelVisible}
+              required={ismust}
             >
               {labeltext}
-              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
-            </span>
+            </JGInputLabel>
             <Box
               sx={{
                 'width': '100%',
@@ -141,7 +133,8 @@ JGDateTimePicker.defaultProps = {
   top: 0,
   placeholder: '请选择日期',
   labelVisible: true,
-  labelWidth: 94
+  labelWidth: 94,
+  height: '26px'
 }
 
 export default JGDateTimePicker

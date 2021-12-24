@@ -1,5 +1,4 @@
 import { Property } from 'csstype'
-import 'antd/dist/antd.css'
 import { Table, Switch, Space } from 'antd'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'

@@ -4,6 +4,7 @@ import { Property } from 'csstype'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
@@ -149,14 +150,14 @@ const JGPassword = function (props: JGPasswordProps) {
   }
   return (
     <div style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <span style={labelStyles}>
-          {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
-        </span>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <CustomInput
         style={inputStyles}
         placeholder={props.placeholder}
@@ -184,4 +185,4 @@ JGPassword.defaultProps = {
 }
 
 export default JGPassword
-export { JGPassword, JGPasswordProps }
+export { JGPassword, type JGPasswordProps }

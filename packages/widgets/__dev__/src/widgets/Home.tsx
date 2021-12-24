@@ -71,6 +71,7 @@ const Home = () => {
       <Link href="/JGTreeGrid">JGTreeGrid</Link> <br />
       <Link href="/JGLongTextBox">JGLongTextBox</Link> <br />
       <Link href="/JGCheckBox">JGCheckBox</Link> <br />
+      <Link href="/JGComponentContainer">JGComponentContainer</Link> <br />
     </>
   )
 }

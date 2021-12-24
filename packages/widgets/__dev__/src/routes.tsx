@@ -54,8 +54,12 @@ const JGGroupPanelSecene1 = lazy(() => import('./widgets/JGGroupPanel/index1'))
 const JGGroupPanelSecene2 = lazy(() => import('./widgets/JGGroupPanel/index2'))
 const JGReport = lazy(() => import('./widgets/JGReport'))
 const JGTreeGrid = lazy(() => import('./widgets/JGTreeGrid'))
+const JGComponentContainer = lazy(
+  () => import('./widgets/JGComponentContainer')
+)
 const Routes = () =>
   useRoutes([
+    { path: '/JGComponentContainer', element: <JGComponentContainer /> },
     { path: '/JGTreeGrid', element: <JGTreeGrid /> },
     { path: '/JGDataGrid', element: <JGDataGrid /> },
     { path: '/JGTreeView', element: <JGTreeView /> },
