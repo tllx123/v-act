@@ -8,9 +8,7 @@
     "dist"
   ],
   "dependencies": {
-    "@types/qrcode.react": "^1.0.2",
-    "@v-act/schema-types": "^1.0.0",
-    "qrcode.react": "^1.0.1"
+    "@v-act/schema-types": "^1.0.0"
   },
   "widgetType": "JGQrcode"
 }
