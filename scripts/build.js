@@ -4,6 +4,7 @@ import { build } from 'vite'
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
+import usePluginImport from 'vite-plugin-importer'
 
 const publicExternal = [
   '@mui/icons-material',
@@ -27,7 +28,6 @@ const vitePluginDts = () => {
       })
     }
   }
-
   return plugin
 }
 
@@ -53,7 +53,15 @@ export async function viteBuild(scopes) {
       },
       configFile: false,
       root,
-      plugins: [vitePluginReact(), vitePluginDts()]
+      plugins: [
+        vitePluginReact(),
+        vitePluginDts(),
+        usePluginImport({
+          libraryName: 'antd',
+          libraryDirectory: 'es',
+          style: 'css'
+        })
+      ]
     }).then((result) => {
       console.log(chalk.greenBright(`${name} Builded! \n`))
       return result

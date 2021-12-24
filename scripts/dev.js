@@ -4,7 +4,7 @@ import { createServer } from 'vite'
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
-
+import usePluginImport from 'vite-plugin-importer'
 const getAlias = async () => {
   const alias = {}
   const packages = await getPackages()
@@ -28,7 +28,14 @@ export async function viteServ(scopes) {
       root: pkg.location,
       server: { open: '/' },
       resolve: { alias },
-      plugins: [vitePluginReact()]
+      plugins: [
+        vitePluginReact(),
+        usePluginImport({
+          libraryName: 'antd',
+          libraryDirectory: 'es',
+          style: 'css'
+        })
+      ]
     })
       .then((serv) => serv.listen())
       .then((serv) => serv.printUrls())
