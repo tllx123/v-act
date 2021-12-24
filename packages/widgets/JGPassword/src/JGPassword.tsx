@@ -136,16 +136,8 @@ const JGPassword = function (props: JGPasswordProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  let lineHeight = String(height).indexOf('px') !== -1 ? height : height + 'px'
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    height: height,
-    lineHeight: lineHeight,
-    textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
-  }
   const inputStyles = {
+    width: '100%',
     height: height
   }
   return (
