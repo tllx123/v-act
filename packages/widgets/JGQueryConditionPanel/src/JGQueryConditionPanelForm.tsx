@@ -149,10 +149,7 @@ const convert = function (
   const formControls: Control[] = []
   if (controls && controls.length > 0) {
     controls.forEach((con) => {
-      if (
-        con.type === 'JGLocateBox' &&
-        con.properties.code == 'JGLocateBox_quickSearch1'
-      ) {
+      if (con.type === 'JGLocateBox') {
         formProps.quickSearchHint = con.properties.hint || ''
       } else {
         formControls.push(con)

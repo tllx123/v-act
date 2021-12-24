@@ -9,5 +9,6 @@
   ],
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
-  }
+  },
+  "widgetType": "JGBaseDictBox"
 }
