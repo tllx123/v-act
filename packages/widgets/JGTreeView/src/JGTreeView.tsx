@@ -1,18 +1,20 @@
-import { Property } from 'csstype'
-import { TreeView, TreeViewPropsBase } from '@mui/lab'
-import { TreeItem, TreeItemProps } from '@mui/lab'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
+import { Property } from 'csstype'
+
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { TreeItem, TreeView, TreeViewPropsBase } from '@mui/lab'
+import Box from '@mui/material/Box'
+import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth } from '@v-act/widget-utils'
+
 export interface JGTreeViewProps extends TreeViewPropsBase {
   left?: Property.Left
   top?: Property.Top
   position?: Property.Position
-  height?: Property.Height
-  width?: Property.Width
+  height?: Height
+  width?: Width
   readonly?: boolean
   disable?: boolean
   data?: any
