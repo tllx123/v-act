@@ -1,4 +1,10 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGChart, JGChartProps } from './JGChart'
 
@@ -8,10 +14,11 @@ const convert = function (
 ): JSX.Element {
   const pros = control.properties
   const props: JGChartProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
-    placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible, true)
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
+    visible: toBoolean(pros.visible, true),
+    multiWidth: valueofWidth(pros.multiWidth, '462px'),
+    multiHeight: valueofHeight(pros.multiHeight, '213px')
   }
   console.log(123)
   return <JGChart {...props}></JGChart>
