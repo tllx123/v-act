@@ -100,5 +100,14 @@ const convert = function (
   return <JGQueryConditionPanel {...props}>{children}</JGQueryConditionPanel>
 }
 
+JGQueryConditionPanel.defaultProps = {
+  left: 0,
+  top: 0,
+  multiHeight: '40px',
+  multiWidth: '500px',
+  visible: true,
+  defaultExpand: true
+}
+
 export default JGQueryConditionPanel
 export { convert, JGQueryConditionPanel, type JGQueryConditionPanelProps }
