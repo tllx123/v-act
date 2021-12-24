@@ -28,14 +28,7 @@ export async function viteServ(scopes) {
       root: pkg.location,
       server: { open: '/' },
       resolve: { alias },
-      plugins: [
-        vitePluginReact(),
-        usePluginImport({
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: 'css'
-        })
-      ]
+      plugins: [vitePluginReact()]
     })
       .then((serv) => serv.listen())
       .then((serv) => serv.printUrls())

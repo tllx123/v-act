@@ -1,5 +1,5 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
-
+import { Control } from '@v-act/schema-types'
+import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 import JGTreeGrid, { JGTreeGridProps } from './JGTreeGrid'
 
 export const convert = function (
@@ -10,8 +10,8 @@ export const convert = function (
   const props: JGTreeGridProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    width: toNumber(pros.multiWidth) + 'px',
-    height: toNumber(pros.multiHeight) + 'px',
+    width: valueofWidth(pros.multiWidth, '200px'),
+    height: valueofHeight(pros.multiHeight, '200px'),
     dataTreeHeader: pros.dataTreeHeader,
     data: pros.gridData
   }

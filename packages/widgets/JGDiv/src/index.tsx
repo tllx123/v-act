@@ -1,5 +1,10 @@
-import { Control, toNumber } from '@v-act/schema-types'
-
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofWidth,
+  valueofHeight
+} from '@v-act/widget-utils'
 import { JGDiv, JGDivProps } from './JGDiv'
 
 const convert = function (
@@ -10,8 +15,8 @@ const convert = function (
   const props: JGDivProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    width: toNumber(pros.multiWidth) + 'px',
-    height: toNumber(pros.multiHeight) + 'px'
+    width: valueofWidth(pros.multiWidth, '235px'),
+    height: valueofHeight(pros.multiHeight, '26px')
   }
   return <JGDiv {...props}></JGDiv>
 }
