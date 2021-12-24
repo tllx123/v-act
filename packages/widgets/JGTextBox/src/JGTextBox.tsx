@@ -1,7 +1,10 @@
 import React, { CSSProperties, forwardRef } from 'react'
+
 import { Property } from 'csstype'
+
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
@@ -126,29 +129,20 @@ const JGTextBox = function (props: JGTextBoxProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    lineHeight: props.multiHeight,
-    textAlign: 'right',
-    paddingRight: '6px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  }
   const inputStyles = {
     width: '100%',
     height: height
   }
   return (
     <div style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <span style={labelStyles}>
-          {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
-        </span>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <CustomInput
         style={inputStyles}
         disabled={props.disabled}

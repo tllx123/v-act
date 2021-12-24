@@ -2,7 +2,8 @@ import { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, Checkbox, InputLabel } from '@mui/material'
+import { Box, BoxProps, Checkbox } from '@mui/material'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
@@ -303,13 +304,14 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
 
   return (
     <Box style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <InputLabel id={code} style={labelStyles}>
-          {props.labelText}:
-        </InputLabel>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <Box style={checkboxStyles}>
         {radioData.map((item) => {
           return (
