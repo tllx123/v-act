@@ -141,7 +141,8 @@ JGDateTimePicker.defaultProps = {
   top: 0,
   placeholder: '请选择日期',
   labelVisible: true,
-  labelWidth: 94
+  labelWidth: 94,
+  height: '26px'
 }
 
 export default JGDateTimePicker

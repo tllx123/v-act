@@ -138,7 +138,8 @@ JGLongDateTimePicker.defaultProps = {
   left: 0,
   top: 0,
   placeholder: '请选择日期',
-  labelVisible: true
+  labelVisible: true,
+  height: '26px'
 }
 
 export default JGLongDateTimePicker
