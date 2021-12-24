@@ -2,7 +2,8 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, InputLabel, Radio } from '@mui/material'
+import { Box, BoxProps, Radio } from '@mui/material'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
@@ -335,14 +336,14 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
 
   return (
     <Box style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <InputLabel id={code} style={labelStyles}>
-          {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
-        </InputLabel>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <Box
         style={radioBoxStyles}
         sx={{

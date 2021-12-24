@@ -7,6 +7,7 @@ import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Box from '@mui/material/Box'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
@@ -68,22 +69,14 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
-            <span
-              style={{
-                lineHeight: toHeight(height, context, '26px'),
-                fontSize: '14px',
-                overflow: 'hidden',
-                whiteSpace: 'nowrap',
-                textOverflow: 'ellipsis',
-                paddingRight: '6px',
-                textAlign: 'right',
-                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
-                display: labelVisible ? 'block' : 'none'
-              }}
+            <JGInputLabel
+              width={toLabelWidth(labelWidth, context, 94)}
+              height={toHeight(height, context, '26px')}
+              visible={labelVisible}
+              required={ismust}
             >
               {labeltext}
-              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
-            </span>
+            </JGInputLabel>
             <Box
               sx={{
                 'width': '100%',

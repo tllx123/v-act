@@ -2,14 +2,8 @@ import React, { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Box,
-  BoxProps,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectProps
-} from '@mui/material'
+import { Box, BoxProps, MenuItem, Select, SelectProps } from '@mui/material'
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
@@ -322,13 +316,14 @@ const JGComboBox = function (props: JGComboBoxProps) {
 
   return (
     <Box style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <InputLabel id={code} style={labelStyles}>
-          {props.labelText}:
-        </InputLabel>
-      ) : (
-        ''
-      )}
+      <JGInputLabel
+        width={labelWidth}
+        height={height}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
       <CustomSelect
         style={selectStyles}
         labelId={code}

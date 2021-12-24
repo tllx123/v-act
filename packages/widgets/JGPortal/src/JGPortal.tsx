@@ -11,6 +11,8 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 export interface JGPortalProps extends CardProps {
   bottom?: Property.Bottom
@@ -24,24 +26,26 @@ export interface JGPortalProps extends CardProps {
 const JGPortalRoot = styled(Card, {
   name: 'JGPortal',
   slot: 'Root'
-})(({ theme }) => ({
-  position: 'relative'
-}))
+})(({ theme }) => ({}))
 
 const JGPortal = forwardRef<HTMLDivElement, JGPortalProps>((inProps, ref) => {
+  const context = useContext()
+  const sx = inProps.sx || {}
   const props: JGPortalProps = {
     sx: {
-      width: inProps.width,
+      ...sx,
+      height: toHeight(inProps.height, context, '724px'),
+      width: toWidth(inProps.width, context, '1200px'),
+      position: context ? context.position : 'absolute',
       top: inProps.top,
       right: inProps.right,
       left: inProps.left,
-      height: inProps.height,
       bottom: inProps.bottom
     }
   }
 
   const JGPortalWindow = styled(Card, {
-    name: 'JGNewList',
+    name: 'JGPortalWindow',
     slot: 'Root',
     shouldForwardProp: (prop) => prop !== 'title'
   })(({ theme }) => ({
@@ -87,5 +91,10 @@ const JGPortal = forwardRef<HTMLDivElement, JGPortalProps>((inProps, ref) => {
     </JGPortalRoot>
   )
 })
+
+JGPortal.defaultProps = {
+  height: '724px',
+  width: '1200px'
+}
 
 export default JGPortal
