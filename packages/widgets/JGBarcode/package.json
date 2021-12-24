@@ -9,8 +9,7 @@
     "dist"
   ],
   "dependencies": {
-    "@v-act/schema-types": "^1.0.0",
-    "react-barcode": "^1.4.1"
+    "@v-act/schema-types": "^1.0.0"
   },
   "widgetType": "JGBarcode"
 }

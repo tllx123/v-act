@@ -84,7 +84,7 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@^7.1.0", "@babel/core@^7.12.10", "@babel/core@^7.12.17", "@babel/core@^7.12.3", "@babel/core@^7.16.0", "@babel/core@^7.7.2", "@babel/core@^7.7.5", "@babel/core@^7.8.4":
+"@babel/core@^7.1.0", "@babel/core@^7.12.17", "@babel/core@^7.12.3", "@babel/core@^7.16.0", "@babel/core@^7.7.2", "@babel/core@^7.7.5", "@babel/core@^7.8.4":
   version "7.16.5"
   resolved "https://registry.npmmirror.com/@babel/core/download/@babel/core-7.16.5.tgz#924aa9e1ae56e1e55f7184c8bf073a50d8677f5c"
   integrity sha512-wUcenlLzuWMZ9Zt8S0KmFwGlH6QKRh3vsm/dhDA3CHkiTA45YuG1XkHRcNRl73EFPXDp/d5kVOU0/y7x2w6OaQ==
@@ -105,7 +105,7 @@
     semver "^6.3.0"
     source-map "^0.5.0"
 
-"@babel/generator@^7.12.1", "@babel/generator@^7.12.11", "@babel/generator@^7.16.5", "@babel/generator@^7.7.2":
+"@babel/generator@^7.12.1", "@babel/generator@^7.16.5", "@babel/generator@^7.7.2":
   version "7.16.5"
   resolved "https://registry.npmmirror.com/@babel/generator/download/@babel/generator-7.16.5.tgz#26e1192eb8f78e0a3acaf3eede3c6fc96d22bedf"
   integrity sha512-kIvCdjZqcdKqoDbVVdt5R99icaRtrtYhYK/xux5qiWCBmfdvEYMFZ68QCrpE5cbFM1JsuArUNs1ZkuKtTtUcZA==
@@ -330,7 +330,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.3", "@babel/parser@^7.14.7", "@babel/parser@^7.16.0", "@babel/parser@^7.16.5", "@babel/parser@^7.7.0", "@babel/parser@^7.7.2":
+"@babel/parser@^7.1.0", "@babel/parser@^7.12.3", "@babel/parser@^7.14.7", "@babel/parser@^7.16.0", "@babel/parser@^7.16.5", "@babel/parser@^7.7.0", "@babel/parser@^7.7.2":
   version "7.16.6"
   resolved "https://registry.npmmirror.com/@babel/parser/download/@babel/parser-7.16.6.tgz#8f194828193e8fa79166f34a4b4e52f3e769a314"
   integrity sha512-Gr86ujcNuPDnNOY8mi383Hvi8IYrJVJYuf3XcuBM/Dgd+bINn/7tHqsj+tKkoreMbmGsFLsltI/JJd8fOFWGDQ==
@@ -1110,7 +1110,7 @@
     "@babel/parser" "^7.16.0"
     "@babel/types" "^7.16.0"
 
-"@babel/traverse@^7.1.0", "@babel/traverse@^7.12.1", "@babel/traverse@^7.12.12", "@babel/traverse@^7.13.0", "@babel/traverse@^7.16.5", "@babel/traverse@^7.4.5", "@babel/traverse@^7.7.0", "@babel/traverse@^7.7.2":
+"@babel/traverse@^7.1.0", "@babel/traverse@^7.12.1", "@babel/traverse@^7.13.0", "@babel/traverse@^7.16.5", "@babel/traverse@^7.4.5", "@babel/traverse@^7.7.0", "@babel/traverse@^7.7.2":
   version "7.16.5"
   resolved "https://registry.npmmirror.com/@babel/traverse/download/@babel/traverse-7.16.5.tgz#d7d400a8229c714a59b87624fc67b0f1fbd4b2b3"
   integrity sha512-FOCODAzqUMROikDYLYxl4nmwiLlu85rNqBML/A5hKRVXG2LV8d0iMqgPzdYTcIpjZEBB7D6UDU9vxRZiriASdQ==
@@ -13048,7 +13048,7 @@ param-case@2.1.x:
   dependencies:
     no-case "^2.2.0"
 
-param-case@^3.0.3, param-case@^3.0.4:
+param-case@^3.0.3:
   version "3.0.4"
   resolved "https://registry.nlark.com/param-case/download/param-case-3.0.4.tgz#7d17fe4aa12bde34d4a77d91acfb6219caad01c5"
   integrity sha1-fRf+SqEr3jTUp32RrPtiGcqtAcU=
@@ -14457,7 +14457,7 @@ qr.js@0.0.0:
 
 qrcode.react@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/qrcode.react/download/qrcode.react-1.0.1.tgz#2834bb50e5e275ffe5af6906eff15391fe9e38a5"
+  resolved "https://registry.npm.taobao.org/qrcode.react/download/qrcode.react-1.0.1.tgz?cache=0&sync_timestamp=1609367915352&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fqrcode.react%2Fdownload%2Fqrcode.react-1.0.1.tgz#2834bb50e5e275ffe5af6906eff15391fe9e38a5"
   integrity sha1-KDS7UOXidf/lr2kG7/FTkf6eOKU=
   dependencies:
     loose-envify "^1.4.0"
@@ -17866,18 +17866,6 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-vite-plugin-imp@^2.0.11:
-  version "2.0.11"
-  resolved "https://registry.npmmirror.com/vite-plugin-imp/download/vite-plugin-imp-2.0.11.tgz#821fd8548a7a18c2027bbf0a55f0865487b33052"
-  integrity sha512-98lCTKiGvE54O8qtJdmDuGaJv8d7bd2p2k140M1i2+L81DCn2eKKRkdAJxNUiYUugv+pucX0Ye0omQ5SGrFH+A==
-  dependencies:
-    "@babel/core" "^7.12.10"
-    "@babel/generator" "^7.12.11"
-    "@babel/parser" "^7.12.11"
-    "@babel/traverse" "^7.12.12"
-    chalk "^4.1.0"
-    param-case "^3.0.4"
 
 vite-plugin-importer@^0.2.5:
   version "0.2.5"
