@@ -182,7 +182,8 @@ const JGPeriod = function (props: JGPeriodProps) {
   const calendarIconStyles: CSSProperties = {
     position: 'absolute',
     right: '-3px',
-    top: '-4px'
+    top: '50%',
+    transform: 'translateY(-50%)'
   }
   const calendarOperateWrapStyles: CSSProperties = {
     display: 'flex',
@@ -277,4 +278,4 @@ JGPeriod.defaultProps = {
 }
 
 export default JGPeriod
-export { JGPeriod, type JGPeriodProps }
+export { JGPeriod, JGPeriodProps }
