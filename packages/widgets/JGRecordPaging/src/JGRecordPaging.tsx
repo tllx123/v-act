@@ -3,6 +3,8 @@ import { forwardRef } from 'react'
 import { Property } from 'csstype'
 
 import { Pagination, PaginationProps, styled } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 export interface JGRecordPagingProps extends PaginationProps {
   bottom?: Property.Bottom
@@ -17,11 +19,11 @@ export interface JGRecordPagingProps extends PaginationProps {
 const JGRecordPagingRoot = styled(Pagination, {
   name: 'JGRecordPaging',
   slot: 'Root'
-})(({ theme }) => ({
-  position: 'absolute'
-}))
+})(({ theme }) => ({}))
 
 const JGRecordPaging = forwardRef<any, JGRecordPagingProps>((inProps, ref) => {
+  const context = useContext()
+  const sx = inProps.sx || {}
   const props: PaginationProps = {
     count: inProps.count ?? 10,
     shape: inProps.shape ?? 'rounded',
@@ -32,15 +34,22 @@ const JGRecordPaging = forwardRef<any, JGRecordPagingProps>((inProps, ref) => {
     size: inProps.size ?? 'small',
     variant: inProps.variant ?? 'outlined',
     sx: {
-      width: inProps.width,
+      ...sx,
+      height: toHeight(inProps.height, context, '25px'),
+      width: toWidth(inProps.width, context, '222px'),
+      position: context ? context.position : 'absolute',
       top: inProps.top,
       right: inProps.right,
       left: inProps.left,
-      height: inProps.height,
       bottom: inProps.bottom
     }
   }
   return <JGRecordPagingRoot {...props} ref={ref} />
 })
+
+JGRecordPaging.defaultProps = {
+  height: '25px',
+  width: '222px'
+}
 
 export default JGRecordPaging

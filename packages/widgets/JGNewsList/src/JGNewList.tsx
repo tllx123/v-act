@@ -13,6 +13,8 @@ import {
   Toolbar,
   Typography
 } from '@mui/material'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 export interface JGNewsListProps extends CardProps {
   title?: string
@@ -29,7 +31,6 @@ const JGNewsListRoot = styled(Card, {
   slot: 'Root',
   shouldForwardProp: (prop) => prop !== 'title'
 })(({ theme }) => ({
-  position: 'absolute',
   border: '1px solid #356abb'
 }))
 
@@ -41,14 +42,18 @@ const JGNewsListToolbar = styled(Toolbar)(({ theme }) => ({
 
 const JGNewsList = forwardRef<HTMLDivElement, JGNewsListProps>(
   (inProps, ref) => {
+    const context = useContext()
+    const sx = inProps.sx || {}
     const props: JGNewsListProps = {
       sx: {
+        ...sx,
+        height: toHeight(inProps.height, context, '188px'),
+        width: toWidth(inProps.width, context, '350px'),
+        position: context ? context.position : 'absolute',
         bottom: inProps.bottom,
-        height: inProps.height,
         left: inProps.left ?? 0,
         right: inProps.right,
-        top: inProps.top ?? 0,
-        width: inProps.width
+        top: inProps.top ?? 0
       }
     }
     return (
@@ -71,5 +76,10 @@ const JGNewsList = forwardRef<HTMLDivElement, JGNewsListProps>(
     )
   }
 )
+
+JGNewsList.defaultProps = {
+  height: '188px',
+  width: '350px'
+}
 
 export default JGNewsList
