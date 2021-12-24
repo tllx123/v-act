@@ -1,5 +1,4 @@
 import { Plugin } from 'vite'
-
 const vitePluginDts = () => {
   const plugin: Plugin = {
     name: 'vite:dts',

@@ -1,4 +1,5 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
 
 import JGLongTextBox, { JGLongTextBoxProps } from './JGLongTextBox'
 
@@ -11,7 +12,10 @@ export const convert = function (control: Control): JSX.Element {
     height: toNumber(pros.multiHeight) + 'px',
     ismust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    labeltext: pros.labelText || '',
+    labelWidth: toNumber(pros.labelWidth, 94),
+    labelVisible: toBoolean(pros.labelVisible, true)
   }
   return <JGLongTextBox {...props}></JGLongTextBox>
 }

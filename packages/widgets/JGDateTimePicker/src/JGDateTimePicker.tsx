@@ -1,10 +1,15 @@
 import * as React from 'react'
+
+import { Property } from 'csstype'
+import zhCN from 'date-fns/locale/zh-CN'
+
+import { DatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { DatePicker, DatePickerProps } from '@mui/lab'
-import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
-import { Property } from 'csstype'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 interface JGDateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
@@ -15,12 +20,15 @@ interface JGDateTimePickerProps {
   padding?: Property.Padding
   ismust?: boolean
   labeltext?: string
+  labelWidth?: number
   placeholder?: string
   readonly?: boolean
   disabled?: boolean
+  labelVisible?: boolean
 }
 
 const JGDateTimePicker = (props: JGDateTimePickerProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -33,6 +41,8 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     padding,
     placeholder,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   const [value, setValue] = React.useState<any>(null)
@@ -49,9 +59,9 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: width,
-              height: height,
-              position: position,
+              width: toWidth(width, context, '235px'),
+              height: toHeight(height, context, '26px'),
+              position: context.position,
               left: left,
               top: top,
               margin: margin,
@@ -60,21 +70,23 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
-            <Box
-              sx={{
-                width: '100px',
+            <span
+              style={{
+                fontSize: '14px',
+                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
                 fontSize: '12px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
+                lineHeight: toHeight(height, context, '26px'),
                 textOverflow: 'ellipsis',
-                p: '0px 5px 0px 5px',
+                paddingRight: '6px',
                 textAlign: 'right',
-                flexShrink: '0'
+                display: labelVisible ? 'block' : 'none'
               }}
             >
               {labeltext}
-              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
-            </Box>
+              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
+            </span>
             <Box
               sx={{
                 'width': '100%',
@@ -127,9 +139,11 @@ JGDateTimePicker.defaultProps = {
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: 'wahaha'
+  placeholder: '请选择日期',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGDateTimePicker
 
-export { JGDateTimePicker, JGDateTimePickerProps }
+export { JGDateTimePicker, type JGDateTimePickerProps }

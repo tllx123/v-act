@@ -1,6 +1,10 @@
+import { Property } from 'csstype'
+
 import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
-import { Property } from 'csstype'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   left?: Property.Left
   top?: Property.Top
@@ -12,10 +16,14 @@ export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   readonly?: boolean
   ismust?: boolean
   labeltext?: string
+  labelWidth?: number
   placeholder?: string
+  labelVisible?: boolean
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
+  const context = useContext()
+
   const {
     left,
     top,
@@ -27,6 +35,8 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     margin,
     padding,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   return (
@@ -34,9 +44,9 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: width,
-        height: height,
-        position: position,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         left: left,
         top: top,
         margin: margin,
@@ -44,21 +54,22 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
         pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
-      <Box
-        sx={{
-          width: '100px',
-          fontSize: '12px',
+      <span
+        style={{
+          lineHeight: toHeight(height, context, '26px'),
+          fontSize: '14px',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
           textOverflow: 'ellipsis',
-          p: '0px 5px 0px 5px',
+          paddingRight: '6px',
           textAlign: 'right',
-          flexShrink: '0'
+          width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
+          display: labelVisible ? 'block' : 'none'
         }}
       >
         {labeltext}
-        {ismust ? <label style={{ color: 'red' }}>*</label> : ''}{' '}
-      </Box>
+        {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
+      </span>
       <Box
         sx={{
           'resize': 'none',
@@ -90,12 +101,14 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
 
 JGLongTextBox.defaultProps = {
   labeltext: '文本',
-  width: '250px',
-  height: '50px',
+  width: '235px',
+  height: '26px',
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: ''
+  placeholder: '',
+  labelVisible: true,
+  labelWidth: 94
 }
 
 export default JGLongTextBox

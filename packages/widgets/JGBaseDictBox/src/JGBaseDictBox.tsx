@@ -5,7 +5,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { IconButton } from '@mui/material'
 import { styled } from '@mui/system'
 import { Height, Width } from '@v-act/schema-types'
-import { WidgetContextProps } from '@v-act/widget-context'
+import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGBaseDictBoxProps extends InputUnstyledProps {
@@ -49,8 +49,6 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
    * 显示标题
    */
   labelVisible?: boolean
-
-  context?: WidgetContextProps
 }
 
 const StyledInputElement = styled('input')`
@@ -94,7 +92,7 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   if (!props.visible) {
     return null
   }
-  const context = props.context
+  const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -105,7 +103,7 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
     width: width,
     height: height,
     fontSize: '14px',
-    position: context ? context.position : 'absolute',
+    position: context.position,
     display: 'flex',
     alignItems: 'center',
     left: props.left,
@@ -160,4 +158,4 @@ JGBaseDictBox.defaultProps = {
 }
 
 export default JGBaseDictBox
-export { JGBaseDictBox, JGBaseDictBoxProps }
+export { JGBaseDictBox, type JGBaseDictBoxProps }

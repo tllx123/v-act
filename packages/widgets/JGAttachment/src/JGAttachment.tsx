@@ -151,6 +151,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
     lineHeight: lineHeight
   }
   const inputStyles = {
+    width: '100%',
     height: height
   }
 
@@ -174,7 +175,7 @@ const JGAttachment = function (props: JGAttachmentProps) {
       {labelWidth > 0 ? (
         <span style={labelStyles}>
           {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
         </span>
       ) : (
         ''
@@ -234,4 +235,4 @@ JGAttachment.defaultProps = {
 }
 
 export default JGAttachment
-export { JGAttachment, JGAttachmentProps }
+export { JGAttachment, type JGAttachmentProps }

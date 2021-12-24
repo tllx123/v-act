@@ -1,10 +1,15 @@
 import * as React from 'react'
+
+import { Property } from 'csstype'
+import zhCN from 'date-fns/locale/zh-CN'
+
+import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
-import zhCN from 'date-fns/locale/zh-CN'
 import Box from '@mui/material/Box'
-import { Property } from 'csstype'
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 interface JGLongDateTimePickerProps extends DateTimePickerProps {
   left?: Property.Left
   top?: Property.Top
@@ -15,11 +20,14 @@ interface JGLongDateTimePickerProps extends DateTimePickerProps {
   padding?: Property.Padding
   ismust?: boolean
   labeltext?: string
+  labelWidth?: number
   placeholder?: string
   readonly?: boolean
+  labelVisible?: boolean
 }
 
 const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -32,6 +40,8 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     padding,
     placeholder,
     readonly,
+    labelVisible,
+    labelWidth,
     ...restProps
   } = props
   const [value, setValue] = React.useState<any>(null)
@@ -48,31 +58,32 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: width,
-              position: position,
+              width: toWidth(width, context, '235px'),
+              height: toHeight(height, context, '26px'),
+              position: context.position,
               left: left,
               top: top,
               margin: margin,
               padding: padding,
-              height: height,
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
-            <Box
-              sx={{
-                width: '100px',
-                fontSize: '12px',
+            <span
+              style={{
+                lineHeight: toHeight(height, context, '26px'),
+                fontSize: '14px',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
                 textOverflow: 'ellipsis',
-                p: '0px 5px 0px 5px',
+                paddingRight: '6px',
                 textAlign: 'right',
-                flexShrink: '0'
+                width: labelVisible ? toLabelWidth(labelWidth, context, 94) : 0,
+                display: labelVisible ? 'block' : 'none'
               }}
             >
               {labeltext}
-              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}
-            </Box>
+              {ismust ? <label style={{ color: 'red' }}>*</label> : ''}:
+            </span>
             <Box
               sx={{
                 'width': '100%',
@@ -121,12 +132,14 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
 
 JGLongDateTimePicker.defaultProps = {
   labeltext: '文本',
-  width: '250px',
+  width: '235px',
+  labelWidth: 94,
   position: 'absolute',
   left: 0,
   top: 0,
-  placeholder: 'wahaha'
+  placeholder: '请选择日期',
+  labelVisible: true
 }
 
 export default JGLongDateTimePicker
-export { JGLongDateTimePicker, JGLongDateTimePickerProps }
+export { JGLongDateTimePicker, type JGLongDateTimePickerProps }

@@ -5,7 +5,8 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 interface dataHeader {
   code: string
   name: string
@@ -24,6 +25,7 @@ export interface JGDataGridProps {
 }
 
 const JGDataGrid = (props: JGDataGridProps) => {
+  const context = useContext()
   const {
     left,
     top,
@@ -40,17 +42,20 @@ const JGDataGrid = (props: JGDataGridProps) => {
   return (
     <TableContainer
       sx={{
-        position: position,
         left: left,
         top: top,
-        width: width,
-        height: height,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '300px'),
+        position: context.position,
         display: ishide ? 'none' : 'block'
       }}
     >
       <Table sx={{ minWidth: 650 }} size="small" {...resprops}>
         <TableHead>
-          <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+          <TableRow
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            key="80000"
+          >
             {dataHeader?.map((row) => (
               <TableCell component="th" scope="row" key={row.code}>
                 {row.name}
@@ -65,7 +70,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               {dataHeader?.map((item) => (
-                <TableCell scope="row">{row[item.code]}</TableCell>
+                <TableCell scope="row" key={item.code}>
+                  {row[item.code]}
+                </TableCell>
               ))}
             </TableRow>
           ))}
@@ -81,8 +88,17 @@ JGDataGrid.defaultProps = {
   width: '800px',
   height: '500px',
   position: 'absolute',
-  data: [],
-  dataHeader: []
+  data: [
+    { id: '1', name: '11', num: '120', key: '1' },
+    { id: '2', name: '22', num: '122', key: '2' },
+    { id: '3', name: '33', num: '130', key: '3' },
+    { id: '4', name: '44', num: '140', key: '4' }
+  ],
+  dataHeader: [
+    { code: 'id', name: 'id号', key: '5' },
+    { code: 'name', name: '名称', key: '6' },
+    { code: 'num', name: '数量', key: '7' }
+  ]
 }
 
 export default JGDataGrid

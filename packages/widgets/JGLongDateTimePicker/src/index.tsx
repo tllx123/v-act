@@ -1,8 +1,10 @@
+import { Control } from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
+
 import {
   JGLongDateTimePicker,
   JGLongDateTimePickerProps
 } from './JGLongDateTimePicker'
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
 
 const convert = function (
   control: Control,
@@ -14,14 +16,16 @@ const convert = function (
     top: pros.top + 'px',
     height: toNumber(pros.multiHeight) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
-    position: 'absolute',
     labeltext: pros.labelText,
+    labelWidth: toNumber(pros.labelWidth, 94),
     readonly: toBoolean(pros.readOnly, false),
     ismust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    labelVisible: toBoolean(pros.labelVisible, true),
+    labelWidth: toNumber(pros.labelWidth)
   }
   return <JGLongDateTimePicker {...props}></JGLongDateTimePicker>
 }
 
-export { JGLongDateTimePicker, convert }
+export { convert, JGLongDateTimePicker }

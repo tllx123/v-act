@@ -69,6 +69,8 @@ const Home = () => {
       <Link href="/JGReport">JGReport</Link>
       <br />
       <Link href="/JGTreeGrid">JGTreeGrid</Link> <br />
+      <Link href="/JGLongTextBox">JGLongTextBox</Link> <br />
+      <Link href="/JGCheckBox">JGCheckBox</Link> <br />
     </>
   )
 }

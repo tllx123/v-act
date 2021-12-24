@@ -145,6 +145,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     paddingRight: '6px'
   }
   const inputStyles = {
+    width: '100%',
     height: height
   }
   const isInteger = (e) => {
@@ -169,7 +170,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
       {labelWidth > 0 ? (
         <span style={labelStyles}>
           {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}
+          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
         </span>
       ) : (
         ''
@@ -202,4 +203,4 @@ JGFloatBox.defaultProps = {
 }
 
 export default JGFloatBox
-export { JGFloatBox, JGFloatBoxProps }
+export { JGFloatBox, type JGFloatBoxProps }

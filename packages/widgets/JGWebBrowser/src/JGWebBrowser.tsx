@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
 import Iframe from 'react-iframe'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 interface JGWebBrowserProps {
   left?: Property.Left
   top?: Property.Top
@@ -23,6 +24,7 @@ const obj2strUrl = (obj: any) => {
 }
 
 const JGWebBrowser = (props: JGWebBrowserProps) => {
+  const context = useContext()
   const { left, top, height, width, position, url, param, ...resprops } = props
 
   let urlTemp = url
@@ -36,7 +38,9 @@ const JGWebBrowser = (props: JGWebBrowserProps) => {
       sx={{
         left: left,
         top: top,
-        position: position
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position
       }}
     >
       <Iframe url={urlTemp} width="100%" height="100%" {...resprops} />

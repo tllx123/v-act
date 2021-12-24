@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import InputBase from '@mui/material/InputBase'
-import { useContext, withContext } from '@v-act/widget-context'
+import { useContext } from '@v-act/widget-context'
 
 interface JGLocateBoxProps {
   /**
@@ -39,7 +39,7 @@ interface JGLocateBoxProps {
   disabled?: boolean
 }
 
-const JGLocateBoxDef = function (props: JGLocateBoxProps) {
+const JGLocateBox = function (props: JGLocateBoxProps) {
   if (!props.visible) {
     return null
   }
@@ -98,7 +98,7 @@ const JGLocateBoxDef = function (props: JGLocateBoxProps) {
   )
 }
 
-JGLocateBoxDef.defaultProps = {
+JGLocateBox.defaultProps = {
   left: '0px',
   top: '0px',
   height: '28px',
@@ -107,8 +107,6 @@ JGLocateBoxDef.defaultProps = {
   visible: true,
   disabled: false
 }
-
-const JGLocateBox = withContext(JGLocateBoxDef)
 
 export default JGLocateBox
 export { JGLocateBox, type JGLocateBoxProps }

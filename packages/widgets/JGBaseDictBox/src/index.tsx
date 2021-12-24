@@ -13,7 +13,7 @@ const convert = function (
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible),
+    visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true)
   }

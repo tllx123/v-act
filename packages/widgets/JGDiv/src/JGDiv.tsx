@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 interface JGDivProps {
   left?: Property.Left
   top?: Property.Top
@@ -12,15 +13,15 @@ interface JGDivProps {
 
 const JGDiv = (props: JGDivProps) => {
   const { left, position, top, width, height, backColor } = props
-
+  const context = useContext()
   return (
     <Box
       sx={{
         left: left,
         top: top,
-        position: position,
-        width: width,
-        height: height,
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
+        position: context.position,
         backgroundColor: backColor
       }}
       component="div"
