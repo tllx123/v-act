@@ -152,7 +152,8 @@ const JGAttachment = function (props: JGAttachmentProps) {
   }
   const inputStyles = {
     width: '100%',
-    height: height
+    height: height,
+    flex: 1
   }
 
   const isInteger = (e) => {
@@ -235,4 +236,4 @@ JGAttachment.defaultProps = {
 }
 
 export default JGAttachment
-export { JGAttachment, type JGAttachmentProps }
+export { JGAttachment, JGAttachmentProps }
