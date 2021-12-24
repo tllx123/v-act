@@ -157,6 +157,11 @@ interface Property {
    * 树表头数据
    */
   dataTreeHeader?: Array<dataTreeHeader>
+
+  /**
+   *边框颜色
+   */
+  boderColor?: string
 }
 
 export default Property
