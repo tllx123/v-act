@@ -75,7 +75,8 @@
       "@v-act/jgdatagrid": ["packages/widgets/JGDataGrid/src"],
       "@v-act/jgtreegrid": ["packages/widgets/JGTreeGrid/src"],
       "@v-act/jgcomponentcontainer": ["packages/widgets/JGComponentContainer/src"],
-      "@v-act/jginputlabel": ["packages/widgets/JGInputLabel/src"]
+      "@v-act/jginputlabel": ["packages/widgets/JGInputLabel/src"],
+      "@v-act/jgworkflowgraph": ["packages/widgets/JGWorkFlowGraph/src"]
     }
   }
 }
