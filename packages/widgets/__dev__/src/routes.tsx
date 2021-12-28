@@ -3,6 +3,7 @@ import { lazy } from 'react'
 import { useRoutes } from 'react-router-dom'
 
 import Home from './widgets/Home'
+import JGWorkFlowGraph from './widgets/JGWorkFlowGraph'
 
 const JGAttachment = lazy(() => import('./widgets/JGAttachment'))
 const JGButton = lazy(() => import('./widgets/JGButton'))
@@ -239,6 +240,10 @@ const Routes = () =>
     {
       path: '/JGLongTextBox',
       element: <JGLongTextBox />
+    },
+    {
+      path: '/JGWorkFlowGraph',
+      element: <JGWorkFlowGraph />
     }
   ])
 

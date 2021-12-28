@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/jgimagecutter",
+  "name": "@v-act/jgworkflowgraph",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -8,11 +8,8 @@
     "dist",
     "src"
   ],
-  "peerDependencies": {
-    "react-cropper": "^2.1.8"
-  },
   "publishConfig": {
     "access": "public"
   },
-  "widgetType": "JGImageCutter"
+  "widgetType": "JGWorkFlowGraph"
 }
