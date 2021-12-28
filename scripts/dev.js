@@ -1,10 +1,9 @@
 import { resolve } from 'path'
 import { createServer } from 'vite'
-
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
-import usePluginImport from 'vite-plugin-importer'
+
 const getAlias = async () => {
   const alias = {}
   const packages = await getPackages()
@@ -19,9 +18,7 @@ const getAlias = async () => {
 export async function viteServ(scopes) {
   const packages = await getPackages()
   const filteredPackages = filterPackages(packages, scopes)
-
   const alias = await getAlias()
-
   return filteredPackages.map((pkg) => {
     return createServer({
       configFile: false,
