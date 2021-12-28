@@ -72,6 +72,7 @@ const Home = () => {
       <Link href="/JGLongTextBox">JGLongTextBox</Link> <br />
       <Link href="/JGCheckBox">JGCheckBox</Link> <br />
       <Link href="/JGComponentContainer">JGComponentContainer</Link> <br />
+      <Link href="/JGButtonGroup">JGButtonGroup</Link> <br />
     </>
   )
 }

@@ -1,5 +1,4 @@
 import { Property } from 'csstype'
-
 import { Checkbox, CheckboxProps } from '@mui/material'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
