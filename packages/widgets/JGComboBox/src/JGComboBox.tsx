@@ -331,9 +331,33 @@ const JGComboBox = function (props: JGComboBoxProps) {
         value={value}
         defaultValue={value}
         onChange={handleChange}
+        sx={{
+          '.MuiSelect-select': {
+            padding: '5px 6px'
+          }
+        }}
       >
         {radioData.map((item) => {
-          return <MenuItem value={item.id}>{item.name}</MenuItem>
+          return (
+            <MenuItem
+              value={item.id}
+              sx={{
+                'height': '32px',
+                'paddingLeft': '6px',
+                'paddingRight': '6px',
+                'fontSize': '14px',
+                'backgroundColor': 'transparent!important',
+                '&.Mui-selected': {
+                  backgroundColor: 'transparent!important'
+                },
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)!important'
+                }
+              }}
+            >
+              {item.name}
+            </MenuItem>
+          )
         })}
       </CustomSelect>
     </Box>
