@@ -5,6 +5,7 @@ import { Property } from 'csstype'
 import { Editable, withReact, useSlate, Slate } from 'slate-react'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 import Box from '@mui/material/Box'
+import '../src/icon.css'
 import {
   Editor,
   Transforms,
