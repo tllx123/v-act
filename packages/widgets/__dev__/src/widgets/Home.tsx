@@ -73,6 +73,7 @@ const Home = () => {
       <Link href="/JGCheckBox">JGCheckBox</Link> <br />
       <Link href="/JGComponentContainer">JGComponentContainer</Link> <br />
       <Link href="/JGButtonGroup">JGButtonGroup</Link> <br />
+      <Link href="/JGRichTextEditor">JGRichTextEditor</Link> <br />
     </>
   )
 }

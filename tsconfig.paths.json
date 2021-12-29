@@ -77,7 +77,8 @@
       "@v-act/jgcomponentcontainer": ["packages/widgets/JGComponentContainer/src"],
       "@v-act/jginputlabel": ["packages/widgets/JGInputLabel/src"],
       "@v-act/jgworkflowgraph": ["packages/widgets/JGWorkFlowGraph/src"],
-      "@v-act/jgbuttongroup": ["packages/widgets/JGButtonGroup/src"]
+      "@v-act/jgbuttongroup": ["packages/widgets/JGButtonGroup/src"],
+      "@v-act/jgrichtexteditor": ["packages/widgets/JGRichTextEditor/src"]
     }
   }
 }

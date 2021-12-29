@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-
+import { useContext } from '@v-act/widget-context'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface {{dirNameProps}} {
   left?: Property.Left
@@ -12,6 +13,7 @@ interface {{dirNameProps}} {
 
 
 const  {{dirName}} = (props: {{dirNameProps}}) => {
+  const context = useContext()
   const { left, top, height, width, position, ...resprops } = props
 
 

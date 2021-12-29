@@ -5,20 +5,20 @@ import {
   valueofWidth,
   valueofHeight
 } from '@v-act/widget-utils'
-import { {{dirName}}, {{dirNameProps}} } from './{{dirName}}'
+import { JGRichTextEditor, JGRichTextEditorProps } from './JGRichTextEditor'
 
 const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
   const pros = control.properties
-  const props: {{dirNameProps}} = {
+  const props: JGRichTextEditorProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '235px'),
-    height: valueofHeight(pros.multiHeight, '26px'),
+    height: valueofHeight(pros.multiHeight, '26px')
   }
-  return <{{dirName}} {...props}></{{dirName}}>
+  return <JGRichTextEditor {...props}></JGRichTextEditor>
 }
 
-export { convert,  {{dirName}} }
+export { convert, JGRichTextEditor }

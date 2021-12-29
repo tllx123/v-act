@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
-
+import Icon from '@mui/material/Icon'
 interface JGCheckBoxProps extends CheckboxProps {
   left?: Property.Left
   top?: Property.Top

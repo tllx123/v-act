@@ -58,9 +58,11 @@ const JGComponentContainer = lazy(
   () => import('./widgets/JGComponentContainer')
 )
 const JGButtonGroup = lazy(() => import('./widgets/JGButtonGroup'))
+const JGRichTextEditor = lazy(() => import('./widgets/JGRichTextEditor'))
 
 const Routes = () =>
   useRoutes([
+    { path: '/JGRichTextEditor', element: <JGRichTextEditor /> },
     { path: '/JGButtonGroup', element: <JGButtonGroup /> },
     { path: '/JGComponentContainer', element: <JGComponentContainer /> },
     { path: '/JGTreeGrid', element: <JGTreeGrid /> },
