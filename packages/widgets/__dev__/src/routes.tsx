@@ -63,6 +63,7 @@ const JGButtonGroup = lazy(() => import('./widgets/JGButtonGroup'))
 const JGRichTextEditor = lazy(() => import('./widgets/JGRichTextEditor'))
 const JGRichTextViewer = lazy(() => import('./widgets/JGRichTextViewer'))
 const JGPagination = lazy(() => import('./widgets/JGPagination'))
+const JGImagePlay = lazy(() => import('./widgets/JGImagePlay'))
 
 const Routes = () =>
   useRoutes([
@@ -264,6 +265,14 @@ const Routes = () =>
     {
       path: 'JGPagination',
       element: <JGPagination />
+    },
+    {
+      path: 'JGPagination',
+      element: <JGPagination />
+    },
+    {
+      path: 'JGImagePlay',
+      element: <JGImagePlay />
     }
   ])
 
