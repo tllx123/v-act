@@ -79,6 +79,7 @@
       "@v-act/jgworkflowgraph": ["packages/widgets/JGWorkFlowGraph/src"],
       "@v-act/jgbuttongroup": ["packages/widgets/JGButtonGroup/src"],
       "@v-act/jgrichtexteditor": ["packages/widgets/JGRichTextEditor/src"]
+
     }
   }
 }
