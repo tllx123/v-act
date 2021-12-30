@@ -5,20 +5,13 @@ const BaseDictBox = () => {
   return (
     <JGComponent>
       <JGBaseDictBox
-        top={33}
-        left={57}
+        top={27}
+        left={20}
         multiHeight="26px"
         multiWidth="235px"
         labelText="弹出选择"
         labelVisible={true}
-      ></JGBaseDictBox>
-      <JGBaseDictBox
-        top={66}
-        left={57}
-        multiHeight="88px"
-        multiWidth="500px"
-        labelText="弹出选择"
-        labelVisible={true}
+        readOnly={true}
       ></JGBaseDictBox>
     </JGComponent>
   )

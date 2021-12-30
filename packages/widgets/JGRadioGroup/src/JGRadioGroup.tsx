@@ -299,7 +299,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   }
 
   /* 测试数据 */
-  const radioData = [
+  /* const radioData = [
     {
       id: 1,
       name: '苹果'
@@ -332,7 +332,15 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
       id: 8,
       name: '香蕉'
     }
-  ]
+  ] */
+
+  const radioData = []
+  for (let i = 0; i < 16; i++) {
+    radioData.push({
+      id: i + 1,
+      name: `苹果${i + 1}`
+    })
+  }
 
   return (
     <Box style={wrapStyles}>
@@ -356,6 +364,9 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
             backgroundColor: '#ddd',
             backgroundImage:
               '-webkit-linear-gradient(45deg,rgba(255, 255, 255, 0.2) 25%,transparent 25%,transparent 50%,rgba(255, 255, 255, 0.2) 50%,rgba(255, 255, 255, 0.2) 75%,transparent 75%,transparent)'
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#999'
           }
           /* '&::-webkit-scrollbar-track': {
             boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.2)',
@@ -396,7 +407,6 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
                 }}
               >
                 {item.name}
-                {item.id}
               </span>
             </div>
           )

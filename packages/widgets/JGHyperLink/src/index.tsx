@@ -1,4 +1,11 @@
-import { Control, toNumber, toBoolean } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
+
 import { JGHyperLink, JGHyperLinkProps } from './JGHyperLink'
 
 const convert = function (
@@ -9,6 +16,8 @@ const convert = function (
   const props: JGHyperLinkProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust, false),
     placeholder: pros.placeholder,
@@ -22,4 +31,4 @@ const convert = function (
 
 export default JGHyperLink
 
-export { JGHyperLink, convert }
+export { convert, JGHyperLink }

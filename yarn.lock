@@ -17371,7 +17371,7 @@ timsort@^0.3.0:
 
 tiny-invariant@1.0.6:
   version "1.0.6"
-  resolved "https://registry.npmmirror.com/tiny-invariant/download/tiny-invariant-1.0.6.tgz?cache=0&sync_timestamp=1635822367356&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Ftiny-invariant%2Fdownload%2Ftiny-invariant-1.0.6.tgz#b3f9b38835e36a41c843a3b0907a5a7b3755de73"
+  resolved "https://registry.npmmirror.com/tiny-invariant/download/tiny-invariant-1.0.6.tgz#b3f9b38835e36a41c843a3b0907a5a7b3755de73"
   integrity sha1-s/mziDXjakHIQ6OwkHpaezdV3nM=
 
 tiny-warning@^1.0.2, tiny-warning@^1.0.3:

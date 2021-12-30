@@ -1,9 +1,8 @@
-import React, { forwardRef, CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
-
 import { styled } from '@mui/system'
-
+import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
 
 interface JGHyperLinkProps extends InputUnstyledProps {
@@ -117,24 +116,34 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
     textAlign: 'right',
     paddingRight: '6px'
   }
-  const inputStyles = {
-    height: props.multiHeight
+  const divStyles: CSSProperties = {
+    // height: props.multiHeight
+    boxSizing: 'content-box',
+    borderCollapse: 'separate',
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    flex: 1,
+    lineHeight: 'unset',
+    border: '1px solid #DCDEE2',
+    borderRadius: '4px'
   }
   return (
     <div style={wrapStyles}>
-      {labelWidth > 0 ? (
-        <span style={labelStyles}>
-          {props.labelText}
-          {props.isMust ? <label style={{ color: 'red' }}>*</label> : ''}:
-        </span>
-      ) : (
-        ''
-      )}
-      <CustomInput
+      <JGInputLabel
+        width={labelWidth}
+        height={props.multiHeight}
+        visible={props.labelVisible}
+        required={props.isMust}
+      >
+        {props.labelText}
+      </JGInputLabel>
+      <div style={divStyles}></div>
+      {/* <CustomInput
         style={inputStyles}
         disabled={props.disabled}
         placeholder={props.placeholder}
-      />
+      /> */}
     </div>
   )
 }
@@ -145,7 +154,7 @@ JGHyperLink.defaultProps = {
   multiHeight: 26,
   multiWidth: 235,
   labelWidth: 94,
-  labelText: '文本',
+  labelText: '链接',
   placeholder: '',
   isMust: false,
   visible: true,
@@ -154,4 +163,4 @@ JGHyperLink.defaultProps = {
 }
 
 export default JGHyperLink
-export { JGHyperLink, JGHyperLinkProps }
+export { JGHyperLink, type JGHyperLinkProps }

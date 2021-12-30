@@ -1,4 +1,4 @@
-import { CSSProperties, forwardRef } from 'react'
+import { CSSProperties, forwardRef, MouseEventHandler, useRef } from 'react'
 
 import { Property } from 'csstype'
 
@@ -20,7 +20,7 @@ interface CustomLinearProgressProps extends LinearProgressProps {
   /**
    * 比例颜色
    */
-  frontcolor?: string
+  frontColor?: string
 
   /**
    * 背景颜色
@@ -40,7 +40,7 @@ const CustomLinearProgress = forwardRef(function (
     borderRadius: '4px'
   }
 
-  const { backgroundColor = '#e9ecef', frontcolor = '#ef5350' } = props
+  const { backgroundColor = '#e9ecef', frontColor = '#ef5350' } = props
   const themeOptions: VActThemeOptions = {
     successColor: '',
     primaryColor: '',
@@ -71,7 +71,7 @@ const CustomLinearProgress = forwardRef(function (
             backgroundColor: backgroundColor
           },
           bar1Determinate: {
-            backgroundColor: frontcolor
+            backgroundColor: frontColor
           }
         }
       }
@@ -176,12 +176,44 @@ interface JGPercentProps extends BoxProps {
    */
   frontColor?: string
 
+  /********************** 事件 ***********************************/
+  /**
+   * 单击事件
+   */
+  onClick?: MouseEventHandler
+
   /********************** 数据 ***********************************/
+
+  /**
+   * 实体
+   */
+  tableName?: number
+
+  /**
+   * 字段名称
+   */
+  columnName?: number
 
   /**
    * 值
    */
   value?: number
+
+  /********************** 表单布局 ***********************************/
+  /**
+   * 跨列
+   */
+  colSpan?: number
+
+  /**
+   * 起始行
+   */
+  startRow?: number
+
+  /**
+   * 结束行
+   */
+  endRow?: number
 }
 
 const JGPercent = function (props: JGPercentProps) {
@@ -223,10 +255,23 @@ const JGPercent = function (props: JGPercentProps) {
     fontStyle: props.valueFontStyle
   }
 
+  const textInput = useRef(null)
+
+  const handleClick = function (event: any) {
+    if (props.onClick) {
+      console.log(textInput.current)
+      props.onClick(event)
+    }
+  }
+
   return (
-    <Box style={wrapStyles}>
+    <Box style={wrapStyles} onClick={handleClick}>
       <div style={{ width: width, height: height, position: 'relative' }}>
-        <CustomLinearProgress value={props.value}></CustomLinearProgress>
+        <CustomLinearProgress
+          value={props.value}
+          frontColor={props.frontColor}
+          ref={textInput}
+        ></CustomLinearProgress>
         <Typography
           style={progressTextStyles}
           variant="caption"

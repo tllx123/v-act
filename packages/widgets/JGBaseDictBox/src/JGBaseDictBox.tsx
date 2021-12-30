@@ -1,8 +1,13 @@
-import React, { CSSProperties, forwardRef } from 'react'
+import React, { CSSProperties } from 'react'
 
-import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { IconButton } from '@mui/material'
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  OutlinedInput
+} from '@mui/material'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -50,12 +55,17 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
    * 显示标题
    */
   labelVisible?: boolean
+  /**
+   * 只读
+   */
+  readOnly?: boolean
 }
 
 const StyledInputElement = styled('input')`
   border: 1px solid #dcdee2;
-  color: #333;
+  border-right: 0;
   border-radius: 4px;
+  color: #333;
   padding: 0 4px;
   width: 100%;
   outline: none;
@@ -74,19 +84,10 @@ const StyledInputElement = styled('input')`
     background: #f6f7fb;
   }
 `
-
-const CustomInput = forwardRef(function (
-  props: JGBaseDictBoxProps,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
-  return (
-    <InputUnstyled
-      components={{ Input: StyledInputElement }}
-      readOnly={true}
-      {...props}
-      ref={ref}
-    />
-  )
+const CssOutlinedInput = styled(OutlinedInput)({
+  '&:hover fieldset': {
+    borderColor: 'yellow'
+  }
 })
 
 const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
@@ -104,28 +105,34 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
     width: width,
     height: height,
     fontSize: '14px',
-    position: context.position,
     display: 'flex',
     alignItems: 'center',
+    position: context.position,
     left: props.left,
+    overflow: 'visible',
     top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
 
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    // height: props.multiHeight,
-    textAlign: 'right',
-    paddingRight: '6px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis'
-  }
   const inputStyles = {
     width: '100%',
-    height: props.multiHeight
+    height: height
   }
+
+  const buttonStyles: CSSProperties = {
+    width: '16px',
+    height: '16px'
+  }
+
+  const openStyle: CSSProperties = {
+    color: '#dcdee2'
+  }
+
+  const InputAdornmentSty: CSSProperties = {
+    width: '18px'
+  }
+
   return (
     <div style={wrapStyles}>
       <JGInputLabel
@@ -136,19 +143,29 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
       >
         {props.labelText}
       </JGInputLabel>
-      <CustomInput style={inputStyles} placeholder={props.placeholder} />
-      <IconButton>
-        <OpenInNewIcon />
-      </IconButton>
+
+      <FormControl variant="outlined">
+        <CssOutlinedInput
+          style={inputStyles}
+          readOnly={props.readOnly}
+          endAdornment={
+            <InputAdornment style={InputAdornmentSty} position="end">
+              <IconButton style={openStyle}>
+                <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
     </div>
   )
 }
 
 JGBaseDictBox.defaultProps = {
-  left: 0,
-  top: 0,
-  multiHeight: 26,
-  multiWidth: 235,
+  left: '0px',
+  top: '0px',
+  multiHeight: '26px',
+  multiWidth: '235px',
   labelWidth: 94,
   labelText: '文本',
   placeholder: '',

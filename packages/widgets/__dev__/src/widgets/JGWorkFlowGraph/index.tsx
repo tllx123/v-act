@@ -7,8 +7,8 @@ const workFlowGraph = () => {
       <JGWorkFlowGraph
         top="143px"
         left="296px"
-        multiWidth="137px"
-        multiHeight="161px"
+        multiWidth="766px"
+        multiHeight="532px"
       ></JGWorkFlowGraph>
     </JGComponent>
   )

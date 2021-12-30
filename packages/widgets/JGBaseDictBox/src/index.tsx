@@ -1,4 +1,5 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
 
 import { JGBaseDictBox, JGBaseDictBoxProps } from './JGBaseDictBox'
 

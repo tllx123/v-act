@@ -78,7 +78,11 @@
       "@v-act/jginputlabel": ["packages/widgets/JGInputLabel/src"],
       "@v-act/jgworkflowgraph": ["packages/widgets/JGWorkFlowGraph/src"],
       "@v-act/jgbuttongroup": ["packages/widgets/JGButtonGroup/src"],
-      "@v-act/jgrichtexteditor": ["packages/widgets/JGRichTextEditor/src"]
+      "@v-act/jgrichtexteditor": ["packages/widgets/JGRichTextEditor/src"],
+      "@v-act/jgimagePlay": ["packages/widgets/JGImagePlay/src"],
+      "@v-act/jgpagination": ["packages/widgets/JGPagination/src"],
+      "@v-act/jgrichtextviewer": ["packages/widgets/JGRichTextViewer/src"],
+      "@v-act/jgimageplay": ["packages/widgets/JGImagePlay/src"]
     }
   }
 }

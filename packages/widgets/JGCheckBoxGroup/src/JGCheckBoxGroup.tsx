@@ -283,7 +283,7 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
     : `${Date.now()}${Math.random().toString(32).slice(2)}`
 
   /* 测试数据 */
-  const radioData = [
+  /* const radioData = [
     {
       id: 1,
       name: '苹果'
@@ -300,7 +300,14 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
       id: 4,
       name: '芒果'
     }
-  ]
+  ] */
+  const radioData = []
+  for (let i = 0; i < 16; i++) {
+    radioData.push({
+      id: i + 1,
+      name: `苹果${i + 1}`
+    })
+  }
 
   return (
     <Box style={wrapStyles}>
@@ -312,13 +319,40 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
       >
         {props.labelText}
       </JGInputLabel>
-      <Box style={checkboxStyles}>
+      <Box
+        style={checkboxStyles}
+        sx={{
+          '&::-webkit-scrollbar': {
+            height: '10px',
+            width: '10px'
+          },
+          '&::-webkit-scrollbar-thumb': {
+            borderRadius: '10px',
+            backgroundColor: '#ddd',
+            backgroundImage:
+              '-webkit-linear-gradient(45deg,rgba(255, 255, 255, 0.2) 25%,transparent 25%,transparent 50%,rgba(255, 255, 255, 0.2) 50%,rgba(255, 255, 255, 0.2) 75%,transparent 75%,transparent)'
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: '#999'
+          }
+          /*  '&:hover': {
+            '&::-webkit-scrollbar-thumb': {
+              backgroundColor: 'red'
+            }
+          } */
+          /* '&::-webkit-scrollbar-track': {
+        boxShadow: 'inset 0 0 5px rgba(0, 0, 0, 0.2)',
+        backgroundColor: 'red',
+        borderRadius: '10px'
+      } */
+        }}
+      >
         {radioData.map((item) => {
           return (
             <Box
               key={item.id}
               style={{
-                paddingRight: '8px',
+                paddingRight: '6px',
                 height: '24px',
                 display: 'inline-flex'
               }}
@@ -327,7 +361,7 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
                 defaultChecked
                 size="small"
                 sx={{
-                  'width': '24px',
+                  'width': '16px',
                   'height': '24px',
                   '& .MuiSvgIcon-root': { fontSize: 16 }
                 }}

@@ -57,8 +57,13 @@ const JGTreeGrid = lazy(() => import('./widgets/JGTreeGrid'))
 const JGComponentContainer = lazy(
   () => import('./widgets/JGComponentContainer')
 )
+
 const JGButtonGroup = lazy(() => import('./widgets/JGButtonGroup'))
+
 const JGRichTextEditor = lazy(() => import('./widgets/JGRichTextEditor'))
+const JGRichTextViewer = lazy(() => import('./widgets/JGRichTextViewer'))
+const JGPagination = lazy(() => import('./widgets/JGPagination'))
+const JGImagePlay = lazy(() => import('./widgets/JGImagePlay'))
 
 const Routes = () =>
   useRoutes([
@@ -248,6 +253,26 @@ const Routes = () =>
     {
       path: '/JGWorkFlowGraph',
       element: <JGWorkFlowGraph />
+    },
+    {
+      path: 'JGRichTextEditor',
+      element: <JGRichTextEditor />
+    },
+    {
+      path: 'JGRichTextViewer',
+      element: <JGRichTextViewer />
+    },
+    {
+      path: 'JGPagination',
+      element: <JGPagination />
+    },
+    {
+      path: 'JGPagination',
+      element: <JGPagination />
+    },
+    {
+      path: 'JGImagePlay',
+      element: <JGImagePlay />
     }
   ])
 
