@@ -7,7 +7,7 @@ const convert = function (control: Control): JSX.Element {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '235px'),
-    height: valueofHeight(pros.multiHeight, '26px')
+    height: valueofHeight(pros.multiHeight, '30px')
   }
   return <JGButtonGroup {...props}></JGButtonGroup>
 }

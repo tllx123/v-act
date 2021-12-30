@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
-interface JGComponentContainerProps {
+export interface JGComponentContainerProps {
   left?: Property.Left
   top?: Property.Top
   position?: Property.Position
@@ -54,4 +54,3 @@ JGComponentContainer.defaultProps = {
 }
 
 export default JGComponentContainer
-export { JGComponentContainer, JGComponentContainerProps }

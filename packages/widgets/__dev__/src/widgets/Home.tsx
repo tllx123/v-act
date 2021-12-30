@@ -74,6 +74,8 @@ const Home = () => {
       <Link href="/JGComponentContainer">JGComponentContainer</Link> <br />
       <Link href="/JGButtonGroup">JGButtonGroup</Link> <br />
       <Link href="/JGRichTextEditor">JGRichTextEditor</Link> <br />
+      <Link href="/JGDateTimePicker">JGDateTimePicker</Link> <br />
+      <Link href="/JGLongDateTimePicker">JGLongDateTimePicker</Link> <br />
     </>
   )
 }

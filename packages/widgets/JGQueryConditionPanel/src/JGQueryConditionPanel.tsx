@@ -87,8 +87,8 @@ const convert = function (
   const props: JGQueryConditionPanelProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    multiWidth: valueofWidth(pros.multiWidth, '500px'),
-    multiHeight: valueofHeight(pros.multiHeight, '40px'),
+    multiWidth: 'auto',
+    multiHeight: 'auto',
     visible: toBoolean(pros.visible, true),
     defaultExpand: toBoolean(pros.defaultExpand, true)
   }
@@ -103,8 +103,8 @@ const convert = function (
 JGQueryConditionPanel.defaultProps = {
   left: 0,
   top: 0,
-  multiHeight: '40px',
-  multiWidth: '500px',
+  multiHeight: 'auto',
+  multiWidth: 'auto',
   visible: true,
   defaultExpand: true
 }

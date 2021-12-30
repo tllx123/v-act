@@ -1,10 +1,10 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-import { ButtonGroup, Button, ButtonGroupProps } from '@mui/material'
+import { ButtonGroup, Button } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 
-interface JGButtonGroupProps extends ButtonGroupProps {
+interface JGButtonGroupProps {
   left?: Property.Left
   top?: Property.Top
   position?: Property.Position
@@ -21,16 +21,16 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
       variant="contained"
       sx={{
         width: toWidth(width, context, '235px'),
-        height: toHeight(height, context, '26px'),
+        height: '30px',
         position: context.position,
         left: left,
         top: top
       }}
       component={ButtonGroup}
     >
-      <Button>按钮1</Button>
-      <Button>按钮2</Button>
-      <Button>按钮3</Button>
+      <Button sx={{ height: '100%', width: '100%' }}>按钮1</Button>
+      <Button sx={{ height: '100%', width: '100%' }}>按钮2</Button>
+      <Button sx={{ height: '100%', width: '100%' }}>按钮3</Button>
     </Box>
   )
 }
@@ -38,7 +38,7 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
 JGButtonGroup.defaultProps = {
   left: '20px',
   top: '50px',
-  width: 'auto',
+  width: '250px',
   height: '30px',
   position: 'absolute'
 }

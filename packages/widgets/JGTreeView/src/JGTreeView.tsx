@@ -42,18 +42,37 @@ const JGTreeView = (props: JGTreeViewProps) => {
     })
   }
 
+  console.log('dataTree')
+  console.log(dataTree)
+
   let isReadonly = false
   if (readonly || disable) {
     isReadonly = true
   }
 
-  const renderTree = (nodes: any) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-      {Array.isArray(nodes.children)
-        ? nodes.children.map((node: any) => renderTree(node))
-        : null}
-    </TreeItem>
-  )
+  const renderTreeRoot = (dataTree: any) => {
+    const renderTree = (nodes: any) => {
+      console.log(nodes)
+      return (
+        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+          {Array.isArray(nodes.children)
+            ? nodes.children.map((nodeC: any) => renderTree(nodeC))
+            : null}
+        </TreeItem>
+      )
+    }
+
+    return dataTree.map((item: any) => {
+      console.log(item)
+      return (
+        <TreeItem key={item.id} nodeId={item.id} label={item.name}>
+          {Array.isArray(item.children)
+            ? item.children.map((nodeC: any) => renderTree(nodeC))
+            : null}
+        </TreeItem>
+      )
+    })
+  }
 
   return (
     <Box
@@ -63,7 +82,8 @@ const JGTreeView = (props: JGTreeViewProps) => {
         width: toWidth(width, context, '235px'),
         height: toHeight(height, context, '26px'),
         position: context.position,
-        pointerEvents: isReadonly ? 'none' : 'auto'
+        pointerEvents: isReadonly ? 'none' : 'auto',
+        border: '1px solid #999'
       }}
     >
       <TreeView
@@ -75,7 +95,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
         defaultExpandIcon={<ChevronRightIcon />}
         {...resprops}
       >
-        {renderTree(dataTree[0])}
+        {renderTreeRoot(dataTree)}
       </TreeView>
     </Box>
   )
@@ -88,12 +108,13 @@ JGTreeView.defaultProps = {
   height: '200px',
   position: 'absolute',
   data: [
-    { id: '1', name: '1' },
-    { id: '2', name: '2', pid: '1' },
-    { id: '3', name: '3', pid: '2' },
-    { id: '11', name: '11', pid: '2' },
-    { id: '22', name: '22', pid: '11' },
-    { id: '33', name: '33', pid: '22' }
+    { id: '1', name: 'item1' },
+    { id: '111', name: 'item1_1', pid: '1' },
+    { id: '2', name: 'item2' },
+    { id: '3', name: 'item2_1', pid: '2' },
+    { id: '11', name: 'item2_2', pid: '2' },
+    { id: '22', name: 'item2_2_1', pid: '11' },
+    { id: '33', name: 'item2_2_1_1', pid: '22' }
   ]
 }
 
