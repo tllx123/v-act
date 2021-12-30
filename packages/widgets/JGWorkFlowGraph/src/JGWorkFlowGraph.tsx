@@ -7,6 +7,8 @@ import { Property } from 'csstype'
 import { Box, BoxProps } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
 
+import logo from './img/blank.png'
+
 /* 包装器属性 */
 interface JGWorkFlowGraphProps extends BoxProps {
   /************************** 其它 **************************************/
@@ -161,6 +163,9 @@ const JGWorkFlowGraph = function (props: JGWorkFlowGraphProps) {
     display: 'inline-flex',
     fontSize: '14px',
     position: context.position,
+    backgroundImage: `url(${logo})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '100% 100%',
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
@@ -170,11 +175,7 @@ const JGWorkFlowGraph = function (props: JGWorkFlowGraphProps) {
     ? props.code
     : `${Date.now()}${Math.random().toString(32).slice(2)}`
 
-  return (
-    <Box style={wrapStyles}>
-      <Box>这个是流程图</Box>
-    </Box>
-  )
+  return <Box style={wrapStyles}></Box>
 }
 
 JGWorkFlowGraph.defaultProps = {
