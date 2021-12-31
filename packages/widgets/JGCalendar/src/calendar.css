@@ -1,0 +1,19 @@
+.ant-picker-calendar.ant-picker-calendar-full {
+  height: 469px;
+}
+
+.ant-picker-date-panel {
+  height: 100%;
+}
+
+.ant-picker-body {
+  height: 100%;
+}
+
+.ant-picker-content {
+  height: 100%;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date {
+  height: 71px;
+}
