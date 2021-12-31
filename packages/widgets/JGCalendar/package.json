@@ -1,0 +1,21 @@
+{
+  "name": "@v-act/jgcalendar",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@v-act/schema-types": "^1.0.0"
+  },
+  "peerDependencies": {
+    "moment": "^1.22.17"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "widgetType": "JGCalendar"
+}
