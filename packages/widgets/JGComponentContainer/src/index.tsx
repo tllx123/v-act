@@ -9,7 +9,10 @@ import JGComponentContainer, {
   JGComponentContainerProps
 } from './JGComponentContainer'
 
-const convert = function (control: Control): JSX.Element {
+const convert = function (
+  control: Control,
+  render: (controls: Array<Control>) => JSX.Element | null
+): JSX.Element {
   const pros = control.properties
 
   const props: JGComponentContainerProps = {

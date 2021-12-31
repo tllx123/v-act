@@ -44,8 +44,8 @@ const JGComponentContainer = (props: JGComponentContainerProps) => {
 }
 
 JGComponentContainer.defaultProps = {
-  left: '20px',
-  top: '50px',
+  left: '0px',
+  top: '0px',
   width: '200px',
   height: '200px',
   position: 'absolute',
