@@ -131,7 +131,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '2',
-      id: '440883',
+      id: '440884',
       name: '李四',
       num: '男',
       text1: '171cm',
@@ -144,7 +144,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '3',
-      id: '440883',
+      id: '440885',
       name: '王五',
       num: '男',
       text1: '176cm',
@@ -157,7 +157,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '4',
-      id: '440883',
+      id: '440886',
       name: '赵六',
       num: '女',
       text1: '168cm',
@@ -170,7 +170,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '5',
-      id: '440883',
+      id: '440887',
       name: '孙七',
       num: '女',
       text1: '162cm',
@@ -183,7 +183,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '6',
-      id: '440883',
+      id: '440888',
       name: '周八',
       num: '男',
       text1: '173cm',
@@ -196,7 +196,7 @@ JGDataGrid.defaultProps = {
     },
     {
       index: '7',
-      id: '440883',
+      id: '440889',
       name: '吴九',
       num: '男',
       text1: '172cm',
@@ -210,15 +210,15 @@ JGDataGrid.defaultProps = {
   ],
   dataHeader: [
     { code: 'index', name: '', key: '8' },
-    { code: 'id', name: '文本', key: '5' },
-    { code: 'name', name: '文本', key: '6' },
-    { code: 'num', name: '文本', key: '7' },
-    { code: 'text1', name: '文本', key: '5' },
-    { code: 'text3', name: '小数', key: '6' },
-    { code: 'text2', name: '下拉选择', key: '7' },
-    { code: 'text4', name: '日期', key: '5' },
-    { code: 'text5', name: '弹出选择', key: '6' },
-    { code: 'text6', name: '图片', key: '7' }
+    { code: 'id', name: '文本', key: '9' },
+    { code: 'name', name: '文本', key: '10' },
+    { code: 'num', name: '文本', key: '11' },
+    { code: 'text1', name: '文本', key: '12' },
+    { code: 'text3', name: '小数', key: '13' },
+    { code: 'text2', name: '下拉选择', key: '14' },
+    { code: 'text4', name: '日期', key: '15' },
+    { code: 'text5', name: '弹出选择', key: '16' },
+    { code: 'text6', name: '图片', key: '17' }
   ]
 }
 
