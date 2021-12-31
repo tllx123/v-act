@@ -7,7 +7,7 @@ import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
-
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 import { Aligment, ScrollbarDirection, TabAppearance } from './Enums'
 import { JGTabPage } from './JGTabPage'
 
@@ -70,8 +70,8 @@ const JGTabControl = function (props: JGTabControlProps) {
         position: context.position,
         left: props.left,
         top: props.top,
-        height: props.multiHeight,
-        width: props.multiWidth
+        width: toWidth(props.multiHeight, context, '235px'),
+        height: toHeight(props.multiWidth, context, '26px')
       }}
     >
       <Tabs

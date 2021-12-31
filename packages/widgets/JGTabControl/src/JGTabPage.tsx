@@ -62,7 +62,8 @@ function JGTabPage(props: JGTabPageProps) {
   const { children, index, value } = props
   const context = useContext()
   const styles: CSSProperties = {
-    position: context.position
+    position: context.position,
+    height: 'calc(100% - 48px)'
   }
   return (
     <div
@@ -72,7 +73,7 @@ function JGTabPage(props: JGTabPageProps) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 3, height: '100%' }}>{children}</Box>}
     </div>
   )
 }

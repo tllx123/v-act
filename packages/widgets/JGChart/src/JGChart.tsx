@@ -5,7 +5,7 @@ import ReactECharts from 'echarts-for-react'
 
 import { Box, BoxProps } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
-
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 import { handleOptions } from './V3Echart'
 
 /* 包装器属性 */
@@ -151,8 +151,8 @@ const JGChart = function (props: JGChartProps) {
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
-    width: props.multiWidth,
-    height: props.multiHeight,
+    width: toWidth(props.multiWidth, context, '235px'),
+    height: toHeight(props.multiHeight, context, '26px'),
     left: props.left,
     top: props.top,
     display: 'inline-flex',
