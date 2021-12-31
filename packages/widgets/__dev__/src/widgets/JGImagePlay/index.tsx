@@ -1,5 +1,5 @@
 import { JGComponent } from '@v-act/jgcomponent'
-import { JGImagePlay } from '@v-act/jgimagePlay'
+import { JGImagePlay } from '@v-act/jgimageplay'
 
 const ImagePlay = () => {
   return (
@@ -7,8 +7,8 @@ const ImagePlay = () => {
       <JGImagePlay
         top="33px"
         left="57px"
-        multiHeight="26px"
-        multiWidth="188px"
+        multiHeight="170px"
+        multiWidth="263px"
       ></JGImagePlay>
     </JGComponent>
   )

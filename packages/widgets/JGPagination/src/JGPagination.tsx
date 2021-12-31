@@ -103,7 +103,7 @@ const JGPagination = function (props: JGPaginationProps) {
   }
 
   const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [rowsPerPage, setRowsPerPage] = React.useState(25)
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -114,7 +114,7 @@ const JGPagination = function (props: JGPaginationProps) {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
+    setRowsPerPage(parseInt(event.target.value, 25))
     setPage(0)
   }
 
@@ -131,13 +131,13 @@ const JGPagination = function (props: JGPaginationProps) {
       <Pagination
         color={'primary'}
         size={'small'}
-        count={100}
+        count={1}
         shape="rounded"
       ></Pagination>
       <input></input>
       <TablePagination
         component="div"
-        count={100}
+        count={0}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
