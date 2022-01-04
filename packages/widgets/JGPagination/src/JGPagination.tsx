@@ -1,14 +1,19 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
 import {
   Box,
   BoxProps,
+  Button,
+  InputUnstyled,
+  InputUnstyledProps,
   Pagination,
   Stack,
   TablePagination
 } from '@mui/material'
+import { styled } from '@mui/system'
+import { JGLabel } from '@v-act/jglabel'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
@@ -32,41 +37,119 @@ interface JGPaginationProps extends BoxProps {
   multiWidth?: Width
 }
 
-// const StyledInputElement = styled('input')`
-//   border: 1px solid #dcdee2;
-//   color: #333;
-//   border-radius: 4px;
-//   padding: 0 4px;
-//   width: 100%;
-//   outline: none;
-//   height: 100%;
-//   &:hover {
-//     border-color: #356abb;
-//   }
+/*输入框*/
+interface JGPaginationInputProps extends InputUnstyledProps {
+  /**
+   * 左边距
+   */
+  left?: number
+  /**
+   * 上边距
+   */
+  top?: number
+  /**
+   * 高度
+   */
+  multiHeight?: Height
+  /**
+   * 宽度
+   */
+  multiWidth?: Width
+  /**
+   * 标题
+   */
+  labelText?: string
+  /**
+   * 标题宽度
+   */
+  labelWidth?: number
+  /**
+   * 提醒文字
+   */
+  placeholder?: string
+  /**
+   * 必填
+   */
+  isMust?: boolean
+  /**
+   * 显示
+   */
+  visible?: boolean
 
-//   &:focus {
-//     border-color: #356abb;
-//     background: #fff;
-//     box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
-//   }
+  /**
+   * 显示标题
+   */
+  labelVisible?: boolean
 
-//   [disabled] {
-//     background: #f6f7fb;
-//   }
-// `
+  /**
+   * 禁用
+   */
+  disabled?: boolean
+}
 
-// const CustomInput = forwardRef(function (
-//   props: JGTextBoxProps,
-//   ref: React.ForwardedRef<HTMLDivElement>
-// ) {
-//   return (
-//     <InputUnstyled
-//       components={{ Input: StyledInputElement }}
-//       {...props}
-//       ref={ref}
-//     />
-//   )
-// })
+const StyledInputElement = styled('input')`
+  border: 1px solid #dcdee2;
+  color: #333;
+  border-radius: 4px;
+  padding: 0 4px;
+  width: 100%;
+  outline: none;
+  height: 100%;
+  &:hover {
+    border-color: #356abb;
+  }
+
+  &:focus {
+    border-color: #356abb;
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
+  }
+
+  [disabled] {
+    background: #f6f7fb;
+  }
+`
+//GO按钮
+const buttonStyle: CSSProperties = {
+  width: '22px',
+  padding: '0px',
+  minWidth: '0px'
+}
+
+//input
+const inputStyle: CSSProperties = {
+  width: '42px',
+  margin: '0px 5px 0 32px'
+}
+
+const divStyle: CSSProperties = {
+  display: 'flex',
+  position: 'relative'
+}
+
+const CustomInput = forwardRef(function (
+  props: JGPaginationInputProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <div style={divStyle}>
+      <JGLabel width={'28px'} height={'28px'}>
+        到第
+      </JGLabel>
+      <InputUnstyled
+        style={inputStyle}
+        components={{ Input: StyledInputElement }}
+        {...props}
+        ref={ref}
+      />
+      <Button style={buttonStyle} variant="contained">
+        GO
+      </Button>
+    </div>
+  )
+})
+/*==================*/
+
 interface TablePaginationActionsProps {
   count: number
   page: number
@@ -101,7 +184,7 @@ const JGPagination = function (props: JGPaginationProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-
+  // 分页
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(25)
   const handleChangePage = (
@@ -119,7 +202,6 @@ const JGPagination = function (props: JGPaginationProps) {
   }
 
   const labelDisplayedRowsZh = function defaultLabelDisplayedRows({
-    from,
     to,
     count
   }) {
@@ -134,7 +216,7 @@ const JGPagination = function (props: JGPaginationProps) {
         count={1}
         shape="rounded"
       ></Pagination>
-      <input></input>
+      <CustomInput />
       <TablePagination
         component="div"
         count={0}
