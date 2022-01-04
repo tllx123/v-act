@@ -1,19 +1,30 @@
 const childProcess = require('child_process')
 const path = require('path')
 const program = require('commander')
+const cache = require('@v-act/cache').get('v-act-cli-utils')
 program.option('-p, --port <port>', '端口号')
+const startProcCacheKey = 'StartProcessPid'
 
 function _start(command) {
-  var proc = childProcess.exec(
+  const pid = cache.get(startProcCacheKey)
+  if (pid) {
+    try {
+      process.kill(pid)
+    } catch (e) {}
+  }
+  proc = childProcess.exec(
     command,
-    { cwd: process.cwd() },
+    {
+      cwd: process.cwd()
+    },
     function (err, stdout, stderr) {
       if (err) {
         throw err
       }
     }
   )
-
+  cache.put(startProcCacheKey, proc.pid)
+  cache.save()
   proc.stdout.on('data', (data) => {
     console.log(data)
   })
@@ -24,6 +35,13 @@ function _start(command) {
 }
 
 module.exports = {
+  getStartProcId: function () {
+    return cache.get(startProcCacheKey)
+  },
+  clearStartProcId: function () {
+    cache.remove(startProcCacheKey)
+    cache.save()
+  },
   startProject: function () {
     program.parse(process.argv)
     const options = program.opts()
