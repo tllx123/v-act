@@ -80,12 +80,14 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
             <Box
               sx={{
                 'width': '100%',
+                'height': '100%',
                 'display': 'flex',
                 'alignItems': 'center',
                 'border': '1px solid #dcdee2',
                 'color': '#333',
                 'borderRadius': '4px',
-                'padding': '5px',
+                'paddingLeft': '5px',
+                'paddingRight': '5px',
                 'flexShrink': '1',
                 '&:hover': {
                   borderColor: '#356abb'
