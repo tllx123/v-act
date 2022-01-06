@@ -324,6 +324,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
       >
         {props.labelText}
       </JGInputLabel>
+
       <CustomSelect
         style={selectStyles}
         labelId={code}
