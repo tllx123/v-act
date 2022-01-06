@@ -66,7 +66,7 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
               left: left,
               top: top,
               margin: margin,
-              padding: padding,
+
               // height: '26px',
               pointerEvents: readonly ? 'none' : 'auto'
             }}

@@ -65,7 +65,6 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
               left: left,
               top: top,
               margin: margin,
-              padding: padding,
               pointerEvents: readonly ? 'none' : 'auto'
             }}
           >
