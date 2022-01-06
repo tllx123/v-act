@@ -1,6 +1,6 @@
 {
   "name": "@v-act/cli-utils",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": false,
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "@v-act/api": "^1.0.3",
     "@v-act/bundle": "^1.0.3",
+    "@v-act/cache": "^1.0.0",
     "@v-act/install": "^1.0.3",
     "@v-act/utils": "^1.0.4",
     "commander": "^8.3.0",

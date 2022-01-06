@@ -1,6 +1,7 @@
 const chokidar = require('chokidar')
 const fs = require('fs')
 const Component = require('../src/model/Component')
+const Cache = require('../src/utils/Cache')
 let watcherReady = false
 
 exports.watch = function (v3devCmpDir) {
@@ -9,7 +10,7 @@ exports.watch = function (v3devCmpDir) {
   }
   if (fs.existsSync(v3devCmpDir)) {
     if (fs.existsSync(v3devCmpDir)) {
-      const watcher = chokidar.watch(v3devCmpDir, {
+      watcher = chokidar.watch(v3devCmpDir, {
         awaitWriteFinish: true
       })
       watcher.on('ready', () => {

@@ -1,6 +1,6 @@
 {
   "name": "@v-act/v3dev-component-watcher",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": false,
   "description": "v平台开发系统构件监听",
   "homepage": "https://github.com/opensource-vplatform/v-act",
@@ -13,12 +13,14 @@
   "author": "opensource.vplatform",
   "main": "src/index.js",
   "bin": {
-    "vactWatch": "bin/index.js"
+    "stopWatch": "bin/stop.js",
+    "vactWatch": "bin/start.js"
   },
   "scripts": {
-    "debug": "node bin/index.js"
+    "debug": "node bin/start.js"
   },
   "dependencies": {
+    "@v-act/cache": "^1.0.0",
     "art-template": "^4.13.2",
     "chokidar": "^3.5.2",
     "juicer": "^0.6.15",

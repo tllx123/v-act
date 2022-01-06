@@ -11,6 +11,9 @@
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
   },
+  "peerDependencies": {
+    "react-swipeable-views": "^0.14.0"
+  },
   "publishConfig": {
     "access": "public"
   },

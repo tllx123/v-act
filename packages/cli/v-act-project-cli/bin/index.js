@@ -7,6 +7,7 @@ const args = process.argv.slice(2)
 const scripts = [
   'build',
   'start',
+  'stop',
   'test',
   'clear',
   'apply',
