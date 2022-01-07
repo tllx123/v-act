@@ -4,8 +4,12 @@ import { Property } from 'csstype'
 
 import { Box, BoxProps, styled } from '@mui/material'
 import { ReactEnum } from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { ContextProvider, useContext } from '@v-act/widget-context'
+import {
+  getChildrenWithoutFragmentRecursively,
+  toHeight,
+  toWidth
+} from '@v-act/widget-utils'
 
 interface JGComponentProps {
   bottom?: Property.Bottom
@@ -24,6 +28,29 @@ const JGComponentRoot = styled(Box, {
   position: 'relative'
 }))
 
+const splitChildren = function (
+  children: JSX.Element | JSX.Element[] | null | undefined
+) {
+  const items = getChildrenWithoutFragmentRecursively(children)
+  const result: {
+    absolute: JSX.Element[]
+    static: JSX.Element[]
+  } = { absolute: [], static: [] }
+  items.forEach((item) => {
+    if (item.props.multiWidth == 'space' || item.props.multiWidth == '100%') {
+      result.static.push(item)
+    } else if (
+      item.props.multiHeight == 'space' ||
+      item.props.multiHeight == '100%'
+    ) {
+      result.static.push(item)
+    } else {
+      result.absolute.push(item)
+    }
+  })
+  return result
+}
+
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
     const context = useContext()
@@ -33,13 +60,24 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
+        padding: '16px', //窗体内间距
         height: toHeight(inProps.height, context, ReactEnum.Space),
         bottom: inProps.bottom
       }
     }
+    const result = splitChildren(inProps.children)
+    let children: JSX.Element[] = []
+    if (result.static.length > 0) {
+      children.push(
+        <ContextProvider context={{ position: 'static' }}>
+          {result.static}
+        </ContextProvider>
+      )
+    }
+    children = children.concat(result.absolute)
     return (
       <JGComponentRoot {...props} ref={ref}>
-        {inProps.children}
+        {children}
       </JGComponentRoot>
     )
   }

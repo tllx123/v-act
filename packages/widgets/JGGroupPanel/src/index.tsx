@@ -37,6 +37,7 @@ const convert = function (
         : ContentAlignment.Table,
     setting: settings
   }
+  const isTableLayout = pros.contentAlignment == 'Table'
   const controls = control.controls
   if (controls && controls.length > 0) {
     controls.forEach((con, index) => {
@@ -56,6 +57,10 @@ const convert = function (
             : childProps.verticalAlign == 'Bottom'
             ? VerticalAlign.Bottom
             : VerticalAlign.Top
+      }
+      if (isTableLayout) {
+        //网格中，所有控件宽度按空间自适应
+        childProps.multiWidth = ReactEnum.Space.toString()
       }
       if (isPercent(childProps.multiWidth)) {
         setting.percentWidth = childProps.multiWidth

@@ -177,6 +177,29 @@ const getChildrenWithoutFragment = function (
   return []
 }
 
+const getChildrenWithoutFragmentRecursively = function (
+  element: JSX.Element | JSX.Element[] | null | undefined
+): JSX.Element[] {
+  let children: JSX.Element[] = []
+  if (element) {
+    if (Array.isArray(element)) {
+      element.forEach((ele) => {
+        children = children.concat(getChildrenWithoutFragmentRecursively(ele))
+      })
+    } else {
+      if (element.type === Fragment) {
+        const childList = element.props.children
+        children = children.concat(
+          getChildrenWithoutFragmentRecursively(childList)
+        )
+      } else {
+        children.push(element)
+      }
+    }
+  }
+  return children
+}
+
 const isPercent = function (val: string | null | undefined) {
   if (typeof val == 'string') {
     return val.endsWith('%')
@@ -212,6 +235,7 @@ export {
   calTitleWidth,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
+  getChildrenWithoutFragmentRecursively,
   isPercent,
   layoutControls,
   toBoolean,
