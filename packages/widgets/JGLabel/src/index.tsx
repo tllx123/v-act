@@ -1,4 +1,5 @@
-import { Control, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 
 import JGLabel, { JGLabelProps } from './JGLabel'
 
@@ -10,8 +11,8 @@ export const convert = function (
   const props: JGLabelProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
-    width: toNumber(pros.multiWidth) + 'px',
-    height: toNumber(pros.multiHeight) + 'px'
+    width: valueofWidth(pros.multiWidth, '68px'),
+    height: valueofHeight(pros.multiHeight, '24px')
   }
   return <JGLabel {...props}>{pros.labelText}</JGLabel>
 }
