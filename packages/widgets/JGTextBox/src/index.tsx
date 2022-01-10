@@ -1,5 +1,7 @@
 import { Control } from '@v-act/schema-types'
 import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -24,7 +26,9 @@ const convert = function (
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGTextBox {...props}></JGTextBox>
 }

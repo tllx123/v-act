@@ -114,30 +114,6 @@ interface Property {
    */
   backColor?: string
   /**
-   * 默认展开(查询面板)
-   */
-  defaultExpand?: string
-  /**
-   * 查询按钮标题（查询面板）
-   */
-  queryButtonText?: string
-  /**
-   * 列数(查询面板)
-   */
-  columnCount?: string
-  /**
-   * 标题宽度(查询面板)
-   */
-  itemLabelWidth?: string
-  /**
-   * 快速检索（查询面板）
-   */
-  searchBoxEnabled?: string
-  /**
-   * 工具栏设置（查询面板）
-   */
-  toolbarSetting?: string
-  /**
    * 水平位置（编组）
    */
   horizontalAlign?: string
@@ -162,6 +138,16 @@ interface Property {
    *边框颜色
    */
   boderColor?: string
+
+  /**
+   * 结束行
+   */
+  endRow?: string
+
+  /**
+   * 宽度
+   */
+  colSpan?: string
 }
 
 export default Property

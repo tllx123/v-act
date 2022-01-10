@@ -4,7 +4,7 @@ import { Property } from 'csstype'
 
 import { Box, BoxProps, styled } from '@mui/material'
 import { ReactEnum } from '@v-act/schema-types'
-import { ContextProvider, useContext } from '@v-act/widget-context'
+import { ContextProvider, Entities, useContext } from '@v-act/widget-context'
 import {
   getChildrenWithoutFragmentRecursively,
   toHeight,
@@ -18,6 +18,7 @@ interface JGComponentProps {
   right?: Property.Right
   top?: Property.Top
   width?: Property.Width
+  entities?: Entities
   children?: JSX.Element | JSX.Element[] | null
 }
 
@@ -54,6 +55,7 @@ const splitChildren = function (
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
     const context = useContext()
+    context.entities = inProps.entities
     const props: BoxProps = {
       sx: {
         width: toWidth(inProps.width, context, ReactEnum.Space),

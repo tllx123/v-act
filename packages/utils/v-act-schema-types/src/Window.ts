@@ -1,4 +1,5 @@
 import Control from './Control'
+import Entity from './Entity'
 import Property from './Property'
 
 /**
@@ -13,6 +14,10 @@ interface Window {
    * 子控件
    */
   controls: Array<Control>
+  /**
+   * 实体
+   */
+  entities?: Array<Entity>
 }
 
 export default Window

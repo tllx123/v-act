@@ -6,8 +6,16 @@ import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
 {{@ importScripts}}
 
-const controlConverts = {{@ controlConvertMap}};
-const controlDefines = {{@ controlDefines}};
+const controlConverts: { [widgetType: string]: Function } = {{@ controlConvertMap}};
+const controlDefines: {
+  [widgetType: string]: {
+    defaultProps?:
+      | {
+          [pro: string]: any
+        }
+      | undefined
+  }
+} = {{@ controlDefines}};
 controlConverts.JGSpacer = convertJGSpacer1;
 controlConverts.JGGroupPanel = convertJGGroupPanel1;
 controlDefines.JGSpacer = JGSpacer1;

@@ -7,7 +7,17 @@ import {
   WidgetContextProps,
   withContext
 } from '@v-act/widget-context'
-import { getChildrenTitleWidth } from '@v-act/widget-utils'
+import {
+  getChildrenTitleWidth,
+  getChildrenWithoutFragmentRecursively
+} from '@v-act/widget-utils'
+
+interface Setting {
+  key?: string
+  index?: number
+  colSpan?: number
+  endRow?: boolean
+}
 
 interface JGFormLayoutProps {
   /**
@@ -46,11 +56,24 @@ interface JGFormLayoutProps {
   children?: JSX.Element[] | null
 
   context?: WidgetContextProps
+
+  setting?: Setting[]
 }
 
 const JGFormLayoutDef = function (props: JGFormLayoutProps) {
   const numCols = props.numCols ? props.numCols : 3
   let remainNumCols = numCols
+  const settings = props.setting || []
+  const settingMap: { [prop: string]: Setting } = {}
+  const settingIndexList: Setting[] = []
+  settings.forEach((set) => {
+    if (typeof set.key === 'string') {
+      settingMap[set.key] = set
+    }
+    if (typeof set.index === 'number') {
+      settingIndexList[set.index] = set
+    }
+  })
   let context = props.context
   const wrapStyles: CSSProperties = {
     left: props.left,
@@ -64,15 +87,7 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
   }
   let children = props.children
   if (children) {
-    if (!Array.isArray(children)) {
-      const chid = children as JSX.Element
-      if (chid.type === React.Fragment) {
-        children = chid.props.children
-      }
-    }
-    if (!Array.isArray(children) && children) {
-      children = [children]
-    }
+    children = getChildrenWithoutFragmentRecursively(children)
   }
 
   let titleWidth = props.titleWidth
@@ -94,12 +109,13 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     >
       {children
         ? children.map((child, i) => {
+            const setting = settingIndexList[i]
             const childProps = child.props
-            let colSpan = parseInt(childProps.colSpan)
+            let colSpan = setting ? (setting.colSpan ? setting.colSpan : 1) : 1
             colSpan = isNaN(colSpan) ? 1 : colSpan
             remainNumCols = remainNumCols - colSpan
             remainNumCols = remainNumCols == 0 ? numCols : remainNumCols
-            const endRow = child.props.endRow == 'True'
+            const endRow = setting ? setting.endRow : false
             return (
               <React.Fragment key={i}>
                 <ContextProvider context={childContext}>
@@ -141,4 +157,4 @@ JGFormLayoutDef.defaultProps = {}
 
 const JGFormLayout = withContext(JGFormLayoutDef)
 export default JGFormLayout
-export { JGFormLayout, type JGFormLayoutProps }
+export { JGFormLayout, type JGFormLayoutProps, type Setting }

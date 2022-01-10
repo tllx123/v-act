@@ -4,9 +4,15 @@ import { Property } from 'csstype'
 
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
-import { Control, Height, Width } from '@v-act/schema-types'
+import {
+  Control,
+  Height,
+  JGQueryConditionPanelProperty,
+  Width
+} from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import {
+  getChildrenWithoutFragmentRecursively,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -53,6 +59,11 @@ const JGQueryConditionPanel = function (props: JGQueryConditionPanelProps) {
   if (typeof props.visible == 'boolean' && !props.visible) {
     return null
   }
+  const hasToolbar = false
+  const children = getChildrenWithoutFragmentRecursively(props.children)
+  for (let index = 0; index < children.length; index++) {
+    const element = children[index]
+  }
   const context = useContext()
   const wrapStyles: CSSProperties = {
     width: props.multiWidth,
@@ -83,7 +94,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
-  const pros = control.properties
+  const pros: JGQueryConditionPanelProperty = control.properties
   const props: JGQueryConditionPanelProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
@@ -92,10 +103,12 @@ const convert = function (
     visible: toBoolean(pros.visible, true),
     defaultExpand: toBoolean(pros.defaultExpand, true)
   }
-  const children = [
-    JGQueryConditionPanelToolbarConvert(control, render),
-    JGQueryConditionPanelFormConvert(control, render)
-  ]
+  const showToolbar = toBoolean(pros.showToolbar, false)
+  const children = []
+  if (showToolbar) {
+    children.push(JGQueryConditionPanelToolbarConvert(control, render))
+  }
+  children.push(JGQueryConditionPanelFormConvert(control, render))
 
   return <JGQueryConditionPanel {...props}>{children}</JGQueryConditionPanel>
 }

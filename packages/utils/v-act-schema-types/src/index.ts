@@ -2,8 +2,10 @@ import type Component from './Component'
 import type Control from './Control'
 import type ControlReact from './ControlReact'
 import Dock from './Dock'
+import type Entity from './Entity'
 import type Height from './Height'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
+import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
 import type Property from './Property'
@@ -82,8 +84,10 @@ export {
   Control,
   ControlReact,
   Dock,
+  Entity,
   Height,
   JGGroupPanelProperty,
+  JGQueryConditionPanelProperty,
   JGReportProperty,
   JGWebBrowserProperty,
   Property,

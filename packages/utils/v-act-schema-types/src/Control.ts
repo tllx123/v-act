@@ -1,3 +1,4 @@
+import DataBinding from './DataBinding'
 import Property from './Property'
 
 /**
@@ -23,6 +24,11 @@ interface Control {
    * 工具栏(查询面板)
    */
   headerControls?: Control[]
+
+  /**
+   * 数据绑定
+   */
+  dataBindings?: DataBinding[]
 }
 
 export default Control

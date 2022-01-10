@@ -26,10 +26,19 @@ const layoutControls = function (
     children.length > 0 &&
     contianerReact
   ) {
+    const newChildren: Control[] = []
+    const dockedChildren: Control[] = []
+    children.forEach((child) => {
+      if (child.properties.dock && child.properties.dock != 'None') {
+        dockedChildren.push(child)
+      } else {
+        newChildren.push(child)
+      }
+    })
     const sameLeftChildren: { [prop: string]: Control[] } = {}
     const sameTopChildren: { [prop: string]: Control[] } = {}
     //将左边距、上边距一致的控件堆放在数组中
-    children.forEach((child) => {
+    dockedChildren.forEach((child) => {
       const props = child.properties
       const left = props.left || '0'
       const top = props.top || '0'
@@ -40,7 +49,6 @@ const layoutControls = function (
       sameLeftChildren[left] = sameLeftList
       sameTopChildren[top] = sameTopList
     })
-    const newChildren: Control[] = []
     const sameHeightChildren = getHLayoutFromTopSameChildren(
       sameTopChildren,
       controlDefines

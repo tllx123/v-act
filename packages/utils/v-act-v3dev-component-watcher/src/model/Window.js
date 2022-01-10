@@ -4,6 +4,7 @@ const template = require('art-template')
 const path = require('path')
 const File = require('../utils/File')
 const fs = require('fs')
+const { TableRows } = require('@mui/icons-material')
 const render = template.compile(
   new String(
     fs.readFileSync(path.resolve(__dirname, '../template/window.tpl'))
@@ -63,6 +64,30 @@ class Window {
     return properties
   }
 
+  toSchemaDataBinding(dataBinding) {
+    let dataMemberObjs =
+      dataBinding.dataMembers && dataBinding.dataMembers.dataMember
+        ? dataBinding.dataMembers.dataMember
+        : null
+    const dataMembers = []
+    if (dataMemberObjs) {
+      dataMemberObjs = Array.isArray(dataMemberObjs)
+        ? dataMemberObjs
+        : [dataMemberObjs]
+      dataMemberObjs.forEach((dataMemberObj) => {
+        dataMembers.push({
+          name: dataMemberObj.$.name,
+          code: dataMemberObj.$.code,
+          value: dataMemberObj._
+        })
+      })
+    }
+    return {
+      dataSource: dataBinding.dataSource ? dataBinding.dataSource : null,
+      dataMembers: dataMembers
+    }
+  }
+
   toSchemaControl(controlObj) {
     const controls = []
     let controlObjs =
@@ -88,11 +113,81 @@ class Window {
         headerControls.push(this.toSchemaControl(con))
       })
     }
+    const dataBindings = []
+    let dataBindingObjs =
+      controlObj.dataBindings && controlObj.dataBindings.dataBinding
+        ? controlObj.dataBindings.dataBinding
+        : null
+    if (dataBindingObjs) {
+      dataBindingObjs = Array.isArray(dataBindingObjs)
+        ? dataBindingObjs
+        : [dataBindingObjs]
+      dataBindingObjs.forEach((dataBindingObj) => {
+        dataBindings.push(this.toSchemaDataBinding(dataBindingObj))
+      })
+    }
     return {
       type: controlObj.$.type,
       properties: this.toSchemaProperty(controlObj.propertys),
       headerControls,
-      controls
+      controls,
+      dataBindings
+    }
+  }
+
+  toSchemaField(field) {
+    return {
+      code: field.$.code,
+      name: field.$.name,
+      chineseName: field.$.chineseName,
+      type: field.$.type,
+      length: field.$.length,
+      precision: field.$.precision,
+      defaultValue: field.$.defaultValue
+    }
+  }
+
+  toSchemaRow(entityDefRow) {
+    let entityFieldDefVal = entityDefRow.entityFieldDefVal
+    const value = {}
+    if (entityFieldDefVal) {
+      entityFieldDefVal = Array.isArray(entityFieldDefVal)
+        ? entityFieldDefVal
+        : [entityFieldDefVal]
+      entityFieldDefVal.forEach((defVal) => {
+        value[defVal.$.fieldCode] = defVal._
+      })
+    }
+    return value
+  }
+
+  toSchemaEntity(entity) {
+    const fileds = []
+    if (entity.entityFields && entity.entityFields.entityField) {
+      let entitiesFields = entity.entityFields.entityField
+      entitiesFields = Array.isArray(entitiesFields)
+        ? entitiesFields
+        : [entitiesFields]
+      entitiesFields.forEach((field) => {
+        fileds.push(this.toSchemaField(field))
+      })
+    }
+    const rows = []
+    if (entity.entityDefRows && entity.entityDefRows.entityDefRow) {
+      let entitiesDefRows = entity.entityDefRows.entityDefRow
+      entitiesDefRows = Array.isArray(entitiesDefRows)
+        ? entitiesDefRows
+        : [entitiesDefRows]
+      entitiesDefRows.forEach((row) => {
+        rows.push(this.toSchemaRow(row))
+      })
+    }
+    return {
+      code: entity.$.code,
+      name: entity.$.name,
+      chineseName: entity.$.chineseName,
+      fields: fileds,
+      rows: rows
     }
   }
 
@@ -107,9 +202,19 @@ class Window {
           controls.push(this.toSchemaControl(con))
         })
       }
+      const entities = []
+      if (this.obj.entitys && this.obj.entitys.entity) {
+        let entity = this.obj.entitys.entity
+        entity = Array.isArray(entity) ? entity : [entity]
+        entity.forEach((en) => {
+          entities.push(this.toSchemaEntity(en))
+        })
+      }
       this.windowJsonObj = {
+        type: 'JGComponent',
         properties,
-        controls
+        controls,
+        entities
       }
     }
     return this.windowJsonObj
