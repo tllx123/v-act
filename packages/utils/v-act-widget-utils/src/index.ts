@@ -6,10 +6,12 @@ import {
   Control,
   Dock,
   Entity,
+  Event,
   Height,
   Property,
   ReactEnum,
-  Width
+  Width,
+  Window
 } from '@v-act/schema-types'
 import {
   Entities,
@@ -412,8 +414,66 @@ const toEntities = function (entities?: Entity[]): Entities {
   return result
 }
 
+/**
+ * 增强窗体配置，将控件事件属性值转换成Function
+ * @param win 窗体节点
+ */
+const enhanceWindow = function (win: Window, context: { router: any }) {
+  const prototype = win.prototype
+  if (prototype) {
+    const controlEventMap: { [controlCode: string]: Event[] } = {}
+    const router = context.router
+    prototype.forEach((action) => {
+      const controlCode = action.controlCode
+      const controlEvents = controlEventMap[controlCode] || []
+      const triggerEvent = action.triggerEvent
+      const windowAction = action.windowAction
+      controlEvents.push({
+        code: triggerEvent,
+        name: '',
+        handler: () => {
+          const containerType = windowAction.targetContainerType
+          if (containerType == 'dialogWindow') {
+            throw Error('暂未支持打开位置为对话框！')
+          } else if (containerType == 'currentWindow') {
+            const targetWindow = windowAction.targetWindow
+            const winInfo = targetWindow.split('.')
+            router.push(`/${winInfo[0]}/${winInfo[1]}`)
+          }
+        }
+      })
+      controlEventMap[controlCode] = controlEvents
+    })
+    const controls = win.controls
+    if (controls && controls.length > 0) {
+      controls.forEach((control) => {
+        _enhanceControl(control, controlEventMap)
+      })
+    }
+  }
+}
+
+const _enhanceControl = function (
+  control: Control,
+  controlEventMap: { [controlCode: string]: Event[] }
+) {
+  const properties = control.properties
+  const controlCode = properties.code
+  const events = controlEventMap[controlCode]
+  if (events) {
+    control.events = events
+  }
+  const controls = control.controls
+  if (controls && controls.length > 0) {
+    controls.forEach((con) => {
+      _enhanceControl(con, controlEventMap)
+    })
+  }
+}
+
 export {
   calTitleWidth,
+  enhanceWindow,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,

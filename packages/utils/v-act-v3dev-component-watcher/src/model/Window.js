@@ -191,6 +191,25 @@ class Window {
     }
   }
 
+  toSchemaWindowAction(windowAction) {
+    return {
+      targetWindow: windowAction.$.targetWindow,
+      targetWindowTitle: windowAction.$.targetWindowTitle,
+      targetContainerType: windowAction.$.targetContainerType,
+      targetSourceType: windowAction.$.targetSourceType,
+      widthExp: windowAction.$.widthExp,
+      heightExp: windowAction.$.heightExp
+    }
+  }
+
+  toSchemaPrototype(actionObj) {
+    return {
+      controlCode: actionObj.$.controlCode,
+      triggerEvent: actionObj.$.triggerEvent,
+      windowAction: this.toSchemaWindowAction(actionObj.windowAction)
+    }
+  }
+
   toSchmemaObj() {
     if (!this.windowJsonObj) {
       const properties = this.toSchemaProperty(this.obj.propertys)
@@ -210,11 +229,24 @@ class Window {
           entities.push(this.toSchemaEntity(en))
         })
       }
+      const prototype = []
+      if (
+        this.obj.prototype &&
+        this.obj.prototype.actions &&
+        this.obj.prototype.actions.action
+      ) {
+        let actionObjs = this.obj.prototype.actions.action
+        actionObjs = Array.isArray(actionObjs) ? actionObjs : [actionObjs]
+        actionObjs.forEach((actionObj) => {
+          prototype.push(this.toSchemaPrototype(actionObj))
+        })
+      }
       this.windowJsonObj = {
         type: 'JGComponent',
         properties,
         controls,
-        entities
+        entities,
+        prototype
       }
     }
     return this.windowJsonObj

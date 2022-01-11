@@ -1,5 +1,6 @@
 import { Control, ControlReact, ReactEnum, Window } from '@v-act/schema-types'
 import {
+  enhanceWindow,
   toEntities,
   toNumber,
   valueofHeight,
@@ -13,9 +14,11 @@ const convert = function (
   render: (
     controls: Array<Control>,
     containerReact: ControlReact
-  ) => JSX.Element | null
+  ) => JSX.Element | null,
+  context: { router: any }
 ): JSX.Element {
   const win = control as Window
+  enhanceWindow(win, context)
   const pros = control.properties
   const props: JGComponentProps = {
     top: toNumber(pros.top, 0) + 'px',

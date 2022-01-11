@@ -17,6 +17,14 @@ export const convert = function (control: Control): JSX.Element {
     height: valueofHeight(pros.multiHeight, '26px'),
     disabled: !toBoolean(pros.enabled, true)
   }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OnClick
+  }
   return <JGButton {...props}>{pros.labelText}</JGButton>
 }
 

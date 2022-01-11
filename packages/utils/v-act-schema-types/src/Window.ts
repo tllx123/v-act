@@ -1,3 +1,4 @@
+import Action from './Action'
 import Control from './Control'
 import Entity from './Entity'
 import Property from './Property'
@@ -18,6 +19,8 @@ interface Window {
    * 实体
    */
   entities?: Array<Entity>
+
+  prototype?: Action[]
 }
 
 export default Window

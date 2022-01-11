@@ -1,4 +1,5 @@
 import DataBinding from './DataBinding'
+import Event from './Event'
 import Property from './Property'
 
 /**
@@ -29,6 +30,11 @@ interface Control {
    * 数据绑定
    */
   dataBindings?: DataBinding[]
+
+  /**
+   * 事件信息
+   */
+  events?: Event[]
 }
 
 export default Control

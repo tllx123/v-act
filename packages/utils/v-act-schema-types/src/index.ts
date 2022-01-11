@@ -3,6 +3,7 @@ import type Control from './Control'
 import type ControlReact from './ControlReact'
 import Dock from './Dock'
 import type Entity from './Entity'
+import type Event from './Event'
 import type Height from './Height'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
@@ -85,6 +86,7 @@ export {
   ControlReact,
   Dock,
   Entity,
+  Event,
   Height,
   JGGroupPanelProperty,
   JGQueryConditionPanelProperty,
