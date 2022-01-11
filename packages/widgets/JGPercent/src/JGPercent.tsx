@@ -12,15 +12,20 @@ import {
   Typography
 } from '@mui/material'
 import { VActThemeOptions } from '@v-act/styles'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  isNullOrUnDef,
+  toHeight,
+  toWidth
+} from '@v-act/widget-utils'
 
 /* 进度条属性 */
 interface CustomLinearProgressProps extends LinearProgressProps {
   /**
    * 比例颜色
    */
-  frontColor?: string
+  frontcolor?: string
 
   /**
    * 背景颜色
@@ -40,7 +45,7 @@ const CustomLinearProgress = forwardRef(function (
     borderRadius: '4px'
   }
 
-  const { backgroundColor = '#e9ecef', frontColor = '#ef5350' } = props
+  const { backgroundColor = '#e9ecef', frontcolor = '#ef5350' } = props
   const themeOptions: VActThemeOptions = {
     successColor: '',
     primaryColor: '',
@@ -71,7 +76,7 @@ const CustomLinearProgress = forwardRef(function (
             backgroundColor: backgroundColor
           },
           bar1Determinate: {
-            backgroundColor: frontColor
+            backgroundColor: frontcolor
           }
         }
       }
@@ -187,12 +192,12 @@ interface JGPercentProps extends BoxProps {
   /**
    * 实体
    */
-  tableName?: number
+  tableName?: string | null
 
   /**
    * 字段名称
    */
-  columnName?: number
+  columnName?: string | null
 
   /**
    * 值
@@ -222,7 +227,17 @@ const JGPercent = function (props: JGPercentProps) {
     return null
   }
 
+  console.log('JGPercent')
+
   const context = useContext()
+
+  /* 处理值，用于绑定到value属性上 */
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? 0 : (value as number) * 100
+  }
+
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
 
@@ -251,7 +266,7 @@ const JGPercent = function (props: JGPercentProps) {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    color: props.fontColor,
+    color: props.fontColor ? props.fontColor : '#333',
     fontStyle: props.valueFontStyle
   }
 
@@ -268,8 +283,8 @@ const JGPercent = function (props: JGPercentProps) {
     <Box style={wrapStyles} onClick={handleClick}>
       <div style={{ width: width, height: height, position: 'relative' }}>
         <CustomLinearProgress
-          value={props.value}
-          frontColor={props.frontColor}
+          value={value as number}
+          frontcolor={props.frontColor}
           ref={textInput}
         ></CustomLinearProgress>
         <Typography
@@ -277,7 +292,7 @@ const JGPercent = function (props: JGPercentProps) {
           variant="caption"
           component="div"
           color="text.secondary"
-        >{`${props.value}%`}</Typography>
+        >{`${value}%`}</Typography>
       </div>
     </Box>
   )
