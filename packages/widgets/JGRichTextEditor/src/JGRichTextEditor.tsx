@@ -14,9 +14,7 @@ import {
   Element as SlateElement
 } from 'slate'
 import { withHistory } from 'slate-history'
-
 import { Button, Toolbar } from '../src/components'
-
 import Icon from '@mui/material/Icon'
 
 const HOTKEYS = {
@@ -28,7 +26,7 @@ const HOTKEYS = {
 
 const LIST_TYPES = ['numbered-list', 'bulleted-list']
 
-interface JGRichTextEditorProps {
+export interface JGRichTextEditorProps {
   left?: Property.Left
   top?: Property.Top
   position?: Property.Position
@@ -234,4 +232,3 @@ JGRichTextEditor.defaultProps = {
 }
 
 export default JGRichTextEditor
-export { JGRichTextEditor, type JGRichTextEditorProps }
