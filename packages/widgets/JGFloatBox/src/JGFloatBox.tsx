@@ -6,8 +6,14 @@ import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  isNullOrUnDef,
+  toHeight,
+  toLabelWidth,
+  toWidth
+} from '@v-act/widget-utils'
 
 interface JGFloatBoxProps extends InputUnstyledProps {
   /**
@@ -70,6 +76,14 @@ interface JGFloatBoxProps extends InputUnstyledProps {
    * 禁用
    */
   disabled?: boolean
+  /**
+   * 实体编号
+   */
+  tableName?: string | null
+  /**
+   * 字段编号
+   */
+  columnName?: string | null
 }
 
 const StyledInputElement = styled('input')`
@@ -118,7 +132,13 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     return null
   }
   const context = useContext()
-  const [inputVal, setInputVal] = useState('')
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+  console.log('有没有值啊：', value)
+  const [inputVal, setInputVal] = useState(value)
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -136,15 +156,15 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
-  let lineHeight = String(height).indexOf('px') !== -1 ? height : height + 'px'
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    height: height,
-    lineHeight: lineHeight,
-    textAlign: 'right',
-    display: 'inline-block',
-    paddingRight: '6px'
-  }
+  // let lineHeight = String(height).indexOf('px') !== -1 ? height : height + 'px'
+  // const labelStyles: CSSProperties = {
+  //   width: labelWidth,
+  //   height: height,
+  //   lineHeight: lineHeight,
+  //   textAlign: 'right',
+  //   display: 'inline-block',
+  //   paddingRight: '6px'
+  // }
   const inputStyles = {
     width: '100%',
     height: height
@@ -167,7 +187,7 @@ const JGFloatBox = function (props: JGFloatBoxProps) {
     isInteger(e)
   }
   return (
-    <div style={wrapStyles}>
+    <div style={wrapStyles} value-show={value}>
       <JGInputLabel
         width={labelWidth}
         height={height}
@@ -204,4 +224,5 @@ JGFloatBox.defaultProps = {
 }
 
 export default JGFloatBox
-export { JGFloatBox, type JGFloatBoxProps }
+export { JGFloatBox }
+export type { JGFloatBoxProps }
