@@ -1,8 +1,11 @@
-import Box from '@mui/material/Box'
+import React from 'react'
+import 'antd/dist/antd.css'
 import { Property } from 'csstype'
-import { ButtonGroup, Button } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
+import { Menu, Dropdown, Button, Space } from 'antd'
+import { DownOutlined, EllipsisOutlined } from '@ant-design/icons'
+import { ArrowDropDownCircleOutlined } from '@mui/icons-material'
 
 interface JGButtonGroupProps {
   left?: Property.Left
@@ -11,27 +14,46 @@ interface JGButtonGroupProps {
   height?: Property.Height
   width?: Property.Width
 }
+const { SubMenu } = Menu
+
+const menu = (
+  <Menu>
+    <Menu.ItemGroup title="Group title">
+      <Menu.Item>1st menu item</Menu.Item>
+      <Menu.Item>2nd menu item</Menu.Item>
+    </Menu.ItemGroup>
+    <SubMenu title="sub menu">
+      <Menu.Item>3rd menu item</Menu.Item>
+      <Menu.Item>4th menu item</Menu.Item>
+    </SubMenu>
+    <SubMenu title="disabled sub menu" disabled>
+      <Menu.Item>5d menu item</Menu.Item>
+      <Menu.Item>6th menu item</Menu.Item>
+    </SubMenu>
+  </Menu>
+)
 
 const JGButtonGroup = (props: JGButtonGroupProps) => {
   const { left, top, height, width, position, ...resprops } = props
-  const context = useContext()
 
   return (
-    <Box
-      variant="contained"
-      sx={{
-        width: toWidth(width, context, '235px'),
-        height: '30px',
-        position: context.position,
-        left: left,
-        top: top
-      }}
-      component={ButtonGroup}
-    >
-      <Button sx={{ height: '100%', width: '100%' }}>按钮1</Button>
-      <Button sx={{ height: '100%', width: '100%' }}>按钮2</Button>
-      <Button sx={{ height: '100%', width: '100%' }}>按钮3</Button>
-    </Box>
+    <>
+      <Space>
+        <Button type="primary">你好</Button>
+        <Dropdown overlay={menu}>
+          <Button type="primary">
+            你好
+            <DownOutlined />
+          </Button>
+        </Dropdown>
+
+        <Dropdown overlay={menu}>
+          <Button type="primary">
+            <EllipsisOutlined />
+          </Button>
+        </Dropdown>
+      </Space>
+    </>
   )
 }
 
