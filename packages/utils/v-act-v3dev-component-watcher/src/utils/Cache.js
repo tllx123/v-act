@@ -6,7 +6,7 @@ const MEMERY_CACHE = {}
 const WIDGET_MAP = {}
 
 const getCacheDir = function () {
-  return path.resolve(os.tmpdir(), 'v-act', 'watcher')
+  return path.resolve(__dirname, 'v-act-v3dev-component-watcher')
 }
 
 const getComponentCachePath = function (componentCode) {

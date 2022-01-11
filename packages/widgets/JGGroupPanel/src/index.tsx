@@ -37,6 +37,9 @@ const convert = function (
         : ContentAlignment.Table,
     setting: settings
   }
+  const isTableLayout = pros.contentAlignment == 'Table'
+  const isVerticalLayout = pros.contentAlignment == 'Vertical'
+  const isHorizontalLayout = pros.contentAlignment == 'Horizontal'
   const controls = control.controls
   if (controls && controls.length > 0) {
     controls.forEach((con, index) => {
@@ -57,6 +60,18 @@ const convert = function (
             ? VerticalAlign.Bottom
             : VerticalAlign.Top
       }
+      if (isTableLayout) {
+        //网格中，所有控件宽度按空间自适应
+        childProps.multiWidth = ReactEnum.Space.toString()
+      }
+      if (isVerticalLayout) {
+        //垂直排列，所有子控件宽度空间自适应
+        childProps.multiWidth = ReactEnum.Space.toString()
+      }
+      if (isHorizontalLayout) {
+        //水平排列，所有子控件高度空间自适应
+        childProps.multiHeight = ReactEnum.Space.toString()
+      }
       if (isPercent(childProps.multiWidth)) {
         setting.percentWidth = childProps.multiWidth
         childProps.multiWidth = ReactEnum.Space.toString()
@@ -65,6 +80,7 @@ const convert = function (
         setting.percentHeight = childProps.multiHeight
         childProps.multiHeight = ReactEnum.Space.toString()
       }
+
       settings.push(setting)
     })
   }

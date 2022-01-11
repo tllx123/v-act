@@ -2,8 +2,22 @@ import { Fragment } from 'react'
 
 import { Property as CSSProperty } from 'csstype'
 
-import { Dock, Height, Property, ReactEnum, Width } from '@v-act/schema-types'
-import { WidgetContextProps } from '@v-act/widget-context'
+import {
+  Control,
+  Dock,
+  Entity,
+  Event,
+  Height,
+  Property,
+  ReactEnum,
+  Width,
+  Window
+} from '@v-act/schema-types'
+import {
+  Entities,
+  EntityRecord,
+  WidgetContextProps
+} from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
 
@@ -177,6 +191,29 @@ const getChildrenWithoutFragment = function (
   return []
 }
 
+const getChildrenWithoutFragmentRecursively = function (
+  element: JSX.Element | JSX.Element[] | null | undefined
+): JSX.Element[] {
+  let children: JSX.Element[] = []
+  if (element) {
+    if (Array.isArray(element)) {
+      element.forEach((ele) => {
+        children = children.concat(getChildrenWithoutFragmentRecursively(ele))
+      })
+    } else {
+      if (element.type === Fragment) {
+        const childList = element.props.children
+        children = children.concat(
+          getChildrenWithoutFragmentRecursively(childList)
+        )
+      } else {
+        children.push(element)
+      }
+    }
+  }
+  return children
+}
+
 const isPercent = function (val: string | null | undefined) {
   if (typeof val == 'string') {
     return val.endsWith('%')
@@ -207,16 +244,251 @@ const toCssAxisVal = function (
     return def
   }
 }
+/**
+ * 是否为null或undefined值
+ * @param val 值
+ * @returns
+ */
+const isNullOrUnDef = function (val: any): boolean {
+  return val === null || typeof val === 'undefined'
+}
+
+/**
+ * 获取实体字段值
+ * @param tableName 实体编号
+ * @param columnName 字段编号
+ * @param context 上下文
+ */
+const getFieldValue = function (
+  tableName: string,
+  columnName: string,
+  context: WidgetContextProps
+) {
+  const entities = context.entities
+  if (entities) {
+    const entity = entities[tableName]
+    if (entity) {
+      const current = entity._current
+      if (current) {
+        return current[columnName]
+      }
+    }
+  }
+  return null
+}
+
+/**
+ * 获取实体数据
+ * @param tableName 实体编号
+ * @param context 上下文
+ */
+const getEntityDatas = function (
+  tableName: string,
+  context: WidgetContextProps
+) {
+  const entities = context.entities
+  if (entities) {
+    const entity = entities[tableName]
+    if (entity) {
+      return entity.datas
+    }
+  }
+  return null
+}
+
+const _checkDataBinding = function (control: Control) {
+  const dataMembers = control.dataBindings
+  if (dataMembers && dataMembers.length > 0) {
+    if (dataMembers.length > 1) {
+      throw Error('未支持控件绑定多个实体！')
+    }
+  }
+}
+
+/**
+ * 获取控件绑定实体编号
+ * @param control 控件定义
+ * @returns
+ */
+const getTableName = function (control: Control) {
+  _checkDataBinding(control)
+  return control.dataBindings ? control.dataBindings[0].dataSource : null
+}
+
+/**
+ * 获取控件绑定字段
+ * @param control 控件定义
+ * @returns
+ */
+const getColumnName = function (control: Control) {
+  _checkDataBinding(control)
+  if (control.dataBindings) {
+    const dataMembers = control.dataBindings[0].dataMembers
+    for (let index = 0; index < dataMembers.length; index++) {
+      const element = dataMembers[index]
+      if (element.code === 'ColumnName') {
+        return element.value
+      }
+    }
+  }
+  return null
+}
+/**
+ * 获取控件标识字段
+ * @param control 控件定义
+ * @returns
+ */
+const getIDColumnName = function (control: Control) {
+  _checkDataBinding(control)
+  if (control.dataBindings) {
+    const dataMembers = control.dataBindings[0].dataMembers
+    for (let index = 0; index < dataMembers.length; index++) {
+      const element = dataMembers[index]
+      if (element.code === 'IDColumnName') {
+        return element.value
+      }
+    }
+  }
+  return null
+}
+
+const __fieldValueConverts: { [type: string]: Function } = {
+  integer: function (value?: string) {
+    if (typeof value === 'string') {
+      const val = parseInt(value)
+      return isNaN(val) ? null : val
+    }
+    return null
+  },
+  float: function (value?: string) {
+    if (typeof value === 'string') {
+      const val = parseFloat(value)
+      return isNaN(val) ? null : val
+    }
+    return null
+  },
+  boolean: function (value?: string) {
+    if (typeof value === 'string') {
+      const val = value.toLowerCase()
+      return val === 'true' ? true : false
+    }
+    return null
+  }
+}
+
+const toEntities = function (entities?: Entity[]): Entities {
+  const result: Entities = {}
+  if (entities) {
+    entities.forEach((entity) => {
+      const tableName = entity.code
+      const fieldMap: { [fieldCode: string]: string } = {}
+      const fields = entity.fields
+      fields.forEach((field) => {
+        fieldMap[field.code] = field.type
+      })
+      const rows = entity.rows
+      const datas: EntityRecord[] = []
+      rows.forEach((row) => {
+        const record: EntityRecord = {}
+        for (const fieldCode in row) {
+          if (Object.prototype.hasOwnProperty.call(row, fieldCode)) {
+            let fieldValue = row[fieldCode]
+            const fieldType = fieldMap[fieldCode]
+            if (fieldType) {
+              const convert = __fieldValueConverts[fieldType]
+              if (convert) {
+                fieldValue = convert(fieldValue)
+              }
+            }
+            record[fieldCode] = fieldValue
+          }
+        }
+        datas.push(record)
+      })
+      result[tableName] = {
+        datas: datas,
+        _current: datas.length > 0 ? datas[0] : null
+      }
+    })
+  }
+  return result
+}
+
+/**
+ * 增强窗体配置，将控件事件属性值转换成Function
+ * @param win 窗体节点
+ */
+const enhanceWindow = function (win: Window, context: { router: any }) {
+  const prototype = win.prototype
+  if (prototype) {
+    const controlEventMap: { [controlCode: string]: Event[] } = {}
+    const router = context.router
+    prototype.forEach((action) => {
+      const controlCode = action.controlCode
+      const controlEvents = controlEventMap[controlCode] || []
+      const triggerEvent = action.triggerEvent
+      const windowAction = action.windowAction
+      controlEvents.push({
+        code: triggerEvent,
+        name: '',
+        handler: () => {
+          const containerType = windowAction.targetContainerType
+          if (containerType == 'dialogWindow') {
+            throw Error('暂未支持打开位置为对话框！')
+          } else if (containerType == 'currentWindow') {
+            const targetWindow = windowAction.targetWindow
+            const winInfo = targetWindow.split('.')
+            router.push(`/${winInfo[0]}/${winInfo[1]}`)
+          }
+        }
+      })
+      controlEventMap[controlCode] = controlEvents
+    })
+    const controls = win.controls
+    if (controls && controls.length > 0) {
+      controls.forEach((control) => {
+        _enhanceControl(control, controlEventMap)
+      })
+    }
+  }
+}
+
+const _enhanceControl = function (
+  control: Control,
+  controlEventMap: { [controlCode: string]: Event[] }
+) {
+  const properties = control.properties
+  const controlCode = properties.code
+  const events = controlEventMap[controlCode]
+  if (events) {
+    control.events = events
+  }
+  const controls = control.controls
+  if (controls && controls.length > 0) {
+    controls.forEach((con) => {
+      _enhanceControl(con, controlEventMap)
+    })
+  }
+}
 
 export {
   calTitleWidth,
+  enhanceWindow,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
+  getChildrenWithoutFragmentRecursively,
+  getColumnName,
+  getEntityDatas,
+  getFieldValue,
+  getIDColumnName,
+  getTableName,
+  isNullOrUnDef,
   isPercent,
   layoutControls,
   toBoolean,
   toControlReact,
   toCssAxisVal,
+  toEntities,
   toHeight,
   toLabelWidth,
   toNumber,

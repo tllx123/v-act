@@ -2,7 +2,11 @@ import React from 'react'
 
 import Box from '@mui/material/Box'
 import { JGButton } from '@v-act/jgbutton'
-import { Control, ReactEnum } from '@v-act/schema-types'
+import {
+  Control,
+  JGQueryConditionPanelProperty,
+  ReactEnum
+} from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 import {
   getChildrenTitleWidth,
@@ -134,7 +138,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
-  const pros = control.properties
+  const pros: JGQueryConditionPanelProperty = control.properties
   const formProps = {
     searchBoxEnabled: toBoolean(pros.searchBoxEnabled, true),
     queryButtonText: pros.queryButtonText || '查询',

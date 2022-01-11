@@ -4,8 +4,14 @@ import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  isNullOrUnDef,
+  toHeight,
+  toLabelWidth,
+  toWidth
+} from '@v-act/widget-utils'
 
 interface JGTextBoxProps extends InputUnstyledProps {
   /**
@@ -66,6 +72,14 @@ interface JGTextBoxProps extends InputUnstyledProps {
    * 布局位置
    */
   position?: string
+  /**
+   * 实体编号
+   */
+  tableName?: string | null
+  /**
+   * 字段编号
+   */
+  columnName?: string | null
 }
 
 const StyledInputElement = styled('input')`
@@ -109,6 +123,11 @@ const JGTextBox = function (props: JGTextBoxProps) {
     return null
   }
   const context = useContext()
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -145,6 +164,7 @@ const JGTextBox = function (props: JGTextBoxProps) {
         style={inputStyles}
         disabled={props.disabled}
         placeholder={props.placeholder}
+        value={value}
       />
     </div>
   )

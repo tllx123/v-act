@@ -1,5 +1,11 @@
-import { Control, ControlReact, ReactEnum } from '@v-act/schema-types'
-import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
+import { Control, ControlReact, ReactEnum, Window } from '@v-act/schema-types'
+import {
+  enhanceWindow,
+  toEntities,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGComponent, JGComponentProps } from './JGComponent'
 
@@ -8,14 +14,18 @@ const convert = function (
   render: (
     controls: Array<Control>,
     containerReact: ControlReact
-  ) => JSX.Element | null
+  ) => JSX.Element | null,
+  context: { router: any }
 ): JSX.Element {
+  const win = control as Window
+  enhanceWindow(win, context)
   const pros = control.properties
   const props: JGComponentProps = {
     top: toNumber(pros.top, 0) + 'px',
     left: toNumber(pros.left, 0) + 'px',
     width: valueofWidth(pros.multiWidth, ReactEnum.Space),
-    height: valueofHeight(pros.multiHeight, ReactEnum.Space)
+    height: valueofHeight(pros.multiHeight, ReactEnum.Space),
+    entities: toEntities(win.entities)
   }
   return (
     <JGComponent {...props}>

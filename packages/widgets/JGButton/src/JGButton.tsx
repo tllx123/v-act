@@ -13,6 +13,7 @@ export interface JGButtonProps extends ButtonProps {
   right?: Property.Right | undefined
   top?: Property.Top | undefined
   width?: Property.Width | undefined
+  click?: Function
 }
 
 const JGButtonRoot = styled(Button, {
@@ -43,8 +44,14 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
         position: context ? context.position : 'absolute'
       }
     }
+    const clickHd = inProps.click
+    const clickHandler = () => {
+      if (clickHd) {
+        clickHd.apply(this)
+      }
+    }
     return (
-      <JGButtonRoot {...props} ref={ref}>
+      <JGButtonRoot {...props} ref={ref} onClick={clickHandler}>
         {inProps.children}
       </JGButtonRoot>
     )

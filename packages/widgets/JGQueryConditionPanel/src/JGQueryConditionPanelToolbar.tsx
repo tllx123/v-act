@@ -4,7 +4,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Box from '@mui/material/Box'
 import { JGLabel } from '@v-act/jglabel'
-import { Control } from '@v-act/schema-types'
+import { Control, JGQueryConditionPanelProperty } from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 import { getChildrenWithoutFragment } from '@v-act/widget-utils'
 
@@ -22,6 +22,10 @@ interface JGQueryConditionPanelFormProps {
    * 折叠状态
    */
   collapseStatus?: boolean
+  /**
+   * 显示收缩
+   */
+  showCollapse?: boolean
 
   setting?: Setting[]
 
@@ -126,7 +130,8 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element[] | null
 ) {
-  const toolbarSetStr = control.properties.toolbarSetting
+  const properties: JGQueryConditionPanelProperty = control.properties
+  const toolbarSetStr = properties.toolbarSetting
   const setting: Setting[] = []
   if (toolbarSetStr) {
     const toolbarSetting = JSON.parse(toolbarSetStr)

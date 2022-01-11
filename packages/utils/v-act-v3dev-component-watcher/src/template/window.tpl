@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import {Control,ControlReact} from "@v-act/schema-types";
 import {layoutControls} from "@v-act/widget-utils";
 import {convert} from "@v-act/jgcomponent";
@@ -6,8 +7,16 @@ import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
 {{@ importScripts}}
 
-const controlConverts = {{@ controlConvertMap}};
-const controlDefines = {{@ controlDefines}};
+const controlConverts: { [widgetType: string]: Function } = {{@ controlConvertMap}};
+const controlDefines: {
+  [widgetType: string]: {
+    defaultProps?:
+      | {
+          [pro: string]: any
+        }
+      | undefined
+  }
+} = {{@ controlDefines}};
 controlConverts.JGSpacer = convertJGSpacer1;
 controlConverts.JGGroupPanel = convertJGGroupPanel1;
 controlDefines.JGSpacer = JGSpacer1;
@@ -31,9 +40,10 @@ const render = function(controls: Array<Control>,contianerReact: ControlReact): 
 }
 
 function Index(){
+    const router = useRouter();
     return (
         <React.Fragment>
-            {convert(windowObjs,render)}
+            {convert(windowObjs,render,{router})}
         </React.Fragment>   
     );
 }
