@@ -15,6 +15,13 @@ import { useContext } from '@v-act/widget-context'
 import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
 
 interface JGBaseDictBoxProps extends InputUnstyledProps {
+  /** 其他*/
+  /**
+   * 标题
+   */
+  labelText?: string
+
+  /** 格式 */
   /**
    * 左边距
    */
@@ -31,14 +38,22 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
    * 宽度
    */
   multiWidth?: Width
-  /**
-   * 标题
-   */
-  labelText?: string
+
+  /** 格式 */
   /**
    * 标题宽度
    */
   labelWidth?: number
+  // /**
+  //  * 显示
+  //  */
+  // visible?: boolean
+
+  /** 数据 */
+  /**
+   * 只读
+   */
+  readOnly?: boolean
   /**
    * 提醒文字
    */
@@ -48,17 +63,9 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
    */
   isMust?: boolean
   /**
-   * 显示
+   * 使能
    */
-  visible?: boolean
-  /**
-   * 显示标题
-   */
-  labelVisible?: boolean
-  /**
-   * 只读
-   */
-  readOnly?: boolean
+  enabled?: boolean
 }
 
 const StyledInputElement = styled('input')`
@@ -87,19 +94,31 @@ const StyledInputElement = styled('input')`
 const CssOutlinedInput = styled(OutlinedInput)({
   '&:hover fieldset': {
     borderColor: 'yellow'
+  },
+  '& .css-nnbavb': {
+    width: '0px'
   }
 })
 
 const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
-  if (!props.visible) {
-    return null
-  }
+  // if (!props.visible) {
+  //   return null
+  // }
+
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
-  const labelWidth = props.labelVisible
-    ? toLabelWidth(props.labelWidth, context, 94)
-    : 0
+
+  // const labelWidth = props.labelVisible
+  //   ? toLabelWidth(props.labelWidth, context, 94)
+  //   : 0
+  const labelWidth = toLabelWidth(props.labelWidth, context, 94)
+
+  //使能与只读两个位true时候disabled 才为true
+  let isStart: boolean = false
+  if (props.enabled && props.readOnly) {
+    isStart = true
+  }
 
   const wrapStyles: CSSProperties = {
     width: width,
@@ -138,19 +157,20 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
       <JGInputLabel
         width={labelWidth}
         height={height}
-        visible={props.labelVisible}
+        //visible={props.labelVisible}
         required={props.isMust}
       >
         {props.labelText}
       </JGInputLabel>
 
-      <FormControl variant="outlined">
+      <FormControl variant="filled">
         <CssOutlinedInput
           style={inputStyles}
-          readOnly={props.readOnly}
+          readOnly={true}
+          disabled={isStart}
           endAdornment={
             <InputAdornment style={InputAdornmentSty} position="end">
-              <IconButton style={openStyle}>
+              <IconButton style={openStyle} disabled={isStart}>
                 <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
               </IconButton>
             </InputAdornment>
@@ -171,7 +191,6 @@ JGBaseDictBox.defaultProps = {
   placeholder: '',
   isMust: false,
   visible: true,
-  labelVisible: true,
   readOnly: true
 }
 

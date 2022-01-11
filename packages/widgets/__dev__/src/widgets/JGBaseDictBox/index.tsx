@@ -10,8 +10,8 @@ const BaseDictBox = () => {
         multiHeight="26px"
         multiWidth="235px"
         labelText="弹出选择"
-        labelVisible={true}
         readOnly={true}
+        enabled={true}
       ></JGBaseDictBox>
     </JGComponent>
   )

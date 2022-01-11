@@ -1,5 +1,10 @@
 import { Control } from '@v-act/schema-types'
-import { toBoolean, toNumber } from '@v-act/widget-utils'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGBaseDictBox, JGBaseDictBoxProps } from './JGBaseDictBox'
 
@@ -11,12 +16,13 @@ const convert = function (
   const props: JGBaseDictBoxProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible, true),
-    labelWidth: toNumber(pros.labelWidth),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    // visible: toBoolean(pros.visible, true),
+    labelWidth: toNumber(pros.labelWidth)
   }
   return <JGBaseDictBox {...props}></JGBaseDictBox>
 }
