@@ -306,6 +306,27 @@ const _checkDataBinding = function (control: Control) {
 }
 
 /**
+ * 获取数据来源
+ * @param control 控件定义
+ * @returns
+ */
+const getConstData = function (control: Control) {
+  const dropDownSource = control?.properties?.dropDownSource
+  const dropDownSourceObj = dropDownSource ? JSON.parse(dropDownSource) : {}
+  return dropDownSourceObj.DataSourceSetting.DataConfig.ConstData
+}
+
+/**
+ * 获取数据来源
+ * @param control 控件定义
+ * @returns
+ */
+const getDropDownSource = function (control: Control) {
+  const dropDownSource = control?.properties?.dropDownSource
+  return dropDownSource ? JSON.parse(dropDownSource) : {}
+}
+
+/**
  * 获取控件绑定实体编号
  * @param control 控件定义
  * @returns
@@ -503,6 +524,8 @@ export {
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,
   getColumnName,
+  getConstData,
+  getDropDownSource,
   getEntityDatas,
   getFieldValue,
   getIDColumnName,

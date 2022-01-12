@@ -148,6 +148,11 @@ interface Property {
    * 宽度
    */
   colSpan?: string
+
+  /**
+   * 数据来源
+   */
+  dropDownSource?: string
 }
 
 export default Property

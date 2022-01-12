@@ -14,6 +14,8 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
+  console.log('@@@@@@@@@@@@@@@:JGPercent')
+  console.log(control)
   const pros = control.properties
   const props: JGPercentProps = {
     top: toNumber(pros.top) + 'px',

@@ -1,5 +1,9 @@
 import { Control } from '@v-act/schema-types'
 import {
+  getColumnName,
+  getDropDownSource,
+  getIDColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -12,6 +16,8 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element | null
 ): JSX.Element {
+  console.log('@@@@@@@@@@@@@@@:JGComboBox')
+  console.log(control)
   const pros = control.properties
   const props: JGComboBoxProps = {
     top: toNumber(pros.top) + 'px',
@@ -21,10 +27,16 @@ const convert = function (
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
+    readOnly: toBoolean(pros.readOnly, false),
+    enabled: toBoolean(pros.enabled, true),
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
-    multiHeight: valueofHeight(pros.multiHeight, '26px')
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
+    tableName: getTableName(control),
+    columnName: getColumnName(control),
+    idColumnName: getIDColumnName(control),
+    dropDownSource: getDropDownSource(control)
   }
-  console.log(123)
+
   return <JGComboBox {...props}></JGComboBox>
 }
 
