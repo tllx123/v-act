@@ -7,9 +7,12 @@ const HyperLink = () => {
       <JGHyperLink
         top={21}
         left={15}
-        multiHeight="44px"
-        multiWidth="352px"
+        multiHeight="26px"
+        multiWidth="235px"
         labelText="链接"
+        labelWidth={60}
+        labelVisible={true}
+        enabled={true}
       ></JGHyperLink>
     </JGComponent>
   )

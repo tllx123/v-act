@@ -1,5 +1,7 @@
 import { Control } from '@v-act/schema-types'
 import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -19,12 +21,11 @@ const convert = function (
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
-    isMust: toBoolean(pros.isMust, false),
-    placeholder: pros.placeholder,
-    visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
-    disabled: !toBoolean(pros.enabled, true)
+    enabled: !toBoolean(pros.enabled, true),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGHyperLink {...props}></JGHyperLink>
 }
