@@ -414,15 +414,24 @@ const toEntities = function (entities?: Entity[]): Entities {
   return result
 }
 
+const _getRandomNum = function () {
+  const random = Math.random() * 10000
+  return parseInt(random + '')
+}
+
 /**
  * 增强窗体配置，将控件事件属性值转换成Function
  * @param win 窗体节点
  */
-const enhanceWindow = function (win: Window, context: { router: any }) {
+const enhanceWindow = function (
+  win: Window,
+  context: { router: any; stackInfo: any }
+) {
   const prototype = win.prototype
   if (prototype) {
     const controlEventMap: { [controlCode: string]: Event[] } = {}
     const router = context.router
+    const { thisLevel } = context.stackInfo
     prototype.forEach((action) => {
       const controlCode = action.controlCode
       const controlEvents = controlEventMap[controlCode] || []
@@ -434,11 +443,27 @@ const enhanceWindow = function (win: Window, context: { router: any }) {
         handler: () => {
           const containerType = windowAction.targetContainerType
           if (containerType == 'dialogWindow') {
-            throw Error('暂未支持打开位置为对话框！')
+            const targetWindow = windowAction.targetWindow
+            const winInfo = targetWindow.split('.')
+            router.push({
+              pathname: `/${winInfo[0]}/${winInfo[1]}`,
+              query: {
+                modal: thisLevel + 1,
+                title: windowAction.targetWindowTitle,
+                v: _getRandomNum()
+              }
+            })
           } else if (containerType == 'currentWindow') {
             const targetWindow = windowAction.targetWindow
             const winInfo = targetWindow.split('.')
-            router.push(`/${winInfo[0]}/${winInfo[1]}`)
+            router.push({
+              pathname: `/${winInfo[0]}/${winInfo[1]}`,
+              query: {
+                modal: thisLevel,
+                title: windowAction.targetWindowTitle,
+                v: _getRandomNum()
+              }
+            })
           }
         }
       })
