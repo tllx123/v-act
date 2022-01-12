@@ -1,5 +1,7 @@
 import { Control } from '@v-act/schema-types'
 import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -26,7 +28,9 @@ const convert = function (
     labelVisible: toBoolean(pros.labelVisible, true),
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGFloatBox {...props}></JGFloatBox>
 }
