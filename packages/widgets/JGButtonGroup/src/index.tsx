@@ -3,11 +3,18 @@ import { JGButtonGroup, JGButtonGroupProps } from './JGButtonGroup'
 import { toNumber, valueofWidth, valueofHeight } from '@v-act/widget-utils'
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
+
+  console.log('control')
+  console.log(control)
+  console.log('pros')
+  console.log(pros)
+
   const props: JGButtonGroupProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '235px'),
-    height: valueofHeight(pros.multiHeight, '30px')
+    height: valueofHeight(pros.multiHeight, '30px'),
+    control: control
   }
   return <JGButtonGroup {...props}></JGButtonGroup>
 }
