@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import useStackInfo from '../../../src/components/usePageStackInfo';
 import {Control,ControlReact} from "@v-act/schema-types";
 import {layoutControls} from "@v-act/widget-utils";
 import {convert} from "@v-act/jgcomponent";
@@ -41,9 +42,10 @@ const render = function(controls: Array<Control>,contianerReact: ControlReact): 
 
 function Index(){
     const router = useRouter();
+    const stackInfo = useStackInfo();
     return (
         <React.Fragment>
-            {convert(windowObjs,render,{router})}
+            {convert(windowObjs,render,{router,stackInfo})}
         </React.Fragment>   
     );
 }
