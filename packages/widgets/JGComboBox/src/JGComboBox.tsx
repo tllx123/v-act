@@ -325,6 +325,9 @@ const JGComboBox = function (props: JGComboBoxProps) {
         sx={{
           '.MuiSelect-select': {
             padding: '5px 6px'
+          },
+          'legend': {
+            width: 'auto'
           }
         }}
       >
