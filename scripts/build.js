@@ -1,9 +1,10 @@
 import chalk from 'chalk'
 import { build } from 'vite'
+import usePluginImport from 'vite-plugin-importer'
+
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
-import usePluginImport from 'vite-plugin-importer'
 
 const publicExternal = [
   '@mui/icons-material',
@@ -13,6 +14,7 @@ const publicExternal = [
   'react',
   'react-dom'
 ]
+const nodeExternal = ['art-template', 'fast-xml-parser', 'fs-extra', 'path']
 
 const vitePluginDts = () => {
   const plugin = {
@@ -33,9 +35,10 @@ const vitePluginDts = () => {
 export async function viteBuild(scopes) {
   const packages = await getPackages()
   const localExternal = packages.map((pkg) => pkg.name)
-  const external = [...publicExternal, ...localExternal]
+  const external = [...publicExternal, ...localExternal, ...nodeExternal]
   const filteredPackages = filterPackages(packages, scopes)
-  return await filteredPackages.map(async (pkg) => {
+
+  await filteredPackages.map(async (pkg) => {
     const root = pkg.location
     const name = pkg.name
     const fileName = (fmt) => (fmt === 'umd' ? 'index.js' : 'index.es.js')
