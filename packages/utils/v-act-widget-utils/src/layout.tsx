@@ -371,6 +371,9 @@ const getControlHeight = function (
     ) {
       return parseInt(control.properties.multiHeight)
     }
+    if (control.properties.multiHeight == 'space') {
+      return -1
+    }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
     if (widgetDefine) {
@@ -456,6 +459,9 @@ const getControlWidth = function (
       control.properties.multiWidth.endsWith('px')
     ) {
       return parseInt(control.properties.multiWidth)
+    }
+    if (control.properties.multiWidth === 'space') {
+      return -1
     }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]

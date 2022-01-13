@@ -153,6 +153,8 @@ interface Property {
    * 数据来源
    */
   dropDownSource?: string
+
+  isMore?: string
 }
 
 export default Property
