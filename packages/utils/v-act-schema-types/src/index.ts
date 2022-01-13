@@ -79,6 +79,34 @@ const valueofHeight = function (
 ): Height {
   return valueofWidth(val, def)
 }
+/**
+ * 控件定义信息
+ */
+interface WidgetDefines {
+  [widgetType: string]: {
+    defaultProps?:
+      | {
+          [pro: string]: any
+        }
+      | undefined
+  }
+}
+
+interface WidgetConverts {
+  [widgetType: string]: (
+    control: Control,
+    render: (
+      controls: Array<Control>,
+      containerReact: ControlReact
+    ) => JSX.Element | null,
+    context: { router: any; stackInfo: any }
+  ) => JSX.Element | null
+}
+
+interface WidgetConvertContext {
+  router: any
+  stackInfo: any
+}
 
 export {
   Component,
@@ -98,6 +126,9 @@ export {
   toNumber,
   valueofHeight,
   valueofWidth,
+  type WidgetConvertContext,
+  type WidgetConverts,
+  type WidgetDefines,
   Width,
   Window
 }

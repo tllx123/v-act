@@ -62,7 +62,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
-        padding: '16px', //窗体内间距
+        //padding: '16px', //窗体内间距
         height: toHeight(inProps.height, context, ReactEnum.Space),
         bottom: inProps.bottom
       }
@@ -76,7 +76,13 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         </ContextProvider>
       )
     }
-    children = children.concat(result.absolute)
+    if (result.absolute.length > 0) {
+      children.push(
+        <ContextProvider context={{ position: 'absolute' }}>
+          {result.absolute}
+        </ContextProvider>
+      )
+    }
     return (
       <JGComponentRoot {...props} ref={ref}>
         {children}

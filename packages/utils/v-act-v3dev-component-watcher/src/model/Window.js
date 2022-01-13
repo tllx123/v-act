@@ -202,12 +202,75 @@ class Window {
     }
   }
 
-  toSchemaPrototype(actionObj) {
+  toSchemaAction(actionObj) {
     return {
       controlCode: actionObj.$.controlCode,
       triggerEvent: actionObj.$.triggerEvent,
       windowAction: this.toSchemaWindowAction(actionObj.windowAction)
     }
+  }
+
+  toSchemaMasterPageControl(widgetType, widget) {
+    const properties = widget.$
+    const controls = []
+    for (const wdType in widget) {
+      if (wdType !== '$' && Object.hasOwnProperty.call(widget, wdType)) {
+        const wd = widget[wdType]
+        controls.push(this.toSchemaMasterPageControl(wdType, wd))
+      }
+    }
+    return {
+      type: widgetType,
+      properties,
+      controls
+    }
+  }
+
+  toSchemaMasterPageProperties(masterPage) {
+    const properties = {}
+    if (masterPage.propertys && masterPage.propertys.property) {
+      let propertys = masterPage.propertys.property
+      propertys = Array.isArray(propertys) ? propertys : [propertys]
+      propertys.forEach((property) => {
+        properties[property.$.name] = property._
+      })
+    }
+    return properties
+  }
+
+  toSchemaMasterPage(masterPage) {
+    let properties = {
+      code: masterPage.$.code
+    }
+    properties = this.toSchemaMasterPageProperties(masterPage)
+    properties.code = masterPage.$.code
+    const result = {
+      properties: properties
+    }
+    if (masterPage.actions && masterPage.actions.action) {
+      let actions = masterPage.actions.action
+      actions = Array.isArray(actions) ? actions : [actions]
+      result.actions = this.toSchemaActions(actions)
+    }
+    if (masterPage.controls) {
+      const controls = []
+      for (const widgetType in masterPage.controls) {
+        if (Object.hasOwnProperty.call(masterPage.controls, widgetType)) {
+          const widget = masterPage.controls[widgetType]
+          controls.push(this.toSchemaMasterPageControl(widgetType, widget))
+        }
+      }
+      result.controls = controls
+    }
+    return result
+  }
+
+  toSchemaActions(actions) {
+    const result = []
+    actions.forEach((actionObj) => {
+      result.push(this.toSchemaAction(actionObj))
+    })
+    return result
   }
 
   toSchmemaObj() {
@@ -229,7 +292,7 @@ class Window {
           entities.push(this.toSchemaEntity(en))
         })
       }
-      const prototype = []
+      let prototype = []
       if (
         this.obj.prototype &&
         this.obj.prototype.actions &&
@@ -237,9 +300,8 @@ class Window {
       ) {
         let actionObjs = this.obj.prototype.actions.action
         actionObjs = Array.isArray(actionObjs) ? actionObjs : [actionObjs]
-        actionObjs.forEach((actionObj) => {
-          prototype.push(this.toSchemaPrototype(actionObj))
-        })
+        let actions = this.toSchemaActions(actionObjs)
+        prototype = prototype.concat(actions)
       }
       this.windowJsonObj = {
         type: 'JGComponent',
@@ -247,6 +309,10 @@ class Window {
         controls,
         entities,
         prototype
+      }
+      if (this.obj.masterPage) {
+        const masterPage = this.toSchemaMasterPage(this.obj.masterPage)
+        this.windowJsonObj.masterPage = masterPage
       }
     }
     return this.windowJsonObj

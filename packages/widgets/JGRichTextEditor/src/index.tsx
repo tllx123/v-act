@@ -5,12 +5,9 @@ import {
   valueofWidth,
   valueofHeight
 } from '@v-act/widget-utils'
-import { JGRichTextEditor, JGRichTextEditorProps } from './JGRichTextEditor'
+import JGRichTextEditor, { JGRichTextEditorProps } from './JGRichTextEditor'
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
-): JSX.Element {
+const convert = function (control: Control): JSX.Element {
   const pros = control.properties
   const props: JGRichTextEditorProps = {
     top: toNumber(pros.top) + 'px',
@@ -20,5 +17,4 @@ const convert = function (
   }
   return <JGRichTextEditor {...props}></JGRichTextEditor>
 }
-
 export { convert, JGRichTextEditor }

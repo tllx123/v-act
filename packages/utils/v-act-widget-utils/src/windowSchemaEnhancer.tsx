@@ -1,0 +1,348 @@
+import { Fragment } from 'react'
+
+import {
+  Control,
+  ControlReact,
+  Event,
+  ReactEnum,
+  WidgetConvertContext,
+  WidgetConverts,
+  WidgetDefines,
+  Window
+} from '@v-act/schema-types'
+
+import { layoutControls } from './layout'
+
+const _getRandomNum = function () {
+  const random = Math.random() * 10000
+  return parseInt(random + '')
+}
+
+/**
+ * 增强窗体配置，将控件事件属性值转换成Function
+ * @param win 窗体节点
+ */
+const enhanceWindow = function (
+  win: Window,
+  context: { router: any; stackInfo: any }
+) {
+  const prototype = win.prototype
+  if (prototype) {
+    const controlEventMap: { [controlCode: string]: Event[] } = {}
+    const router = context.router
+    const { thisLevel } = context.stackInfo
+    prototype.forEach((action) => {
+      const controlCode = action.controlCode
+      const controlEvents = controlEventMap[controlCode] || []
+      const triggerEvent = action.triggerEvent
+      const windowAction = action.windowAction
+      controlEvents.push({
+        code: triggerEvent,
+        name: '',
+        handler: () => {
+          const containerType = windowAction.targetContainerType
+          if (containerType == 'dialogWindow') {
+            const targetWindow = windowAction.targetWindow
+            const winInfo = targetWindow.split('.')
+            router.push({
+              pathname: `/${winInfo[0]}/${winInfo[1]}`,
+              query: {
+                modal: thisLevel + 1,
+                title: windowAction.targetWindowTitle,
+                v: _getRandomNum()
+              }
+            })
+          } else if (containerType == 'currentWindow') {
+            const targetWindow = windowAction.targetWindow
+            const winInfo = targetWindow.split('.')
+            router.push({
+              pathname: `/${winInfo[0]}/${winInfo[1]}`,
+              query: {
+                modal: thisLevel,
+                title: windowAction.targetWindowTitle,
+                v: _getRandomNum()
+              }
+            })
+          }
+        }
+      })
+      controlEventMap[controlCode] = controlEvents
+    })
+    const controls = win.controls
+    if (controls && controls.length > 0) {
+      controls.forEach((control) => {
+        _enhanceControl(control, controlEventMap)
+      })
+    }
+  }
+}
+
+const _enhanceControl = function (
+  control: Control,
+  controlEventMap: { [controlCode: string]: Event[] }
+) {
+  const properties = control.properties
+  const controlCode = properties.code
+  const events = controlEventMap[controlCode]
+  if (events) {
+    control.events = events
+  }
+  const controls = control.controls
+  if (controls && controls.length > 0) {
+    controls.forEach((con) => {
+      _enhanceControl(con, controlEventMap)
+    })
+  }
+}
+
+const WIDGET_CODE_SUBFIX = '_$_Frame'
+/**
+ * 处理控件编号重复问题
+ * @param windowSchema
+ */
+const _toDealWidgetCode = function (windowSchema: Window) {
+  const actions = windowSchema.masterPage?.actions
+  if (actions) {
+    actions.forEach((action) => {
+      action.controlCode += WIDGET_CODE_SUBFIX
+    })
+  }
+  const dealControl = function (control: {
+    properties?: { [props: string]: string }
+    controls?: object[]
+  }) {
+    const properties = control.properties
+    if (properties) {
+      properties.Code += WIDGET_CODE_SUBFIX
+    }
+    const controls = control.controls
+    if (controls) {
+      controls.forEach((cn) => {
+        dealControl(cn)
+      })
+    }
+  }
+  const controls = windowSchema.masterPage?.controls
+  controls?.forEach((control) => {
+    dealControl(control)
+  })
+}
+
+type MasterPageControl = {
+  Code?: string
+  IsMore?: string
+  LabelText?: string
+  controls?: MasterPageControl[]
+}
+
+const toJGButtonGroupItemSchema = function (
+  control: MasterPageControl
+): Control {
+  const result: Control = {
+    type: 'JGButtonGroupItem',
+    properties: {
+      code: control.Code || '',
+      isMore: control.IsMore ? 'True' : 'False',
+      labelText: control.LabelText || ''
+    },
+    controls: []
+  }
+  const controlObjs = control.controls
+  if (controlObjs) {
+    const controls: Control[] = []
+    controlObjs.forEach((cn) => {
+      controls.push(toJGButtonGroupItemSchema(cn))
+    })
+    result.controls = controls
+  }
+  return result
+}
+
+const toJGButtonGroupSchema = function (windowSchema: Window) {
+  const controls = windowSchema.masterPage?.controls
+  if (controls && controls.length > 0) {
+    for (let i = 0; i < controls.length; i++) {
+      const control = controls[i]
+      if (control.type == 'JGButtonGroup') {
+        const buttonItems: Control[] = []
+        control.controls?.forEach((cn) => {
+          buttonItems.push(toJGButtonGroupItemSchema(cn))
+        })
+        return {
+          type: 'JGButtonGroup',
+          properties: {
+            btnGrpDataSourceType: 'Static',
+            code: control.properties.Code,
+            horizontalAlign: 'Right',
+            multiHeight: '32px',
+            multiWidth: ReactEnum.Content.toString()
+          },
+          controls: buttonItems
+        }
+      }
+    }
+  }
+  return {
+    type: 'JGButtonGroup',
+    properties: {
+      btnGrpDataSourceType: 'Static',
+      code: 'Frame_Dock_Top_JGButtonGroup_' + _getRandomNum(),
+      horizontalAlign: 'Right',
+      multiHeight: '32px',
+      multiWidth: ReactEnum.Content.toString()
+    },
+    controls: []
+  }
+}
+
+const _toFrameDockTop = function (windowSchema: Window) {
+  _toDealWidgetCode(windowSchema)
+  const masterPage = windowSchema.masterPage
+  let actions = windowSchema.prototype || []
+  actions = actions.concat(masterPage?.actions || [])
+  windowSchema.properties.dock = 'Fill'
+  delete windowSchema.properties.width
+  windowSchema.properties.multiWidth = ReactEnum.Space.toString()
+  return {
+    type: 'JGComponent',
+    properties: {
+      multiWidth: ReactEnum.Space.toString(),
+      multiHeight: ReactEnum.Space.toString(),
+      code: 'Frame_Dock_Top_' + _getRandomNum()
+    },
+    controls: [
+      {
+        type: 'JGGroupPanel',
+        properties: {
+          dock: 'Top',
+          contentAlignment: 'Horizontal',
+          multiHeight: '34px',
+          multiWidth: ReactEnum.Space.toString(),
+          code: 'Frame_Dock_Top_JGGroupPanel_' + _getRandomNum()
+        },
+        controls: [
+          {
+            type: 'JGLabel',
+            properties: {
+              dock: 'Top',
+              multiHeight: ReactEnum.Space.toString(),
+              multiWidth: '200px',
+              labelText: '合同编号：HT-2020-03-11-001<br>当前状态：立项中',
+              code: 'Frame_Dock_Top_JGLabel_' + _getRandomNum()
+            },
+            controls: []
+          },
+          toJGButtonGroupSchema(windowSchema)
+        ]
+      },
+      windowSchema
+    ],
+    prototype: actions
+  }
+}
+
+const _toFrameDockBottom = function (windowSchema: Window) {
+  _toDealWidgetCode(windowSchema)
+  const masterPage = windowSchema.masterPage
+  let actions = windowSchema.prototype || []
+  actions = actions.concat(masterPage?.actions || [])
+  windowSchema.properties.dock = 'Fill'
+  delete windowSchema.properties.width
+  windowSchema.properties.multiWidth = ReactEnum.Space.toString()
+  const result = {
+    type: 'JGComponent',
+    properties: {
+      multiWidth: windowSchema.properties.multiWidth,
+      multiHeight: windowSchema.properties.multiHeight,
+      code: 'Frame_Dock_Top_' + _getRandomNum()
+    },
+    controls: [
+      windowSchema,
+      {
+        type: 'JGGroupPanel',
+        properties: {
+          dock: 'Top',
+          contentAlignment: 'Horizontal',
+          multiHeight: '34px',
+          multiWidth: ReactEnum.Space.toString(),
+          code: 'Frame_Dock_Top_JGGroupPanel_' + _getRandomNum()
+        },
+        controls: [toJGButtonGroupSchema(windowSchema)]
+      }
+    ],
+    prototype: actions
+  }
+  return result
+}
+/**
+ * 处理窗体框架母版信息
+ * @param windowSchema 窗体schema数据
+ */
+const _dealWindowMasterPageInfo = function (windowSchema: Window) {
+  if (windowSchema.masterPage) {
+    const masterPageType = windowSchema.masterPage.properties.code
+    if (masterPageType === 'Frame_Dock_Top') {
+      //顶栏框架
+      windowSchema = _toFrameDockTop(windowSchema)
+    } else if (masterPageType === 'Frame_Dock_Bottom') {
+      //底部框架
+      windowSchema = _toFrameDockBottom(windowSchema)
+    } else {
+      throw Error('未识别框架母版，母版类型：' + masterPageType)
+    }
+  }
+  return windowSchema
+}
+/**
+ * 从窗体schema数据转换成React脚本
+ * @param windowSchema 窗体schema数据
+ * @param widgetDefines 控件定义
+ * @param widgetConverts 控件缓存函数
+ * @param context 转换上下文
+ * @returns
+ */
+const convertWindowSchema = function (
+  windowSchema: Window,
+  widgetDefines: WidgetDefines,
+  widgetConverts: WidgetConverts,
+  context: WidgetConvertContext
+): JSX.Element | null {
+  const renderChildrenFunc = (
+    controls: Array<Control>,
+    contianerReact: ControlReact
+  ) => {
+    controls = layoutControls(controls, contianerReact, widgetDefines)
+    if (controls && controls.length > 0) {
+      return (
+        <Fragment>
+          {controls.map((control) => {
+            return (
+              <Fragment key={control.properties.code}>
+                {widgetConverts[control.type]
+                  ? widgetConverts[control.type](
+                      control,
+                      renderChildrenFunc,
+                      context
+                    )
+                  : null}
+              </Fragment>
+            )
+          })}
+        </Fragment>
+      )
+    }
+    return null
+  }
+  windowSchema = _dealWindowMasterPageInfo(windowSchema)
+  //处理窗体schema，将控件事件值转换成Function
+  enhanceWindow(windowSchema, context)
+  const widgetType = windowSchema.type
+  const convert = widgetConverts[widgetType]
+  if (convert) {
+    return convert(windowSchema, renderChildrenFunc, context)
+  } else {
+    return null
+  }
+}
+
+export { convertWindowSchema }
