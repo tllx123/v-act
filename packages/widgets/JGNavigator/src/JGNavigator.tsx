@@ -185,4 +185,5 @@ JGNavigator.defaultProps = {
   ]
 }
 export default JGNavigator
-export { JGNavigator, JGNavigatorProps }
+export { JGNavigator }
+export type { JGNavigatorProps }
