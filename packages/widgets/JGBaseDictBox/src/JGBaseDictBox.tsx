@@ -1,7 +1,8 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
-import { InputUnstyledProps } from '@mui/base/InputUnstyled'
-import { FormControl, InputAdornment, OutlinedInput } from '@mui/material'
+import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import { FormControl, IconButton, InputAdornment } from '@mui/material'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -62,28 +63,49 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
   enabled?: boolean
 }
 
-const CssOutlinedInput = styled(OutlinedInput)({
-  '&.MuiOutlinedInput-root': {
-    'borderRadius': 4,
-    'position': 'relative',
-    'width': '100%',
-    '&:focus': {
-      boxShadow: '0 0 10px rgba(53,106,187,0.3)'
-    },
-    '&:hover fieldset': {
-      borderColor: '#0960c3'
-    }
+const StyledInputElement = styled('input')`
+  border: 1px solid #dcdee2;
+  border-radius: 4px;
+  color: #333;
+  padding: 0 4px;
+  width: 100%;
+  outline: none;
+  height: 100%;
+  &:hover {
+    border-color: #356abb;
   }
+
+  &:focus {
+    border-color: #356abb;
+    background: #fff;
+    box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
+  }
+
+  [disabled] {
+    background: #f6f7fb;
+  }
+`
+const CssOutlinedInput = forwardRef(function (
+  props: JGBaseDictBoxProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <InputUnstyled
+      components={{ Input: StyledInputElement }}
+      {...props}
+      ref={ref}
+    />
+  )
 })
+
+const myFun = () => {
+  console.log('aaaaaaaa')
+}
 
 const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
-
-  // const labelWidth = props.labelVisible
-  //   ? toLabelWidth(props.labelWidth, context, 94)
-  //   : 0
   const labelWidth = toLabelWidth(props.labelWidth, context, 94)
 
   //使能与只读两个位true时候disabled 才为true
@@ -106,9 +128,10 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
 
-  const inputStyles = {
+  const inputStyles: CSSProperties = {
     width: '100%',
-    height: height
+    height: height,
+    position: 'relative'
   }
 
   const buttonStyles: CSSProperties = {
@@ -121,35 +144,29 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   }
 
   const InputAdornmentSty: CSSProperties = {
-    width: '18px'
+    width: '18px',
+    position: 'absolute',
+    top: '0',
+    right: '15px',
+    height: '100%'
   }
 
   return (
     <div style={wrapStyles}>
-      <JGInputLabel
-        width={labelWidth}
-        height={height}
-        //visible={props.labelVisible}
-        required={props.isMust}
-      >
+      <JGInputLabel width={labelWidth} height={height} required={props.isMust}>
         {props.labelText}
       </JGInputLabel>
 
       <FormControl variant="filled">
         <CssOutlinedInput
-          sx={{
-            legend: {
-              width: 'auto'
-            }
-          }}
           style={inputStyles}
           readOnly={true}
           disabled={isStart}
           endAdornment={
             <InputAdornment style={InputAdornmentSty} position="end">
-              {/* <IconButton style={openStyle} disabled={isStart}>
+              <IconButton style={openStyle} disabled={isStart} onClick={myFun}>
                 <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
-              </IconButton> */}
+              </IconButton>
             </InputAdornment>
           }
         />

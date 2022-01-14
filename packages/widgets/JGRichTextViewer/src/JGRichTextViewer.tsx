@@ -2,12 +2,18 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, Card, CardContent, Typography } from '@mui/material'
+import { Box, BoxProps, Card } from '@mui/material'
 import { Height, Width } from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  isNullOrUnDef,
+  toHeight,
+  toWidth
+} from '@v-act/widget-utils'
 
 interface JGRichTextViewerProps extends BoxProps {
+  /** 格式*/
   /**
    * 左边距
    */
@@ -24,25 +30,43 @@ interface JGRichTextViewerProps extends BoxProps {
    * 宽度
    */
   multiWidth?: Width
+
+  /** 数据 */
+  /**
+   * 实体编号
+   */
+  tableName?: string | null
+  /**
+   * 字段编号
+   */
+  columnName?: string | null
 }
 
 const JGRichTextViewer = function (props: JGRichTextViewerProps) {
-  // if (!props.visible) {
-  //   return null
-  // }
   const context = useContext()
-  const width = toWidth(props.multiWidth, context, '235px')
-  const height = toHeight(props.multiHeight, context, '26px')
+  const width = toWidth(props.multiWidth, context, '395px')
+  const height = toHeight(props.multiHeight, context, '344px')
+
+  //获取value
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
 
   const wrapStyles: CSSProperties = {
     width: width,
     height: height,
     position: context.position,
     left: props.left,
-    top: props.top
+    top: props.top,
+    fontSize: '14px',
+    fontFamily:
+      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
   const cardStyles: CSSProperties = {
-    height: '100%'
+    height: '91%',
+    overflowY: 'auto'
   }
 
   const cardContentStyles: CSSProperties = {
@@ -59,11 +83,11 @@ const JGRichTextViewer = function (props: JGRichTextViewerProps) {
     marginBottom: '20px'
   }
   const divStyle: CSSProperties = {
-    border: '1px solid',
-    padding: '16px',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
+    // border: '1px solid',
+    // padding: '16px',
+    // height: '100%',
+    // display: 'flex',
+    // flexDirection: 'column'
   }
 
   const divConStyle: CSSProperties = {
@@ -77,8 +101,12 @@ const JGRichTextViewer = function (props: JGRichTextViewerProps) {
   return (
     <Box style={wrapStyles}>
       <Card style={cardStyles} variant="outlined">
-        <CardContent style={cardContentStyles}>
-          <div style={titleStyle}>
+        {/* <CardContent style={cardContentStyles}> */}
+        {/* <div>
+        你是谁
+      </div> */}
+        <div>{value}</div>
+        {/* <div style={titleStyle}>
             <Typography style={headStyle} variant="h5">
               富文本浏览控件示例标题
             </Typography>
@@ -92,8 +120,8 @@ const JGRichTextViewer = function (props: JGRichTextViewerProps) {
             <Typography style={contentFootStyle}>
               富文本浏览控件示例正文-结束
             </Typography>
-          </div>
-        </CardContent>
+          </div> */}
+        {/* </CardContent> */}
       </Card>
     </Box>
   )
