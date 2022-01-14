@@ -12,6 +12,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
+  console.log('control', control)
   const pros = control.properties
   const props: JGAttachmentProps = {
     top: toNumber(pros.top) + 'px',
@@ -26,7 +27,8 @@ const convert = function (
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    showUploadList: toBoolean(pros.showUploadList, true)
   }
   return <JGAttachment {...props}></JGAttachment>
 }
