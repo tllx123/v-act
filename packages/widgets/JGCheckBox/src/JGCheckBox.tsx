@@ -2,8 +2,14 @@ import { Property } from 'csstype'
 import { Checkbox, CheckboxProps } from '@mui/material'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  getFieldValue,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 import Icon from '@mui/material/Icon'
 interface JGCheckBoxProps extends CheckboxProps {
   left?: Property.Left
@@ -18,10 +24,20 @@ interface JGCheckBoxProps extends CheckboxProps {
   readonly?: boolean
   ismust?: boolean
   labelVisible?: boolean
+  tableName?: string | null
+  columnName?: string | null
 }
 
 const JGCheckBox = (props: JGCheckBoxProps) => {
   const context = useContext()
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+  console.log('-------------------value--------------------------')
+  console.log(value)
+
   const {
     left,
     top,

@@ -85,7 +85,8 @@
       "@v-act/jgcalendar": ["packages/widgets/JGCalendar/src"],
       "@v-act/jgpropertyeditor": ["packages/widgets/JGPropertyEditor/src"],
       "@v-act/cache": ["packages/utils/v-act-cache/src"],
-      "@v-act/widget-all": ["packages/widgets/All/src"]
+      "@v-act/widget-all": ["packages/widgets/All/src"],
+      "@v-act/jgcontext": ["packages/widgets/JGContext/src"]
     }
   }
 }

@@ -179,7 +179,7 @@ const loadButtonGroup = (
         variant = 'outlined'
       }
 
-      if (!showBorder) {
+      if (showBorder == false) {
         variant = 'text'
       }
 
@@ -229,7 +229,7 @@ const loadButtonGroup = (
         const menu = getMenu(item.more)
         let variant_more: any = 'contained'
         let color_more: any = 'primary'
-        if (!showBorder) {
+        if (showBorder == false) {
           variant_more = 'text'
           color_more = 'primary'
         }
@@ -272,6 +272,13 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
     ...resprops
   } = props
 
+  let controlsTemp = []
+  console.log('showBorder')
+  console.log(showBorder)
+
+  if (control && control.controls) {
+    controlsTemp = control.controls
+  }
   // let controlTemp = [
   //   {
   //     type: 'JGButtonGroupItem',
@@ -406,7 +413,7 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
       }}
     >
       <Space>
-        {loadButtonGroup(control, enabled, showBorder, expandWhenHover)}
+        {loadButtonGroup(controlsTemp, enabled, showBorder, expandWhenHover)}
       </Space>
     </Box>
   )

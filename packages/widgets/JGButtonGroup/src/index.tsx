@@ -8,6 +8,9 @@ import {
 } from '@v-act/widget-utils'
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
+  console.log('control')
+
+  console.log(control)
 
   const props: JGButtonGroupProps = {
     top: toNumber(pros.top) + 'px',
@@ -15,7 +18,7 @@ const convert = function (control: Control): JSX.Element {
     width: valueofWidth(pros.multiWidth, '235px'),
     height: valueofHeight(pros.multiHeight, '30px'),
     enabled: !toBoolean(pros.enabled, true),
-    showBorder: !toBoolean(pros.showBorder, true),
+    showBorder: toBoolean(pros.showBorder, true),
     expandWhenHover: !toBoolean(pros.expandWhenHover, true),
     control: control
   }
