@@ -5,6 +5,7 @@ import Dock from './Dock'
 import type Entity from './Entity'
 import type Event from './Event'
 import type Height from './Height'
+import type JGCollapsePanelProperty from './properties/JGCollapsePanel'
 import type JGContextProperty from './properties/JGContextProperty'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
@@ -117,6 +118,7 @@ export {
   Entity,
   Event,
   Height,
+  JGCollapsePanelProperty,
   JGContextProperty,
   JGGroupPanelProperty,
   JGQueryConditionPanelProperty,
