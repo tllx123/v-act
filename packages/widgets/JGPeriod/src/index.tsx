@@ -1,5 +1,7 @@
 import { Control } from '@v-act/schema-types'
 import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
@@ -12,6 +14,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
+  console.log(control)
   const pros = control.properties
   const props: JGPeriodProps = {
     top: toNumber(pros.top) + 'px',
@@ -26,7 +29,9 @@ const convert = function (
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
-    disabled: !toBoolean(pros.enabled, true)
+    disabled: !toBoolean(pros.enabled, true),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGPeriod {...props}></JGPeriod>
 }

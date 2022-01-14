@@ -1,5 +1,11 @@
 import { Control } from '@v-act/schema-types'
-import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
+import {
+  getColumnName,
+  getTableName,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGRichTextViewer, JGRichTextViewerProps } from './JGRichTextViewer'
 
@@ -12,7 +18,9 @@ const convert = function (
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     multiWidth: valueofWidth(pros.multiWidth, '395px'),
-    multiHeight: valueofHeight(pros.multiHeight, '344px')
+    multiHeight: valueofHeight(pros.multiHeight, '344px'),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGRichTextViewer {...props}></JGRichTextViewer>
 }

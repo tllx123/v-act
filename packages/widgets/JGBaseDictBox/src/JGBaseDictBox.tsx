@@ -1,13 +1,8 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, forwardRef } from 'react'
 
-import { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import {
-  FormControl,
-  IconButton,
-  InputAdornment,
-  OutlinedInput
-} from '@mui/material'
+import { FormControl, IconButton, InputAdornment } from '@mui/material'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -70,7 +65,6 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
 
 const StyledInputElement = styled('input')`
   border: 1px solid #dcdee2;
-  border-right: 0;
   border-radius: 4px;
   color: #333;
   padding: 0 4px;
@@ -91,27 +85,27 @@ const StyledInputElement = styled('input')`
     background: #f6f7fb;
   }
 `
-const CssOutlinedInput = styled(OutlinedInput)({
-  '&:hover fieldset': {
-    borderColor: 'yellow'
-  },
-  '& .css-nnbavb': {
-    width: '0px'
-  }
+const CssOutlinedInput = forwardRef(function (
+  props: JGBaseDictBoxProps,
+  ref: React.ForwardedRef<HTMLDivElement>
+) {
+  return (
+    <InputUnstyled
+      components={{ Input: StyledInputElement }}
+      {...props}
+      ref={ref}
+    />
+  )
 })
 
-const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
-  // if (!props.visible) {
-  //   return null
-  // }
+const myFun = () => {
+  console.log('aaaaaaaa')
+}
 
+const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
-
-  // const labelWidth = props.labelVisible
-  //   ? toLabelWidth(props.labelWidth, context, 94)
-  //   : 0
   const labelWidth = toLabelWidth(props.labelWidth, context, 94)
 
   //使能与只读两个位true时候disabled 才为true
@@ -134,9 +128,10 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
 
-  const inputStyles = {
+  const inputStyles: CSSProperties = {
     width: '100%',
-    height: height
+    height: height,
+    position: 'relative'
   }
 
   const buttonStyles: CSSProperties = {
@@ -149,17 +144,16 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   }
 
   const InputAdornmentSty: CSSProperties = {
-    width: '18px'
+    width: '18px',
+    position: 'absolute',
+    top: '0',
+    right: '15px',
+    height: '100%'
   }
 
   return (
     <div style={wrapStyles}>
-      <JGInputLabel
-        width={labelWidth}
-        height={height}
-        //visible={props.labelVisible}
-        required={props.isMust}
-      >
+      <JGInputLabel width={labelWidth} height={height} required={props.isMust}>
         {props.labelText}
       </JGInputLabel>
 
@@ -170,7 +164,7 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
           disabled={isStart}
           endAdornment={
             <InputAdornment style={InputAdornmentSty} position="end">
-              <IconButton style={openStyle} disabled={isStart}>
+              <IconButton style={openStyle} disabled={isStart} onClick={myFun}>
                 <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
               </IconButton>
             </InputAdornment>

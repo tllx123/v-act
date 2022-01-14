@@ -1,21 +1,36 @@
-import { JGCheckBox } from '@v-act/jgcheckbox'
+import { JGCheckBox, convert } from '@v-act/jgcheckbox'
 import { JGComponent } from '@v-act/jgcomponent'
 import { JGFormLayout } from '@v-act/jgformlayout'
 const checkbox = () => {
   return (
     <JGComponent>
-      <JGFormLayout
-        left={197}
-        top={168}
-        multiHeight="content"
-        multiWidth="800px"
-        groupTitle="分组标题"
-      >
-        <JGCheckBox labeltext="超出省略号超出省略号" />
-        <JGCheckBox labeltext="disabled" top={70} disabled />
-        <JGCheckBox labeltext="只读" readonly={true} checked top={130} />
-        <JGCheckBox height={200} width={400} top={210} labeltext="哇哈哈哈" />
-      </JGFormLayout>
+      {convert({
+        type: 'JGCheckBox',
+        properties: {
+          code: 'JGCheckBox6',
+          height: '32',
+          labelText: '提醒文字',
+          left: '456',
+          multiHeight: '32px',
+          multiWidth: '235px',
+          placeholder: '提醒文字',
+          top: '127'
+        },
+        headerControls: [],
+        controls: [],
+        dataBindings: [
+          {
+            dataSource: 'formAllFreeEntity',
+            dataMembers: [
+              {
+                name: '字段名称',
+                code: 'ColumnName',
+                value: 'JGCheckBox6'
+              }
+            ]
+          }
+        ]
+      })}
     </JGComponent>
   )
 }

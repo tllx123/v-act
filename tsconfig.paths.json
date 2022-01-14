@@ -86,7 +86,12 @@
       "@v-act/jgpropertyeditor": ["packages/widgets/JGPropertyEditor/src"],
       "@v-act/jgcollapse": ["packages/widgets/JGCollapse/src"],
       "@v-act/cache": ["packages/utils/v-act-cache/src"],
-      "@v-act/widget-all": ["packages/widgets/All/src"]
+      "@v-act/widget-all": ["packages/widgets/All/src"],
+      "@v-act/vdev": ["packages/v3dev/core/src"],
+      "@v-act/runtime-next": ["packages/v3dev/runtime-next/src"],
+      "@v-act/vdev-runtime": ["packages/v3dev/runtime/src"],
+      "@v-act/jgcontext": ["packages/widgets/JGContext/src"],
+      "v3-pack-center-template": ["packages/v3dev/runtime-next/src"]
     }
   }
 }
