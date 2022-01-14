@@ -4,8 +4,9 @@ import { Property } from 'csstype'
 import ReactECharts from 'echarts-for-react'
 
 import { Box, BoxProps } from '@mui/material'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { EntityRecord, useContext } from '@v-act/widget-context'
+import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'
+
 import { handleOptions } from './V3Echart'
 
 /* 包装器属性 */
@@ -112,7 +113,7 @@ interface JGChartProps extends BoxProps {
   /**
    * 实体
    */
-  tableName?: string
+  tableName?: string | null
 
   /**
    * 图表设计
@@ -136,18 +137,30 @@ const JGChart = function (props: JGChartProps) {
     ? props.code
     : `${Date.now()}${Math.random().toString(32).slice(2)}`
 
-  let V3Data = JSON.parse(
+  //测试数据
+  /* let V3Data = JSON.parse(
     '{"recordCount":3,"values":[{"id":"20d063994f0e403ca5704663957b855b","name":"苹果","num":500},{"id":"29868461536f462189b78984e369fc5c","name":"雪梨","num":200},{"id":"ec1c843693b64663bd7102e39750293d","name":"香蕉","num":100}]}'
   )
   let a =
     '{&quot;PluginID&quot;:&quot;FusionChart&quot;,&quot;PluginName&quot;:&quot;Fusion图表&quot;,&quot;ChartID&quot;:&quot;1013&quot;,&quot;chartName&quot;:&quot;饼2D&quot;,&quot;chartType&quot;:&quot;Pie&quot;,&quot;is3D&quot;:&quot;false&quot;,&quot;path&quot;:&quot;fusionchart/FusionchartFactory&quot;,&quot;palette&quot;:&quot;1&quot;,&quot;size&quot;:{&quot;high&quot;:&quot;400&quot;,&quot;width&quot;:&quot;600&quot;},&quot;title&quot;:{&quot;font&quot;:&quot;黑体&quot;,&quot;fontSize&quot;:&quot;18&quot;,&quot;fontColor&quot;:&quot;#000000&quot;,&quot;alpha&quot;:&quot;0&quot;,&quot;bgColor&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;,&quot;show&quot;:&quot;true&quot;,&quot;horizontal&quot;:&quot;center&quot;,&quot;vertical&quot;:&quot;top&quot;,&quot;title&quot;:&quot;水果&quot;},&quot;subtitle&quot;:{&quot;font&quot;:&quot;黑体&quot;,&quot;fontSize&quot;:&quot;12&quot;,&quot;fontColor&quot;:&quot;#000000&quot;,&quot;alpha&quot;:&quot;0&quot;,&quot;bgColor&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;,&quot;show&quot;:&quot;true&quot;,&quot;horizontal&quot;:&quot;center&quot;,&quot;vertical&quot;:&quot;top&quot;,&quot;title&quot;:null},&quot;inCanvas&quot;:{&quot;font&quot;:&quot;黑体&quot;,&quot;fontSize&quot;:&quot;8&quot;,&quot;fontColor&quot;:&quot;#696969&quot;,&quot;alpha&quot;:&quot;100&quot;,&quot;bgColor&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;},&quot;outCanvas&quot;:{&quot;font&quot;:&quot;黑体&quot;,&quot;fontSize&quot;:&quot;8&quot;,&quot;fontColor&quot;:&quot;#000000&quot;,&quot;alpha&quot;:&quot;100&quot;,&quot;bgColor&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;},&quot;xAxis&quot;:{&quot;Title&quot;:null,&quot;font&quot;:null,&quot;fontSize&quot;:&quot;0&quot;,&quot;fontColor&quot;:null,&quot;labelDisplay&quot;:null,&quot;slantLabels&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;,&quot;boundaryGap&quot;:&quot;false&quot;,&quot;scale&quot;:&quot;false&quot;,&quot;LabelShow&quot;:&quot;true&quot;,&quot;LineShow&quot;:&quot;true&quot;,&quot;TickShow&quot;:&quot;true&quot;,&quot;alignWithLabel&quot;:&quot;true&quot;,&quot;nameGap&quot;:null,&quot;nameLocation&quot;:null},&quot;yAxis&quot;:{&quot;Title&quot;:null,&quot;font&quot;:null,&quot;fontSize&quot;:&quot;0&quot;,&quot;fontColor&quot;:null,&quot;labelDisplay&quot;:null,&quot;slantLabels&quot;:null,&quot;bold&quot;:&quot;0&quot;,&quot;italic&quot;:&quot;0&quot;,&quot;strikeout&quot;:&quot;0&quot;,&quot;underline&quot;:&quot;0&quot;,&quot;boundaryGap&quot;:&quot;false&quot;,&quot;scale&quot;:&quot;false&quot;,&quot;LabelShow&quot;:&quot;true&quot;,&quot;LineShow&quot;:&quot;true&quot;,&quot;TickShow&quot;:&quot;true&quot;,&quot;isGradientColor&quot;:&quot;false&quot;,&quot;nameGap&quot;:null,&quot;nameLocation&quot;:null},&quot;DataInfo&quot;:{&quot;type&quot;:&quot;Entity&quot;,&quot;name&quot;:&quot;test&quot;,&quot;value&quot;:&quot;test&quot;},&quot;DataColumns&quot;:{&quot;value&quot;:[&quot;id&quot;,&quot;name&quot;,&quot;num&quot;,&quot;logo&quot;]},&quot;serie&quot;:{&quot;isVar&quot;:&quot;true&quot;,&quot;name&quot;:null,&quot;value&quot;:&quot;name&quot;,&quot;show&quot;:&quot;true&quot;,&quot;horizontal&quot;:&quot;center&quot;,&quot;vertical&quot;:&quot;bottom&quot;,&quot;orient&quot;:&quot;horizontal&quot;,&quot;itemGap&quot;:&quot;10&quot;,&quot;selectedOffset&quot;:&quot;10&quot;,&quot;selecteName&quot;:null,&quot;isShowLabel&quot;:&quot;true&quot;,&quot;isShowDataLabel&quot;:&quot;true&quot;,&quot;isShowLabelLine&quot;:&quot;true&quot;,&quot;radius&quot;:&quot;65%&quot;,&quot;center&quot;:[&quot;50%&quot;,&quot;50%&quot;]},&quot;x&quot;:{&quot;isVar&quot;:&quot;false&quot;,&quot;name&quot;:null,&quot;value&quot;:null},&quot;y&quot;:{&quot;name&quot;:&quot;num&quot;,&quot;code&quot;:&quot;num&quot;,&quot;stack&quot;:&quot;false&quot;,&quot;showlabel&quot;:&quot;false&quot;,&quot;position&quot;:&quot;top&quot;}}'
   let b = a.replaceAll('&quot;', '"')
-  let V3ChartConfig = JSON.parse(b)
-  //let V3ChartConfig = props.graphSettings ? JSON.parse(props.graphSettings) : {}
+  let V3ChartConfig = JSON.parse(b) */
 
-  const options = handleOptions(V3ChartConfig, V3Data)
+  console.log('JGChart')
 
   const context = useContext()
+  /* 处理值，用于绑定到value属性上 */
+  let value: EntityRecord[] | null = []
+  if (props.tableName) {
+    value = getEntityDatas(props.tableName, context)
+  }
+  /* 构造v3chart图表数据 */
+  let V3ChartConfig = props.graphSettings ? JSON.parse(props.graphSettings) : {}
+  let V3Data = {
+    recordCount: value?.length || 0,
+    values: value || []
+  }
+  const options = handleOptions(V3ChartConfig, V3Data)
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
