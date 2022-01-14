@@ -1,11 +1,16 @@
-import { CSSProperties } from 'react'
+import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
 import { Box, BoxProps, Checkbox } from '@mui/material'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import {
+  getFieldValue,
+  toHeight,
+  toLabelWidth,
+  toWidth
+} from '@v-act/widget-utils'
 
 /* 包装器属性 */
 export interface JGCheckBoxGroupProps extends BoxProps {
@@ -156,17 +161,17 @@ export interface JGCheckBoxGroupProps extends BoxProps {
   /**
    * 实体
    */
-  tableName?: string
+  tableName?: string | null
 
   /**
    * 标识字段
    */
-  idColumnName?: string
+  idColumnName?: string | null
 
   /**
    * 显示字段
    */
-  columnName?: string
+  columnName?: string | null
 
   /**
    * 只读
@@ -176,7 +181,17 @@ export interface JGCheckBoxGroupProps extends BoxProps {
   /**
    * 数据来源
    */
-  dropDownSource?: string
+  dropDownSource?: {
+    DataSourceSetting: {
+      DataConfig: {
+        ConstData: Array<{
+          id: string
+          text: string
+          selected: boolean
+        }>
+      }
+    }
+  }
 
   /**
    * 浮动提示
@@ -192,11 +207,6 @@ export interface JGCheckBoxGroupProps extends BoxProps {
    * 使能
    */
   enabled?: boolean
-
-  /**
-   * 用enabled还是disabled？？？？？
-   */
-  disabled?: boolean
 
   /**
    * 值
@@ -231,9 +241,21 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
     return null
   }
 
+  console.log('JGCheckBoxGroup')
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
+
+  /* 处理值，用于绑定到value属性上 */
+  let value: string = ''
+  if (props.tableName && props.idColumnName) {
+    value =
+      (getFieldValue(props.tableName, props.idColumnName, context) as string) ||
+      ''
+  }
+
+  const constData =
+    props?.dropDownSource?.DataSourceSetting?.DataConfig?.ConstData || []
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
@@ -252,20 +274,6 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   const labelWidth = props.labelVisible
     ? toLabelWidth(props.labelWidth, context, 94)
     : 0
-
-  /* 标签样式 */
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    height: height,
-    lineHeight: height,
-    textAlign: 'right',
-    paddingRight: '6px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    fontSize: '14px',
-    color: '#333'
-  }
 
   /* 单选框组样式 */
   const checkboxStyles: CSSProperties = {
@@ -309,6 +317,24 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
     })
   }
 
+  constData.forEach((item) => {
+    item.selected =
+      item.selected.toString().toLocaleLowerCase() === 'true' ? true : false
+
+    //如果有当前选项，所有待选项默认值都改成false
+    value.length > 0 && (item.selected = false)
+    value.indexOf(item.id) > -1 && (item.selected = true)
+  })
+
+  const [checkboxData, setCheckboxData] = React.useState(constData)
+  const handleChange = (event: any) => {
+    checkboxData.map((item) => {
+      item.id === event.target.id && (item.selected = event.target.checked)
+      return item
+    })
+    //setCheckboxData(newCheckboxData)
+  }
+
   return (
     <Box style={wrapStyles}>
       <JGInputLabel
@@ -347,18 +373,27 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
       } */
         }}
       >
-        {radioData.map((item) => {
+        {checkboxData.map((item) => {
           return (
             <Box
               key={item.id}
               style={{
                 paddingRight: '6px',
                 height: '24px',
-                display: 'inline-flex'
+                display: 'inline-flex',
+                pointerEvents: props.readOnly ? 'none' : 'auto'
               }}
             >
               <Checkbox
-                defaultChecked
+                id={item.id}
+                defaultChecked={item.selected}
+                //checked={item.selected}
+                onChange={props.readOnly ? () => {} : handleChange}
+                disabled={!props.enabled}
+                readOnly={props.readOnly}
+                inputProps={{
+                  readOnly: false
+                }}
                 size="small"
                 sx={{
                   'width': '16px',
@@ -371,7 +406,7 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
                   lineHeight: '25px'
                 }}
               >
-                {item.name}
+                {item.text}
               </span>
             </Box>
           )
@@ -391,7 +426,8 @@ JGCheckBoxGroup.defaultProps = {
   placeholder: '',
   visible: true,
   labelVisible: true,
-  disabled: false
+  enabled: true,
+  readOnly: false
 }
 
 export default JGCheckBoxGroup

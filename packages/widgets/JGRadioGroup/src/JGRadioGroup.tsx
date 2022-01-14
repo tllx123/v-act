@@ -4,8 +4,13 @@ import { Property } from 'csstype'
 
 import { Box, BoxProps, Radio } from '@mui/material'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  toHeight,
+  toLabelWidth,
+  toWidth
+} from '@v-act/widget-utils'
 
 /* 包装器属性 */
 interface JGRadioGroupProps extends BoxProps {
@@ -156,17 +161,17 @@ interface JGRadioGroupProps extends BoxProps {
   /**
    * 实体
    */
-  tableName?: string
+  tableName?: string | null
 
   /**
    * 标识字段
    */
-  idColumnName?: string
+  idColumnName?: string | null
 
   /**
    * 显示字段
    */
-  columnName?: string
+  columnName?: string | null
 
   /**
    * 只读
@@ -176,7 +181,17 @@ interface JGRadioGroupProps extends BoxProps {
   /**
    * 数据来源
    */
-  dropDownSource?: string
+  dropDownSource?: {
+    DataSourceSetting: {
+      DataConfig: {
+        ConstData: Array<{
+          id: string
+          text: string
+          selected: boolean
+        }>
+      }
+    }
+  }
 
   /**
    * 浮动提示
@@ -192,11 +207,6 @@ interface JGRadioGroupProps extends BoxProps {
    * 使能
    */
   enabled?: boolean
-
-  /**
-   * 用enabled还是disabled？？？？？
-   */
-  disabled?: boolean
 
   /**
    * 值
@@ -231,9 +241,22 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
     return null
   }
 
+  console.log('JGRadioGroup')
+
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
+
+  /* 处理值，用于绑定到value属性上 */
+  let value: FieldValue = ''
+  if (props.tableName && props.idColumnName) {
+    value = getFieldValue(props.tableName, props.idColumnName, context)
+  }
+  console.log(value)
+  console.log(props.dropDownSource)
+
+  const constData =
+    props?.dropDownSource?.DataSourceSetting?.DataConfig?.ConstData || []
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
@@ -252,20 +275,6 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   const labelWidth = props.labelVisible
     ? toLabelWidth(props.labelWidth, context, 94)
     : 0
-
-  /* 标签样式 */
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    height: height,
-    lineHeight: height,
-    textAlign: 'right',
-    paddingRight: '6px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    fontSize: '14px',
-    color: '#333'
-  }
 
   /* 单选框组样式 */
   const radioBoxStyles: CSSProperties = {
@@ -291,48 +300,12 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
     ? props.code
     : `${Date.now()}${Math.random().toString(32).slice(2)}`
 
-  const [selectedValue, setSelectedValue] = React.useState('1')
+  const [selectedValue, setSelectedValue] = React.useState(value)
 
   /* change事件 */
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value)
   }
-
-  /* 测试数据 */
-  /* const radioData = [
-    {
-      id: 1,
-      name: '苹果'
-    },
-    {
-      id: 2,
-      name: '雪梨'
-    },
-    {
-      id: 3,
-      name: '香蕉'
-    },
-    {
-      id: 4,
-      name: '香蕉'
-    },
-    {
-      id: 5,
-      name: '香蕉'
-    },
-    {
-      id: 6,
-      name: '香蕉'
-    },
-    {
-      id: 7,
-      name: '香蕉'
-    },
-    {
-      id: 8,
-      name: '香蕉'
-    }
-  ] */
 
   const radioData = []
   for (let i = 0; i < 16; i++) {
@@ -375,7 +348,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
           } */
         }}
       >
-        {radioData.map((item) => {
+        {constData.map((item) => {
           return (
             <div style={{ display: 'inline-block' }}>
               <Radio
@@ -384,7 +357,7 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
                 onChange={props.readOnly ? () => {} : handleChange}
                 value={item.id}
                 name="radio-buttons"
-                disabled={props.disabled}
+                disabled={!props.enabled}
                 style={radioStyles}
                 inputProps={{
                   readOnly: true
@@ -403,10 +376,10 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
                   height: '24px',
                   float: 'right',
                   lineHeight: '24px',
-                  color: props.disabled ? '#C3C5C6' : '#333'
+                  color: !props.enabled ? '#C3C5C6' : '#333'
                 }}
               >
-                {item.name}
+                {item.text}
               </span>
             </div>
           )
@@ -424,11 +397,10 @@ JGRadioGroup.defaultProps = {
   multiWidth: '235px',
   labelWidth: '94px',
   labelText: '单选组',
-  placeholder: '',
   visible: true,
   labelVisible: true,
   readonly: false,
-  disabled: false
+  enabled: true
 }
 
 export default JGRadioGroup

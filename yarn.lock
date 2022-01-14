@@ -3392,9 +3392,9 @@
   integrity sha1-zMqrdYr1Z2Hre/N69vA/Mm3XmK0=
 
 "@types/archiver@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.npmmirror.com/@types/archiver/download/@types/archiver-5.1.1.tgz#d6d7610de4386b293abd5c1cb1875e0a4f4e1c30"
-  integrity sha1-1tdhDeQ4ayk6vVwcsYdeCk9OHDA=
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@types/archiver/-/archiver-5.3.1.tgz#02991e940a03dd1a32678fead4b4ca03d0e387ca"
+  integrity sha512-wKYZaSXaDvTZuInAWjCeGG7BEAgTWG2zZW0/f7IYFcoHB2X2d9lkVFnrOlXl3W6NrvO6Ml3FLLu8Uksyymcpnw==
   dependencies:
     "@types/glob" "*"
 
@@ -3444,16 +3444,9 @@
     chalk "*"
 
 "@types/crypto-js@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.npmmirror.com/@types/crypto-js/download/@types/crypto-js-4.0.2.tgz#4524325a175bf819fec6e42560c389ce1fb92c97"
-  integrity sha1-RSQyWhdb+Bn+xuQlYMOJzh+5LJc=
-
-"@types/decompress@^4.2.4":
-  version "4.2.4"
-  resolved "https://registry.npmmirror.com/@types/decompress/download/@types/decompress-4.2.4.tgz#dd2715d3ac1f566d03e6e302d1a26ffab59f8c5c"
-  integrity sha1-3ScV06wfVm0D5uMC0aJv+rWfjFw=
-  dependencies:
-    "@types/node" "*"
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/crypto-js/-/crypto-js-4.1.0.tgz#09ba1b49bcce62c9a8e6d5e50a3364aa98975578"
+  integrity sha512-DCFfy/vh2lG6qHSGezQ+Sn2Ulf/1Mx51dqOdmOKyW5nMK3maLlxeS3onC7r212OnBM2pBR95HkAmAjjF08YkxQ==
 
 "@types/eslint@^7.28.2":
   version "7.29.0"
@@ -3473,6 +3466,13 @@
   resolved "https://registry.npmmirror.com/@types/estree/download/@types/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
   integrity sha1-4Xfmme4bjCLSMXTKqnQiZEOJUJ8=
 
+"@types/fs-extra@^9.0.13":
+  version "9.0.13"
+  resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.13.tgz#7594fbae04fe7f1918ce8b3d213f74ff44ac1f45"
+  integrity sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/glob@*", "@types/glob@^7.1.1":
   version "7.2.0"
   resolved "https://registry.npmmirror.com/@types/glob/download/@types/glob-7.2.0.tgz#bc1b5bf3aa92f25bd5dd39f35c57361bdce5b2eb"
@@ -3490,8 +3490,8 @@
 
 "@types/gulp-zip@^4.0.2":
   version "4.0.2"
-  resolved "https://registry.npmmirror.com/@types/gulp-zip/download/@types/gulp-zip-4.0.2.tgz#c686c9a16bff4bb2baa18436853e0eb49873ce1f"
-  integrity sha1-xobJoWv/S7K6oYQ2hT4OtJhzzh8=
+  resolved "https://registry.yarnpkg.com/@types/gulp-zip/-/gulp-zip-4.0.2.tgz#c686c9a16bff4bb2baa18436853e0eb49873ce1f"
+  integrity sha512-Ii+HkfXPvi86qRM+6iFO9EsnO2eoUX+MLuGgazigGoIzIm05USb7WQl7tqmiFHWWE6MofnO9QRb9INeCbEh6CA==
   dependencies:
     "@types/node" "*"
 
@@ -3499,14 +3499,6 @@
   version "5.1.2"
   resolved "https://registry.npmmirror.com/@types/html-minifier-terser/download/@types/html-minifier-terser-5.1.2.tgz#693b316ad323ea97eed6b38ed1a3cc02b1672b57"
   integrity sha1-aTsxatMj6pfu1rOO0aPMArFnK1c=
-
-"@types/inquirer@^8.1.3":
-  version "8.1.3"
-  resolved "https://registry.npmmirror.com/@types/inquirer/download/@types/inquirer-8.1.3.tgz#dfda4c97cdbe304e4dceb378a80f79448ea5c8fe"
-  integrity sha1-39pMl82+ME5NzrN4qA95RI6lyP4=
-  dependencies:
-    "@types/through" "*"
-    rxjs "^7.2.0"
 
 "@types/is-hotkey@^0.1.1":
   version "0.1.7"
@@ -3532,7 +3524,7 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@*", "@types/jest@^27.0.2":
+"@types/jest@*":
   version "27.0.3"
   resolved "https://registry.npmmirror.com/@types/jest/download/@types/jest-27.0.3.tgz?cache=0&sync_timestamp=1637262564392&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fjest%2Fdownload%2F%40types%2Fjest-27.0.3.tgz#0cf9dfe9009e467f70a342f0f94ead19842a783a"
   integrity sha512-cmmwv9t7gBYt7hNKH5Spu7Kuu/DotGa+Ff+JGRKZ4db5eh8PnKS4LuebJ3YLUoyOyIHraTGyULn23YtEAm0VSg==
@@ -3575,8 +3567,8 @@
 
 "@types/needle@^2.5.2":
   version "2.5.2"
-  resolved "https://registry.npmmirror.com/@types/needle/download/@types/needle-2.5.2.tgz#b92571d2623fbcf91d143b55182494b562f4c926"
-  integrity sha1-uSVx0mI/vPkdFDtVGCSUtWL0ySY=
+  resolved "https://registry.yarnpkg.com/@types/needle/-/needle-2.5.2.tgz#b92571d2623fbcf91d143b55182494b562f4c926"
+  integrity sha512-FSckojxsXODVYE4oJ7q0OjUki27a6gsdIxp2WJHs9oEmXit/0rjzb/NK+tJnKwFMMyR6mzo+1Nyr83ELw3YT+Q==
   dependencies:
     "@types/node" "*"
 
@@ -3590,7 +3582,7 @@
   resolved "https://registry.npmmirror.com/@types/node/download/@types/node-12.20.38.tgz#74801983c0558a7a31a4ead18bce2edded2b0e2f"
   integrity sha512-NxmtBRGipjx1B225OeMdI+CQmLbYqvvmYbukDTJGDgzIDgPQ1EcjGmYxGhOk5hTBqeB558S6RgHSpq2iiqifAQ==
 
-"@types/node@^16.11.6", "@types/node@^16.11.7":
+"@types/node@^16.11.6":
   version "16.11.17"
   resolved "https://registry.npmmirror.com/@types/node/download/@types/node-16.11.17.tgz#ae146499772e33fc6382e1880bc567e41a528586"
   integrity sha512-C1vTZME8cFo8uxY2ui41xcynEotVkczIVI5AjLmy5pkpBv/FtG+jhtOlfcPysI8VRVwoOMv6NJm44LGnoMSWkw==
@@ -3648,7 +3640,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.0", "@types/react@^17.0.34", "@types/react@^17.0.37":
+"@types/react@*", "@types/react@^17.0.0", "@types/react@^17.0.37":
   version "17.0.38"
   resolved "https://registry.npmmirror.com/@types/react/download/@types/react-17.0.38.tgz#f24249fefd89357d5fa71f739a686b8d7c7202bd"
   integrity sha512-SI92X1IA+FMnP3qM5m4QReluXzhcmovhZnLNm3pyeQlooi02qI7sLiepEYqT678uNiyc25XfCqxREFpy3W7YhQ==
@@ -3714,13 +3706,6 @@
   integrity sha512-vehbtyHUShPxIa9SioxDwCvgxukDMH//icJG90sXQBUm5lJOHLT5kNeU9tnivhnA/TkOFMzGIXN2cTc4hY8/kg==
   dependencies:
     "@types/jest" "*"
-
-"@types/through@*":
-  version "0.0.30"
-  resolved "https://registry.npmmirror.com/@types/through/download/@types/through-0.0.30.tgz?cache=0&sync_timestamp=1637270775793&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fthrough%2Fdownload%2F%40types%2Fthrough-0.0.30.tgz#e0e42ce77e897bd6aead6f6ea62aeb135b8a3895"
-  integrity sha1-4OQs536Je9aurW9upirrE1uKOJU=
-  dependencies:
-    "@types/node" "*"
 
 "@types/uglify-js@*":
   version "3.13.1"
@@ -3882,6 +3867,60 @@
   dependencies:
     "@typescript-eslint/types" "4.33.0"
     eslint-visitor-keys "^2.0.0"
+
+"@v-act/bundle@^1.0.3":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@v-act/bundle/-/bundle-1.0.7.tgz#8572d6cc8454fa275c76045d492c78c35b6042e7"
+  integrity sha512-Tvvj/U6qAVekK2V5Ot7y5uKLRgWzanrFcttwbHnOpwcjm6ENT2QPAGEa3JearYbdnW96Qd3AOkK2H4XwlSe2kg==
+  dependencies:
+    "@v-act/utils" "^1.0.3"
+    archiver "^5.3.0"
+    decompress "^4.2.1"
+
+"@v-act/cli-utils@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@v-act/cli-utils/-/cli-utils-1.0.9.tgz#b346b8db1cf51ad721deb206e35f6490a0b787b0"
+  integrity sha512-HcdlLRf380uNxaasH3l2wNQ77o4mVjfkzlVMJb6DOSnG/f2T+Q/gqNDNSalPY9+RYn/d+MEr2biooYctXs/guQ==
+  dependencies:
+    "@v-act/api" "^1.0.3"
+    "@v-act/bundle" "^1.0.3"
+    "@v-act/cache" "^1.0.0"
+    "@v-act/install" "^1.0.3"
+    "@v-act/utils" "^1.0.4"
+    commander "^8.3.0"
+    inquirer "^8.2.0"
+    next "^12.0.3"
+    react-app-rewired "^2.1.8"
+    react-dev-utils "^11.0.4"
+    react-scripts "^4.0.3"
+    require-all "^3.0.0"
+
+"@v-act/install@^1.0.3":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@v-act/install/-/install-1.0.7.tgz#d8c0ef90f21ee75a3e6f148b523ef2ae50df59ea"
+  integrity sha512-hp2on2kAckDtno+n+Z0U9loOBpm++pgtoQP7rojmR9Qev4M0RYKm9abSb0s00OBCH+9eqnHKCUkMmVBX0/1RsQ==
+  dependencies:
+    inquirer "^8.2.0"
+
+"@v-act/loader@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@v-act/loader/-/loader-1.0.7.tgz#93007ad18b9e01e3c4f1720eb2affcff8e3d37ac"
+  integrity sha512-OL1SchzYqAxFBlT9qwDA6do5y1iQUhhJMsBgW7yExv0IJJU3Tgs/C8jLmtVnmEMOQqwXVUXigTzqKldORULuJA==
+  dependencies:
+    cp-cli "^2.0.0"
+    mkdirp "^1.0.4"
+    rimraf "^3.0.2"
+
+"@v-act/styles@^1.0.1", "@v-act/styles@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@v-act/styles/-/styles-1.0.5.tgz#ea6b8d82ef3730ff10964a7416d751ee64da15c7"
+  integrity sha512-enPbhwMUvjQCXh7rXcTdGJ7DpnnQewZWWZ5K4FfrE7WhBM4Zg2M77dStX9B5XNqemEt0AMyZIgeJU96K/Y62cQ==
+  dependencies:
+    "@material-ui/core" "^4.12.3"
+    "@mui/core" "^5.0.0-alpha.54"
+    "@mui/material" "^5.1.0"
+    "@mui/styles" "^5.1.0"
+    react "^17.0.2"
 
 "@vitejs/plugin-react@^1.1.1":
   version "1.1.3"
@@ -5621,7 +5660,7 @@ chokidar@^2.1.8:
 
 chokidar@^3.4.1, chokidar@^3.5.2:
   version "3.5.2"
-  resolved "https://registry.npmmirror.com/chokidar/download/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
   integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
   dependencies:
     anymatch "~3.1.2"
@@ -7063,6 +7102,14 @@ detect-port-alt@1.1.6:
     address "^1.0.1"
     debug "^2.6.0"
 
+detect-port@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/detect-port/-/detect-port-1.3.0.tgz#d9c40e9accadd4df5cac6a782aefd014d573d1f1"
+  integrity sha512-E+B1gzkl2gqxt1IhUzwjrxBKRqx1UzC3WLONHinn8S3T6lwV/agVCyitiFOsGJ/eYuEUBvD71MZHy3Pv1G9doQ==
+  dependencies:
+    address "^1.0.1"
+    debug "^2.6.0"
+
 dezalgo@^1.0.0:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/dezalgo/download/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"
@@ -8279,6 +8326,13 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   version "2.0.6"
   resolved "https://registry.npm.taobao.org/fast-levenshtein/download/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+
+fast-xml-parser@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/fast-xml-parser/-/fast-xml-parser-4.0.1.tgz#bea0d20ca1d7ad1a5963d609096e8e83e526a7d9"
+  integrity sha512-EN1yOXDmMqpHrqkwTlCJDvFjepJBoBxjLRDtDxFmqrBILGV3NyFWpmcsofSKCCzc+YxhvNreB5rcKzG+TlyWpg==
+  dependencies:
+    strnum "^1.0.5"
 
 fastq@^1.6.0:
   version "1.13.0"
@@ -12309,8 +12363,8 @@ natural-compare@^1.4.0:
 
 needle@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.nlark.com/needle/download/needle-3.0.0.tgz?cache=0&sync_timestamp=1630674795023&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fneedle%2Fdownload%2Fneedle-3.0.0.tgz#5808f20246d69ffd7ebd42109eb58d1442b98e6e"
-  integrity sha1-WAjyAkbWn/1+vUIQnrWNFEK5jm4=
+  resolved "https://registry.yarnpkg.com/needle/-/needle-3.0.0.tgz#5808f20246d69ffd7ebd42109eb58d1442b98e6e"
+  integrity sha512-eGr0qnfHxAjr+Eptl1zr2lgUQUPC1SZfTkg2kFi0kxr1ChJonHUVYobkug8siBKMlyUVVp56MSkp6CSeXH/jgw==
   dependencies:
     debug "^3.2.6"
     iconv-lite "^0.4.4"
@@ -15134,6 +15188,14 @@ react-dom@17.0.2, react-dom@^17.0.1, react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
+react-draggable@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.4.tgz#5b26d9996be63d32d285a426f41055de87e59b2f"
+  integrity sha512-6e0WdcNLwpBx/YIDpoyd2Xb04PB0elrDrulKUgdrIlwuYvxh5Ok9M+F8cljm8kPXXs43PmMzek9RrB1b7mLMqA==
+  dependencies:
+    clsx "^1.1.1"
+    prop-types "^15.6.0"
+
 react-error-overlay@^6.0.9:
   version "6.0.10"
   resolved "https://registry.npmmirror.com/react-error-overlay/download/react-error-overlay-6.0.10.tgz#0fe26db4fa85d9dbb8624729580e90e7159a59a6"
@@ -17016,6 +17078,11 @@ strip-json-comments@^3.1.0, strip-json-comments@^3.1.1:
   version "3.1.1"
   resolved "https://registry.nlark.com/strip-json-comments/download/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha1-MfEoGzgyYwQ0gxwxDAHMzajL4AY=
+
+strnum@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/strnum/-/strnum-1.0.5.tgz#5c4e829fe15ad4ff0d20c3db5ac97b73c9b072db"
+  integrity sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==
 
 strong-log-transformer@^2.1.0:
   version "2.1.0"

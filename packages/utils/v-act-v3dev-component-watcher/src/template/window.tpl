@@ -5,6 +5,8 @@ import {convertWindowSchema} from "@v-act/widget-utils";
 import {JGComponent as JGComponent1,convert as convertJGComponent} from "@v-act/jgcomponent";
 import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer";
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
+import {JGContext as JGContext1,convert as convertJGContext1} from "@v-act/jgcontext";
+import {JGButtonGroup as JGButtonGroup1,convert as convertJGButtonGroup1} from '@v-act/jgbuttongroup';
 {{@ importScripts}}
 
 const widgetConverts: { [widgetType: string]: Function } = {{@ controlConvertMap}};
@@ -20,9 +22,13 @@ const widgetDefines: {
 widgetConverts.JGSpacer = convertJGSpacer1;
 widgetConverts.JGGroupPanel = convertJGGroupPanel1;
 widgetConverts.JGComponent = convertJGComponent;
+widgetConverts.JGContext = convertJGContext1;
+widgetConverts.JGButtonGroup = convertJGButtonGroup1;
 widgetDefines.JGSpacer = JGSpacer1;
 widgetDefines.JGGroupPanel = JGGroupPanel1;
 widgetDefines.JGComponent = JGComponent1;
+widgetDefines.JGContext = JGContext1;
+widgetDefines.JGButtonGroup = JGButtonGroup1;
 
 const windowObjs = {{@ windowJsonScript}};
 

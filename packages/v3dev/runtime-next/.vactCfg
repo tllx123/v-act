@@ -1,0 +1,116 @@
+{
+    "themeList":[{
+        "name":"蓝色主题",
+        "code":"blueTheme",
+        "vars":{
+            "global":{
+                "background":"#282c34"
+            },
+            "btn":{
+                "color":"white",
+                "bgcolor":"#356abb"
+            },
+            "text":{
+                "color":"white"
+            }
+        }
+    },{
+        "name":"橙色主题",
+        "code":"orangeTheme",
+        "vars":{
+            "global":{
+                "background":"#282c34"
+            },
+            "btn":{
+                "color":"white",
+                "bgcolor":"orange"
+            },
+            "text":{
+                "color":"orange"
+            }
+        }
+    },{
+        "name":"绿色主题",
+        "code":"greenTheme",
+        "vars":{
+            "global":{
+                "background":"#282c34"
+            },
+            "btn":{
+                "color":"white",
+                "bgcolor":"green"
+            },
+            "text":{
+                "color":"green"
+            }
+        }
+    }],
+    "theme":[{
+        "namespace":"global",
+        "code":"background",
+        "title":"全局背景",
+        "value":"#282c34",
+        "desc":"全局背景"
+    },{
+        "namespace":"btn",
+        "code":"background",
+        "title":"按钮文字颜色",
+        "value":"white",
+        "desc":"按钮文字颜色"
+    },{
+        "namespace":"global",
+        "code":"background",
+        "title":"按钮背景色",
+        "value":"#356abb",
+        "desc":"按钮背景色"
+    },{
+        "namespace":"global",
+        "code":"background",
+        "title":"文字颜色",
+        "value":"white",
+        "desc":"普通文字的颜色"
+    }],
+    "i18n":{
+        "zh":{
+            "welcome":"欢迎",
+            "edit":"编辑",
+            "start":"开始项目之旅",
+            "study":"学习指南",
+            "en":"英语",
+            "zh":"中文",
+            "de":"德语",
+            "title":"V平台React项目样例",
+            "blueTheme":"蓝色主题",
+            "orangeTheme":"橙色主题",
+            "greenTheme":"绿色主题"
+            
+        },
+        "en":{
+            "welcome":"Welcome",
+            "edit":"Edit",
+            "start":"Start Project",
+            "study":"Study Guide",
+            "en":"English",
+            "zh":"Chinese",
+            "de":"Deutsch",
+            "title":"V-Platform React Project Exapmle",
+            "blueTheme":"Blue Theme",
+            "orangeTheme":"Orange Theme",
+            "greenTheme":"Green Theme"
+        },
+        "de":{
+            "welcome":"Willkommen",
+            "edit":"Edit",
+            "start":"Projekt Starten",
+            "study":"Leitfaden zur Studie",
+            "en":"Englisch",
+            "zh":"Chinese",
+            "de":"Deutsch",
+            "title":"Beispiel eines V-Plattform-Reaktionsprojekts",
+            "blueTheme":"Blaues Thema",
+            "orangeTheme":"Orange Thema",
+            "greenTheme":"Grünes Thema"
+        }
+    },
+    "dependencies":[]
+}

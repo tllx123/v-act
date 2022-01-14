@@ -77,10 +77,24 @@ const enhanceWindow = function (
   }
 }
 
+const _enhanceControlDock = function (control: Control) {
+  const properties = control.properties
+  const dock = properties.dock
+  if (dock === 'Top' || dock === 'bottom') {
+    properties.multiWidth = 'space'
+  } else if (dock === 'Left' || dock === 'Right') {
+    properties.multiHeight = 'space'
+  } else if (dock === 'Fill') {
+    properties.multiWidth = 'space'
+    properties.multiHeight = 'space'
+  }
+}
+
 const _enhanceControl = function (
   control: Control,
   controlEventMap: { [controlCode: string]: Event[] }
 ) {
+  _enhanceControlDock(control)
   const properties = control.properties
   const controlCode = properties.code
   const events = controlEventMap[controlCode]
@@ -160,9 +174,11 @@ const toJGButtonGroupItemSchema = function (
 
 const toJGButtonGroupSchema = function (windowSchema: Window) {
   const controls = windowSchema.masterPage?.controls
-  if (controls && controls.length > 0) {
-    for (let i = 0; i < controls.length; i++) {
-      const control = controls[i]
+  const controlList =
+    controls && controls.length > 0 ? controls[0].controls : null
+  if (controlList && controlList.length > 0) {
+    for (let i = 0; i < controlList.length; i++) {
+      const control = controlList[i]
       if (control.type == 'JGButtonGroup') {
         const buttonItems: Control[] = []
         control.controls?.forEach((cn) => {

@@ -154,6 +154,16 @@ interface Property {
    */
   dropDownSource?: string
 
+  /**
+   * 是否显示边框
+   */
+  showBorder?: string
+
+  /**
+   * 是否hover展开菜单
+   */
+  expandWhenHover?: string
+
   isMore?: string
 }
 

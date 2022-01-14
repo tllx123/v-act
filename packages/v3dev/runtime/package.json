@@ -1,0 +1,9 @@
+{
+  "name": "@v-act/vdev-runtime",
+  "version": "1.0.0-alpha.1",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "dev": "lerna run build --scope @v-act/vdev && vite"
+  }
+}

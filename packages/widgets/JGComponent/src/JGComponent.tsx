@@ -4,12 +4,8 @@ import { Property } from 'csstype'
 
 import { Box, BoxProps, styled } from '@mui/material'
 import { ReactEnum } from '@v-act/schema-types'
-import { ContextProvider, Entities, useContext } from '@v-act/widget-context'
-import {
-  getChildrenWithoutFragmentRecursively,
-  toHeight,
-  toWidth
-} from '@v-act/widget-utils'
+import { Entities, useContext } from '@v-act/widget-context'
+import { toHeight, toWidth } from '@v-act/widget-utils'
 
 interface JGComponentProps {
   bottom?: Property.Bottom
@@ -29,29 +25,6 @@ const JGComponentRoot = styled(Box, {
   position: 'relative'
 }))
 
-const splitChildren = function (
-  children: JSX.Element | JSX.Element[] | null | undefined
-) {
-  const items = getChildrenWithoutFragmentRecursively(children)
-  const result: {
-    absolute: JSX.Element[]
-    static: JSX.Element[]
-  } = { absolute: [], static: [] }
-  items.forEach((item) => {
-    if (item.props.multiWidth == 'space' || item.props.multiWidth == '100%') {
-      result.static.push(item)
-    } else if (
-      item.props.multiHeight == 'space' ||
-      item.props.multiHeight == '100%'
-    ) {
-      result.static.push(item)
-    } else {
-      result.absolute.push(item)
-    }
-  })
-  return result
-}
-
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
     const context = useContext()
@@ -67,25 +40,9 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         bottom: inProps.bottom
       }
     }
-    const result = splitChildren(inProps.children)
-    let children: JSX.Element[] = []
-    if (result.static.length > 0) {
-      children.push(
-        <ContextProvider context={{ position: 'static' }}>
-          {result.static}
-        </ContextProvider>
-      )
-    }
-    if (result.absolute.length > 0) {
-      children.push(
-        <ContextProvider context={{ position: 'absolute' }}>
-          {result.absolute}
-        </ContextProvider>
-      )
-    }
     return (
       <JGComponentRoot {...props} ref={ref}>
-        {children}
+        {inProps.children}
       </JGComponentRoot>
     )
   }

@@ -1,5 +1,3 @@
-import './style.css'
-
 import React, { CSSProperties } from 'react'
 
 import { InputUnstyledProps } from '@mui/base/InputUnstyled'
@@ -62,28 +60,20 @@ interface JGHyperLinkProps extends InputUnstyledProps {
   columnName?: string | null
 }
 
-const StyledInputElement = styled('input')`
-  border: 1px solid #dcdee2;
-  color: #333;
-  border-radius: 4px;
-  padding: 0 4px;
-  width: 100%;
-  outline: none;
+const StyleSpanElement = styled('span')`
   height: 100%;
+  display: flex;
+  align-items: center;
+  color: #0960c3;
+
   &:hover {
-    border-color: #356abb;
-  }
-
-  &:focus {
-    border-color: #356abb;
-    background: #fff;
-    box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
-  }
-
-  [disabled] {
-    background: #f6f7fb;
+    text-decoration: underline;
+    color: #0960c3;
   }
 `
+const myFun = function () {
+  console.log('你点击我了')
+}
 
 const JGHyperLink = function (props: JGHyperLinkProps) {
   const context = useContext()
@@ -115,12 +105,6 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
       : props.labelWidth
     : 0
 
-  const spanStyle: CSSProperties = {
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    color: '#0960c3'
-  }
   const divStyles: CSSProperties = {
     height: '100%',
     width: '100%',
@@ -139,7 +123,7 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
         {props.labelText}
       </JGInputLabel>
       <div style={divStyles}>
-        <span style={spanStyle}>{value}</span>
+        <StyleSpanElement onClick={myFun}>{value}</StyleSpanElement>
       </div>
     </div>
   )
