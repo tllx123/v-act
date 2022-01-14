@@ -1,0 +1,25 @@
+import { createElement, Fragment } from 'react'
+
+import { Control, Window } from '@v-act/vdev'
+import { convertWindowSchema } from '@v-act/widget-utils'
+
+{{each win._dependencies dep}}
+{{if deps[dep]}}import { {{dep}}, convert as convert{{dep}} } from '{{deps[dep]}}'{{/if}}{{/each}}
+
+const __window: Window = {{@ winConst}}
+
+const __controls = {
+  {{each win._dependencies dep}}'{{dep}}': { control: {{dep}}, convert: convert{{dep}} },{{/each}}
+}
+
+const __render = (controls: Control[]) => {
+  const stackInfo = useStackInfo()
+
+  return controls.map((control) => (
+    <Fragment key={control.properties.code}>{convertWindowSchema(__window, __controls, __converters, null as any)}</Fragment>
+  ))
+}
+
+const __page = () => __render(__window.controls)
+
+export default __page

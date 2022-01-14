@@ -1,0 +1,19 @@
+{
+  "name": "@v-act/vdev",
+  "version": "1.0.0-alpha.1",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
