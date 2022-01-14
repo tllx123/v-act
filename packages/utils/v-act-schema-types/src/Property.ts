@@ -18,6 +18,11 @@ interface Property {
   /**
    * 控件编码
    */
+  alias: string
+
+  /**
+   * 控件编码
+   */
   code: string
   /**
    * 控件原始高度
@@ -165,6 +170,16 @@ interface Property {
   expandWhenHover?: string
 
   isMore?: string
+
+  /**
+   * 图表设计
+   */
+  graphSettings?: string
+
+  /**
+   * 界面顺序号
+   */
+  tabIndex?: string
 }
 
 export default Property

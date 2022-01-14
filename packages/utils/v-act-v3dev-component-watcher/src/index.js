@@ -11,7 +11,8 @@ exports.watch = function (v3devCmpDir) {
   if (fs.existsSync(v3devCmpDir)) {
     if (fs.existsSync(v3devCmpDir)) {
       watcher = chokidar.watch(v3devCmpDir, {
-        awaitWriteFinish: true
+        awaitWriteFinish: true,
+        ignored: ['**/.DS_Store']
       })
       watcher.on('ready', () => {
         watcherReady = true
