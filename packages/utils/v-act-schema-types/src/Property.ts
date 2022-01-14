@@ -153,6 +153,16 @@ interface Property {
    * 数据来源
    */
   dropDownSource?: string
+
+  /**
+   * 是否显示边框
+   */
+  showBorder?: string
+
+  /**
+   * 是否hover展开菜单
+   */
+  expandWhenHover?: string
 }
 
 export default Property
