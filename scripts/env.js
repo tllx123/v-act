@@ -5,6 +5,10 @@ import { normalizePath } from 'vite'
 
 import { getPackages } from '@lerna/project'
 
+export async function buildEnv() {
+  await buildTsConfigPaths()
+}
+
 export async function buildTsConfigPaths() {
   const packages = await getPackages()
   const root = path.resolve('./')

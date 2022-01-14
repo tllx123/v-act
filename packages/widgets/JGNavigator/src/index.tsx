@@ -1,6 +1,29 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import { Control } from '@v-act/schema-types'
+import {
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
+} from '@v-act/widget-utils'
 
 import { JGNavigator, JGNavigatorProps } from './JGNavigator'
+
+const getNavData = function (control: Control) {
+  let flat = function (item: any, mergeData: any, labelTitle = 'text') {
+    return item.reduce((prev: any, next: any) => {
+      let item = { [labelTitle]: next.properties.labelText }
+      if (next.controls.length) {
+        item.nodes = [...flat(next.controls, [], 'text')]
+      }
+      prev.push(item)
+      return prev
+    }, mergeData)
+  }
+  if (control.controls.length) {
+    var reduceData = flat(control.controls, [], 'panelText')
+    return reduceData
+  }
+}
 
 const convert = function (
   control: Control,
@@ -10,11 +33,14 @@ const convert = function (
   const props: JGNavigatorProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
-    children: pros.children
+    children: [],
+    navData: getNavData(control)
   }
   return <JGNavigator {...props}></JGNavigator>
 }

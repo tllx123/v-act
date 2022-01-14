@@ -163,6 +163,8 @@ interface Property {
    * 是否hover展开菜单
    */
   expandWhenHover?: string
+
+  isMore?: string
 }
 
 export default Property

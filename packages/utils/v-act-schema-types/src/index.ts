@@ -5,6 +5,7 @@ import Dock from './Dock'
 import type Entity from './Entity'
 import type Event from './Event'
 import type Height from './Height'
+import type JGContextProperty from './properties/JGContextProperty'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
@@ -79,6 +80,34 @@ const valueofHeight = function (
 ): Height {
   return valueofWidth(val, def)
 }
+/**
+ * 控件定义信息
+ */
+interface WidgetDefines {
+  [widgetType: string]: {
+    defaultProps?:
+      | {
+          [pro: string]: any
+        }
+      | undefined
+  }
+}
+
+interface WidgetConverts {
+  [widgetType: string]: (
+    control: Control,
+    render: (
+      controls: Array<Control>,
+      containerReact: ControlReact
+    ) => JSX.Element | null,
+    context: { router: any; stackInfo: any }
+  ) => JSX.Element | null
+}
+
+interface WidgetConvertContext {
+  router: any
+  stackInfo: any
+}
 
 export {
   Component,
@@ -88,6 +117,7 @@ export {
   Entity,
   Event,
   Height,
+  JGContextProperty,
   JGGroupPanelProperty,
   JGQueryConditionPanelProperty,
   JGReportProperty,
@@ -98,6 +128,9 @@ export {
   toNumber,
   valueofHeight,
   valueofWidth,
+  type WidgetConvertContext,
+  type WidgetConverts,
+  type WidgetDefines,
   Width,
   Window
 }

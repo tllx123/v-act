@@ -99,7 +99,7 @@ const JGQueryConditionPanelForm = function (
   return (
     <div
       style={{
-        padding: '4px 16px',
+        padding: '0px 16px 4px 16px',
         backgroundColor: '#F6F7FB',
         border: '1px solid #DCDEE2'
       }}
@@ -111,7 +111,7 @@ const JGQueryConditionPanelForm = function (
       <Box
         display="grid"
         gridTemplateColumns={'repeat(' + columnCount + ', 1fr)'}
-        gap={2}
+        gap={1}
         sx={{
           marginTop: '4px'
         }}

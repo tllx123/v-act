@@ -12,7 +12,7 @@ import {
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: (controls: Array<Control>) => JSX.Element[] | null
 ): JSX.Element {
   return JGQueryConditionPanelConvert(control, render)
 }

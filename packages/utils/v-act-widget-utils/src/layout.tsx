@@ -2,9 +2,13 @@ import { ContentAlignment } from '@v-act/jggrouppanel'
 import {
   Control,
   ControlReact,
+  JGContextProperty,
   JGGroupPanelProperty,
-  ReactEnum
+  ReactEnum,
+  WidgetDefines
 } from '@v-act/schema-types'
+
+import adjustControlReactByDock from './adjustControlReactByDock'
 
 let SPACER_INST_INDEX = 0
 
@@ -18,7 +22,7 @@ let ALLOW_PERCENT_LAYOUT = true
 const layoutControls = function (
   children: Control[],
   contianerReact: ControlReact,
-  controlDefines: { [prop: string]: { defaultProps?: { [pro: string]: any } } }
+  controlDefines: WidgetDefines
 ) {
   if (
     ALLOW_PERCENT_LAYOUT &&
@@ -27,14 +31,23 @@ const layoutControls = function (
     contianerReact
   ) {
     const newChildren: Control[] = []
-    const dockedChildren: Control[] = []
+    let dockedChildren: Control[] = []
+    const absoluteChildren: Control[] = []
     children.forEach((child) => {
       if (child.properties.dock && child.properties.dock != 'None') {
         dockedChildren.push(child)
       } else {
-        newChildren.push(child)
+        absoluteChildren.push(child)
       }
     })
+    if (absoluteChildren.length > 0) {
+      newChildren.push(dealWithAbsoluteChildren(absoluteChildren))
+    }
+    if (dockedChildren.length > 0) {
+      //泊靠控件为倒叙，需反转
+      dockedChildren = dockedChildren.reverse()
+      adjustControlReactByDock(dockedChildren, contianerReact, controlDefines)
+    }
     const sameLeftChildren: { [prop: string]: Control[] } = {}
     const sameTopChildren: { [prop: string]: Control[] } = {}
     //将左边距、上边距一致的控件堆放在数组中
@@ -141,6 +154,43 @@ const sortCatalogedChildren = function (
   })
 }
 
+let JGCONTEXT_INST_INDEX = 0
+
+/**
+ * 处理锚定子控件
+ * @param children 子控件
+ * @returns
+ */
+const dealWithAbsoluteChildren = function (children: Control[]) {
+  const properties: JGContextProperty = {
+    code: 'JGContext_' + JGCONTEXT_INST_INDEX++,
+    position: 'absolute'
+  }
+  const context: Control = {
+    type: 'JGContext',
+    properties: properties,
+    controls: children
+  }
+  return context
+}
+/**
+ * 包装static位置
+ * @param children 子控件
+ * @returns
+ */
+const wrapWithStaticPosition = function (children: Control[]) {
+  const properties: JGContextProperty = {
+    code: 'JGContext_' + JGCONTEXT_INST_INDEX++,
+    position: 'static'
+  }
+  const context: Control = {
+    type: 'JGContext',
+    properties: properties,
+    controls: children
+  }
+  return context
+}
+
 /**
  * 处理上边距和高度相同的子控件
  * @param children
@@ -230,7 +280,7 @@ const dealWithSameTopAndHeightChildren = function (
         '%'*/
       controls.push(child)
     })
-    return hLayout
+    return wrapWithStaticPosition([hLayout])
   }
   return null
 }
@@ -324,7 +374,7 @@ const dealWithSameLeftAndWidthChildren = function (
 
       controls.push(child)
     })
-    return vLayout
+    return wrapWithStaticPosition([vLayout])
   }
   return null
 }
@@ -370,6 +420,9 @@ const getControlHeight = function (
       control.properties.multiHeight.endsWith('px')
     ) {
       return parseInt(control.properties.multiHeight)
+    }
+    if (control.properties.multiHeight == 'space') {
+      return -1
     }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]
@@ -456,6 +509,9 @@ const getControlWidth = function (
       control.properties.multiWidth.endsWith('px')
     ) {
       return parseInt(control.properties.multiWidth)
+    }
+    if (control.properties.multiWidth === 'space') {
+      return -1
     }
     const widgetType = control.type
     const widgetDefine = controlDefines[widgetType]

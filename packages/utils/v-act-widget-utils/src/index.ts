@@ -6,12 +6,10 @@ import {
   Control,
   Dock,
   Entity,
-  Event,
   Height,
   Property,
   ReactEnum,
-  Width,
-  Window
+  Width
 } from '@v-act/schema-types'
 import {
   Entities,
@@ -20,6 +18,7 @@ import {
 } from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
+import { convertWindowSchema } from './windowSchemaEnhancer'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -435,91 +434,9 @@ const toEntities = function (entities?: Entity[]): Entities {
   return result
 }
 
-const _getRandomNum = function () {
-  const random = Math.random() * 10000
-  return parseInt(random + '')
-}
-
-/**
- * 增强窗体配置，将控件事件属性值转换成Function
- * @param win 窗体节点
- */
-const enhanceWindow = function (
-  win: Window,
-  context: { router: any; stackInfo: any }
-) {
-  const prototype = win.prototype
-  if (prototype) {
-    const controlEventMap: { [controlCode: string]: Event[] } = {}
-    const router = context.router
-    const { thisLevel } = context.stackInfo
-    prototype.forEach((action) => {
-      const controlCode = action.controlCode
-      const controlEvents = controlEventMap[controlCode] || []
-      const triggerEvent = action.triggerEvent
-      const windowAction = action.windowAction
-      controlEvents.push({
-        code: triggerEvent,
-        name: '',
-        handler: () => {
-          const containerType = windowAction.targetContainerType
-          if (containerType == 'dialogWindow') {
-            const targetWindow = windowAction.targetWindow
-            const winInfo = targetWindow.split('.')
-            router.push({
-              pathname: `/${winInfo[0]}/${winInfo[1]}`,
-              query: {
-                modal: thisLevel + 1,
-                title: windowAction.targetWindowTitle,
-                v: _getRandomNum()
-              }
-            })
-          } else if (containerType == 'currentWindow') {
-            const targetWindow = windowAction.targetWindow
-            const winInfo = targetWindow.split('.')
-            router.push({
-              pathname: `/${winInfo[0]}/${winInfo[1]}`,
-              query: {
-                modal: thisLevel,
-                title: windowAction.targetWindowTitle,
-                v: _getRandomNum()
-              }
-            })
-          }
-        }
-      })
-      controlEventMap[controlCode] = controlEvents
-    })
-    const controls = win.controls
-    if (controls && controls.length > 0) {
-      controls.forEach((control) => {
-        _enhanceControl(control, controlEventMap)
-      })
-    }
-  }
-}
-
-const _enhanceControl = function (
-  control: Control,
-  controlEventMap: { [controlCode: string]: Event[] }
-) {
-  const properties = control.properties
-  const controlCode = properties.code
-  const events = controlEventMap[controlCode]
-  if (events) {
-    control.events = events
-  }
-  const controls = control.controls
-  if (controls && controls.length > 0) {
-    controls.forEach((con) => {
-      _enhanceControl(con, controlEventMap)
-    })
-  }
-}
-
 export {
   calTitleWidth,
-  enhanceWindow,
+  convertWindowSchema,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,

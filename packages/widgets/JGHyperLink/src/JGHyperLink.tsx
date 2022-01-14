@@ -1,11 +1,25 @@
-import React, { CSSProperties, forwardRef } from 'react'
+import React, { CSSProperties } from 'react'
 
-import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  getFieldValue,
+  isNullOrUnDef,
+  toHeight,
+  toWidth
+} from '@v-act/widget-utils'
 
 interface JGHyperLinkProps extends InputUnstyledProps {
+  /** 其他*/
+  /**
+   * 标题
+   */
+  labelText?: string
+
+  /** 格式 */
   /**
    * 左边距
    */
@@ -23,80 +37,59 @@ interface JGHyperLinkProps extends InputUnstyledProps {
    */
   multiWidth?: Width
   /**
-   * 标题
+   * 显示标题
    */
-  labelText?: string
+  labelVisible?: boolean
   /**
    * 标题宽度
    */
   labelWidth?: number
-  /**
-   * 提醒文字
-   */
-  placeholder?: string
-  /**
-   * 必填
-   */
-  isMust?: boolean
-  /**
-   * 显示
-   */
-  visible?: boolean
 
+  /** 数据 */
   /**
-   * 显示标题
+   * 使能
    */
-  labelVisible?: boolean
-
+  enabled?: boolean
   /**
-   * 禁用
+   * 实体编号
    */
-  disabled?: boolean
+  tableName?: string | null
+  /**
+   * 字段编号
+   */
+  columnName?: string | null
 }
 
-const StyledInputElement = styled('input')`
-  border: 1px solid #dcdee2;
-  color: #333;
-  border-radius: 4px;
-  padding: 0 4px;
-  width: 100%;
-  outline: none;
+const StyleSpanElement = styled('span')`
   height: 100%;
+  display: flex;
+  align-items: center;
+  color: #0960c3;
+
   &:hover {
-    border-color: #356abb;
-  }
-
-  &:focus {
-    border-color: #356abb;
-    background: #fff;
-    box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
-  }
-
-  [disabled] {
-    background: #f6f7fb;
+    text-decoration: underline;
+    color: #0960c3;
   }
 `
-
-const CustomInput = forwardRef(function (
-  props: JGHyperLinkProps,
-  ref: React.ForwardedRef<HTMLDivElement>
-) {
-  return (
-    <InputUnstyled
-      components={{ Input: StyledInputElement }}
-      {...props}
-      ref={ref}
-    />
-  )
-})
+const myFun = function () {
+  console.log('你点击我了')
+}
 
 const JGHyperLink = function (props: JGHyperLinkProps) {
-  if (!props.visible) {
-    return null
+  const context = useContext()
+  let value: FieldValue = ''
+
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
   }
+
+  const width = toWidth(props.multiWidth, context, '235px')
+  const height = toHeight(props.multiHeight, context, '26px')
+
   const wrapStyles: CSSProperties = {
-    width: props.multiWidth,
-    height: props.multiHeight,
+    width: width,
+    height: height,
     fontSize: '14px',
     position: 'absolute',
     display: 'flex',
@@ -111,22 +104,14 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
       ? 94
       : props.labelWidth
     : 0
-  const labelStyles: CSSProperties = {
-    width: labelWidth,
-    textAlign: 'right',
-    paddingRight: '6px'
-  }
+
   const divStyles: CSSProperties = {
-    // height: props.multiHeight
-    boxSizing: 'content-box',
-    borderCollapse: 'separate',
-    position: 'relative',
     height: '100%',
     width: '100%',
-    flex: 1,
-    lineHeight: 'unset',
     border: '1px solid #DCDEE2',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    padding: '3px',
+    cursor: 'pointer'
   }
   return (
     <div style={wrapStyles}>
@@ -134,16 +119,12 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
         width={labelWidth}
         height={props.multiHeight}
         visible={props.labelVisible}
-        required={props.isMust}
       >
         {props.labelText}
       </JGInputLabel>
-      <div style={divStyles}></div>
-      {/* <CustomInput
-        style={inputStyles}
-        disabled={props.disabled}
-        placeholder={props.placeholder}
-      /> */}
+      <div style={divStyles}>
+        <StyleSpanElement onClick={myFun}>{value}</StyleSpanElement>
+      </div>
     </div>
   )
 }
@@ -155,11 +136,8 @@ JGHyperLink.defaultProps = {
   multiWidth: 235,
   labelWidth: 94,
   labelText: '链接',
-  placeholder: '',
-  isMust: false,
-  visible: true,
   labelVisible: true,
-  disabled: false
+  enabled: false
 }
 
 export default JGHyperLink

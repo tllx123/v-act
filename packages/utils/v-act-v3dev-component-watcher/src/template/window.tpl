@@ -1,15 +1,16 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import useStackInfo from '../../../src/components/usePageStackInfo';
-import {Control,ControlReact} from "@v-act/schema-types";
-import {layoutControls} from "@v-act/widget-utils";
-import {convert} from "@v-act/jgcomponent";
+import {convertWindowSchema} from "@v-act/widget-utils";
+import {JGComponent as JGComponent1,convert as convertJGComponent} from "@v-act/jgcomponent";
 import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer";
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
+import {JGContext as JGContext1,convert as convertJGContext1} from "@v-act/jgcontext";
+import {JGButtonGroup as JGButtonGroup1,convert as convertJGButtonGroup1} from '@v-act/jgbuttongroup';
 {{@ importScripts}}
 
-const controlConverts: { [widgetType: string]: Function } = {{@ controlConvertMap}};
-const controlDefines: {
+const widgetConverts: { [widgetType: string]: Function } = {{@ controlConvertMap}};
+const widgetDefines: {
   [widgetType: string]: {
     defaultProps?:
       | {
@@ -18,34 +19,25 @@ const controlDefines: {
       | undefined
   }
 } = {{@ controlDefines}};
-controlConverts.JGSpacer = convertJGSpacer1;
-controlConverts.JGGroupPanel = convertJGGroupPanel1;
-controlDefines.JGSpacer = JGSpacer1;
-controlDefines.JGGroupPanel = JGGroupPanel1;
-
+widgetConverts.JGSpacer = convertJGSpacer1;
+widgetConverts.JGGroupPanel = convertJGGroupPanel1;
+widgetConverts.JGComponent = convertJGComponent;
+widgetConverts.JGContext = convertJGContext1;
+widgetConverts.JGButtonGroup = convertJGButtonGroup1;
+widgetDefines.JGSpacer = JGSpacer1;
+widgetDefines.JGGroupPanel = JGGroupPanel1;
+widgetDefines.JGComponent = JGComponent1;
+widgetDefines.JGContext = JGContext1;
+widgetDefines.JGButtonGroup = JGButtonGroup1;
 
 const windowObjs = {{@ windowJsonScript}};
-
-const render = function(controls: Array<Control>,contianerReact: ControlReact): JSX.Element|null{
-    controls = layoutControls(controls,contianerReact,controlDefines);
-    if(controls&&controls.length>0){
-        return <React.Fragment>{
-            controls.map((control)=>{
-                return (<React.Fragment key={control.properties.code}>{
-                    controlConverts[control.type] ? controlConverts[control.type](control,render):null
-                }</React.Fragment>);
-            })
-        }</React.Fragment>
-    }
-    return null;
-}
 
 function Index(){
     const router = useRouter();
     const stackInfo = useStackInfo();
     return (
         <React.Fragment>
-            {convert(windowObjs,render,{router,stackInfo})}
+            {convertWindowSchema(windowObjs,widgetDefines,widgetConverts,{router,stackInfo})}
         </React.Fragment>   
     );
 }
