@@ -11,10 +11,12 @@ import {
 import { JGCheckBox, JGCheckBoxProps } from './JGCheckBox'
 
 const convert = function (control: Control): JSX.Element {
+  console.log(control.properties.labelText)
   console.log('control')
   console.log(control)
 
   const pros = control.properties
+
   const props: JGCheckBoxProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
@@ -23,7 +25,10 @@ const convert = function (control: Control): JSX.Element {
     ismust: toBoolean(pros.isMust, false),
     disabled: !toBoolean(pros.enabled, true),
     labelWidth: toNumber(pros.labelWidth, 94),
+    placeholder: pros.placeholder,
+    labeltext: pros.labelText,
     labelVisible: toBoolean(pros.labelVisible, true),
+    readonly: toBoolean(pros.readOnly, false),
     tableName: getTableName(control),
     columnName: getColumnName(control)
   }

@@ -23,20 +23,26 @@ interface JGCheckBoxProps extends CheckboxProps {
   labelWidth?: number
   readonly?: boolean
   ismust?: boolean
+  disabled?: boolean
   labelVisible?: boolean
   tableName?: string | null
   columnName?: string | null
+  placeholder?: string
 }
 
 const JGCheckBox = (props: JGCheckBoxProps) => {
   const context = useContext()
+
+  let checkedValue: any = false
   let value: FieldValue = ''
   if (props.tableName && props.columnName) {
     value = getFieldValue(props.tableName, props.columnName, context)
     value = isNullOrUnDef(value) ? '' : value
   }
-  console.log('-------------------value--------------------------')
-  console.log(value)
+
+  if (value) {
+    checkedValue = true
+  }
 
   const {
     left,
@@ -48,10 +54,17 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     margin,
     padding,
     ismust,
+    disabled,
     readonly,
     labelVisible,
-    labelWidth
+    labelWidth,
+    placeholder
   } = props
+
+  let isDisable = false
+  if (readonly || disabled) {
+    isDisable = true
+  }
 
   return (
     <Box
@@ -89,15 +102,24 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
         component="div"
       >
         <Box
-          sx={{
-            pointerEvents: readonly ? 'none' : 'auto'
-          }}
           component={Checkbox}
           size="small"
           disableRipple={true}
+          defaultChecked={checkedValue}
+          disabled={isDisable}
         >
           {' '}
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: placeholder ? 'block' : 'none',
+          color: '#999',
+          fontSize: '14PX',
+          flexShrink: '0'
+        }}
+      >
+        {placeholder}
       </Box>
     </Box>
   )

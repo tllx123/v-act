@@ -180,6 +180,11 @@ interface Property {
    * 界面顺序号
    */
   tabIndex?: string
+
+  /**
+   * 是否必填
+   */
+  ismust?: string
 }
 
 export default Property
