@@ -3,12 +3,18 @@ import {
   toBoolean,
   toNumber,
   valueofWidth,
-  valueofHeight
+  valueofHeight,
+  getColumnName,
+  getTableName
 } from '@v-act/widget-utils'
 
 import JGLongTextBox, { JGLongTextBoxProps } from './JGLongTextBox'
 
 export const convert = function (control: Control): JSX.Element {
+  console.log(control.properties.labelText)
+  console.log('control')
+  console.log(control)
+
   const pros = control.properties
 
   const props: JGLongTextBoxProps = {
@@ -21,7 +27,10 @@ export const convert = function (control: Control): JSX.Element {
     disabled: !toBoolean(pros.enabled, true),
     labeltext: pros.labelText || '',
     labelWidth: toNumber(pros.labelWidth, 94),
-    labelVisible: toBoolean(pros.labelVisible, true)
+    labelVisible: toBoolean(pros.labelVisible, true),
+    readonly: toBoolean(pros.readOnly, false),
+    tableName: getTableName(control),
+    columnName: getColumnName(control)
   }
   return <JGLongTextBox {...props}></JGLongTextBox>
 }
