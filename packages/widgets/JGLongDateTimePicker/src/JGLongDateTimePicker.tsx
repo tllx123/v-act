@@ -84,6 +84,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
         {...restProps}
         maxDate={maxDateTemp}
         minDate={minDateTemp}
+        inputFormat="yyyy-MM-dd HH:mm:ss"
         value={valueTemp}
         onChange={(newValue) => {
           setValue(newValue)
