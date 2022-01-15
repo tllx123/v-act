@@ -195,6 +195,11 @@ interface Property {
    * 最小日期
    */
   minDate?: string
+
+  /**
+   * 日期模式
+   */
+  dateDisplay?: string
 }
 
 export default Property
