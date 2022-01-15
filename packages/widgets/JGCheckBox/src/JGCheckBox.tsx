@@ -10,7 +10,7 @@ import {
   getFieldValue,
   isNullOrUnDef
 } from '@v-act/widget-utils'
-import Icon from '@mui/material/Icon'
+
 interface JGCheckBoxProps extends CheckboxProps {
   left?: Property.Left
   top?: Property.Top

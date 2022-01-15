@@ -185,6 +185,16 @@ interface Property {
    * 是否必填
    */
   ismust?: string
+
+  /**
+   * 最大日期
+   */
+  maxDate?: string
+
+  /**
+   * 最小日期
+   */
+  minDate?: string
 }
 
 export default Property

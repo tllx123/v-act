@@ -1,15 +1,20 @@
 import * as React from 'react'
-
 import { Property } from 'csstype'
 import zhCN from 'date-fns/locale/zh-CN'
-
+import { parseISO, format } from 'date-fns'
 import { DateTimePicker, DateTimePickerProps } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  getFieldValue,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 
 interface JGLongDateTimePickerProps extends DateTimePickerProps {
   left?: Property.Left
@@ -25,10 +30,29 @@ interface JGLongDateTimePickerProps extends DateTimePickerProps {
   placeholder?: string
   readonly?: boolean
   labelVisible?: boolean
+  tableName?: string | null
+  columnName?: string | null
+  maxDate?: any
+  minDate?: any
 }
 
 const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
   const context = useContext()
+
+  let defulValue: any = null
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+
+  if (value) {
+    defulValue = value
+  }
+
+  // console.log("---value---")
+  // console.log(value)
+
   const {
     left,
     top,
@@ -43,14 +67,24 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     readonly,
     labelVisible,
     labelWidth,
+    maxDate,
+    minDate,
     ...restProps
   } = props
-  const [value, setValue] = React.useState<any>(null)
+
+  let maxDateTemp: any
+  let minDateTemp: any
+  maxDateTemp = parseISO(maxDate)
+  minDateTemp = parseISO(minDate)
+
+  const [valueTemp, setValue] = React.useState<any>(defulValue)
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
       <DateTimePicker
         {...restProps}
-        value={value}
+        maxDate={maxDateTemp}
+        minDate={minDateTemp}
+        value={valueTemp}
         onChange={(newValue) => {
           setValue(newValue)
         }}
