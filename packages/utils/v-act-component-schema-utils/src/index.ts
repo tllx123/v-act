@@ -37,18 +37,22 @@ const COMPONENT_MEMERY_CAHCE: {
  * @param component 构件schema
  */
 const parse = function (component: ComponentSchema) {
-  const code = component.$.code
-  if (!COMPONENT_MEMERY_CAHCE[code]) {
-    let resources = component.resources.resource
-    resources = Array.isArray(resources) ? resources : [resources]
-    const resourceList: Resource[] = []
-    resources.forEach((res) => {
-      resourceList.push({
-        code: res.$.fullName,
-        hashCode: res.$.hashCode
-      })
-    })
-    COMPONENT_MEMERY_CAHCE[code] = { resources: resourceList }
+  if (component) {
+    const code = component.$.code
+    if (!COMPONENT_MEMERY_CAHCE[code]) {
+      if (component.resources && component.resources.resource) {
+        let resources = component.resources.resource
+        resources = Array.isArray(resources) ? resources : [resources]
+        const resourceList: Resource[] = []
+        resources.forEach((res) => {
+          resourceList.push({
+            code: res.$.fullName,
+            hashCode: res.$.hashCode
+          })
+        })
+        COMPONENT_MEMERY_CAHCE[code] = { resources: resourceList }
+      }
+    }
   }
 }
 
