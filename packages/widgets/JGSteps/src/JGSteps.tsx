@@ -75,8 +75,6 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
     context
   )
 
-  console.log(datas)
-
   const {
     DescColumn: descCol,
     SaveColumn: idCol,
