@@ -18,7 +18,7 @@ interface Property {
   /**
    * 控件编码
    */
-  alias: string
+  alias?: string
 
   /**
    * 控件编码

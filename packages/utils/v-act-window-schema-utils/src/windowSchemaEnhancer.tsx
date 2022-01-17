@@ -11,6 +11,7 @@ import {
   WidgetDefines,
   Window
 } from '@v-act/schema-types'
+import { ContextProvider, useContext } from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
 import { getInstCode } from './utils'
@@ -369,6 +370,7 @@ const _dealWindowMasterPageInfo = function (windowSchema: Window) {
 }
 /**
  * 从窗体schema数据转换成React脚本
+ * @param componentCode 构件编号
  * @param windowSchema 窗体schema数据
  * @param widgetDefines 控件定义
  * @param widgetConverts 控件缓存函数
@@ -376,6 +378,7 @@ const _dealWindowMasterPageInfo = function (windowSchema: Window) {
  * @returns
  */
 const convertWindowSchema = function (
+  componentCode: string,
   windowSchema: Window,
   widgetDefines: WidgetDefines,
   widgetConverts: WidgetConverts,
@@ -396,6 +399,7 @@ const convertWindowSchema = function (
                   ? widgetConverts[control.type](
                       control,
                       renderChildrenFunc,
+                      componentCode,
                       context
                     )
                   : null}
@@ -414,7 +418,13 @@ const convertWindowSchema = function (
   const widgetType = windowSchema.type
   const convert = widgetConverts[widgetType]
   if (convert) {
-    return convert(windowSchema, renderChildrenFunc, context)
+    const widgetContext = useContext()
+    widgetContext.componentCode = componentCode
+    return (
+      <ContextProvider context={widgetContext}>
+        {convert(windowSchema, renderChildrenFunc, componentCode, context)}
+      </ContextProvider>
+    )
   } else {
     return null
   }

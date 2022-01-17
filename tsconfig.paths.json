@@ -91,7 +91,9 @@
       "@v-act/runtime-next": ["packages/v3dev/runtime-next/src"],
       "@v-act/vdev-runtime": ["packages/v3dev/runtime/src"],
       "@v-act/jgcontext": ["packages/widgets/JGContext/src"],
-      "v3-pack-center-template": ["packages/v3dev/runtime-next/src"]
+      "v3-pack-center-template": ["packages/v3dev/runtime-next/src"],
+      "@v-act/component-schema-utils": ["packages/utils/v-act-component-schema-utils/src"],
+      "@v-act/window-schema-utils": ["packages/utils/v-act-window-schema-utils/src"]
     }
   }
 }

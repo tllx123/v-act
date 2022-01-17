@@ -18,9 +18,25 @@ type Entities = {
 }
 
 interface WidgetContextProps {
+  /**
+   * 控件position
+   */
   position: Property.Position
+  /**
+   * 构件编号
+   */
+  componentCode?: string
+  /**
+   * 标题宽度
+   */
   labelWidth?: number
+  /**
+   * 控件高度
+   */
   multiHeight?: Height
+  /**
+   * 控件宽度
+   */
   multiWidth?: Width
   //因方案未确定，不要在控件中使用该属性,请使用@v-act/widget-utils中的getFieldValue和getEntityDatas两个接口获取实体数据
   entities?: Entities

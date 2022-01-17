@@ -8,6 +8,7 @@ import type Height from './Height'
 import type JGCollapsePanelProperty from './properties/JGCollapsePanel'
 import type JGContextProperty from './properties/JGContextProperty'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
+import type JGImageProperty from './properties/JGImageProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
@@ -101,6 +102,7 @@ interface WidgetConverts {
       controls: Array<Control>,
       containerReact: ControlReact
     ) => JSX.Element | null,
+    componentCode: string,
     context: { router: any; stackInfo: any }
   ) => JSX.Element | null
 }
@@ -121,6 +123,7 @@ export {
   JGCollapsePanelProperty,
   JGContextProperty,
   JGGroupPanelProperty,
+  JGImageProperty,
   JGQueryConditionPanelProperty,
   JGReportProperty,
   JGWebBrowserProperty,
