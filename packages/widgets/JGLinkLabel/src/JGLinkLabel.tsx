@@ -97,4 +97,5 @@ JGLinkLabel.defaultProps = {
 }
 
 export default JGLinkLabel
-export { JGLinkLabel, JGLinkLabelProps }
+export { JGLinkLabel }
+export type { JGLinkLabelProps }
