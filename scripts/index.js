@@ -28,9 +28,10 @@ yargs(hideBin(process.argv))
    */
   .command({
     command: 'build',
-    handler: async (argv) => viteBuild(argv.scope)
+    handler: async (argv) => viteBuild(argv.scope, argv.copy)
   })
   .option('scope', { alias: 's' })
+  .option('copy', { alias: 'cp' })
 
   /**
    * Env

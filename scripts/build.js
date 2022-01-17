@@ -1,4 +1,6 @@
 import chalk from 'chalk'
+import fs from 'fs-extra'
+import path from 'path'
 import { build } from 'vite'
 import usePluginImport from 'vite-plugin-importer'
 
@@ -32,7 +34,7 @@ const vitePluginDts = () => {
   return plugin
 }
 
-export async function viteBuild(scopes) {
+export async function viteBuild(scopes, copyToPath) {
   const packages = await getPackages()
   const localExternal = packages.map((pkg) => pkg.name)
   const external = [...publicExternal, ...localExternal, ...nodeExternal]
@@ -61,9 +63,26 @@ export async function viteBuild(scopes) {
           style: 'css'
         })
       ]
-    }).then((result) => {
-      console.log(chalk.greenBright(`${name} Builded! \n`))
-      return result
     })
+      .then(() =>
+        fs.copySync(root, path.resolve(`${copyToPath}/node_modules/${name}`))
+      )
+      .then((result) => {
+        console.log(chalk.greenBright(`${name} Builded! \n`))
+        return result
+      })
+  })
+
+  filterPackages(packages, [
+    '@v-act/schema-types',
+    '@v-act/v3dev-component-watcher',
+    '@v-act/widget-context',
+    '@v-act/widget-utils'
+  ]).forEach((pkg) => {
+    const distDir = path.resolve(`${copyToPath}/node_modules/${pkg.name}/`)
+    fs.rmSync(distDir, { force: true, recursive: true })
+    fs.cpSync(pkg.location, distDir, { recursive: true })
+    const nodemodules = path.resolve(`${distDir}/node_modules/`)
+    fs.rmSync(nodemodules, { recursive: true, force: true })
   })
 }

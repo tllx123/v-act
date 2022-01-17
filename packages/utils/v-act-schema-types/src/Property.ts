@@ -180,6 +180,26 @@ interface Property {
    * 界面顺序号
    */
   tabIndex?: string
+
+  /**
+   * 是否必填
+   */
+  ismust?: string
+
+  /**
+   * 最大日期
+   */
+  maxDate?: string
+
+  /**
+   * 最小日期
+   */
+  minDate?: string
+
+  /**
+   * 日期模式
+   */
+  dateDisplay?: string
 }
 
 export default Property

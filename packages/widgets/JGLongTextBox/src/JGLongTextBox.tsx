@@ -3,8 +3,14 @@ import { Property } from 'csstype'
 import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  getFieldValue,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 
 export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   left?: Property.Left
@@ -20,10 +26,27 @@ export interface JGLongTextBoxProps extends TextareaAutosizeProps {
   labelWidth?: number
   placeholder?: string
   labelVisible?: boolean
+  tableName?: string | null
+  columnName?: string | null
+  disabled?: boolean
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
   const context = useContext()
+
+  let defaultValue: any = ''
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+
+  if (value) {
+    defaultValue = value
+  }
+
+  // console.log("---value---")
+  // console.log(value)
 
   const {
     left,
@@ -38,8 +61,14 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     readonly,
     labelVisible,
     labelWidth,
-    ...restProps
+    disabled
   } = props
+
+  let isDisable = false
+  if (readonly || disabled) {
+    isDisable = true
+  }
+
   return (
     <Box
       sx={{
@@ -86,7 +115,8 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
           }
         }}
         component={TextareaAutosize}
-        {...restProps}
+        defaultValue={defaultValue}
+        disabled={isDisable}
       ></Box>
     </Box>
   )

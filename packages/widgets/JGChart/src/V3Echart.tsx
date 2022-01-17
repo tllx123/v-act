@@ -1,5 +1,59 @@
 import * as echarts from 'echarts'
 
+const cacl = function <T>(arr: Array<T>, callback: Function) {
+  var ret
+  for (var i = 0; i < arr.length; i++) {
+    ret = callback(arr[i], ret)
+  }
+  return ret
+}
+/**
+ * 计算数组中最大值
+ */
+const caclArrayMaxValue = function (arr: Array<number>) {
+  return cacl(arr, function (item: number, max: number) {
+    if (!(max > item)) {
+      return item
+    } else {
+      return max
+    }
+  })
+}
+
+/**
+ * 计算数组中最小值
+ */
+const caclArrayMinValue = function (arr: Array<number>) {
+  return cacl(arr, function (item: number, min: number) {
+    if (!(min < item)) {
+      return item
+    } else {
+      return min
+    }
+  })
+}
+
+/**
+ * 计算数组项总和
+ */
+const caclArraySumValue = function (arr: Array<number>) {
+  return cacl(arr, function (item: number, sum: number) {
+    if (typeof sum == 'undefined') {
+      return item
+    } else {
+      return (sum += item)
+    }
+  })
+}
+
+const caclArrayAvgValue = function (arr: Array<number>) {
+  const arrLen = arr.length
+  if (arrLen == 0) {
+    return 0
+  }
+  return caclArraySumValue(arr) / arrLen
+}
+
 // 获取图表类型
 const getChartType = function (ChartType: any) {
   // line 折线图
@@ -104,8 +158,6 @@ function upgradeChartConfig(V3ChartConfig: any) {
       V3ChartConfig.x.value = V3ChartConfig.serie.value
       V3ChartConfig.serie.value = null
     }
-    V3ChartConfig.x.value = V3ChartConfig.serie.value
-    V3ChartConfig.serie.value = null
   }
 
   //雷达图 是否填充颜色
@@ -632,8 +684,8 @@ function setGaugeOption(V3ChartConfig: any, data: any, option: any) {
       }
     }
 
-    series.min = RangeArea.minValue()
-    series.max = RangeArea.maxValue()
+    series.min = caclArrayMinValue(RangeArea)
+    series.max = caclArrayMaxValue(RangeArea)
 
     option.series.push(series)
   }
@@ -1802,6 +1854,7 @@ function setBubbleOption(option: any) {
 
 // 雷达图设置
 function setRadarOption(V3ChartConfig: any, V3Data: any, option: any) {
+  console.log('雷达图设置')
   if (!V3Data.recordCount) {
     return
   }
@@ -1962,13 +2015,13 @@ function setRadarOption(V3ChartConfig: any, V3Data: any, option: any) {
   }
 
   // 自动调整
-  let Max = Math.ceil(option.series[0].data[0].value.maxValue()),
-    Min = Math.floor(option.series[0].data[0].value.minValue())
+  let Max = Math.ceil(caclArrayMaxValue(option.series[0].data[0].value)),
+    Min = Math.floor(caclArrayMinValue(option.series[0].data[0].value))
 
   for (let i = 0; i < option.series[0].data.length; i++) {
     if (option.series[0].data[i].value.length > 0) {
-      Max = Math.max(Max, option.series[0].data[i].value.maxValue())
-      Min = Math.min(Min, option.series[0].data[i].value.minValue())
+      Max = Math.max(Max, caclArrayMaxValue(option.series[0].data[i].value))
+      Min = Math.min(Min, caclArrayMinValue(option.series[0].data[i].value))
     }
   }
 
@@ -2090,6 +2143,7 @@ function setFunnelOption(V3ChartConfig: any, V3Data: any, option: any) {
   option.toolbox.feature.saveAsImage = {}
   option.toolbox.feature.saveAsImage.show = false
 
+  console.log('漏斗图断点')
   if (typeof option.series != 'undefined') {
     option.series = option.series[0]
     option.series.name = ''

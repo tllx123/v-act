@@ -84,6 +84,7 @@
       "@v-act/jgimageplay": ["packages/widgets/JGImagePlay/src"],
       "@v-act/jgcalendar": ["packages/widgets/JGCalendar/src"],
       "@v-act/jgpropertyeditor": ["packages/widgets/JGPropertyEditor/src"],
+      "@v-act/jgcollapse": ["packages/widgets/JGCollapse/src"],
       "@v-act/cache": ["packages/utils/v-act-cache/src"],
       "@v-act/widget-all": ["packages/widgets/All/src"],
       "@v-act/vdev": ["packages/v3dev/core/src"],

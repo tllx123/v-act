@@ -4,6 +4,7 @@ import {
   Control,
   ControlReact,
   Event,
+  JGCollapsePanelProperty,
   ReactEnum,
   WidgetConvertContext,
   WidgetConverts,
@@ -12,10 +13,67 @@ import {
 } from '@v-act/schema-types'
 
 import { layoutControls } from './layout'
+import { getInstCode } from './utils'
 
 const _getRandomNum = function () {
   const random = Math.random() * 10000
   return parseInt(random + '')
+}
+
+const toJGCollapseSchema = function (controls: Control[]) {
+  const collapseChildren: Control[] = []
+  controls.forEach((con) => {
+    const propties: JGCollapsePanelProperty = {
+      code: getInstCode('JGCollapsePanel'),
+      title: con.properties.groupTitle || ''
+    }
+    delete con.properties.groupTitle
+    collapseChildren.push({
+      type: 'JGCollapsePanel',
+      properties: propties,
+      controls: [con]
+    })
+  })
+  const control: Control = {
+    type: 'JGCollapse',
+    properties: {
+      code: getInstCode('JGCollapse'),
+      dock: 'Top',
+      multiWidth: 'space',
+      multiHeight: 'content'
+    },
+    controls: collapseChildren
+  }
+  return control
+}
+
+/**
+ * 窗体子控件靠上且有分组标题时，转换成折叠面板
+ * @param win
+ */
+const convetToGroupedTopDock = function (win: Window) {
+  const controls = win.controls
+  const newControls: Control[] = []
+  let temp: Control[] = []
+  controls.forEach((control) => {
+    const properties = control.properties
+    const dock = properties.dock
+    const groupTitle = properties.groupTitle
+    if (dock === 'Top' && typeof groupTitle == 'string' && groupTitle !== '') {
+      temp.push(control)
+    } else {
+      if (temp.length > 0) {
+        newControls.push(toJGCollapseSchema(temp))
+        temp = []
+      }
+
+      newControls.push(control)
+    }
+  })
+  if (temp.length > 0) {
+    newControls.push(toJGCollapseSchema(temp))
+  }
+  win.controls = newControls
 }
 
 /**
@@ -350,6 +408,7 @@ const convertWindowSchema = function (
     return null
   }
   windowSchema = _dealWindowMasterPageInfo(windowSchema)
+  convetToGroupedTopDock(windowSchema)
   //处理窗体schema，将控件事件值转换成Function
   enhanceWindow(windowSchema, context)
   const widgetType = windowSchema.type

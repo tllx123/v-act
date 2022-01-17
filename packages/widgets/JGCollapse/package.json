@@ -1,6 +1,6 @@
 {
-  "name": "@v-act/jgcomponent",
-  "version": "1.0.0-alpha.2",
+  "name": "@v-act/jgcollapse",
+  "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -11,8 +11,5 @@
   "dependencies": {
     "@v-act/schema-types": "^1.0.0"
   },
-  "publishConfig": {
-    "access": "public"
-  },
-  "widgetType": "JGComponent"
+  "widgetType": "JGCollapse"
 }

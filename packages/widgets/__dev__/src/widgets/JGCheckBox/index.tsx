@@ -1,20 +1,23 @@
 import { JGCheckBox, convert } from '@v-act/jgcheckbox'
 import { JGComponent } from '@v-act/jgcomponent'
-import { JGFormLayout } from '@v-act/jgformlayout'
+
 const checkbox = () => {
   return (
     <JGComponent>
       {convert({
         type: 'JGCheckBox',
         properties: {
+          alias: '',
           code: 'JGCheckBox6',
-          height: '32',
+          height: '50',
           labelText: '提醒文字',
           left: '456',
-          multiHeight: '32px',
-          multiWidth: '235px',
+          isMust: 'true',
+          multiHeight: '50px',
+          multiWidth: '300px',
           placeholder: '提醒文字',
-          top: '127'
+          top: '127',
+          readOnly: 'True'
         },
         headerControls: [],
         controls: [],
