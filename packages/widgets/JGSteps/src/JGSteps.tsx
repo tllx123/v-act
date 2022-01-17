@@ -8,7 +8,8 @@ import {
   StepLabel,
   Stepper,
   StepperProps,
-  styled
+  styled,
+  Typography
 } from '@mui/material'
 import { useContext } from '@v-act/widget-context'
 import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'
@@ -65,7 +66,6 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
     activeStep: inProps.activeStep ?? 1,
     alternativeLabel: inProps.alternativeLabel ?? false
   }
-  const defaultSteps = ['步骤1', '步骤2', '步骤3']
 
   const context = useContext()
   const sx = inProps.sx || {}
@@ -75,9 +75,11 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
     context
   )
 
+  console.log(datas)
+
   const {
+    DescColumn: descCol,
     SaveColumn: idCol,
-    StatusColumn: curCol,
     ShowColumn: labelCol
   } = inProps.stepDownSource.DataSourceSetting.DataConfig
 
@@ -97,8 +99,18 @@ const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
       <JGStepsRoot {...props} ref={ref}>
         {datas &&
           datas.map((step) => (
-            <Step key={step['idCol'] as string}>
-              <StepLabel>{step['ShowColumn'] as string}</StepLabel>
+            <Step key={step[idCol] as string}>
+              <StepLabel
+                optional={
+                  step[descCol] ?? (
+                    <Typography variant="caption">
+                      {step[descCol] as string}
+                    </Typography>
+                  )
+                }
+              >
+                {step[labelCol] as string}
+              </StepLabel>
             </Step>
           ))}
       </JGStepsRoot>
