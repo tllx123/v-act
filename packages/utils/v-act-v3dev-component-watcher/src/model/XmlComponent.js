@@ -1,4 +1,5 @@
 const Component = require('./Component')
+const fs = require('fs')
 
 class XmlComponent extends Component {
   constructor(filePath) {
