@@ -1,9 +1,6 @@
 const path = require('path')
 const File = require('./File')
-const os = require('os')
 const fs = require('fs')
-const project = require('@lerna/project')
-const filter = require('@lerna/filter-packages')
 const MEMERY_CACHE = {}
 const WIDGET_MAP = {}
 
@@ -134,38 +131,27 @@ const cleanComponentCache = function (componentCode) {
   })
 }
 
-// const scanVActWidgets = function () {
-//   const nodeModulesPath = path.resolve(process.cwd(), 'node_modules')
-//   const iter = function (dir) {
-//     const packagePath = path.resolve(dir, 'package.json')
-//     if (fs.existsSync(packagePath)) {
-//       const packageJson = require(packagePath)
-//       if (packageJson.widgetType) {
-//         WIDGET_MAP[packageJson.widgetType] = packageJson.name
-//       }
-//     } else {
-//       const dirNames = fs.readdirSync(dir)
-//       dirNames.forEach((dirName) => {
-//         const ph = path.resolve(dir, dirName)
-//         const state = fs.statSync(ph)
-//         if (state.isDirectory()) {
-//           iter(ph)
-//         }
-//       })
-//     }
-//   }
-//   iter(nodeModulesPath)
-// }
-
 const scanVActWidgets = function () {
-  const packages = project.getPackagesSync()
-  const widgetPackages = filter.filterPackages(packages, '@v-act/jg*')
-
-  return widgetPackages.reduce((widgets, pkg) => {
-    const widgetType = pkg.get('widgetType')
-    widgets[widgetType] = pkg.name
-    return widgets
-  }, WIDGET_MAP)
+  const nodeModulesPath = path.resolve(process.cwd(), 'node_modules')
+  const iter = function (dir) {
+    const packagePath = path.resolve(dir, 'package.json')
+    if (fs.existsSync(packagePath)) {
+      const packageJson = require(packagePath)
+      if (packageJson.widgetType) {
+        WIDGET_MAP[packageJson.widgetType] = packageJson.name
+      }
+    } else {
+      const dirNames = fs.readdirSync(dir)
+      dirNames.forEach((dirName) => {
+        const ph = path.resolve(dir, dirName)
+        const state = fs.statSync(ph)
+        if (state.isDirectory()) {
+          iter(ph)
+        }
+      })
+    }
+  }
+  iter(nodeModulesPath)
 }
 
 const getWidgetMap = function () {
