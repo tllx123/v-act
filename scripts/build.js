@@ -81,7 +81,7 @@ export async function viteBuild(scopes, copyToPath) {
   ]).forEach((pkg) => {
     const distDir = path.resolve(`${copyToPath}/node_modules/${pkg.name}/`)
     fs.rmSync(distDir, { force: true, recursive: true })
-    fs.cpSync(pkg.location, distDir, { recursive: true })
+    fs.copySync(pkg.location, distDir)
     const nodemodules = path.resolve(`${distDir}/node_modules/`)
     fs.rmSync(nodemodules, { recursive: true, force: true })
   })
