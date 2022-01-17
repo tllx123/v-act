@@ -152,6 +152,10 @@ const JGPeriod = function (props: JGPeriodProps) {
   }
   console.log(value)
   const [inputVal, setInputVal] = useState<any>('')
+  const [minDateVal, setMinDateVal] = useState<any>(minDate)
+  const [maxDateVal, setMaxDateVal] = useState<any>(maxDate)
+  const [minDateNameVal, setMinDateNameVal] = useState<any>(minDateName)
+  const [maxDateNameVal, setMaxDateNameVal] = useState<any>(maxDateName)
   const [inputDateVal, setInputDateVal] = useState<Date | null>(new Date())
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
@@ -173,6 +177,26 @@ const JGPeriod = function (props: JGPeriodProps) {
     setInputDateVal(new Date())
   }
 
+  const handleBackDate = () => {
+    setMinDateVal(() => {
+      return new Date(moment(minDateVal).subtract(15, 'years').format('YYYY'))
+    })
+    setMaxDateVal(() => {
+      return new Date(moment(minDateVal).subtract(1, 'years').format('YYYY'))
+    })
+    setMinDateNameVal(moment(minDateVal).subtract(15, 'years').format('YYYY'))
+    setMaxDateNameVal(moment(minDateVal).subtract(1, 'years').format('YYYY'))
+  }
+  const handleNextDate = () => {
+    setMinDateVal(() => {
+      return new Date(moment(maxDateVal).add(1, 'years').format('YYYY'))
+    })
+    setMaxDateVal(() => {
+      return new Date(moment(maxDateVal).add(15, 'years').format('YYYY'))
+    })
+    setMinDateNameVal(moment(maxDateVal).add(1, 'years').format('YYYY'))
+    setMaxDateNameVal(moment(maxDateVal).add(15, 'years').format('YYYY'))
+  }
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -233,8 +257,7 @@ const JGPeriod = function (props: JGPeriodProps) {
   const datePickerHeaderTextStyle: CSSProperties = {
     flex: 1,
     textAlign: 'center',
-    fontSize: '16px',
-    cursor: 'pointer'
+    fontSize: '16px'
   }
   return (
     <div style={wrapStyles}>
@@ -288,7 +311,11 @@ const JGPeriod = function (props: JGPeriodProps) {
         }}
       >
         <div style={datePickerHeaderWrapStyle}>
-          <IconButton aria-label="日期后退按钮" component="span">
+          <IconButton
+            aria-label="日期后退按钮"
+            component="span"
+            onClick={handleBackDate}
+          >
             <ArrowBackIosIcon
               sx={{
                 fontSize: '16px',
@@ -297,9 +324,13 @@ const JGPeriod = function (props: JGPeriodProps) {
             />
           </IconButton>
           <div style={datePickerHeaderTextStyle}>
-            {minDateName}年 - {maxDateName}年
+            {minDateNameVal}年 - {maxDateNameVal}年
           </div>
-          <IconButton aria-label="日期前进按钮" component="span">
+          <IconButton
+            aria-label="日期前进按钮"
+            component="span"
+            onClick={handleNextDate}
+          >
             <ArrowForwardIosIcon
               sx={{
                 fontSize: '16px',
@@ -312,8 +343,8 @@ const JGPeriod = function (props: JGPeriodProps) {
           <YearPicker
             date={inputDateVal}
             isDateDisabled={() => false}
-            minDate={minDate}
-            maxDate={maxDate}
+            minDate={minDateVal}
+            maxDate={maxDateVal}
             onChange={(newDate) => setInputDateVal(newDate)}
           />
         </LocalizationProvider>
