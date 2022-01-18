@@ -42,9 +42,14 @@ Promise.all(promises)
  */
 function startComponentXmlWatcher() {
   return new Promise((resolve, reject) => {
-    console.log('exe vactWactch command')
+    const args = process.argv
+    let command = 'vactWatch'
+    if (args.length === 3) {
+      command += ' '
+      command += args[2]
+    }
     let proc = childProcess.exec(
-      'vactWatch',
+      command,
       {
         cwd: process.cwd()
       },
@@ -55,7 +60,6 @@ function startComponentXmlWatcher() {
       }
     )
     if (proc) {
-      console.log('save vactWactch process pid')
       const startedProcessPids = cache.get(PROCESS_PID_KEY) || []
       startedProcessPids.push(proc.pid)
       cache.put(PROCESS_PID_KEY, startedProcessPids)

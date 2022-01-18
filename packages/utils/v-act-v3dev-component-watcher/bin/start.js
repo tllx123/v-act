@@ -14,4 +14,9 @@ cache.put('WatcherPropcessPid', process.pid)
 cache.save()
 Cache.scanVActWidgets()
 const cwd = process.cwd()
-index.watch(path.resolve(cwd, 'v3dev'))
+let watchPath = path.resolve(cwd, 'v3dev')
+const args = process.argv
+if (args.length === 3) {
+  watchPath = path.resolve(args[2], 'Template', 'v3dev')
+}
+index.watch(watchPath)
