@@ -18,11 +18,15 @@ const convert = function (
   console.log(control)
   const pros = control.properties
   const props: JGPercentProps = {
+    code: pros.code,
+    alias: pros.alias,
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     visible: toBoolean(pros.visible, true),
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
+    fontColor: pros.fontColor,
+    frontColor: pros.frontColor,
     tableName: getTableName(control),
     columnName: getColumnName(control)
   }

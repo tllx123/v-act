@@ -209,6 +209,16 @@ interface Property {
    * 显示工具栏
    */
   showToolbar?: string
+
+  /**
+   * 字体颜色
+   */
+  fontColor?: string
+
+  /**
+   * 比例颜色
+   */
+  frontColor?: string
 }
 
 export default Property
