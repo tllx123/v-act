@@ -44,7 +44,7 @@ function startComponentXmlWatcher() {
   return new Promise((resolve, reject) => {
     console.log('exe vactWactch command')
     let proc = childProcess.exec(
-      'vactWatch',
+      'node node_modules/@v-act/v3dev-component-watcher/bin/start.js',
       {
         cwd: process.cwd()
       },
