@@ -153,7 +153,7 @@ interface JGComboBoxProps extends BoxProps {
   /**
    * 值改变事件
    */
-  onValueChanged?: string
+  onValueChanged?: Function
 
   /**
    * 值加载事件
@@ -300,6 +300,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
 
   const handleChange = (event: any) => {
     setValue(event.target.value)
+    props.onValueChanged && props.onValueChanged()
   }
 
   return (
