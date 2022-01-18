@@ -2,6 +2,7 @@ import { Fragment } from 'react'
 
 import { Property as CSSProperty } from 'csstype'
 
+import { getResHashCode } from '@v-act/component-schema-utils'
 import {
   Control,
   Dock,
@@ -16,9 +17,6 @@ import {
   EntityRecord,
   WidgetContextProps
 } from '@v-act/widget-context'
-
-import { layoutControls } from './layout'
-import { convertWindowSchema } from './windowSchemaEnhancer'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -434,13 +432,28 @@ const toEntities = function (entities?: Entity[]): Entities {
   return result
 }
 
+/**
+ * 获取构件资源路径
+ * @param resCode 资源编号
+ * @param componentCode 构件编号
+ */
+const getComponentResPath = function (resCode: string, componentCode: string) {
+  if (!componentCode) {
+    throw Error('未找到构件编码，无法获取构件资源路径！')
+  }
+  return `../../resources/${componentCode}_${resCode}?h=${getResHashCode(
+    componentCode,
+    resCode
+  )}`
+}
+
 export {
   calTitleWidth,
-  convertWindowSchema,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,
   getColumnName,
+  getComponentResPath,
   getConstData,
   getDropDownSource,
   getEntityDatas,
@@ -449,7 +462,6 @@ export {
   getTableName,
   isNullOrUnDef,
   isPercent,
-  layoutControls,
   toBoolean,
   toControlReact,
   toCssAxisVal,

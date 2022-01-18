@@ -2,6 +2,10 @@
 
 const spawn = require('react-dev-utils/crossSpawn')
 const utils = require('@v-act/utils')
+const cache = require('@v-act/cache').get('v-act-project-cli')
+const processPids = cache.get('processPids') || []
+processPids.push(process.pid)
+cache.put('processPids', processPids)
 
 const args = process.argv.slice(2)
 const scripts = [

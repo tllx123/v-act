@@ -4,7 +4,6 @@ const template = require('art-template')
 const path = require('path')
 const File = require('../utils/File')
 const fs = require('fs')
-const { TableRows } = require('@mui/icons-material')
 const render = template.compile(
   new String(
     fs.readFileSync(path.resolve(__dirname, '../template/window.tpl'))
@@ -393,6 +392,7 @@ class Window {
     return new Promise((resolve, reject) => {
       try {
         const params = {
+          componentCode: this.componentCode,
           windowJsonScript: JSON.stringify(this.toSchmemaObj()),
           controlConvertMap: this.getControlConverMapScript(),
           importScripts: this.toImportScripts(),

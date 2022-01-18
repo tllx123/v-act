@@ -1,60 +1,65 @@
 const xml2js = require('xml2js')
 const fs = require('fs')
+const path = require('path')
 const Window = require('./Window')
 const File = require('../utils/File')
 const Cache = require('../utils/Cache')
+const template = require('art-template')
+const render = template.compile(
+  new String(
+    fs.readFileSync(path.resolve(__dirname, '../template/component.tpl'))
+  ).toString()
+)
 
 class Component {
-  xmlUrl = null
+  filePath
+
+  xmlContent = null
 
   xmlObj = {}
 
   componentCode = null
 
-  constructor(xmlUrl) {
-    this.xmlUrl = xmlUrl
+  constructor(filePath) {
+    this.filePath = filePath
   }
 
-  getContent() {
-    return new Promise((resolve, reject) => {
-      if (fs.existsSync(this.xmlUrl)) {
-        fs.readFile(this.xmlUrl, (err, data) => {
-          if (err) {
-            return reject(err)
-          }
-          resolve(new String(data))
-        })
-      } else {
-        reject(Error('文件不存在！path=' + this.xmlUrl))
-      }
-    })
+  setXmlContent(xmlContent) {
+    this.xmlContent = xmlContent
   }
 
-  xmlToJson() {
+  getXmlObj() {
+    return this.xmlObj
+  }
+
+  getCode() {
+    return this.componentCode
+  }
+
+  getFilePath() {
+    return this.filePath
+  }
+
+  _xmlToJson() {
     return new Promise((resolve, reject) => {
-      this.getContent()
-        .then((content) => {
-          var parser = new xml2js.Parser({
-            explicitArray: false
-          })
-          parser
-            .parseStringPromise(content)
-            .then((obj) => {
-              resolve(obj)
-            })
-            .catch((e) => {
-              reject(e)
-            })
+      var parser = new xml2js.Parser({
+        explicitArray: false
+      })
+      parser
+        .parseStringPromise(this.xmlContent)
+        .then((obj) => {
+          this.xmlObj = obj
+          resolve(obj)
         })
-        .catch((err) => {
-          reject(err)
+        .catch((e) => {
+          reject(e)
         })
     })
   }
 
-  parseToWindow() {
+  _parseToWindow() {
     return new Promise((resolve, reject) => {
-      this.xmlToJson()
+      this._xmlToJson()
         .then((obj) => {
           const component = obj.component
           this.componentCode = component.$.code
@@ -83,7 +88,7 @@ class Component {
 
   generate() {
     return new Promise((resolve, reject) => {
-      this.parseToWindow()
+      this._parseToWindow()
         .then(() => {
           try {
             const changedWindows = []
@@ -95,7 +100,7 @@ class Component {
             if (changedWindows.length > 0) {
               const compnentCache =
                 Cache.getComponentCache(this.componentCode) || {}
-              compnentCache.absPath = this.xmlUrl
+              compnentCache.absPath = this.getFilePath()
               compnentCache.componentCode = this.componentCode
               const promises = []
               const windows = compnentCache.windows || {}
@@ -109,9 +114,18 @@ class Component {
               compnentCache.windows = windows
               Promise.all(promises)
                 .then(() => {
-                  Cache.saveComponentCache(this.componentCode, compnentCache)
+                  this._parseComponent()
                     .then(() => {
-                      resolve()
+                      Cache.saveComponentCache(
+                        this.componentCode,
+                        compnentCache
+                      )
+                        .then(() => {
+                          resolve()
+                        })
+                        .catch((err) => {
+                          reject(err)
+                        })
                     })
                     .catch((err) => {
                       reject(err)
@@ -131,6 +145,46 @@ class Component {
     })
   }
 
+  _parseComponent() {
+    return new Promise((resolve, reject) => {
+      const component = {}
+      const componentObj = this.xmlObj.component
+      for (const key in componentObj) {
+        if (
+          key !== 'windows' &&
+          Object.hasOwnProperty.call(componentObj, key)
+        ) {
+          const value = componentObj[key]
+          component[key] = value
+        }
+      }
+      try {
+        const params = {
+          componentSchema: JSON.stringify(component)
+        }
+        const componentCode = componentObj.$.code
+        const content = render(params)
+        File.write(
+          path.resolve(
+            process.cwd(),
+            'src',
+            'componentdefs',
+            `${componentCode}.tsx`
+          ),
+          content
+        )
+          .then(() => {
+            resolve()
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      } catch (err) {
+        reject(err)
+      }
+    })
+  }
+
   destroy() {
     return new Promise((resolve, reject) => {
       try {
@@ -138,7 +192,7 @@ class Component {
         const componentCode = null
         for (let index = 0; index < caches.length; index++) {
           const cache = caches[index]
-          if (cache.absPath === this.xmlUrl) {
+          if (cache.absPath === this.getFilePath()) {
             componentCode = cache.componentCode
             break
           }

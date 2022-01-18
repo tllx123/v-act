@@ -24,7 +24,9 @@ const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
   const context = useContext()
   const sx = inProps.sx || {}
   const props: JGImageProps = {
-    image: 'http://www.yindangu.com/itop/common/images/defaultImg.png',
+    image: inProps.image
+      ? inProps.image
+      : 'http://www.yindangu.com/itop/common/images/defaultImg.png',
     sx: {
       ...sx,
       height: toHeight(inProps.height, context, '100px'),

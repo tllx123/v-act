@@ -14,6 +14,7 @@ const convert = function (
     controls: Array<Control>,
     containerReact: ControlReact
   ) => JSX.Element | null,
+  componentCode: string,
   context: { router: any; stackInfo: any }
 ): JSX.Element {
   const win = control as Window

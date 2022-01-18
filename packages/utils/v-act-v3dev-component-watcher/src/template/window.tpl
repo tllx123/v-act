@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import useStackInfo from '../../../src/components/usePageStackInfo';
-import {convertWindowSchema} from "@v-act/widget-utils";
+import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
+import {convertWindowSchema} from "@v-act/window-schema-utils";
 import {JGComponent as JGComponent1,convert as convertJGComponent} from "@v-act/jgcomponent";
 import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer";
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
@@ -36,11 +37,12 @@ widgetDefines.JGCollapse = JGCollapse;
 const windowObjs = {{@ windowJsonScript}};
 
 function Index(){
+    parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
     return (
         <React.Fragment>
-            {convertWindowSchema(windowObjs,widgetDefines,widgetConverts,{router,stackInfo})}
+            {convertWindowSchema("{{@ componentCode}}",windowObjs,widgetDefines,widgetConverts,{router,stackInfo})}
         </React.Fragment>   
     );
 }

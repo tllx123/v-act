@@ -1,4 +1,6 @@
 import chalk from 'chalk'
+import fs from 'fs-extra'
+import path from 'path'
 import { build } from 'vite'
 import usePluginImport from 'vite-plugin-importer'
 
@@ -32,7 +34,7 @@ const vitePluginDts = () => {
   return plugin
 }
 
-export async function viteBuild(scopes) {
+export async function viteBuild(scopes, copyToPath, watch) {
   const packages = await getPackages()
   const localExternal = packages.map((pkg) => pkg.name)
   const external = [...publicExternal, ...localExternal, ...nodeExternal]
@@ -46,9 +48,17 @@ export async function viteBuild(scopes) {
     return await build({
       build: {
         emptyOutDir: true,
-        lib: { entry, name, fileName, formats: ['umd', 'es'] },
-        rollupOptions: { external },
-        sourcemap: true
+        lib: {
+          entry,
+          name,
+          fileName,
+          formats: ['umd', 'es']
+        },
+        rollupOptions: {
+          external
+        },
+        sourcemap: true,
+        watch: watch ? {} : undefined
       },
       configFile: false,
       root,
@@ -59,11 +69,43 @@ export async function viteBuild(scopes) {
           libraryName: 'antd',
           libraryDirectory: 'es',
           style: 'css'
-        })
+        }),
+        {
+          name: 'vite-plugin-vact-builder',
+          closeBundle: () => {
+            if (copyToPath) {
+              const distDir = path.resolve(`${copyToPath}/node_modules/${name}`)
+              fs.copySync(root, distDir)
+            }
+          }
+        }
       ]
     }).then((result) => {
       console.log(chalk.greenBright(`${name} Builded! \n`))
       return result
     })
   })
+
+  if (copyToPath) {
+    filterPackages(packages, [
+      '@v-act/schema-types',
+      '@v-act/v3dev-component-watcher',
+      '@v-act/widget-context',
+      '@v-act/widget-utils',
+      '@v-act/component-schema-utils',
+      '@v-act/window-schema-utils'
+    ]).forEach((pkg) => {
+      const distDir = path.resolve(`${copyToPath}/node_modules/${pkg.name}/`)
+      fs.rmSync(distDir, {
+        force: true,
+        recursive: true
+      })
+      fs.copySync(pkg.location, distDir)
+      const nodemodules = path.resolve(`${distDir}/node_modules/`)
+      fs.rmSync(nodemodules, {
+        recursive: true,
+        force: true
+      })
+    })
+  }
 }

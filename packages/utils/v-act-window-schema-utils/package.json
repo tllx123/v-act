@@ -1,0 +1,31 @@
+{
+  "name": "@v-act/window-schema-utils",
+  "version": "1.0.0",
+  "private": false,
+  "description": "V平台窗体schema工具插件",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-window-schema-utils"
+  },
+  "license": "ISC",
+  "author": "opensource.vplatform",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -wc"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  },
+  "peerDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -11,7 +11,7 @@ interface Window {
   /**
    * 控件类型
    */
-  type: string
+  type: string | 'JGComponent'
   /**
    * 属性
    */
