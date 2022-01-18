@@ -38,5 +38,8 @@ export async function buildTsConfigPaths() {
 }
 
 export async function buildCoreDependencies() {
-  await viteBuild(['@v-act/window-schema-utils'])
+  await viteBuild([
+    '@v-act/window-schema-utils',
+    '@v-act/component-schema-utils'
+  ])
 }

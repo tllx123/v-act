@@ -9,6 +9,7 @@
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
+    "dev: jgsteps": "node scripts/index.js build -w -s @v-act/jgsteps --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
     "prepare": "husky install && node scripts/index.js env"
   },
