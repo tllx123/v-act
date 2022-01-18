@@ -2562,10 +2562,10 @@
     chalk "^4.1.2"
     crypto-js "^4.1.1"
 
-"@v-act/v3dev-component-watcher@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@v-act/v3dev-component-watcher/-/v3dev-component-watcher-1.0.10.tgz#ce015108a94ec6d6ae08d2f96adc4e48bf766d6c"
-  integrity sha512-67u2/F2hdO18kn1ZO1UbeY57f+71+GKbXDBX0JqTO7U6GHXyofIDL4xOCGwJqqbBPuQnWSAUsmzuzmo+L3iOTg==
+"@v-act/v3dev-component-watcher@^1.0.11":
+  version "1.0.11"
+  resolved "https://registry.npmmirror.com/@v-act/v3dev-component-watcher/download/@v-act/v3dev-component-watcher-1.0.11.tgz#aab4c001f978630b37bd9b62b00e01a83f53e33c"
+  integrity sha512-JVST84WSzzKwyX3xQ8M/NBx0iqJf/4HdDO28caGxG+siWvzULMox9lV64llDw0s7oyVWeCzSElEU8ffOB/UiVA==
   dependencies:
     "@v-act/cache" "^1.0.0"
     art-template "^4.13.2"
