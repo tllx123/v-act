@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography'
 
 type navNode = {
   text: string
+  click?: Function
 }
 
 interface navDataItem {
@@ -145,7 +146,17 @@ const JGNavigator = function (props: JGNavigatorProps) {
             <AccordionDetails>
               {val.nodes &&
                 val.nodes.map((nodeVal, nodeIndex) => (
-                  <Typography key={nodeIndex}>{nodeVal.text}</Typography>
+                  <Typography
+                    key={nodeIndex}
+                    onClick={() => {
+                      console.log('nodeVal', nodeVal)
+                      if (nodeVal.click) {
+                        nodeVal.click.apply(this)
+                      }
+                    }}
+                  >
+                    {nodeVal.text}
+                  </Typography>
                 ))}
             </AccordionDetails>
           </Accordion>
