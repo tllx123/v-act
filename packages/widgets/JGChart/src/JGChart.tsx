@@ -102,7 +102,7 @@ interface JGChartProps extends BoxProps {
   /**
    * 图形单击
    */
-  onChartClick?: string
+  onChartClick?: Function
 
   /********************** 数据 ************************/
   /**
@@ -182,6 +182,9 @@ const JGChart = function (props: JGChartProps) {
         notMerge={true}
         lazyUpdate={true}
         style={{ width: '100%', height: '100%' }}
+        onEvents={{
+          click: props.onChartClick ? props.onChartClick : function () {}
+        }}
       />
     </Box>
   )
