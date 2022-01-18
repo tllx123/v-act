@@ -1,11 +1,18 @@
 import { Control } from '@v-act/schema-types'
 
 import JGDataGrid, { JGDataGridProps } from './JGDataGrid'
-import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
-): JSX.Element {
+import {
+  toNumber,
+  valueofHeight,
+  valueofWidth,
+  getColumnName,
+  getTableName
+} from '@v-act/widget-utils'
+const convert = function (control: Control): JSX.Element {
+  console.log(control.properties.labelText)
+  console.log('control')
+  console.log(control)
+
   const pros = control.properties
   const props: JGDataGridProps = {
     top: toNumber(pros.top) + 'px',
@@ -13,7 +20,11 @@ const convert = function (
     width: valueofWidth(pros.multiWidth, '200px'),
     height: valueofHeight(pros.multiHeight, '200px'),
     data: pros.gridData,
-    dataHeader: pros.dataHeader
+    dataHeader: pros.dataHeader,
+    tablename: getTableName(control),
+    columnname: getColumnName(control),
+    control: control,
+    rowHeight: toNumber(pros.rowHeight) + 'px'
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }
