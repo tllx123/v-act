@@ -7,8 +7,11 @@ import { TreeItem, TreeView, TreeViewPropsBase } from '@mui/lab'
 import Box from '@mui/material/Box'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
+import '../src/JGTreeView.css'
+import { display } from '@mui/system'
 
+import FolderIcon from '@mui/icons-material/Folder'
 export interface JGTreeViewProps extends TreeViewPropsBase {
   left?: Property.Left
   top?: Property.Top
@@ -18,6 +21,10 @@ export interface JGTreeViewProps extends TreeViewPropsBase {
   readonly?: boolean
   disable?: boolean
   data?: any
+  tablename?: string | null
+  columnname?: string | null
+  control?: any
+  labelText?: any
 }
 
 const JGTreeView = (props: JGTreeViewProps) => {
@@ -31,19 +38,32 @@ const JGTreeView = (props: JGTreeViewProps) => {
     data,
     readonly,
     disable,
+    tablename,
+    control,
+    labelText,
     ...resprops
   } = props
 
+  console.log('---dataTemp---')
+  let dataTemp: any = []
+  if (tablename) {
+    dataTemp = getEntityDatas(tablename, context)
+    console.log(dataTemp)
+  }
+
   let dataTree = []
   if (data) {
-    dataTree = toTree(data, {
-      parentProperty: 'pid',
+    dataTree = toTree(dataTemp, {
+      parentProperty: 'PID',
       customID: 'id'
     })
   }
 
   console.log('dataTree')
   console.log(dataTree)
+
+  console.log('labelText')
+  console.log(labelText)
 
   let isReadonly = false
   if (readonly || disable) {
@@ -54,7 +74,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
     const renderTree = (nodes: any) => {
       console.log(nodes)
       return (
-        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.TreeColumnName}>
           {Array.isArray(nodes.children)
             ? nodes.children.map((nodeC: any) => renderTree(nodeC))
             : null}
@@ -65,7 +85,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
     return dataTree.map((item: any) => {
       console.log(item)
       return (
-        <TreeItem key={item.id} nodeId={item.id} label={item.name}>
+        <TreeItem key={item.id} nodeId={item.id} label={item.TreeColumnName}>
           {Array.isArray(item.children)
             ? item.children.map((nodeC: any) => renderTree(nodeC))
             : null}
@@ -83,13 +103,29 @@ const JGTreeView = (props: JGTreeViewProps) => {
         height: toHeight(height, context, '26px'),
         position: context.position,
         pointerEvents: isReadonly ? 'none' : 'auto',
-        border: '1px solid #999'
+        border: '1px solid #eee',
+        fontSize: '14px!important'
       }}
     >
+      <Box
+        sx={{
+          width: '100%',
+          height: '31px',
+          background: '#F6F7FB',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '14px',
+          fontWeight: 'bold'
+        }}
+      >
+        {labelText}
+      </Box>
       <TreeView
         sx={{
           width: '100%',
-          height: '100%'
+          height: 'calc(100% - 30px) ',
+          overflow: 'auto'
         }}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}

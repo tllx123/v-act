@@ -12,9 +12,18 @@ const getNavData = function (control: Control) {
   let flat = function (item: any, mergeData: any, labelTitle = 'text') {
     return item.reduce((prev: any, next: any) => {
       let item = { [labelTitle]: next.properties.labelText }
+      const events = next.events
+      if (labelTitle === 'text' && events && events.length > 0) {
+        const eventMap: { [eventCode: string]: Function } = {}
+        events.forEach((evt: any) => {
+          eventMap[evt.code] = evt.handler
+        })
+        item.click = eventMap.OnClick
+      }
       if (next.controls.length) {
         item.nodes = [...flat(next.controls, [], 'text')]
       }
+
       prev.push(item)
       return prev
     }, mergeData)
@@ -42,6 +51,7 @@ const convert = function (
     children: [],
     navData: getNavData(control)
   }
+  console.log(control, getNavData)
   return <JGNavigator {...props}></JGNavigator>
 }
 
