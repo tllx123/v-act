@@ -3,6 +3,8 @@
 pages/*
 v3dev/*
 
+src/componentdefs
+
 !pages/api
 !pages/intro
 !pages/_app.tsx
