@@ -65,6 +65,7 @@ const JGRichTextViewer = lazy(() => import('./widgets/JGRichTextViewer'))
 const JGPagination = lazy(() => import('./widgets/JGPagination'))
 const JGImagePlay = lazy(() => import('./widgets/JGImagePlay'))
 const JGCollapse = lazy(() => import('./widgets/JGCollapse'))
+const IPrototypeLogin = lazy(() => import('./widgets/IPrototypeLogin'))
 
 const Routes = () =>
   useRoutes([
@@ -278,6 +279,10 @@ const Routes = () =>
     {
       path: 'JGCollapse',
       element: <JGCollapse />
+    },
+    {
+      path: 'IPrototypeLogin',
+      element: <IPrototypeLogin />
     }
   ])
 

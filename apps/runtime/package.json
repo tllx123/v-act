@@ -17,8 +17,8 @@
   "scripts": {
     "dev": "next dev",
     "v3:preview": "node bin/preview.js",
-    "v3:restart": "rm -rf ./.next && node --expose-gc bin/start.js",
-    "v3:start": "node --expose-gc bin/start.js",
+    "v3:restart": "rm -rf ./.next && node --expose-gc bin/start.js E:/开发系统/test",
+    "v3:start": "node --expose-gc bin/start.js E:/开发系统/test",
     "v3:stop": "node bin/stop.js"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@v-act/loader": "^1.0.7",
     "@v-act/project-cli": "^1.0.6",
     "@v-act/styles": "^1.0.5",
+    "@v-act/v3dev-component-watcher": "^1.0.11",
     "cheerio": "^1.0.0-rc.3",
     "commander": "^8.3.0",
     "detect-port": "^1.3.0",
