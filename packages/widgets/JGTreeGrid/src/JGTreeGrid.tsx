@@ -1,9 +1,15 @@
 import { Property } from 'csstype'
 import { Table, Switch, Space } from 'antd'
+import 'antd/dist/antd.css'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import {
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  getEntityDatas
+} from '@v-act/widget-utils'
 interface dataTreeHeader {
   title: string
   dataIndex: string
@@ -16,33 +22,174 @@ export interface JGTreeGridProps {
   position?: Property.Position
   height?: Property.Height
   width?: Property.Width
-  dataTreeHeader?: Array<dataTreeHeader>
+  // dataTreeHeader?: Array<dataTreeHeader>
   data?: any
+  tablename?: string | null
+  columnname?: string | null
+  control?: any
+  labelText?: any
+}
+
+const rowSelection = {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {},
+  getCheckboxProps: (record: any) => ({
+    name: record.name
+  })
 }
 
 const JGTreeGrid = (props: JGTreeGridProps) => {
   const context = useContext()
+
   const {
     left,
     top,
     height,
     width,
     position,
-    dataTreeHeader,
+    // dataTreeHeader,
     data,
+    tablename,
+    control,
+    labelText,
     ...resprops
   } = props
 
+  let dataTreeHeader: any = []
+
+  control.controls.some((item: any) => {
+    dataTreeHeader.push({
+      title: item.properties.labelText,
+      dataIndex: item.properties.code,
+      key: item.properties.code
+    })
+  })
+
+  console.log('---dataTemp---')
+  let dataTemp: any = [
+    {
+      id: '1',
+      JGTextBoxColumn13: '文件夹-1',
+      IsLeaf: false,
+      JGPercentColumn17: '34',
+      JGPeriodColumn18: '45',
+      JGImageColumn19: '546',
+      JGBaseDictBoxColumn20: '456',
+      JGComboBoxColumn21: '456'
+    },
+    {
+      id: '2',
+      PID: '1',
+      JGTextBoxColumn13: '文件1-1',
+      IsLeaf: true,
+      JGTextBoxColumn15: '657'
+    },
+    {
+      id: '3',
+      PID: '2',
+      JGTextBoxColumn13: '45345',
+      IsLeaf: false,
+      JGTextBoxColumn15: '7567',
+      JGBaseDictBoxColumn20: '45'
+    },
+    {
+      id: '4',
+      PID: '3',
+      JGTextBoxColumn13: '57645',
+      IsLeaf: false,
+      JGPeriodColumn18: '454',
+      JGBaseDictBoxColumn20: '45'
+    },
+    {
+      id: '5',
+      PID: '4',
+      JGTextBoxColumn13: '654765',
+      IsLeaf: true,
+      JGTextBoxColumn14: '56765',
+      JGComboBoxColumn21: '4564'
+    },
+    {
+      id: '6',
+      PID: '1',
+      JGTextBoxColumn13: '文件1-2',
+      IsLeaf: true,
+      JGPercentColumn17: '546',
+      JGComboBoxColumn21: '567'
+    },
+    {
+      id: '7',
+      JGTextBoxColumn13: '文件夹-2',
+      IsLeaf: false,
+      JGTextBoxColumn15: '456',
+      JGImageColumn19: '5tryrt'
+    },
+    {
+      id: '8',
+      PID: '7',
+      JGTextBoxColumn13: '文件2-1',
+      IsLeaf: true,
+      JGTextBoxColumn14: '45',
+      JGBaseDictBoxColumn20: '45'
+    },
+    {
+      id: '9',
+      PID: '7',
+      JGTextBoxColumn13: '文件2-2',
+      IsLeaf: true,
+      JGPercentColumn17: '5',
+      JGImageColumn19: '45',
+      JGComboBoxColumn21: '45'
+    },
+    {
+      id: '10',
+      PID: '7',
+      JGTextBoxColumn13: 'ewrwe',
+      IsLeaf: true,
+      JGTextBoxColumn14: '45'
+    },
+    {
+      id: '11',
+      PID: '7',
+      JGTextBoxColumn13: 'ereter',
+      IsLeaf: true,
+      JGTextBoxColumn15: '45',
+      JGComboBoxColumn21: '45'
+    },
+    {
+      id: '12',
+      PID: '7',
+      JGTextBoxColumn13: 'tyrtytry',
+      IsLeaf: true
+    }
+  ]
+  // if (tablename) {
+  //   dataTemp = getEntityDatas(tablename, context)
+  //   // console.log(dataTemp)
+  // }
+
+  dataTemp.some((item2: any, index: any) => {
+    item2.key = index
+  })
+
   let dataTree = []
-  if (data) {
-    dataTree = toTree(data, {
-      parentProperty: 'pid',
+  if (dataTemp) {
+    dataTree = toTree(dataTemp, {
+      parentProperty: 'PID',
       customID: 'id'
     })
   }
 
+  console.log('dataTreeHeader')
   console.log(dataTreeHeader)
+  console.log('dataTemp')
+  console.log(dataTemp)
+  console.log('dataTree')
+  console.log(dataTree)
 
+  console.log('toWidth')
+  console.log(toWidth(width, context, '235px'))
+
+  console.log('toHeight')
+  console.log(toHeight(height, context, '26px'))
   return (
     <Box
       sx={{
@@ -53,7 +200,13 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         position: context.position
       }}
     >
-      <Table columns={dataTreeHeader} dataSource={dataTree} {...resprops} />
+      <Table
+        rowSelection={{ ...rowSelection }}
+        bordered
+        columns={dataTreeHeader}
+        dataSource={dataTree}
+        {...resprops}
+      />
     </Box>
   )
 }
