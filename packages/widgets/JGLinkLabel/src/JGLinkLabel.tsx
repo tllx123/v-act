@@ -49,6 +49,7 @@ interface JGLinkLabelProps {
   webURL?: string
   target?: string
   foreColor: string
+  click?: Function
 }
 
 const JGLinkLabel = function (props: JGLinkLabelProps) {
@@ -71,14 +72,25 @@ const JGLinkLabel = function (props: JGLinkLabelProps) {
     textAlign: props.textAlign,
     lineHeight: lineHeight
   }
-
+  const clickHd = props.click
+  const clickHandler = () => {
+    if (clickHd) {
+      clickHd.apply(this)
+    }
+  }
   return (
     <div style={wrapSx}>
       <Link
         href={props.webURL || '#'}
         underline="hover"
         target={props.target || ''}
-        color={props.foreColor}
+        color={'rgb(' + props.foreColor + ')'}
+        sx={{
+          '&:active,&:hover': {
+            color: 'rgb(' + props.foreColor + ')'
+          }
+        }}
+        onClick={clickHandler}
       >
         {props.labelText}
       </Link>
@@ -93,7 +105,7 @@ JGLinkLabel.defaultProps = {
   multiWidth: 68,
   visible: true,
   textAlign: 'Left',
-  foreColor: '#356bbc'
+  foreColor: '53, 107, 188'
 }
 
 export default JGLinkLabel
