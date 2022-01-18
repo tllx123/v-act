@@ -200,6 +200,15 @@ interface Property {
    * 日期模式
    */
   dateDisplay?: string
+  /**
+   * 行高
+   */
+  rowHeight?: string
+
+  /**
+   * 显示工具栏
+   */
+  showToolbar?: string
 }
 
 export default Property

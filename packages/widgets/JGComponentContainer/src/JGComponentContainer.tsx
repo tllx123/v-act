@@ -1,7 +1,12 @@
 import Box from '@mui/material/Box'
 import { Property } from 'csstype'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { FieldValue, useContext } from '@v-act/widget-context'
+import {
+  toHeight,
+  toWidth,
+  getFieldValue,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 
 export interface JGComponentContainerProps {
   left?: Property.Left
@@ -11,10 +16,26 @@ export interface JGComponentContainerProps {
   width?: Property.Width
   bodercolor?: string
   visible?: boolean
+  tableName?: string | null
+  columnName?: string | null
 }
 
 const JGComponentContainer = (props: JGComponentContainerProps) => {
   const context = useContext()
+
+  let defulValue: any = null
+  let value: FieldValue = ''
+  if (props.tableName && props.columnName) {
+    value = getFieldValue(props.tableName, props.columnName, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+
+  if (value) {
+    defulValue = value
+  }
+  console.log('---value---')
+  console.log(value)
+
   const {
     left,
     top,

@@ -5,10 +5,23 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import Box from '@mui/material/Box'
+import { convert as buttongroupConvert } from '@v-act/jgbuttongroup'
+
+import {
+  ContextProvider,
+  createContext,
+  useContext
+} from '@v-act/widget-context'
+import {
+  toHeight,
+  toLabelWidth,
+  toWidth,
+  getEntityDatas
+} from '@v-act/widget-utils'
 import { styled } from '@mui/material/styles'
 import Paper from '@mui/material/Paper'
+import { height } from '@mui/system'
 interface dataHeader {
   code: string
   name: string
@@ -27,7 +40,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   }
 }))
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
   '&:nth-of-type(odd)': {
     backgroundColor: '#FBFBFB'
   }
@@ -43,6 +56,10 @@ export interface JGDataGridProps {
   ishide?: boolean
   data?: any
   dataHeader?: Array<dataHeader>
+  tablename?: string | null
+  columnname?: string | null
+  control?: any
+  rowHeight?: string
 }
 
 const JGDataGrid = (props: JGDataGridProps) => {
@@ -54,14 +71,82 @@ const JGDataGrid = (props: JGDataGridProps) => {
     width,
     position,
     readonly,
-    data,
-    dataHeader,
+    rowHeight,
+    // dataHeader,
     ishide,
-    ...resprops
+    tablename,
+    control
   } = props
 
+  let dataHeader: Array<any> = []
+  control.controls.some((item: any, index: any) => {
+    dataHeader.push({
+      code: item.properties.code,
+      name: item.properties.labelText,
+      key: index + 'head'
+    })
+  })
+
+  console.log('---data---')
+  let data: any
+  if (tablename) {
+    data = getEntityDatas(tablename, context)
+  }
+
+  data = [
+    {
+      JGTextBoxColumn2: '请问请问'
+    },
+    {
+      JGTextBoxColumn3: '去问我去饿',
+      JGDateTimePickerColumn6: '2022-01-17',
+      JGFloatBoxColumn7: '2312',
+      JGIntegerBoxColumn8: 43534
+    },
+    {
+      JGTextBoxColumn2: '撒地方撒旦',
+      JGTextBoxColumn4: '阿斯顿发射点',
+      JGDateTimePickerColumn6: '2022-01-13',
+      JGFloatBoxColumn7: '233',
+      JGIntegerBoxColumn8: 65454
+    },
+    {
+      JGTextBoxColumn2: '梵蒂冈的',
+      JGTextBoxColumn3: 'u一天具体有',
+      JGTextBoxColumn4: 'utyru它犹如',
+      JGFloatBoxColumn7: '645',
+      JGIntegerBoxColumn8: 87
+    }
+  ]
+
+  if (Array.isArray(data)) {
+    data.some((item: any, index: any) => {
+      item.key = index + 'grid'
+    })
+  }
+
+  console.log('dataHeader')
+  console.log(dataHeader)
+  console.log('data')
+  console.log(data)
+
+  let headerControlTemp = []
+  if (control.headerControls) {
+    console.log('control.headerControls[0].controls')
+    console.log(control.headerControls[0].controls)
+    headerControlTemp = control.headerControls[0].controls
+  }
+
+  const loadMenu = (headerControl: any) => {
+    let param: any = {
+      context: { position: 'relative' },
+      children: buttongroupConvert(headerControl[0])
+    }
+    return ContextProvider(param)
+  }
+
   return (
-    <TableContainer
+    <Box
       sx={{
         left: left,
         top: top,
@@ -69,43 +154,51 @@ const JGDataGrid = (props: JGDataGridProps) => {
         height: '100%',
         position: context.position,
         display: ishide ? 'none' : 'block',
-        // border: '1px solid #DCDEE2',
         boxShadow: 'none'
       }}
-      component={Paper}
     >
-      <Table sx={{ width: '100%', height: '100%' }} size="small" {...resprops}>
-        <TableHead>
-          <TableRow key="80000">
-            {dataHeader?.map((row) => (
-              <StyledTableCell
-                sx={{ border: '1px solid #DCDEE2' }}
-                component="th"
-                scope="row"
-                key={row.code}
-              >
-                {row.name}
-              </StyledTableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row: any) => (
-            <StyledTableRow key={row.id}>
-              {dataHeader?.map((item) => (
-                <TableCell
-                  sx={{ border: '1px solid #DCDEE2!important' }}
+      {/* {headerControlTemp.length > 0 ? loadMenu(headerControlTemp) : <Box sx={{ width: '200px', height: '200px', background: '#000' }}></Box>} */}
+
+      <TableContainer
+        sx={{
+          display: ishide ? 'none' : 'block',
+          boxShadow: 'none'
+        }}
+        component={Paper}
+      >
+        <Table sx={{ width: '100%' }} size="small">
+          <TableHead>
+            <TableRow key="80000">
+              {dataHeader?.map((row) => (
+                <StyledTableCell
+                  sx={{ border: '1px solid #DCDEE2' }}
+                  component="th"
                   scope="row"
-                  key={item.code}
+                  key={row.key}
                 >
-                  {row[item.code]}
-                </TableCell>
+                  {row.name}
+                </StyledTableCell>
               ))}
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((row: any) => (
+              <StyledTableRow key={row.key} sx={{ height: rowHeight }}>
+                {dataHeader?.map((item) => (
+                  <TableCell
+                    sx={{ border: '1px solid #DCDEE2!important' }}
+                    scope="row"
+                    key={item.code}
+                  >
+                    {row[item.code]}
+                  </TableCell>
+                ))}
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   )
 }
 
@@ -115,111 +208,7 @@ JGDataGrid.defaultProps = {
   width: '800px',
   height: 'auto',
   position: 'absolute',
-  data: [
-    {
-      index: '1',
-      id: '440883',
-      name: '张三',
-      num: '男',
-      text1: '181cm',
-      text2: '56kg',
-      text3: '$56',
-      text4: '2000-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '1'
-    },
-    {
-      index: '2',
-      id: '440884',
-      name: '李四',
-      num: '男',
-      text1: '171cm',
-      text2: '63kg',
-      text3: '$76',
-      text4: '2001-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '2'
-    },
-    {
-      index: '3',
-      id: '440885',
-      name: '王五',
-      num: '男',
-      text1: '176cm',
-      text2: '68kg',
-      text3: '$16',
-      text4: '2006-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '3'
-    },
-    {
-      index: '4',
-      id: '440886',
-      name: '赵六',
-      num: '女',
-      text1: '168cm',
-      text2: '50kg',
-      text3: '$66',
-      text4: '2003-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '4'
-    },
-    {
-      index: '5',
-      id: '440887',
-      name: '孙七',
-      num: '女',
-      text1: '162cm',
-      text2: '45kg',
-      text3: '$86',
-      text4: '2005-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '5'
-    },
-    {
-      index: '6',
-      id: '440888',
-      name: '周八',
-      num: '男',
-      text1: '173cm',
-      text2: '60kg',
-      text3: '$96',
-      text4: '2004-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '6'
-    },
-    {
-      index: '7',
-      id: '440889',
-      name: '吴九',
-      num: '男',
-      text1: '172cm',
-      text2: '70kg',
-      text3: '$06',
-      text4: '2009-01-23',
-      text5: '***',
-      text6: '***.JPG',
-      key: '7'
-    }
-  ],
-  dataHeader: [
-    { code: 'index', name: '', key: '8' },
-    { code: 'id', name: '文本', key: '9' },
-    { code: 'name', name: '文本', key: '10' },
-    { code: 'num', name: '文本', key: '11' },
-    { code: 'text1', name: '文本', key: '12' },
-    { code: 'text3', name: '小数', key: '13' },
-    { code: 'text2', name: '下拉选择', key: '14' },
-    { code: 'text4', name: '日期', key: '15' },
-    { code: 'text5', name: '弹出选择', key: '16' },
-    { code: 'text6', name: '图片', key: '17' }
-  ]
+  data: []
 }
 
 export default JGDataGrid
