@@ -7,7 +7,7 @@
     "packages/**"
   ],
   "scripts": {
-    "build: widgets": "node scripts/index.js build -s @v-act/jg*",
+    "build: widgets": "node scripts/index.js build -s @v-act/jg* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
     "prepare": "husky install && node scripts/index.js env"

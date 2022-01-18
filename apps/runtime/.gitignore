@@ -1,0 +1,9 @@
+.next
+
+pages/*
+v3dev/*
+
+!pages/api
+!pages/intro
+!pages/_app.tsx
+!pages/index.tsx
