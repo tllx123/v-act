@@ -7,204 +7,30 @@ const datagrid = () => {
       {convert({
         type: 'JGDataGrid',
         properties: {
-          allowMerge: 'True',
+          chooseMode: '3',
           code: 'JGDataGrid1',
-          height: '438',
+          height: '230',
           labelText: '列表',
-          left: '167',
-          multiHeight: '438px',
-          multiWidth: '727px',
-          percentHeight: '52.3%',
-          percentWidth: '56.5%',
+          left: '529',
+          multiHeight: '230px',
+          multiWidth: '480px',
+          percentHeight: '31.2%',
+          percentWidth: '37.7%',
           readOnly: 'True',
           rowHeight: '28',
-          rowsFixedCount: '3',
-          rowWidthMode: 'PercentWidth',
-          showToolbar: 'True',
+          showRowNumbers: 'False',
           tabIndex: '0',
-          top: '125',
-          width: '727'
+          top: '366',
+          width: '480'
         },
         headerControls: [
           {
             type: 'JGToolbar',
             properties: {
-              code: 'JGToolbar5',
-              width: '725'
+              code: 'JGToolbar5'
             },
             headerControls: [],
-            controls: [
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  code: 'JGToolbarMenu9',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'import',
-                  labelText: '导入',
-                  left: '8',
-                  top: '10',
-                  type: 'import',
-                  width: '53'
-                },
-                headerControls: [],
-                controls: [],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              },
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  code: 'JGToolbarMenu10',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'export',
-                  labelText: '导出',
-                  left: '69',
-                  top: '10',
-                  type: 'export',
-                  width: '53'
-                },
-                headerControls: [],
-                controls: [],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              },
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  code: 'JGToolbarMenu11',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'add',
-                  labelText: '新增',
-                  left: '130',
-                  top: '10',
-                  type: 'add',
-                  width: '67'
-                },
-                headerControls: [],
-                controls: [
-                  {
-                    type: 'JGToolbarMenu',
-                    properties: {
-                      code: 'JGToolbarMenu20',
-                      height: '21',
-                      labelText: '下拉菜单项',
-                      type: 'custom'
-                    },
-                    headerControls: [],
-                    controls: [],
-                    dataBindings: [
-                      {
-                        dataSource: null,
-                        dataMembers: []
-                      }
-                    ]
-                  },
-                  {
-                    type: 'JGToolbarMenu',
-                    properties: {
-                      code: 'JGToolbarMenu21',
-                      height: '21',
-                      labelText: '下拉菜单项',
-                      type: 'custom'
-                    },
-                    headerControls: [],
-                    controls: [],
-                    dataBindings: [
-                      {
-                        dataSource: null,
-                        dataMembers: []
-                      }
-                    ]
-                  }
-                ],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              },
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  align: 'Right',
-                  code: 'JGToolbarMenu12',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'tingyong',
-                  labelText: '停用',
-                  left: '558',
-                  top: '10',
-                  type: 'tingyong',
-                  width: '53'
-                },
-                headerControls: [],
-                controls: [],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              },
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  align: 'Right',
-                  code: 'JGToolbarMenu13',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'template',
-                  labelText: '模板',
-                  left: '611',
-                  top: '10',
-                  type: 'template',
-                  width: '53'
-                },
-                headerControls: [],
-                controls: [],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              },
-              {
-                type: 'JGToolbarMenu',
-                properties: {
-                  align: 'Right',
-                  code: 'JGToolbarMenu14',
-                  displayStyle: 'ImageAndText',
-                  height: '21',
-                  icon: 'more',
-                  labelText: '更多',
-                  left: '664',
-                  top: '10',
-                  type: 'more',
-                  width: '53'
-                },
-                headerControls: [],
-                controls: [],
-                dataBindings: [
-                  {
-                    dataSource: null,
-                    dataMembers: []
-                  }
-                ]
-              }
-            ],
+            controls: [],
             dataBindings: [
               {
                 dataSource: null,
@@ -218,7 +44,7 @@ const datagrid = () => {
             type: 'JGTextBoxColumn',
             properties: {
               code: 'JGTextBoxColumn2',
-              labelText: '文本|文本|文本'
+              labelText: '文本'
             },
             headerControls: [],
             controls: [],
@@ -239,7 +65,7 @@ const datagrid = () => {
             type: 'JGTextBoxColumn',
             properties: {
               code: 'JGTextBoxColumn3',
-              labelText: '文本|文本|文本'
+              labelText: '文本'
             },
             headerControls: [],
             controls: [],
@@ -260,7 +86,7 @@ const datagrid = () => {
             type: 'JGTextBoxColumn',
             properties: {
               code: 'JGTextBoxColumn4',
-              labelText: '文本|文本|文本'
+              labelText: '文本'
             },
             headerControls: [],
             controls: [],
@@ -278,10 +104,10 @@ const datagrid = () => {
             ]
           },
           {
-            type: 'JGDateTimePickerColumn',
+            type: 'JGLongDateTimePickerColumn',
             properties: {
-              code: 'JGDateTimePickerColumn6',
-              labelText: '日期'
+              code: 'JGLongDateTimePickerColumn6',
+              labelText: '长日期'
             },
             headerControls: [],
             controls: [],
@@ -292,18 +118,17 @@ const datagrid = () => {
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGDateTimePickerColumn6'
+                    value: 'JGLongDateTimePickerColumn6'
                   }
                 ]
               }
             ]
           },
           {
-            type: 'JGFloatBoxColumn',
+            type: 'JGComboBoxColumn',
             properties: {
-              code: 'JGFloatBoxColumn7',
-              labelText: '小数',
-              showGridSummary: 'True'
+              code: 'JGComboBoxColumn7',
+              labelText: '下拉选择'
             },
             headerControls: [],
             controls: [],
@@ -312,20 +137,24 @@ const datagrid = () => {
                 dataSource: 'JGDataGrid1',
                 dataMembers: [
                   {
-                    name: '字段名称',
+                    name: '标识字段',
+                    code: 'IDColumnName',
+                    value: 'JGComboBoxColumn7_IDColumnName'
+                  },
+                  {
+                    name: '显示字段',
                     code: 'ColumnName',
-                    value: 'JGFloatBoxColumn7'
+                    value: 'JGComboBoxColumn7'
                   }
                 ]
               }
             ]
           },
           {
-            type: 'JGIntegerBoxColumn',
+            type: 'JGPercentColumn',
             properties: {
-              code: 'JGIntegerBoxColumn8',
-              labelText: '整数',
-              showGridSummary: 'True'
+              code: 'JGPercentColumn8',
+              labelText: '百分比'
             },
             headerControls: [],
             controls: [],
@@ -336,7 +165,28 @@ const datagrid = () => {
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGIntegerBoxColumn8'
+                    value: 'JGPercentColumn8'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'JGPeriodColumn',
+            properties: {
+              code: 'JGPeriodColumn9',
+              labelText: '期次'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'JGDataGrid1',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'JGPeriodColumn9'
                   }
                 ]
               }

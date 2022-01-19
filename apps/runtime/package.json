@@ -17,8 +17,8 @@
   "scripts": {
     "dev": "next dev",
     "v3:preview": "node bin/preview.js",
-    "v3:restart": "rm -rf ./.next && node --expose-gc bin/start.js",
-    "v3:start": "node --expose-gc bin/start.js",
+    "v3:restart": "rm -rf ./.next && node --expose-gc bin/start.js  ",
+    "v3:start": "node --expose-gc bin/start.js  C:\\Users\\Administrator\\vBoxApp\\V-Proto体验版\\V3ProtoBeta\\Template\\v3dev",
     "v3:stop": "node bin/stop.js"
   },
   "dependencies": {

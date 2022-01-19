@@ -1,0 +1,8 @@
+.ant-table-thead > tr > th{
+    background: rgb(246, 247, 251)!important;
+}
+
+
+.ant-table-tbody > tr:nth-child(even){
+    background:#FBFBFB!important;
+}

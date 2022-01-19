@@ -200,6 +200,7 @@ interface Property {
    * 日期模式
    */
   dateDisplay?: string
+
   /**
    * 行高
    */
@@ -211,6 +212,7 @@ interface Property {
   showToolbar?: string
 
   /**
+
    * 字体颜色
    */
   fontColor?: string
@@ -219,6 +221,30 @@ interface Property {
    * 比例颜色
    */
   frontColor?: string
+
+  /**
+   * 显示序列
+   */
+  showRowNumbers?: string
+
+  /**
+   * 多选模式
+   */
+  chooseMode?: string
+  /*
+   * 显示页码
+   */
+  paginationVisible?: string
+
+  /**
+   * 播放间隔(秒)
+   */
+  swiInterval?: string
+
+  /**
+   * 图片布局方式
+   */
+  imageLayout?: string
 }
 
 export default Property

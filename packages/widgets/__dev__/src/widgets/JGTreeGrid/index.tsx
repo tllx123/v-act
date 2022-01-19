@@ -6,27 +6,26 @@ const treegrid = () => {
       {convert({
         type: 'JGTreeGrid',
         properties: {
-          allowMerge: 'True',
-          code: 'JGTreeGrid12',
-          height: '369',
+          chooseMode: '3',
+          code: 'JGTreeGrid1',
+          height: '411',
           labelText: '树表',
-          left: '252',
-          multiHeight: '369px',
-          multiWidth: '799px',
-          percentHeight: '46.9%',
-          percentWidth: '64.3%',
+          left: '317',
+          multiHeight: '411px',
+          multiWidth: '741px',
+          percentHeight: '48%',
+          percentWidth: '54.9%',
           rowHeight: '28',
-          rowsFixedCount: '2',
           showRowNumbers: 'True',
           tabIndex: '0',
-          top: '212',
-          width: '799'
+          top: '190',
+          width: '741'
         },
         headerControls: [
           {
             type: 'JGToolbar',
             properties: {
-              code: 'JGToolbar16'
+              code: 'JGToolbar5'
             },
             headerControls: [],
             controls: [],
@@ -42,20 +41,20 @@ const treegrid = () => {
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn13',
-              labelText: '文本|文本',
+              code: 'JGTextBoxColumn2',
+              labelText: '文本',
               width: '140'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn13'
+                    value: 'JGTextBoxColumn2'
                   }
                 ]
               }
@@ -64,20 +63,19 @@ const treegrid = () => {
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn15',
-              labelText: '文本|文本',
-              width: '154'
+              code: 'JGTextBoxColumn3',
+              labelText: '文本'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn15'
+                    value: 'JGTextBoxColumn3'
                   }
                 ]
               }
@@ -86,40 +84,19 @@ const treegrid = () => {
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn14',
-              labelText: '文本|文本'
+              code: 'JGTextBoxColumn4',
+              labelText: '文本'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn14'
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            type: 'JGPercentColumn',
-            properties: {
-              code: 'JGPercentColumn17',
-              labelText: '百分比|百分比'
-            },
-            headerControls: [],
-            controls: [],
-            dataBindings: [
-              {
-                dataSource: 'JGTreeGrid12',
-                dataMembers: [
-                  {
-                    name: '字段名称',
-                    code: 'ColumnName',
-                    value: 'JGPercentColumn17'
+                    value: 'JGTextBoxColumn4'
                   }
                 ]
               }
@@ -128,19 +105,19 @@ const treegrid = () => {
           {
             type: 'JGPeriodColumn',
             properties: {
-              code: 'JGPeriodColumn18',
-              labelText: '期次|期次'
+              code: 'JGPeriodColumn6',
+              labelText: '期次'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGPeriodColumn18'
+                    value: 'JGPeriodColumn6'
                   }
                 ]
               }
@@ -149,45 +126,40 @@ const treegrid = () => {
           {
             type: 'JGImageColumn',
             properties: {
-              code: 'JGImageColumn19',
-              labelText: '图片|图片'
+              code: 'JGImageColumn7',
+              labelText: '图片'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGImageColumn19'
+                    value: 'JGImageColumn7'
                   }
                 ]
               }
             ]
           },
           {
-            type: 'JGBaseDictBoxColumn',
+            type: 'JGPercentColumn',
             properties: {
-              code: 'JGBaseDictBoxColumn20',
-              labelText: '弹出选择|弹出选择'
+              code: 'JGPercentColumn8',
+              labelText: '百分比'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
-                    name: '标识字段',
-                    code: 'IDColumnName',
-                    value: 'JGBaseDictBoxColumn20_IDColumnName'
-                  },
-                  {
-                    name: '显示字段',
+                    name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGBaseDictBoxColumn20'
+                    value: 'JGPercentColumn8'
                   }
                 ]
               }
@@ -196,24 +168,24 @@ const treegrid = () => {
           {
             type: 'JGComboBoxColumn',
             properties: {
-              code: 'JGComboBoxColumn21',
-              labelText: '下拉选择|下拉选择'
+              code: 'JGComboBoxColumn9',
+              labelText: '下拉选择'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGTreeGrid12',
+                dataSource: 'JGTreeGrid1',
                 dataMembers: [
                   {
                     name: '标识字段',
                     code: 'IDColumnName',
-                    value: 'JGComboBoxColumn21_IDColumnName'
+                    value: 'JGComboBoxColumn9_IDColumnName'
                   },
                   {
                     name: '显示字段',
                     code: 'ColumnName',
-                    value: 'JGComboBoxColumn21'
+                    value: 'JGComboBoxColumn9'
                   }
                 ]
               }
@@ -222,12 +194,12 @@ const treegrid = () => {
         ],
         dataBindings: [
           {
-            dataSource: 'JGTreeGrid12',
+            dataSource: 'JGTreeGrid1',
             dataMembers: [
               {
                 name: '树显示字段',
                 code: 'TreeColumName',
-                value: 'JGTextBoxColumn13'
+                value: 'JGTextBoxColumn2'
               },
               {
                 name: '父记录字段',
