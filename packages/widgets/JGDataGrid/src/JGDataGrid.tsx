@@ -1,50 +1,16 @@
 import { Property } from 'csstype'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
 import Box from '@mui/material/Box'
+import { Table } from 'antd'
 import { convert as buttongroupConvert } from '@v-act/jgbuttongroup'
-
-import {
-  ContextProvider,
-  createContext,
-  useContext
-} from '@v-act/widget-context'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  getEntityDatas
-} from '@v-act/widget-utils'
+import '../src/JGDataGrid.css'
+import 'antd/dist/antd.css'
+import { ContextProvider, useContext } from '@v-act/widget-context'
+import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
 import { styled } from '@mui/material/styles'
-import Paper from '@mui/material/Paper'
-import { height } from '@mui/system'
 interface dataHeader {
   code: string
   name: string
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: 'rgb(246, 247, 251)',
-    fontWeight: 'bold',
-
-    textAlign: 'center'
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    borderRight: '1px solid #DCDEE2'
-  }
-}))
-
-const StyledTableRow = styled(TableRow)(() => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: '#FBFBFB'
-  }
-}))
 
 export interface JGDataGridProps {
   left?: Property.Left
@@ -60,6 +26,15 @@ export interface JGDataGridProps {
   columnname?: string | null
   control?: any
   rowHeight?: string
+  showRowNumbers?: boolean
+  chooseMode?: string
+}
+
+const rowSelection = {
+  onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {},
+  getCheckboxProps: (record: any) => ({
+    name: record.name
+  })
 }
 
 const JGDataGrid = (props: JGDataGridProps) => {
@@ -72,6 +47,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
     position,
     readonly,
     rowHeight,
+    showRowNumbers,
     // dataHeader,
     ishide,
     tablename,
@@ -79,19 +55,35 @@ const JGDataGrid = (props: JGDataGridProps) => {
   } = props
 
   let dataHeader: Array<any> = []
-  control.controls.some((item: any, index: any) => {
+
+  if (showRowNumbers) {
     dataHeader.push({
-      code: item.properties.code,
-      name: item.properties.labelText,
-      key: index + 'head'
+      title: '',
+      dataIndex: '####3',
+      align: 'center',
+      width: 50,
+      render(text: any, record: any, index: any) {
+        //TODO
+        return index + 1
+      }
+    })
+  }
+
+  control.controls.some((item, index: any) => {
+    dataHeader.push({
+      title: item.properties.labelText,
+      dataIndex: item.properties.code,
+      // width:index==0? 200 : 100,
+      align: 'center',
+      key: item.properties.code
     })
   })
 
   console.log('---data---')
   let data: any
-  if (tablename) {
-    data = getEntityDatas(tablename, context)
-  }
+  // if (tablename) {
+  //   data = getEntityDatas(tablename, context)
+  // }
 
   data = [
     {
@@ -137,14 +129,6 @@ const JGDataGrid = (props: JGDataGridProps) => {
     headerControlTemp = control.headerControls[0].controls
   }
 
-  const loadMenu = (headerControl: any) => {
-    let param: any = {
-      context: { position: 'relative' },
-      children: buttongroupConvert(headerControl[0])
-    }
-    return ContextProvider(param)
-  }
-
   return (
     <Box
       sx={{
@@ -157,47 +141,19 @@ const JGDataGrid = (props: JGDataGridProps) => {
         boxShadow: 'none'
       }}
     >
-      {/* {headerControlTemp.length > 0 ? loadMenu(headerControlTemp) : <Box sx={{ width: '200px', height: '200px', background: '#000' }}></Box>} */}
-
-      <TableContainer
-        sx={{
-          display: ishide ? 'none' : 'block',
-          boxShadow: 'none'
+      <Table
+        scroll={{
+          y: toHeight(height, context, '26px'),
+          x: toWidth(width, context, '235px')
         }}
-        component={Paper}
-      >
-        <Table sx={{ width: '100%' }} size="small">
-          <TableHead>
-            <TableRow key="80000">
-              {dataHeader?.map((row) => (
-                <StyledTableCell
-                  sx={{ border: '1px solid #DCDEE2' }}
-                  component="th"
-                  scope="row"
-                  key={row.key}
-                >
-                  {row.name}
-                </StyledTableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row: any) => (
-              <StyledTableRow key={row.key} sx={{ height: rowHeight }}>
-                {dataHeader?.map((item) => (
-                  <TableCell
-                    sx={{ border: '1px solid #DCDEE2!important' }}
-                    scope="row"
-                    key={item.code}
-                  >
-                    {row[item.code]}
-                  </TableCell>
-                ))}
-              </StyledTableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+        rowSelection={{ ...rowSelection }}
+        bordered
+        // childrenColumnName=""
+        columns={dataHeader}
+        dataSource={data}
+        size="small"
+        pagination={false}
+      />
     </Box>
   )
 }

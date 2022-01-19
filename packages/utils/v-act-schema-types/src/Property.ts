@@ -219,6 +219,16 @@ interface Property {
    * 比例颜色
    */
   frontColor?: string
+
+  /**
+   * 显示序列
+   */
+  showRowNumbers?: string
+
+  /**
+   * 多选模式
+   */
+  chooseMode?: string
 }
 
 export default Property

@@ -6,7 +6,8 @@ import {
   valueofHeight,
   valueofWidth,
   getColumnName,
-  getTableName
+  getTableName,
+  toBoolean
 } from '@v-act/widget-utils'
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
@@ -24,7 +25,9 @@ const convert = function (control: Control): JSX.Element {
     tablename: getTableName(control),
     columnname: getColumnName(control),
     control: control,
-    rowHeight: toNumber(pros.rowHeight) + 'px'
+    rowHeight: toNumber(pros.rowHeight) + 'px',
+    showRowNumbers: toBoolean(pros.showRowNumbers, true),
+    chooseMode: pros.chooseMode
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }

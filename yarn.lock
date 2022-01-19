@@ -3633,6 +3633,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-resizable@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.npmmirror.com/@types/react-resizable/download/@types/react-resizable-1.7.4.tgz#8138e370338511b480ad00267d4efdd217f45741"
+  integrity sha1-gTjjcDOFEbSArQAmfU790hf0V0E=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0", "@types/react-transition-group@^4.4.4":
   version "4.4.4"
   resolved "https://registry.npmmirror.com/@types/react-transition-group/download/@types/react-transition-group-4.4.4.tgz#acd4cceaa2be6b757db61ed7b432e103242d163e"
@@ -14529,6 +14536,15 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
+prop-types@15.x:
+  version "15.8.1"
+  resolved "https://registry.npmmirror.com/prop-types/download/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 prop-types@^15.5.4, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.8.0"
   resolved "https://registry.npmmirror.com/prop-types/download/prop-types-15.8.0.tgz#d237e624c45a9846e469f5f31117f970017ff588"
@@ -15188,7 +15204,7 @@ react-dom@17.0.2, react-dom@^17.0.1, react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-draggable@^4.4.4:
+react-draggable@^4.0.3, react-draggable@^4.4.4:
   version "4.4.4"
   resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-4.4.4.tgz#5b26d9996be63d32d285a426f41055de87e59b2f"
   integrity sha512-6e0WdcNLwpBx/YIDpoyd2Xb04PB0elrDrulKUgdrIlwuYvxh5Ok9M+F8cljm8kPXXs43PmMzek9RrB1b7mLMqA==
@@ -15250,6 +15266,14 @@ react-refresh@^0.11.0:
   version "0.11.0"
   resolved "https://registry.npmmirror.com/react-refresh/download/react-refresh-0.11.0.tgz#77198b944733f0f1f1a90e791de4541f9f074046"
   integrity sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==
+
+react-resizable@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.nlark.com/react-resizable/download/react-resizable-3.0.4.tgz#aa20108eff28c52c6fddaa49abfbef8abf5e581b"
+  integrity sha1-qiAQjv8oxSxv3apJq/vvir9eWBs=
+  dependencies:
+    prop-types "15.x"
+    react-draggable "^4.0.3"
 
 react-router-dom@^6.1.0:
   version "6.2.1"
