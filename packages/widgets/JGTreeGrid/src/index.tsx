@@ -4,7 +4,8 @@ import {
   valueofHeight,
   valueofWidth,
   getColumnName,
-  getTableName
+  getTableName,
+  toBoolean
 } from '@v-act/widget-utils'
 import JGTreeGrid, { JGTreeGridProps } from './JGTreeGrid'
 
@@ -24,7 +25,8 @@ export const convert = function (control: Control): JSX.Element {
     tablename: getTableName(control),
     columnname: getColumnName(control),
     labelText: pros.labelText,
-    control: control
+    control: control,
+    readonly: toBoolean(pros.readOnly, false)
   }
   return <JGTreeGrid {...props}></JGTreeGrid>
 }

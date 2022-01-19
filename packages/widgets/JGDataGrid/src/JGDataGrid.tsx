@@ -44,11 +44,10 @@ const JGDataGrid = (props: JGDataGridProps) => {
     top,
     height,
     width,
-    position,
     readonly,
     rowHeight,
+    chooseMode,
     showRowNumbers,
-    // dataHeader,
     ishide,
     tablename,
     control
@@ -63,53 +62,50 @@ const JGDataGrid = (props: JGDataGridProps) => {
       align: 'center',
       width: 50,
       render(text: any, record: any, index: any) {
-        //TODO
         return index + 1
       }
     })
   }
 
-  control.controls.some((item, index: any) => {
+  control.controls.some((item: any, index: any) => {
     dataHeader.push({
       title: item.properties.labelText,
       dataIndex: item.properties.code,
-      // width:index==0? 200 : 100,
       align: 'center',
       key: item.properties.code
     })
   })
 
-  console.log('---data---')
-  let data: any
-  // if (tablename) {
-  //   data = getEntityDatas(tablename, context)
-  // }
+  let data: any = []
+  if (tablename) {
+    data = getEntityDatas(tablename, context)
+  }
 
-  data = [
-    {
-      JGTextBoxColumn2: '请问请问'
-    },
-    {
-      JGTextBoxColumn3: '去问我去饿',
-      JGDateTimePickerColumn6: '2022-01-17',
-      JGFloatBoxColumn7: '2312',
-      JGIntegerBoxColumn8: 43534
-    },
-    {
-      JGTextBoxColumn2: '撒地方撒旦',
-      JGTextBoxColumn4: '阿斯顿发射点',
-      JGDateTimePickerColumn6: '2022-01-13',
-      JGFloatBoxColumn7: '233',
-      JGIntegerBoxColumn8: 65454
-    },
-    {
-      JGTextBoxColumn2: '梵蒂冈的',
-      JGTextBoxColumn3: 'u一天具体有',
-      JGTextBoxColumn4: 'utyru它犹如',
-      JGFloatBoxColumn7: '645',
-      JGIntegerBoxColumn8: 87
-    }
-  ]
+  // data = [
+  //   {
+  //     JGTextBoxColumn2: '请问请问'
+  //   },
+  //   {
+  //     JGTextBoxColumn3: '去问我去饿',
+  //     JGDateTimePickerColumn6: '2022-01-17',
+  //     JGFloatBoxColumn7: '2312',
+  //     JGIntegerBoxColumn8: 43534
+  //   },
+  //   {
+  //     JGTextBoxColumn2: '撒地方撒旦',
+  //     JGTextBoxColumn4: '阿斯顿发射点',
+  //     JGDateTimePickerColumn6: '2022-01-13',
+  //     JGFloatBoxColumn7: '233',
+  //     JGIntegerBoxColumn8: 65454
+  //   },
+  //   {
+  //     JGTextBoxColumn2: '梵蒂冈的',
+  //     JGTextBoxColumn3: 'u一天具体有',
+  //     JGTextBoxColumn4: 'utyru它犹如',
+  //     JGFloatBoxColumn7: '645',
+  //     JGIntegerBoxColumn8: 87
+  //   }
+  // ]
 
   if (Array.isArray(data)) {
     data.some((item: any, index: any) => {
@@ -117,16 +113,16 @@ const JGDataGrid = (props: JGDataGridProps) => {
     })
   }
 
-  console.log('dataHeader')
-  console.log(dataHeader)
-  console.log('data')
-  console.log(data)
-
   let headerControlTemp = []
   if (control.headerControls) {
     console.log('control.headerControls[0].controls')
     console.log(control.headerControls[0].controls)
     headerControlTemp = control.headerControls[0].controls
+  }
+
+  let tableProp: any = {}
+  if (chooseMode === '3') {
+    tableProp.rowSelection = rowSelection
   }
 
   return (
@@ -138,17 +134,17 @@ const JGDataGrid = (props: JGDataGridProps) => {
         height: '100%',
         position: context.position,
         display: ishide ? 'none' : 'block',
-        boxShadow: 'none'
+        boxShadow: 'none',
+        pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
       <Table
+        {...tableProp}
         scroll={{
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')
         }}
-        rowSelection={{ ...rowSelection }}
         bordered
-        // childrenColumnName=""
         columns={dataHeader}
         dataSource={data}
         size="small"

@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
 import { useContext } from '@v-act/widget-context'
 import '../src/JGTreeGrid.css'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
 interface dataTreeHeader {
   title: string
   dataIndex: string
@@ -24,6 +24,7 @@ export interface JGTreeGridProps {
   columnname?: string | null
   control?: any
   labelText?: any
+  readonly?: boolean
 }
 
 const rowSelection = {
@@ -46,7 +47,7 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     tablename,
     control,
     labelText,
-    ...resprops
+    readonly
   } = props
 
   let dataTreeHeader: any = []
@@ -62,126 +63,11 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
   })
 
   console.log('---dataTemp---')
-  let dataTemp: any = [
-    {
-      id: '1',
-      JGTextBoxColumn2: '文件夹-1',
-      IsLeaf: false,
-      key: 0
-    },
-    {
-      id: '2',
-      PID: '1',
-      JGTextBoxColumn2: '文件1-1',
-      IsLeaf: true,
-      JGTextBoxColumn3: '尔特人',
-      JGTextBoxColumn4: '儿童',
-      JGPeriodColumn6: '24234',
-      JGImageColumn7: '234',
-      key: 1
-    },
-    {
-      id: '3',
-      PID: '1',
-      JGTextBoxColumn2: '文件1-2',
-      IsLeaf: true,
-      JGComboBoxColumn9: '234',
-      key: 2
-    },
-    {
-      id: '4',
-      PID: '3',
-      JGTextBoxColumn2: '温柔',
-      IsLeaf: false,
-      JGTextBoxColumn3: '委任为',
-      JGPercentColumn8: '234',
-      key: 3
-    },
-    {
-      id: '5',
-      PID: '4',
-      JGTextBoxColumn2: '有人提议',
-      IsLeaf: false,
-      JGTextBoxColumn4: 'er特瑞特',
-      JGImageColumn7: '认为其二r',
-      key: 4
-    },
-    {
-      id: '6',
-      PID: '5',
-      JGTextBoxColumn2: '体育体育',
-      IsLeaf: true,
-      JGTextBoxColumn3: 'w二',
-      JGPeriodColumn6: '去微软',
-      key: 5
-    },
-    {
-      id: '7',
-      PID: '1',
-      JGTextBoxColumn2: '请问温柔',
-      IsLeaf: true,
-      JGTextBoxColumn3: 'r委任为',
-      JGTextBoxColumn4: 'er他',
-      JGImageColumn7: '234',
-      JGPercentColumn8: '234',
-      key: 6
-    },
-    {
-      id: '8',
-      PID: '1',
-      JGTextBoxColumn2: '温柔',
-      IsLeaf: true,
-      JGTextBoxColumn4: '位',
-      JGComboBoxColumn9: '234',
-      key: 7
-    },
-    {
-      id: '9',
-      PID: '1',
-      JGTextBoxColumn2: 'e让他',
-      IsLeaf: true,
-      JGImageColumn7: '我去人',
-      key: 8
-    },
-    {
-      id: '10',
-      JGTextBoxColumn2: '文件夹-2',
-      IsLeaf: false,
-      key: 9
-    },
-    {
-      id: '11',
-      PID: '10',
-      JGTextBoxColumn2: '文件2-1',
-      IsLeaf: true,
-      JGTextBoxColumn4: '234',
-      JGImageColumn7: '234',
-      JGPercentColumn8: '34',
-      JGComboBoxColumn9: '234',
-      key: 10
-    },
-    {
-      id: '12',
-      PID: '10',
-      JGTextBoxColumn2: '文件2-2',
-      IsLeaf: true,
-      JGPeriodColumn6: '234',
-      key: 11
-    },
-    {
-      id: '13',
-      IsLeaf: true,
-      JGImageColumn7: '234',
-      JGPercentColumn8: '234',
-      JGComboBoxColumn9: '234',
-      key: 12
-    }
-  ]
+  let dataTemp: any = []
 
-  // if (tablename) {
-  //   dataTemp = getEntityDatas(tablename, context)
-  //   // console.log(dataTemp)
-  // }
+  if (tablename) {
+    dataTemp = getEntityDatas(tablename, context)
+  }
 
   dataTemp.some((item2: any, index: any) => {
     item2.key = index
@@ -195,21 +81,6 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     })
   }
 
-  // console.log('dataTreeHeader')
-  // console.log(dataTreeHeader)
-  // console.log('dataTemp')
-  // console.log(dataTemp)
-  // console.log('dataTree')
-  // console.log(dataTree)
-
-  // console.log('toWidth')
-  // console.log(toWidth(width, context, '235px'))
-
-  // console.log('toHeight')
-  // console.log(toHeight(height, context, '26px'))
-
-  console.log(dataTreeHeader)
-
   return (
     <Box
       sx={{
@@ -217,7 +88,8 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         top: top,
         width: toWidth(width, context, '235px'),
         height: toHeight(height, context, '26px'),
-        position: context.position
+        position: context.position,
+        pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
       <Table
@@ -227,7 +99,6 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         }}
         rowSelection={{ ...rowSelection }}
         bordered
-        // childrenColumnName=""
         columns={dataTreeHeader}
         dataSource={dataTree}
         size="small"

@@ -7,6 +7,116 @@ const datagrid = () => {
       {convert({
         type: 'JGDataGrid',
         properties: {
+          code: 'JGDataGrid10',
+          height: '230',
+          labelText: '列表',
+          left: '123',
+          multiHeight: '230px',
+          multiWidth: '480px',
+          percentHeight: '31.2%',
+          percentWidth: '37.7%',
+          rowHeight: '28',
+          tabIndex: '9',
+          top: '63',
+          width: '480'
+        },
+        headerControls: [
+          {
+            type: 'JGToolbar',
+            properties: {
+              code: 'JGToolbar14'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: null,
+                dataMembers: []
+              }
+            ]
+          }
+        ],
+        controls: [
+          {
+            type: 'JGTextBoxColumn',
+            properties: {
+              code: 'JGTextBoxColumn11',
+              labelText: '文本'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'JGDataGrid10',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'JGTextBoxColumn11'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'JGTextBoxColumn',
+            properties: {
+              code: 'JGTextBoxColumn12',
+              labelText: '文本'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'JGDataGrid10',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'JGTextBoxColumn12'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'JGTextBoxColumn',
+            properties: {
+              code: 'JGTextBoxColumn13',
+              labelText: '文本'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'JGDataGrid10',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'JGTextBoxColumn13'
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        dataBindings: [
+          {
+            dataSource: 'JGDataGrid10',
+            dataMembers: [
+              {
+                name: '分组字段',
+                code: 'GroupByFieldName'
+              }
+            ]
+          }
+        ]
+      })}
+
+      {convert({
+        type: 'JGDataGrid',
+        properties: {
           chooseMode: '3',
           code: 'JGDataGrid1',
           height: '230',
