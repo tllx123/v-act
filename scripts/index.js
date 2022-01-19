@@ -5,6 +5,7 @@ import { viteBuild } from './build.js'
 import { createWidget } from './create.js'
 import { viteServ } from './dev.js'
 import { buildEnv } from './env.js'
+import { sync } from './sync.js'
 
 yargs(hideBin(process.argv))
   /**
@@ -41,4 +42,14 @@ yargs(hideBin(process.argv))
     command: 'env',
     handler: async () => buildEnv()
   })
+
+  /**
+   * Sync
+   */
+  .command({
+    command: 'sync',
+    handler: async (argv) => sync(argv.scope, argv.copy)
+  })
+  .option('scope', { alias: 's' })
+  .option('copy', { alias: 'cp' })
   .parse()

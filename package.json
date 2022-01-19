@@ -11,7 +11,8 @@
     "create": "node scripts/index.js create ",
     "dev: jgtreegrid": "node scripts/index.js build -w -s @v-act/jgtreegrid --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
-    "prepare": "husky install && node scripts/index.js env"
+    "prepare": "husky install && node scripts/index.js env",
+    "sync: widgets": "node scripts/index.js sync -s @v-act/jg* --cp ./apps/runtime"
   },
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -58,6 +59,8 @@
     "@types/needle": "^2.5.2",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "@types/react-swipeable-views": "^0.13.1",
+    "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/yargs": "^17.0.7",
     "@vitejs/plugin-react": "^1.1.1",
     "chalk": "^5.0.0",
