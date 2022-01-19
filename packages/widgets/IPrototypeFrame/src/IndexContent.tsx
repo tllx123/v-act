@@ -93,8 +93,18 @@ const IndexContent = function (props: IndexContentProps) {
             selected={selectMenu}
             onChange={(item) => {
               setSelectMenu(item)
-              opened.push(item)
-              setOpened(opened)
+              let isOpend = false
+              for (let i = 0; i < opened.length; i++) {
+                const op = opened[i]
+                if (item.code === op.code) {
+                  isOpend = true
+                  break
+                }
+              }
+              if (!isOpend) {
+                opened.push(item)
+                setOpened(opened)
+              }
             }}
           ></SideMenu>
         </div>
@@ -119,9 +129,10 @@ const IndexContent = function (props: IndexContentProps) {
         }}
         onClose={(items) => {
           if (items && items.length > 0) {
+            let needResetSelected = false
             items.forEach((item) => {
               if (selectMenu && selectMenu.code === item.code) {
-                setSelectMenu(selectMenu)
+                needResetSelected = true
               }
               for (let i = 0; i < opened.length; i++) {
                 const open = opened[i]
@@ -131,7 +142,17 @@ const IndexContent = function (props: IndexContentProps) {
                 }
               }
             })
-            setOpened(opened)
+
+            if (needResetSelected) {
+              let newSelected =
+                opened.length > 0 ? opened[opened.length - 1] : undefined
+              setSelectMenu(newSelected)
+            }
+            const newOpened: MenuData[] = []
+            opened.forEach((open) => {
+              newOpened.push(open)
+            })
+            setOpened(newOpened)
           }
         }}
       ></IndexPortal>
