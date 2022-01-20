@@ -62,6 +62,7 @@ function JGTabPage(props: JGTabPageProps) {
   const { children, index, value } = props
   const context = useContext()
   const styles: CSSProperties = {
+    width: '100%',
     height: '100%'
   }
   return (

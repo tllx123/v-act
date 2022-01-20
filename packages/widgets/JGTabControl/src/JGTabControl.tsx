@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
+import makeStyles from '@mui/styles/makeStyles'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
@@ -62,6 +63,13 @@ interface JGTabControlProps {
   children?: Array<JSX.Element> | null
 }
 
+const useStyles = makeStyles({
+  topIndicator: { top: '0px' },
+  leftIndicator: { left: '0px' },
+  bottomIndicator: { bottom: '0px' },
+  rightIndicator: { right: '0px' }
+})
+
 const JGTabControl = function (props: JGTabControlProps) {
   if (!props.visible) {
     return null
@@ -77,9 +85,20 @@ const JGTabControl = function (props: JGTabControlProps) {
   const alignment = props.alignment
   const isHLayout = alignment == Aligment.Top || alignment == Aligment.Bottom
   let sx = isHLayout ? { height: '38px' } : { width: '110px' }
+  const classes = useStyles()
   const tabHeader = (
     <Tabs
       value={value}
+      classes={{
+        indicator:
+          alignment == Aligment.Bottom
+            ? classes.topIndicator
+            : alignment == Aligment.Right
+            ? classes.leftIndicator
+            : alignment == Aligment.Top
+            ? classes.bottomIndicator
+            : classes.rightIndicator
+      }}
       onChange={handleChange}
       variant="scrollable"
       orientation={isHLayout ? 'horizontal' : 'vertical'}
