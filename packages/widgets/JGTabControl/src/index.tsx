@@ -1,5 +1,9 @@
-import { Control, ControlReact } from '@v-act/schema-types'
-import { toBoolean, toCssAxisVal } from '@v-act/widget-utils'
+import {
+  Control,
+  ControlReact,
+  JGTabControlProperty
+} from '@v-act/schema-types'
+import { toBoolean, toCssAxisVal, toNumber } from '@v-act/widget-utils'
 
 import {
   Aligment,
@@ -19,13 +23,15 @@ const convert = function (
     containerReact: ControlReact
   ) => JSX.Element | null
 ): JSX.Element {
-  const pros = control.properties
+  const pros: JGTabControlProperty = control.properties
   const props: JGTabControlProps = {
     top: toCssAxisVal(pros.top, '0px'),
     left: toCssAxisVal(pros.left, '0px'),
     multiWidth: toCssAxisVal(pros.multiWidth, '200px'),
     multiHeight: toCssAxisVal(pros.multiHeight, '100px'),
     visible: toBoolean(pros.visible, true),
+    selectedIndex: toNumber(pros.selectedIndex, 0),
+    disabled: !toBoolean(pros.enabled, true),
     alignment: pros.alignment ? valueofAligment(pros.alignment) : Aligment.Top,
     scrollbarDir: pros.scrollbarDir
       ? valueofScrollbarDirection(pros.scrollbarDir)

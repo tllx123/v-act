@@ -13,6 +13,7 @@ import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGImageProperty from './properties/JGImageProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
+import type JGTabControlProperty from './properties/JGTabControlProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
 import type Property from './Property'
 import ReactEnum from './ReactEnum'
@@ -130,6 +131,7 @@ export {
   JGImageProperty,
   JGQueryConditionPanelProperty,
   JGReportProperty,
+  JGTabControlProperty,
   JGWebBrowserProperty,
   Property,
   ReactEnum,

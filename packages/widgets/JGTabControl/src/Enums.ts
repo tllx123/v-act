@@ -5,30 +5,30 @@ enum Aligment {
   /**
    * 顶部
    */
-  Top = 'top',
+  Top = 'Top',
   /**
    * 左边
    */
-  Left = 'left',
+  Left = 'Left',
   /**
    * 底部
    */
-  Bottom = 'bottom',
+  Bottom = 'Bottom',
   /**
    * 右边
    */
-  Right = 'right'
+  Right = 'Right'
 }
 
 const valueofAligment = function (val: string): Aligment {
   switch (val) {
-    case 'top':
+    case 'Top':
       return Aligment.Top
-    case 'bottom':
+    case 'Bottom':
       return Aligment.Bottom
-    case 'left':
+    case 'Left':
       return Aligment.Left
-    case 'right':
+    case 'Right':
       return Aligment.Right
     default:
       throw Error(
@@ -100,9 +100,9 @@ const valueofTabAppearance = function (val: string): TabAppearance {
 
 export {
   Aligment,
-  valueofAligment,
   ScrollbarDirection,
-  valueofScrollbarDirection,
   TabAppearance,
+  valueofAligment,
+  valueofScrollbarDirection,
   valueofTabAppearance
 }

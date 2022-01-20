@@ -3,11 +3,13 @@ import React from 'react'
 import { Property } from 'csstype'
 
 import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth } from '@v-act/widget-utils'
+
 import { Aligment, ScrollbarDirection, TabAppearance } from './Enums'
 import { JGTabPage } from './JGTabPage'
 
@@ -51,6 +53,12 @@ interface JGTabControlProps {
    */
   tabAppearance?: TabAppearance
 
+  disabled?: boolean
+  /**
+   * 是否显示页签头
+   */
+  tabBarVisible?: boolean
+
   children?: Array<JSX.Element> | null
 }
 
@@ -58,40 +66,40 @@ const JGTabControl = function (props: JGTabControlProps) {
   if (!props.visible) {
     return null
   }
+  const tabBarVisible = props.tabBarVisible
+  const disabled = props.disabled
   const context = useContext()
   const index = props.selectedIndex || 0
   const [value, setValue] = React.useState(index)
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
-  return (
-    <Box
-      sx={{
-        position: context.position,
-        left: props.left,
-        top: props.top,
-        width: toWidth(props.multiHeight, context, '235px'),
-        height: toHeight(props.multiWidth, context, '26px')
-      }}
+  const alignment = props.alignment
+  const isHLayout = alignment == Aligment.Top || alignment == Aligment.Bottom
+  let sx = isHLayout ? { height: '38px' } : { width: '110px' }
+  const tabHeader = (
+    <Tabs
+      value={value}
+      onChange={handleChange}
+      variant="scrollable"
+      orientation={isHLayout ? 'horizontal' : 'vertical'}
+      sx={sx}
     >
-      <Tabs
-        orientation={
-          props.alignment == Aligment.Top || props.alignment == Aligment.Bottom
-            ? 'horizontal'
-            : 'vertical'
-        }
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-      >
-        {props.children
-          ? props.children.map((child) => {
-              return (
-                <Tab key={child.props.code} label={child.props.labelText}></Tab>
-              )
-            })
-          : null}
-      </Tabs>
+      {props.children
+        ? props.children.map((child) => {
+            return (
+              <Tab
+                key={child.props.code}
+                disabled={disabled}
+                label={child.props.labelText}
+              ></Tab>
+            )
+          })
+        : null}
+    </Tabs>
+  )
+  const tabPanel = (
+    <>
       {props.children
         ? props.children.map((child, i) => {
             return (
@@ -106,8 +114,81 @@ const JGTabControl = function (props: JGTabControlProps) {
             )
           })
         : null}
-    </Box>
+    </>
   )
+  if (!tabBarVisible) {
+    return (
+      <Box
+        sx={{
+          position: context.position,
+          left: props.left,
+          top: props.top,
+          width: toWidth(props.multiHeight, context, '235px'),
+          height: toHeight(props.multiWidth, context, '26px')
+        }}
+      >
+        {tabPanel}
+      </Box>
+    )
+  } else if (alignment == Aligment.Top) {
+    return (
+      <Stack
+        sx={{
+          position: context.position,
+          left: props.left,
+          top: props.top,
+          width: toWidth(props.multiHeight, context, '235px'),
+          height: toHeight(props.multiWidth, context, '26px')
+        }}
+      >
+        {[tabHeader, tabPanel]}
+      </Stack>
+    )
+  } else if (alignment == Aligment.Bottom) {
+    return (
+      <Stack
+        sx={{
+          position: context.position,
+          left: props.left,
+          top: props.top,
+          width: toWidth(props.multiHeight, context, '235px'),
+          height: toHeight(props.multiWidth, context, '26px')
+        }}
+      >
+        {[tabPanel, tabHeader]}
+      </Stack>
+    )
+  } else if (alignment == Aligment.Left) {
+    return (
+      <Box
+        sx={{
+          position: context.position,
+          display: 'flex',
+          left: props.left,
+          top: props.top,
+          width: toWidth(props.multiHeight, context, '235px'),
+          height: toHeight(props.multiWidth, context, '26px')
+        }}
+      >
+        {[tabHeader, tabPanel]}
+      </Box>
+    )
+  } else {
+    return (
+      <Box
+        sx={{
+          position: context.position,
+          display: 'flex',
+          left: props.left,
+          top: props.top,
+          width: toWidth(props.multiHeight, context, '235px'),
+          height: toHeight(props.multiWidth, context, '26px')
+        }}
+      >
+        {[tabPanel, tabHeader]}
+      </Box>
+    )
+  }
 }
 
 JGTabControl.defaultProps = {
@@ -119,7 +200,8 @@ JGTabControl.defaultProps = {
   visible: true,
   alignment: Aligment.Top,
   scrollbarDir: ScrollbarDirection.Both,
-  tabAppearance: TabAppearance.Line
+  tabAppearance: TabAppearance.Line,
+  tabBarVisible: true
 }
 
 export default JGTabControl
