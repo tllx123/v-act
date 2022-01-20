@@ -8,35 +8,33 @@ import {
   valueofWidth
 } from '@v-act/widget-utils'
 
-import { JGPeriod, JGPeriodProps } from './JGPeriod'
+import { JGFloatBoxProps, JGFloatRangeBox } from './JGFloatRangeBox'
 
 const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
-  console.log(control)
   const pros = control.properties
-  const props: JGPeriodProps = {
+  const props: JGFloatBoxProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '235px'),
     height: valueofHeight(pros.multiHeight, '26px'),
-    multiWidth: valueofWidth(pros.multiWidth, '235px'),
-    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText || '文本',
-    isMust: toBoolean(pros.isMust, false),
+    isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth),
     labelVisible: toBoolean(pros.labelVisible, true),
+    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiHeight: valueofHeight(pros.multiHeight, '26px'),
     disabled: !toBoolean(pros.enabled, true),
     tableName: getTableName(control),
-    columnName: getColumnName(control),
-    periodType: pros.periodType || 'years'
+    columnName: getColumnName(control)
   }
-  return <JGPeriod {...props}></JGPeriod>
+  return <JGFloatRangeBox {...props}></JGFloatRangeBox>
 }
 
-export default JGPeriod
+export default JGFloatRangeBox
 
-export { convert, JGPeriod }
+export { convert, JGFloatRangeBox }
