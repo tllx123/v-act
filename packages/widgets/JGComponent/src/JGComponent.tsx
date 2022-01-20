@@ -15,6 +15,7 @@ interface JGComponentProps {
   top?: Property.Top
   width?: Property.Width
   entities?: Entities
+  padding?: Property.Padding
   children?: JSX.Element | JSX.Element[] | null
 }
 
@@ -35,7 +36,8 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
-        //padding: '16px', //窗体内间距
+        padding:
+          typeof inProps.padding !== 'undefined' ? inProps.padding : '16px', //窗体内间距
         height: toHeight(inProps.height, context, ReactEnum.Space),
         bottom: inProps.bottom
       }

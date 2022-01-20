@@ -14,4 +14,11 @@ interface MenuData {
   children?: MenuData[]
 }
 
-export { getIndexCode, isIndex, type MenuData }
+type ListItem = {
+  code: string
+  type: string
+  data: string
+  title: string
+}
+
+export { getIndexCode, isIndex, type ListItem, type MenuData }

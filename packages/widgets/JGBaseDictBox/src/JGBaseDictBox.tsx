@@ -2,7 +2,7 @@ import React, { CSSProperties, forwardRef } from 'react'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { FormControl, IconButton, InputAdornment } from '@mui/material'
+import { IconButton, InputAdornment } from '@mui/material'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -105,13 +105,13 @@ const CssOutlinedInput = forwardRef(function (
 
 const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   const context = useContext()
+
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = toLabelWidth(props.labelWidth, context, 94)
 
   //触发点击事件
   const myFun = () => {
-    console.log('1111111')
     props.click && props.click()
   }
 
@@ -164,20 +164,18 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
         {props.labelText}
       </JGInputLabel>
 
-      <FormControl variant="filled">
-        <CssOutlinedInput
-          style={inputStyles}
-          readOnly={true}
-          disabled={isStart}
-          endAdornment={
-            <InputAdornment style={InputAdornmentSty} position="end">
-              <IconButton style={openStyle} disabled={isStart} onClick={myFun}>
-                <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
-              </IconButton>
-            </InputAdornment>
-          }
-        />
-      </FormControl>
+      <CssOutlinedInput
+        style={inputStyles}
+        readOnly={true}
+        disabled={isStart}
+        endAdornment={
+          <InputAdornment style={InputAdornmentSty} position="end">
+            <IconButton style={openStyle} disabled={isStart} onClick={myFun}>
+              <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
     </div>
   )
 }

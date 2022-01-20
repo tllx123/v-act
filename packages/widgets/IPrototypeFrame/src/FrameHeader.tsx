@@ -13,18 +13,11 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 
-import { getIndexCode } from './utils'
+import { getIndexCode, ListItem } from './utils'
 
 enum ListItemType {
   url = 'url',
   index = 'index'
-}
-
-type ListItem = {
-  code: string
-  type: string
-  data: string
-  title: string
 }
 
 interface FrameHeaderProps {
@@ -80,7 +73,11 @@ const FrameHeader = function (props: FrameHeaderProps) {
             marginLeft: '10px',
             verticalAlign: 'middle'
           }}
-          src={props.logo}
+          src={
+            props.logo
+              ? props.logo
+              : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAABACAYAAABx/hm5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA0ppVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQ1IDc5LjE2MzQ5OSwgMjAxOC8wOC8xMy0xNjo0MDoyMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MjU3RjlCRDQ2RjA3MTFFQTk0RkZFQzVGMTI1ODlGQkUiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MjU3RjlCRDM2RjA3MTFFQTk0RkZFQzVGMTI1ODlGQkUiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKFdpbmRvd3MpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpkZTBkZmJjNi1iMDMwLTAzNDMtOWM1ZC1iOThhODM4OTBhNjMiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpkZTBkZmJjNi1iMDMwLTAzNDMtOWM1ZC1iOThhODM4OTBhNjMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz79JVCqAAAC2klEQVR42uzcjW3iQBCG4RBdA0kJtEALXAlugRbSAimBlJAWSAm5EqAEKMFnS0ayot31D6wh8LzSKMjsDKNkPr5dZDIry/IJwDQ8+xUABAcQHACCAwgOAMEBBAcQHACCAwgOAMEBBAcQHACCAwgOAMEBBAeA4IBfLLhdFWUkVrPZ7GlMVBRVfFZxCNStr32Prd/U3gZqH5rry6n7xYNQ/0+TM2NXxlmN6Keo4lAO461n7bcBtb+reJmq3wv8HcQviOcbE/9n4xI/B/191lA/DqSuq9xtR+36+XWodhWvTe3XKj6a64vGla7SLzhcVoer1m4iNT4HrN3GxBZZXyScMPr6Ofr17v8YcROCa7ZlMZaB9fPE+qLnsHe5V3ubuMjdr2G0pZyS6Bms2pV9Ba7tqx/HSMq6Nej18MdE/9XR07/W49UU/cKnlFNsaefNeSnEPpEaG+B5y2VSw9wluPZrLyfqFwSXnaLn0A95btkhjJ8O1iW899z9GsXH4M8N9JBj2BaJreRpm3fssaX8G9gi5uoXBDcJ85F5+zNq7ruKV0L7uKF+YUs5CceReS9XGuJz+gXBXd3hbnGA5wSHe3W47FvV+hPCvvdjGRfcg+CO6uJRmOV+4+66E77r9WP55/Y9pm6dc61+weFOJL+e0yP/O5GfusF3k8jbddTdJepuE3k5+wWH43AcDvfmcKuRjpFyonVH3fIMh8vVLzjc73W4sW7E4XDXDtcMaJerhDjEzkOtoU+dm4oxDpe5X3C4vA43xuWGrO9yrKEOl6tfDsjhpjrDnQY05kahb1zH1m4CIlpG1h4GOlE5Ub/gcHkd7lLukvO8N9S5hvbL4TjcJRyu711Tm9YAFiGXad1eFXKqt5Swm+fmsbNXpG4ZcKZQ3Yv3Cw4H4EYcDgDBAQQHEBwAggMIDgDBAQQHgOAAggMIDgDBAQQHgOAAggMIDgDBAQQHgOAAggNw4r8AAwBQHENFS6dXWwAAAABJRU5ErkJggg=='
+          }
         />
       </div>
       <div
@@ -156,6 +153,7 @@ const FrameHeader = function (props: FrameHeaderProps) {
           style={{
             height: '40px',
             width: '100%',
+            marginTop: '10px',
             paddingInlineStart: '0px'
           }}
         >
@@ -335,4 +333,4 @@ const FrameHeader = function (props: FrameHeaderProps) {
 
 export default FrameHeader
 
-export { FrameHeader, type ListItem, ListItemType }
+export { FrameHeader }

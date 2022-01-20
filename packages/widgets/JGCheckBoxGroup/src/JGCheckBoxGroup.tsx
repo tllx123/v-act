@@ -319,7 +319,9 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
 
   constData.forEach((item) => {
     item.selected =
-      item.selected.toString().toLocaleLowerCase() === 'true' ? true : false
+      item.selected && item.selected.toString().toLocaleLowerCase() === 'true'
+        ? true
+        : false
 
     //如果有当前选项，所有待选项默认值都改成false
     value.length > 0 && (item.selected = false)
