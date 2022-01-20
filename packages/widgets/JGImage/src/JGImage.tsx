@@ -13,6 +13,7 @@ export interface JGImageProps extends CardMediaProps {
   right?: Property.Right
   top?: Property.Top
   width?: Property.Width
+  click?: Function
 }
 
 const JGImageRoot = styled(CardMedia, {
@@ -39,7 +40,15 @@ const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
       bottom: inProps.bottom
     }
   }
-  return <JGImageRoot {...props} ref={ref} />
+
+  const clickHd = inProps.click
+  const clickHandler = () => {
+    if (clickHd) {
+      clickHd.apply(this)
+    }
+  }
+
+  return <JGImageRoot {...props} ref={ref} onClick={clickHandler} />
 })
 
 JGImage.defaultProps = {
