@@ -1,17 +1,18 @@
 import toTree from 'array-to-tree'
 import { Property } from 'csstype'
-
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { TreeItem, TreeView, TreeViewPropsBase } from '@mui/lab'
 import Box from '@mui/material/Box'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
+import {
+  toHeight,
+  toWidth,
+  getEntityDatas,
+  getCompEvent
+} from '@v-act/widget-utils'
 import '../src/JGTreeView.css'
-import { display } from '@mui/system'
-
-import FolderIcon from '@mui/icons-material/Folder'
 export interface JGTreeViewProps extends TreeViewPropsBase {
   left?: Property.Left
   top?: Property.Top
@@ -94,6 +95,11 @@ const JGTreeView = (props: JGTreeViewProps) => {
     })
   }
 
+  let clickProps = () => {}
+
+  if (getCompEvent(control).hasOwnProperty('OnClick')) {
+    clickProps = getCompEvent(control).OnClick
+  }
   return (
     <Box
       sx={{
@@ -122,11 +128,13 @@ const JGTreeView = (props: JGTreeViewProps) => {
         {labelText}
       </Box>
       <TreeView
+        onNodeSelect={clickProps}
         sx={{
           width: '100%',
           height: 'calc(100% - 30px) ',
           overflow: 'auto'
         }}
+        // onNodeFocus= {()=>{console.log(123456)}}
         defaultCollapseIcon={<ExpandMoreIcon />}
         defaultExpandIcon={<ChevronRightIcon />}
         {...resprops}

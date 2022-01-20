@@ -26,7 +26,8 @@ const convert = function (control: Control): JSX.Element {
     bodercolor: pros.boderColor,
     visible: toBoolean(pros.visible, true),
     tableName: getTableName(control),
-    columnName: getColumnName(control)
+    columnName: getColumnName(control),
+    control: control
   }
   return <JGComponentContainer {...props}></JGComponentContainer>
 }

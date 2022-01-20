@@ -126,7 +126,6 @@ const datagrid = () => {
           multiWidth: '480px',
           percentHeight: '31.2%',
           percentWidth: '37.7%',
-          readOnly: 'True',
           rowHeight: '28',
           showRowNumbers: 'False',
           tabIndex: '0',
