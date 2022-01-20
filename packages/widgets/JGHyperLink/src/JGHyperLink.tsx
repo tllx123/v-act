@@ -58,6 +58,15 @@ interface JGHyperLinkProps extends InputUnstyledProps {
    * 字段编号
    */
   columnName?: string | null
+  /**
+   * 提醒文字
+   */
+  placeholder?: string
+
+  /**
+   * 点击事件
+   */
+  click?: Function
 }
 
 const StyleSpanElement = styled('span')`
@@ -71,13 +80,15 @@ const StyleSpanElement = styled('span')`
     color: #0960c3;
   }
 `
-const myFun = function () {
-  console.log('你点击我了')
-}
 
 const JGHyperLink = function (props: JGHyperLinkProps) {
   const context = useContext()
   let value: FieldValue = ''
+
+  //点击事件
+  const myFun = function () {
+    props.click && props.click()
+  }
 
   if (props.tableName && props.columnName) {
     value = getFieldValue(props.tableName, props.columnName, context)
@@ -123,7 +134,9 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
         {props.labelText}
       </JGInputLabel>
       <div style={divStyles}>
-        <StyleSpanElement onClick={myFun}>{value}</StyleSpanElement>
+        <StyleSpanElement placeholder={props.placeholder} onClick={myFun}>
+          {value}
+        </StyleSpanElement>
       </div>
     </div>
   )
@@ -137,7 +150,8 @@ JGHyperLink.defaultProps = {
   labelWidth: 94,
   labelText: '链接',
   labelVisible: true,
-  enabled: false
+  enabled: false,
+  placeholder: ''
 }
 
 export default JGHyperLink
