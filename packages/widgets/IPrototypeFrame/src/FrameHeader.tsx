@@ -1,28 +1,36 @@
-import { type MouseEvent, useState, type SyntheticEvent } from 'react'
-import FormatIndentDecreaseIcon from '@mui/icons-material/FormatIndentDecrease'
-import SearchIcon from '@mui/icons-material/Search'
-import ViewComfyIcon from '@mui/icons-material/ViewComfy'
+import { type MouseEvent, useState } from 'react'
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import CropFreeIcon from '@mui/icons-material/CropFree'
+import FormatIndentDecreaseIcon from '@mui/icons-material/FormatIndentDecrease'
+import Logout from '@mui/icons-material/Logout'
+import SearchIcon from '@mui/icons-material/Search'
+import Settings from '@mui/icons-material/Settings'
 import TokenIcon from '@mui/icons-material/Token'
-import Menu from '@mui/material/Menu'
-import MenuItem from '@mui/material/MenuItem'
+import ViewComfyIcon from '@mui/icons-material/ViewComfy'
 import Divider from '@mui/material/Divider'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import Settings from '@mui/icons-material/Settings'
-import Logout from '@mui/icons-material/Logout'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import Tab from '@mui/material/Tab'
-import Tabs from '@mui/material/Tabs'
-import { borderBottom } from '@mui/system'
+import Menu from '@mui/material/Menu'
+import MenuItem from '@mui/material/MenuItem'
 
-interface ListItem {
+import { getIndexCode } from './utils'
+
+enum ListItemType {
+  url = 'url',
+  index = 'index'
+}
+
+type ListItem = {
   code: string
+  type: string
+  data: string
   title: string
 }
 
 interface FrameHeaderProps {
   logo?: string
   list?: ListItem[]
+  onMenuChange?: (item: ListItem) => void
 }
 
 const FrameHeader = function (props: FrameHeaderProps) {
@@ -35,19 +43,22 @@ const FrameHeader = function (props: FrameHeaderProps) {
     setAnchorEl(null)
   }
   const list = props.list ? props.list : []
-  const homeCode = '_$_index'
-  list.push({
-    code: homeCode,
-    title: '首页'
-  })
-  list.push({
-    code: '1',
-    title: 'test'
-  })
-  const [tabVal, setTabVal] = useState(homeCode)
-  const handleTabChange = (newValue: string) => {
-    setTabVal(newValue)
+  const homeCode = getIndexCode()
+  const menus: ListItem[] = [
+    {
+      code: homeCode,
+      type: ListItemType.index,
+      data: '',
+      title: '首页'
+    }
+  ]
+  if (props.list) {
+    props.list.forEach((item) => {
+      menus.push(item)
+    })
   }
+  const [tabVal, setTabVal] = useState(homeCode)
+  const onMenuChange = props.onMenuChange
   return (
     <div
       style={{
@@ -148,7 +159,7 @@ const FrameHeader = function (props: FrameHeaderProps) {
             paddingInlineStart: '0px'
           }}
         >
-          {list.map((item) => {
+          {menus.map((item) => {
             return (
               <li style={{ display: 'inline-block' }} key={item.code}>
                 <div
@@ -162,6 +173,9 @@ const FrameHeader = function (props: FrameHeaderProps) {
                   }}
                   onClick={() => {
                     setTabVal(item.code)
+                    if (onMenuChange) {
+                      onMenuChange(item)
+                    }
                   }}
                 >
                   <span style={{ lineHeight: '40px', fontSize: '14px' }}>
@@ -320,3 +334,5 @@ const FrameHeader = function (props: FrameHeaderProps) {
 }
 
 export default FrameHeader
+
+export { FrameHeader, type ListItem, ListItemType }
