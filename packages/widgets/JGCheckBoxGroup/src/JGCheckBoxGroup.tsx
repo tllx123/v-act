@@ -318,7 +318,6 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   }
 
   constData.forEach((item) => {
-    console.log(item.selected, 'item.selected')
     item.selected =
       item.selected && item.selected.toString().toLocaleLowerCase() === 'true'
         ? true
