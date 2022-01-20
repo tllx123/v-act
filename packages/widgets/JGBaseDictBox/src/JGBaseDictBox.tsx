@@ -61,6 +61,11 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
    * 使能
    */
   enabled?: boolean
+
+  /**
+   * 点击事件
+   */
+  click?: Function
 }
 
 const StyledInputElement = styled('input')`
@@ -98,15 +103,17 @@ const CssOutlinedInput = forwardRef(function (
   )
 })
 
-const myFun = () => {
-  console.log('aaaaaaaa')
-}
-
 const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = toLabelWidth(props.labelWidth, context, 94)
+
+  //触发点击事件
+  const myFun = () => {
+    console.log('1111111')
+    props.click && props.click()
+  }
 
   //使能与只读两个位true时候disabled 才为true
   let isStart: boolean = false
