@@ -3,6 +3,7 @@ import React, { CSSProperties, forwardRef, useState } from 'react'
 import { Property } from 'csstype'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
+import Box from '@mui/material/Box'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -87,30 +88,17 @@ interface JGFloatBoxProps extends InputUnstyledProps {
 }
 
 const StyledInputElement = styled('input')`
-  border: 1px solid #dcdee2;
   color: #333;
-  border-radius: 4px;
-  padding: 0 4px;
   width: 100%;
   outline: none;
   height: 100%;
-  &:hover {
-    border-color: #356abb;
-  }
-
-  &:focus {
-    border-color: #356abb;
-    background: #fff;
-    box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3);
-  }
+  border: 0;
+  text-align: center;
   &::-webkit-outer-spin-button {
     -webkit-appearance: none;
   }
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
-  }
-  [disabled] {
-    background: #f6f7fb;
   }
 `
 
@@ -137,7 +125,8 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
     value = getFieldValue(props.tableName, props.columnName, context)
     value = isNullOrUnDef(value) ? '' : value
   }
-  const [inputVal, setInputVal] = useState(value)
+  const [inputStartVal, setInputStart] = useState(value)
+  const [inputEndVal, setInputEndVal] = useState(value)
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -159,22 +148,41 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
     width: '100%',
     height: height
   }
-  const isInteger = (e) => {
-    if (props.inputType === 'integer') {
-      let filterVal = e.target.value.replace(/[^(-?\d)]/gi, '')
-      if (
-        filterVal.lastIndexOf('-') !== -1 &&
-        filterVal.lastIndexOf('-') !== 0
-      ) {
-        filterVal = '-' + filterVal.replace(/[^\d]/gi, '')
-      }
-      setInputVal(filterVal)
-    } else {
-      setInputVal(e.target.value)
+  const filterForInteger = (val: string) => {
+    let filterVal = val.replace(/[^(-?\d)]/gi, '')
+    if (filterVal.lastIndexOf('-') !== -1 && filterVal.lastIndexOf('-') !== 0) {
+      filterVal = '-' + filterVal.replace(/[^\d]/gi, '')
     }
+    return filterVal
   }
-  const handleChange = (e) => {
-    isInteger(e)
+  const handleChangeStart = (e) => {
+    let val = filterForInteger(e.target.value)
+    setInputStart(val)
+  }
+  const handleChangeEnd = (e) => {
+    let val = filterForInteger(e.target.value)
+    setInputEndVal(val)
+  }
+
+  const inputWrapSx = {
+    'display': 'flex',
+    'alignItems': 'center',
+    'border': '1px solid #dcdee2',
+    'backgroundColor': '#fff',
+    'fontSize': '12px',
+    'borderRadius': '4px',
+    'padding': '0 4px',
+    '&:hover': {
+      borderColor: '#356abb'
+    },
+    '&:focus': {
+      borderColor: '#356abb',
+      background: ' #fff',
+      boxShadow: '0 0 0 2px rgba(53, 106, 187, 0.3)'
+    },
+    '[disabled]': {
+      background: '#f6f7fb'
+    }
   }
   return (
     <div style={wrapStyles} value-show={value}>
@@ -186,14 +194,25 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
       >
         {props.labelText}
       </JGInputLabel>
-      <CustomInput
-        style={inputStyles}
-        placeholder={props.placeholder}
-        type={props.inputType === 'integer' ? 'text' : props.inputType}
-        onChange={(e) => handleChange(e)}
-        value={inputVal}
-        disabled={props.disabled}
-      />
+      <Box sx={inputWrapSx}>
+        <CustomInput
+          style={inputStyles}
+          placeholder={props.placeholder}
+          type={props.inputType === 'integer' ? 'text' : props.inputType}
+          onChange={(e) => handleChangeStart(e)}
+          value={inputStartVal}
+          disabled={props.disabled}
+        />
+        <Box>~</Box>
+        <CustomInput
+          style={inputStyles}
+          placeholder={'结束值'}
+          type={props.inputType === 'integer' ? 'text' : props.inputType}
+          onChange={(e) => handleChangeEnd(e)}
+          value={inputEndVal}
+          disabled={props.disabled}
+        />
+      </Box>
     </div>
   )
 }
@@ -205,7 +224,7 @@ JGFloatRangeBox.defaultProps = {
   multiWidth: '235px',
   labelWidth: 94,
   labelText: '文本',
-  placeholder: '开始值 ~ 结束值',
+  placeholder: '开始值',
   isMust: false,
   visible: true,
   labelVisible: true,
