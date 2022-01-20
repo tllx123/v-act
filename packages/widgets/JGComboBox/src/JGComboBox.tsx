@@ -307,7 +307,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
     if (selected) {
       return <>{selected}</>
     }
-    return <span style={{ color: '#999999' }}>这个是提示</span>
+    return <span style={{ color: '#999999' }}>{props.placeholder || ''}</span>
   }
 
   return (
