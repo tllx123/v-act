@@ -127,6 +127,7 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
   }
   const [inputStartVal, setInputStart] = useState(value)
   const [inputEndVal, setInputEndVal] = useState(value)
+  const [focusVal, setFocusVal] = useState(false)
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -163,7 +164,6 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
     let val = filterForInteger(e.target.value)
     setInputEndVal(val)
   }
-
   const inputWrapSx = {
     'display': 'flex',
     'alignItems': 'center',
@@ -184,6 +184,11 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
       background: '#f6f7fb'
     }
   }
+  const focusStyle: CSSProperties = {
+    borderColor: '#356abb',
+    background: ' #fff',
+    boxShadow: '0 0 0 2px rgba(53, 106, 187, 0.3)'
+  }
   return (
     <div style={wrapStyles} value-show={value}>
       <JGInputLabel
@@ -194,7 +199,7 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
       >
         {props.labelText}
       </JGInputLabel>
-      <Box sx={inputWrapSx}>
+      <Box sx={inputWrapSx} style={focusVal ? focusStyle : void 0}>
         <CustomInput
           style={inputStyles}
           placeholder={props.placeholder}
@@ -202,6 +207,8 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
           onChange={(e) => handleChangeStart(e)}
           value={inputStartVal}
           disabled={props.disabled}
+          onFocus={() => setFocusVal(true)}
+          onBlur={() => setFocusVal(false)}
         />
         <Box>~</Box>
         <CustomInput
@@ -211,6 +218,8 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
           onChange={(e) => handleChangeEnd(e)}
           value={inputEndVal}
           disabled={props.disabled}
+          onFocus={() => setFocusVal(true)}
+          onBlur={() => setFocusVal(false)}
         />
       </Box>
     </div>
