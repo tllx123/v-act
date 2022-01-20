@@ -3,15 +3,18 @@ import {
   toBoolean,
   toNumber,
   valueofHeight,
-  valueofWidth
+  valueofWidth,
+  getColumnName,
+  getTableName
 } from '@v-act/widget-utils'
 
 import JGTreeView, { JGTreeViewProps } from './JGTreeView'
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
-): JSX.Element {
+const convert = function (control: Control): JSX.Element {
+  console.log(control.properties.labelText)
+  console.log('control')
+  console.log(control)
+
   const pros = control.properties
   const props: JGTreeViewProps = {
     top: toNumber(pros.top) + 'px',
@@ -19,7 +22,11 @@ const convert = function (
     width: valueofWidth(pros.multiWidth, '200px'),
     height: valueofHeight(pros.multiHeight, '200px'),
     disable: !toBoolean(pros.enabled, true),
-    readonly: toBoolean(pros.readOnly, false)
+    readonly: toBoolean(pros.readOnly, false),
+    tablename: getTableName(control),
+    columnname: getColumnName(control),
+    labelText: pros.labelText,
+    control: control
   }
   return <JGTreeView {...props}></JGTreeView>
 }

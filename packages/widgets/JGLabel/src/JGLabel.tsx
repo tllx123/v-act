@@ -13,6 +13,7 @@ export interface JGLabelProps extends TypographyProps {
   right?: Property.Right
   top?: Property.Top
   width?: Property.Width
+  click?: Function
 }
 
 const JGLabelRoot = styled(Typography, {
@@ -43,8 +44,16 @@ const JGLabel = forwardRef<HTMLElement, JGLabelProps>((inProps, ref) => {
       bottom: inProps.bottom
     }
   }
+
+  const clickHd = inProps.click
+  const clickHandler = () => {
+    if (clickHd) {
+      clickHd.apply(this)
+    }
+  }
+
   return (
-    <JGLabelRoot {...props} ref={ref}>
+    <JGLabelRoot {...props} ref={ref} onClick={clickHandler}>
       {inProps.children}
     </JGLabelRoot>
   )

@@ -5,8 +5,11 @@ import { normalizePath } from 'vite'
 
 import { getPackages } from '@lerna/project'
 
+import { viteBuild } from './build.js'
+
 export async function buildEnv() {
   await buildTsConfigPaths()
+  await buildCoreDependencies()
 }
 
 export async function buildTsConfigPaths() {
@@ -32,4 +35,17 @@ export async function buildTsConfigPaths() {
     })
 
   fs.writeFileSync(tscPath, formatedTsc)
+}
+
+export async function buildCoreDependencies() {
+  await viteBuild(
+    [
+      '@v-act/schema-types',
+      '@v-act/widget-context',
+      '@v-act/widget-utils',
+      '@v-act/component-schema-utils',
+      '@v-act/window-schema-utils'
+    ],
+    './apps/runtime'
+  )
 }

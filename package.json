@@ -9,8 +9,10 @@
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
+    "dev: jgtreegrid": "node scripts/index.js build -w -s @v-act/jgtreegrid --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
-    "prepare": "husky install && node scripts/index.js env"
+    "prepare": "husky install && node scripts/index.js env",
+    "sync: widgets": "node scripts/index.js sync -s @v-act/jg* --cp ./apps/runtime"
   },
   "dependencies": {
     "@emotion/react": "^11.7.0",
@@ -21,6 +23,7 @@
     "@mui/styles": "^5.2.3",
     "@mui/system": "^5.2.3",
     "@types/qrcode.react": "^1.0.2",
+    "@types/react-resizable": "^1.7.4",
     "antd": "^4.17.4",
     "date-fns": "^2.27.0",
     "echarts": "^5.2.2",
@@ -34,6 +37,7 @@
     "react-cropper": "^2.1.8",
     "react-dom": "^17.0.2",
     "react-iframe": "^1.8.0",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^6.1.0",
     "react-swipeable-views": "^0.14.0",
     "slate": "^0.72.3",
@@ -55,6 +59,8 @@
     "@types/needle": "^2.5.2",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "@types/react-swipeable-views": "^0.13.1",
+    "@types/react-swipeable-views-utils": "^0.13.3",
     "@types/yargs": "^17.0.7",
     "@vitejs/plugin-react": "^1.1.1",
     "chalk": "^5.0.0",

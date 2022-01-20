@@ -93,7 +93,9 @@
       "@v-act/jgcontext": ["packages/widgets/JGContext/src"],
       "v3-pack-center-template": ["packages/v3dev/runtime-next/src"],
       "@v-act/component-schema-utils": ["packages/utils/v-act-component-schema-utils/src"],
-      "@v-act/window-schema-utils": ["packages/utils/v-act-window-schema-utils/src"]
+      "@v-act/window-schema-utils": ["packages/utils/v-act-window-schema-utils/src"],
+      "@v-act/iprototypelogin": ["packages/widgets/IPrototypeLogin/src"],
+      "@v-act/iprototypeframe": ["packages/widgets/IPrototypeFrame/src"]
     }
   }
 }

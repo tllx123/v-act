@@ -83,6 +83,8 @@ const Home = () => {
       <Link href="/JGChart">JGChart</Link> <br />
       <Link href="/JGComboBox">JGComboBox</Link> <br />
       <Link href="/JGCollapse">JGCollapse</Link> <br />
+      <Link href="/IPrototypeLogin">IPrototypeLogin</Link> <br />
+      <Link href="/IPrototypeFrame">IPrototypeFrame</Link> <br />
     </>
   )
 }

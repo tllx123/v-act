@@ -24,6 +24,14 @@ const convert = function (
     // visible: toBoolean(pros.visible, true),
     labelWidth: toNumber(pros.labelWidth)
   }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OpenModuleAction
+  }
   return <JGBaseDictBox {...props}></JGBaseDictBox>
 }
 

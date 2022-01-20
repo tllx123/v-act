@@ -1,9 +1,11 @@
 .next
 
 pages/*
+public/resources/*
+src/componentdefs/*
 v3dev/*
 
-!pages/api
-!pages/intro
 !pages/_app.tsx
+!pages/api
 !pages/index.tsx
+!pages/intro

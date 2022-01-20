@@ -76,6 +76,11 @@ export async function viteBuild(scopes, copyToPath, watch) {
             if (copyToPath) {
               const distDir = path.resolve(`${copyToPath}/node_modules/${name}`)
               fs.copySync(root, distDir)
+              const nodemodules = path.resolve(`${distDir}/node_modules/`)
+              fs.rmSync(nodemodules, {
+                recursive: true,
+                force: true
+              })
             }
           }
         }
@@ -89,7 +94,6 @@ export async function viteBuild(scopes, copyToPath, watch) {
   if (copyToPath) {
     filterPackages(packages, [
       '@v-act/schema-types',
-      '@v-act/v3dev-component-watcher',
       '@v-act/widget-context',
       '@v-act/widget-utils',
       '@v-act/component-schema-utils',

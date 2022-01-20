@@ -27,6 +27,16 @@ const convert = function (
     alias: pros.alias,
     tabIndex: toNumber(pros.tabIndex)
   }
+
+  /* 事件回调函数 */
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.onChartClick = eventMap.OnChartClick
+  }
   return <JGChart {...props}></JGChart>
 }
 
