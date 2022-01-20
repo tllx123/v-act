@@ -5,7 +5,8 @@ import {
   toHeight,
   toWidth,
   getFieldValue,
-  isNullOrUnDef
+  isNullOrUnDef,
+  toJSXElementFromAction
 } from '@v-act/widget-utils'
 
 export interface JGComponentContainerProps {
@@ -18,6 +19,7 @@ export interface JGComponentContainerProps {
   visible?: boolean
   tableName?: string | null
   columnName?: string | null
+  control?: any
 }
 
 const JGComponentContainer = (props: JGComponentContainerProps) => {
@@ -44,6 +46,7 @@ const JGComponentContainer = (props: JGComponentContainerProps) => {
     position,
     bodercolor,
     visible,
+    control,
     ...resprops
   } = props
 
@@ -60,7 +63,9 @@ const JGComponentContainer = (props: JGComponentContainerProps) => {
         borderWidth: '1px',
         display: visible ? 'block' : 'none'
       }}
-    ></Box>
+    >
+      {toJSXElementFromAction(control)}
+    </Box>
   )
 }
 
