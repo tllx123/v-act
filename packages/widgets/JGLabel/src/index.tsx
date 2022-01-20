@@ -14,6 +14,14 @@ export const convert = function (
     width: valueofWidth(pros.multiWidth, '68px'),
     height: valueofHeight(pros.multiHeight, '24px')
   }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OnClick
+  }
   return <JGLabel {...props}>{pros.labelText}</JGLabel>
 }
 
