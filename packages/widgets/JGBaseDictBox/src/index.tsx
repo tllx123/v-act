@@ -16,7 +16,7 @@ const convert = function (
   const props: JGBaseDictBoxProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
-    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiWidth: valueofWidth(pros.multiWidth, '300px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),

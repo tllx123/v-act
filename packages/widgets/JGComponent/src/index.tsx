@@ -22,6 +22,7 @@ const convert = function (
   const props: JGComponentProps = {
     top: toNumber(pros.top, 0) + 'px',
     left: toNumber(pros.left, 0) + 'px',
+    padding: pros.padding,
     width: valueofWidth(pros.multiWidth, ReactEnum.Space),
     height: valueofHeight(pros.multiHeight, ReactEnum.Space),
     entities: toEntities(win.entities)

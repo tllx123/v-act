@@ -95,7 +95,9 @@
       "@v-act/component-schema-utils": ["packages/utils/v-act-component-schema-utils/src"],
       "@v-act/window-schema-utils": ["packages/utils/v-act-window-schema-utils/src"],
       "@v-act/iprototypelogin": ["packages/widgets/IPrototypeLogin/src"],
-      "@v-act/iprototypeframe": ["packages/widgets/IPrototypeFrame/src"]
+      "@v-act/iprototypeframe": ["packages/widgets/IPrototypeFrame/src"],
+      "@v-act/jgdaterangepicker": ["packages/widgets/JGDateRangePicker/src"],
+      "@v-act/jgperiodrange": ["packages/widgets/JGPeriodRange/src"]
     }
   }
 }

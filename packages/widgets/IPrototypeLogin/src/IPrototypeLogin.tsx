@@ -40,13 +40,17 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
       <Box
         sx={{
           height: '76px',
-          padding: '0px 20px'
+          padding: '0px 20px',
+          display: 'flex',
+          alignItems: 'center'
         }}
       >
         {props.logoPic ? (
           <CardMedia
+            image={props.logoPic}
             sx={{
-              maxHeight: '48px'
+              height: '48px',
+              width: '96px'
             }}
           ></CardMedia>
         ) : null}
@@ -57,6 +61,7 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
           alignItems: 'center',
           justifyContent: 'center',
           display: 'flex',
+          backgroundRepeat: 'round',
           backgroundImage: `url(${bgImage})`
         }}
       >
@@ -93,11 +98,15 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
               }}
             >
               <TextField
-                id="outlined-basic"
                 placeholder="用户名"
                 variant="outlined"
                 fullWidth
                 size="small"
+                sx={{
+                  legend: {
+                    width: 'auto'
+                  }
+                }}
               />
             </div>
             <div
@@ -107,11 +116,15 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
               }}
             >
               <TextField
-                id="outlined-basic"
                 placeholder="密码"
                 fullWidth
                 size="small"
                 variant="outlined"
+                sx={{
+                  legend: {
+                    width: 'auto'
+                  }
+                }}
               />
             </div>
             <div
@@ -169,11 +182,15 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
               }}
             >
               <TextField
-                id="outlined-basic"
                 placeholder="手机号码"
                 variant="outlined"
                 size="small"
                 fullWidth
+                sx={{
+                  legend: {
+                    width: 'auto'
+                  }
+                }}
               />
             </div>
             <div
@@ -184,10 +201,14 @@ function IPrototypeLogin(props: IPrototypeLoginProps) {
               }}
             >
               <TextField
-                id="outlined-basic"
                 placeholder="短信验证码"
                 variant="outlined"
                 size="small"
+                sx={{
+                  legend: {
+                    width: 'auto'
+                  }
+                }}
               />
               <Button
                 disabled

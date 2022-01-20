@@ -11,7 +11,7 @@ import {
   WidgetDefines,
   Window
 } from '@v-act/schema-types'
-import { ContextProvider, useContext } from '@v-act/widget-context'
+import { ContextProvider, createContext } from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
 import { getInstCode } from './utils'
@@ -78,6 +78,21 @@ const convetToGroupedTopDock = function (win: Window) {
 }
 
 /**
+ * 处理窗体padding信息，如：原型工具中登录、首页模板需要去除窗体padding
+ * @param win 窗体节点
+ */
+const enhanceWindowPadding = function (win: Window) {
+  const controls = win.controls
+  if (controls && controls.length > 0) {
+    const control = controls[0]
+    const widgetType = control.type
+    if (widgetType === 'IPrototypeFrame' || widgetType === 'IPrototypeLogin') {
+      win.properties.padding = '0px'
+    }
+  }
+}
+
+/**
  * 增强窗体配置，将控件事件属性值转换成Function
  * @param win 窗体节点
  */
@@ -123,6 +138,7 @@ const enhanceWindow = function (
               }
             })
           }
+          return action
         }
       })
       controlEventMap[controlCode] = controlEvents
@@ -415,11 +431,14 @@ const convertWindowSchema = function (
   convetToGroupedTopDock(windowSchema)
   //处理窗体schema，将控件事件值转换成Function
   enhanceWindow(windowSchema, context)
+  enhanceWindowPadding(windowSchema)
   const widgetType = windowSchema.type
   const convert = widgetConverts[widgetType]
   if (convert) {
-    const widgetContext = useContext()
-    widgetContext.componentCode = componentCode
+    const widgetContext = createContext({
+      position: 'relative',
+      componentCode: componentCode
+    })
     return (
       <ContextProvider context={widgetContext}>
         {convert(windowSchema, renderChildrenFunc, componentCode, context)}
