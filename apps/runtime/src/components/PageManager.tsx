@@ -50,10 +50,7 @@ export default function PageManager(props: PageManagerProperty) {
     return (
       <PageStackProvider key={key} thisLevel={thisLevel} topLevel={topLevel}>
         {thisLevel === 0 ? (
-          <div
-            aria-hidden={topLevel > thisLevel}
-            style={{ height: '100%', padding: '16px' }}
-          >
+          <div aria-hidden={topLevel > thisLevel} style={{ height: '100%' }}>
             {page}
           </div>
         ) : (

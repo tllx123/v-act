@@ -1,12 +1,14 @@
 import { useState } from 'react'
 
-import { FrameHeader, ListItem } from './FrameHeader'
+import { FrameHeader } from './FrameHeader'
 import IFrame from './IFrame'
 import { IndexContent, MenuData } from './IndexContent'
+import { ListItem } from './utils'
 
 interface IPrototypeFrameProps {
   headMenu?: ListItem[]
   sideMenu?: MenuData[]
+  logo?: string
 }
 
 const IPrototypeFrame = function (props: IPrototypeFrameProps) {
@@ -25,7 +27,7 @@ const IPrototypeFrame = function (props: IPrototypeFrameProps) {
         onMenuChange={(item) => {
           setHeaderItem(item)
         }}
-        logo="http://vstore-proto.yindangu.com/itop/resources/a71806b940171866c8bef08a64028809_Fileno_2.jpg?v=C419D9BE74E453FC280B084C655DCA65A0AC1229"
+        logo={props.logo}
       ></FrameHeader>
       <div
         style={{

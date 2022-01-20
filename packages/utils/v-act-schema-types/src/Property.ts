@@ -245,6 +245,10 @@ interface Property {
    * 图片布局方式
    */
   imageLayout?: string
+  /**
+   * 窗体padding
+   */
+  padding?: string
 }
 
 export default Property

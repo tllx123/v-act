@@ -7,6 +7,7 @@ import {
   Control,
   Dock,
   Entity,
+  Event,
   Height,
   Property,
   ReactEnum,
@@ -447,6 +448,24 @@ const getComponentResPath = function (resCode: string, componentCode: string) {
   )}`
 }
 
+/**
+ * 将控件动作转换成React元素
+ * @param evt 控件动作
+ */
+const toJSXElementFromAction = function (evt: Event): JSX.Element | null {
+  const handler = evt.handler
+  const action = handler()
+  const windowAction = action.windowAction
+  const targetWindow = windowAction.targetWindow
+  const winInfo = targetWindow.split('.')
+  return (
+    <iframe
+      src={'/' + winInfo[0] + '/' + winInfo[1]}
+      style={{ width: '100%', height: '100%', padding: '0px', margin: '0px' }}
+    ></iframe>
+  )
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
@@ -467,6 +486,7 @@ export {
   toCssAxisVal,
   toEntities,
   toHeight,
+  toJSXElementFromAction,
   toLabelWidth,
   toNumber,
   toWidth,
