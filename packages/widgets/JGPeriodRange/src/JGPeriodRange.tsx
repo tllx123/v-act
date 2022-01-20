@@ -39,6 +39,10 @@ const JGPeriodRange = (props: JGPeriodRangeProps) => {
   } = props
   let pickerVak: any = 'date'
 
+  if (dateDisplay) {
+    pickerVak = dateDisplay
+  }
+
   return (
     <Box
       sx={{
