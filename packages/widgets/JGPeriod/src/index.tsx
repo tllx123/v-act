@@ -14,7 +14,6 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
-  console.log(control)
   const pros = control.properties
   const props: JGPeriodProps = {
     top: toNumber(pros.top) + 'px',

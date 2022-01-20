@@ -79,7 +79,7 @@ interface JGImagePlayProps extends BoxProps {
 
 const JGImagePlay = function (props: JGImagePlayProps) {
   const context = useContext()
-  console.log(context, 'JGImagePlay======context')
+  // console.log(context, 'JGImagePlay======context')
   //图片url生成
   let images: EntityRecord[] = []
   if (props.tableName) {
@@ -87,7 +87,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   }
 
   images.forEach(function (item) {
-    ;(item.imgPath =
+    ;(item.imgPath = //'http://vstore-proto.yindangu.com/itop/resources/e425207964b340019291a8a2f25c7237_'+ item.ImageField),
       item.ImageField && (props.componentCode ? props.componentCode : '')
         ? getComponentResPath(
             item.ImageField as string,
@@ -106,12 +106,25 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   // const maxStepsVisible = props.paginationVisible ? images.length : 0;
   const maxSteps = images.length
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  //点击图片打开窗口
+  const handleClick = function () {
+    props.click && props.click()
   }
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  //下一页
+  const handleNext = (event: any) => {
+    event.stopPropagation()
+    if (activeStep !== maxSteps - 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    }
+  }
+
+  //上一页
+  const handleBack = (event: any) => {
+    event.stopPropagation()
+    if (activeStep !== 0) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1)
+    }
   }
 
   const handleStepChange = (step: number) => {
@@ -133,7 +146,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     height: '40px',
     backgroundColor: 'rgb(0,0,0,0.3)',
     position: 'absolute',
-    bottom: '1px',
+    bottom: '0px',
     display: 'flex',
     justifyContent: 'space-between',
     color: 'white',
@@ -145,7 +158,8 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   }
 
   const labelRight: CSSProperties = {
-    marginRight: '10px'
+    marginRight: '10px',
+    display: props.paginationVisible ? '' : 'none'
   }
 
   const stepper: CSSProperties = {
@@ -155,6 +169,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     top: 0,
     bottom: 0,
     padding: 0
+    // visibility: 'hidden'
   }
 
   const buttonStyle: CSSProperties = {
@@ -166,23 +181,27 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     minWidth: '38px'
   }
 
-  const handleClick = function () {
-    props.click && props.click()
-  }
-
   //轮播时间处理
   const times: number = (props.swiInterval ? props.swiInterval : 5) * 1000
-  console.log(props, 'sssssssssssssssssssss')
+  // console.log(props, 'sssssssssssssssssssss')
 
   return (
-    <Box style={wrapStyles}>
+    <Box
+      style={wrapStyles}
+      sx={{
+        '&:hover': {
+          // "& .MuiBox-root": {
+          visibility: 'visible'
+          // }
+        }
+      }}
+    >
       <div style={{ position: 'relative' }}>
         <AutoPlaySwipeableViews
           index={activeStep}
           onChangeIndex={handleStepChange}
           interval={times}
           enableMouseEvents
-          onClick={handleClick}
         >
           {images.map((step, index) => (
             <div style={{ position: 'relative' }}>
@@ -205,26 +224,26 @@ const JGImagePlay = function (props: JGImagePlayProps) {
           ))}
         </AutoPlaySwipeableViews>
         <div style={labelStyle}>
-          <span style={labelLeft}>{images[activeStep].imgLabel}</span>
+          <span style={labelLeft}>{images[activeStep]?.imgLabel}</span>
           <span style={labelRight}>
             {activeStep + 1}/{maxSteps}
           </span>
         </div>
         <MobileStepper
+          onClick={handleClick}
           style={stepper}
           steps={0}
           position="static"
           activeStep={activeStep}
           nextButton={
-            // <div style={buttonStyle}>
             <Button
               style={buttonStyle}
               sx={{
-                borderRadius: '0 4px 4px 0'
+                borderRadius: '4px 0 0 4px'
               }}
               size="small"
               onClick={handleNext}
-              disabled={activeStep === maxSteps - 1}
+              //disabled={activeStep === maxSteps - 1}
             >
               <KeyboardArrowLeft />
             </Button>
@@ -233,11 +252,11 @@ const JGImagePlay = function (props: JGImagePlayProps) {
             <Button
               style={buttonStyle}
               sx={{
-                borderRadius: '4px 0 0 4px'
+                borderRadius: '0 4px 4px 0'
               }}
               size="small"
               onClick={handleBack}
-              disabled={activeStep === 0}
+              // disabled={activeStep === 0}
             >
               <KeyboardArrowRight />
             </Button>

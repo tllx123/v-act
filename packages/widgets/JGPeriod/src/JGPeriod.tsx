@@ -155,7 +155,6 @@ const JGPeriod = function (props: JGPeriodProps) {
     value = getFieldValue(props.tableName, props.columnName, context)
     value = isNullOrUnDef(value) ? '' : value
   }
-  console.log(value)
   const [inputVal, setInputVal] = useState<any>('')
   const [minDateVal, setMinDateVal] = useState<any>(minDate)
   const [maxDateVal, setMaxDateVal] = useState<any>(maxDate)
@@ -213,17 +212,16 @@ const JGPeriod = function (props: JGPeriodProps) {
     }
   }
 
-  const monthData = () => {
-    let initMonth = 1
-    let retMonth = []
-    while (initMonth <= 12) {
-      retMonth.push(initMonth)
-      initMonth++
-    }
-    return {}
-  }
+  // const monthData = () => {
+  //   let initMonth = 1
+  //   let retMonth = []
+  //   while (initMonth <= 12) {
+  //     retMonth.push(initMonth)
+  //     initMonth++
+  //   }
+  //   return {}
+  // }
 
-  // console.log(dateMonth, props.periodType)
   const [dateModalSelectedVal, setDateModalSelectedVal] = useState(
     +moment().format('YYYY')
   )
@@ -265,7 +263,6 @@ const JGPeriod = function (props: JGPeriodProps) {
   const [dateEnumVal, setDateEnumVal] = useState<any>(
     props.periodType ? dateEnumData[props.periodType]?.data : void 0
   )
-  console.log(dateEnumVal)
   const handleConfirmDate = () => {
     handleClose()
   }
@@ -375,6 +372,10 @@ const JGPeriod = function (props: JGPeriodProps) {
     setInputVal(props.periodType ? showVals[props.periodType] : void 0)
     setEnumSelectedYearVal(yearNum)
     setEnumSelectedVal(clickVal)
+  }
+  const handleChangeForYearView = (date: any) => {
+    setInputVal(moment(date).format('YYYY') + '年')
+    setInputDateVal(date)
   }
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
@@ -588,7 +589,7 @@ const JGPeriod = function (props: JGPeriodProps) {
               isDateDisabled={() => false}
               minDate={minDateVal}
               maxDate={maxDateVal}
-              onChange={(newDate) => setInputDateVal(newDate)}
+              onChange={(date) => handleChangeForYearView(date)}
             />
           </LocalizationProvider>
         )}
