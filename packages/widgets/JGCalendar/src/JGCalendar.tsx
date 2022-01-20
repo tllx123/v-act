@@ -5,18 +5,25 @@ import './calendar.css'
 
 import React, { CSSProperties } from 'react'
 
-import { Calendar, Col, Row } from 'antd'
+import { Calendar } from 'antd'
 import locale from 'antd/lib/calendar/locale/zh_CN'
 import { Property } from 'csstype'
 import moment from 'moment'
 
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { BoxProps, Button, ButtonGroup, IconButton } from '@mui/material'
-import { Height, Width } from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { BoxProps } from '@mui/material'
+import {
+  Height,
+  Width
+} from '@v-act/schema-types'
+import {
+  EntityRecord,
+  useContext
+} from '@v-act/widget-context'
+import {
+  getEntityDatas,
+  toHeight,
+  toWidth
+} from '@v-act/widget-utils'
 
 moment.locale('zh-cn')
 
@@ -37,6 +44,21 @@ interface JGCalendarProps extends BoxProps {
    * 宽度
    */
   multiWidth?: Width
+
+  /** 数据 */
+  /**
+   * 实体
+   */
+  tableName?: string | null  
+  /**
+   * 字段
+   */
+  columnName?: string | null
+
+  /**
+   * 点击事件
+   */
+  click?: Function 
 }
 
 const JGCalendar = function (props: JGCalendarProps) {
@@ -44,13 +66,44 @@ const JGCalendar = function (props: JGCalendarProps) {
   const width = toWidth(props.multiWidth, context, '834px')
   const height = toHeight(props.multiHeight, context, '500px')
 
+  //构成日程数据
+  let noticedata: EntityRecord[] = []
+  if (props.tableName) {
+    noticedata = getEntityDatas(props.tableName,context) || []
+  }
+
+  const getListData = function (value) {
+    const listData:Array<string | number | boolean> = [];
+    let newValue = value.format('YYYY-MM-DD');
+    noticedata.map(function (item) { 
+      if (item.StartDateField && item.EndDateField && item.NameField) { 
+        if (newValue >= item.StartDateField && newValue <= item.EndDateField) { 
+            listData.push(item.NameField)
+        }
+      }
+    })
+    return listData
+  }
+
+  const dateCellRender = function (value) {
+    const listData = getListData(value);
+    console.log(listData)
+    return (
+      <div>
+        {listData.map(item => (       
+          // <Badge text={item[0]} /> 
+          <span>{item[0]}</span>
+        ))}
+      </div>
+    );
+  }
+
+  console.log(noticedata)
+
   const wrapStyles: CSSProperties = {
     border: '1px solid #E8EAEC',
     width: width,
     height: height,
-    // fontSize: '14px',
-    // display: 'flex',
-    // alignItems: 'center',
     position: context.position,
     left: props.left,
     // overflow: 'visible',
@@ -59,88 +112,16 @@ const JGCalendar = function (props: JGCalendarProps) {
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
 
-  const inputStyle: CSSProperties = {
-    height: '100%',
-    padding: '0px 8px',
-    border: '0'
+  const dateClick = function () {
+    props.click && props.click();
+    
   }
-  const lineStyle: CSSProperties = {
-    borderBottom: '1px solid #E8EAEC'
-  }
-
-  const calIconStyle: CSSProperties = {
-    height: '100%'
-  }
-
-  const colButStyle: CSSProperties = {
-    margin: 'auto'
-  }
-
-  const buttonStyle: CSSProperties = {
-    border: '1px solid #E8EAEC',
-    color: 'black',
-    height: '28px'
-  }
-
   return (
     <div style={wrapStyles}>
-      <Calendar
-        locale={locale}
-        headerRender={({ value }) => {
-          const month = value.month()
-          const year = value.year()
-
-          return (
-            <div style={lineStyle}>
-              <Row gutter={8}>
-                <Col>
-                  <ButtonGroup
-                    variant="outlined"
-                    aria-label="outlined button group"
-                  >
-                    <IconButton>
-                      <ChevronLeftIcon
-                        sx={{
-                          border: '1px solid #E8EAEC',
-                          width: '30px',
-                          height: '30px',
-                          color: '#E8EAEC'
-                        }}
-                      />
-                    </IconButton>
-                    <IconButton>
-                      <ChevronRightIcon
-                        sx={{
-                          border: '1px solid #E8EAEC',
-                          width: '30px',
-                          height: '30px',
-                          color: '#E8EAEC'
-                        }}
-                      />
-                    </IconButton>
-                  </ButtonGroup>
-                </Col>
-                <Col>
-                  <input
-                    style={inputStyle}
-                    value={String(year) + '年' + String(month) + '月'}
-                  />
-                </Col>
-                <Col>
-                  <IconButton style={calIconStyle}>
-                    <CalendarTodayIcon
-                      sx={{ width: '16px', height: '16px', color: '#E8EAEC' }}
-                    />
-                  </IconButton>
-                </Col>
-                <Col span="12"></Col>
-                <Col style={colButStyle}>
-                  <Button style={buttonStyle}>今日</Button>
-                </Col>
-              </Row>
-            </div>
-          )
-        }}
+      <Calendar 
+        dateCellRender={dateCellRender}
+        locale={locale} 
+        onSelect={dateClick}
       />
     </div>
   )
