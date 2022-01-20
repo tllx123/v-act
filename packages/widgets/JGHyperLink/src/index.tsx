@@ -25,7 +25,16 @@ const convert = function (
     labelVisible: toBoolean(pros.labelVisible, true),
     enabled: !toBoolean(pros.enabled, true),
     tableName: getTableName(control),
-    columnName: getColumnName(control)
+    columnName: getColumnName(control),
+    placeholder: pros.placeholder
+  }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OpenModuleAction
   }
   return <JGHyperLink {...props}></JGHyperLink>
 }

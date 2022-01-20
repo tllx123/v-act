@@ -18,6 +18,14 @@ export const convert = function (
       ? getComponentResPath(pros.imageValue, componentCode)
       : undefined
   }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OnClick
+  }
   return <JGImage {...props}>{pros.labelText}</JGImage>
 }
 
