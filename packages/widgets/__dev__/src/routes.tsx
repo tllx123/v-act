@@ -67,9 +67,13 @@ const JGImagePlay = lazy(() => import('./widgets/JGImagePlay'))
 const JGCollapse = lazy(() => import('./widgets/JGCollapse'))
 const IPrototypeLogin = lazy(() => import('./widgets/IPrototypeLogin'))
 const IPrototypeFrame = lazy(() => import('./widgets/IPrototypeFrame'))
+const JGDateRangePicker = lazy(() => import('./widgets/JGDateRangePicker'))
+const JGPeriodRange = lazy(() => import('./widgets/JGPeriodRange'))
 
 const Routes = () =>
   useRoutes([
+    { path: '/JGPeriodRange', element: <JGPeriodRange /> },
+    { path: '/JGDateRangePicker', element: <JGDateRangePicker /> },
     { path: '/JGRichTextEditor', element: <JGRichTextEditor /> },
     { path: '/JGButtonGroup', element: <JGButtonGroup /> },
     { path: '/JGComponentContainer', element: <JGComponentContainer /> },
