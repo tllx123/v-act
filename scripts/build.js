@@ -47,6 +47,11 @@ export async function viteBuild(scopes, copyToPath, watch) {
     const entry = `${root}/src`
     return await build({
       build: {
+        terserOptions: {
+          compress: {
+            drop_console: watch === true
+          }
+        },
         emptyOutDir: true,
         lib: {
           entry,

@@ -10,7 +10,7 @@ import EventIcon from '@mui/icons-material/Event'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import YearPicker from '@mui/lab/YearPicker'
-import { Button, IconButton } from '@mui/material'
+import { Box, Button, IconButton } from '@mui/material'
 import Menu from '@mui/material/Menu'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
@@ -24,6 +24,10 @@ import {
   toWidth
 } from '@v-act/widget-utils'
 
+type enumLayoutData = {
+  title: number
+  enumArr: string[]
+}
 interface JGPeriodProps extends InputUnstyledProps {
   /**
    * 左边距
@@ -93,6 +97,7 @@ interface JGPeriodProps extends InputUnstyledProps {
    * 字段编号
    */
   columnName?: string | null
+  periodType?: string
 }
 
 const StyledInputElement = styled('input')`
@@ -136,8 +141,8 @@ const CustomInput = forwardRef(function (
   )
 })
 
-let minDate = new Date('2020-01-01T00:00:00.000')
-let maxDate = new Date('2034-01-01T00:00:00.000')
+let minDate = new Date(moment().subtract(6, 'years').format('YYYY'))
+let maxDate = new Date(moment().add(5, 'years').format('YYYY'))
 let minDateName = moment(minDate).format('YYYY')
 let maxDateName = moment(maxDate).format('YYYY')
 const JGPeriod = function (props: JGPeriodProps) {
@@ -156,46 +161,220 @@ const JGPeriod = function (props: JGPeriodProps) {
   const [maxDateVal, setMaxDateVal] = useState<any>(maxDate)
   const [minDateNameVal, setMinDateNameVal] = useState<any>(minDateName)
   const [maxDateNameVal, setMaxDateNameVal] = useState<any>(maxDateName)
+  const [monthNameVal, setMonthNameVal] = useState<any>(moment().format('YYYY'))
   const [inputDateVal, setInputDateVal] = useState<Date | null>(new Date())
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const menuWrapScope = useRef(null)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(menuWrapScope.current, menuWrapScope)
     setAnchorEl(menuWrapScope.current)
   }
   const handleClose = () => {
     setAnchorEl(null)
   }
 
+  const [anchorElForDateModal, setAnchorElForDateModal] =
+    React.useState<null | HTMLElement>(null)
+  const openForDateModal = Boolean(anchorElForDateModal)
+  const menuWrapScopeForDateModal = useRef(null)
+  const handleClickForDateModal = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElForDateModal(menuWrapScopeForDateModal.current)
+  }
+  const handleCloseForDateModal = () => {
+    setAnchorElForDateModal(null)
+  }
+
+  const calcDateModalData = (currentDataNum: number) => {
+    if (!isNaN(currentDataNum)) {
+      let minNum = currentDataNum - 7
+      let maxNum = currentDataNum + 7
+      let calcArr = []
+      while (minNum <= maxNum) {
+        calcArr.push(minNum)
+        minNum++
+      }
+      return calcArr
+    }
+  }
+
+  const calcEnumLayoutData = (
+    currentNum: number,
+    enumArr: string[] | number[]
+  ) => {
+    if (!isNaN(currentNum)) {
+      let minNum = currentNum - 2
+      let maxNum = currentNum + 3
+      let calcArr = []
+      while (minNum <= maxNum) {
+        calcArr.push({ title: minNum, enumArr: enumArr })
+        minNum++
+      }
+      return calcArr
+    }
+  }
+
+  const monthData = () => {
+    let initMonth = 1
+    let retMonth = []
+    while (initMonth <= 12) {
+      retMonth.push(initMonth)
+      initMonth++
+    }
+    return {}
+  }
+
+  // console.log(dateMonth, props.periodType)
+  const [dateModalSelectedVal, setDateModalSelectedVal] = useState(
+    +moment().format('YYYY')
+  )
+
+  const [dateModalVal, setDateModalVal] = useState<any>(
+    calcDateModalData(dateModalSelectedVal)
+  )
+
+  let dateEnumData: { [key: string]: any } = {
+    years: {
+      data: [],
+      initActive: '',
+      initYear: ''
+    },
+    halfyear: {
+      data: calcEnumLayoutData(dateModalSelectedVal, ['上半年', '下半年']),
+      initActive: moment().month() < 6 ? '上半年' : '下半年',
+      initYear: +moment().format('YYYY')
+    },
+    quarter: {
+      data: calcEnumLayoutData(dateModalSelectedVal, [1, 2, 3, 4]),
+      initActive: moment().quarter(),
+      initYear: +moment().format('YYYY')
+    },
+    month: {
+      data: [],
+      initActive: '',
+      initYear: ''
+    }
+  }
+
+  const [enumSelectedYearVal, setEnumSelectedYearVal] = useState<any>(
+    props.periodType ? dateEnumData[props.periodType]?.initYear : void 0
+  )
+  const [enumSelectedVal, setEnumSelectedVal] = useState<any>(
+    props.periodType ? dateEnumData[props.periodType]?.initActive : void 0
+  )
+
+  const [dateEnumVal, setDateEnumVal] = useState<any>(
+    props.periodType ? dateEnumData[props.periodType]?.data : void 0
+  )
+  console.log(dateEnumVal)
   const handleConfirmDate = () => {
-    setInputVal(moment(inputDateVal).format('YYYY') + '年')
+    handleClose()
   }
 
   const handleSelectedCurrent = () => {
-    setInputVal(moment().format('YYYY') + '年')
-    setInputDateVal(new Date())
+    let currentYear = +moment().format('YYYY')
+    switch (props.periodType) {
+      case 'years':
+        let min = new Date(moment().subtract(6, 'years').format('YYYY'))
+        let max = new Date(moment().add(5, 'years').format('YYYY'))
+        setMinDateVal(min)
+        setMaxDateVal(max)
+        setInputVal(moment().format('YYYY') + '年')
+        setInputDateVal(new Date())
+        handleClose()
+        break
+      case 'halfyear':
+        let currentHalfYear = moment().month() < 6 ? '上半年' : '下半年'
+        setInputVal(moment().format('YYYY') + currentHalfYear)
+        setDateModalSelectedVal(currentYear)
+        setDateModalVal(calcDateModalData(currentYear))
+        setDateEnumVal(calcEnumLayoutData(currentYear, ['上半年', '下半年']))
+        handleEnumClick(currentYear, currentHalfYear)
+        handleClose()
+        break
+      case 'quarter':
+        let currentQuarter = String(moment().quarter())
+        setInputVal(`${moment().format('YYYY')}年0${currentQuarter}季`)
+        setDateModalSelectedVal(currentYear)
+        setDateModalVal(calcDateModalData(currentYear))
+        setDateEnumVal(calcEnumLayoutData(currentYear, [1, 2, 3, 4]))
+        handleEnumClick(currentYear, currentQuarter)
+        handleClose()
+        break
+    }
+  }
+
+  const handleClearSelectDate = () => {
+    setInputVal('')
+    handleClose()
   }
 
   const handleBackDate = () => {
+    let minDate = String(-minDateNameVal - 15)
+    let maxDate = String(-minDateNameVal - 1)
     setMinDateVal(() => {
-      return new Date(moment(minDateVal).subtract(15, 'years').format('YYYY'))
+      return new Date(minDate)
     })
     setMaxDateVal(() => {
-      return new Date(moment(minDateVal).subtract(1, 'years').format('YYYY'))
+      return new Date(maxDate)
     })
-    setMinDateNameVal(moment(minDateVal).subtract(15, 'years').format('YYYY'))
-    setMaxDateNameVal(moment(minDateVal).subtract(1, 'years').format('YYYY'))
+    setMinDateNameVal(minDate)
+    setMaxDateNameVal(maxDate)
   }
   const handleNextDate = () => {
+    let minDate = String(-minDateNameVal + 1)
+    let maxDate = String(-minDateNameVal + 15)
     setMinDateVal(() => {
-      return new Date(moment(maxDateVal).add(1, 'years').format('YYYY'))
+      return new Date(minDate)
     })
     setMaxDateVal(() => {
-      return new Date(moment(maxDateVal).add(15, 'years').format('YYYY'))
+      return new Date(maxDate)
     })
-    setMinDateNameVal(moment(maxDateVal).add(1, 'years').format('YYYY'))
-    setMaxDateNameVal(moment(maxDateVal).add(15, 'years').format('YYYY'))
+    setMinDateNameVal(minDate)
+    setMaxDateNameVal(maxDate)
+  }
+  const handleClickDateModal = (val: number) => {
+    let minDate = String(val - 6)
+    let maxDate = String(val + 5)
+    setDateModalVal(calcDateModalData(val))
+    switch (props.periodType) {
+      case 'years':
+        setMinDateVal(() => {
+          return new Date(minDate)
+        })
+        setMaxDateVal(() => {
+          return new Date(maxDate)
+        })
+        setMinDateNameVal(minDate)
+        setMaxDateNameVal(maxDate)
+        break
+      case 'halfyear':
+        setDateEnumVal(calcEnumLayoutData(val, ['上半年', '下半年']))
+        minDate = String(val - 2)
+        maxDate = String(val + 3)
+        setMinDateNameVal(minDate)
+        setMaxDateNameVal(maxDate)
+        break
+      case 'quarter':
+        minDate = String(val - 2)
+        maxDate = String(val + 3)
+        setDateEnumVal(calcEnumLayoutData(val, [1, 2, 3, 4]))
+        setMinDateNameVal(minDate)
+        setMaxDateNameVal(maxDate)
+        break
+    }
+
+    setDateModalSelectedVal(val)
+    handleCloseForDateModal()
+  }
+
+  const handleEnumClick = (yearNum: number, clickVal: string) => {
+    let showVals: { [key: string]: any } = {
+      halfyear: `${yearNum}${clickVal}`,
+      quarter: `${yearNum}年0${clickVal}季`
+    }
+    setInputVal(props.periodType ? showVals[props.periodType] : void 0)
+    setEnumSelectedYearVal(yearNum)
+    setEnumSelectedVal(clickVal)
   }
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
@@ -257,7 +436,47 @@ const JGPeriod = function (props: JGPeriodProps) {
   const datePickerHeaderTextStyle: CSSProperties = {
     flex: 1,
     textAlign: 'center',
-    fontSize: '16px'
+    fontSize: '16px',
+    cursor: 'pointer'
+  }
+  const menuListItem: CSSProperties = {
+    margin: '8px 0',
+    cursor: 'pointer',
+    padding: '2px 8px',
+    borderRadius: '16px'
+  }
+  const menuListActiveItem: CSSProperties = {
+    margin: '8px 0',
+    cursor: 'pointer',
+    padding: '2px 8px',
+    borderRadius: '16px',
+    color: '#fff',
+    backgroundColor: '#1976d2'
+  }
+  const dateYearItemWrap = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginBottom: '8px',
+    alignItems: 'center'
+  }
+  const dateYear = {
+    color: '#597197',
+    backgroundColor: 'rgb(242,244,250)',
+    borderRadius: '0 19px 19px 0',
+    padding: '4px'
+  }
+  const enumItemSx = {
+    'padding': '4px 16px',
+    'borderRadius': '4px',
+    'cursor': 'pointer',
+    '&:hover': {
+      color: '#333',
+      background: ' #ecf3fe'
+    }
+  }
+  const activeHalfyear = {
+    color: '#fff',
+    backgroundColor: '#356abb'
   }
   return (
     <div style={wrapStyles}>
@@ -303,7 +522,7 @@ const JGPeriod = function (props: JGPeriodProps) {
         sx={{
           '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper':
             {
-              width: '225px'
+              width: '249px'
             },
           '& .MuiYearPicker-root button': {
             height: '30px'
@@ -323,9 +542,32 @@ const JGPeriod = function (props: JGPeriodProps) {
               }}
             />
           </IconButton>
-          <div style={datePickerHeaderTextStyle}>
-            {minDateNameVal}年 - {maxDateNameVal}年
-          </div>
+          {props.periodType === 'month' && (
+            <div
+              style={datePickerHeaderTextStyle}
+              id="menuWrapScopeForDateModal"
+              aria-controls="menuScopeForDateModal"
+              aria-haspopup="true"
+              aria-expanded={openForDateModal ? 'true' : undefined}
+              ref={menuWrapScopeForDateModal}
+              onClick={handleClickForDateModal}
+            >
+              {monthNameVal}年
+            </div>
+          )}
+          {props.periodType !== 'month' && (
+            <div
+              style={datePickerHeaderTextStyle}
+              id="menuWrapScopeForDateModal"
+              aria-controls="menuScopeForDateModal"
+              aria-haspopup="true"
+              aria-expanded={openForDateModal ? 'true' : undefined}
+              ref={menuWrapScopeForDateModal}
+              onClick={handleClickForDateModal}
+            >
+              {minDateNameVal}年 - {maxDateNameVal}年
+            </div>
+          )}
           <IconButton
             aria-label="日期前进按钮"
             component="span"
@@ -339,15 +581,48 @@ const JGPeriod = function (props: JGPeriodProps) {
             />
           </IconButton>
         </div>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <YearPicker
-            date={inputDateVal}
-            isDateDisabled={() => false}
-            minDate={minDateVal}
-            maxDate={maxDateVal}
-            onChange={(newDate) => setInputDateVal(newDate)}
-          />
-        </LocalizationProvider>
+        {props.periodType === 'years' && (
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <YearPicker
+              date={inputDateVal}
+              isDateDisabled={() => false}
+              minDate={minDateVal}
+              maxDate={maxDateVal}
+              onChange={(newDate) => setInputDateVal(newDate)}
+            />
+          </LocalizationProvider>
+        )}
+
+        {props.periodType &&
+          dateEnumVal &&
+          dateEnumVal.map((val: enumLayoutData) => (
+            <Box sx={dateYearItemWrap}>
+              <Box sx={dateYear}>{val.title}</Box>
+              {val.enumArr.map((enumVal) => {
+                return (
+                  <Box
+                    sx={enumItemSx}
+                    style={
+                      val.title === enumSelectedYearVal &&
+                      enumVal == enumSelectedVal
+                        ? activeHalfyear
+                        : void 0
+                    }
+                    onClick={() => handleEnumClick(val.title, enumVal)}
+                  >
+                    {enumVal}
+                  </Box>
+                )
+              })}
+            </Box>
+          ))}
+
+        {/* {props.periodType === 'month' && dateMonth.map((val: number[]) => (
+          <Box sx={dateYearItemWrap}>
+            {val}月
+          </Box>
+        ))} */}
+
         <div style={calendarOperateWrapStyles}>
           <Button variant="contained" onClick={handleSelectedCurrent}>
             本年
@@ -355,13 +630,40 @@ const JGPeriod = function (props: JGPeriodProps) {
           <Button variant="contained" onClick={handleConfirmDate}>
             确定
           </Button>
-          <Button variant="contained" onClick={() => setInputVal('')}>
+          <Button variant="contained" onClick={() => handleClearSelectDate()}>
             清空
           </Button>
-          {/* <span style={calendarOperateIconStyles}>本年</span>
-          <span style={calendarOperateIconStyles}>确定</span>
-          <span style={calendarOperateIconStyles}>清空</span> */}
         </div>
+      </Menu>
+      <Menu
+        style={yearPickerWrap}
+        onClose={handleCloseForDateModal}
+        open={openForDateModal}
+        anchorEl={anchorElForDateModal}
+        id="menuScopeForDateModal"
+        sx={{
+          '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper':
+            {
+              width: '166px'
+            },
+          '& .MuiMenu-list': {
+            display: 'flex',
+            flexWrap: 'wrap',
+            padding: '10px'
+          }
+        }}
+      >
+        {dateModalVal &&
+          dateModalVal.map((val: any) => (
+            <li
+              style={
+                dateModalSelectedVal === val ? menuListActiveItem : menuListItem
+              }
+              onClick={() => handleClickDateModal(val)}
+            >
+              {val}
+            </li>
+          ))}
       </Menu>
     </div>
   )
@@ -378,7 +680,8 @@ JGPeriod.defaultProps = {
   isMust: false,
   visible: true,
   labelVisible: true,
-  disabled: false
+  disabled: false,
+  periodType: 'years'
 }
 
 export default JGPeriod

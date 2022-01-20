@@ -1,0 +1,15 @@
+{
+  "name": "@v-act/jgfloatrangebox",
+  "version": "1.0.0-alpha.1",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@v-act/schema-types": "^1.0.0"
+  },
+  "widgetType": "JGFloatRangeBox"
+}

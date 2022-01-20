@@ -49,9 +49,10 @@ const convert = function (
     placeholder: pros.placeholder,
     visible: toBoolean(pros.visible, true),
     children: [],
-    navData: getNavData(control)
+    navData: getNavData(control),
+    isMulOpened: toBoolean(pros.isMulOpened, false),
+    openPanelOnLoad: toBoolean(pros.openPanelOnLoad, true)
   }
-  console.log(control, getNavData)
   return <JGNavigator {...props}></JGNavigator>
 }
 
