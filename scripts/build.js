@@ -9,6 +9,7 @@ import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
 
 const publicExternal = [
+  '@grapecity/spread-sheets-react',
   '@mui/icons-material',
   '@mui/material',
   '@mui/styles',
