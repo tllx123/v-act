@@ -17,7 +17,8 @@ const publicExternal = [
   'echarts',
   'echarts-for-react',
   'react',
-  'react-dom'
+  'react-dom',
+  'antd'
 ]
 const nodeExternal = ['art-template', 'fast-xml-parser', 'fs-extra', 'path']
 
@@ -73,11 +74,11 @@ export async function viteBuild(scopes, copyToPath, watch) {
       plugins: [
         vitePluginReact(),
         vitePluginDts(),
-        usePluginImport({
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: 'css'
-        }),
+        // usePluginImport({
+        //   libraryName: 'antd',
+        //   libraryDirectory: 'es',
+        //   style: 'css'
+        // }),
         {
           name: 'vite-plugin-vact-builder',
           closeBundle: () => {

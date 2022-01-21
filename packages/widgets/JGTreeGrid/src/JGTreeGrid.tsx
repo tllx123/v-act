@@ -1,6 +1,5 @@
 import { Property } from 'csstype'
-import { Table, Switch, Space } from 'antd'
-// import 'antd/dist/antd.css'
+import { Table } from 'antd'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
 import { useContext } from '@v-act/widget-context'
