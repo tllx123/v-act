@@ -13,6 +13,8 @@ const publicExternal = [
   '@mui/material',
   '@mui/styles',
   '@mui/system',
+  'echarts',
+  'echarts-for-react',
   'react',
   'react-dom'
 ]
