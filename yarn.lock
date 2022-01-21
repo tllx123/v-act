@@ -3914,24 +3914,6 @@
     archiver "^5.3.0"
     decompress "^4.2.1"
 
-"@v-act/cli-utils@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@v-act/cli-utils/-/cli-utils-1.0.9.tgz#b346b8db1cf51ad721deb206e35f6490a0b787b0"
-  integrity sha512-HcdlLRf380uNxaasH3l2wNQ77o4mVjfkzlVMJb6DOSnG/f2T+Q/gqNDNSalPY9+RYn/d+MEr2biooYctXs/guQ==
-  dependencies:
-    "@v-act/api" "^1.0.3"
-    "@v-act/bundle" "^1.0.3"
-    "@v-act/cache" "^1.0.0"
-    "@v-act/install" "^1.0.3"
-    "@v-act/utils" "^1.0.4"
-    commander "^8.3.0"
-    inquirer "^8.2.0"
-    next "^12.0.3"
-    react-app-rewired "^2.1.8"
-    react-dev-utils "^11.0.4"
-    react-scripts "^4.0.3"
-    require-all "^3.0.0"
-
 "@v-act/install@^1.0.3":
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/@v-act/install/-/install-1.0.7.tgz#d8c0ef90f21ee75a3e6f148b523ef2ae50df59ea"
