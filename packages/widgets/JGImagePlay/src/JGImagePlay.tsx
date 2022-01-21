@@ -87,14 +87,13 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   }
 
   images.forEach(function (item) {
-    ;(item.imgPath = //'http://vstore-proto.yindangu.com/itop/resources/e425207964b340019291a8a2f25c7237_'+ item.ImageField),
+    ;(item.imgPath =
       item.ImageField && (props.componentCode ? props.componentCode : '')
         ? getComponentResPath(
             item.ImageField as string,
             props.componentCode ? props.componentCode : ''
           )
-        : 'http://vstore-proto.yindangu.com/itop/resources/e425207964b340019291a8a2f25c7237_' +
-          item.ImageField),
+        : 'http://www.yindangu.com/itop/common/images/defaultImg.png'),
       (item.imgLabel = item.ImageDescField)
   })
 
@@ -243,7 +242,6 @@ const JGImagePlay = function (props: JGImagePlayProps) {
               }}
               size="small"
               onClick={handleNext}
-              //disabled={activeStep === maxSteps - 1}
             >
               <KeyboardArrowLeft />
             </Button>
@@ -256,7 +254,6 @@ const JGImagePlay = function (props: JGImagePlayProps) {
               }}
               size="small"
               onClick={handleBack}
-              // disabled={activeStep === 0}
             >
               <KeyboardArrowRight />
             </Button>
