@@ -11,19 +11,9 @@ import { Property } from 'csstype'
 import moment from 'moment'
 
 import { BoxProps } from '@mui/material'
-import {
-  Height,
-  Width
-} from '@v-act/schema-types'
-import {
-  EntityRecord,
-  useContext
-} from '@v-act/widget-context'
-import {
-  getEntityDatas,
-  toHeight,
-  toWidth
-} from '@v-act/widget-utils'
+import { Height, Width } from '@v-act/schema-types'
+import { EntityRecord, useContext } from '@v-act/widget-context'
+import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'
 
 moment.locale('zh-cn')
 
@@ -49,7 +39,7 @@ interface JGCalendarProps extends BoxProps {
   /**
    * 实体
    */
-  tableName?: string | null  
+  tableName?: string | null
   /**
    * 字段
    */
@@ -58,7 +48,7 @@ interface JGCalendarProps extends BoxProps {
   /**
    * 点击事件
    */
-  click?: Function 
+  click?: Function
 }
 
 const JGCalendar = function (props: JGCalendarProps) {
@@ -69,16 +59,16 @@ const JGCalendar = function (props: JGCalendarProps) {
   //构成日程数据
   let noticedata: EntityRecord[] = []
   if (props.tableName) {
-    noticedata = getEntityDatas(props.tableName,context) || []
+    noticedata = getEntityDatas(props.tableName, context) || []
   }
 
   const getListData = function (value) {
-    const listData:Array<string | number | boolean> = [];
-    let newValue = value.format('YYYY-MM-DD');
-    noticedata.map(function (item) { 
-      if (item.StartDateField && item.EndDateField && item.NameField) { 
-        if (newValue >= item.StartDateField && newValue <= item.EndDateField) { 
-            listData.push(item.NameField)
+    const listData: Array<string | number | boolean> = []
+    let newValue = value.format('YYYY-MM-DD')
+    noticedata.map(function (item) {
+      if (item.StartDateField && item.EndDateField && item.NameField) {
+        if (newValue >= item.StartDateField && newValue <= item.EndDateField) {
+          listData.push(item.NameField)
         }
       }
     })
@@ -86,19 +76,25 @@ const JGCalendar = function (props: JGCalendarProps) {
   }
 
   const dateCellRender = function (value) {
-    const listData = getListData(value);
-    console.log(listData)
+    const listData = getListData(value)
     return (
       <div>
-        {listData.map(item => (       
-          // <Badge text={item[0]} /> 
-          <span>{item[0]}</span>
+        {listData.map((item) => (
+          <div
+            style={{
+              background: item ? '#FFE492' : 'none',
+              border: item ? '1px solid #FBD974' : 'none',
+              paddingLeft: '4px'
+            }}
+          >
+            {item}
+          </div>
         ))}
       </div>
-    );
+    )
   }
 
-  console.log(noticedata)
+  // console.log(noticedata)
 
   const wrapStyles: CSSProperties = {
     border: '1px solid #E8EAEC',
@@ -106,21 +102,19 @@ const JGCalendar = function (props: JGCalendarProps) {
     height: height,
     position: context.position,
     left: props.left,
-    // overflow: 'visible',
     top: props.top,
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
 
   const dateClick = function () {
-    props.click && props.click();
-    
+    props.click && props.click()
   }
   return (
     <div style={wrapStyles}>
-      <Calendar 
+      <Calendar
         dateCellRender={dateCellRender}
-        locale={locale} 
+        locale={locale}
         onSelect={dateClick}
       />
     </div>

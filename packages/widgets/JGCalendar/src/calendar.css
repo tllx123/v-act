@@ -17,3 +17,10 @@
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-calendar-date {
   height: 71px;
 }
+
+.ant-picker-cell
+  .ant-picker-cell-in-view
+  .ant-picker-cell-today
+  .ant-picker-cell-selected {
+  background: #e6f7ff !important;
+}
