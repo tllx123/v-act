@@ -1,10 +1,11 @@
 import '../styles/globals.css'
-import '@v-act/jgcalendar/dist/style.css'
-import '@v-act/jgtreeview/dist/style.css'
-import '@v-act/jgdatagrid/dist/style.css'
-import '@v-act/jgtreegrid/dist/style.css'
-import '@v-act/jgdaterangepicker/dist/style.css'
-import '@v-act/jgperiodrange/dist/style.css'
+// import '@v-act/jgcalendar/dist/style.css'
+// import '@v-act/jgtreeview/dist/style.css'
+// import '@v-act/jgdatagrid/dist/style.css'
+// import '@v-act/jgtreegrid/dist/style.css'
+// import '@v-act/jgdaterangepicker/dist/style.css'
+// import '@v-act/jgperiodrange/dist/style.css'
+import '@v-act/jgrichtexteditor/dist/style.css'
 
 import App from 'next/app'
 

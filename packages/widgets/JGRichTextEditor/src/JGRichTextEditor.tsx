@@ -1,11 +1,17 @@
-import React, { useState } from 'react'
-import { useContext } from '@v-act/widget-context'
+import React, { useState, useEffect } from 'react'
+import { FieldValue, useContext } from '@v-act/widget-context'
 import { Property } from 'csstype'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import {
+  toHeight,
+  toWidth,
+  getFieldValue,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 import Box from '@mui/material/Box'
-import ReactQuill from 'react-quill'
+// import Quill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import TextareaAutosize from '@mui/material/TextareaAutosize'
+
+const ReactQuill = typeof window === 'object' ? require('react-quill') : false
 
 export interface JGRichTextEditorProps {
   left?: Property.Left
@@ -20,44 +26,55 @@ export interface JGRichTextEditorProps {
 
 const JGRichTextEditor = (props: JGRichTextEditorProps) => {
   const context = useContext()
-  const { left, top, height, width, position, ...resprops } = props
+  const {
+    left,
+    top,
+    height,
+    width,
+    position,
+    tablename,
+    columnname,
+    ...resprops
+  } = props
 
-  const [value, setValue] = useState('')
-  return (
-    <Box
-      sx={{
-        'width': toWidth(width, context, '235px'),
-        'height': toHeight(height, context, '26px'),
-        'position': context.position,
-        'left': left,
-        'top': top,
-        'resize': 'none',
-        'border': '1px solid #dcdee2',
-        'color': '#333',
-        'borderRadius': '4px',
-        '&:hover': {
-          borderColor: '#356abb'
-        },
-        '&:focus': {
-          borderColor: '#356abb',
-          background: '#fff',
-          boxShadow: '0 0 0 2px rgba(53, 106, 187, 0.3)',
-          outline: 'none'
-        },
-        '&:disabled': {
-          background: '#f6f7fb'
-        }
-      }}
-      component={TextareaAutosize}
-    >
-      {/* <Box
-        sx={{ width: '100%', height: "100%" }}
-        component={ReactQuill}
-        theme="snow" value={value} onChange={setValue}
+  let defulValue: any = ''
+  let value: FieldValue = ''
+  if (props.tablename && props.columnname) {
+    value = getFieldValue(props.tablename, props.columnname, context)
+    value = isNullOrUnDef(value) ? '' : value
+  }
+
+  if (value) {
+    defulValue = value
+  }
+  console.log('defulValue')
+  console.log(defulValue)
+
+  const [valueRich, setValue] = useState(defulValue)
+
+  if (ReactQuill) {
+    return (
+      <Box
+        sx={{
+          width: toWidth(width, context, '235px'),
+          height: toHeight(height, context, '26px'),
+          position: context.position,
+          left: left,
+          top: top
+        }}
       >
-      </Box> */}
-    </Box>
-  )
+        <Box
+          sx={{ width: '100%', height: '100%' }}
+          component={ReactQuill}
+          theme="snow"
+          value={valueRich}
+          onChange={setValue}
+        ></Box>
+      </Box>
+    )
+  } else {
+    return <Box></Box>
+  }
 }
 
 JGRichTextEditor.defaultProps = {
