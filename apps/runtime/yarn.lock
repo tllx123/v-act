@@ -2536,10 +2536,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@v-act/project-cli@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@v-act/project-cli/-/project-cli-1.0.6.tgz#681e4f150e6922ed7e6591e6780aec8994b9c209"
-  integrity sha512-eQBn3HsCdnR5nBNIYmrHW+6OVDSLTYPjp5r/RyEB8mhSSyXbrEKHdLfWrmjaBCzcaR+7ldy8f6IkI/EMkTvYFw==
+"@v-act/project-cli@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@v-act/project-cli/-/project-cli-1.0.7.tgz#e149d044a20f33bcf4fc6e0012e59edb69d56886"
+  integrity sha512-dkK16nLQDCyPTpj4rq6jbTQwjUcdUdnZ1GjPGBVGbsv4tUgRvZ/dkAdmeqp1PSUFcU48fQ406DMvwq/GCgRGmQ==
   dependencies:
     "@v-act/cli-utils" "^1.0.9"
 

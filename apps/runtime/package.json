@@ -31,7 +31,7 @@
     "@v-act/cache": "^1.0.0",
     "@v-act/i18n": "^1.0.6",
     "@v-act/loader": "^1.0.7",
-    "@v-act/project-cli": "^1.0.6",
+    "@v-act/project-cli": "^1.0.7",
     "@v-act/styles": "^1.0.5",
     "@v-act/v3dev-component-watcher": "^1.0.11",
     "cheerio": "^1.0.0-rc.3",

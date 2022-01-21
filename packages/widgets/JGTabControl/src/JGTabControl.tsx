@@ -59,6 +59,10 @@ interface JGTabControlProps {
    * 是否显示页签头
    */
   tabBarVisible?: boolean
+  /**
+   * 页签头宽度，只在页签头位置为Left、Right时生效
+   */
+  tabHeadWidth?: number
 
   children?: Array<JSX.Element> | null
 }
@@ -84,7 +88,9 @@ const JGTabControl = function (props: JGTabControlProps) {
   }
   const alignment = props.alignment
   const isHLayout = alignment == Aligment.Top || alignment == Aligment.Bottom
-  let sx = isHLayout ? { height: '38px' } : { width: '110px' }
+  let sx = isHLayout
+    ? { height: '38px' }
+    : { width: props.tabHeadWidth ? props.tabHeadWidth + 'px' : '110px' }
   const classes = useStyles()
   const tabHeader = (
     <Tabs
