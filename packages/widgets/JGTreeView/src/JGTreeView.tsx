@@ -53,7 +53,8 @@ const JGTreeView = (props: JGTreeViewProps) => {
   }
 
   let dataTree = []
-  if (data) {
+
+  if (dataTemp) {
     dataTree = toTree(dataTemp, {
       parentProperty: 'PID',
       customID: 'id'

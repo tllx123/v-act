@@ -18,9 +18,11 @@ const JGTableGroupPanel = function (props: JGGroupPanelProps) {
   const settingMap: { [prop: string]: Setting } = {}
   const settingIndexList: Setting[] = []
   const context = useContext()
-  const childContext = createContext({
-    position: 'static'
-  })
+  const childContext = createContext(
+    Object.assign(context, {
+      position: 'static'
+    })
+  )
   settings.forEach((set) => {
     if (typeof set.key === 'string') {
       settingMap[set.key] = set

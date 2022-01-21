@@ -73,9 +73,11 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     dataTemp = getEntityDatas(tablename, context)
   }
 
-  dataTemp.some((item2: any, index: any) => {
-    item2.key = index
-  })
+  if (dataTemp) {
+    dataTemp.some((item2: any, index: any) => {
+      item2.key = index
+    })
+  }
 
   let dataTree = []
   if (dataTemp) {
