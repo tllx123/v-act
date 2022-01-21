@@ -33,6 +33,7 @@ const convert = function (
     selectedIndex: toNumber(pros.selectedIndex, 0),
     disabled: !toBoolean(pros.enabled, true),
     alignment: pros.alignment ? valueofAligment(pros.alignment) : Aligment.Top,
+    tabHeadWidth: toNumber(pros.tabHeadWidth, 110),
     scrollbarDir: pros.scrollbarDir
       ? valueofScrollbarDirection(pros.scrollbarDir)
       : ScrollbarDirection.Both,

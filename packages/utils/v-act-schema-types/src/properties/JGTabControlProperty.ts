@@ -17,6 +17,10 @@ interface JGTabControlProperty extends Property {
    * 显示外观
    */
   tabAppearance?: string
+  /**
+   * 标题宽度
+   */
+  tabHeadWidth?: string
 }
 
 export default JGTabControlProperty

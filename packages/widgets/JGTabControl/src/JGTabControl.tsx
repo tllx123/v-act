@@ -6,6 +6,7 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Tab from '@mui/material/Tab'
 import Tabs from '@mui/material/Tabs'
+import makeStyles from '@mui/styles/makeStyles'
 import { Height, Width } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
@@ -58,9 +59,20 @@ interface JGTabControlProps {
    * 是否显示页签头
    */
   tabBarVisible?: boolean
+  /**
+   * 页签头宽度，只在页签头位置为Left、Right时生效
+   */
+  tabHeadWidth?: number
 
   children?: Array<JSX.Element> | null
 }
+
+const useStyles = makeStyles({
+  topIndicator: { top: '0px' },
+  leftIndicator: { left: '0px' },
+  bottomIndicator: { bottom: '0px' },
+  rightIndicator: { right: '0px' }
+})
 
 const JGTabControl = function (props: JGTabControlProps) {
   if (!props.visible) {
@@ -76,10 +88,23 @@ const JGTabControl = function (props: JGTabControlProps) {
   }
   const alignment = props.alignment
   const isHLayout = alignment == Aligment.Top || alignment == Aligment.Bottom
-  let sx = isHLayout ? { height: '38px' } : { width: '110px' }
+  let sx = isHLayout
+    ? { height: '38px' }
+    : { width: props.tabHeadWidth ? props.tabHeadWidth + 'px' : '110px' }
+  const classes = useStyles()
   const tabHeader = (
     <Tabs
       value={value}
+      classes={{
+        indicator:
+          alignment == Aligment.Bottom
+            ? classes.topIndicator
+            : alignment == Aligment.Right
+            ? classes.leftIndicator
+            : alignment == Aligment.Top
+            ? classes.bottomIndicator
+            : classes.rightIndicator
+      }}
       onChange={handleChange}
       variant="scrollable"
       orientation={isHLayout ? 'horizontal' : 'vertical'}

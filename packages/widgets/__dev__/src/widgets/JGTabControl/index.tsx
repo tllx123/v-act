@@ -8,6 +8,8 @@ const TextBox = () => {
       <JGTabControl
         top="50px"
         left="50px"
+        alignment="Left"
+        tabAppearance="card"
         multiWidth="500px"
         multiHeight="500px"
         selectedIndex={2}
