@@ -1,6 +1,6 @@
 {
   "name": "@v-act/project-cli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "private": false,
   "description": "v-act项目脚手架",
   "homepage": "https://github.com/opensource-vplatform/v-act",
@@ -17,7 +17,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "@v-act/cli-utils": "^1.0.10"
+    "@v-act/cli-utils": "^1.0.11"
   },
   "publishConfig": {
     "access": "public"
