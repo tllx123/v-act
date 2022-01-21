@@ -8,7 +8,10 @@ const { stop } = require('./src/utils/stop')
 const build = require('./src/utils/build')
 const test = require('./src/utils/test')
 
+const { saveNextProcessPid } = require('./src/utils/utils')
+
 module.exports = {
+  saveNextProcessPid,
   clear,
   install,
   packComponent,
