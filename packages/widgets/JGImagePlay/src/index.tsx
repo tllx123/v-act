@@ -14,7 +14,7 @@ const convert = function (
   render: (controls: Array<Control>) => JSX.Element | null,
   componentCode: string
 ): JSX.Element {
-  console.log(control, componentCode, 'JGImagePlay======control')
+  // console.log(control, componentCode, 'JGImagePlay======control')
   const pros = control.properties
   const props: JGImagePlayProps = {
     alias: pros.alias,

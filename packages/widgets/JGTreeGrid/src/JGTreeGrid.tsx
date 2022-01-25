@@ -1,11 +1,15 @@
 import { Property } from 'csstype'
-import { Table, Switch, Space } from 'antd'
-import 'antd/dist/antd.css'
+import { Table } from 'antd'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
 import { useContext } from '@v-act/widget-context'
 import '../src/JGTreeGrid.css'
-import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
+import {
+  toHeight,
+  toWidth,
+  getEntityDatas,
+  getCompEvent
+} from '@v-act/widget-utils'
 interface dataTreeHeader {
   title: string
   dataIndex: string
@@ -69,9 +73,11 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     dataTemp = getEntityDatas(tablename, context)
   }
 
-  dataTemp.some((item2: any, index: any) => {
-    item2.key = index
-  })
+  if (dataTemp) {
+    dataTemp.some((item2: any, index: any) => {
+      item2.key = index
+    })
+  }
 
   let dataTree = []
   if (dataTemp) {
@@ -79,6 +85,12 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
       parentProperty: 'PID',
       customID: 'id'
     })
+  }
+
+  let clickProps = () => {}
+
+  if (getCompEvent(control).hasOwnProperty('OnClick')) {
+    clickProps = getCompEvent(control).OnClick
   }
 
   return (
@@ -93,6 +105,11 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
       }}
     >
       <Table
+        onRow={(record) => {
+          return {
+            onClick: clickProps
+          }
+        }}
         scroll={{
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')

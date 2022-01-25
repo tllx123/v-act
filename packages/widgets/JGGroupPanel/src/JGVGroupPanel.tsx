@@ -36,9 +36,11 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
       settingIndexList[set.index] = set
     }
   })
-  const childContext = createContext({
-    position: 'static'
-  })
+  const childContext = createContext(
+    Object.assign(context, {
+      position: 'static'
+    })
+  )
   let preChildIsSpacer = false
   const parseChild = (child: JSX.Element, index: number) => {
     child = getChildrenWithoutFragment(child)[0]

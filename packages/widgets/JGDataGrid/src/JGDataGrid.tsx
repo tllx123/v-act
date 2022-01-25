@@ -1,12 +1,15 @@
 import { Property } from 'csstype'
 import Box from '@mui/material/Box'
 import { Table } from 'antd'
-import { convert as buttongroupConvert } from '@v-act/jgbuttongroup'
 import '../src/JGDataGrid.css'
-import 'antd/dist/antd.css'
+// import 'antd/dist/antd.css'
 import { ContextProvider, useContext } from '@v-act/widget-context'
-import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
-import { styled } from '@mui/material/styles'
+import {
+  toHeight,
+  toWidth,
+  getEntityDatas,
+  getCompEvent
+} from '@v-act/widget-utils'
 interface dataHeader {
   code: string
   name: string
@@ -125,6 +128,12 @@ const JGDataGrid = (props: JGDataGridProps) => {
     tableProp.rowSelection = rowSelection
   }
 
+  let clickProps = () => {}
+
+  if (getCompEvent(control).hasOwnProperty('OnClick')) {
+    clickProps = getCompEvent(control).OnClick
+  }
+
   return (
     <Box
       sx={{
@@ -140,6 +149,11 @@ const JGDataGrid = (props: JGDataGridProps) => {
     >
       <Table
         {...tableProp}
+        onRow={(record) => {
+          return {
+            onClick: clickProps
+          }
+        }}
         scroll={{
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')

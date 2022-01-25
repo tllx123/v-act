@@ -12,7 +12,10 @@ export const convert = function (
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '68px'),
-    height: valueofHeight(pros.multiHeight, '24px')
+    height: valueofHeight(pros.multiHeight, '24px'),
+    fontStyle: pros.fontStyle,
+    textAlign: pros.textAlign,
+    foreColor: pros.foreColor
   }
   const events = control.events
   if (events && events.length > 0) {

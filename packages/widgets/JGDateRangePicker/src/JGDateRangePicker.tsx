@@ -8,6 +8,7 @@ import moment from 'moment'
 import locale from 'antd/lib/date-picker/locale/zh_CN'
 import '../src/JGDateRangePicker.css'
 import 'moment/dist/locale/zh-cn'
+import EventIcon from '@mui/icons-material/Event'
 moment.locale('zh-cn')
 const { RangePicker } = DatePicker
 
@@ -62,7 +63,11 @@ const JGDateRangePicker = (props: JGDateRangePickerProps) => {
       >
         {labeltext}
       </JGInputLabel>
-      <RangePicker locale={locale} picker={pickerVak} />
+      <RangePicker
+        suffixIcon={<EventIcon sx={{ color: '#333' }} />}
+        locale={locale}
+        picker={pickerVak}
+      />
     </Box>
   )
 }

@@ -466,6 +466,17 @@ const toJSXElementFromAction = function (evt: Event): JSX.Element | null {
   )
 }
 
+const getCompEvent = function (control?: any): any {
+  const events = control.events
+  const eventMap: { [eventCode: string]: Function } = {}
+  if (events && events.length > 0) {
+    events.forEach((evt: any) => {
+      eventMap[evt.code] = evt.handler
+    })
+  }
+  return eventMap
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
@@ -492,5 +503,6 @@ export {
   toWidth,
   valueofDock,
   valueofHeight,
-  valueofWidth
+  valueofWidth,
+  getCompEvent
 }
