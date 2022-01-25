@@ -115,12 +115,6 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
     props.click && props.click()
   }
 
-  //使能与只读两个位true时候disabled 才为true
-  let isStart: boolean = false
-  if (props.enabled && props.readOnly) {
-    isStart = true
-  }
-
   const wrapStyles: CSSProperties = {
     width: width,
     height: height,
@@ -147,15 +141,16 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
   }
 
   const openStyle: CSSProperties = {
-    color: '#dcdee2'
+    color: '#9e9e9e'
   }
 
   const InputAdornmentSty: CSSProperties = {
     width: '18px',
     position: 'absolute',
-    top: '0',
+    top: '2px',
     right: '15px',
-    height: '100%'
+    height: '100%',
+    display: props.enabled && !props.readOnly ? 'inline-flex' : 'none' ////使能(true)与只读(false)才显示按钮
   }
 
   return (
@@ -167,10 +162,10 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
       <CssOutlinedInput
         style={inputStyles}
         readOnly={true}
-        disabled={isStart}
+        disabled={!props.enabled}
         endAdornment={
           <InputAdornment style={InputAdornmentSty} position="end">
-            <IconButton style={openStyle} disabled={isStart} onClick={myFun}>
+            <IconButton style={openStyle} onClick={myFun}>
               <OpenInNewIcon sx={{ width: '20px', height: '20px' }} />
             </IconButton>
           </InputAdornment>
@@ -189,8 +184,8 @@ JGBaseDictBox.defaultProps = {
   labelText: '文本',
   placeholder: '',
   isMust: false,
-  visible: true,
-  readOnly: true
+  enabled: true,
+  readOnly: false
 }
 
 export default JGBaseDictBox
