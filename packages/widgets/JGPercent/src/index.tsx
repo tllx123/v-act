@@ -23,6 +23,7 @@ const convert = function (
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     visible: toBoolean(pros.visible, true),
+    dock: pros.dock,
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     fontColor: pros.fontColor,

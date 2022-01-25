@@ -1,6 +1,7 @@
 import React, { CSSProperties, forwardRef, useRef, useState } from 'react'
 
 import { Property } from 'csstype'
+import zhCN from 'date-fns/locale/zh-CN'
 import moment from 'moment'
 
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
@@ -9,9 +10,11 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import EventIcon from '@mui/icons-material/Event'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import StaticDatePicker from '@mui/lab/StaticDatePicker'
 import YearPicker from '@mui/lab/YearPicker'
 import { Box, Button, IconButton } from '@mui/material'
 import Menu from '@mui/material/Menu'
+import TextField from '@mui/material/TextField'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { Height, Width } from '@v-act/schema-types'
@@ -212,15 +215,15 @@ const JGPeriod = function (props: JGPeriodProps) {
     }
   }
 
-  // const monthData = () => {
-  //   let initMonth = 1
-  //   let retMonth = []
-  //   while (initMonth <= 12) {
-  //     retMonth.push(initMonth)
-  //     initMonth++
-  //   }
-  //   return {}
-  // }
+  const monthData = () => {
+    let initMonth = 1
+    let retMonth = []
+    while (initMonth <= 12) {
+      retMonth.push({ title: '', enumArr: initMonth })
+      initMonth++
+    }
+    return {}
+  }
 
   const [dateModalSelectedVal, setDateModalSelectedVal] = useState(
     +moment().format('YYYY')
@@ -377,6 +380,10 @@ const JGPeriod = function (props: JGPeriodProps) {
     setInputVal(moment(date).format('YYYY') + '年')
     setInputDateVal(date)
   }
+  const handleChangeForMonthView = (date: any) => {
+    setInputVal(moment(date).format('YYYY' + '年' + 'MM' + '月'))
+    handleClose()
+  }
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -523,67 +530,69 @@ const JGPeriod = function (props: JGPeriodProps) {
         sx={{
           '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper':
             {
-              width: '249px'
+              width: props.periodType !== 'month' ? '249px' : 'auto'
             },
           '& .MuiYearPicker-root button': {
             height: '30px'
           }
         }}
       >
-        <div style={datePickerHeaderWrapStyle}>
-          <IconButton
-            aria-label="日期后退按钮"
-            component="span"
-            onClick={handleBackDate}
-          >
-            <ArrowBackIosIcon
-              sx={{
-                fontSize: '16px',
-                color: '#8C8C8C'
-              }}
-            />
-          </IconButton>
-          {props.periodType === 'month' && (
-            <div
-              style={datePickerHeaderTextStyle}
-              id="menuWrapScopeForDateModal"
-              aria-controls="menuScopeForDateModal"
-              aria-haspopup="true"
-              aria-expanded={openForDateModal ? 'true' : undefined}
-              ref={menuWrapScopeForDateModal}
-              onClick={handleClickForDateModal}
+        {props.periodType !== 'month' && (
+          <div style={datePickerHeaderWrapStyle}>
+            <IconButton
+              aria-label="日期后退按钮"
+              component="span"
+              onClick={handleBackDate}
             >
-              {monthNameVal}年
-            </div>
-          )}
-          {props.periodType !== 'month' && (
-            <div
-              style={datePickerHeaderTextStyle}
-              id="menuWrapScopeForDateModal"
-              aria-controls="menuScopeForDateModal"
-              aria-haspopup="true"
-              aria-expanded={openForDateModal ? 'true' : undefined}
-              ref={menuWrapScopeForDateModal}
-              onClick={handleClickForDateModal}
+              <ArrowBackIosIcon
+                sx={{
+                  fontSize: '16px',
+                  color: '#8C8C8C'
+                }}
+              />
+            </IconButton>
+            {props.periodType === 'month' && (
+              <div
+                style={datePickerHeaderTextStyle}
+                id="menuWrapScopeForDateModal"
+                aria-controls="menuScopeForDateModal"
+                aria-haspopup="true"
+                aria-expanded={openForDateModal ? 'true' : undefined}
+                ref={menuWrapScopeForDateModal}
+                onClick={handleClickForDateModal}
+              >
+                {monthNameVal}年
+              </div>
+            )}
+            {props.periodType !== 'month' && (
+              <div
+                style={datePickerHeaderTextStyle}
+                id="menuWrapScopeForDateModal"
+                aria-controls="menuScopeForDateModal"
+                aria-haspopup="true"
+                aria-expanded={openForDateModal ? 'true' : undefined}
+                ref={menuWrapScopeForDateModal}
+                onClick={handleClickForDateModal}
+              >
+                {minDateNameVal}年 - {maxDateNameVal}年
+              </div>
+            )}
+            <IconButton
+              aria-label="日期前进按钮"
+              component="span"
+              onClick={handleNextDate}
             >
-              {minDateNameVal}年 - {maxDateNameVal}年
-            </div>
-          )}
-          <IconButton
-            aria-label="日期前进按钮"
-            component="span"
-            onClick={handleNextDate}
-          >
-            <ArrowForwardIosIcon
-              sx={{
-                fontSize: '16px',
-                color: '#8C8C8C'
-              }}
-            />
-          </IconButton>
-        </div>
+              <ArrowForwardIosIcon
+                sx={{
+                  fontSize: '16px',
+                  color: '#8C8C8C'
+                }}
+              />
+            </IconButton>
+          </div>
+        )}
         {props.periodType === 'years' && (
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
             <YearPicker
               date={inputDateVal}
               isDateDisabled={() => false}
@@ -618,23 +627,36 @@ const JGPeriod = function (props: JGPeriodProps) {
             </Box>
           ))}
 
-        {/* {props.periodType === 'month' && dateMonth.map((val: number[]) => (
-          <Box sx={dateYearItemWrap}>
-            {val}月
-          </Box>
-        ))} */}
-
-        <div style={calendarOperateWrapStyles}>
-          <Button variant="contained" onClick={handleSelectedCurrent}>
-            本年
-          </Button>
-          <Button variant="contained" onClick={handleConfirmDate}>
-            确定
-          </Button>
-          <Button variant="contained" onClick={() => handleClearSelectDate()}>
-            清空
-          </Button>
-        </div>
+        {props.periodType === 'month' && (
+          <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
+            <StaticDatePicker
+              displayStaticWrapperAs="desktop"
+              openTo="year"
+              views={['year', 'month']}
+              value={inputDateVal}
+              onChange={(newValue) => {
+                setInputDateVal(newValue)
+              }}
+              onMonthChange={(newValue) => {
+                handleChangeForMonthView(newValue)
+              }}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        )}
+        {props.periodType !== 'month' && (
+          <div style={calendarOperateWrapStyles}>
+            <Button variant="contained" onClick={handleSelectedCurrent}>
+              本年
+            </Button>
+            <Button variant="contained" onClick={handleConfirmDate}>
+              确定
+            </Button>
+            <Button variant="contained" onClick={() => handleClearSelectDate()}>
+              清空
+            </Button>
+          </div>
+        )}
       </Menu>
       <Menu
         style={yearPickerWrap}

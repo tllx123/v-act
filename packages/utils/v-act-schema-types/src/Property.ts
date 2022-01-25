@@ -1,3 +1,5 @@
+import { Property } from 'csstype'
+
 import ReactEnum from './ReactEnum'
 
 interface dataHeader {
@@ -249,6 +251,21 @@ interface Property {
    * 窗体padding
    */
   padding?: string
+
+  /**
+   * 标签对齐方式
+   */
+  textAlign: Property.TextAlign | undefined
+
+  /**
+   * 字体
+   */
+  fontStyle?: Property.FontStyle | undefined
+
+  /**
+   * 前景色
+   */
+  foreColor?: string
 }
 
 export default Property
