@@ -6,7 +6,9 @@ import { autoPlay } from 'react-swipeable-views-utils'
 
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
-import { Box, BoxProps, Button, MobileStepper } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import MobileStepper from '@mui/material/MobileStepper'
 import { Height, Width } from '@v-act/schema-types'
 import { EntityRecord, useContext } from '@v-act/widget-context'
 import {
