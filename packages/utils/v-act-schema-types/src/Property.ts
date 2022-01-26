@@ -279,17 +279,22 @@ interface Property {
   /**
    * 主题
    */
-  theme: string | undefined
+  theme?: string | undefined
 
   /**
    * 图片code
    */
-  imageValue: string | undefined
+  imageValue?: string | undefined
 
   /**
    * 方向
    */
-  direction: string | null | undefined
+  direction?: string | null | undefined
+
+  /**
+   * 图片位置
+   */
+  imagePosition?: string
 }
 
 export default Property
