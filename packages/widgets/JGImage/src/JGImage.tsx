@@ -14,6 +14,7 @@ export interface JGImageProps extends CardMediaProps {
   top?: Property.Top
   width?: Property.Width
   click?: Function
+  imagePosition?: string
 }
 
 const JGImageRoot = styled(CardMedia, {
@@ -24,20 +25,23 @@ const JGImageRoot = styled(CardMedia, {
 const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
   const context = useContext()
   const sx = inProps.sx || {}
+  const width = toWidth(inProps.width, context, '100px')
+  const height = toHeight(inProps.height, context, '100px')
+  const isWidthMornThenHeight =
+    parseInt(width as string) > parseInt(height as string) ? true : false
   const props: JGImageProps = {
-    image: inProps.image
-      ? inProps.image
-      : 'http://www.yindangu.com/itop/common/images/defaultImg.png',
+    //image: inProps.image? inProps.image : 'http://www.yindangu.com/itop/common/images/defaultImg.png',
     sx: {
       ...sx,
-      height: toHeight(inProps.height, context, '100px'),
-      width: toWidth(inProps.width, context, '100px'),
+      height: height,
+      width: width,
       position: context ? context.position : 'absolute',
       backgroundSize: 'auto',
       top: inProps.top ?? 0,
       right: inProps.right,
       left: inProps.left ?? 0,
-      bottom: inProps.bottom
+      bottom: inProps.bottom,
+      textAlign: 'center'
     }
   }
 
@@ -48,7 +52,31 @@ const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
     }
   }
 
-  return <JGImageRoot {...props} ref={ref} onClick={clickHandler} />
+  return (
+    <JGImageRoot {...props} ref={ref} onClick={clickHandler}>
+      <img
+        src={
+          inProps.image
+            ? inProps.image
+            : 'http://www.yindangu.com/itop/common/images/defaultImg.png'
+        }
+        style={{
+          width:
+            inProps.imagePosition === 'fill'
+              ? '100%'
+              : isWidthMornThenHeight
+              ? ''
+              : '100%',
+          height:
+            inProps.imagePosition === 'fill'
+              ? '100%'
+              : isWidthMornThenHeight
+              ? '100%'
+              : ''
+        }}
+      ></img>
+    </JGImageRoot>
+  )
 })
 
 JGImage.defaultProps = {

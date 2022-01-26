@@ -14,6 +14,7 @@ export const convert = function (
     left: toNumber(pros.left) + 'px',
     width: toNumber(pros.multiWidth) + 'px',
     height: toNumber(pros.multiHeight) + 'px',
+    imagePosition: pros.imagePosition,
     image: pros.imageValue
       ? getComponentResPath(pros.imageValue, componentCode)
       : undefined
