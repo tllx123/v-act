@@ -146,6 +146,8 @@ const JGTabControl = function (props: JGTabControlProps) {
     ? { height: '38px', minHeight: '0px' }
     : { width: props.tabHeadWidth ? props.tabHeadWidth + 'px' : '110px' }
   const classes = useStyles()
+  const tabPageWidth = isHLayout ? '100%' : `calc(100% - ${sx.width})`
+  const tabPageHeight = isHLayout ? `calc(100% - ${sx.height})` : '100%'
   const tabHeader = (
     <Tabs
       value={value}
@@ -173,12 +175,18 @@ const JGTabControl = function (props: JGTabControlProps) {
       sx={sx}
     >
       {props.children
-        ? props.children.map((child) => {
+        ? props.children.map((child, i) => {
             return (
               <Tab
                 key={child.props.code}
                 disabled={disabled}
-                sx={sx}
+                sx={
+                  i == 0
+                    ? isHLayout
+                      ? { ...sx, marginLeft: '0px !important' }
+                      : { ...sx, marginTop: '0px !important' }
+                    : { ...sx }
+                }
                 classes={
                   isLineStyle
                     ? {}
@@ -214,12 +222,32 @@ const JGTabControl = function (props: JGTabControlProps) {
                   isLineStyle
                     ? {}
                     : alignment == Aligment.Top
-                    ? { marginTop: '-1px', border: borderStyle }
+                    ? {
+                        marginTop: '-1px',
+                        border: borderStyle,
+                        width: tabPageWidth,
+                        height: tabPageHeight
+                      }
                     : alignment == Aligment.Left
-                    ? { marginLeft: '-1px', border: borderStyle }
+                    ? {
+                        marginLeft: '-1px',
+                        border: borderStyle,
+                        width: tabPageWidth,
+                        height: tabPageHeight
+                      }
                     : alignment == Aligment.Bottom
-                    ? { marginBottom: '-1px', border: borderStyle }
-                    : { marginRight: '-1px', border: borderStyle }
+                    ? {
+                        marginBottom: '-1px',
+                        border: borderStyle,
+                        width: tabPageWidth,
+                        height: tabPageHeight
+                      }
+                    : {
+                        marginRight: '-1px',
+                        border: borderStyle,
+                        width: tabPageWidth,
+                        height: tabPageHeight
+                      }
                 }
                 index={i}
               >
@@ -237,8 +265,8 @@ const JGTabControl = function (props: JGTabControlProps) {
           position: context.position,
           left: props.left,
           top: props.top,
-          width: toWidth(props.multiHeight, context, '235px'),
-          height: toHeight(props.multiWidth, context, '26px')
+          width: toWidth(props.multiWidth, context, '235px'),
+          height: toHeight(props.multiHeight, context, '26px')
         }}
       >
         {tabPanel}
@@ -251,8 +279,8 @@ const JGTabControl = function (props: JGTabControlProps) {
           position: context.position,
           left: props.left,
           top: props.top,
-          width: toWidth(props.multiHeight, context, '235px'),
-          height: toHeight(props.multiWidth, context, '26px')
+          width: toWidth(props.multiWidth, context, '235px'),
+          height: toHeight(props.multiHeight, context, '26px')
         }}
       >
         {[tabHeader, tabPanel]}
@@ -265,8 +293,8 @@ const JGTabControl = function (props: JGTabControlProps) {
           position: context.position,
           left: props.left,
           top: props.top,
-          width: toWidth(props.multiHeight, context, '235px'),
-          height: toHeight(props.multiWidth, context, '26px')
+          width: toWidth(props.multiWidth, context, '235px'),
+          height: toHeight(props.multiHeight, context, '26px')
         }}
       >
         {[tabPanel, tabHeader]}
@@ -280,8 +308,8 @@ const JGTabControl = function (props: JGTabControlProps) {
           display: 'flex',
           left: props.left,
           top: props.top,
-          width: toWidth(props.multiHeight, context, '235px'),
-          height: toHeight(props.multiWidth, context, '26px')
+          width: toWidth(props.multiWidth, context, '235px'),
+          height: toHeight(props.multiHeight, context, '26px')
         }}
       >
         {[tabHeader, tabPanel]}
@@ -295,8 +323,8 @@ const JGTabControl = function (props: JGTabControlProps) {
           display: 'flex',
           left: props.left,
           top: props.top,
-          width: toWidth(props.multiHeight, context, '235px'),
-          height: toHeight(props.multiWidth, context, '26px')
+          width: toWidth(props.multiWidth, context, '235px'),
+          height: toHeight(props.multiHeight, context, '26px')
         }}
       >
         {[tabPanel, tabHeader]}

@@ -1,14 +1,7 @@
 import { CSSProperties } from 'react'
 
 import Box from '@mui/material/Box'
-import {
-  Control,
-  ControlReact,
-  Height,
-  ReactEnum,
-  Width
-} from '@v-act/schema-types'
-import { useContext } from '@v-act/widget-context'
+import { Control, ControlReact } from '@v-act/schema-types'
 
 interface JGTabPageProps {
   code: string
@@ -17,17 +10,9 @@ interface JGTabPageProps {
 
   value?: string
   /**
-   * 高度
-   */
-  multiHeight?: Height
-  /**
    * 标题
    */
   labelText?: string
-  /**
-   * 宽度
-   */
-  multiWidth?: Width
 
   sx?: CSSProperties
 
@@ -45,9 +30,7 @@ const convert = function (
   const pros = control.properties
   const props: JGTabPageProps = {
     code: pros.code,
-    labelText: pros.labelText,
-    multiHeight: pros.multiHeight ? pros.multiHeight : ReactEnum.Content,
-    multiWidth: pros.multiWidth ? pros.multiWidth : ReactEnum.Space
+    labelText: pros.labelText
   }
   const containerProps: ControlReact = {
     width: parseInt(tabControl.properties.width || '200'),
@@ -62,10 +45,7 @@ const convert = function (
 
 function JGTabPage(props: JGTabPageProps) {
   const { children, index, value } = props
-  const context = useContext()
   const styles = props.sx ? props.sx : {}
-  styles.width = '100%'
-  styles.height = '100%'
   return (
     <div
       style={styles}
@@ -84,4 +64,4 @@ function JGTabPage(props: JGTabPageProps) {
 }
 
 export default JGTabPage
-export { convert, JGTabPage }
+export { convert, JGTabPage, type JGTabPageProps }
