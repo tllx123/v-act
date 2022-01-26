@@ -103,7 +103,6 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   const [activeStep, setActiveStep] = React.useState(0)
 
   //是否显示页码
-  // const maxStepsVisible = props.paginationVisible ? images.length : 0;
   const maxSteps = images.length
 
   //点击图片打开窗口
@@ -162,16 +161,6 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     display: props.paginationVisible ? '' : 'none'
   }
 
-  const stepper: CSSProperties = {
-    width: '100%',
-    background: 'none',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    padding: 0
-    // visibility: 'hidden'
-  }
-
   const buttonStyle: CSSProperties = {
     background: 'black',
     opacity: '0.5',
@@ -186,17 +175,9 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   // console.log(props, 'sssssssssssssssssssss')
 
   return (
-    <Box
-      style={wrapStyles}
-      sx={{
-        '&:hover': {
-          // "& .MuiBox-root": {
-          visibility: 'visible'
-          // }
-        }
-      }}
-    >
+    <Box style={wrapStyles}>
       <div style={{ position: 'relative' }}>
+        {/* 轮播图 */}
         <AutoPlaySwipeableViews
           index={activeStep}
           onChangeIndex={handleStepChange}
@@ -215,7 +196,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
                     maxHeight: height,
                     overflow: 'hidden',
                     margin: '0 auto',
-                    width: props.imageLayout == 'Stretch' ? '100%' : 'auto'
+                    width: props.imageLayout == 'Stretch' ? '100%' : 'auto' //图片布局(拉伸 or 自适应)
                   }}
                   src={step.imgPath as string}
                 />
@@ -229,9 +210,22 @@ const JGImagePlay = function (props: JGImagePlayProps) {
             {activeStep + 1}/{maxSteps}
           </span>
         </div>
+        {/* 步进条 */}
         <MobileStepper
           onClick={handleClick}
-          style={stepper}
+          sx={{
+            'width': '100%',
+            'background': 'none',
+            'position': 'absolute',
+            'top': 0,
+            'bottom': 0,
+            'padding': 0,
+            'opacity': 0,
+
+            '&:hover': {
+              opacity: 1
+            }
+          }}
           steps={0}
           position="static"
           activeStep={activeStep}
