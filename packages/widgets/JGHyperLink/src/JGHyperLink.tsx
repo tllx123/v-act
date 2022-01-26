@@ -69,25 +69,34 @@ interface JGHyperLinkProps extends InputUnstyledProps {
   click?: Function
 }
 
-const StyleSpanElement = styled('span')`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  color: #0960c3;
-
-  &:hover {
-    text-decoration: underline;
-    color: #0960c3;
-  }
-`
-
 const JGHyperLink = function (props: JGHyperLinkProps) {
+  const StyleSpanElement = props.enabled
+    ? styled('span')`
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          text-decoration: underline;
+          color: #0960c3;
+        }
+      `
+    : styled('span')`
+    height: 100%;
+    display: flex;
+    align-items: center;  
+    }
+  `
+
   const context = useContext()
   let value: FieldValue = ''
 
   //点击事件
-  const myFun = function () {
-    props.click && props.click()
+  const linkEvent = function () {
+    if (props.enabled) {
+      // console.log("11111")
+      props.click && props.click()
+    }
   }
 
   if (props.tableName && props.columnName) {
@@ -122,8 +131,13 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
     border: '1px solid #DCDEE2',
     borderRadius: '4px',
     padding: '3px',
-    cursor: 'pointer'
+    cursor: props.enabled ? 'pointer' : 'not-allowed'
   }
+
+  const spanStyles: CSSProperties = {
+    color: props.enabled ? '#0960c3' : '#000000'
+  }
+
   return (
     <div style={wrapStyles}>
       <JGInputLabel
@@ -134,7 +148,11 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
         {props.labelText}
       </JGInputLabel>
       <div style={divStyles}>
-        <StyleSpanElement placeholder={props.placeholder} onClick={myFun}>
+        <StyleSpanElement
+          style={spanStyles}
+          placeholder={props.placeholder}
+          onClick={linkEvent}
+        >
           {value}
         </StyleSpanElement>
       </div>

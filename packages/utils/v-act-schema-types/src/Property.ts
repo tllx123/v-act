@@ -266,6 +266,16 @@ interface Property {
    * 前景色
    */
   foreColor?: string
+
+  /**
+   * 主题
+   */
+  theme: string | undefined
+
+  /**
+   * 图片code
+   */
+  imageValue: string | undefined
 }
 
 export default Property
