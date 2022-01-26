@@ -87,6 +87,7 @@ const Home = () => {
       <Link href="/IPrototypeFrame">IPrototypeFrame</Link> <br />
       <Link href="/JGDateRangePicker">JGDateRangePicker</Link> <br />
       <Link href="/JGPeriodRange">JGPeriodRange</Link> <br />
+      <Link href="/JGToolbar">JGToolbar</Link> <br />
     </>
   )
 }

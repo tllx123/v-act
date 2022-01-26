@@ -4544,7 +4544,7 @@ array-includes@^3.1.3, array-includes@^3.1.4:
 
 array-to-tree@^3.3.2:
   version "3.3.2"
-  resolved "https://registry.npmmirror.com/array-to-tree/download/array-to-tree-3.3.2.tgz#06da2f3815a906a99aaa5ad793a39114db36da52"
+  resolved "https://registry.nlark.com/array-to-tree/download/array-to-tree-3.3.2.tgz#06da2f3815a906a99aaa5ad793a39114db36da52"
   integrity sha1-BtovOBWpBqmaqlrXk6ORFNs22lI=
   dependencies:
     lodash.keyby "^4.6.0"
@@ -7015,6 +7015,13 @@ deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
   resolved "https://registry.nlark.com/deep-is/download/deep-is-0.1.4.tgz#a6f2dce612fadd2ef1f519b73551f17e85199831"
   integrity sha1-pvLc5hL63S7x9Rm3NVHxfoUZmDE=
+
+deepcopy@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/deepcopy/download/deepcopy-2.1.0.tgz#2deb0dd52d079c2ecb7924b640a7c3abd4db1d6d"
+  integrity sha1-LesN1S0HnC7LeSS2QKfDq9TbHW0=
+  dependencies:
+    type-detect "^4.0.8"
 
 deepmerge@^4.2.2:
   version "4.2.2"
@@ -17867,7 +17874,7 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-detect@4.0.8:
+type-detect@4.0.8, type-detect@^4.0.8:
   version "4.0.8"
   resolved "https://registry.nlark.com/type-detect/download/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha1-dkb7XxiHHPu3dJ5pvTmmOI63RQw=

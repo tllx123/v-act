@@ -249,6 +249,16 @@ interface Property {
    * 窗体padding
    */
   padding?: string
+
+  /**
+   * 开启多选
+   */
+  cascadeCheck?: string
+
+  /**
+   * 展示模式
+   */
+  displayMode?: string
 }
 
 export default Property

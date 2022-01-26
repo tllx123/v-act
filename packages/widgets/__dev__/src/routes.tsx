@@ -69,9 +69,11 @@ const IPrototypeLogin = lazy(() => import('./widgets/IPrototypeLogin'))
 const IPrototypeFrame = lazy(() => import('./widgets/IPrototypeFrame'))
 const JGDateRangePicker = lazy(() => import('./widgets/JGDateRangePicker'))
 const JGPeriodRange = lazy(() => import('./widgets/JGPeriodRange'))
+const JGToolbar = lazy(() => import('./widgets/JGToolbar'))
 
 const Routes = () =>
   useRoutes([
+    { path: '/JGToolbar', element: <JGToolbar /> },
     { path: '/JGPeriodRange', element: <JGPeriodRange /> },
     { path: '/JGDateRangePicker', element: <JGDateRangePicker /> },
     { path: '/JGRichTextEditor', element: <JGRichTextEditor /> },
