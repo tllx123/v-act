@@ -2,7 +2,8 @@ import { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, styled } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import { styled } from '@mui/material/styles'
 
 /* 包装器属性 */
 export interface JGActivityPanelProps extends BoxProps {

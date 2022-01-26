@@ -2,7 +2,8 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, Radio } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import Radio from '@mui/material/Radio'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {

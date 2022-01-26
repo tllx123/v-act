@@ -4,7 +4,7 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
 import { useContext } from '@v-act/widget-context'
 
 import logo from './img/blank.png'
