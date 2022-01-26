@@ -132,15 +132,13 @@ const JGTreeView = (props: JGTreeViewProps) => {
   let headerDataLeft: any = deepcopy(control.headerControls)
   let headerDataRight: any = deepcopy(control.headerControls)
 
-  console.log('headerDataLeft')
-
-  console.log(headerDataLeft)
-
   if (control.headerControls.length > 0) {
     if (headerDataLeft.length > 0) {
       headerDataLeft[0].controls = []
-
+      headerDataRight[0].controls = []
       control.headerControls[0].controls.some((item: any) => {
+        console.log('item.properties.align')
+        console.log(item.properties.align)
         if (item.properties.align) {
           headerDataRight[0].controls.push(item)
           headerDataRight[0].properties.top = 0
@@ -153,6 +151,10 @@ const JGTreeView = (props: JGTreeViewProps) => {
       })
     }
   }
+
+  console.log('headerDataRight')
+
+  console.log(headerDataRight)
 
   return (
     <Box
