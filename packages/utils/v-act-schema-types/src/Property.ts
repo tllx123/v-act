@@ -276,6 +276,11 @@ interface Property {
    * 图片code
    */
   imageValue: string | undefined
+
+  /**
+   * 方向
+   */
+  direction: string | null | undefined
 }
 
 export default Property
