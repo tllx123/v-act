@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, styled } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import { styled } from '@mui/styles'
 import { ReactEnum } from '@v-act/schema-types'
 import { Entities, useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'

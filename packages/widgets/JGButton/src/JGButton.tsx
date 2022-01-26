@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Button, ButtonProps, styled } from '@mui/material'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 
