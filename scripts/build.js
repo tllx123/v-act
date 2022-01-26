@@ -9,12 +9,16 @@ import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
 
 const publicExternal = [
+  '@grapecity/spread-sheets-react',
   '@mui/icons-material',
   '@mui/material',
   '@mui/styles',
   '@mui/system',
+  'echarts',
+  'echarts-for-react',
   'react',
-  'react-dom'
+  'react-dom',
+  'antd'
 ]
 const nodeExternal = ['art-template', 'fast-xml-parser', 'fs-extra', 'path']
 
@@ -47,6 +51,11 @@ export async function viteBuild(scopes, copyToPath, watch) {
     const entry = `${root}/src`
     return await build({
       build: {
+        terserOptions: {
+          compress: {
+            drop_console: watch === true
+          }
+        },
         emptyOutDir: true,
         lib: {
           entry,
@@ -65,11 +74,11 @@ export async function viteBuild(scopes, copyToPath, watch) {
       plugins: [
         vitePluginReact(),
         vitePluginDts(),
-        usePluginImport({
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: 'css'
-        }),
+        // usePluginImport({
+        //   libraryName: 'antd',
+        //   libraryDirectory: 'es',
+        //   style: 'css'
+        // }),
         {
           name: 'vite-plugin-vact-builder',
           closeBundle: () => {

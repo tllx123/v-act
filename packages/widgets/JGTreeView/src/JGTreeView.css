@@ -1,6 +1,34 @@
-.MuiTreeItem-content{
-    height:30px!important;
-} 
-.MuiTreeItem-label{
-      font-size: 14px!important;
+
+.ant-tree-treenode{
+    width: 100%;
+    
+}
+
+.ant-tree-title:hover{
+    background-color: rgba(0, 0, 0, 0)!important;
+}
+
+.ant-tree .ant-tree-node-content-wrapper.ant-tree-node-selected{
+    background: rgba(0, 0, 0, 0);
+}
+
+
+.ant-tree-treenode:hover{
+    background: #e9f7ff;
+}
+
+
+.ant-tree-checkbox-checked .ant-tree-checkbox-inner{
+    background-color: #356abb;
+    border-color: #356abb;
+}
+
+
+.ant-tree-checkbox-indeterminate .ant-tree-checkbox-inner::after{
+    background-color: #356abb   ;
+}
+
+
+.ant-tree-checkbox-inner:hover{
+    border: 1px solid #356abb;
 }

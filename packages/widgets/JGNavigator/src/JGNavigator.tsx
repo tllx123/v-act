@@ -55,6 +55,14 @@ interface JGNavigatorProps extends AccordionProps {
   children: NonNullable<React.ReactNode>
 
   navData?: Array<navDataItem>
+  /**
+   * 是否收回菜单
+   */
+  isMulOpened?: boolean
+  /**
+   * 是否打开第一个
+   */
+  openPanelOnLoad?: boolean
 }
 
 const Accordion = styled((props: JGNavigatorProps) => (
@@ -110,10 +118,17 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }))
 
 const JGNavigator = function (props: JGNavigatorProps) {
-  const [expanded, setExpanded] = React.useState<string | false>('panel1')
+  const [expanded, setExpanded] = React.useState<string | false>(
+    props.openPanelOnLoad ? 'panel0' : false
+  )
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      // if (props.isMulOpened) {
+      //   setExpanded(newExpanded ? panel : false)
+      // } else {
+      //   if (expanded !== panel) setExpanded(newExpanded ? panel : false)
+      // }
       setExpanded(newExpanded ? panel : false)
     }
   const navWrap: React.CSSProperties = {
@@ -127,15 +142,17 @@ const JGNavigator = function (props: JGNavigatorProps) {
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
+
   return (
     <div style={navWrap}>
       {props.navData &&
         props.navData.length &&
         props.navData.map((val, i) => (
           <Accordion
-            expanded={expanded === 'panel' + i}
+            expanded={props.isMulOpened ? void 0 : expanded === 'panel' + i}
             onChange={handleChange('panel' + i)}
             key={i}
+            defaultExpanded={props.openPanelOnLoad && i === 0 ? true : void 0}
           >
             <AccordionSummary
               aria-controls={'panel-content' + i}
@@ -193,7 +210,9 @@ JGNavigator.defaultProps = {
         }
       ]
     }
-  ]
+  ],
+  isMulOpened: false,
+  openPanelOnLoad: true
 }
 export default JGNavigator
 export { JGNavigator }

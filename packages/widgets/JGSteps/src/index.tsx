@@ -21,6 +21,7 @@ export const convert = function (
     height: valueofHeight(pros.multiHeight, '40px'),
     tableName: getTableName(control),
     columnName: getColumnName(control),
+    direction: pros.direction,
     stepDownSource: JSON.parse((pros as any)['stepDownSource']) as any
   }
   return <JGSteps {...props} />

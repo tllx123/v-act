@@ -1,3 +1,5 @@
+import { Property } from 'csstype'
+
 import ReactEnum from './ReactEnum'
 
 interface dataHeader {
@@ -245,6 +247,59 @@ interface Property {
    * 图片布局方式
    */
   imageLayout?: string
+  /**
+   * 窗体padding
+   */
+  padding?: string
+
+  /**
+   * 开启多选
+   */
+  cascadeCheck?: string
+
+  /**
+   * 展示模式
+   */
+  displayMode?: string
+  /**
+   * 标签对齐方式
+   */
+  textAlign: Property.TextAlign | undefined
+
+  /**
+   * 字体
+   */
+  fontStyle?: Property.FontStyle | undefined
+
+  /**
+   * 前景色
+   */
+  foreColor?: string
+
+  /**
+   * 主题
+   */
+  theme?: string | undefined
+
+  /**
+   * 图片code
+   */
+  imageValue?: string | undefined
+
+  /**
+   * 方向
+   */
+  direction?: string | null | undefined
+
+  /**
+   * 图片位置
+   */
+  imagePosition?: string
+
+  /**
+   * 适应行高
+   */
+  adaLineHeight?: string
 }
 
 export default Property

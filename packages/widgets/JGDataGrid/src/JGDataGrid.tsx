@@ -1,12 +1,17 @@
 import { Property } from 'csstype'
 import Box from '@mui/material/Box'
 import { Table } from 'antd'
-import { convert as buttongroupConvert } from '@v-act/jgbuttongroup'
 import '../src/JGDataGrid.css'
 import 'antd/dist/antd.css'
 import { ContextProvider, useContext } from '@v-act/widget-context'
-import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
-import { styled } from '@mui/material/styles'
+import { convert as bgconvert } from '@v-act/jgbuttongroup'
+import deepcopy from 'deepcopy'
+import {
+  toHeight,
+  toWidth,
+  getEntityDatas,
+  getCompEvent
+} from '@v-act/widget-utils'
 interface dataHeader {
   code: string
   name: string
@@ -28,6 +33,7 @@ export interface JGDataGridProps {
   rowHeight?: string
   showRowNumbers?: boolean
   chooseMode?: string
+  adaLineHeight?: boolean
 }
 
 const rowSelection = {
@@ -50,6 +56,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
     showRowNumbers,
     ishide,
     tablename,
+    adaLineHeight,
     control
   } = props
 
@@ -72,40 +79,24 @@ const JGDataGrid = (props: JGDataGridProps) => {
       title: item.properties.labelText,
       dataIndex: item.properties.code,
       align: 'center',
-      key: item.properties.code
+      key: item.properties.code,
+      ellipsis: adaLineHeight == true ? false : 'enble'
     })
   })
 
   let data: any = []
   if (tablename) {
     data = getEntityDatas(tablename, context)
+    console.log('data')
+    console.log(data)
   }
 
-  // data = [
-  //   {
-  //     JGTextBoxColumn2: '请问请问'
-  //   },
-  //   {
-  //     JGTextBoxColumn3: '去问我去饿',
-  //     JGDateTimePickerColumn6: '2022-01-17',
-  //     JGFloatBoxColumn7: '2312',
-  //     JGIntegerBoxColumn8: 43534
-  //   },
-  //   {
-  //     JGTextBoxColumn2: '撒地方撒旦',
-  //     JGTextBoxColumn4: '阿斯顿发射点',
-  //     JGDateTimePickerColumn6: '2022-01-13',
-  //     JGFloatBoxColumn7: '233',
-  //     JGIntegerBoxColumn8: 65454
-  //   },
-  //   {
-  //     JGTextBoxColumn2: '梵蒂冈的',
-  //     JGTextBoxColumn3: 'u一天具体有',
-  //     JGTextBoxColumn4: 'utyru它犹如',
-  //     JGFloatBoxColumn7: '645',
-  //     JGIntegerBoxColumn8: 87
-  //   }
-  // ]
+  data = [
+    {
+      JGTextBoxColumn66:
+        '不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高'
+    }
+  ]
 
   if (Array.isArray(data)) {
     data.some((item: any, index: any) => {
@@ -125,21 +116,93 @@ const JGDataGrid = (props: JGDataGridProps) => {
     tableProp.rowSelection = rowSelection
   }
 
+  let clickProps = () => {}
+
+  if (getCompEvent(control).hasOwnProperty('OnClick')) {
+    clickProps = getCompEvent(control).OnClick
+  }
+
+  let headerDataLeft: any = deepcopy(control.headerControls)
+  let headerDataRight: any = deepcopy(control.headerControls)
+
+  if (control.headerControls.length > 0) {
+    if (headerDataLeft.length > 0) {
+      headerDataLeft[0].controls = []
+      headerDataRight[0].controls = []
+      control.headerControls[0].controls.some((item: any) => {
+        console.log('item.properties.align')
+        console.log(item.properties.align)
+        if (item.properties.align) {
+          // item.properties.height = 'auto'
+          // item.properties.showBorder = false
+
+          headerDataRight[0].controls.push(item)
+          headerDataRight[0].properties.top = 0
+          headerDataRight[0].properties.showBorder = 'false'
+          headerDataRight[0].properties.size = 0
+          headerDataRight[0].properties.align = 'end'
+        } else {
+          item.properties.size = 0
+          headerDataLeft[0].controls.push(item)
+          headerDataLeft[0].properties.top = 0
+          headerDataLeft[0].properties.showBorder = 'false'
+          headerDataLeft[0].properties.size = 0
+        }
+      })
+    }
+  }
+
   return (
     <Box
       sx={{
         left: left,
         top: top,
-        width: '100%',
-        height: '100%',
+        width: toWidth(width, context, '235px'),
+        height: toHeight(height, context, '26px'),
         position: context.position,
         display: ishide ? 'none' : 'block',
         boxShadow: 'none',
         pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
+      <Box
+        sx={{
+          display: 'flex'
+          // justifyContent: 'space-between',
+        }}
+      >
+        <Box sx={{ width: '50%', overflow: 'hidden' }}>
+          {headerDataLeft.length == 1
+            ? ContextProvider({
+                context: { position: 'relative' },
+                children: bgconvert(headerDataLeft[0])
+              })
+            : ''}
+        </Box>
+
+        <Box
+          sx={{
+            width: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'flex-end'
+          }}
+        >
+          {headerDataRight.length == 1
+            ? ContextProvider({
+                context: { position: 'relative' },
+                children: bgconvert(headerDataRight[0])
+              })
+            : ''}
+        </Box>
+      </Box>
       <Table
         {...tableProp}
+        onRow={(record) => {
+          return {
+            onClick: clickProps
+          }
+        }}
         scroll={{
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')
@@ -149,7 +212,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
         dataSource={data}
         size="small"
         pagination={false}
-      />
+      ></Table>
     </Box>
   )
 }

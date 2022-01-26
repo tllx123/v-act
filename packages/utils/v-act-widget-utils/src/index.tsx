@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { CSSProperties, Fragment } from 'react'
 
 import { Property as CSSProperty } from 'csstype'
 
@@ -7,6 +7,7 @@ import {
   Control,
   Dock,
   Entity,
+  Event,
   Height,
   Property,
   ReactEnum,
@@ -447,12 +448,80 @@ const getComponentResPath = function (resCode: string, componentCode: string) {
   )}`
 }
 
+/**
+ * 将控件动作转换成React元素
+ * @param evt 控件动作
+ */
+const toJSXElementFromAction = function (evt: Event): JSX.Element | null {
+  const handler = evt.handler
+  const action = handler()
+  const windowAction = action.windowAction
+  const targetWindow = windowAction.targetWindow
+  const winInfo = targetWindow.split('.')
+  return (
+    <iframe
+      src={'/' + winInfo[0] + '/' + winInfo[1]}
+      style={{ width: '100%', height: '100%', padding: '0px', margin: '0px' }}
+    ></iframe>
+  )
+}
+
+const getCompEvent = function (control?: any): any {
+  const events = control.events
+  const eventMap: { [eventCode: string]: Function } = {}
+  if (events && events.length > 0) {
+    events.forEach((evt: any) => {
+      eventMap[evt.code] = evt.handler
+    })
+  }
+  return eventMap
+}
+
+/**
+ * 获取主题颜色
+ * @param theme 主题类型
+ * @param control 控件定义
+ * @returns
+ */
+const valueofTheme = function (
+  theme?: string,
+  control?: Control
+): CSSProperties {
+  switch (theme) {
+    case 'whiteType':
+      return {
+        backgroundColor: '#fff'
+      }
+    case 'greenType':
+      return {
+        backgroundColor: '#04B26A'
+      }
+    case 'orangeType':
+      return {
+        backgroundColor: '#F27923'
+      }
+    case 'redType':
+      return {
+        backgroundColor: '#ED4014'
+      }
+    case 'customType':
+      return {
+        backgroundColor: control?.properties?.backColor ?? '#356abb'
+      }
+    default:
+      return {
+        backgroundColor: '#356abb'
+      }
+  }
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,
   getColumnName,
+  getCompEvent,
   getComponentResPath,
   getConstData,
   getDropDownSource,
@@ -467,10 +536,12 @@ export {
   toCssAxisVal,
   toEntities,
   toHeight,
+  toJSXElementFromAction,
   toLabelWidth,
   toNumber,
   toWidth,
   valueofDock,
   valueofHeight,
+  valueofTheme,
   valueofWidth
 }

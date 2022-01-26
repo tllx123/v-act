@@ -5,12 +5,15 @@ import Dock from './Dock'
 import type Entity from './Entity'
 import type Event from './Event'
 import type Height from './Height'
+import type IPrototypeFrameProperty from './properties/IPrototypeFrameProperty'
+import type IPrototypeLoginProperty from './properties/IPrototypeLoginProperty'
 import type JGCollapsePanelProperty from './properties/JGCollapsePanel'
 import type JGContextProperty from './properties/JGContextProperty'
 import type JGGroupPanelProperty from './properties/JGGroupPanelProperty'
 import type JGImageProperty from './properties/JGImageProperty'
 import type JGQueryConditionPanelProperty from './properties/JGQueryConditionPanelProperty'
 import type JGReportProperty from './properties/JGReportProperty'
+import type JGTabControlProperty from './properties/JGTabControlProperty'
 import type JGWebBrowserProperty from './properties/JGWebBrowserProperty'
 import type Property from './Property'
 import ReactEnum from './ReactEnum'
@@ -120,12 +123,15 @@ export {
   Entity,
   Event,
   Height,
+  IPrototypeFrameProperty,
+  IPrototypeLoginProperty,
   JGCollapsePanelProperty,
   JGContextProperty,
   JGGroupPanelProperty,
   JGImageProperty,
   JGQueryConditionPanelProperty,
   JGReportProperty,
+  JGTabControlProperty,
   JGWebBrowserProperty,
   Property,
   ReactEnum,

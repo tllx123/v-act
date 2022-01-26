@@ -1,3 +1,5 @@
+import Action from './Action'
+
 interface Event {
   /**
    * 事件编号
@@ -10,6 +12,6 @@ interface Event {
   /**
    * 事件handler
    */
-  handler: Function
+  handler: () => Action
 }
 export default Event

@@ -1,11 +1,17 @@
 import { Property } from 'csstype'
-import { Table, Switch, Space } from 'antd'
-import 'antd/dist/antd.css'
+import { Table } from 'antd'
 import Box from '@mui/material/Box'
 import toTree from 'array-to-tree'
-import { useContext } from '@v-act/widget-context'
+import { ContextProvider, useContext } from '@v-act/widget-context'
 import '../src/JGTreeGrid.css'
-import { toHeight, toWidth, getEntityDatas } from '@v-act/widget-utils'
+import { convert as bgconvert } from '@v-act/jgbuttongroup'
+import deepcopy from 'deepcopy'
+import {
+  toHeight,
+  toWidth,
+  getEntityDatas,
+  getCompEvent
+} from '@v-act/widget-utils'
 interface dataTreeHeader {
   title: string
   dataIndex: string
@@ -25,6 +31,9 @@ export interface JGTreeGridProps {
   control?: any
   labelText?: any
   readonly?: boolean
+  adaLineHeight?: boolean
+  cascadeCheck?: boolean
+  showRowNumbers?: boolean
 }
 
 const rowSelection = {
@@ -47,10 +56,28 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     tablename,
     control,
     labelText,
-    readonly
+    readonly,
+    adaLineHeight,
+    cascadeCheck,
+    showRowNumbers
   } = props
 
   let dataTreeHeader: any = []
+
+  if (showRowNumbers) {
+    dataTreeHeader.push(
+      {
+        title: '',
+        dataIndex: '####3',
+        align: 'center',
+        width: 50,
+        render(text: any, record: any, index: any) {
+          return index + 1
+        }
+      },
+      Table.EXPAND_COLUMN
+    )
+  }
 
   control.controls.some((item: any, index: any) => {
     dataTreeHeader.push({
@@ -58,7 +85,8 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
       dataIndex: item.properties.code,
       width: index == 0 ? 200 : 100,
       align: index == 0 ? undefined : 'center',
-      key: item.properties.code
+      key: item.properties.code,
+      ellipsis: adaLineHeight == true ? false : 'enble'
     })
   })
 
@@ -69,9 +97,55 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     dataTemp = getEntityDatas(tablename, context)
   }
 
-  dataTemp.some((item2: any, index: any) => {
-    item2.key = index
-  })
+  if (dataTemp) {
+    dataTemp.some((item2: any, index: any) => {
+      item2.key = index
+    })
+  }
+
+  dataTemp = [
+    {
+      id: '1',
+      JGTextBoxColumn111: '文件夹-1可直接返回第四u回复框上支付货款董事长',
+      IsLeaf: false,
+      key: 0
+    },
+    {
+      id: '2',
+      PID: '1',
+      JGTextBoxColumn111: '文件1-1',
+      IsLeaf: true,
+      key: 1
+    },
+    {
+      id: '3',
+      PID: '1',
+      JGTextBoxColumn111: '文件1-2',
+      IsLeaf: true,
+      key: 2
+    },
+    {
+      id: '4',
+      JGTextBoxColumn111: '文件夹-2',
+      IsLeaf: false,
+      key: 3
+    },
+    {
+      id: '5',
+      PID: '4',
+      JGTextBoxColumn111: '文件2-1',
+      IsLeaf: true,
+      key: 4
+    },
+    {
+      id: '6',
+      PID: '4',
+      JGTextBoxColumn111: '文件2-2',
+      IsLeaf: true,
+      key: 5
+    }
+  ]
+  console.log(dataTemp)
 
   let dataTree = []
   if (dataTemp) {
@@ -79,6 +153,42 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
       parentProperty: 'PID',
       customID: 'id'
     })
+  }
+
+  let clickProps = () => {}
+
+  if (getCompEvent(control).hasOwnProperty('OnClick')) {
+    clickProps = getCompEvent(control).OnClick
+  }
+
+  let headerDataLeft: any = deepcopy(control.headerControls)
+  let headerDataRight: any = deepcopy(control.headerControls)
+
+  if (control.headerControls.length > 0) {
+    if (headerDataLeft.length > 0) {
+      headerDataLeft[0].controls = []
+      headerDataRight[0].controls = []
+      control.headerControls[0].controls.some((item: any) => {
+        console.log('item.properties.align')
+        console.log(item.properties.align)
+        if (item.properties.align) {
+          // item.properties.height = 'auto'
+          // item.properties.showBorder = false
+
+          headerDataRight[0].controls.push(item)
+          headerDataRight[0].properties.top = 0
+          headerDataRight[0].properties.showBorder = 'false'
+          headerDataRight[0].properties.size = 0
+          headerDataRight[0].properties.align = 'end'
+        } else {
+          item.properties.size = 0
+          headerDataLeft[0].controls.push(item)
+          headerDataLeft[0].properties.top = 0
+          headerDataLeft[0].properties.showBorder = 'false'
+          headerDataLeft[0].properties.size = 0
+        }
+      })
+    }
   }
 
   return (
@@ -92,12 +202,49 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         pointerEvents: readonly ? 'none' : 'auto'
       }}
     >
+      <Box
+        sx={{
+          display: 'flex'
+          // justifyContent: 'space-between',
+        }}
+      >
+        <Box sx={{ width: '50%', overflow: 'hidden' }}>
+          {headerDataLeft.length == 1
+            ? ContextProvider({
+                context: { position: 'relative' },
+                children: bgconvert(headerDataLeft[0])
+              })
+            : ''}
+        </Box>
+
+        <Box
+          sx={{
+            width: '50%',
+            overflow: 'hidden',
+            display: 'flex',
+            justifyContent: 'flex-end'
+          }}
+        >
+          {headerDataRight.length == 1
+            ? ContextProvider({
+                context: { position: 'relative' },
+                children: bgconvert(headerDataRight[0])
+              })
+            : ''}
+        </Box>
+      </Box>
+
       <Table
+        onRow={(record) => {
+          return {
+            onClick: clickProps
+          }
+        }}
         scroll={{
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')
         }}
-        rowSelection={{ ...rowSelection }}
+        rowSelection={{ ...rowSelection, checkStrictly: cascadeCheck }}
         bordered
         columns={dataTreeHeader}
         dataSource={dataTree}

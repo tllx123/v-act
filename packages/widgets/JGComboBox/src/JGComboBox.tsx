@@ -2,7 +2,9 @@ import React, { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, MenuItem, Select, SelectProps } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import MenuItem from '@mui/material/MenuItem'
+import Select, { SelectProps } from '@mui/material/Select'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
@@ -303,6 +305,13 @@ const JGComboBox = function (props: JGComboBoxProps) {
     props.onValueChanged && props.onValueChanged()
   }
 
+  const renderValue = function <T>(selected: T) {
+    if (selected) {
+      return <>{selected}</>
+    }
+    return <span style={{ color: '#999999' }}>{props.placeholder || ''}</span>
+  }
+
   return (
     <Box style={wrapStyles}>
       <JGInputLabel
@@ -315,6 +324,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
       </JGInputLabel>
 
       <CustomSelect
+        displayEmpty
         style={selectStyles}
         labelId={code}
         id={`${code}select`}
@@ -323,6 +333,7 @@ const JGComboBox = function (props: JGComboBoxProps) {
         onChange={handleChange}
         readOnly={props.readOnly}
         disabled={!props.enabled}
+        renderValue={renderValue}
         sx={{
           '.MuiSelect-select': {
             padding: '5px 6px'

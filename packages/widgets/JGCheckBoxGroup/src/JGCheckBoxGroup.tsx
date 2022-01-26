@@ -2,7 +2,8 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, Checkbox } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import Checkbox from '@mui/material/Checkbox'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import {
@@ -319,7 +320,9 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
 
   constData.forEach((item) => {
     item.selected =
-      item.selected.toString().toLocaleLowerCase() === 'true' ? true : false
+      item.selected && item.selected.toString().toLocaleLowerCase() === 'true'
+        ? true
+        : false
 
     //如果有当前选项，所有待选项默认值都改成false
     value.length > 0 && (item.selected = false)

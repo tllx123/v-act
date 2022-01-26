@@ -14,8 +14,8 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
-  console.log(control)
   const pros = control.properties
+  console.log(control)
   const props: JGPeriodProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
@@ -31,7 +31,8 @@ const convert = function (
     labelVisible: toBoolean(pros.labelVisible, true),
     disabled: !toBoolean(pros.enabled, true),
     tableName: getTableName(control),
-    columnName: getColumnName(control)
+    columnName: getColumnName(control),
+    periodType: pros.periodType || 'years'
   }
   return <JGPeriod {...props}></JGPeriod>
 }

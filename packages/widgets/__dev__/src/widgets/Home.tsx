@@ -85,6 +85,9 @@ const Home = () => {
       <Link href="/JGCollapse">JGCollapse</Link> <br />
       <Link href="/IPrototypeLogin">IPrototypeLogin</Link> <br />
       <Link href="/IPrototypeFrame">IPrototypeFrame</Link> <br />
+      <Link href="/JGDateRangePicker">JGDateRangePicker</Link> <br />
+      <Link href="/JGPeriodRange">JGPeriodRange</Link> <br />
+      <Link href="/JGToolbar">JGToolbar</Link> <br />
     </>
   )
 }

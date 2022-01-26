@@ -11,9 +11,9 @@ import {
 import JGTreeView, { JGTreeViewProps } from './JGTreeView'
 
 const convert = function (control: Control): JSX.Element {
-  console.log(control.properties.labelText)
-  console.log('control')
-  console.log(control)
+  // console.log(control.properties.labelText)
+  // console.log('control')
+  // console.log(control)
 
   const pros = control.properties
   const props: JGTreeViewProps = {
@@ -26,7 +26,9 @@ const convert = function (control: Control): JSX.Element {
     tablename: getTableName(control),
     columnname: getColumnName(control),
     labelText: pros.labelText,
-    control: control
+    control: control,
+    cascadeCheck: toBoolean(pros.cascadeCheck, false),
+    displayMode: pros.displayMode
   }
   return <JGTreeView {...props}></JGTreeView>
 }

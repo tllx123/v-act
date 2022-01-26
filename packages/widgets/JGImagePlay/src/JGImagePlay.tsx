@@ -4,8 +4,11 @@ import { Property } from 'csstype'
 import SwipeableViews from 'react-swipeable-views'
 import { autoPlay } from 'react-swipeable-views-utils'
 
-import { KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
-import { Box, BoxProps, Button, MobileStepper } from '@mui/material'
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+import Box, { BoxProps } from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import MobileStepper from '@mui/material/MobileStepper'
 import { Height, Width } from '@v-act/schema-types'
 import { EntityRecord, useContext } from '@v-act/widget-context'
 import {
@@ -79,7 +82,7 @@ interface JGImagePlayProps extends BoxProps {
 
 const JGImagePlay = function (props: JGImagePlayProps) {
   const context = useContext()
-  console.log(context, 'JGImagePlay======context')
+  // console.log(context, 'JGImagePlay======context')
   //图片url生成
   let images: EntityRecord[] = []
   if (props.tableName) {
@@ -93,8 +96,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
             item.ImageField as string,
             props.componentCode ? props.componentCode : ''
           )
-        : 'http://vstore-proto.yindangu.com/itop/resources/e425207964b340019291a8a2f25c7237_' +
-          item.ImageField),
+        : 'http://www.yindangu.com/itop/common/images/defaultImg.png'),
       (item.imgLabel = item.ImageDescField)
   })
 
@@ -103,15 +105,27 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   const [activeStep, setActiveStep] = React.useState(0)
 
   //是否显示页码
-  // const maxStepsVisible = props.paginationVisible ? images.length : 0;
   const maxSteps = images.length
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  //点击图片打开窗口
+  const handleClick = function () {
+    props.click && props.click()
   }
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  //下一页
+  const handleNext = (event: any) => {
+    event.stopPropagation()
+    if (activeStep !== maxSteps - 1) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1)
+    }
+  }
+
+  //上一页
+  const handleBack = (event: any) => {
+    event.stopPropagation()
+    if (activeStep !== 0) {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1)
+    }
   }
 
   const handleStepChange = (step: number) => {
@@ -133,7 +147,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     height: '40px',
     backgroundColor: 'rgb(0,0,0,0.3)',
     position: 'absolute',
-    bottom: '1px',
+    bottom: '0px',
     display: 'flex',
     justifyContent: 'space-between',
     color: 'white',
@@ -145,16 +159,8 @@ const JGImagePlay = function (props: JGImagePlayProps) {
   }
 
   const labelRight: CSSProperties = {
-    marginRight: '10px'
-  }
-
-  const stepper: CSSProperties = {
-    width: '100%',
-    background: 'none',
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    padding: 0
+    marginRight: '10px',
+    display: props.paginationVisible ? '' : 'none'
   }
 
   const buttonStyle: CSSProperties = {
@@ -166,23 +172,19 @@ const JGImagePlay = function (props: JGImagePlayProps) {
     minWidth: '38px'
   }
 
-  const handleClick = function () {
-    props.click && props.click()
-  }
-
   //轮播时间处理
   const times: number = (props.swiInterval ? props.swiInterval : 5) * 1000
-  console.log(props, 'sssssssssssssssssssss')
+  // console.log(props, 'sssssssssssssssssssss')
 
   return (
     <Box style={wrapStyles}>
       <div style={{ position: 'relative' }}>
+        {/* 轮播图 */}
         <AutoPlaySwipeableViews
           index={activeStep}
           onChangeIndex={handleStepChange}
           interval={times}
           enableMouseEvents
-          onClick={handleClick}
         >
           {images.map((step, index) => (
             <div style={{ position: 'relative' }}>
@@ -196,7 +198,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
                     maxHeight: height,
                     overflow: 'hidden',
                     margin: '0 auto',
-                    width: props.imageLayout == 'Stretch' ? '100%' : 'auto'
+                    width: props.imageLayout == 'Stretch' ? '100%' : 'auto' //图片布局(拉伸 or 自适应)
                   }}
                   src={step.imgPath as string}
                 />
@@ -205,26 +207,38 @@ const JGImagePlay = function (props: JGImagePlayProps) {
           ))}
         </AutoPlaySwipeableViews>
         <div style={labelStyle}>
-          <span style={labelLeft}>{images[activeStep].imgLabel}</span>
+          <span style={labelLeft}>{images[activeStep]?.imgLabel}</span>
           <span style={labelRight}>
             {activeStep + 1}/{maxSteps}
           </span>
         </div>
+        {/* 步进条 */}
         <MobileStepper
-          style={stepper}
+          onClick={handleClick}
+          sx={{
+            'width': '100%',
+            'background': 'none',
+            'position': 'absolute',
+            'top': 0,
+            'bottom': 0,
+            'padding': 0,
+            'opacity': 0,
+
+            '&:hover': {
+              opacity: 1
+            }
+          }}
           steps={0}
           position="static"
           activeStep={activeStep}
           nextButton={
-            // <div style={buttonStyle}>
             <Button
               style={buttonStyle}
               sx={{
-                borderRadius: '0 4px 4px 0'
+                borderRadius: '4px 0 0 4px'
               }}
               size="small"
               onClick={handleNext}
-              disabled={activeStep === maxSteps - 1}
             >
               <KeyboardArrowLeft />
             </Button>
@@ -233,11 +247,10 @@ const JGImagePlay = function (props: JGImagePlayProps) {
             <Button
               style={buttonStyle}
               sx={{
-                borderRadius: '4px 0 0 4px'
+                borderRadius: '0 4px 4px 0'
               }}
               size="small"
               onClick={handleBack}
-              disabled={activeStep === 0}
             >
               <KeyboardArrowRight />
             </Button>

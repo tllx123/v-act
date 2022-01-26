@@ -58,26 +58,46 @@ interface JGHyperLinkProps extends InputUnstyledProps {
    * 字段编号
    */
   columnName?: string | null
-}
+  /**
+   * 提醒文字
+   */
+  placeholder?: string
 
-const StyleSpanElement = styled('span')`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  color: #0960c3;
-
-  &:hover {
-    text-decoration: underline;
-    color: #0960c3;
-  }
-`
-const myFun = function () {
-  console.log('你点击我了')
+  /**
+   * 点击事件
+   */
+  click?: Function
 }
 
 const JGHyperLink = function (props: JGHyperLinkProps) {
+  const StyleSpanElement = props.enabled
+    ? styled('span')`
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        &:hover {
+          text-decoration: underline;
+          color: #0960c3;
+        }
+      `
+    : styled('span')`
+    height: 100%;
+    display: flex;
+    align-items: center;  
+    }
+  `
+
   const context = useContext()
   let value: FieldValue = ''
+
+  //点击事件
+  const linkEvent = function () {
+    if (props.enabled) {
+      // console.log("11111")
+      props.click && props.click()
+    }
+  }
 
   if (props.tableName && props.columnName) {
     value = getFieldValue(props.tableName, props.columnName, context)
@@ -111,8 +131,13 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
     border: '1px solid #DCDEE2',
     borderRadius: '4px',
     padding: '3px',
-    cursor: 'pointer'
+    cursor: props.enabled ? 'pointer' : 'not-allowed'
   }
+
+  const spanStyles: CSSProperties = {
+    color: props.enabled ? '#0960c3' : '#000000'
+  }
+
   return (
     <div style={wrapStyles}>
       <JGInputLabel
@@ -123,7 +148,13 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
         {props.labelText}
       </JGInputLabel>
       <div style={divStyles}>
-        <StyleSpanElement onClick={myFun}>{value}</StyleSpanElement>
+        <StyleSpanElement
+          style={spanStyles}
+          placeholder={props.placeholder}
+          onClick={linkEvent}
+        >
+          {value}
+        </StyleSpanElement>
       </div>
     </div>
   )
@@ -137,7 +168,8 @@ JGHyperLink.defaultProps = {
   labelWidth: 94,
   labelText: '链接',
   labelVisible: true,
-  enabled: false
+  enabled: false,
+  placeholder: ''
 }
 
 export default JGHyperLink

@@ -2,12 +2,11 @@ import React from 'react'
 import 'antd/dist/antd.css'
 import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
-import { toHeight, toWidth } from '@v-act/widget-utils'
+import { toHeight, toWidth, getCompEvent } from '@v-act/widget-utils'
 import { Menu, Dropdown, Space } from 'antd'
-import { DownOutlined } from '@ant-design/icons'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import { MoreHoriz } from '@mui/icons-material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import './JGButtonGroup.css'
 interface JGButtonGroupProps {
@@ -58,8 +57,18 @@ const loadButtonGroup = (
           }
 
           if (item.controls.length == 0) {
+            let clickProps = () => {}
+
+            if (getCompEvent(item).hasOwnProperty('OnClick')) {
+              clickProps = getCompEvent(item).OnClick
+            }
+
             return (
-              <Menu.Item style={{ color: color }} key={item.properties.code}>
+              <Menu.Item
+                onClick={clickProps}
+                style={{ color: color }}
+                key={item.properties.code}
+              >
                 {item.properties.labelText}
               </Menu.Item>
             )
@@ -107,8 +116,18 @@ const loadButtonGroup = (
             }
 
             if (item.controls.length == 0) {
+              let clickProps = () => {}
+
+              if (getCompEvent(item).hasOwnProperty('OnClick')) {
+                clickProps = getCompEvent(item).OnClick
+              }
+
               return (
-                <Menu.Item style={{ color: color }} key={item.properties.code}>
+                <Menu.Item
+                  onClick={clickProps}
+                  style={{ color: color }}
+                  key={item.properties.code}
+                >
                   {item.properties.labelText}
                 </Menu.Item>
               )
@@ -184,6 +203,12 @@ const loadButtonGroup = (
       }
 
       if (item.controls && item.controls.length == 0) {
+        let clickProps = () => {}
+
+        if (getCompEvent(item).hasOwnProperty('OnClick')) {
+          clickProps = getCompEvent(item).OnClick
+        }
+
         return (
           <Button
             disabled={enabled}
@@ -192,6 +217,7 @@ const loadButtonGroup = (
             key={item.properties.code}
             size="small"
             disableElevation
+            onClick={clickProps}
           >
             {item.properties.labelText}
           </Button>
@@ -204,6 +230,12 @@ const loadButtonGroup = (
         !item.properties.isMore
       ) {
         const menu = getMenu(item.controls)
+
+        let clickProps = () => {}
+
+        if (getCompEvent(item).hasOwnProperty('OnClick')) {
+          clickProps = getCompEvent(item).OnClick
+        }
         return (
           <Dropdown
             disabled={enabled}
@@ -218,6 +250,7 @@ const loadButtonGroup = (
               size="small"
               endIcon={<ExpandMoreIcon />}
               disableElevation
+              onClick={clickProps}
             >
               {item.properties.labelText}
             </Button>
@@ -233,7 +266,11 @@ const loadButtonGroup = (
           variant_more = 'text'
           color_more = 'primary'
         }
+        let clickProps = () => {}
 
+        if (getCompEvent(item).hasOwnProperty('OnClick')) {
+          clickProps = getCompEvent(item).OnClick
+        }
         return (
           <Dropdown
             disabled={enabled}
@@ -247,8 +284,9 @@ const loadButtonGroup = (
               color={color_more}
               size="small"
               disableElevation
+              onClick={clickProps}
             >
-              <MoreHoriz />
+              <MoreHorizIcon />
             </Button>
           </Dropdown>
         )
@@ -273,136 +311,13 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
   } = props
 
   let controlsTemp = []
-  console.log('showBorder')
-  console.log(showBorder)
 
   if (control && control.controls) {
     controlsTemp = control.controls
   }
-  // let controlTemp = [
-  //   {
-  //     type: 'JGButtonGroupItem',
-  //     properties: {
-  //       code: 'JGButtonGroupItem1',
-  //       labelText: '按钮1',
-  //       theme: 'whiteType'
-  //     },
-  //     headerControls: [],
-  //     controls: []
-  //   },
-  //   {
-  //     type: 'JGButtonGroupItem',
-  //     properties: {
-  //       code: 'JGButtonGroupItem2',
-  //       labelText: '按钮2',
-  //       theme: 'redType'
-  //     },
-  //     headerControls: [],
-  //     controls: [
-  //       {
-  //         type: 'JGButtonGroupItem',
-  //         properties: {
-  //           code: 'JGButtonGroupItem3',
-  //           labelText: '按钮3'
-  //         },
-  //         headerControls: [],
-  //         controls: [
-  //           {
-  //             type: 'JGButtonGroupItem',
-  //             properties: {
-  //               code: 'JGButtonGroupItem4',
-  //               labelText: '按钮4',
-  //               theme: 'greenType'
-  //             },
-  //             headerControls: [],
-  //             controls: []
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     type: 'JGButtonGroupItem',
-  //     properties: {
-  //       code: 'JGButtonGroupItem5',
-  //       isMore: 'True',
-  //       labelText: '按钮5'
-  //     },
-  //     headerControls: [],
-  //     controls: [
-  //       {
-  //         type: 'JGButtonGroupItem',
-  //         properties: {
-  //           code: 'JGButtonGroupItem9',
-  //           isMore: 'True',
-  //           labelText: '按钮9',
-  //           theme: 'greenType'
-  //         },
-  //         headerControls: [],
-  //         controls: []
-  //       },
-  //       {
-  //         type: 'JGButtonGroupItem',
-  //         properties: {
-  //           code: 'JGButtonGroupItem10',
-  //           isMore: 'True',
-  //           labelText: '按钮10'
-  //         },
-  //         headerControls: [],
-  //         controls: [
-  //           {
-  //             type: 'JGButtonGroupItem',
-  //             properties: {
-  //               code: 'JGButtonGroupItem11',
-  //               isMore: 'True',
-  //               labelText: '按钮11',
-  //               theme: 'whiteType'
-  //             },
-  //             headerControls: [],
-  //             controls: []
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     type: 'JGButtonGroupItem',
-  //     properties: {
-  //       code: 'JGButtonGroupItem6',
-  //       isMore: 'True',
-  //       labelText: '按钮6',
-  //       theme: 'redType'
-  //     },
-  //     headerControls: [],
-  //     controls: [
-  //       {
-  //         type: 'JGButtonGroupItem',
-  //         properties: {
-  //           code: 'JGButtonGroupItem7',
-  //           isMore: 'True',
-  //           labelText: '按钮7',
-  //           theme: 'orangeType'
-  //         },
-  //         headerControls: [],
-  //         controls: [
-  //           {
-  //             type: 'JGButtonGroupItem',
-  //             properties: {
-  //               code: 'JGButtonGroupItem8',
-  //               isMore: 'True',
-  //               labelText: '按钮8',
-  //               theme: 'whiteType'
-  //             },
-  //             headerControls: [],
-  //             controls: []
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // ]\
-  console.log('context.position')
-  console.log(context.position)
+
+  // console.log("context.position")
+  // console.log(context.position)
 
   return (
     <Box
@@ -411,10 +326,11 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
         top: top,
         width: toWidth(width, context, '235px'),
         height: toHeight(height, context, '26px'),
-        position: context.position
+        position: context.position,
+        textAlign: control.properties.align == 'end' ? 'right' : 'left'
       }}
     >
-      <Space>
+      <Space size={control.properties.size}>
         {loadButtonGroup(controlsTemp, enabled, showBorder, expandWhenHover)}
       </Space>
     </Box>

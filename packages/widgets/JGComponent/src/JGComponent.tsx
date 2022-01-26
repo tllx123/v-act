@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, styled } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import { styled } from '@mui/styles'
 import { ReactEnum } from '@v-act/schema-types'
 import { Entities, useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
@@ -15,6 +16,7 @@ interface JGComponentProps {
   top?: Property.Top
   width?: Property.Width
   entities?: Entities
+  padding?: Property.Padding
   children?: JSX.Element | JSX.Element[] | null
 }
 
@@ -35,7 +37,8 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         top: inProps.top,
         right: inProps.right,
         left: inProps.left,
-        //padding: '16px', //窗体内间距
+        padding:
+          typeof inProps.padding !== 'undefined' ? inProps.padding : '16px', //窗体内间距
         height: toHeight(inProps.height, context, ReactEnum.Space),
         bottom: inProps.bottom
       }

@@ -12,17 +12,27 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
+  // console.log(control.properties,"aaaaaa")
   const pros = control.properties
   const props: JGBaseDictBoxProps = {
     top: toNumber(pros.top),
     left: toNumber(pros.left),
-    multiWidth: valueofWidth(pros.multiWidth, '235px'),
+    multiWidth: valueofWidth(pros.multiWidth, '300px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
-    // visible: toBoolean(pros.visible, true),
+    enabled: toBoolean(pros.enabled, true),
+    readOnly: toBoolean(pros.readOnly, false),
     labelWidth: toNumber(pros.labelWidth)
+  }
+  const events = control.events
+  if (events && events.length > 0) {
+    const eventMap: { [eventCode: string]: Function } = {}
+    events.forEach((evt) => {
+      eventMap[evt.code] = evt.handler
+    })
+    props.click = eventMap.OpenModuleAction
   }
   return <JGBaseDictBox {...props}></JGBaseDictBox>
 }

@@ -1,0 +1,18 @@
+.ant-picker-range{
+    border-radius: 4px!important;
+    border: 1px solid #808080!important;
+    height: 100%!important;
+}
+
+.ant-picker:hover, .ant-picker-focused{
+    border-color:#356abb!important
+}
+
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner{
+    background: #356abb!important
+}
+
+.ant-picker-active-bar{
+    background: #356abb!important
+}
