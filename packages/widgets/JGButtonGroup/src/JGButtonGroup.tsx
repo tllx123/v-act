@@ -6,7 +6,7 @@ import { toHeight, toWidth, getCompEvent } from '@v-act/widget-utils'
 import { Menu, Dropdown, Space } from 'antd'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import { MoreHoriz } from '@mui/icons-material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import './JGButtonGroup.css'
 interface JGButtonGroupProps {
@@ -286,7 +286,7 @@ const loadButtonGroup = (
               disableElevation
               onClick={clickProps}
             >
-              <MoreHoriz />
+              <MoreHorizIcon />
             </Button>
           </Dropdown>
         )
@@ -310,133 +310,135 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
     ...resprops
   } = props
 
-  // let controlsTemp = []
+  let controlsTemp = []
 
-  // if (control && control.controls) {
-  //   controlsTemp = control.controls
-  // }
-  let controlsTemp = [
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem1',
-        labelText: '按钮1',
-        theme: 'whiteType'
-      },
-      headerControls: [],
-      controls: []
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem2',
-        labelText: '按钮2',
-        theme: 'redType'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem3',
-            labelText: '按钮3'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem4',
-                labelText: '按钮4',
-                theme: 'greenType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem5',
-        isMore: 'True',
-        labelText: '按钮5'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem9',
-            isMore: 'True',
-            labelText: '按钮9',
-            theme: 'greenType'
-          },
-          headerControls: [],
-          controls: []
-        },
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem10',
-            isMore: 'True',
-            labelText: '按钮10'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem11',
-                isMore: 'True',
-                labelText: '按钮11',
-                theme: 'whiteType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem6',
-        isMore: 'True',
-        labelText: '按钮6',
-        theme: 'redType'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem7',
-            isMore: 'True',
-            labelText: '按钮7',
-            theme: 'orangeType'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem8',
-                isMore: 'True',
-                labelText: '按钮8',
-                theme: 'whiteType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  if (control && control.controls) {
+    controlsTemp = control.controls
+  }
+  // let controlsTemp = [
+  //   {
+  //     type: 'JGButtonGroupItem',
+  //     properties: {
+  //       code: 'JGButtonGroupItem1',
+  //       labelText: '按钮1',
+  //       theme: 'whiteType'
+  //     },
+  //     headerControls: [],
+  //     controls: []
+  //   },
+  //   {
+  //     type: 'JGButtonGroupItem',
+  //     properties: {
+  //       code: 'JGButtonGroupItem2',
+  //       labelText: '按钮2',
+  //       theme: 'redType'
+  //     },
+  //     headerControls: [],
+  //     controls: [
+  //       {
+  //         type: 'JGButtonGroupItem',
+  //         properties: {
+  //           code: 'JGButtonGroupItem3',
+  //           labelText: '按钮3'
+  //         },
+  //         headerControls: [],
+  //         controls: [
+  //           {
+  //             type: 'JGButtonGroupItem',
+  //             properties: {
+  //               code: 'JGButtonGroupItem4',
+  //               labelText: '按钮4',
+  //               theme: 'greenType'
+  //             },
+  //             headerControls: [],
+  //             controls: []
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     type: 'JGButtonGroupItem',
+  //     properties: {
+  //       code: 'JGButtonGroupItem5',
+  //       isMore: 'True',
+  //       labelText: '按钮5'
+  //     },
+  //     headerControls: [],
+  //     controls: [
+  //       {
+  //         type: 'JGButtonGroupItem',
+  //         properties: {
+  //           code: 'JGButtonGroupItem9',
+  //           isMore: 'True',
+  //           labelText: '按钮9',
+  //           theme: 'greenType'
+  //         },
+  //         headerControls: [],
+  //         controls: []
+  //       },
+  //       {
+  //         type: 'JGButtonGroupItem',
+  //         properties: {
+  //           code: 'JGButtonGroupItem10',
+  //           isMore: 'True',
+  //           labelText: '按钮10'
+  //         },
+  //         headerControls: [],
+  //         controls: [
+  //           {
+  //             type: 'JGButtonGroupItem',
+  //             properties: {
+  //               code: 'JGButtonGroupItem11',
+  //               isMore: 'True',
+  //               labelText: '按钮11',
+  //               theme: 'whiteType'
+  //             },
+  //             headerControls: [],
+  //             controls: []
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     type: 'JGButtonGroupItem',
+  //     properties: {
+  //       code: 'JGButtonGroupItem6',
+  //       isMore: 'True',
+  //       labelText: '按钮6',
+  //       theme: 'redType'
+  //     },
+  //     headerControls: [],
+  //     controls: [
+  //       {
+  //         type: 'JGButtonGroupItem',
+  //         properties: {
+  //           code: 'JGButtonGroupItem7',
+  //           isMore: 'True',
+  //           labelText: '按钮7',
+  //           theme: 'orangeType'
+  //         },
+  //         headerControls: [],
+  //         controls: [
+  //           {
+  //             type: 'JGButtonGroupItem',
+  //             properties: {
+  //               code: 'JGButtonGroupItem8',
+  //               isMore: 'True',
+  //               labelText: '按钮8',
+  //               theme: 'whiteType'
+  //             },
+  //             headerControls: [],
+  //             controls: []
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ]
+  // console.log("context.position")
+  // console.log(context.position)
 
   return (
     <Box
