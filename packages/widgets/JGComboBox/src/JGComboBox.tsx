@@ -2,7 +2,9 @@ import React, { CSSProperties, forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, MenuItem, Select, SelectProps } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import MenuItem from '@mui/material/MenuItem'
+import Select, { SelectProps } from '@mui/material/Select'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {

@@ -12,6 +12,7 @@ const convert = function (
   control: Control,
   render: (controls: Array<Control>) => JSX.Element
 ): JSX.Element {
+  // console.log(control.properties,"aaaaaa")
   const pros = control.properties
   const props: JGBaseDictBoxProps = {
     top: toNumber(pros.top),
@@ -21,7 +22,8 @@ const convert = function (
     labelText: pros.labelText,
     isMust: toBoolean(pros.isMust),
     placeholder: pros.placeholder,
-    // visible: toBoolean(pros.visible, true),
+    enabled: toBoolean(pros.enabled, true),
+    readOnly: toBoolean(pros.readOnly, false),
     labelWidth: toNumber(pros.labelWidth)
   }
   const events = control.events

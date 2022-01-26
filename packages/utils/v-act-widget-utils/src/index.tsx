@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { CSSProperties, Fragment } from 'react'
 
 import { Property as CSSProperty } from 'csstype'
 
@@ -477,12 +477,51 @@ const getCompEvent = function (control?: any): any {
   return eventMap
 }
 
+/**
+ * 获取主题颜色
+ * @param theme 主题类型
+ * @param control 控件定义
+ * @returns
+ */
+const valueofTheme = function (
+  theme?: string,
+  control?: Control
+): CSSProperties {
+  switch (theme) {
+    case 'whiteType':
+      return {
+        backgroundColor: '#fff'
+      }
+    case 'greenType':
+      return {
+        backgroundColor: '#04B26A'
+      }
+    case 'orangeType':
+      return {
+        backgroundColor: '#F27923'
+      }
+    case 'redType':
+      return {
+        backgroundColor: '#ED4014'
+      }
+    case 'customType':
+      return {
+        backgroundColor: control?.properties?.backColor ?? '#356abb'
+      }
+    default:
+      return {
+        backgroundColor: '#356abb'
+      }
+  }
+}
+
 export {
   calTitleWidth,
   getChildrenTitleWidth,
   getChildrenWithoutFragment,
   getChildrenWithoutFragmentRecursively,
   getColumnName,
+  getCompEvent,
   getComponentResPath,
   getConstData,
   getDropDownSource,
@@ -503,6 +542,6 @@ export {
   toWidth,
   valueofDock,
   valueofHeight,
-  valueofWidth,
-  getCompEvent
+  valueofTheme,
+  valueofWidth
 }

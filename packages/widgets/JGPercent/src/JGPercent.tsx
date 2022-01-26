@@ -2,16 +2,12 @@ import { CSSProperties, forwardRef, MouseEventHandler, useRef } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Box,
-  BoxProps,
-  createTheme,
-  LinearProgress,
-  LinearProgressProps,
-  ThemeProvider,
-  Typography
-} from '@mui/material'
-import { VActThemeOptions } from '@v-act/styles'
+import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import Box, { BoxProps } from '@mui/material/Box'
+import LinearProgress, {
+  LinearProgressProps
+} from '@mui/material/LinearProgress'
+import Typography from '@mui/material/Typography'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
   getFieldValue,
@@ -46,29 +42,9 @@ const CustomLinearProgress = forwardRef(function (
   }
 
   const { backgroundColor = '#e9ecef', frontcolor = '#ef5350' } = props
-  const themeOptions: VActThemeOptions = {
-    successColor: '',
-    primaryColor: '',
-    infoColor: '',
-    warningColor: '',
-    errorColor: '',
-    linkColor: '',
-    textTitleColor: '',
-    textBaseColor: '',
-    textSecondaryColor: '',
-    borderRadiusBase: '',
-    borderRadiusSmall: '',
-    borderBaseColor: '',
-    borderSplitColor: '',
-    backgroundBaseColor: '',
-    backgroundStripeColor: '',
-    disabledColor: '',
-    disabledBg: ''
-  }
 
   /* 进度条主题 */
   const theme = createTheme({
-    vact: themeOptions,
     components: {
       MuiLinearProgress: {
         styleOverrides: {

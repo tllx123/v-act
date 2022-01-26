@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Button, ButtonProps, styled } from '@mui/material'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 
@@ -14,6 +15,11 @@ export interface JGButtonProps extends ButtonProps {
   top?: Property.Top | undefined
   width?: Property.Width | undefined
   click?: Function
+  backColor?: string
+  /**
+   * 图片code
+   */
+  imageValue?: string
 }
 
 const JGButtonRoot = styled(Button, {
@@ -31,17 +37,24 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
   (inProps, ref) => {
     const context = useContext()
     const sx = inProps.sx || {}
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', inProps)
     const props: ButtonProps = {
       variant: 'contained',
+      disabled: inProps.disabled,
       sx: {
         ...sx,
-        width: toWidth(inProps.width, context, '59px'),
-        top: inProps.top ?? 0,
-        right: inProps.right,
-        left: inProps.left ?? 0,
-        height: toHeight(inProps.height, context, '26px'),
-        bottom: inProps.bottom,
-        position: context ? context.position : 'absolute'
+        'cursor': inProps.disabled ? 'not-allowed' : '',
+        'backgroundColor': `rgb(${inProps.backColor})`,
+        'width': toWidth(inProps.width, context, '59px'),
+        'top': inProps.top ?? 0,
+        'right': inProps.right,
+        'left': inProps.left ?? 0,
+        'height': toHeight(inProps.height, context, '26px'),
+        'bottom': inProps.bottom,
+        'position': context ? context.position : 'absolute',
+        '&:hover': {
+          backgroundColor: `rgb(${inProps.backColor})`
+        }
       }
     }
     const clickHd = inProps.click
@@ -52,6 +65,18 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
     }
     return (
       <JGButtonRoot {...props} ref={ref} onClick={clickHandler}>
+        {inProps.imageValue ? (
+          <img
+            src={inProps.imageValue}
+            style={{
+              height: '50%',
+              width: '50%',
+              marginRight: '10px'
+            }}
+          ></img>
+        ) : (
+          ''
+        )}
         {inProps.children}
       </JGButtonRoot>
     )

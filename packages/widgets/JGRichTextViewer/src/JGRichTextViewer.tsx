@@ -2,7 +2,8 @@ import React, { CSSProperties } from 'react'
 
 import { Property } from 'csstype'
 
-import { Box, BoxProps, Card } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import Card from '@mui/material/Card'
 import { Height, Width } from '@v-act/schema-types'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {

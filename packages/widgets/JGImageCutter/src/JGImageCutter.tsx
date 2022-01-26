@@ -5,7 +5,7 @@ import React, { CSSProperties, useRef } from 'react'
 import { Property } from 'csstype'
 import { Cropper } from 'react-cropper'
 
-import { Box, BoxProps } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
 import { useContext } from '@v-act/widget-context'
 
 import logo from './img/blank.png'
