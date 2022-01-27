@@ -21,6 +21,11 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
 
   /** 格式 */
   /**
+   * 布局位置
+   */
+  position?: string
+  /**
+  /**
    * 左边距
    */
   left?: Property.Left
@@ -38,6 +43,7 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
   multiWidth?: Width
 
   /** 格式 */
+
   /**
    * 标题宽度
    */
@@ -124,7 +130,7 @@ const JGBaseDictBox = function (props: JGBaseDictBoxProps) {
     fontSize: '14px',
     display: 'flex',
     alignItems: 'center',
-    position: context.position,
+    position: context ? context.position : 'absolute',
     left: props.left,
     overflow: 'visible',
     top: props.top,
