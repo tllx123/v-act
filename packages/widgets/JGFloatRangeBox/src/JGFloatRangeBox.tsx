@@ -166,6 +166,7 @@ const JGFloatRangeBox = function (props: JGFloatBoxProps) {
   }
   const inputWrapSx = {
     'display': 'flex',
+    'width': '100%',
     'alignItems': 'center',
     'border': '1px solid #dcdee2',
     'backgroundColor': '#fff',

@@ -51,7 +51,7 @@ const JGPeriodRange = (props: JGPeriodRangeProps) => {
         display: 'flex',
         alignItems: 'center',
         width: toWidth(width, context, '235px'),
-        height: toHeight(height, context, '26px'),
+        height: toHeight(height, context, '32px'),
         position: context.position,
         left: left,
         top: top
@@ -59,12 +59,17 @@ const JGPeriodRange = (props: JGPeriodRangeProps) => {
     >
       <JGInputLabel
         width={toLabelWidth(labelWidth, context, 94)}
-        height={toHeight(height, context, '26px')}
+        height={toHeight(height, context, '32px')}
       >
         {labeltext}
       </JGInputLabel>
       <RangePicker
-        suffixIcon={<EventIcon sx={{ color: '#333' }} />}
+        style={{
+          width: '100%',
+          height: '100%',
+          border: '1px solid #dcdee2 !important'
+        }}
+        suffixIcon={<EventIcon sx={{ color: 'rgba(0, 0, 0, 0.54)' }} />}
         locale={locale}
         picker={pickerVak}
       />

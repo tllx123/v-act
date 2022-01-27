@@ -310,7 +310,7 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         }}
       >
         <Box sx={{ width: '50%', flexShrink: 1 }}>
-          {headerDataLeft.length == 1
+          {headerDataLeft[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative' },
                 children: bgconvert(headerDataLeft[0])
@@ -326,7 +326,7 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
             flexShrink: 1
           }}
         >
-          {headerDataRight.length == 1
+          {headerDataRight[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative' },
                 children: bgconvert(headerDataRight[0])

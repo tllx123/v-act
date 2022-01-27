@@ -32,6 +32,7 @@ const convert = function (control: Control): JSX.Element {
     adaLineHeight: toBoolean(pros.adaLineHeight, false),
     allowMerge: toBoolean(pros.allowMerge, false),
     rowsFixedCount: toNumber(pros.rowsFixedCount)
+    // showGridSummary：toBoolean(pros.showGridSummary, false)
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }

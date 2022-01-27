@@ -310,6 +310,11 @@ interface Property {
    * 行数
    */
   rowsFixedCount?: string
+
+  /**
+   * 合计
+   */
+  showGridSummary?: string
 }
 
 export default Property
