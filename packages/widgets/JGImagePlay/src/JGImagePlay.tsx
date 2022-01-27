@@ -240,7 +240,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
               size="small"
               onClick={handleNext}
             >
-              <KeyboardArrowLeft />
+              <KeyboardArrowRight />
             </Button>
           }
           backButton={
@@ -252,7 +252,7 @@ const JGImagePlay = function (props: JGImagePlayProps) {
               size="small"
               onClick={handleBack}
             >
-              <KeyboardArrowRight />
+              <KeyboardArrowLeft />
             </Button>
           }
         />
