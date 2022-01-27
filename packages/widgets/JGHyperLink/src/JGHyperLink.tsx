@@ -23,6 +23,10 @@ interface JGHyperLinkProps extends InputUnstyledProps {
 
   /** 格式 */
   /**
+   * 布局位置
+   */
+  position?: string
+  /**
    * 左边距
    */
   left?: Property.Left
@@ -113,7 +117,7 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
     width: width,
     height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context ? context.position : 'absolute',
     display: 'flex',
     alignItems: 'center',
     left: props.left,
