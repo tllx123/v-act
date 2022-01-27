@@ -1,5 +1,7 @@
 import React, { CSSProperties, forwardRef } from 'react'
 
+import { Property } from 'csstype'
+
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import IconButton from '@mui/material/IconButton'
@@ -21,11 +23,11 @@ interface JGBaseDictBoxProps extends InputUnstyledProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
