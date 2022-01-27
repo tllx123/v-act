@@ -62,42 +62,42 @@ const JGTreeView = (props: JGTreeViewProps) => {
     // console.log(dataTemp)
   }
 
-  // dataTemp = [
-  //   {
-  //     id: '598fafc96d304aa5b3698237b05f879d',
-  //     TreeColumnName: '文件夹-1',
-  //     IsLeaf: false
-  //   },
-  //   {
-  //     id: '19469ecb8b734f9b86b7020dd7880383',
-  //     PID: '598fafc96d304aa5b3698237b05f879d',
-  //     TreeColumnName: '文件1-1',
-  //     IsLeaf: true
-  //   },
-  //   {
-  //     id: '816d6a4d6b59410a9db2536cc8240fe2',
-  //     PID: '598fafc96d304aa5b3698237b05f879d',
-  //     TreeColumnName: '文件1-2',
-  //     IsLeaf: true
-  //   },
-  //   {
-  //     id: 'dc5be2a7b6fc437982e421db556012cc',
-  //     TreeColumnName: '文件夹-2',
-  //     IsLeaf: false
-  //   },
-  //   {
-  //     id: '03a9ad59bc34443bbd11bbf46cf2b178',
-  //     PID: 'dc5be2a7b6fc437982e421db556012cc',
-  //     TreeColumnName: '文件2-1',
-  //     IsLeaf: true
-  //   },
-  //   {
-  //     id: '54927198944c4f8ab9c64186809e9285',
-  //     PID: 'dc5be2a7b6fc437982e421db556012cc',
-  //     TreeColumnName: '文件2-2',
-  //     IsLeaf: true
-  //   }
-  // ]
+  dataTemp = [
+    {
+      id: '598fafc96d304aa5b3698237b05f879d',
+      TreeColumnName: '文件夹-1',
+      IsLeaf: false
+    },
+    {
+      id: '19469ecb8b734f9b86b7020dd7880383',
+      PID: '598fafc96d304aa5b3698237b05f879d',
+      TreeColumnName: '文件1-1',
+      IsLeaf: true
+    },
+    {
+      id: '816d6a4d6b59410a9db2536cc8240fe2',
+      PID: '598fafc96d304aa5b3698237b05f879d',
+      TreeColumnName: '文件1-2',
+      IsLeaf: true
+    },
+    {
+      id: 'dc5be2a7b6fc437982e421db556012cc',
+      TreeColumnName: '文件夹-2',
+      IsLeaf: false
+    },
+    {
+      id: '03a9ad59bc34443bbd11bbf46cf2b178',
+      PID: 'dc5be2a7b6fc437982e421db556012cc',
+      TreeColumnName: '文件2-1',
+      IsLeaf: true
+    },
+    {
+      id: '54927198944c4f8ab9c64186809e9285',
+      PID: 'dc5be2a7b6fc437982e421db556012cc',
+      TreeColumnName: '文件2-2',
+      IsLeaf: true
+    }
+  ]
 
   let dataTree = []
 
@@ -183,7 +183,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
           // justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ width: '50%', overflow: 'hidden' }}>
+        <Box sx={{ width: '50%', flexShrink: 1 }}>
           {headerDataLeft.length == 1
             ? ContextProvider({
                 context: { position: 'relative' },
@@ -195,9 +195,9 @@ const JGTreeView = (props: JGTreeViewProps) => {
         <Box
           sx={{
             width: '50%',
-            overflow: 'hidden',
             display: 'flex',
-            justifyContent: 'flex-end'
+            justifyContent: 'flex-end',
+            flexShrink: 1
           }}
         >
           {headerDataRight.length == 1

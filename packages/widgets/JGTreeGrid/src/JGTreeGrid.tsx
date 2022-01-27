@@ -207,7 +207,7 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
           // justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ width: '50%', overflow: 'hidden' }}>
+        <Box sx={{ width: '50%', flexShrink: 1 }}>
           {headerDataLeft.length == 1
             ? ContextProvider({
                 context: { position: 'relative' },
@@ -219,9 +219,9 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
         <Box
           sx={{
             width: '50%',
-            overflow: 'hidden',
             display: 'flex',
-            justifyContent: 'flex-end'
+            justifyContent: 'flex-end',
+            flexShrink: 1
           }}
         >
           {headerDataRight.length == 1
