@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react'
 
+import { Property } from 'csstype'
+
 import { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
@@ -23,11 +25,11 @@ interface JGHyperLinkProps extends InputUnstyledProps {
   /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
