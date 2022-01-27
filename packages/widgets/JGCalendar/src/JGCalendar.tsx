@@ -84,7 +84,10 @@ const JGCalendar = function (props: JGCalendarProps) {
             style={{
               background: item ? '#FFE492' : 'none',
               border: item ? '1px solid #FBD974' : 'none',
-              paddingLeft: '4px'
+              paddingLeft: '4px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
             }}
           >
             {item}
