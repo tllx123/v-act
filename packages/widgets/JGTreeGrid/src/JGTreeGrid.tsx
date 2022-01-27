@@ -61,7 +61,9 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     readonly,
     adaLineHeight,
     cascadeCheck,
-    showRowNumbers
+    showRowNumbers,
+    allowMerge,
+    rowsFixedCount
   } = props
 
   let dataTreeHeader: any = []
@@ -78,16 +80,106 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     })
   }
 
-  control.controls.some((item: any, index: any) => {
-    dataTreeHeader.push({
-      title: item.properties.labelText,
-      dataIndex: item.properties.code,
-      width: index == 0 ? 200 : 100,
-      align: index == 0 ? undefined : 'center',
-      key: item.properties.code,
-      ellipsis: adaLineHeight == true ? false : 'enble'
+  if (rowsFixedCount) {
+    if (allowMerge) {
+      let data: any = []
+      control.controls.some((item: any, index: any) => {
+        let val = item.properties.labelText.split('|')
+
+        for (let i = 0; i < rowsFixedCount; i++) {
+          data.push({
+            id: val[i] ? 'a' + (val[i] ? val[i] : '') : i.toString() + 'a',
+            pid:
+              i == 0
+                ? '$$$'
+                : val[i - 1]
+                ? 'a' + (val[i - 1] ? val[i - 1] : '')
+                : (i - 1).toString() + 'a',
+            title: val[i] ? val[i] : '',
+            dataIndex: item.properties.code,
+            width: index == 0 ? 200 : 100,
+            align: index == 0 ? undefined : 'center',
+            key: item.properties.code,
+            ellipsis: adaLineHeight == true ? false : 'enble'
+          })
+          // dataTreeHeader.push(dataTree[0])
+        }
+      })
+
+      console.log('data')
+      console.log(data)
+      let data2 = data.filter((item: any) => {
+        return item.id !== item.pid
+      })
+      console.log('data2')
+      console.log(data2)
+      // let data3 =   deepcopy(data2 )
+
+      let map = new Map()
+      data2.forEach((item: any, index: any) => {
+        if (!map.has(item['id'])) {
+          map.set(item['id'], item)
+        }
+      })
+      let data3 = [...map.values()]
+      console.log('data3')
+      console.log(data3)
+
+      let dataTreeA: any = []
+      dataTreeA = toTree(data3, {
+        parentProperty: 'pid',
+        customID: 'id'
+      })
+      console.log('dataTreeA')
+      console.log(dataTreeA)
+      dataTreeA.some((item: any) => {
+        dataTreeHeader.push(item)
+      })
+    } else {
+      control.controls.some((item: any, index: any) => {
+        let val = item.properties.labelText.split('|')
+        let data: any = []
+
+        for (let i = 0; i < rowsFixedCount; i++) {
+          data.push({
+            id: i.toString() + 'a',
+            pid: i == 0 ? '$$$' : (i - 1).toString() + 'a',
+            title: val[i] ? val[i] : '',
+            dataIndex: item.properties.code,
+            width: index == 0 ? 200 : 100,
+            align: index == 0 ? undefined : 'center',
+            key: item.properties.code,
+            ellipsis: adaLineHeight == true ? false : 'enble'
+          })
+          // dataTreeHeader.push(dataTree[0])
+        }
+        console.log('data')
+        console.log(data)
+
+        let dataTreeA: any = []
+        dataTreeA = toTree(data, {
+          parentProperty: 'pid',
+          customID: 'id'
+        })
+        console.log('dataTreeA')
+        console.log(dataTreeA)
+        dataTreeA.some((item: any) => {
+          dataTreeHeader.push(item)
+        })
+      })
+    }
+  } else {
+    control.controls.some((item: any, index: any) => {
+      dataTreeHeader.push({
+        title: item.properties.labelText,
+        dataIndex: item.properties.code,
+        width: index == 0 ? 200 : 100,
+        align: index == 0 ? undefined : 'center',
+        key: item.properties.code,
+        ellipsis: adaLineHeight == true ? false : 'enble'
+      })
     })
-  })
+  }
 
   console.log('---dataTemp---')
   let dataTemp: any = []
@@ -203,8 +295,8 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     >
       <Box
         sx={{
-          display: 'flex'
-          // justifyContent: 'space-between',
+          display: 'flex',
+          overflow: 'hidden'
         }}
       >
         <Box sx={{ width: '50%', flexShrink: 1 }}>

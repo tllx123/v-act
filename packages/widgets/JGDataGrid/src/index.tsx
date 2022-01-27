@@ -29,7 +29,9 @@ const convert = function (control: Control): JSX.Element {
     showRowNumbers: toBoolean(pros.showRowNumbers, true),
     chooseMode: pros.chooseMode,
     readonly: toBoolean(pros.readOnly, false),
-    adaLineHeight: toBoolean(pros.adaLineHeight, false)
+    adaLineHeight: toBoolean(pros.adaLineHeight, false),
+    allowMerge: toBoolean(pros.allowMerge, false),
+    rowsFixedCount: toNumber(pros.rowsFixedCount)
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }
