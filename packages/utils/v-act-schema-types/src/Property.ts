@@ -300,6 +300,16 @@ interface Property {
    * 适应行高
    */
   adaLineHeight?: string
+
+  /**
+   * 是否合并标题
+   */
+  allowMerge?: string
+
+  /**
+   * 行数
+   */
+  rowsFixedCount?: string
 }
 
 export default Property

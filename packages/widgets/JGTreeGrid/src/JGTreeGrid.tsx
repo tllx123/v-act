@@ -34,6 +34,8 @@ export interface JGTreeGridProps {
   adaLineHeight?: boolean
   cascadeCheck?: boolean
   showRowNumbers?: boolean
+  allowMerge?: boolean
+  rowsFixedCount?: number
 }
 
 const rowSelection = {
@@ -65,18 +67,15 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
   let dataTreeHeader: any = []
 
   if (showRowNumbers) {
-    dataTreeHeader.push(
-      {
-        title: '',
-        dataIndex: '####3',
-        align: 'center',
-        width: 50,
-        render(text: any, record: any, index: any) {
-          return index + 1
-        }
-      },
-      Table.EXPAND_COLUMN
-    )
+    dataTreeHeader.push({
+      title: '',
+      dataIndex: '####3',
+      align: 'center',
+      width: 50,
+      render(text: any, record: any, index: any) {
+        return index + 1
+      }
+    })
   }
 
   control.controls.some((item: any, index: any) => {
@@ -103,49 +102,49 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     })
   }
 
-  dataTemp = [
-    {
-      id: '1',
-      JGTextBoxColumn111: '文件夹-1可直接返回第四u回复框上支付货款董事长',
-      IsLeaf: false,
-      key: 0
-    },
-    {
-      id: '2',
-      PID: '1',
-      JGTextBoxColumn111: '文件1-1',
-      IsLeaf: true,
-      key: 1
-    },
-    {
-      id: '3',
-      PID: '1',
-      JGTextBoxColumn111: '文件1-2',
-      IsLeaf: true,
-      key: 2
-    },
-    {
-      id: '4',
-      JGTextBoxColumn111: '文件夹-2',
-      IsLeaf: false,
-      key: 3
-    },
-    {
-      id: '5',
-      PID: '4',
-      JGTextBoxColumn111: '文件2-1',
-      IsLeaf: true,
-      key: 4
-    },
-    {
-      id: '6',
-      PID: '4',
-      JGTextBoxColumn111: '文件2-2',
-      IsLeaf: true,
-      key: 5
-    }
-  ]
-  console.log(dataTemp)
+  // dataTemp = [
+  //   {
+  //     id: '1',
+  //     JGTextBoxColumn111: '文件夹-1可直接返回第四u回复框上支付货款董事长',
+  //     IsLeaf: false,
+  //     key: 0
+  //   },
+  //   {
+  //     id: '2',
+  //     PID: '1',
+  //     JGTextBoxColumn111: '文件1-1',
+  //     IsLeaf: true,
+  //     key: 1
+  //   },
+  //   {
+  //     id: '3',
+  //     PID: '1',
+  //     JGTextBoxColumn111: '文件1-2',
+  //     IsLeaf: true,
+  //     key: 2
+  //   },
+  //   {
+  //     id: '4',
+  //     JGTextBoxColumn111: '文件夹-2',
+  //     IsLeaf: false,
+  //     key: 3
+  //   },
+  //   {
+  //     id: '5',
+  //     PID: '4',
+  //     JGTextBoxColumn111: '文件2-1',
+  //     IsLeaf: true,
+  //     key: 4
+  //   },
+  //   {
+  //     id: '6',
+  //     PID: '4',
+  //     JGTextBoxColumn111: '文件2-2',
+  //     IsLeaf: true,
+  //     key: 5
+  //   }
+  // ]
+  // console.log(dataTemp)
 
   let dataTree = []
   if (dataTemp) {

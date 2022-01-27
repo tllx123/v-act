@@ -87,16 +87,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
   let data: any = []
   if (tablename) {
     data = getEntityDatas(tablename, context)
-    console.log('data')
-    console.log(data)
   }
-
-  data = [
-    {
-      JGTextBoxColumn66:
-        '不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高不自适应行高'
-    }
-  ]
 
   if (Array.isArray(data)) {
     data.some((item: any, index: any) => {
