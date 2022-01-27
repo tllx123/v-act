@@ -31,6 +31,7 @@ export interface JGTreeGridProps {
   control?: any
   labelText?: any
   readonly?: boolean
+  chooseMode?: string
   adaLineHeight?: boolean
   cascadeCheck?: boolean
   showRowNumbers?: boolean
@@ -63,7 +64,8 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     cascadeCheck,
     showRowNumbers,
     allowMerge,
-    rowsFixedCount
+    rowsFixedCount,
+    chooseMode
   } = props
 
   let dataTreeHeader: any = []
@@ -282,6 +284,14 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
     }
   }
 
+  let tableProp: any = {}
+  if (chooseMode === '3') {
+    tableProp.rowSelection = rowSelection
+    if (cascadeCheck) {
+      tableProp.rowSelection.checkStrictly = cascadeCheck
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -326,6 +336,7 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
       </Box>
 
       <Table
+        {...tableProp}
         onRow={(record) => {
           return {
             onClick: clickProps
@@ -335,7 +346,6 @@ const JGTreeGrid = (props: JGTreeGridProps) => {
           y: toHeight(height, context, '26px'),
           x: toWidth(width, context, '235px')
         }}
-        rowSelection={{ ...rowSelection, checkStrictly: cascadeCheck }}
         bordered
         columns={dataTreeHeader}
         dataSource={dataTree}

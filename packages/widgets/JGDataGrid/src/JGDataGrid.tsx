@@ -309,6 +309,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
         dataSource={data}
         size="small"
         pagination={false}
+        footer={() => 'Footer'}
       ></Table>
     </Box>
   )

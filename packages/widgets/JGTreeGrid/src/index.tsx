@@ -28,9 +28,10 @@ export const convert = function (control: Control): JSX.Element {
     readonly: toBoolean(pros.readOnly, false),
     adaLineHeight: toBoolean(pros.adaLineHeight, false),
     cascadeCheck: toBoolean(pros.cascadeCheck, false),
-    showRowNumbers: toBoolean(pros.showRowNumbers, true),
+    showRowNumbers: toBoolean(pros.showRowNumbers, false),
     allowMerge: toBoolean(pros.allowMerge, false),
-    rowsFixedCount: toNumber(pros.rowsFixedCount)
+    rowsFixedCount: toNumber(pros.rowsFixedCount),
+    chooseMode: pros.chooseMode
   }
   return <JGTreeGrid {...props}></JGTreeGrid>
 }
