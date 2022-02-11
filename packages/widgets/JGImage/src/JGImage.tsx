@@ -41,7 +41,9 @@ const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
       right: inProps.right,
       left: inProps.left ?? 0,
       bottom: inProps.bottom,
-      textAlign: 'center'
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   }
 
