@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { styled, Typography, TypographyProps } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Typography, { TypographyProps } from '@mui/material/Typography'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 
