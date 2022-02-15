@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/widget-all",
+  "name": "@v-act/widget-all-nextjs",
   "version": "1.0.0-alpha.1",
   "main": "dist/index.js",
   "module": "dist/index.es.js",

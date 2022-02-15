@@ -20,4 +20,6 @@ interface Entity {
   rows: EntityRecord[]
 }
 
+export { type Entity, type EntityField, type EntityRecord }
+
 export default Entity

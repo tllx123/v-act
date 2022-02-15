@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
-import {convertWindowSchema} from "@v-act/window-schema-utils";
+import {parseWindowSchema} from "@v-act/window-schema-utils";
 import {JGComponent as JGComponent1,convert as convertJGComponent} from "@v-act/jgcomponent";
 import {JGSpacer as JGSpacer1,convert as convertJGSpacer1} from "@v-act/jgspacer";
 import {JGGroupPanel as JGGroupPanel1,convert as convertJGGroupPanel1} from "@v-act/jggrouppanel";
@@ -42,7 +42,7 @@ function Index(){
     const stackInfo = useStackInfo();
     return (
         <React.Fragment>
-            {convertWindowSchema("{{@ componentCode}}",windowObjs,widgetDefines,widgetConverts,{router,stackInfo})}
+            {parseWindowSchema("{{@ componentCode}}",windowObjs,widgetDefines,widgetConverts,{router,stackInfo})}
         </React.Fragment>   
     );
 }

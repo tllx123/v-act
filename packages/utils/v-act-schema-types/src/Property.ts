@@ -264,7 +264,7 @@ interface Property {
   /**
    * 标签对齐方式
    */
-  textAlign: Property.TextAlign | undefined
+  textAlign?: Property.TextAlign | undefined
 
   /**
    * 字体

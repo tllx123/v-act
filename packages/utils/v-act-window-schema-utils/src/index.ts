@@ -1,4 +1,4 @@
 import { layoutControls } from './layout'
-import { convertWindowSchema } from './windowSchemaEnhancer'
+import { parseWindowSchema } from './windowSchemaEnhancer'
 
-export { convertWindowSchema, layoutControls }
+export { layoutControls, parseWindowSchema }

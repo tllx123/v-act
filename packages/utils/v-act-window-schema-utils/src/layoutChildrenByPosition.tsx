@@ -18,8 +18,11 @@ let JGCONTEXT_INST_INDEX = 0
 const layoutChildrenByPosition = function (
   children: Control[],
   contianerReact: ControlReact,
-  controlDefines: WidgetDefines
+  controlDefines?: WidgetDefines
 ) {
+  if (!controlDefines) {
+    throw Error('根据控件位置进行布局需要控件定义信息！')
+  }
   const newChildren: Control[] = []
   const sameLeftChildren: { [prop: string]: Control[] } = {}
   const sameTopChildren: { [prop: string]: Control[] } = {}

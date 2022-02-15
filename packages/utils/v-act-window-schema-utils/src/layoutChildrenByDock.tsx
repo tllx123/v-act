@@ -16,7 +16,7 @@ import { getJGGroupPanelInstCode } from './utils'
 const layoutChildrenByDock = function (
   children: Control[],
   contianerReact: ControlReact,
-  controlDefines: WidgetDefines
+  controlDefines?: WidgetDefines
 ) {
   let headMembers: Control[] = [],
     centerMembers: Control[] = [],

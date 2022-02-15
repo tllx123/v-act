@@ -21,4 +21,6 @@ interface Action {
   windowAction: WindowAction
 }
 
+export { type Action, type WindowAction }
+
 export default Action

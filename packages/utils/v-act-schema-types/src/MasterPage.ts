@@ -6,7 +6,7 @@ interface MasterPageControl {
   controls?: MasterPageControl[]
 }
 
-interface Property {
+interface MasterPageProperty {
   code: string
   showTopStatus?: string
 }
@@ -14,6 +14,8 @@ interface Property {
 interface MasterPage {
   actions?: Action[]
   controls?: MasterPageControl[]
-  properties: Property
+  properties: MasterPageProperty
 }
+
+export { type MasterPage, type MasterPageControl, type MasterPageProperty }
 export default MasterPage
