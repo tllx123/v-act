@@ -2,15 +2,12 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Box,
-  Step,
-  StepLabel,
-  Stepper,
-  StepperProps,
-  styled,
-  Typography
-} from '@mui/material'
+import Box from '@mui/material/Box'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Stepper, { StepperProps } from '@mui/material/Stepper'
+import { styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import { useContext } from '@v-act/widget-context'
 import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'
 
@@ -23,6 +20,7 @@ export interface JGStepsProps extends StepperProps {
   width?: Property.Width
   tableName?: string | null
   columnName?: string | null
+  direction?: string | null
   stepDownSource: {
     DataSourceSetting: {
       DataConfig: {
@@ -62,18 +60,26 @@ const JGStepsRoot = styled(Stepper, {
 })(({ theme }) => ({}))
 
 const JGSteps = forwardRef<HTMLDivElement, JGStepsProps>((inProps, ref) => {
-  const props: StepperProps = {
-    activeStep: inProps.activeStep ?? 1,
-    alternativeLabel: inProps.alternativeLabel ?? false
-  }
-
   const context = useContext()
   const sx = inProps.sx || {}
 
-  const datas = getEntityDatas(
-    inProps.stepDownSource.DataSourceSetting.DataConfig.SourceID,
-    context
-  )
+  const datas =
+    getEntityDatas(
+      inProps.stepDownSource.DataSourceSetting.DataConfig.SourceID,
+      context
+    ) || []
+
+  //统计已经完成的个数
+  const activeStep = datas?.reduce(function (preValue, item) {
+    item.StatusColumn === 'Done' && (preValue += 1)
+    return preValue
+  }, 0)
+
+  const props: StepperProps = {
+    activeStep: activeStep,
+    alternativeLabel: inProps.alternativeLabel ?? false,
+    orientation: inProps.direction === 'Vertical' ? 'vertical' : 'horizontal'
+  }
 
   const {
     DescColumn: descCol,

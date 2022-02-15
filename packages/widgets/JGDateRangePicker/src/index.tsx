@@ -19,7 +19,7 @@ const convert = function (control: Control): JSX.Element {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '235px'),
-    height: valueofHeight(pros.multiHeight, '26px'),
+    height: valueofHeight(pros.multiHeight, '32px'),
     labeltext: pros.labelText,
     labelWidth: toNumber(pros.labelWidth, 94),
     tableName: getTableName(control),

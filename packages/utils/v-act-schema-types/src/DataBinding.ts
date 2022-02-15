@@ -5,8 +5,9 @@ interface DataMember {
 }
 
 interface DataBinding {
-  dataSource: string
+  dataSource: string | null
   dataMembers: DataMember[]
 }
 
+export { type DataBinding, type DataMember }
 export default DataBinding

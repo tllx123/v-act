@@ -3547,6 +3547,14 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
+"@types/jest@^27.0.2":
+  version "27.4.0"
+  resolved "https://registry.npmmirror.com/@types/jest/download/@types/jest-27.4.0.tgz#037ab8b872067cae842a320841693080f9cb84ed"
+  integrity sha512-gHl8XuC1RZ8H2j5sHv/JqsaxXkDDM9iDOgu0Wp8sjs4u/snb2PVehyWXJPr+ORA0RPpgw231mnutWI1+0hgjIQ==
+  dependencies:
+    jest-diff "^27.0.0"
+    pretty-format "^27.0.0"
+
 "@types/json-schema@*", "@types/json-schema@^7.0.3", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.7", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.9"
   resolved "https://registry.npmmirror.com/@types/json-schema/download/@types/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
@@ -3593,6 +3601,11 @@
   version "16.11.17"
   resolved "https://registry.npmmirror.com/@types/node/download/@types/node-16.11.17.tgz#ae146499772e33fc6382e1880bc567e41a528586"
   integrity sha512-C1vTZME8cFo8uxY2ui41xcynEotVkczIVI5AjLmy5pkpBv/FtG+jhtOlfcPysI8VRVwoOMv6NJm44LGnoMSWkw==
+
+"@types/node@^16.11.7":
+  version "16.11.21"
+  resolved "https://registry.npmmirror.com/@types/node/download/@types/node-16.11.21.tgz#474d7589a30afcf5291f59bd49cca9ad171ffde4"
+  integrity sha512-Pf8M1XD9i1ksZEcCP8vuSNwooJ/bZapNmIzpmsMaL+jMI+8mEYU3PKvs+xDNuQcJWF/x24WzY4qxLtB0zNow9A==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -3677,7 +3690,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.0", "@types/react@^17.0.37":
+"@types/react@*", "@types/react@^17.0.0", "@types/react@^17.0.34", "@types/react@^17.0.37":
   version "17.0.38"
   resolved "https://registry.npmmirror.com/@types/react/download/@types/react-17.0.38.tgz#f24249fefd89357d5fa71f739a686b8d7c7202bd"
   integrity sha512-SI92X1IA+FMnP3qM5m4QReluXzhcmovhZnLNm3pyeQlooi02qI7sLiepEYqT678uNiyc25XfCqxREFpy3W7YhQ==
@@ -3929,17 +3942,6 @@
     cp-cli "^2.0.0"
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
-
-"@v-act/styles@^1.0.1", "@v-act/styles@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@v-act/styles/-/styles-1.0.5.tgz#ea6b8d82ef3730ff10964a7416d751ee64da15c7"
-  integrity sha512-enPbhwMUvjQCXh7rXcTdGJ7DpnnQewZWWZ5K4FfrE7WhBM4Zg2M77dStX9B5XNqemEt0AMyZIgeJU96K/Y62cQ==
-  dependencies:
-    "@material-ui/core" "^4.12.3"
-    "@mui/core" "^5.0.0-alpha.54"
-    "@mui/material" "^5.1.0"
-    "@mui/styles" "^5.1.0"
-    react "^17.0.2"
 
 "@vitejs/plugin-react@^1.1.1":
   version "1.1.3"
@@ -4544,7 +4546,7 @@ array-includes@^3.1.3, array-includes@^3.1.4:
 
 array-to-tree@^3.3.2:
   version "3.3.2"
-  resolved "https://registry.npmmirror.com/array-to-tree/download/array-to-tree-3.3.2.tgz#06da2f3815a906a99aaa5ad793a39114db36da52"
+  resolved "https://registry.nlark.com/array-to-tree/download/array-to-tree-3.3.2.tgz#06da2f3815a906a99aaa5ad793a39114db36da52"
   integrity sha1-BtovOBWpBqmaqlrXk6ORFNs22lI=
   dependencies:
     lodash.keyby "^4.6.0"
@@ -7015,6 +7017,13 @@ deep-is@^0.1.3, deep-is@~0.1.3:
   version "0.1.4"
   resolved "https://registry.nlark.com/deep-is/download/deep-is-0.1.4.tgz#a6f2dce612fadd2ef1f519b73551f17e85199831"
   integrity sha1-pvLc5hL63S7x9Rm3NVHxfoUZmDE=
+
+deepcopy@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/deepcopy/download/deepcopy-2.1.0.tgz#2deb0dd52d079c2ecb7924b640a7c3abd4db1d6d"
+  integrity sha1-LesN1S0HnC7LeSS2QKfDq9TbHW0=
+  dependencies:
+    type-detect "^4.0.8"
 
 deepmerge@^4.2.2:
   version "4.2.2"
@@ -17867,7 +17876,7 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-detect@4.0.8:
+type-detect@4.0.8, type-detect@^4.0.8:
   version "4.0.8"
   resolved "https://registry.nlark.com/type-detect/download/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha1-dkb7XxiHHPu3dJ5pvTmmOI63RQw=

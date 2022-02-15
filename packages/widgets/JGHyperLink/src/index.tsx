@@ -17,8 +17,8 @@ const convert = function (
   // console.log(control,"sssssssssssssssssssss")
   const pros = control.properties
   const props: JGHyperLinkProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
     multiWidth: valueofWidth(pros.multiWidth, '235px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,

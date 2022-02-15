@@ -7,9 +7,9 @@ import '@v-act/jgdaterangepicker/dist/style.css'
 import '@v-act/jgperiodrange/dist/style.css'
 import 'antd/dist/antd.css'
 import '@v-act/jgrichtexteditor/dist/style.css'
-
+import { useEffect } from 'react'
 import App from 'next/app'
-
+import { ServerStyleSheets } from '@material-ui/styles'
 import { createTheme, ThemeProvider } from '@v-act/styles'
 
 import PageManager from '../src/components/PageManager'
@@ -17,6 +17,7 @@ import PageManager from '../src/components/PageManager'
 export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {}
+
     const level = ctx.req ? 0 : parseInt(ctx.query.modal, 10) || 0
 
     if (Component.getInitialProps) {
@@ -25,6 +26,7 @@ export default class MyApp extends App {
 
     return { pageProps, level, url: ctx.asPath }
   }
+
   render() {
     const { Component, pageProps, level, url } = this.props
     const theme = createTheme()

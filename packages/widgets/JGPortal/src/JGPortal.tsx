@@ -2,15 +2,12 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  AppBar,
-  Card,
-  CardProps,
-  Grid,
-  styled,
-  Toolbar,
-  Typography
-} from '@mui/material'
+import AppBar from '@mui/material/AppBar'
+import Card, { CardProps } from '@mui/material/Card'
+import Grid from '@mui/material/Grid'
+import { styled } from '@mui/material/styles'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 

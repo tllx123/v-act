@@ -253,9 +253,18 @@ interface Property {
   padding?: string
 
   /**
+   * 开启多选
+   */
+  cascadeCheck?: string
+
+  /**
+   * 展示模式
+   */
+  displayMode?: string
+  /**
    * 标签对齐方式
    */
-  textAlign: Property.TextAlign | undefined
+  textAlign?: Property.TextAlign | undefined
 
   /**
    * 字体
@@ -270,12 +279,42 @@ interface Property {
   /**
    * 主题
    */
-  theme: string | undefined
+  theme?: string | undefined
 
   /**
    * 图片code
    */
-  imageValue: string | undefined
+  imageValue?: string | undefined
+
+  /**
+   * 方向
+   */
+  direction?: string | null | undefined
+
+  /**
+   * 图片位置
+   */
+  imagePosition?: string
+
+  /**
+   * 适应行高
+   */
+  adaLineHeight?: string
+
+  /**
+   * 是否合并标题
+   */
+  allowMerge?: string
+
+  /**
+   * 行数
+   */
+  rowsFixedCount?: string
+
+  /**
+   * 合计
+   */
+  showGridSummary?: string
 }
 
 export default Property

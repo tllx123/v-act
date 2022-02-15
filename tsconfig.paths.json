@@ -98,7 +98,9 @@
       "@v-act/iprototypeframe": ["packages/widgets/IPrototypeFrame/src"],
       "@v-act/jgdaterangepicker": ["packages/widgets/JGDateRangePicker/src"],
       "@v-act/jgperiodrange": ["packages/widgets/JGPeriodRange/src"],
-      "@v-act/jgfloatrangebox": ["packages/widgets/JGFloatRangeBox/src"]
+      "@v-act/jgfloatrangebox": ["packages/widgets/JGFloatRangeBox/src"],
+      "@v-act/jgtoolbar": ["packages/widgets/JGToolbar/src"],
+      "@v-act/widget-all-nextjs": ["packages/widgets/All-Nextjs/src"]
     }
   }
 }

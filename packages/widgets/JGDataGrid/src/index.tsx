@@ -26,9 +26,13 @@ const convert = function (control: Control): JSX.Element {
     columnname: getColumnName(control),
     control: control,
     rowHeight: toNumber(pros.rowHeight) + 'px',
-    showRowNumbers: toBoolean(pros.showRowNumbers, true),
+    showRowNumbers: toBoolean(pros.showRowNumbers, false),
     chooseMode: pros.chooseMode,
-    readonly: toBoolean(pros.readOnly, false)
+    readonly: toBoolean(pros.readOnly, false),
+    adaLineHeight: toBoolean(pros.adaLineHeight, false),
+    allowMerge: toBoolean(pros.allowMerge, false),
+    rowsFixedCount: toNumber(pros.rowsFixedCount)
+    // showGridSummary：toBoolean(pros.showGridSummary, false)
   }
   return <JGDataGrid {...props}></JGDataGrid>
 }

@@ -1,15 +1,37 @@
 import { Fragment } from 'react'
 
 import {
+  Action,
+  ActionSchema,
   Control,
   ControlReact,
+  ControlSchema,
+  DataBinding,
+  DataBindingSchema,
+  DataMember,
+  Entity,
+  EntityDefRowSchema,
+  EntityField,
+  EntityFieldSchema,
+  EntityRecord,
+  EntitySchema,
   Event,
   JGCollapsePanelProperty,
+  JGGroupPanelProperty,
+  MasterPage,
+  MasterPageControl as MasterPageControl1,
+  MasterPageControlSchema,
+  MasterPageSchema,
+  Property,
+  PropertysSchema,
   ReactEnum,
   WidgetConvertContext,
   WidgetConverts,
   WidgetDefines,
-  Window
+  Window,
+  WindowAction,
+  WindowActionSchema,
+  WindowSchema
 } from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 
@@ -286,7 +308,7 @@ const toJGButtonGroupSchema = function (windowSchema: Window) {
   }
 }
 
-const _toFrameDockTop = function (windowSchema: Window) {
+const _toFrameDockTop = function (windowSchema: Window): Window {
   _toDealWidgetCode(windowSchema)
   const masterPage = windowSchema.masterPage
   let actions = windowSchema.prototype || []
@@ -294,6 +316,13 @@ const _toFrameDockTop = function (windowSchema: Window) {
   windowSchema.properties.dock = 'Fill'
   delete windowSchema.properties.width
   windowSchema.properties.multiWidth = ReactEnum.Space.toString()
+  const groupPanelProps: JGGroupPanelProperty = {
+    dock: 'Top',
+    contentAlignment: 'Horizontal',
+    multiHeight: '34px',
+    multiWidth: ReactEnum.Space.toString(),
+    code: 'Frame_Dock_Top_JGGroupPanel_' + _getRandomNum()
+  }
   return {
     type: 'JGComponent',
     properties: {
@@ -304,13 +333,7 @@ const _toFrameDockTop = function (windowSchema: Window) {
     controls: [
       {
         type: 'JGGroupPanel',
-        properties: {
-          dock: 'Top',
-          contentAlignment: 'Horizontal',
-          multiHeight: '34px',
-          multiWidth: ReactEnum.Space.toString(),
-          code: 'Frame_Dock_Top_JGGroupPanel_' + _getRandomNum()
-        },
+        properties: groupPanelProps,
         controls: [
           {
             type: 'JGLabel',
@@ -384,6 +407,365 @@ const _dealWindowMasterPageInfo = function (windowSchema: Window) {
   }
   return windowSchema
 }
+
+/**
+ * 解析控件属性schema
+ * @param propertys 控件属性信息
+ * @returns
+ */
+const parseSchemaProperty = function (propertys: PropertysSchema): Property {
+  const properties: Property = { code: '' }
+  if (propertys && propertys.property) {
+    let property = propertys.property
+    property = Array.isArray(property) ? property : [property]
+    property.forEach((property) => {
+      let attr = property.$.code
+      if (attr.length > 1) {
+        attr = attr.substring(0, 2).toLowerCase() + attr.substring(2)
+      } else {
+        attr = attr.toLowerCase()
+      }
+      const attrVal = property._ || ''
+      //@ts-ignore
+      properties[attr] = attrVal
+    })
+  }
+  if (!properties.code) {
+    throw Error('控件未设置控件编号！')
+  }
+  return properties
+}
+
+/**
+ * 解析控件数据绑定schema
+ * @param dataBinding 数据绑定schema
+ * @returns
+ */
+const parseSchemaDataBinding = function (
+  dataBinding: DataBindingSchema
+): DataBinding {
+  let dataMemberObjs =
+    dataBinding.dataMembers && dataBinding.dataMembers.dataMember
+      ? dataBinding.dataMembers.dataMember
+      : null
+  const dataMembers: DataMember[] = []
+  if (dataMemberObjs) {
+    dataMemberObjs = Array.isArray(dataMemberObjs)
+      ? dataMemberObjs
+      : [dataMemberObjs]
+    dataMemberObjs.forEach((dataMemberObj) => {
+      dataMembers.push({
+        name: dataMemberObj.$.name,
+        code: dataMemberObj.$.code,
+        value: dataMemberObj._
+      })
+    })
+  }
+  return {
+    dataSource: dataBinding.dataSource ? dataBinding.dataSource : null,
+    dataMembers: dataMembers
+  }
+}
+
+/**
+ * 解析控件schema
+ * @param controlObj 控件schema
+ * @returns
+ */
+const parseSchemaControl = function (controlObj: ControlSchema): Control {
+  const controls: Control[] = []
+  let controlObjs =
+    controlObj.controls && controlObj.controls.control
+      ? controlObj.controls.control
+      : null
+  if (controlObjs) {
+    controlObjs = Array.isArray(controlObjs) ? controlObjs : [controlObjs]
+    controlObjs.forEach((con) => {
+      controls.push(parseSchemaControl(con))
+    })
+  }
+  const headerControls: Control[] = []
+  let headerControlObjs =
+    controlObj.headerControls && controlObj.headerControls.control
+      ? controlObj.headerControls.control
+      : null
+  if (headerControlObjs) {
+    headerControlObjs = Array.isArray(headerControlObjs)
+      ? headerControlObjs
+      : [headerControlObjs]
+    headerControlObjs.forEach((con) => {
+      headerControls.push(parseSchemaControl(con))
+    })
+  }
+  const dataBindings: DataBinding[] = []
+  let dataBindingObjs =
+    controlObj.dataBindings && controlObj.dataBindings.dataBinding
+      ? controlObj.dataBindings.dataBinding
+      : null
+  if (dataBindingObjs) {
+    dataBindingObjs = Array.isArray(dataBindingObjs)
+      ? dataBindingObjs
+      : [dataBindingObjs]
+    dataBindingObjs.forEach((dataBindingObj) => {
+      dataBindings.push(parseSchemaDataBinding(dataBindingObj))
+    })
+  }
+  return {
+    type: controlObj.$.type,
+    properties: parseSchemaProperty(controlObj.propertys),
+    headerControls,
+    controls,
+    dataBindings
+  }
+}
+
+/**
+ * 解析字段定义
+ * @param field 字段定义
+ * @returns
+ */
+const parseSchemaField = function (field: EntityFieldSchema): EntityField {
+  let length = parseInt(field.$.length)
+  return {
+    code: field.$.code,
+    name: field.$.name,
+    chineseName: field.$.chineseName,
+    type: field.$.type,
+    length: isNaN(length) ? 0 : length,
+    precision: field.$.precision,
+    defaultValue: field.$.defaultValue
+  }
+}
+
+/**
+ * 解析实体记录
+ * @param entityDefRow 实体记录
+ * @returns
+ */
+const parseSchemaRow = function (entityDefRow: EntityDefRowSchema) {
+  let entityFieldDefVal = entityDefRow.entityFieldDefVal
+  const value: { [pro: string]: string } = {}
+  if (entityFieldDefVal) {
+    entityFieldDefVal = Array.isArray(entityFieldDefVal)
+      ? entityFieldDefVal
+      : [entityFieldDefVal]
+    entityFieldDefVal.forEach((defVal) => {
+      value[defVal.$.fieldCode] = defVal._
+    })
+  }
+  return value
+}
+
+/**
+ * 解析实体schema
+ * @param entity 实体schema
+ * @returns
+ */
+const parseSchemaEntity = function (entity: EntitySchema): Entity {
+  const fileds: EntityField[] = []
+  if (entity.entityFields && entity.entityFields.entityField) {
+    let entitiesFields = entity.entityFields.entityField
+    entitiesFields = Array.isArray(entitiesFields)
+      ? entitiesFields
+      : [entitiesFields]
+    entitiesFields.forEach((field) => {
+      fileds.push(parseSchemaField(field))
+    })
+  }
+  const rows: EntityRecord[] = []
+  if (entity.entityDefRows && entity.entityDefRows.entityDefRow) {
+    let entitiesDefRows = entity.entityDefRows.entityDefRow
+    entitiesDefRows = Array.isArray(entitiesDefRows)
+      ? entitiesDefRows
+      : [entitiesDefRows]
+    entitiesDefRows.forEach((row) => {
+      rows.push(parseSchemaRow(row))
+    })
+  }
+  return {
+    code: entity.$.code,
+    name: entity.$.name,
+    chineseName: entity.$.chineseName,
+    fields: fileds,
+    rows: rows
+  }
+}
+
+/**
+ * 解析窗体动作
+ * @param windowAction 窗体动作
+ * @returns
+ */
+const parseSchemaWindowAction = function (
+  windowAction: WindowActionSchema
+): WindowAction {
+  return {
+    targetWindow: windowAction.$.targetWindow,
+    targetWindowTitle: windowAction.$.targetWindowTitle,
+    targetContainerType: windowAction.$.targetContainerType,
+    targetSourceType: windowAction.$.targetSourceType,
+    widthExp: windowAction.$.widthExp,
+    heightExp: windowAction.$.heightExp
+  }
+}
+
+/**
+ * 解析动作定义
+ * @param actionObj 动作定义
+ * @returns
+ */
+const parseSchemaAction = function (actionObj: ActionSchema): Action {
+  return {
+    controlCode: actionObj.$.controlCode,
+    triggerEvent: actionObj.$.triggerEvent,
+    windowAction: parseSchemaWindowAction(actionObj.windowAction)
+  }
+}
+
+/**
+ * 解析动作定义
+ * @param actions 动作定义
+ * @returns
+ */
+const parseSchemaActions = function (actions: ActionSchema[]): Action[] {
+  const result: Action[] = []
+  actions.forEach((actionObj) => {
+    result.push(parseSchemaAction(actionObj))
+  })
+  return result
+}
+
+/**
+ * 解析母版属性
+ * @param masterPage 母版
+ * @returns
+ */
+const parseSchemaMasterPageProperties = function (
+  masterPage: MasterPageSchema
+): Property {
+  const properties: { [proName: string]: string } = {}
+  if (masterPage.propertys && masterPage.propertys.property) {
+    let propertys = masterPage.propertys.property
+    propertys = Array.isArray(propertys) ? propertys : [propertys]
+    propertys.forEach((property) => {
+      properties[property.$.name] = property._
+    })
+  }
+  //@ts-ignore
+  return properties
+}
+
+/**
+ * 解析母版控件
+ * @param widgetType 控件类型
+ * @param widget 控件定义
+ * @returns
+ */
+const parseSchemaMasterPageControl = function (
+  widgetType: string,
+  widget: MasterPageControlSchema
+): MasterPageControl1 {
+  const properties = widget.$
+  const controls: MasterPageControl[] = []
+  for (const wdType in widget) {
+    if (wdType !== '$' && Object.hasOwnProperty.call(widget, wdType)) {
+      const wd = widget[wdType]
+      controls.push(parseSchemaMasterPageControl(wdType, wd))
+    }
+  }
+  return {
+    type: widgetType,
+    //@ts-ignore
+    properties,
+    //@ts-ignore
+    controls
+  }
+}
+
+/**
+ * 解析母版信息
+ * @param masterPage
+ * @returns
+ */
+const parseSchemaMasterPage = function (
+  masterPage: MasterPageSchema
+): MasterPage {
+  let properties = {
+    code: masterPage.$.code
+  }
+  properties = parseSchemaMasterPageProperties(masterPage)
+  properties.code = masterPage.$.code
+  const result: MasterPage = {
+    properties: properties,
+    actions: [],
+    controls: []
+  }
+  if (masterPage.actions && masterPage.actions.action) {
+    let actions = masterPage.actions.action
+    actions = Array.isArray(actions) ? actions : [actions]
+    result.actions = parseSchemaActions(actions)
+  }
+  if (masterPage.controls) {
+    const controls = []
+    for (const widgetType in masterPage.controls) {
+      if (Object.hasOwnProperty.call(masterPage.controls, widgetType)) {
+        const widget = masterPage.controls[widgetType]
+        controls.push(parseSchemaMasterPageControl(widgetType, widget))
+      }
+    }
+    result.controls = controls
+  }
+  return result
+}
+
+/**
+ * 转换窗体schema
+ * @param windowSchema 窗体schema
+ * @returns
+ */
+const convertWindowSchema = function (windowSchema: WindowSchema): Window {
+  const properties = parseSchemaProperty(windowSchema.propertys)
+  const controls: Control[] = []
+  if (windowSchema.controls && windowSchema.controls.control) {
+    let control = windowSchema.controls.control
+    control = Array.isArray(control) ? control : [control]
+    control.forEach((con) => {
+      controls.push(parseSchemaControl(con))
+    })
+  }
+  const entities: Entity[] = []
+  if (windowSchema.entitys && windowSchema.entitys.entity) {
+    let entity = windowSchema.entitys.entity
+    entity = Array.isArray(entity) ? entity : [entity]
+    entity.forEach((en) => {
+      entities.push(parseSchemaEntity(en))
+    })
+  }
+  let prototype: Action[] = []
+  if (
+    windowSchema.prototype &&
+    windowSchema.prototype.actions &&
+    windowSchema.prototype.actions.action
+  ) {
+    let actionObjs = windowSchema.prototype.actions.action
+    actionObjs = Array.isArray(actionObjs) ? actionObjs : [actionObjs]
+    let actions = parseSchemaActions(actionObjs)
+    prototype = prototype.concat(actions)
+  }
+  const windowJsonObj: Window = {
+    type: 'JGComponent',
+    properties,
+    controls,
+    entities,
+    prototype
+  }
+  if (windowSchema.masterPage) {
+    const masterPage = parseSchemaMasterPage(windowSchema.masterPage)
+    windowJsonObj.masterPage = masterPage
+  }
+  return windowJsonObj
+}
+
 /**
  * 从窗体schema数据转换成React脚本
  * @param componentCode 构件编号
@@ -393,13 +775,14 @@ const _dealWindowMasterPageInfo = function (windowSchema: Window) {
  * @param context 转换上下文
  * @returns
  */
-const convertWindowSchema = function (
+const parseWindowSchema = function (
   componentCode: string,
-  windowSchema: Window,
+  windowSchema: WindowSchema,
   widgetDefines: WidgetDefines,
   widgetConverts: WidgetConverts,
   context: WidgetConvertContext
 ): JSX.Element | null {
+  let windowDefine = convertWindowSchema(windowSchema)
   const renderChildrenFunc = (
     controls: Array<Control>,
     contianerReact: ControlReact
@@ -427,12 +810,12 @@ const convertWindowSchema = function (
     }
     return null
   }
-  windowSchema = _dealWindowMasterPageInfo(windowSchema)
-  convetToGroupedTopDock(windowSchema)
+  windowDefine = _dealWindowMasterPageInfo(windowDefine)
+  convetToGroupedTopDock(windowDefine)
   //处理窗体schema，将控件事件值转换成Function
-  enhanceWindow(windowSchema, context)
-  enhanceWindowPadding(windowSchema)
-  const widgetType = windowSchema.type
+  enhanceWindow(windowDefine, context)
+  enhanceWindowPadding(windowDefine)
+  const widgetType = windowDefine.type
   const convert = widgetConverts[widgetType]
   if (convert) {
     const widgetContext = createContext({
@@ -441,7 +824,7 @@ const convertWindowSchema = function (
     })
     return (
       <ContextProvider context={widgetContext}>
-        {convert(windowSchema, renderChildrenFunc, componentCode, context)}
+        {convert(windowDefine, renderChildrenFunc, componentCode, context)}
       </ContextProvider>
     )
   } else {
@@ -449,4 +832,4 @@ const convertWindowSchema = function (
   }
 }
 
-export { convertWindowSchema }
+export { parseWindowSchema }

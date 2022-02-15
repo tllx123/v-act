@@ -2,17 +2,14 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { MoreHoriz } from '@mui/icons-material'
-import {
-  AppBar,
-  Box,
-  Card,
-  CardProps,
-  IconButton,
-  styled,
-  Toolbar,
-  Typography
-} from '@mui/material'
+import MoreHoriz from '@mui/icons-material/MoreHoriz'
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Card, { CardProps } from '@mui/material/Card'
+import IconButton from '@mui/material/IconButton'
+import { styled } from '@mui/material/styles'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 

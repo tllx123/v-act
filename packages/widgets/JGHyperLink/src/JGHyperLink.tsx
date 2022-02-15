@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react'
 
+import { Property } from 'csstype'
+
 import { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
@@ -21,13 +23,17 @@ interface JGHyperLinkProps extends InputUnstyledProps {
 
   /** 格式 */
   /**
+   * 布局位置
+   */
+  position?: string
+  /**
    * 左边距
    */
-  left?: number
+  left?: Property.Left
   /**
    * 上边距
    */
-  top?: number
+  top?: Property.Top
   /**
    * 高度
    */
@@ -111,7 +117,7 @@ const JGHyperLink = function (props: JGHyperLinkProps) {
     width: width,
     height: height,
     fontSize: '14px',
-    position: 'absolute',
+    position: context ? context.position : 'absolute',
     display: 'flex',
     alignItems: 'center',
     left: props.left,

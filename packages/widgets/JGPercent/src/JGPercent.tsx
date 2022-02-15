@@ -2,15 +2,13 @@ import { CSSProperties, forwardRef, MouseEventHandler, useRef } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Box,
-  BoxProps,
-  createTheme,
-  LinearProgress,
-  LinearProgressProps,
-  ThemeProvider,
-  Typography
-} from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
+import LinearProgress, {
+  LinearProgressProps
+} from '@mui/material/LinearProgress'
+//import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import { VActThemeOptions } from '@v-act/styles'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
@@ -46,6 +44,7 @@ const CustomLinearProgress = forwardRef(function (
   }
 
   const { backgroundColor = '#e9ecef', frontcolor = '#ef5350' } = props
+
   const themeOptions: VActThemeOptions = {
     successColor: '',
     primaryColor: '',

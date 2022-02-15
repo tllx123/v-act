@@ -3,11 +3,30 @@ import 'antd/dist/antd.css'
 import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth, getCompEvent } from '@v-act/widget-utils'
-import { Menu, Dropdown, Space } from 'antd'
+import { Tooltip, Menu, Dropdown, Space } from 'antd'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import { MoreHoriz } from '@mui/icons-material'
+
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import IconButton from '@mui/material/IconButton'
+import FolderIcon from '@mui/icons-material/Folder'
+import AddIcon from '@mui/icons-material/Add'
+import ClearIcon from '@mui/icons-material/Clear'
+import EditIcon from '@mui/icons-material/Edit'
+import SaveIcon from '@mui/icons-material/Save'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ImportExportIcon from '@mui/icons-material/ImportExport'
+import PrintIcon from '@mui/icons-material/Print'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy'
+import AccountTreeIcon from '@mui/icons-material/AccountTree'
+import RemoveIcon from '@mui/icons-material/Remove'
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
+import StopCircleOutlinedIcon from '@mui/icons-material/StopCircleOutlined'
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined'
+import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import './JGButtonGroup.css'
 interface JGButtonGroupProps {
   left?: Property.Left
@@ -22,6 +41,81 @@ interface JGButtonGroupProps {
 }
 const { SubMenu } = Menu
 
+const iconMap = [
+  {
+    iconV3: 'open',
+    icon: <FolderIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'import',
+    icon: <ExitToAppIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'export',
+    icon: <OpenInNewOutlinedIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'add',
+    icon: <AddIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'update',
+    icon: <EditIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'delete',
+    icon: <ClearIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'save',
+    icon: <SaveIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'moveUp',
+    icon: <ArrowUpwardIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'moveDown',
+    icon: <ArrowDownwardIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'relegation',
+    icon: <ImportExportIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'print',
+    icon: <PrintIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'fuzhi',
+    icon: <ContentCopyIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'liucheng',
+    icon: <AccountTreeIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'jian',
+    icon: <RemoveIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'qiyong',
+    icon: <PlayCircleOutlineIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'tingyong',
+    icon: <StopCircleOutlinedIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'template',
+    icon: <CloudUploadOutlinedIcon sx={{ fontSize: '16px' }} />
+  },
+  {
+    iconV3: 'more',
+    icon: ''
+  }
+]
+
 const loadButtonGroup = (
   control: any,
   enabled?: boolean,
@@ -33,6 +127,9 @@ const loadButtonGroup = (
   } else {
     const getChild = (controls: any) => {
       if (controls) {
+        console.log('controls')
+        console.log(controls)
+
         return controls.map((item: any) => {
           let color: any = '#333'
 
@@ -209,19 +306,45 @@ const loadButtonGroup = (
           clickProps = getCompEvent(item).OnClick
         }
 
-        return (
-          <Button
-            disabled={enabled}
-            variant={variant}
-            color={color}
-            key={item.properties.code}
-            size="small"
-            disableElevation
-            onClick={clickProps}
-          >
-            {item.properties.labelText}
-          </Button>
-        )
+        if (item.properties.displayStyle) {
+          return (
+            <Button
+              disabled={enabled}
+              variant={variant}
+              color={color}
+              key={item.properties.code}
+              size="small"
+              disableRipple
+              onClick={clickProps}
+              startIcon={iconMap.map((itemTemp) => {
+                if (itemTemp.iconV3 == item.properties.icon) {
+                  return itemTemp.icon
+                }
+              })}
+            >
+              {item.properties.labelText}
+            </Button>
+          )
+        } else {
+          return (
+            <Tooltip title={item.properties.labelText}>
+              <IconButton
+                disabled={enabled}
+                color={color}
+                key={item.properties.code}
+                size="small"
+                onClick={clickProps}
+                disableRipple
+              >
+                {iconMap.map((itemTemp) => {
+                  if (itemTemp.iconV3 == item.properties.icon) {
+                    return itemTemp.icon
+                  }
+                })}
+              </IconButton>
+            </Tooltip>
+          )
+        }
       }
 
       if (
@@ -236,26 +359,67 @@ const loadButtonGroup = (
         if (getCompEvent(item).hasOwnProperty('OnClick')) {
           clickProps = getCompEvent(item).OnClick
         }
-        return (
-          <Dropdown
-            disabled={enabled}
-            overlay={menu}
-            key={item.properties.code}
-            trigger={trigger}
-          >
-            <Button
+
+        if (item.properties.displayStyle) {
+          return (
+            <Dropdown
               disabled={enabled}
-              variant={variant}
-              color={color}
-              size="small"
-              endIcon={<ExpandMoreIcon />}
-              disableElevation
-              onClick={clickProps}
+              overlay={menu}
+              key={item.properties.code}
+              trigger={trigger}
             >
-              {item.properties.labelText}
-            </Button>
-          </Dropdown>
-        )
+              <Button
+                disabled={enabled}
+                variant={variant}
+                color={color}
+                size="small"
+                endIcon={<ExpandMoreIcon />}
+                disableRipple
+                onClick={clickProps}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+                startIcon={iconMap.map((itemTemp) => {
+                  if (itemTemp.iconV3 == item.properties.icon) {
+                    return itemTemp.icon
+                  }
+                })}
+              >
+                {item.properties.labelText}
+              </Button>
+            </Dropdown>
+          )
+        } else {
+          return (
+            <Dropdown
+              disabled={enabled}
+              overlay={menu}
+              key={item.properties.code}
+              trigger={trigger}
+            >
+              <Tooltip title={item.properties.labelText}>
+                <IconButton
+                  disabled={enabled}
+                  // variant={variant}
+                  color={color}
+                  size="small"
+                  onClick={clickProps}
+                  disableRipple
+                >
+                  {iconMap.map((itemTemp) => {
+                    if (itemTemp.iconV3 == item.properties.icon) {
+                      return itemTemp.icon
+                    }
+                  })}
+
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Tooltip>
+            </Dropdown>
+          )
+        }
       }
 
       if (item.more.length > 0) {
@@ -285,9 +449,8 @@ const loadButtonGroup = (
               size="small"
               disableElevation
               onClick={clickProps}
-            >
-              <MoreHoriz />
-            </Button>
+              endIcon={<MoreHorizIcon />}
+            ></Button>
           </Dropdown>
         )
       }
@@ -310,133 +473,14 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
     ...resprops
   } = props
 
-  // let controlsTemp = []
+  let controlsTemp = []
 
-  // if (control && control.controls) {
-  //   controlsTemp = control.controls
-  // }
-  let controlsTemp = [
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem1',
-        labelText: '按钮1',
-        theme: 'whiteType'
-      },
-      headerControls: [],
-      controls: []
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem2',
-        labelText: '按钮2',
-        theme: 'redType'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem3',
-            labelText: '按钮3'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem4',
-                labelText: '按钮4',
-                theme: 'greenType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem5',
-        isMore: 'True',
-        labelText: '按钮5'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem9',
-            isMore: 'True',
-            labelText: '按钮9',
-            theme: 'greenType'
-          },
-          headerControls: [],
-          controls: []
-        },
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem10',
-            isMore: 'True',
-            labelText: '按钮10'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem11',
-                isMore: 'True',
-                labelText: '按钮11',
-                theme: 'whiteType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      type: 'JGButtonGroupItem',
-      properties: {
-        code: 'JGButtonGroupItem6',
-        isMore: 'True',
-        labelText: '按钮6',
-        theme: 'redType'
-      },
-      headerControls: [],
-      controls: [
-        {
-          type: 'JGButtonGroupItem',
-          properties: {
-            code: 'JGButtonGroupItem7',
-            isMore: 'True',
-            labelText: '按钮7',
-            theme: 'orangeType'
-          },
-          headerControls: [],
-          controls: [
-            {
-              type: 'JGButtonGroupItem',
-              properties: {
-                code: 'JGButtonGroupItem8',
-                isMore: 'True',
-                labelText: '按钮8',
-                theme: 'whiteType'
-              },
-              headerControls: [],
-              controls: []
-            }
-          ]
-        }
-      ]
-    }
-  ]
+  if (control && control.controls) {
+    controlsTemp = control.controls
+  }
+
+  // console.log("context.position")
+  // console.log(context.position)
 
   return (
     <Box
@@ -445,10 +489,11 @@ const JGButtonGroup = (props: JGButtonGroupProps) => {
         top: top,
         width: toWidth(width, context, '235px'),
         height: toHeight(height, context, '26px'),
-        position: context.position
+        position: context.position,
+        textAlign: control.properties.align == 'end' ? 'right' : 'left'
       }}
     >
-      <Space>
+      <Space size={control.properties.size}>
         {loadButtonGroup(controlsTemp, enabled, showBorder, expandWhenHover)}
       </Space>
     </Box>

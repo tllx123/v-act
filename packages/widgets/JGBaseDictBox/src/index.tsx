@@ -15,8 +15,8 @@ const convert = function (
   // console.log(control.properties,"aaaaaa")
   const pros = control.properties
   const props: JGBaseDictBoxProps = {
-    top: toNumber(pros.top),
-    left: toNumber(pros.left),
+    top: toNumber(pros.top) + 'px',
+    left: toNumber(pros.left) + 'px',
     multiWidth: valueofWidth(pros.multiWidth, '300px'),
     multiHeight: valueofHeight(pros.multiHeight, '26px'),
     labelText: pros.labelText,

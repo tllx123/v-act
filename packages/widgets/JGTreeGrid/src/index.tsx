@@ -20,13 +20,18 @@ export const convert = function (control: Control): JSX.Element {
     left: toNumber(pros.left) + 'px',
     width: valueofWidth(pros.multiWidth, '200px'),
     height: valueofHeight(pros.multiHeight, '200px'),
-    // dataTreeHeader: pros.dataTreeHeader,
     data: pros.gridData,
     tablename: getTableName(control),
     columnname: getColumnName(control),
     labelText: pros.labelText,
     control: control,
-    readonly: toBoolean(pros.readOnly, false)
+    readonly: toBoolean(pros.readOnly, false),
+    adaLineHeight: toBoolean(pros.adaLineHeight, false),
+    cascadeCheck: toBoolean(pros.cascadeCheck, false),
+    showRowNumbers: toBoolean(pros.showRowNumbers, false),
+    allowMerge: toBoolean(pros.allowMerge, false),
+    rowsFixedCount: toNumber(pros.rowsFixedCount),
+    chooseMode: pros.chooseMode
   }
   return <JGTreeGrid {...props}></JGTreeGrid>
 }

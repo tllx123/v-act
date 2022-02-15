@@ -9,7 +9,6 @@ import {
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
   console.log('control')
-
   console.log(control)
 
   const props: JGButtonGroupProps = {

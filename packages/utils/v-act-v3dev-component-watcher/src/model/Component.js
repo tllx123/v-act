@@ -5,6 +5,7 @@ const Window = require('./Window')
 const File = require('../utils/File')
 const Cache = require('../utils/Cache')
 const template = require('art-template')
+const packageJson = require('../../package.json')
 const render = template.compile(
   new String(
     fs.readFileSync(path.resolve(__dirname, '../template/component.tpl'))
@@ -109,6 +110,7 @@ class Component {
                 const windowCode = win.getCode()
                 const winInfo = windows[windowCode] || {}
                 winInfo.md5 = win.getMD5()
+                winInfo.metadataVersion = packageJson.metadataVersion
                 windows[windowCode] = winInfo
               })
               compnentCache.windows = windows

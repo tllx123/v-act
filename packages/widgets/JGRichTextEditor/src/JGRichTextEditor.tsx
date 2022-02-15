@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import { Property } from 'csstype'
+// import { createRequire } from 'module';
+// const require = createRequire(import.meta.url);
 import {
   toHeight,
   toWidth,

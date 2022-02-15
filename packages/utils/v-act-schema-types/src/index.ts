@@ -2,7 +2,6 @@ import type Component from './Component'
 import type Control from './Control'
 import type ControlReact from './ControlReact'
 import Dock from './Dock'
-import type Entity from './Entity'
 import type Event from './Event'
 import type Height from './Height'
 import type IPrototypeFrameProperty from './properties/IPrototypeFrameProperty'
@@ -120,7 +119,6 @@ export {
   Control,
   ControlReact,
   Dock,
-  Entity,
   Event,
   Height,
   IPrototypeFrameProperty,
@@ -145,3 +143,10 @@ export {
   Width,
   Window
 }
+
+export * from './WindowSchema'
+export * from './DataBinding'
+export * from './Entity'
+export * from './Action'
+export * from './MasterPage'
+export * from './WidgetConvertArg'

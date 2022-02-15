@@ -3,7 +3,7 @@ import React, { CSSProperties } from 'react'
 import { Property } from 'csstype'
 import ReactECharts from 'echarts-for-react'
 
-import { Box, BoxProps } from '@mui/material'
+import Box, { BoxProps } from '@mui/material/Box'
 import { EntityRecord, useContext } from '@v-act/widget-context'
 import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'
 
