@@ -3,10 +3,9 @@ import 'antd/dist/antd.css'
 import { Property } from 'csstype'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth, getCompEvent } from '@v-act/widget-utils'
-import { Menu, Dropdown, Space } from 'antd'
+import { Tooltip, Menu, Dropdown, Space } from 'antd'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import Tooltip from '@mui/material/Tooltip'
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
@@ -414,6 +413,7 @@ const loadButtonGroup = (
                       return itemTemp.icon
                     }
                   })}
+
                   <ExpandMoreIcon />
                 </IconButton>
               </Tooltip>
