@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { CardMedia, CardMediaProps, styled } from '@mui/material'
+import CardMedia, { CardMediaProps } from '@mui/material/CardMedia'
+import { styled } from '@mui/material/styles'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 
@@ -41,7 +42,9 @@ const JGImage = forwardRef<HTMLDivElement, JGImageProps>((inProps, ref) => {
       right: inProps.right,
       left: inProps.left ?? 0,
       bottom: inProps.bottom,
-      textAlign: 'center'
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
     }
   }
 

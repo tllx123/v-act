@@ -2,7 +2,8 @@ import { forwardRef } from 'react'
 
 import { Property } from 'csstype'
 
-import { Pagination, PaginationProps, styled } from '@mui/material'
+import Pagination, { PaginationProps } from '@mui/material/Pagination'
+import { styled } from '@mui/material/styles'
 import { useContext } from '@v-act/widget-context'
 import { toHeight, toWidth } from '@v-act/widget-utils'
 

@@ -23,7 +23,7 @@ const layoutByDock = function () {
 const layoutControls = function (
   children: Control[],
   contianerReact: ControlReact,
-  controlDefines: WidgetDefines
+  controlDefines?: WidgetDefines
 ) {
   if (
     ALLOW_PERCENT_LAYOUT &&
