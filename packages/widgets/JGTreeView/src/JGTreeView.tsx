@@ -137,12 +137,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
       headerDataLeft[0].controls = []
       headerDataRight[0].controls = []
       control.headerControls[0].controls.some((item: any) => {
-        console.log('item.properties.align')
-        console.log(item.properties.align)
         if (item.properties.align) {
-          // item.properties.height = 'auto'
-          // item.properties.showBorder = false
-
           headerDataRight[0].controls.push(item)
           headerDataRight[0].properties.top = 0
           headerDataRight[0].properties.showBorder = 'false'
@@ -158,10 +153,6 @@ const JGTreeView = (props: JGTreeViewProps) => {
       })
     }
   }
-
-  console.log('headerDataRight')
-
-  console.log(headerDataRight)
 
   return (
     <Box
@@ -184,10 +175,10 @@ const JGTreeView = (props: JGTreeViewProps) => {
           // justifyContent: 'space-between',
         }}
       >
-        <Box sx={{ width: '50%', flexShrink: 1 }}>
+        <Box sx={{ width: '100%', flexShrink: 0 }}>
           {headerDataLeft[0].controls.length > 0
             ? ContextProvider({
-                context: { position: 'relative' },
+                context: { position: 'relative', multiWidth: '100%' },
                 children: bgconvert(headerDataLeft[0])
               })
             : ''}
@@ -195,7 +186,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
 
         <Box
           sx={{
-            width: '50%',
+            width: '100%',
             display: 'flex',
             justifyContent: 'flex-end',
             flexShrink: 1
@@ -203,7 +194,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
         >
           {headerDataRight[0].controls.length > 0
             ? ContextProvider({
-                context: { position: 'relative' },
+                context: { position: 'relative', multiWidth: '100%' },
                 children: bgconvert(headerDataRight[0])
               })
             : ''}

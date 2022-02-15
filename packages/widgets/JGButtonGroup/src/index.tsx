@@ -8,9 +8,8 @@ import {
 } from '@v-act/widget-utils'
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
-  // console.log('control')
-
-  // console.log(control)
+  console.log('control')
+  console.log(control)
 
   const props: JGButtonGroupProps = {
     top: toNumber(pros.top) + 'px',
