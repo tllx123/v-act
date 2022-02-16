@@ -183,7 +183,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
         }}
       >
         <Box sx={{ width: '100%', flexShrink: 0 }}>
-          {headerDataLeft == []
+          {headerDataLeft.length == 0
             ? ''
             : headerDataLeft[0].controls.length > 0
             ? ContextProvider({
@@ -201,7 +201,7 @@ const JGTreeView = (props: JGTreeViewProps) => {
             flexShrink: 1
           }}
         >
-          {headerDataRight == []
+          {headerDataRight.length == 0
             ? ''
             : headerDataRight[0].controls.length > 0
             ? ContextProvider({

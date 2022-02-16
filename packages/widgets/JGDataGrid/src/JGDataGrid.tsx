@@ -270,7 +270,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
         }}
       >
         <Box sx={{ width: '50%', flexShrink: 1 }}>
-          {headerDataLeft[0].controls.length > 0
+          {headerDataLeft.length == 0
+            ? ''
+            : headerDataLeft[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative' },
                 children: bgconvert(headerDataLeft[0])
@@ -286,7 +288,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
             flexShrink: 1
           }}
         >
-          {headerDataRight[0].controls.length > 0
+          {headerDataRight.length == 0
+            ? ''
+            : headerDataRight[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative' },
                 children: bgconvert(headerDataRight[0])
