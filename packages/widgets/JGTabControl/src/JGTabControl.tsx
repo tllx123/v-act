@@ -223,7 +223,7 @@ const JGTabControl = function (props: JGTabControlProps) {
                 value={value}
                 sx={
                   isLineStyle
-                    ? {}
+                    ? { width: tabPageWidth, height: tabPageHeight }
                     : alignment == Aligment.Top
                     ? {
                         marginTop: '-1px',
