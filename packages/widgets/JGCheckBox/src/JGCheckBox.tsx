@@ -1,5 +1,5 @@
 import { Property } from 'csstype'
-import { Checkbox, CheckboxProps } from '@mui/material'
+import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
