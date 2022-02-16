@@ -447,10 +447,10 @@ const loadButtonGroup = (
               variant={variant_more}
               color={color_more}
               size="small"
-              disableElevation
               onClick={clickProps}
-              endIcon={<MoreHorizIcon />}
-            ></Button>
+            >
+              <MoreHorizIcon />
+            </Button>
           </Dropdown>
         )
       }
