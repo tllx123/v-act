@@ -20,6 +20,7 @@ export interface JGComponentContainerProps {
   tableName?: string | null
   columnName?: string | null
   control?: any
+  click?: Function
 }
 
 const JGComponentContainer = (props: JGComponentContainerProps) => {
@@ -64,7 +65,9 @@ const JGComponentContainer = (props: JGComponentContainerProps) => {
         display: visible ? 'block' : 'none'
       }}
     >
-      {toJSXElementFromAction(control)}
+      {control.events && control.events.length > 0
+        ? toJSXElementFromAction(control.events[0])
+        : null}
     </Box>
   )
 }
