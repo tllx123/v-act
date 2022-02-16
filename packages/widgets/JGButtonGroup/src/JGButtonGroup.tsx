@@ -306,7 +306,7 @@ const loadButtonGroup = (
           clickProps = getCompEvent(item).OnClick
         }
 
-        if (item.properties.displayStyle) {
+        if (item.properties.displayStyle || item.type === 'JGButtonGroupItem') {
           return (
             <Button
               disabled={enabled}
@@ -360,7 +360,7 @@ const loadButtonGroup = (
           clickProps = getCompEvent(item).OnClick
         }
 
-        if (item.properties.displayStyle) {
+        if (item.properties.displayStyle || item.type === 'JGButtonGroupItem') {
           return (
             <Dropdown
               disabled={enabled}
