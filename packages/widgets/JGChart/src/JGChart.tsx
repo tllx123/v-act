@@ -151,7 +151,10 @@ const JGChart = function (props: JGChartProps) {
     recordCount: value?.length || 0,
     values: value || []
   }
-  const options = handleOptions(V3ChartConfig, V3Data)
+
+  const options = props.graphSettings
+    ? handleOptions(V3ChartConfig, V3Data)
+    : {}
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
