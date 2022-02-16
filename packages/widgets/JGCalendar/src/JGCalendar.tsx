@@ -10,7 +10,7 @@ import locale from 'antd/lib/calendar/locale/zh_CN'
 import { Property } from 'csstype'
 import moment from 'moment'
 
-import { BoxProps } from '@mui/material'
+import { BoxProps } from '@mui/material/Box'
 import { Height, Width } from '@v-act/schema-types'
 import { EntityRecord, useContext } from '@v-act/widget-context'
 import { getEntityDatas, toHeight, toWidth } from '@v-act/widget-utils'

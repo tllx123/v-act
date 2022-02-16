@@ -143,8 +143,11 @@ const JGTabControl = function (props: JGTabControlProps) {
   const isLineStyle = props.tabAppearance == TabAppearance.Card ? false : true
   const isHLayout = alignment == Aligment.Top || alignment == Aligment.Bottom
   let sx = isHLayout
-    ? { height: '38px', minHeight: '0px' }
-    : { width: props.tabHeadWidth ? props.tabHeadWidth + 'px' : '110px' }
+    ? { height: '38px', minHeight: '0px', flexShrink: 0 }
+    : {
+        width: props.tabHeadWidth ? props.tabHeadWidth + 'px' : '110px',
+        flexShrink: 0
+      }
   const classes = useStyles()
   const tabPageWidth = isHLayout ? '100%' : `calc(100% - ${sx.width})`
   const tabPageHeight = isHLayout ? `calc(100% - ${sx.height})` : '100%'
