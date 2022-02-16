@@ -129,8 +129,15 @@ const JGTreeView = (props: JGTreeViewProps) => {
     // console.log('onCheck', checkedKeys, info);
   }
 
+  console.log('control')
+  console.log(control)
+
   let headerDataLeft: any = deepcopy(control.headerControls)
   let headerDataRight: any = deepcopy(control.headerControls)
+  console.log('headerDataLeft')
+  console.log(headerDataLeft)
+  console.log('headerDataRight')
+  console.log(headerDataRight)
 
   if (control.headerControls.length > 0) {
     if (headerDataLeft.length > 0) {
@@ -176,7 +183,9 @@ const JGTreeView = (props: JGTreeViewProps) => {
         }}
       >
         <Box sx={{ width: '100%', flexShrink: 0 }}>
-          {headerDataLeft[0].controls.length > 0
+          {headerDataLeft == []
+            ? ''
+            : headerDataLeft[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative', multiWidth: '100%' },
                 children: bgconvert(headerDataLeft[0])
@@ -192,7 +201,9 @@ const JGTreeView = (props: JGTreeViewProps) => {
             flexShrink: 1
           }}
         >
-          {headerDataRight[0].controls.length > 0
+          {headerDataRight == []
+            ? ''
+            : headerDataRight[0].controls.length > 0
             ? ContextProvider({
                 context: { position: 'relative', multiWidth: '100%' },
                 children: bgconvert(headerDataRight[0])
