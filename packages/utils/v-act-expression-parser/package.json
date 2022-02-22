@@ -1,0 +1,26 @@
+{
+  "name": "@v-act/expression-parser",
+  "version": "1.0.0",
+  "private": false,
+  "description": "表达式解析器",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-expression-parser"
+  },
+  "license": "ISC",
+  "author": "opensource.vplatform",
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "debug": "node debug/index.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}
