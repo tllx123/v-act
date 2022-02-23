@@ -16,10 +16,13 @@ const testAll = function () {
 }
 
 const test = function () {
-  let exp = 'Multiply(BR_IN_PARENT.taxRate,0.01)'
+  let startTime = new Date().getTime()
+  let exp = 'ConcatStr(BC.JGAddress1.Value,"test")'
   let syntax = parser.parse(exp)
+  let endTime = new Date().getTime()
+  console.log(`表达式解析完成，总耗时：${endTime - startTime}毫秒`)
   console.log(syntax.toString())
 }
 
-//test()
-testAll()
+test()
+//testAll()
