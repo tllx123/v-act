@@ -1,9 +1,9 @@
-import Syntax from '../Syntax'
-import Position from '../../Position'
-import BlankToken from '../../tokenizer/punctuation/BlankToken'
 import { parseToSyntax } from '../../Parser'
-import Token from '../../tokenizer/Token'
+import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
+import BlankToken from '../../tokenizer/punctuation/BlankToken'
+import Token from '../../tokenizer/Token'
+import Syntax from '../Syntax'
 
 const getLeftSyntax = function (index: number, tokens: Array<Token | Syntax>) {
   let result
@@ -130,14 +130,14 @@ abstract class BinaryExpressionSyntax extends Syntax {
     let script = []
     let leftSyntax = this.getLeft()
     if (leftSyntax) {
-      script.push(' ')
+      //script.push(' ')
       script.push(leftSyntax.toString())
     }
     script.push(this.getSymbol())
     let rightSyntax = this.getRight()
     if (rightSyntax) {
       script.push(rightSyntax.toString())
-      script.push(' ')
+      //script.push(' ')
     }
     return script.join('')
   }

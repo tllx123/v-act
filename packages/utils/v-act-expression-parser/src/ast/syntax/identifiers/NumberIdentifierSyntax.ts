@@ -1,11 +1,11 @@
-import Syntax from '../Syntax'
 import Position from '../../Position'
+import SyntaxParseContext from '../../SyntaxParseContext'
 import NumberToken from '../../tokenizer/literal/NumberToken'
-import DotToken from '../../tokenizer/punctuation/DotToken'
 import MinusToken from '../../tokenizer/operator/calculator/MinusToken'
 import BlankToken from '../../tokenizer/punctuation/BlankToken'
-import SyntaxParseContext from '../../SyntaxParseContext'
+import DotToken from '../../tokenizer/punctuation/DotToken'
 import Token from '../../tokenizer/Token'
+import Syntax from '../Syntax'
 
 const getPositiveNumber = function (index: number, tokens: Token[]) {
   let numbers = []
@@ -42,7 +42,7 @@ class NumberIdentifierSyntax extends Syntax {
     let index = context.getIndex()
     let startIndex = index
     let numbers = getPositiveNumber(index, <Token[]>tokens)
-    let value = parseInt(numbers.join(''))
+    let value = parseFloat(numbers.join(''))
     let preToken = tokens[index - 1]
     if (preToken instanceof MinusToken) {
       //判断是否是负数
@@ -85,7 +85,7 @@ class NumberIdentifierSyntax extends Syntax {
       let index = context.getIndex()
       let numbers = getPositiveNumber(index, <Token[]>tokens)
       let numberStr = numbers.join('')
-      return numberStr == parseInt(numberStr) + ''
+      return numberStr == new Number(numberStr) + ''
     }
     return false
   }

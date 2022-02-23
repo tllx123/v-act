@@ -3,16 +3,25 @@
   "version": "1.0.5",
   "private": false,
   "description": "",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/utils/v-act-api"
+  },
+  "license": "ISC",
+  "author": "opensource.vplatform",
   "main": "dist/index.js",
+  "files": [
+    "dist/**/**.*"
+  ],
   "scripts": {
-    "dev": "tsc -p tsconfig.build.json -w",
     "build": "npm run build:clean && npm run build:tsc",
     "build:clean": "rimraf dist && mkdirp dist",
     "build:tsc": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.build.json -w",
     "test": "node test/index.js"
   },
-  "author": "opensource.vplatform",
-  "license": "ISC",
   "dependencies": {
     "@v-act/inquirer-detail-list": "^1.0.1",
     "@v-act/utils": "^1.0.3",
@@ -33,14 +42,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/opensource-vplatform/v-act",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/opensource-vplatform/v-act.git",
-    "directory": "packages/v-act-api"
-  },
-  "files": [
-    "dist/**/**.*"
-  ],
   "gitHead": "32a16b95cf7a7fc46d940652315ec16ff23ca833"
 }

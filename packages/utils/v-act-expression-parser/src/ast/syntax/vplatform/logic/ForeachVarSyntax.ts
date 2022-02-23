@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import DotToken from '../../../tokenizer/punctuation/DotToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class ForeachVarSyntax extends Syntax {
   varCode: string
@@ -86,7 +86,7 @@ class ForeachVarSyntax extends Syntax {
   }
 
   toString() {
-    return `VL.${this.getVarCode()}.${this.getFieldCode()}`
+    return `LV.${this.getVarCode()}.${this.getFieldCode()}`
   }
 }
 

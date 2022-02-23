@@ -145,6 +145,7 @@ function startVActDevEnv() {
           })
         }
         console.log('业务构件本地预览服务启动成功！')
+        metadataUtil.save()
         resolve()
       })
       .catch((err) => {
