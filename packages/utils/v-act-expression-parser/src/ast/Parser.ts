@@ -213,6 +213,7 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
     return null
   }
   let syntaxList = getSyntaxs()
+  const parseContext = new SyntaxParseContext()
   for (let i = 0, l = syntaxList.length; i < l; i++) {
     let SyntaxConstructor = syntaxList[i]
     let tokenNotSyntaxed = true
@@ -222,7 +223,8 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
         continue
       } else {
         tokenNotSyntaxed = false
-        let parseContext = new SyntaxParseContext(j, tokens)
+        parseContext.setIndex(j)
+        parseContext.setTokens(tokens)
         if (SyntaxConstructor.accept(parseContext)) {
           let syntax = SyntaxConstructor.parse(parseContext)
           let startIndex = syntax.getTokenStartIndex()
@@ -251,13 +253,15 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
       let position = new Position()
       position.parseStartToken(unknownTokens[0])
       position.parseEndToken(unknownTokens[unknownTokens.length - 1])
+      parseContext.setIndex(i)
+      parseContext.setTokens(tokens)
       let syntax = new UnknownSyntax(
         i - unknownTokens.length,
         i--,
         '未识别表达式',
         unknownTokens,
         position,
-        new SyntaxParseContext(i, tokens)
+        parseContext
       )
       tokens.splice(i - unknownTokens.length, unknownTokens.length, syntax)
       unknownTokens = []
@@ -267,13 +271,15 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
     let position = new Position()
     position.parseStartToken(unknownTokens[0])
     position.parseEndToken(unknownTokens[unknownTokens.length - 1])
+    parseContext.setIndex(0)
+    parseContext.setTokens(tokens)
     let syntax = new UnknownSyntax(
       tokens.length - unknownTokens.length,
       tokens.length - 1,
       '未识别表达式',
       unknownTokens,
       position,
-      new SyntaxParseContext(0, tokens)
+      parseContext
     )
     tokens.splice(
       tokens.length - unknownTokens.length,
@@ -289,7 +295,9 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
       throw Error('表达式识别失败！')
     }
   })
-  return new ParseResultSyntax(syntaxs, new SyntaxParseContext(0, syntaxs))
+  parseContext.setIndex(0)
+  parseContext.setTokens(syntaxs)
+  return new ParseResultSyntax(syntaxs, parseContext)
 }
 
 /**

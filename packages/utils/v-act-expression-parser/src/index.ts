@@ -7,8 +7,9 @@ const parse = function (exp: string): Syntax {
 }
 
 const print = function (syntax: Syntax, printer: Printer): string {
-  //todo
-  return ''
+  const ctx = syntax.getContext()
+  ctx.setPrinter(printer)
+  return syntax.toString()
 }
 
 export { parse, print, Printer }
