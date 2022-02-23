@@ -26,6 +26,15 @@ class MultiplySyntax extends BinaryExpressionSyntax {
   getSymbol(): string {
     return MultiplySyntax.SYMBOL
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printMultiplySyntax) {
+      return printer.printMultiplySyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default MultiplySyntax

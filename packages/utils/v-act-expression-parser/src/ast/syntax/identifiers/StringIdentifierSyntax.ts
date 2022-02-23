@@ -1,10 +1,10 @@
-import Syntax from '../Syntax'
 import Position from '../../Position'
-import QuoteToken from '../../tokenizer/punctuation/QuoteToken'
-import LineBreakToken from '../../tokenizer/punctuation/LineBreakToken'
-import UnknownSyntax from '../UnknownSyntax'
-import Token from '../../tokenizer/Token'
 import SyntaxParseContext from '../../SyntaxParseContext'
+import LineBreakToken from '../../tokenizer/punctuation/LineBreakToken'
+import QuoteToken from '../../tokenizer/punctuation/QuoteToken'
+import Token from '../../tokenizer/Token'
+import Syntax from '../Syntax'
+import UnknownSyntax from '../UnknownSyntax'
 
 const parseStr = function (
   index: number,
@@ -137,7 +137,15 @@ class StringIdentifierSyntax extends Syntax {
   }
 
   toString() {
-    return `"${this.getValue()}"`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printStringIdentifierSyntax) {
+      return printer.printStringIdentifierSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return `"${this.getValue()}"`
+    }
   }
 }
 

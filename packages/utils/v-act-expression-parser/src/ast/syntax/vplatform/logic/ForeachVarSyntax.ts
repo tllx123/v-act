@@ -86,7 +86,13 @@ class ForeachVarSyntax extends Syntax {
   }
 
   toString() {
-    return `LV.${this.getVarCode()}.${this.getFieldCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printForeachVarSyntax) {
+      return printer.printForeachVarSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return `LV.${this.getVarCode()}.${this.getFieldCode()}`
+    }
   }
 }
 

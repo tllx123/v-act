@@ -1,7 +1,7 @@
-import ComparatorSyntax from '../ComparatorSyntax'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Syntax from '../../../Syntax'
+import ComparatorSyntax from '../ComparatorSyntax'
 
 class LessOrEqualSyntax extends ComparatorSyntax {
   static SYMBOL: string = '<='
@@ -22,6 +22,15 @@ class LessOrEqualSyntax extends ComparatorSyntax {
 
   getSymbol(): string {
     return LessOrEqualSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printLessOrEqualSyntax) {
+      return printer.printLessOrEqualSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

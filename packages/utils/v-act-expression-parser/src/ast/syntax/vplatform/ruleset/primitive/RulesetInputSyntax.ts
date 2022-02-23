@@ -17,6 +17,17 @@ class RulesetInputSyntax extends RulesetPrimitiveSyntax {
   getPrefix(): string {
     return RulesetInputSyntax.PREFIX
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRulesetInputSyntax) {
+      return printer.printRulesetInputSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default RulesetInputSyntax

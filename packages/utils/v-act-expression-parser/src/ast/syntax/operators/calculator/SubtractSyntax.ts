@@ -2,6 +2,7 @@ import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
 import Syntax from '../../Syntax'
 import BinaryExpressionSyntax from '../BinaryExpressionSyntax'
+
 /**
  * 减运算符
  */
@@ -23,6 +24,15 @@ class SubtractSyntax extends BinaryExpressionSyntax {
 
   getSymbol(): string {
     return SubtractSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printSubtractSyntax) {
+      return printer.printSubtractSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

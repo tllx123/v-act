@@ -1,10 +1,10 @@
-import Syntax from '../../../Syntax'
+import { parseToSyntax } from '../../../../Parser'
 import Position from '../../../../Position'
+import SyntaxParseContext from '../../../../SyntaxParseContext'
 import NotToken from '../../../../tokenizer/operator/logic/NotToken'
 import BlankToken from '../../../../tokenizer/punctuation/BlankToken'
-import { parseToSyntax } from '../../../../Parser'
-import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Token from '../../../../tokenizer/Token'
+import Syntax from '../../../Syntax'
 
 const getRightSyntax = function (index: number, tokens: Token[]) {
   let result
@@ -73,8 +73,14 @@ class NotSyntax extends Syntax {
   }
 
   toString() {
-    let rigthSyntax = this.getRight()
-    return `!${rigthSyntax ? rigthSyntax.toString() : ''}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printNotSyntax) {
+      return printer.printNotSyntax(this, (syntax) => syntax.toString())
+    } else {
+      let rigthSyntax = this.getRight()
+      return `!${rigthSyntax ? rigthSyntax.toString() : ''}`
+    }
   }
 }
 

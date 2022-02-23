@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import AtToken from '../../../tokenizer/punctuation/AtToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import AtToken from '../../../tokenizer/punctuation/AtToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class WindowVarSyntax extends Syntax {
   code: string
@@ -56,7 +56,13 @@ class WindowVarSyntax extends Syntax {
   }
 
   toString() {
-    return `@${this.getCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printWindowVarSyntax) {
+      return printer.printWindowVarSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return `@${this.getCode()}`
+    }
   }
 }
 

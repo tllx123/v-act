@@ -1,12 +1,12 @@
-import Syntax from '../../Syntax'
-import Position from '../../../Position'
 import { parseToSyntax } from '../../../Parser'
-import LeftParenToken from '../../../tokenizer/punctuation/LeftParenToken'
-import { isVarToken } from '../../../utils/TokenUtils'
-import RightParenToken from '../../../tokenizer/punctuation/RightParenToken'
-import CommaToken from '../../../tokenizer/punctuation/CommaToken'
+import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import CommaToken from '../../../tokenizer/punctuation/CommaToken'
+import LeftParenToken from '../../../tokenizer/punctuation/LeftParenToken'
+import RightParenToken from '../../../tokenizer/punctuation/RightParenToken'
 import Token from '../../../tokenizer/Token'
+import { isVarToken } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 const findFunctionName = function (index: number, tokens: Token[]) {
   let funNameTokens = []
@@ -166,20 +166,26 @@ class FunctionSyntax extends Syntax {
   }
 
   toString() {
-    let argScript: string[] = []
-    let args = this.getArgs()
-    if (args && args.length > 0) {
-      args.forEach((arg) => {
-        if (arg) {
-          argScript.push(arg.toString())
-        }
-        argScript.push(',')
-      })
-      argScript.pop()
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printFunctionSyntax) {
+      return printer.printFunctionSyntax(this, (syntax) => syntax.toString())
+    } else {
+      let argScript: string[] = []
+      let args = this.getArgs()
+      if (args && args.length > 0) {
+        args.forEach((arg) => {
+          if (arg) {
+            argScript.push(arg.toString())
+          }
+          argScript.push(',')
+        })
+        argScript.pop()
+      }
+      return `${this.getCode()}(${
+        argScript.length > 0 ? argScript.join('') : ''
+      })`
     }
-    return `${this.getCode()}(${
-      argScript.length > 0 ? argScript.join('') : ''
-    })`
   }
 }
 

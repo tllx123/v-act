@@ -24,6 +24,17 @@ class RulesetEntityFieldOutputSyntax extends RulesetEntitySyntax {
   getPrefix(): string {
     return RulesetEntityFieldOutputSyntax.PREFIX
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRulesetEntityFieldOutputSyntax) {
+      return printer.printRulesetEntityFieldOutputSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default RulesetEntityFieldOutputSyntax

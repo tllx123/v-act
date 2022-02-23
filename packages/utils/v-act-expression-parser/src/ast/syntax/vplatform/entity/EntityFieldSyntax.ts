@@ -1,10 +1,10 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
+import SyntaxParseContext from '../../../SyntaxParseContext'
 import LeftBracketToken from '../../../tokenizer/punctuation/LeftBracketToken'
 import RightBracketToken from '../../../tokenizer/punctuation/RightBracketToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
-import SyntaxParseContext from '../../../SyntaxParseContext'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class EntityFieldSyntax extends Syntax {
   entityCode: string
@@ -90,7 +90,13 @@ class EntityFieldSyntax extends Syntax {
   }
 
   toString() {
-    return `[${this.getEntityCode()}].[${this.getFieldCode()}]`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printEntityFieldSyntax) {
+      return printer.printEntityFieldSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return `[${this.getEntityCode()}].[${this.getFieldCode()}]`
+    }
   }
 }
 

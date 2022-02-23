@@ -1,11 +1,11 @@
-import Syntax from '../Syntax'
 import { parseToSyntax } from '../../Parser'
 import Position from '../../Position'
+import SyntaxParseContext from '../../SyntaxParseContext'
 import LeftParenToken from '../../tokenizer/punctuation/LeftParenToken'
 import RightParenToken from '../../tokenizer/punctuation/RightParenToken'
-import UnknownSyntax from '../UnknownSyntax'
-import SyntaxParseContext from '../../SyntaxParseContext'
 import Token from '../../tokenizer/Token'
+import Syntax from '../Syntax'
+import UnknownSyntax from '../UnknownSyntax'
 
 const findBodyTokens = function (
   index: number,
@@ -127,7 +127,13 @@ class BracketSyntax extends Syntax {
   }
 
   toString() {
-    return `(${this.getBody().toString()})`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printBacketSyntax) {
+      return printer.printBacketSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return `(${this.getBody().toString()})`
+    }
   }
 }
 

@@ -1,7 +1,7 @@
-import LogicSyntax from '../LogicSyntax'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Syntax from '../../../Syntax'
+import LogicSyntax from '../LogicSyntax'
 
 class AndSyntax extends LogicSyntax {
   static SYMBOL: string = '&&'
@@ -21,6 +21,15 @@ class AndSyntax extends LogicSyntax {
 
   getSymbol(): string {
     return AndSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printAndSyntax) {
+      return printer.printAndSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import AtToken from '../../../tokenizer/punctuation/AtToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import AtToken from '../../../tokenizer/punctuation/AtToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class ComponentVarSyntax extends Syntax {
   code: string
@@ -58,7 +58,15 @@ class ComponentVarSyntax extends Syntax {
   }
 
   toString() {
-    return `@@${this.getCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printComponentVarSyntax) {
+      return printer.printComponentVarSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return `@@${this.getCode()}`
+    }
   }
 }
 

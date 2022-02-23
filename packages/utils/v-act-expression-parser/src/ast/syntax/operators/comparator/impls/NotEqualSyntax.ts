@@ -1,7 +1,7 @@
-import ComparatorSyntax from '../ComparatorSyntax'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Syntax from '../../../Syntax'
+import ComparatorSyntax from '../ComparatorSyntax'
 
 class NotEqualSyntax extends ComparatorSyntax {
   static SYMBOL: string = '<>'
@@ -21,6 +21,15 @@ class NotEqualSyntax extends ComparatorSyntax {
 
   getSymbol(): string {
     return NotEqualSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printNotEqualSyntax) {
+      return printer.printNotEqualSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

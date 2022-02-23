@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import DotToken from '../../../tokenizer/punctuation/DotToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class WidgetPropertySyntax extends Syntax {
   widgetCode: string
@@ -89,7 +89,15 @@ class WidgetPropertySyntax extends Syntax {
   }
 
   toString() {
-    return `CC.${this.getWidgetCode()}.${this.getPropertyCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printWidgetPropertySyntax) {
+      return printer.printWidgetPropertySyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return `CC.${this.getWidgetCode()}.${this.getPropertyCode()}`
+    }
   }
 }
 

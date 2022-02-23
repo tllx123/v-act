@@ -1,9 +1,9 @@
-import ComparatorSyntax from '../ComparatorSyntax'
-import EqualToken from '../../../../tokenizer/operator/comparator/EqualToken'
-import LessToken from '../../../../tokenizer/operator/comparator/LessToken'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
+import EqualToken from '../../../../tokenizer/operator/comparator/EqualToken'
+import LessToken from '../../../../tokenizer/operator/comparator/LessToken'
 import Syntax from '../../../Syntax'
+import ComparatorSyntax from '../ComparatorSyntax'
 
 class GreaterThanSyntax extends ComparatorSyntax {
   static SYMBOL: string = '>'
@@ -34,6 +34,15 @@ class GreaterThanSyntax extends ComparatorSyntax {
 
   getSymbol(): string {
     return GreaterThanSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printGreaterThanSyntax) {
+      return printer.printGreaterThanSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

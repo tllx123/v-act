@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import HashToken from '../../../tokenizer/punctuation/HashToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import HashToken from '../../../tokenizer/punctuation/HashToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class WorkflowVarSyntax extends Syntax {
   code: string
@@ -52,7 +52,13 @@ class WorkflowVarSyntax extends Syntax {
   }
 
   toString() {
-    return `#${this.getCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printWorkflowVarSyntax) {
+      return printer.printWorkflowVarSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return `#${this.getCode()}`
+    }
   }
 }
 

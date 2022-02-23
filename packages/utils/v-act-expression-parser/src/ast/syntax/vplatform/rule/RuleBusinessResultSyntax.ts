@@ -1,9 +1,9 @@
-import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
-import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
+import DotToken from '../../../tokenizer/punctuation/DotToken'
 import Token from '../../../tokenizer/Token'
+import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
+import Syntax from '../../Syntax'
 
 class RuleBusinessResultSyntax extends Syntax {
   instanceCode: string
@@ -88,7 +88,15 @@ class RuleBusinessResultSyntax extends Syntax {
   }
 
   toString() {
-    return `BR_OUT.${this.getInstanceCode()}.${this.getResultCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRuleBusinessResultSyntax) {
+      return printer.printRuleBusinessResultSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return `BR_OUT.${this.getInstanceCode()}.${this.getResultCode()}`
+    }
   }
 }
 

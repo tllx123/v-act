@@ -26,3 +26,14 @@ const test = function () {
 
 test()
 //testAll()
+
+const testPrint = function () {
+  const syntax = parse('@@v_hh_gjbl03')
+  const script = print(syntax, {
+    printComponentVarSyntax: function (syntax, print) {
+      return 'context.getComponontVar("' + syntax.getCode() + '")'
+    }
+  })
+  console.log(script)
+  //context.getComponontVar("v_hh_gjbl03")
+}

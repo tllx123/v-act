@@ -1,7 +1,7 @@
-import ComparatorSyntax from '../ComparatorSyntax'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Syntax from '../../../Syntax'
+import ComparatorSyntax from '../ComparatorSyntax'
 
 class GreaterOrEqualSyntax extends ComparatorSyntax {
   static SYMBOL: string = '>='
@@ -25,6 +25,17 @@ class GreaterOrEqualSyntax extends ComparatorSyntax {
 
   getSymbol(): string {
     return GreaterOrEqualSyntax.SYMBOL
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printGreaterOrEqualSyntax) {
+      return printer.printGreaterOrEqualSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return super.toString()
+    }
   }
 }
 

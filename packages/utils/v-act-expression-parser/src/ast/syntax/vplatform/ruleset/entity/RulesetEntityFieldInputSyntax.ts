@@ -26,6 +26,17 @@ class RulesetEntityFieldInputSyntax extends RulesetEntitySyntax {
   getPrefix(): string {
     return RulesetEntityFieldInputSyntax.PREFIX
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRulesetEntityFieldInputSyntax) {
+      return printer.printRulesetEntityFieldInputSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default RulesetEntityFieldInputSyntax

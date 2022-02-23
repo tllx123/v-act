@@ -28,6 +28,16 @@ class AddSyntax extends BinaryExpressionSyntax {
   getSymbol(): string {
     return AddSyntax.SYMBOL
   }
+
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printAddSyntax) {
+      return printer.printAddSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default AddSyntax

@@ -89,7 +89,15 @@ class BusinessWidgetPropertySyntax extends Syntax {
   }
 
   toString() {
-    return `BC.${this.getWidgetCode()}.${this.getPropertyCode()}`
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printBusinessWidgetPropertySyntax) {
+      return printer.printBusinessWidgetPropertySyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return `BC.${this.getWidgetCode()}.${this.getPropertyCode()}`
+    }
   }
 }
 

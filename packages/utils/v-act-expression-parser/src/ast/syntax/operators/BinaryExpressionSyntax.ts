@@ -133,6 +133,7 @@ abstract class BinaryExpressionSyntax extends Syntax {
       //script.push(' ')
       script.push(leftSyntax.toString())
     }
+    this.constructor.toString()
     script.push(this.getSymbol())
     let rightSyntax = this.getRight()
     if (rightSyntax) {

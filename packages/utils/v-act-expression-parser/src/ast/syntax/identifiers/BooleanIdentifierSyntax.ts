@@ -1,7 +1,7 @@
-import Syntax from '../Syntax'
-import Token from '../../tokenizer/Token'
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
+import Token from '../../tokenizer/Token'
+import Syntax from '../Syntax'
 
 /**
  * 布尔常量
@@ -57,7 +57,15 @@ class BooleanIdentifierSyntax extends Syntax {
   }
 
   toString() {
-    return this.getValue() ? 'True' : 'False'
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printBooleanIdentifierSyntax) {
+      return printer.printBooleanIdentifierSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return this.getValue() ? 'True' : 'False'
+    }
   }
 }
 

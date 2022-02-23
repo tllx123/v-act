@@ -1,6 +1,6 @@
-import Syntax from './Syntax'
 import Position from '../Position'
 import SyntaxParseContext from '../SyntaxParseContext'
+import Syntax from './Syntax'
 
 class ParseResultSyntax extends Syntax {
   syntaxs: Syntax[]
@@ -29,11 +29,17 @@ class ParseResultSyntax extends Syntax {
   }
 
   toString() {
-    let script: string[] = []
-    this.syntaxs.forEach((syntax) => {
-      script.push(syntax.toString())
-    })
-    return script.join('')
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printParseResultSyntax) {
+      return printer.printParseResultSyntax(this, (syntax) => syntax.toString())
+    } else {
+      let script: string[] = []
+      this.syntaxs.forEach((syntax) => {
+        script.push(syntax.toString())
+      })
+      return script.join('')
+    }
   }
 }
 

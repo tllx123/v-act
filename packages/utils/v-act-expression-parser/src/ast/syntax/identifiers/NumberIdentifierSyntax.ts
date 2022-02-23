@@ -106,7 +106,15 @@ class NumberIdentifierSyntax extends Syntax {
   }
 
   toString() {
-    return this.getValue() + ''
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printNumberIdentifierSyntax) {
+      return printer.printNumberIdentifierSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return this.getValue() + ''
+    }
   }
 }
 

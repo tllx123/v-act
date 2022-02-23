@@ -18,6 +18,15 @@ class RulesetVarSyntax extends RulesetPrimitiveSyntax {
   getPrefix(): string {
     return RulesetVarSyntax.PREFIX
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRulesetVarSyntax) {
+      return printer.printRulesetVarSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default RulesetVarSyntax

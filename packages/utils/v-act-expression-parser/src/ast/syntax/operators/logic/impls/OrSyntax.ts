@@ -1,7 +1,7 @@
-import LogicSyntax from '../LogicSyntax'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
 import Syntax from '../../../Syntax'
+import LogicSyntax from '../LogicSyntax'
 
 class OrSyntax extends LogicSyntax {
   static SYMBOL: string = '||'
@@ -26,6 +26,15 @@ class OrSyntax extends LogicSyntax {
 
   getSymbol(): string {
     return this.getOperator()
+  }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printOrSyntax) {
+      return printer.printOrSyntax(this, (syntax) => syntax.toString())
+    } else {
+      return super.toString()
+    }
   }
 }
 

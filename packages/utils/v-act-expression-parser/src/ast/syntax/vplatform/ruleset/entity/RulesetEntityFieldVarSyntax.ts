@@ -26,6 +26,17 @@ class RulesetEntityFieldVarSyntax extends RulesetEntitySyntax {
   getPrefix(): string {
     return RulesetEntityFieldVarSyntax.PREFIX
   }
+  toString() {
+    const ctx = this.getContext()
+    const printer = ctx.getPrinter()
+    if (printer && printer.printRulesetEntityFieldVarSyntax) {
+      return printer.printRulesetEntityFieldVarSyntax(this, (syntax) =>
+        syntax.toString()
+      )
+    } else {
+      return super.toString()
+    }
+  }
 }
 
 export default RulesetEntityFieldVarSyntax
