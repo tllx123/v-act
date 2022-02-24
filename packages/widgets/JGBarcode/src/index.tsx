@@ -1,9 +1,17 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import { toNumber } from '@v-act/widget-utils'
+
 import { JGBarcode, JGBarcodeProps } from './JGBarcode'
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer,
+  componentCode: string,
+  context: WidgetRenderContext
 ): JSX.Element {
   const pros = control.JGBarcodeProperty
 
@@ -24,4 +32,18 @@ const convert = function (
   return <JGBarcode {...props}></JGBarcode>
 }
 
-export { JGBarcode, convert }
+const JsonJGBarcode = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
+export { convert, JGBarcode, JsonJGBarcode }

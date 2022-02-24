@@ -1,13 +1,20 @@
-import { Control, Event, IPrototypeFrameProperty } from '@v-act/schema-types'
+import {
+  Control,
+  Event,
+  IPrototypeFrameProperty,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { getComponentResPath } from '@v-act/widget-utils'
 
 import { IPrototypeFrame, IPrototypeFrameProps } from './IPrototypeFrame'
 import { ListItem, MenuData } from './utils'
 
-export const convert = function (
+const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null,
-  componentCode: string
+  render: WidgetRenderer,
+  componentCode: string,
+  context: WidgetRenderContext
 ): JSX.Element {
   const pros: IPrototypeFrameProperty = control.properties
 
@@ -81,4 +88,18 @@ export const convert = function (
   return <IPrototypeFrame {...props}></IPrototypeFrame>
 }
 
-export { IPrototypeFrame, type IPrototypeFrameProps }
+const JsonIPrototypeFrame = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
+export { IPrototypeFrame, type IPrototypeFrameProps, JsonIPrototypeFrame }

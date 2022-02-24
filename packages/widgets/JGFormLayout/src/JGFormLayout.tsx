@@ -53,7 +53,7 @@ interface JGFormLayoutProps {
    */
   groupTitle?: string
 
-  children?: JSX.Element[] | null
+  children?: JSX.Element | JSX.Element[] | null
 
   context?: WidgetContextProps
 

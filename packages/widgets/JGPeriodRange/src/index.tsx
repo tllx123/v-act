@@ -1,13 +1,26 @@
-import { Control } from '@v-act/schema-types'
 import {
-  toBoolean,
-  toNumber,
-  valueofWidth,
-  valueofHeight,
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
   getColumnName,
-  getTableName
+  getTableName,
+  toNumber,
+  valueofHeight,
+  valueofWidth
 } from '@v-act/widget-utils'
+
 import { JGPeriodRange, JGPeriodRangeProps } from './JGPeriodRange'
+
+const JsonJGPeriodRange = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
 
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
@@ -29,4 +42,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGPeriodRange {...props}></JGPeriodRange>
 }
 
-export { convert, JGPeriodRange }
+export { convert, JGPeriodRange, JsonJGPeriodRange }

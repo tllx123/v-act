@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getDropDownSource,
@@ -12,9 +16,18 @@ import {
 
 import { JGRadioGroup, JGRadioGroupProps } from './JGRadioGroup'
 
+const JsonJGRadioGroup = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   console.log('@@@@@@@@@@@@@@@:JGRadioGroup')
   console.log(control)
@@ -40,4 +53,4 @@ const convert = function (
 }
 
 export default JGRadioGroup
-export { convert, JGRadioGroup }
+export { convert, JGRadioGroup, JsonJGRadioGroup }

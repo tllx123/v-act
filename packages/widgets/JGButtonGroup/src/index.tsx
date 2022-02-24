@@ -1,16 +1,28 @@
-import { Control } from '@v-act/schema-types'
-import { JGButtonGroup, JGButtonGroupProps } from './JGButtonGroup'
 import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
+  toBoolean,
   toNumber,
-  valueofWidth,
   valueofHeight,
-  toBoolean
+  valueofWidth
 } from '@v-act/widget-utils'
+
+import { JGButtonGroup, JGButtonGroupProps } from './JGButtonGroup'
+
+const JsonJGButtonGroup = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
+
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
-  console.log('control')
-  console.log(control)
-
   const props: JGButtonGroupProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
@@ -24,4 +36,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGButtonGroup {...props}></JGButtonGroup>
 }
 
-export { convert, JGButtonGroup }
+export { convert, JGButtonGroup, JsonJGButtonGroup }

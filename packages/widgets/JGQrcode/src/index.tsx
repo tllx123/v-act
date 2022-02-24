@@ -1,9 +1,24 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import {
+  Control,
+  toNumber,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+
 import { JGQrcode, JGQrcodeProps } from './JGQrcode'
+
+const JsonJGQrcode = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.jgqrcodeproperties
 
@@ -18,4 +33,4 @@ const convert = function (
   return <JGQrcode {...props}></JGQrcode>
 }
 
-export { JGQrcode, convert }
+export { convert, JGQrcode, JsonJGQrcode }

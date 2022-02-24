@@ -1,14 +1,27 @@
-import { Control } from '@v-act/schema-types'
 import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
-  valueofWidth,
   valueofHeight,
-  getColumnName,
-  getTableName
+  valueofWidth
 } from '@v-act/widget-utils'
 
 import { JGDateTimePicker, JGDateTimePickerProps } from './JGDateTimePicker'
+
+const JsonJGDateTimePicker = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
 
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
@@ -35,4 +48,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGDateTimePicker {...props}></JGDateTimePicker>
 }
 
-export { convert, JGDateTimePicker }
+export { convert, JGDateTimePicker, JsonJGDateTimePicker }

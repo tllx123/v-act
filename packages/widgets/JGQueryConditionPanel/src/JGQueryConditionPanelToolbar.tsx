@@ -4,7 +4,11 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import Box from '@mui/material/Box'
 import { JGLabel } from '@v-act/jglabel'
-import { Control, JGQueryConditionPanelProperty } from '@v-act/schema-types'
+import {
+  Control,
+  JGQueryConditionPanelProperty,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 import { getChildrenWithoutFragment } from '@v-act/widget-utils'
 
@@ -31,7 +35,7 @@ interface JGQueryConditionPanelFormProps {
 
   onClick?: (status: boolean) => void
 
-  children?: Array<JSX.Element> | null
+  children?: JSX.Element[] | JSX.Element | null
 }
 
 function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
@@ -126,10 +130,7 @@ function JGQueryConditionPanelToolbar(props: JGQueryConditionPanelFormProps) {
   )
 }
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element[] | null
-) {
+const convert = function (control: Control, render: WidgetRenderer) {
   const properties: JGQueryConditionPanelProperty = control.properties
   const toolbarSetStr = properties.toolbarSetting
   const setting: Setting[] = []

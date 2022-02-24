@@ -111,6 +111,12 @@ const testPrint = function (exp) {
     },
     printRulesetVarSyntax: function (syntax, print) {
       return 'context.getRulesetVar("' + syntax.getCode() + '")'
+    },
+    printBooleanIdentifierSyntax: function (syntax, print) {
+      return `${syntax.getValue()}`
+    },
+    printNotEqualSyntax: function (syntax, print) {
+      return `${print(syntax.getLeft())}!=${print(syntax.getRight())}`
     }
   })
 }

@@ -1,7 +1,8 @@
 import {
   Control,
-  ControlReact,
-  JGTabControlProperty
+  JGTabControlProperty,
+  WidgetRenderContext,
+  WidgetRenderer
 } from '@v-act/schema-types'
 import { toBoolean, toCssAxisVal, toNumber } from '@v-act/widget-utils'
 
@@ -18,10 +19,9 @@ import { convert as convertJGTabPage, JGTabPage } from './JGTabPage'
 
 const convert = function (
   control: Control,
-  render: (
-    controls: Array<Control>,
-    containerReact: ControlReact
-  ) => JSX.Element | null
+  render: WidgetRenderer,
+  componentCode: string,
+  context: WidgetRenderContext
 ): JSX.Element {
   const pros: JGTabControlProperty = control.properties
   const props: JGTabControlProps = {
@@ -52,6 +52,20 @@ const convert = function (
   )
 }
 
+const JsonJGTabControl = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
 export default JGTabControl
 
-export { convert, JGTabControl, JGTabPage }
+export { convert, JGTabControl, JGTabPage, JsonJGTabControl }

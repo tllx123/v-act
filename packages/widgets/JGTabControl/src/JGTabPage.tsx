@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 
 import Box from '@mui/material/Box'
-import { Control, ControlReact } from '@v-act/schema-types'
+import { Control, ControlReact, WidgetRenderer } from '@v-act/schema-types'
 
 interface JGTabPageProps {
   code: string
@@ -21,10 +21,7 @@ interface JGTabPageProps {
 
 const convert = function (
   control: Control,
-  render: (
-    controls: Array<Control>,
-    containerReact: ControlReact
-  ) => JSX.Element | null,
+  render: WidgetRenderer,
   tabControl: Control
 ): JSX.Element {
   const pros = control.properties

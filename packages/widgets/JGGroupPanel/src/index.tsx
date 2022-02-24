@@ -1,4 +1,10 @@
-import { Control, JGGroupPanelProperty, ReactEnum } from '@v-act/schema-types'
+import {
+  Control,
+  JGGroupPanelProperty,
+  ReactEnum,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   isPercent,
   toCssAxisVal,
@@ -16,9 +22,18 @@ import {
   VerticalAlign
 } from './JGGroupPanel'
 
+const JsonJGGroupPanel = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element[] | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties as JGGroupPanelProperty
   const settings: Setting[] = []
@@ -94,5 +109,6 @@ export {
   convert,
   HorizontalAlign,
   JGGroupPanel,
+  JsonJGGroupPanel,
   VerticalAlign
 }

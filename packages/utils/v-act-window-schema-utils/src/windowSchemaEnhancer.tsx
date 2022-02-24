@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { createElement, Fragment } from 'react'
 
 import {
   Action,
@@ -26,7 +26,6 @@ import {
   PropertysSchema,
   ReactEnum,
   WidgetConvertContext,
-  WidgetConverts,
   WidgetDefines,
   Window,
   WindowAction,
@@ -779,56 +778,64 @@ const parseWindowSchema = function (
   componentCode: string,
   windowSchema: WindowSchema,
   widgetDefines: WidgetDefines,
-  widgetConverts: WidgetConverts,
   context: WidgetConvertContext
 ): JSX.Element | null {
-  //
-  let windowDefine = convertWindowSchema(windowSchema)
-  const renderChildrenFunc = (
-    controls: Array<Control>,
-    contianerReact: ControlReact
-  ) => {
-    controls = layoutControls(controls, contianerReact, widgetDefines)
-    if (controls && controls.length > 0) {
-      return (
-        <Fragment>
-          {controls.map((control) => {
-            return (
-              <Fragment key={control.properties.code}>
-                {widgetConverts[control.type]
-                  ? widgetConverts[control.type](
-                      control,
-                      renderChildrenFunc,
-                      componentCode,
-                      context
-                    )
-                  : null}
-              </Fragment>
-            )
-          })}
-        </Fragment>
-      )
+  try {
+    let windowDefine = convertWindowSchema(windowSchema)
+    const renderChildrenFunc = (
+      controls: Array<Control>,
+      contianerReact: ControlReact
+    ) => {
+      controls = layoutControls(controls, contianerReact, widgetDefines)
+      if (controls && controls.length > 0) {
+        return (
+          <Fragment>
+            {controls.map((control) => {
+              return (
+                <Fragment key={control.properties.code}>
+                  {widgetDefines[control.type]
+                    ? createElement(widgetDefines[control.type], {
+                        control,
+                        render: renderChildrenFunc,
+                        componentCode,
+                        context
+                      })
+                    : null}
+                </Fragment>
+              )
+            })}
+          </Fragment>
+        )
+      }
+      return null
     }
-    return null
-  }
-  windowDefine = _dealWindowMasterPageInfo(windowDefine)
-  convetToGroupedTopDock(windowDefine)
-  //处理窗体schema，将控件事件值转换成Function
-  enhanceWindow(windowDefine, context)
-  enhanceWindowPadding(windowDefine)
-  const widgetType = windowDefine.type
-  const convert = widgetConverts[widgetType]
-  if (convert) {
-    const widgetContext = createContext({
-      position: 'relative',
-      componentCode: componentCode
-    })
-    return (
-      <ContextProvider context={widgetContext}>
-        {convert(windowDefine, renderChildrenFunc, componentCode, context)}
-      </ContextProvider>
-    )
-  } else {
+    windowDefine = _dealWindowMasterPageInfo(windowDefine)
+    convetToGroupedTopDock(windowDefine)
+    //处理窗体schema，将控件事件值转换成Function
+    enhanceWindow(windowDefine, context)
+    enhanceWindowPadding(windowDefine)
+    const widgetType = windowDefine.type
+    const define = widgetDefines[widgetType]
+    if (define) {
+      const widgetContext = createContext({
+        position: 'relative',
+        componentCode: componentCode
+      })
+      return (
+        <ContextProvider context={widgetContext}>
+          {createElement(define, {
+            control: windowDefine,
+            render: renderChildrenFunc,
+            componentCode,
+            context
+          })}
+        </ContextProvider>
+      )
+    } else {
+      return null
+    }
+  } catch (err) {
+    console.error(err)
     return null
   }
 }

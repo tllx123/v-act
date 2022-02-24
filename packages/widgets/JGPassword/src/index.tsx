@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getTableName,
@@ -10,9 +14,18 @@ import {
 
 import { JGPassword, JGPasswordProps } from './JGPassword'
 
+const JsonJGPassword = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGPasswordProps = {
@@ -37,4 +50,4 @@ const convert = function (
 
 export default JGPassword
 
-export { convert, JGPassword }
+export { convert, JGPassword, JsonJGPassword }

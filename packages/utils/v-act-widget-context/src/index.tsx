@@ -2,7 +2,12 @@ import React, { ReactNode } from 'react'
 
 import { Property } from 'csstype'
 
-import { Height, Width } from '@v-act/schema-types'
+import {
+  Height,
+  Width,
+  ControlReact,
+  WidgetRenderContext
+} from '@v-act/schema-types'
 
 type FieldValue = string | number | boolean | null
 

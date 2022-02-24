@@ -1,14 +1,28 @@
-import { Control } from '@v-act/schema-types'
-
-import JGDataGrid, { JGDataGridProps } from './JGDataGrid'
 import {
-  toNumber,
-  valueofHeight,
-  valueofWidth,
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
   getColumnName,
   getTableName,
-  toBoolean
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
 } from '@v-act/widget-utils'
+
+import JGDataGrid, { JGDataGridProps } from './JGDataGrid'
+
+const JsonJGDataGrid = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
+
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
   console.log('control')
@@ -37,4 +51,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGDataGrid {...props}></JGDataGrid>
 }
 
-export { convert, JGDataGrid }
+export { convert, JGDataGrid, JsonJGDataGrid }

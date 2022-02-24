@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getTableName,
@@ -9,9 +13,18 @@ import {
 
 import { JGCalendar, JGCalendarProps } from './JGCalendar'
 
+const JsonJGCalendar = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   // console.log(control,"11111111111111111")
   const pros = control.properties
@@ -35,4 +48,4 @@ const convert = function (
 }
 export default JGCalendar
 
-export { convert, JGCalendar }
+export { convert, JGCalendar, JsonJGCalendar }

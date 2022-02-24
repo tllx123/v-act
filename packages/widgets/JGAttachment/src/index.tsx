@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   toBoolean,
   toNumber,
@@ -10,7 +14,9 @@ import { JGAttachment, JGAttachmentProps } from './JGAttachment'
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: WidgetRenderer,
+  componentCode: string,
+  context: WidgetRenderContext
 ): JSX.Element {
   console.log('control', control)
   const pros = control.properties
@@ -33,6 +39,20 @@ const convert = function (
   return <JGAttachment {...props}></JGAttachment>
 }
 
+const JsonJGAttachment = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
 export default JGAttachment
 
-export { convert, JGAttachment }
+export { convert, JGAttachment, JsonJGAttachment }

@@ -1,10 +1,24 @@
-import { Control, toNumber } from '@v-act/schema-types'
+import {
+  Control,
+  toNumber,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 
 import { JGPortalEdit, JGPortalEditProps } from './JGPortalEdit'
 
+const JsonJGPortalEdit = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGPortalEditProps = {
@@ -18,4 +32,4 @@ const convert = function (
 
 export default JGPortalEdit
 
-export { convert, JGPortalEdit }
+export { convert, JGPortalEdit, JsonJGPortalEdit }

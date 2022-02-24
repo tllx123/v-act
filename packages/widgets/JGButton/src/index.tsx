@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getComponentResPath,
   toBoolean,
@@ -10,13 +14,12 @@ import {
 
 import JGButton, { JGButtonProps } from './JGButton'
 
-export const convert = function (
+const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null,
-  componentCode: string
+  render: WidgetRenderer,
+  componentCode: string,
+  context: WidgetRenderContext
 ): JSX.Element {
-  console.log('===========================', 'control')
-  console.log(control)
   const pros = control.properties
   const props: JGButtonProps = {
     top: toNumber(pros.top) + 'px',
@@ -40,4 +43,18 @@ export const convert = function (
   return <JGButton {...props}>{pros.labelText}</JGButton>
 }
 
-export { JGButton }
+const JsonJGButton = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
+export { JGButton, JsonJGButton }

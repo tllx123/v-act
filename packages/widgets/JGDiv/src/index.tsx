@@ -1,15 +1,24 @@
-import { Control } from '@v-act/schema-types'
 import {
-  toBoolean,
-  toNumber,
-  valueofWidth,
-  valueofHeight
-} from '@v-act/widget-utils'
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
+
 import { JGDiv, JGDivProps } from './JGDiv'
+
+const JsonJGDiv = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
 
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGDivProps = {
@@ -23,4 +32,4 @@ const convert = function (
 
 export default JGDiv
 
-export { convert, JGDiv }
+export { convert, JGDiv, JsonJGDiv }

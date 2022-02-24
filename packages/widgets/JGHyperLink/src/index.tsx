@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getTableName,
@@ -10,9 +14,18 @@ import {
 
 import { JGHyperLink, JGHyperLinkProps } from './JGHyperLink'
 
+const JsonJGHyperLink = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   // console.log(control,"sssssssssssssssssssss")
   const pros = control.properties
@@ -42,4 +55,4 @@ const convert = function (
 
 export default JGHyperLink
 
-export { convert, JGHyperLink }
+export { convert, JGHyperLink, JsonJGHyperLink }

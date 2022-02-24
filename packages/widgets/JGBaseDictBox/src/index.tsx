@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   toBoolean,
   toNumber,
@@ -8,9 +12,18 @@ import {
 
 import { JGBaseDictBox, JGBaseDictBoxProps } from './JGBaseDictBox'
 
+const JsonJGBaseDictBox = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: WidgetRenderer
 ): JSX.Element {
   // console.log(control.properties,"aaaaaa")
   const pros = control.properties
@@ -39,4 +52,4 @@ const convert = function (
 
 export default JGBaseDictBox
 
-export { convert, JGBaseDictBox }
+export { convert, JGBaseDictBox, JsonJGBaseDictBox }

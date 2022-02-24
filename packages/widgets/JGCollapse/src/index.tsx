@@ -1,4 +1,9 @@
-import { Control, JGCollapsePanelProperty } from '@v-act/schema-types'
+import {
+  Control,
+  JGCollapsePanelProperty,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 
 import {
@@ -8,9 +13,18 @@ import {
   JGCollapseProps
 } from './JGCollapse'
 
+const JsonJGCollapse = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props = {
@@ -39,5 +53,6 @@ export {
   JGCollapse,
   JGCollapsePanel,
   type JGCollapsePanelProps,
-  type JGCollapseProps
+  type JGCollapseProps,
+  JsonJGCollapse
 }

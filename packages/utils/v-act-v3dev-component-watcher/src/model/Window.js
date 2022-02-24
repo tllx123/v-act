@@ -117,7 +117,7 @@ class Window {
       if (Object.hasOwnProperty.call(existWidgets, widgetType)) {
         const pluginName = existWidgets[widgetType]
         script.push(
-          `import {${widgetType},convert as convert${widgetType}} from '${pluginName}';`
+          `const ${widgetType} = dynamic(()=>{return import('${pluginName}').then(mod=>mod.Json${widgetType})});`
         )
       }
     }
@@ -130,7 +130,6 @@ class Window {
         const params = {
           componentCode: this.componentCode,
           windowJsonScript: JSON.stringify(this.obj),
-          controlConvertMap: this.getControlConverMapScript(),
           importScripts: this.toImportScripts(),
           controlDefines: this.getControlDefineMapScript()
         }
