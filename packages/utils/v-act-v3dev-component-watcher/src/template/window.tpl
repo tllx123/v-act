@@ -4,12 +4,12 @@ import dynamic from 'next/dynamic';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
-const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent'.then(mod=>mod.JsonJGComponent)});
-const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer'.then(mod=>mod.JsonJGSpacer)});
-const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel'.then(mod=>mod.JsonJGGroupPanel)});
-const JGContext1 = dynamic(()=>{return import('@v-act/jgcontext'.then(mod=>mod.JsonJGContext)});
-const JGButtonGroup1 = dynamic(()=>{return import('@v-act/jgbuttongroup'.then(mod=>mod.JsonJGButtonGroup)});
-const JGCollapse1 = dynamic(()=>{return import('@v-act/jgcollapse'.then(mod=>mod.JsonJGCollapse)});
+const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent').then(mod=>mod.JsonJGComponent)});
+const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer').then(mod=>mod.JsonJGSpacer)});
+const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel').then(mod=>mod.JsonJGGroupPanel)});
+const JGContext1 = dynamic(()=>{return import('@v-act/jgcontext').then(mod=>mod.JsonJGContext)});
+const JGButtonGroup1 = dynamic(()=>{return import('@v-act/jgbuttongroup').then(mod=>mod.JsonJGButtonGroup)});
+const JGCollapse1 = dynamic(()=>{return import('@v-act/jgcollapse').then(mod=>mod.JsonJGCollapse)});
 {{@ importScripts}}
 
 const widgetDefines: {
