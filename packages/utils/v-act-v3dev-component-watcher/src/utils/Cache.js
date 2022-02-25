@@ -138,7 +138,10 @@ const scanVActWidgets = function () {
     if (fs.existsSync(packagePath)) {
       const packageJson = require(packagePath)
       if (packageJson.widgetType) {
-        WIDGET_MAP[packageJson.widgetType] = packageJson.name
+        WIDGET_MAP[packageJson.widgetType] = {
+          pluginName: packageJson.name,
+          ssr: !!packageJson.ssr
+        }
       }
     } else {
       const dirNames = fs.readdirSync(dir)

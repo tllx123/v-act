@@ -115,10 +115,15 @@ class Window {
     const script = []
     for (const widgetType in existWidgets) {
       if (Object.hasOwnProperty.call(existWidgets, widgetType)) {
-        const pluginName = existWidgets[widgetType]
-        script.push(
-          `const ${widgetType} = dynamic(()=>{return import('${pluginName}').then(mod=>mod.Json${widgetType})});`
-        )
+        const info = existWidgets[widgetType]
+        const ssr = info.ssr
+        let importScript
+        if (ssr) {
+          importScript = `const ${widgetType} = dynamic(()=>{return import('${info.pluginName}').then(mod=>mod.Json${widgetType})});`
+        } else {
+          importScript = `const ${widgetType} = dynamic(()=>{return import('${info.pluginName}').then(mod=>mod.Json${widgetType})},{ssr:${ssr}});`
+        }
+        script.push(importScript)
       }
     }
     return script.join('\n')
