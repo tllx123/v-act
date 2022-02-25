@@ -31,8 +31,8 @@ interface Setting {
   verticalAlign?: VerticalAlign
   colSpan?: number
   endRow?: boolean
-  percentWidth?: string
-  percentHeight?: string
+  width?: string
+  height?: string
 }
 
 interface JGGroupPanelProps {

@@ -1,4 +1,4 @@
-import { CSSProperties, Fragment, useState } from 'react'
+import { CSSProperties, Fragment } from 'react'
 
 import { Property as CSSProperty } from 'csstype'
 
@@ -127,7 +127,7 @@ const getChildrenTitleWidth = function (children: JSX.Element[]): number {
   let titleWidth = 0
   for (let index = 0; index < children.length; index++) {
     const child = children[index]
-    if (child.type && child.type.toString().indexOf('react.fragment') != -1) {
+    if (child.type && child.type === Fragment) {
       const childList = child.props.children
       if (childList) {
         const w = getChildrenTitleWidth(
@@ -137,7 +137,17 @@ const getChildrenTitleWidth = function (children: JSX.Element[]): number {
       }
     } else {
       const childProps = child.props
-      const w = calTitleWidth(childProps.labelText)
+      let labelText
+      if (
+        childProps.control &&
+        childProps.control.properties &&
+        childProps.control.properties.labelText
+      ) {
+        labelText = childProps.control.properties.labelText
+      } else {
+        childProps.labelText
+      }
+      const w = calTitleWidth(labelText)
       titleWidth = titleWidth > w ? titleWidth : w
     }
   }
@@ -215,6 +225,22 @@ const getChildrenWithoutFragmentRecursively = function (
 const isPercent = function (val: string | null | undefined) {
   if (typeof val == 'string') {
     return val.endsWith('%')
+  }
+  return false
+}
+/**
+ * 是否为锚定值
+ * @param val 宽高值
+ * @returns
+ */
+const isAbsoluteVal = function (val: string | null | undefined) {
+  const type = typeof val
+  if (type == 'number') {
+    return true
+  } else if (type == 'string') {
+    //@ts-ignore
+    const num = parseInt(val)
+    return !isNaN(num)
   }
   return false
 }
@@ -529,6 +555,7 @@ export {
   getFieldValue,
   getIDColumnName,
   getTableName,
+  isAbsoluteVal,
   isNullOrUnDef,
   isPercent,
   toBoolean,

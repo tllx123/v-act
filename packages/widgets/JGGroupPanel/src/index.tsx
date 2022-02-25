@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
   Control,
   JGGroupPanelProperty,
@@ -6,6 +8,7 @@ import {
   WidgetRenderer
 } from '@v-act/schema-types'
 import {
+  isAbsoluteVal,
   isPercent,
   toCssAxisVal,
   toNumber,
@@ -78,24 +81,34 @@ const convert = function (
       if (isTableLayout) {
         //网格中，所有控件宽度按空间自适应
         childProps.multiWidth = ReactEnum.Space.toString()
+      } else {
+        if (isPercent(childProps.multiWidth)) {
+          setting.width = childProps.multiWidth
+          childProps.multiWidth = ReactEnum.Space.toString()
+        } else if (isAbsoluteVal(childProps.multiWidth)) {
+          setting.width = childProps.multiWidth
+        } else if (childProps.multiWidth == ReactEnum.Space.toString()) {
+          setting.width = '100%'
+        }
+        if (isPercent(childProps.multiHeight)) {
+          setting.height = childProps.multiHeight
+          childProps.multiHeight = ReactEnum.Space.toString()
+        } else if (isAbsoluteVal(childProps.multiHeight)) {
+          setting.height = childProps.multiHeight
+        } else if (childProps.multiHeight == ReactEnum.Space.toString()) {
+          setting.height = '100%'
+        }
+        if (isVerticalLayout) {
+          //垂直排列，所有子控件宽度空间自适应
+          childProps.multiWidth = ReactEnum.Space.toString()
+          setting.width = '100%'
+        }
+        if (isHorizontalLayout) {
+          //水平排列，所有子控件高度空间自适应
+          childProps.multiHeight = ReactEnum.Space.toString()
+          setting.height = '100%'
+        }
       }
-      if (isVerticalLayout) {
-        //垂直排列，所有子控件宽度空间自适应
-        childProps.multiWidth = ReactEnum.Space.toString()
-      }
-      if (isHorizontalLayout) {
-        //水平排列，所有子控件高度空间自适应
-        childProps.multiHeight = ReactEnum.Space.toString()
-      }
-      if (isPercent(childProps.multiWidth)) {
-        setting.percentWidth = childProps.multiWidth
-        childProps.multiWidth = ReactEnum.Space.toString()
-      }
-      if (isPercent(childProps.multiHeight)) {
-        setting.percentHeight = childProps.multiHeight
-        childProps.multiHeight = ReactEnum.Space.toString()
-      }
-
       settings.push(setting)
     })
   }

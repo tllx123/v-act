@@ -64,16 +64,16 @@ const JGVGroupPanel = function (props: JGGroupPanelProps) {
           pointerEvents: isSpacerChild ? 'none' : 'all',
           position: 'relative',
           width:
-            childSetting && childSetting.percentWidth
-              ? childSetting.percentWidth
+            childSetting && childSetting.width
+              ? childSetting.width
               : toWidth(
                   child.props.multiWidth || child.props.width,
                   context,
                   ReactEnum.Content
                 ),
           height:
-            childSetting && childSetting.percentHeight
-              ? childSetting.percentHeight
+            childSetting && childSetting.height
+              ? childSetting.height
               : toHeight(
                   child.props.multiHeight || child.props.height,
                   context,

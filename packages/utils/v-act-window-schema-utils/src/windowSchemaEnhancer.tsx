@@ -322,6 +322,9 @@ const _toFrameDockTop = function (windowSchema: Window): Window {
     multiWidth: ReactEnum.Space.toString(),
     code: 'Frame_Dock_Top_JGGroupPanel_' + _getRandomNum()
   }
+  if (!(windowSchema.properties && windowSchema.properties.multiHeight)) {
+    windowSchema.properties.multiHeight = ReactEnum.Space.toString()
+  }
   return {
     type: 'JGComponent',
     properties: {
@@ -362,6 +365,9 @@ const _toFrameDockBottom = function (windowSchema: Window) {
   windowSchema.properties.dock = 'Fill'
   delete windowSchema.properties.width
   windowSchema.properties.multiWidth = ReactEnum.Space.toString()
+  if (!(windowSchema.properties && windowSchema.properties.multiHeight)) {
+    windowSchema.properties.multiHeight = ReactEnum.Space.toString()
+  }
   const result = {
     type: 'JGComponent',
     properties: {
