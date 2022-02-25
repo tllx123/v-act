@@ -1,17 +1,30 @@
-import { Control } from '@v-act/schema-types'
 import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
-  valueofWidth,
   valueofHeight,
-  getColumnName,
-  getTableName
+  valueofWidth
 } from '@v-act/widget-utils'
 
 import {
   JGLongDateTimePicker,
   JGLongDateTimePickerProps
 } from './JGLongDateTimePicker'
+
+const JsonJGLongDateTimePicker = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
 
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
@@ -39,4 +52,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGLongDateTimePicker {...props}></JGLongDateTimePicker>
 }
 
-export { convert, JGLongDateTimePicker }
+export { convert, JGLongDateTimePicker, JsonJGLongDateTimePicker }

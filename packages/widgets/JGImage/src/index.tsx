@@ -1,11 +1,25 @@
-import { Control, JGImageProperty } from '@v-act/schema-types'
+import {
+  Control,
+  JGImageProperty,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { getComponentResPath, toNumber } from '@v-act/widget-utils'
 
 import JGImage, { JGImageProps } from './JGImage'
 
-export const convert = function (
+const JsonJGImage = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render, props.componentCode)
+}
+
+const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null,
+  render: WidgetRenderer,
   componentCode: string
 ): JSX.Element {
   const pros: JGImageProperty = control.properties
@@ -30,4 +44,4 @@ export const convert = function (
   return <JGImage {...props}>{pros.labelText}</JGImage>
 }
 
-export { JGImage }
+export { JGImage, JsonJGImage }

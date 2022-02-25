@@ -8,6 +8,7 @@ import {
   Control,
   Height,
   JGQueryConditionPanelProperty,
+  WidgetRenderer,
   Width
 } from '@v-act/schema-types'
 import { useContext } from '@v-act/widget-context'
@@ -90,10 +91,7 @@ const JGQueryConditionPanel = function (props: JGQueryConditionPanelProps) {
   )
 }
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element[] | null
-) {
+const convert = function (control: Control, render: WidgetRenderer) {
   const pros: JGQueryConditionPanelProperty = control.properties
   const props: JGQueryConditionPanelProps = {
     top: toNumber(pros.top) + 'px',

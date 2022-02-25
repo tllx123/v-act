@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getTableName,
@@ -9,9 +13,18 @@ import {
 
 import JGSteps, { JGStepsProps } from './JGSteps'
 
-export const convert = function (
+const JsonJGSteps = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
+const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGStepsProps = {
@@ -27,4 +40,4 @@ export const convert = function (
   return <JGSteps {...props} />
 }
 
-export { JGSteps }
+export { JGSteps, JsonJGSteps }

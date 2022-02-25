@@ -1,14 +1,27 @@
-import { Control } from '@v-act/schema-types'
 import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
+  getColumnName,
+  getTableName,
   toBoolean,
   toNumber,
   valueofHeight,
-  valueofWidth,
-  getColumnName,
-  getTableName
+  valueofWidth
 } from '@v-act/widget-utils'
 
 import JGTreeView, { JGTreeViewProps } from './JGTreeView'
+
+const JsonJGTreeView = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
 
 const convert = function (control: Control): JSX.Element {
   // console.log(control.properties.labelText)
@@ -33,4 +46,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGTreeView {...props}></JGTreeView>
 }
 
-export { convert, JGTreeView }
+export { convert, JGTreeView, JsonJGTreeView }

@@ -5,7 +5,8 @@ import { JGButton } from '@v-act/jgbutton'
 import {
   Control,
   JGQueryConditionPanelProperty,
-  ReactEnum
+  ReactEnum,
+  WidgetRenderer
 } from '@v-act/schema-types'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 import {
@@ -40,7 +41,7 @@ interface JGQueryConditionPanelFormProps {
    */
   quickSearchHint?: string
 
-  children?: Array<JSX.Element> | null
+  children?: JSX.Element | JSX.Element[] | null
 }
 
 const JGQueryConditionPanelForm = function (
@@ -134,10 +135,7 @@ JGQueryConditionPanelForm.defaultProps = {
   quickSearchHint: ''
 }
 
-const convert = function (
-  control: Control,
-  render: (controls: Array<Control>) => JSX.Element[] | null
-) {
+const convert = function (control: Control, render: WidgetRenderer) {
   const pros: JGQueryConditionPanelProperty = control.properties
   const formProps = {
     searchBoxEnabled: toBoolean(pros.searchBoxEnabled, true),

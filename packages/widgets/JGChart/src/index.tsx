@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getTableName,
   toBoolean,
@@ -9,11 +13,19 @@ import {
 
 import { JGChart, JGChartProps } from './JGChart'
 
+const JsonJGChart = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
-  console.log('@@@@@@@@@@@@@@@:JGChart')
   const pros = control.properties
   const props: JGChartProps = {
     top: toNumber(pros.top) + 'px',
@@ -41,4 +53,4 @@ const convert = function (
 }
 
 export default JGChart
-export { convert, JGChart }
+export { convert, JGChart, JsonJGChart }

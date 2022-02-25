@@ -1,10 +1,24 @@
-import { Control, toNumber } from '@v-act/schema-types'
+import {
+  Control,
+  toNumber,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 
 import JGNewsList, { JGNewsListProps } from './JGNewList'
 
-export const convert = function (
+const JsonJGNewsList = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
+const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGNewsListProps = {
@@ -16,4 +30,4 @@ export const convert = function (
   return <JGNewsList {...props}>{pros.labelText}</JGNewsList>
 }
 
-export { JGNewsList }
+export { JGNewsList, JsonJGNewsList }

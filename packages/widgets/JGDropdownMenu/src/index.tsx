@@ -1,10 +1,24 @@
-import { Control, toBoolean, toNumber } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import { toBoolean, toNumber } from '@v-act/widget-utils'
 
 import { JGDropdownMenu, JGDropdownMenuProps } from './JGDropdownMenu'
 
+const JsonJGDropdownMenu = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const props: JGDropdownMenuProps = {
@@ -19,4 +33,4 @@ const convert = function (
 
 export default JGDropdownMenu
 
-export { convert, JGDropdownMenu }
+export { convert, JGDropdownMenu, JsonJGDropdownMenu }

@@ -1,11 +1,25 @@
-import { Control, JGWebBrowserProperty } from '@v-act/schema-types'
+import {
+  Control,
+  JGWebBrowserProperty,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { toCssAxisVal, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 
 import { JGWebBrowser, JGWebBrowserProps } from './JGWebBrowser'
 
+const JsonJGWebBrowser = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties as JGWebBrowserProperty
   const props: JGWebBrowserProps = {
@@ -19,4 +33,4 @@ const convert = function (
 }
 
 export default JGWebBrowser
-export { convert, JGWebBrowser }
+export { convert, JGWebBrowser, JsonJGWebBrowser }

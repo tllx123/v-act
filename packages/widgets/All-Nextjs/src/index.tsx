@@ -1,7 +1,16 @@
 import dynamic from 'next/dynamic'
 
-const IPrototypeFrame = dynamic(() =>
-  import('@v-act/iprototypeframe').then((mod) => mod.convert)
+const JGComponent = dynamic(() =>
+  import('@v-act/jgcomponent').then((mod) => mod.JsonJGComponent)
 )
 
-export { IPrototypeFrame }
+const JGButton = dynamic(() =>
+  import('@v-act/jgbutton').then((mod) => mod.JsonJGButton)
+)
+
+const widgetDefines = {
+  JGButton,
+  JGComponent
+}
+
+export { widgetDefines }

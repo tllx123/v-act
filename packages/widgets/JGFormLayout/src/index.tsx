@@ -1,11 +1,25 @@
-import { Control, ReactEnum } from '@v-act/schema-types'
+import {
+  Control,
+  ReactEnum,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import { toNumber, valueofHeight, valueofWidth } from '@v-act/widget-utils'
 
 import { JGFormLayout, JGFormLayoutProps, Setting } from './JGFormLayout'
 
+const JsonJGFormLayout = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element[] | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties
   const settings: Setting[] = []
@@ -40,4 +54,4 @@ const convert = function (
 
 export default JGFormLayout
 
-export { convert, JGFormLayout }
+export { convert, JGFormLayout, JsonJGFormLayout }

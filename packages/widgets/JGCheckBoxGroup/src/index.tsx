@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getColumnName,
   getDropDownSource,
@@ -12,11 +16,19 @@ import {
 
 import { JGCheckBoxGroup, JGCheckBoxGroupProps } from './JGCheckBoxGroup'
 
+const JsonJGCheckBoxGroup = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
-  console.log('@@@@@@@@@@@@@@@:JGCheckBoxGroup')
   const pros = control.properties
   const props: JGCheckBoxGroupProps = {
     top: toNumber(pros.top) + 'px',
@@ -40,4 +52,4 @@ const convert = function (
 }
 
 export default JGCheckBoxGroup
-export { convert, JGCheckBoxGroup }
+export { convert, JGCheckBoxGroup, JsonJGCheckBoxGroup }

@@ -1,4 +1,9 @@
-import { Control, JGReportProperty } from '@v-act/schema-types'
+import {
+  Control,
+  JGReportProperty,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   toBoolean,
   toCssAxisVal,
@@ -8,9 +13,18 @@ import {
 
 import { JGReport, JGReportProps } from './JGReport'
 
+const JsonJGReport = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null
+  render: WidgetRenderer
 ): JSX.Element {
   const pros = control.properties as JGReportProperty
   const props: JGReportProps = {
@@ -24,4 +38,4 @@ const convert = function (
   return <JGReport {...props}></JGReport>
 }
 
-export { convert, JGReport, type JGReportProps }
+export { convert, JGReport, type JGReportProps, JsonJGReport }

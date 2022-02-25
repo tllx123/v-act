@@ -1,4 +1,12 @@
-import { Control, ControlReact, ReactEnum, Window } from '@v-act/schema-types'
+import { FunctionComponent, ReactElement } from 'react'
+
+import {
+  Control,
+  ReactEnum,
+  WidgetRenderContext,
+  WidgetRenderer,
+  Window
+} from '@v-act/schema-types'
 import {
   toEntities,
   toNumber,
@@ -10,13 +18,10 @@ import { JGComponent, JGComponentProps } from './JGComponent'
 
 const convert = function (
   control: Control,
-  render: (
-    controls: Array<Control>,
-    containerReact: ControlReact
-  ) => JSX.Element | null,
+  render: WidgetRenderer,
   componentCode: string,
-  context: { router: any; stackInfo: any }
-): JSX.Element {
+  context: WidgetRenderContext
+): ReactElement | null {
   const win = control as Window
   const pros = control.properties
   const props: JGComponentProps = {
@@ -37,4 +42,23 @@ const convert = function (
   )
 }
 
-export { convert, JGComponent }
+const JsonJGComponent: FunctionComponent<{
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}> = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(
+    props.control,
+    props.render,
+    props.componentCode,
+    props.context
+  )
+}
+
+export { convert, JGComponent, JsonJGComponent }

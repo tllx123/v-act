@@ -1,15 +1,29 @@
-import { Control } from '@v-act/schema-types'
 import {
-  toNumber,
-  valueofHeight,
-  valueofWidth,
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
+import {
   getColumnName,
   getTableName,
-  toBoolean
+  toBoolean,
+  toNumber,
+  valueofHeight,
+  valueofWidth
 } from '@v-act/widget-utils'
+
 import JGTreeGrid, { JGTreeGridProps } from './JGTreeGrid'
 
-export const convert = function (control: Control): JSX.Element {
+const JsonJGTreeGrid = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control)
+}
+
+const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
   console.log('control')
   console.log(control)
@@ -36,4 +50,4 @@ export const convert = function (control: Control): JSX.Element {
   return <JGTreeGrid {...props}></JGTreeGrid>
 }
 
-export { JGTreeGrid }
+export { JGTreeGrid, JsonJGTreeGrid }

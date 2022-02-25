@@ -1,4 +1,8 @@
-import { Control } from '@v-act/schema-types'
+import {
+  Control,
+  WidgetRenderContext,
+  WidgetRenderer
+} from '@v-act/schema-types'
 import {
   getTableName,
   toBoolean,
@@ -9,9 +13,18 @@ import {
 
 import { JGImagePlay, JGImagePlayProps } from './JGImagePlay'
 
+const JsonJGImagePlay = function (props: {
+  control: Control
+  render: WidgetRenderer
+  componentCode: string
+  context: WidgetRenderContext
+}) {
+  return convert(props.control, props.render, props.componentCode)
+}
+
 const convert = function (
   control: Control,
-  render: (controls: Array<Control>) => JSX.Element | null,
+  render: WidgetRenderer,
   componentCode: string
 ): JSX.Element {
   // console.log(control, componentCode, 'JGImagePlay======control')
@@ -43,4 +56,4 @@ const convert = function (
 
 export default JGImagePlay
 
-export { convert, JGImagePlay }
+export { convert, JGImagePlay, JsonJGImagePlay }
