@@ -1,18 +1,19 @@
 import { Property } from 'csstype'
-
-import { TextareaAutosize, TextareaAutosizeProps } from '@mui/base'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
+import styled from 'styled-components'
 import {
   toHeight,
   toLabelWidth,
   toWidth,
-  getFieldValue,
-  isNullOrUnDef
+  isNullOrUnDef,
+  getFieldValue
 } from '@v-act/widget-utils'
+import { Input } from 'antd'
+const { TextArea } = Input
 
-export interface JGLongTextBoxProps extends TextareaAutosizeProps {
+export interface JGLongTextBoxProps {
   left?: Property.Left
   top?: Property.Top
   height?: Property.Height
@@ -33,20 +34,15 @@ export interface JGLongTextBoxProps extends TextareaAutosizeProps {
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
   const context = useContext()
+  const setFieldValue = context.setFieldValue
 
-  let defaultValue: any = ''
-  let value: FieldValue = ''
+  let inputvalTemp: FieldValue = ''
+  let inputval: any = ''
+
   if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
+    inputvalTemp = getFieldValue(props.tableName, props.columnName, context)
+    inputval = isNullOrUnDef(inputvalTemp) ? '' : inputvalTemp
   }
-
-  if (value) {
-    defaultValue = value
-  }
-
-  // console.log("---value---")
-  // console.log(value)
 
   const {
     left,
@@ -92,32 +88,22 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       >
         {labeltext}
       </JGInputLabel>
-      <Box
-        sx={{
-          'resize': 'none',
-          'height': '100%!important',
-          'width': '100%',
-          'flexShrink': '1',
-          'border': '1px solid #dcdee2',
-          'color': '#333',
-          'borderRadius': '4px',
-          '&:hover': {
-            borderColor: '#356abb'
-          },
-          '&:focus': {
-            borderColor: '#356abb',
-            background: '#fff',
-            boxShadow: '0 0 0 2px rgba(53, 106, 187, 0.3)',
-            outline: 'none'
-          },
-          '&:disabled': {
-            background: '#f6f7fb'
+
+      <VactTextArea
+        defaultValue={inputval}
+        value={inputval}
+        disabled={isDisable}
+        onChange={(e) => {
+          if (props.tableName && props.columnName && setFieldValue) {
+            setFieldValue(
+              props.tableName,
+              props.columnName,
+              context,
+              e.target.value
+            )
           }
         }}
-        component={TextareaAutosize}
-        defaultValue={defaultValue}
-        disabled={isDisable}
-      ></Box>
+      ></VactTextArea>
     </Box>
   )
 }
@@ -133,5 +119,30 @@ JGLongTextBox.defaultProps = {
   labelVisible: true,
   labelWidth: 94
 }
+const VactTextArea = styled(TextArea)`
+border: 1px solid #dcdee2 !important;
+color: #333!important;
+border-radius: 4px;
+padding: 0 4px!important;
+width: 100%!important;
+flexShrink': 1!important;
+resize:none;
+outline: none!important;
+height: 100%!important;
+&:hover {
+  border-color: #356abb!important;
+}
+
+&:focus {
+  border-color: #356abb!important;
+  background: #fff!important;
+  box-shadow: 0 0 0 2px rgba(53, 106, 187, 0.3)!important;
+  outline: none!important;
+}
+
+[disabled] {
+  background: #f6f7fb!important;
+}
+`
 
 export default JGLongTextBox

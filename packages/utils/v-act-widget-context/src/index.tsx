@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import { Property } from 'csstype'
 
@@ -40,6 +40,19 @@ interface WidgetContextProps {
   multiWidth?: Width
   //因方案未确定，不要在控件中使用该属性,请使用@v-act/widget-utils中的getFieldValue和getEntityDatas两个接口获取实体数据
   entities?: Entities
+
+  setFieldValue?: (
+    tableName: string,
+    columnName: string,
+    context: WidgetContextProps,
+    val: any
+  ) => void
+  getFieldValue?: (
+    tableName: string,
+    columnName: string,
+    context: WidgetContextProps
+  ) => void
+  inputVal?: any
 }
 
 interface ContextProviderProps {
@@ -64,14 +77,6 @@ function withContext<T>(
       </WidgetContext.Consumer>
     )
   }
-  /*const WithWidgetContext = React.forwardRef(function (props, ref) {
-    return (
-      <WidgetContext.Consumer>
-        {(context) => <Component context={context} ref={ref} {...props} />}
-      </WidgetContext.Consumer>
-    )
-  })
-  return WithWidgetContext*/
 }
 
 const useContext = function () {
@@ -87,8 +92,52 @@ const createContext = function (
 const ContextProvider = function (props: ContextProviderProps) {
   const context = props.context || { position: 'absolute' }
   const children = props.children
+
+  const [contextTemp, setVal] = useState(context)
+
+  const getFieldValue = (
+    tableName: string,
+    columnName: string,
+    context: WidgetContextProps
+  ): any => {
+    const entities = context.entities
+    if (entities) {
+      const entity = entities[tableName]
+      if (entity) {
+        const current = entity._current
+        if (current) {
+          return current[columnName]
+        }
+      }
+    }
+    return null
+  }
+
+  const setFieldValue = (
+    tableName: string,
+    columnName: string,
+    context: WidgetContextProps,
+    val: any
+  ) => {
+    const entities = context.entities
+    if (entities) {
+      const entity = entities[tableName]
+      if (entity) {
+        const current = entity._current
+        if (current) {
+          current[columnName] = val
+          setVal(context)
+        }
+      }
+    }
+  }
+
   return (
-    <WidgetContext.Provider value={context}>{children}</WidgetContext.Provider>
+    <WidgetContext.Provider
+      value={{ ...contextTemp, getFieldValue, setFieldValue }}
+    >
+      {children}
+    </WidgetContext.Provider>
   )
 }
 

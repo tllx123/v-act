@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@v-act/expression-engine": ["packages/utils/v-act-expression-engine/src"],
       "@v-act/schema-types": ["packages/utils/v-act-schema-types/src"],
       "@v-act/cli": ["packages/cli/v-act-cli/src"],
       "@v-act/component-cli": ["packages/cli/v-act-component-cli/src"],
@@ -100,7 +101,8 @@
       "@v-act/jgperiodrange": ["packages/widgets/JGPeriodRange/src"],
       "@v-act/jgfloatrangebox": ["packages/widgets/JGFloatRangeBox/src"],
       "@v-act/jgtoolbar": ["packages/widgets/JGToolbar/src"],
-      "@v-act/widget-all-nextjs": ["packages/widgets/All-Nextjs/src"]
+      "@v-act/widget-all-nextjs": ["packages/widgets/All-Nextjs/src"],
+      "@v-act/datasource": ["packages/utils/v-act-datasource/src"]
     }
   }
 }

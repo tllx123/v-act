@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-
 import {
   Action,
   ActionSchema,
@@ -782,7 +781,6 @@ const parseWindowSchema = function (
   widgetConverts: WidgetConverts,
   context: WidgetConvertContext
 ): JSX.Element | null {
-  //
   let windowDefine = convertWindowSchema(windowSchema)
   const renderChildrenFunc = (
     controls: Array<Control>,
