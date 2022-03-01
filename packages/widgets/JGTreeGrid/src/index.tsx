@@ -50,4 +50,4 @@ const convert = function (control: Control): JSX.Element {
   return <JGTreeGrid {...props}></JGTreeGrid>
 }
 
-export { JGTreeGrid, JsonJGTreeGrid }
+export { JGTreeGrid, JsonJGTreeGrid, convert }

@@ -11,6 +11,7 @@ import {
   getFieldValue
 } from '@v-act/widget-utils'
 import { Input } from 'antd'
+import { useState } from 'react'
 const { TextArea } = Input
 
 export interface JGLongTextBoxProps {
@@ -37,11 +38,12 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
   const setFieldValue = context.setFieldValue
 
   let inputvalTemp: FieldValue = ''
-  let inputval: any = ''
+
+  const [inputval, setInputValue] = useState<any>('')
 
   if (props.tableName && props.columnName) {
     inputvalTemp = getFieldValue(props.tableName, props.columnName, context)
-    inputval = isNullOrUnDef(inputvalTemp) ? '' : inputvalTemp
+    setInputValue(isNullOrUnDef(inputvalTemp) ? '' : inputvalTemp)
   }
 
   const {
@@ -94,6 +96,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
         value={inputval}
         disabled={isDisable}
         onChange={(e) => {
+          setInputValue(e.target.value)
           if (props.tableName && props.columnName && setFieldValue) {
             setFieldValue(
               props.tableName,
