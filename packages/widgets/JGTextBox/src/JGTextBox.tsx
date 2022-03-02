@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef } from 'react'
+import React, { useState, CSSProperties, forwardRef } from 'react'
 import { Property } from 'csstype'
 import InputUnstyled, { InputUnstyledProps } from '@mui/base/InputUnstyled'
 import { styled } from '@mui/system'
@@ -122,12 +122,15 @@ const JGTextBox = function (props: JGTextBoxProps) {
   if (!props.visible) {
     return null
   }
+
   const context = useContext()
-  let value: FieldValue = ''
+  const [value, setValue] = useState<FieldValue>('')
+
   if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
+    setValue(getFieldValue(props.tableName, props.columnName, context))
+    setValue(isNullOrUnDef(value) ? '' : value)
   }
+
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
   const labelWidth = props.labelVisible
@@ -150,6 +153,10 @@ const JGTextBox = function (props: JGTextBoxProps) {
     width: '100%',
     height: height
   }
+
+  // 输入框值改变
+  const CustomInputEvent = (event) => setValue(event.target.value)
+
   return (
     <div style={wrapStyles}>
       <JGInputLabel
@@ -160,11 +167,13 @@ const JGTextBox = function (props: JGTextBoxProps) {
       >
         {props.labelText}
       </JGInputLabel>
+
       <CustomInput
         style={inputStyles}
         disabled={props.disabled}
         placeholder={props.placeholder}
         value={value}
+        onInput={CustomInputEvent}
       />
     </div>
   )
@@ -185,4 +194,5 @@ JGTextBox.defaultProps = {
 }
 
 export default JGTextBox
+
 export { JGTextBox, type JGTextBoxProps }

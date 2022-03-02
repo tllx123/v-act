@@ -1,6 +1,7 @@
 import { JGComponent } from '@v-act/jgcomponent'
 import { JGFormLayout } from '@v-act/jgformlayout'
 import { JGTextBox } from '@v-act/jgtextbox'
+import 'antd/dist/antd.css'
 
 const TextBox = () => {
   return (
@@ -10,7 +11,7 @@ const TextBox = () => {
         top={168}
         multiHeight="content"
         multiWidth="534px"
-        groupTitle="分组标题"
+        groupTitle="分组标题11"
       >
         <JGTextBox
           labelText="文本"

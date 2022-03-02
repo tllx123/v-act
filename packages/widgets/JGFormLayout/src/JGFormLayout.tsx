@@ -82,6 +82,8 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     height: props.multiHeight,
     fontSize: '14px',
     position: context ? context.position : 'absolute',
+    border: '1px solid rgb(220, 222, 226)',
+    padding: '8px 8px 8px',
     fontFamily:
       'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
@@ -109,6 +111,7 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
     >
       {children
         ? children.map((child, i) => {
+            console.log(child.props)
             const setting = settingIndexList[i]
             const childProps = child.props
             let colSpan = setting ? (setting.colSpan ? setting.colSpan : 1) : 1
@@ -139,7 +142,10 @@ const JGFormLayoutDef = function (props: JGFormLayoutProps) {
               fontSize: '14px',
               color: '#8C8C8C',
               fontWeight: 'bold',
-              border: '1px solid #ddd'
+              display: 'inline-block',
+              width: 'auto',
+              padding: '0 8px',
+              marginBottom: '0'
             }}
           >
             {props.groupTitle}

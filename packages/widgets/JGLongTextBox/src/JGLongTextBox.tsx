@@ -10,6 +10,7 @@ import {
   setFieldValue
 } from '@v-act/widget-utils'
 import { Input } from 'antd'
+import { useState } from 'react'
 const { TextArea } = Input
 
 export interface JGLongTextBoxProps {
