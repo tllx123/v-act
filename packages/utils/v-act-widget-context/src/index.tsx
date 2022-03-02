@@ -46,7 +46,7 @@ interface WidgetContextProps {
   //因方案未确定，不要在控件中使用该属性,请使用@v-act/widget-utils中的getFieldValue和getEntityDatas两个接口获取实体数据
   entities?: Entities
 
-  setFieldValue?: (
+  setFieldValueTemp?: (
     tableName: string,
     columnName: string,
     context: WidgetContextProps,
@@ -118,7 +118,7 @@ const ContextProvider = function (props: ContextProviderProps) {
     return null
   }
 
-  const setFieldValue = (
+  const setFieldValueTemp = (
     tableName: string,
     columnName: string,
     context: WidgetContextProps,
@@ -139,7 +139,7 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   return (
     <WidgetContext.Provider
-      value={{ ...contextTemp, getFieldValue, setFieldValue }}
+      value={{ ...contextTemp, getFieldValue, setFieldValueTemp }}
     >
       {children}
     </WidgetContext.Provider>

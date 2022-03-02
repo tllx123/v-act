@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 import { Property } from 'csstype'
 import zhCN from 'date-fns/locale/zh-CN'
 import { parseISO, format } from 'date-fns'
@@ -7,13 +8,12 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { FieldValue, useContext } from '@v-act/widget-context'
+import { useContext } from '@v-act/widget-context'
 import {
   toHeight,
   toLabelWidth,
   toWidth,
-  getFieldValue,
-  isNullOrUnDef
+  setFieldValue
 } from '@v-act/widget-utils'
 
 interface JGLongDateTimePickerProps extends DateTimePickerProps {
@@ -30,29 +30,13 @@ interface JGLongDateTimePickerProps extends DateTimePickerProps {
   placeholder?: string
   readonly?: boolean
   labelVisible?: boolean
-  tableName?: string | null
-  columnName?: string | null
+  val?: any
   maxDate?: any
   minDate?: any
 }
 
 const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
   const context = useContext()
-
-  let defulValue: any = null
-  let value: FieldValue = ''
-  if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
-  }
-
-  if (value) {
-    defulValue = value
-  }
-
-  // console.log("---value---")
-  // console.log(value)
-
   const {
     left,
     top,
@@ -69,6 +53,7 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
     labelWidth,
     maxDate,
     minDate,
+    val,
     ...restProps
   } = props
 
@@ -77,7 +62,6 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
   maxDateTemp = parseISO(maxDate)
   minDateTemp = parseISO(minDate)
 
-  const [valueTemp, setValue] = React.useState<any>(defulValue)
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
       <DateTimePicker
@@ -85,9 +69,10 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
         maxDate={maxDateTemp}
         minDate={minDateTemp}
         inputFormat="yyyy-MM-dd HH:mm:ss"
-        value={valueTemp}
+        value={val.valName}
         onChange={(newValue) => {
-          setValue(newValue)
+          // setValue(newValue)
+          setFieldValue(val.tableName, val.columnName, context, newValue)
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => (
           <Box

@@ -1,14 +1,13 @@
 import { Property } from 'csstype'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { FieldValue, useContext } from '@v-act/widget-context'
+import { useContext } from '@v-act/widget-context'
 import styled from 'styled-components'
 import {
   toHeight,
   toLabelWidth,
   toWidth,
-  isNullOrUnDef,
-  getFieldValue
+  setFieldValue
 } from '@v-act/widget-utils'
 import { Input } from 'antd'
 const { TextArea } = Input
@@ -27,23 +26,12 @@ export interface JGLongTextBoxProps {
   labelWidth?: number
   placeholder?: string
   labelVisible?: boolean
-  tableName?: string | null
-  columnName?: string | null
   disabled?: boolean
+  val?: any
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
   const context = useContext()
-  const setFieldValue = context.setFieldValue
-
-  let inputvalTemp: FieldValue = ''
-  let inputval: any = ''
-
-  if (props.tableName && props.columnName) {
-    inputvalTemp = getFieldValue(props.tableName, props.columnName, context)
-    inputval = isNullOrUnDef(inputvalTemp) ? '' : inputvalTemp
-  }
-
   const {
     left,
     top,
@@ -51,13 +39,13 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     width,
     ismust,
     labeltext,
-    position,
     margin,
     padding,
     readonly,
     labelVisible,
     labelWidth,
-    disabled
+    disabled,
+    val
   } = props
 
   let isDisable = false
@@ -90,18 +78,11 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       </JGInputLabel>
 
       <VactTextArea
-        defaultValue={inputval}
-        value={inputval}
+        defaultValue={val.valName}
+        value={val.valName}
         disabled={isDisable}
         onChange={(e) => {
-          if (props.tableName && props.columnName && setFieldValue) {
-            setFieldValue(
-              props.tableName,
-              props.columnName,
-              context,
-              e.target.value
-            )
-          }
+          setFieldValue(val.tableName, val.columnName, context, e.target.value)
         }}
       ></VactTextArea>
     </Box>

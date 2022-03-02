@@ -11,9 +11,7 @@ type SerializeValue =
   | Array<OrginalSerializeType>
 class Cache {
   savePath: string
-
   data: { [prop: string]: SerializeValue }
-
   constructor(savePath: string) {
     this.data = {}
     this.savePath = savePath || path.resolve(__dirname, 'cache.json')
