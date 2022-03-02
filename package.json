@@ -9,7 +9,7 @@
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
-    "dev: jglongdatetimepicker": "node scripts/index.js build -w -s @v-act/jglongdatetimepicker --cp ./apps/runtime",
+    "dev: jgcheckbox": "node scripts/index.js build -w -s @v-act/jgcheckbox --cp ./apps/runtime",
     "dev: widgetContext": "node scripts/index.js build -w -s @v-act/widget-context --cp ./apps/runtime",
     "dev: widgetUtils": "node scripts/index.js build -w -s @v-act/widget-utils --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",

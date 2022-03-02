@@ -7,8 +7,7 @@ import {
   toHeight,
   toLabelWidth,
   toWidth,
-  getFieldValue,
-  isNullOrUnDef
+  setFieldValue
 } from '@v-act/widget-utils'
 
 interface JGCheckBoxProps extends CheckboxProps {
@@ -25,24 +24,12 @@ interface JGCheckBoxProps extends CheckboxProps {
   ismust?: boolean
   disabled?: boolean
   labelVisible?: boolean
-  tableName?: string | null
-  columnName?: string | null
+  val?: any
   placeholder?: string
 }
 
 const JGCheckBox = (props: JGCheckBoxProps) => {
   const context = useContext()
-
-  let checkedValue: any = false
-  let value: FieldValue = ''
-  if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
-  }
-
-  if (value) {
-    checkedValue = true
-  }
 
   const {
     left,
@@ -58,7 +45,8 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     readonly,
     labelVisible,
     labelWidth,
-    placeholder
+    placeholder,
+    val
   } = props
 
   let isDisable = false
@@ -105,8 +93,17 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
           component={Checkbox}
           size="small"
           disableRipple={true}
-          defaultChecked={checkedValue}
+          defaultChecked={val.valName}
           disabled={isDisable}
+          onChange={(e: Object) => {
+            //  console.log(e)
+            setFieldValue(
+              val.tableName,
+              val.columnName,
+              context,
+              e.target.checked
+            )
+          }}
         >
           {' '}
         </Box>
