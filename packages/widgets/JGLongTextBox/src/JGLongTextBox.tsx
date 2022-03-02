@@ -1,15 +1,11 @@
+import { ChangeEvent } from 'react'
+
+import { Input } from 'antd'
 import { Property } from 'csstype'
+import styled from 'styled-components'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { useContext } from '@v-act/widget-context'
-import styled from 'styled-components'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  setFieldValue
-} from '@v-act/widget-utils'
-import { Input } from 'antd'
+
 const { TextArea } = Input
 
 export interface JGLongTextBoxProps {
@@ -27,11 +23,11 @@ export interface JGLongTextBoxProps {
   placeholder?: string
   labelVisible?: boolean
   disabled?: boolean
-  val?: any
+  value?: string
+  onChanged?: (e: ChangeEvent) => void
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
-  const context = useContext()
   const {
     left,
     top,
@@ -45,21 +41,21 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     labelVisible,
     labelWidth,
     disabled,
-    val
+    value,
+    onChanged
   } = props
 
   let isDisable = false
   if (readonly || disabled) {
     isDisable = true
   }
-
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: toWidth(width, context, '235px'),
-        height: toHeight(height, context, '26px'),
+        width: width,
+        height: height,
         position: context.position,
         left: left,
         top: top,
@@ -69,8 +65,8 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       }}
     >
       <JGInputLabel
-        width={toLabelWidth(labelWidth, context, 94)}
-        height={toHeight(height, context, '26px')}
+        width={labelWidth}
+        height={height}
         visible={labelVisible}
         required={ismust}
       >
@@ -78,11 +74,11 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       </JGInputLabel>
 
       <VactTextArea
-        defaultValue={val.valName}
-        value={val.valName}
+        //defaultValue={val.valName}
+        value={value}
         disabled={isDisable}
-        onChange={(e) => {
-          setFieldValue(val.tableName, val.columnName, context, e.target.value)
+        onChange={(e: ChangeEvent) => {
+          onChanged && onChanged(e)
         }}
       ></VactTextArea>
     </Box>
