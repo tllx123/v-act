@@ -1,16 +1,14 @@
+import { ChangeEvent } from 'react'
+
+import { Input } from 'antd'
 import { Property } from 'csstype'
+import styled from 'styled-components'
+
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
-import styled from 'styled-components'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  setFieldValue
-} from '@v-act/widget-utils'
-import { Input } from 'antd'
-import { useState } from 'react'
+import { toHeight, toLabelWidth, toWidth } from '@v-act/widget-utils'
+
 const { TextArea } = Input
 
 export interface JGLongTextBoxProps {
@@ -28,7 +26,8 @@ export interface JGLongTextBoxProps {
   placeholder?: string
   labelVisible?: boolean
   disabled?: boolean
-  val?: any
+  value?: string
+  onChanged?: (e: ChangeEvent) => void
 }
 
 const JGLongTextBox = (props: JGLongTextBoxProps) => {
@@ -46,14 +45,14 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     labelVisible,
     labelWidth,
     disabled,
-    val
+    value,
+    onChanged
   } = props
 
   let isDisable = false
   if (readonly || disabled) {
     isDisable = true
   }
-
   return (
     <Box
       sx={{
@@ -79,11 +78,11 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       </JGInputLabel>
 
       <VactTextArea
-        defaultValue={val.valName}
-        value={val.valName}
+        //defaultValue={val.valName}
+        value={value}
         disabled={isDisable}
-        onChange={(e) => {
-          setFieldValue(val.tableName, val.columnName, context, e.target.value)
+        onChange={(e: ChangeEvent) => {
+          onChanged && onChanged(e)
         }}
       ></VactTextArea>
     </Box>

@@ -1,11 +1,17 @@
 import { Control, WidgetRenderer } from '@v-act/schema-types'
+import { useContext } from '@v-act/widget-context'
 import {
+  getColumnName,
+  getCompVal,
+  getFieldValue,
+  getTableName,
+  setFieldValue,
   toBoolean,
   toNumber,
   valueofHeight,
-  valueofWidth,
-  getCompVal
+  valueofWidth
 } from '@v-act/widget-utils'
+
 import JGLongTextBox, { JGLongTextBoxProps } from './JGLongTextBox'
 
 const JsonJGLongTextBox = function (props: {
@@ -24,6 +30,9 @@ const JsonJGLongTextBox = function (props: {
 
 const convert = function (control: Control): JSX.Element {
   const pros = control.properties
+  const context = useContext()
+  const tableName = getTableName(control)
+  const columnName = getColumnName(control)
   const props: JGLongTextBoxProps = {
     top: toNumber(pros.top) + 'px',
     left: toNumber(pros.left) + 'px',
@@ -36,7 +45,15 @@ const convert = function (control: Control): JSX.Element {
     labelWidth: toNumber(pros.labelWidth, 94),
     labelVisible: toBoolean(pros.labelVisible, true),
     readonly: toBoolean(pros.readOnly, false),
-    val: control.val
+    value:
+      tableName && columnName
+        ? getFieldValue(tableName, columnName, context) + ''
+        : '',
+    onChanged: (e) => {
+      if (tableName && columnName) {
+        setFieldValue(tableName, columnName, e.target.value, context)
+      }
+    }
   }
   return <JGLongTextBox {...props}></JGLongTextBox>
 }
