@@ -7,12 +7,8 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { SerialNumberUtil as serialNumberUtil } from '@v-act/vjs.framework.extension.util'
+import { SerialNumberUtil as serialNumberUtil } from '@v-act/vjs.framework.extension.util.serialnumber'
 import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-
-let undefined
-
-exports.initModule = function (sBox) {}
 
 let main = function (ruleContext) {
   let sepcialStrArr = ['/', '%', '_', '[', ']'] //特殊字符

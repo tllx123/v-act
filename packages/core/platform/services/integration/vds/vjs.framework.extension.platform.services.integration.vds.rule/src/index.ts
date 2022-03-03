@@ -1,2 +1,4 @@
-export * from './RuleContext'
-export * from './MethodContext'
+import RuleContext from './RuleContext'
+import MethodContext from './MethodContext'
+
+export { RuleContext, MethodContext }

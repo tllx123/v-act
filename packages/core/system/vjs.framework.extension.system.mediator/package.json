@@ -15,7 +15,6 @@
     "dist"
   ],
   "dependencies": {
-    "@v-act/vjs.framework.extension.platform.data.spi.mapings": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.system.event": "1.0.0-alpha.1"
   }

@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.platform.icon.iconfont": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",

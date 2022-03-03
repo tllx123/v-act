@@ -22,7 +22,6 @@
     "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.file": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
