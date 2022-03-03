@@ -1,0 +1,37 @@
+{
+  "name": "ExecuteRuleSet",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-09-19liangzc：处理执行范围参数",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/ExecuteRuleSet"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.engine.route": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.route": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.domain.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.init": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.logic.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.mediator": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

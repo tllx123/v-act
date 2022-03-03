@@ -1,0 +1,27 @@
+{
+  "name": "LocateSelectRecord",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-09025liangzc：处理vui列表无法使用记录选中规则的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/LocateSelectRecord"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+  }
+}

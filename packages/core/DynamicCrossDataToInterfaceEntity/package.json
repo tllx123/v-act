@@ -1,0 +1,28 @@
+{
+  "name": "DynamicCrossDataToInterfaceEntity",
+  "version": "1.0.0-alpha.1",
+  "description": "实现加载动态交叉表到实体，值汇总函数支持对指定字段设置不同的汇总函数，支持运算表达式汇总",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/DynamicCrossDataToInterfaceEntity"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.repository.access": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.widget.pagination": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

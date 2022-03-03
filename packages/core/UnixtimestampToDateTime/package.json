@@ -1,0 +1,18 @@
+{
+  "name": "UnixtimestampToDateTime",
+  "version": "1.0.0-alpha.1",
+  "description": "unixTimestamp.replace中unixTimestamp不是字符串类型加入代码：unixTimestamp=unixTimestamp+'';修改日期：2018-10-29.修改人：黄定",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/UnixtimestampToDateTime"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}

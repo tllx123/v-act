@@ -1,0 +1,18 @@
+{
+  "name": "DateTimeToUnixtimestamp",
+  "version": "1.0.0-alpha.1",
+  "description": "vardate=newDate(datetime);修改为vardate=newDate(datetime.replace(/-/g,'/'));ios兼容问题，需要改成datetime.replace(/-/g,'/')修改日期：2018-11-08.修改人：黄定",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/DateTimeToUnixtimestamp"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}

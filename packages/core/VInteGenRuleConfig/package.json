@@ -1,0 +1,23 @@
+{
+  "name": "VInteGenRuleConfig",
+  "version": "1.0.0-alpha.1",
+  "description": "更新日期：2017-09-28更新人：黄家荣更新内容：VJS-Package的依赖改为vjs.framework.extension.platform.interface.scope",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/VInteGenRuleConfig"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.domain.operation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+  }
+}
