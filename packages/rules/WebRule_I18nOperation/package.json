@@ -1,0 +1,28 @@
+{
+	"name": "@v-act/webrule_i18noperation",
+	"version": "1.0.0-alpha.1",
+	"description": "2018-12-10liangzc：处理客户端方法下获取不了多语言列表的问题",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_I18nOperation"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.alerter": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.interface.i18n": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.rule.common.plugin.services.db": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+	}
+}

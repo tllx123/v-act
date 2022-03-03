@@ -1,0 +1,22 @@
+{
+	"name": "@v-act/webfunc_setcurrentwindowtitle",
+	"version": "1.0.0-alpha.1",
+	"description": "修改当前窗体的标题",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/funcs/WebFunc_SetCurrentWindowTitle"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.relation": "1.0.0-alpha.1"
+	}
+}

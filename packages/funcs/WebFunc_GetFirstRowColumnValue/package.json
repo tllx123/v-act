@@ -1,0 +1,22 @@
+{
+	"name": "@v-act/webfunc_getfirstrowcolumnvalue",
+	"version": "1.0.0-alpha.1",
+	"description": "2017-07-21taoyz：所有规则函数控件统一增加内部标识与内部版本,2016-04-25liangzc：修改函数参数格式：界面实体参数只支持字符串类型，活动集实体参数支持字符串类型和实体类型",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/funcs/WebFunc_GetFirstRowColumnValue"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1"
+	}
+}
