@@ -1,0 +1,23 @@
+{
+  "name": "vjs.framework.extension.platform.encrypt.domain.MD5Impl",
+  "version": "1.0.0-alpha.1",
+  "description": "2016-11-26liangzc：添加加密方式：不采用调后台的方式，直接在js中处理。",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.encrypt.domain.MD5Impl"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.core": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.domain.operation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+  }
+}

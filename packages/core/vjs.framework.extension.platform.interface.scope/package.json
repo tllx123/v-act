@@ -1,0 +1,25 @@
+{
+  "name": "vjs.framework.extension.platform.interface.scope",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-04-02liangzc：域堆栈存储",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.interface.scope"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.param": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.i18n": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

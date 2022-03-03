@@ -1,0 +1,18 @@
+{
+  "name": "vjs.framework.extension.platform.plugin.ui.vue.default",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-08-06zhaoyf:vui优化，拆分vui及资源构件",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.plugin.ui.vue.default"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}

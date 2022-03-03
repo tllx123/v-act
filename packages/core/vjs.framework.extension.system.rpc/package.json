@@ -1,0 +1,27 @@
+{
+  "name": "vjs.framework.extension.system.rpc",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-07-22liangzc：处理传递url的参数时结果不正确的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.system.rpc"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.rpc.operation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.channel": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.contract": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.proxy": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

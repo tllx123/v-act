@@ -1,0 +1,32 @@
+{
+  "name": "vjs.framework.extension.platform.engine.route",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-04-17liangzc：执行活动集接口添加成功回调和失败回调",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.engine.route"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.aop": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.route": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.init.view": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.transaction.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

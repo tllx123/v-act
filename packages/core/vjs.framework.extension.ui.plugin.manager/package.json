@@ -1,0 +1,23 @@
+{
+  "name": "vjs.framework.extension.ui.plugin.manager",
+  "version": "1.0.0-alpha.1",
+  "description": "2015-03-13xiedhweb版桌面一体化调整",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.ui.plugin.manager"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.ui": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.common.plugin.services.series": "1.0.0-alpha.1"
+  }
+}
