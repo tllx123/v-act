@@ -1,0 +1,25 @@
+{
+  "name": "vjs.framework.extension.platform.data.storage.schema.param",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-09-06liangzc:添加注册/获取构件元信息接口",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.data.storage.schema.param"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.model.config": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.init": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+  }
+}

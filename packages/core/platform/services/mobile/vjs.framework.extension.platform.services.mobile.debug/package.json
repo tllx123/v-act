@@ -1,0 +1,23 @@
+{
+  "name": "vjs.framework.extension.platform.services.mobile.debug",
+  "version": "1.0.0-alpha.1",
+  "description": "移动端debug页面（微信）",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.mobile.debug"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.aop": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.base": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar": "1.0.0-alpha.1"
+  }
+}

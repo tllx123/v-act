@@ -7,6 +7,7 @@ import usePluginImport from 'vite-plugin-importer'
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
+import cssInjectedByJsPlugin from './cssInjected.js'
 
 const publicExternal = [
   '@grapecity/spread-sheets-react',
@@ -74,6 +75,8 @@ export async function viteBuild(scopes, copyToPath, watch) {
       plugins: [
         vitePluginReact(),
         vitePluginDts(),
+        // cssInjectedByJsPlugin(),
+        cssInjectedByJsPlugin(),
         // usePluginImport({
         //   libraryName: 'antd',
         //   libraryDirectory: 'es',

@@ -15,7 +15,8 @@
     "v3-pack-center-template": "bin/template.js"
   },
   "scripts": {
-    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "v3:getviewurl": "node bin/getViewUrl.js",
     "v3:preview": "node bin/preview.js",
     "v3:restart": "npm run v3:stop && rimraf ./.next && npm run v3:start",

@@ -1,0 +1,40 @@
+{
+  "name": "vjs.framework.extension.ui.adapter.init.smartclient.web",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-10-15liangzc:更新窗体标题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.ui.adapter.init.smartclient.web"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.param": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.init.view.schema.Application": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.runtime.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.relation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.channel.web.ajax": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.contract.vplatform": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.dependency": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage.web": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.common.plugin.services.series": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.services": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.smartclient.JGComponent": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

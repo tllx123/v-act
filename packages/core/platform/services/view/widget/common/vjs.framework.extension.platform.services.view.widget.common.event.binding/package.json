@@ -1,0 +1,21 @@
+{
+  "name": "vjs.framework.extension.platform.services.view.widget.common.event.binding",
+  "version": "1.0.0-alpha.1",
+  "description": "2016-02-03xiedh：代码精简",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.view.widget.common.event.binding"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.event": "1.0.0-alpha.1"
+  }
+}

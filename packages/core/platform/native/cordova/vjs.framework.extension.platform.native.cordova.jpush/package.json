@@ -1,0 +1,25 @@
+{
+  "name": "vjs.framework.extension.platform.native.cordova.jpush",
+  "version": "1.0.0-alpha.1",
+  "description": "cordova极光推送插件",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.native.cordova.jpush"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.browser": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.init": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.integration.render": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.native.mobile.jpush": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "vjs.framework.extension.platform.services.operation.remote.ruleset",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-07-04liangzc：添加参数",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.operation.remote.ruleset"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.metadata": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+  }
+}
