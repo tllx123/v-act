@@ -1,12 +1,6 @@
 import '../styles/globals.css'
-import '@v-act/jgcalendar/dist/style.css'
-import '@v-act/jgtreeview/dist/style.css'
-import '@v-act/jgdatagrid/dist/style.css'
-import '@v-act/jgtreegrid/dist/style.css'
-import '@v-act/jgdaterangepicker/dist/style.css'
-import '@v-act/jgperiodrange/dist/style.css'
 import 'antd/dist/antd.css'
-import '@v-act/jgrichtexteditor/dist/style.css'
+
 import { useEffect } from 'react'
 import App from 'next/app'
 import { ServerStyleSheets } from '@material-ui/styles'
