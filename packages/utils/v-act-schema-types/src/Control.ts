@@ -35,6 +35,21 @@ interface Control {
    * 事件信息
    */
   events?: Event[]
+
+  /**
+   * 组件值
+   */
+  val?: any
+
+  /**
+   * 表名
+   */
+  tableName?: string | null
+
+  /**
+   * 列名
+   */
+  columnName?: string | null
 }
 
 export default Control

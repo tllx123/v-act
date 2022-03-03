@@ -1,7 +1,6 @@
 import { CSSProperties, Fragment } from 'react'
-
+import { useContext } from '@v-act/widget-context'
 import { Property as CSSProperty } from 'csstype'
-
 import { getResHashCode } from '@v-act/component-schema-utils'
 import {
   Control,
@@ -302,6 +301,69 @@ const getFieldValue = function (
 }
 
 /**
+ * 设置实体字段值
+ * @param tableName 实体编号
+ * @param columnName 字段编号
+ * @param context 上下文
+ * @param val 值
+ */
+const setFieldValue = function (
+  tableName: string,
+  columnName: string,
+  context: WidgetContextProps,
+  val: any
+) {
+  if (context.setFieldValueTemp) {
+    context.setFieldValueTemp(tableName, columnName, context, val)
+  }
+}
+
+/**
+ * 获取组件属性值
+ * @param control
+ */
+const useGetCompVal = function (control: Control) {
+  const context = useContext()
+  const properties = control.properties
+  const tableName = getTableName(control)
+  const columnName = getColumnName(control)
+
+  let props = {
+    top: toNumber(properties.top) + 'px',
+    left: toNumber(properties.left) + 'px',
+    width: toWidth(
+      valueofWidth(properties.multiWidth, '235px'),
+      context,
+      '235px'
+    ),
+    height: toHeight(
+      valueofHeight(properties.multiHeight, '26px'),
+      context,
+      '26px'
+    ),
+    ismust: toBoolean(properties.isMust, false),
+    placeholder: properties.placeholder,
+    position: context.position,
+    disabled: !toBoolean(properties.enabled, true),
+    labeltext: properties.labelText || '',
+    labelWidth: toLabelWidth(toNumber(properties.labelWidth, 94), context, 94),
+    labelVisible: toBoolean(properties.labelVisible, true),
+    readonly: toBoolean(properties.readOnly, false),
+    value:
+      tableName && columnName
+        ? getFieldValue(tableName, columnName, context)
+        : '',
+    onChanged: (e: any) => {
+      if (tableName && columnName) {
+        setFieldValue(tableName, columnName, context, e.target.value)
+      }
+    }
+  }
+
+  return props
+}
+
+/**
  * 获取实体数据
  * @param tableName 实体编号
  * @param context 上下文
@@ -555,9 +617,11 @@ export {
   getFieldValue,
   getIDColumnName,
   getTableName,
+  useGetCompVal,
   isAbsoluteVal,
   isNullOrUnDef,
   isPercent,
+  setFieldValue,
   toBoolean,
   toControlReact,
   toCssAxisVal,

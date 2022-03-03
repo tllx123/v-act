@@ -1,51 +1,12 @@
-import { Property } from 'csstype'
+import { Input } from 'antd'
+import styled from 'styled-components'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { FieldValue, useContext } from '@v-act/widget-context'
-import styled from 'styled-components'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  isNullOrUnDef,
-  getFieldValue
-} from '@v-act/widget-utils'
-import { Input } from 'antd'
-import { useState } from 'react'
+import { JGComponentProps } from '@v-act/schema-types'
+
 const { TextArea } = Input
 
-export interface JGLongTextBoxProps {
-  left?: Property.Left
-  top?: Property.Top
-  height?: Property.Height
-  width?: Property.Width
-  position?: Property.Position
-  margin?: Property.Margin
-  padding?: Property.Padding
-  readonly?: boolean
-  ismust?: boolean
-  labeltext?: string
-  labelWidth?: number
-  placeholder?: string
-  labelVisible?: boolean
-  tableName?: string | null
-  columnName?: string | null
-  disabled?: boolean
-}
-
-const JGLongTextBox = (props: JGLongTextBoxProps) => {
-  const context = useContext()
-  const setFieldValue = context.setFieldValue
-
-  let inputvalTemp: FieldValue = ''
-
-  const [inputval, setInputValue] = useState<any>('')
-
-  if (props.tableName && props.columnName) {
-    inputvalTemp = getFieldValue(props.tableName, props.columnName, context)
-    setInputValue(isNullOrUnDef(inputvalTemp) ? '' : inputvalTemp)
-  }
-
+const JGLongTextBox = (props: JGComponentProps) => {
   const {
     left,
     top,
@@ -53,13 +14,15 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     width,
     ismust,
     labeltext,
-    position,
     margin,
     padding,
     readonly,
     labelVisible,
     labelWidth,
-    disabled
+    disabled,
+    position,
+    value,
+    onChanged
   } = props
 
   let isDisable = false
@@ -72,9 +35,9 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: toWidth(width, context, '235px'),
-        height: toHeight(height, context, '26px'),
-        position: context.position,
+        width: width,
+        height: height,
+        position: position,
         left: left,
         top: top,
         margin: margin,
@@ -83,8 +46,8 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       }}
     >
       <JGInputLabel
-        width={toLabelWidth(labelWidth, context, 94)}
-        height={toHeight(height, context, '26px')}
+        width={labelWidth}
+        height={height}
         visible={labelVisible}
         required={ismust}
       >
@@ -92,19 +55,11 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       </JGInputLabel>
 
       <VactTextArea
-        defaultValue={inputval}
-        value={inputval}
+        defaultValue={value}
+        value={value}
         disabled={isDisable}
         onChange={(e) => {
-          setInputValue(e.target.value)
-          if (props.tableName && props.columnName && setFieldValue) {
-            setFieldValue(
-              props.tableName,
-              props.columnName,
-              context,
-              e.target.value
-            )
-          }
+          onChanged && onChanged(e)
         }}
       ></VactTextArea>
     </Box>

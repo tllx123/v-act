@@ -9,7 +9,8 @@ import {
   toBoolean,
   toNumber,
   valueofHeight,
-  valueofWidth
+  valueofWidth,
+  getCompVal
 } from '@v-act/widget-utils'
 
 import { JGCheckBox, JGCheckBoxProps } from './JGCheckBox'
@@ -20,6 +21,12 @@ const JsonJGCheckBox = function (props: {
   componentCode: string
   context: WidgetRenderContext
 }) {
+  let val = getCompVal(props.control)
+  props.control.val = {
+    valName: val.val,
+    tableName: val.tableName,
+    columnName: val.columnName
+  }
   return convert(props.control)
 }
 
@@ -38,8 +45,7 @@ const convert = function (control: Control): JSX.Element {
     labeltext: pros.labelText,
     labelVisible: toBoolean(pros.labelVisible, true),
     readonly: toBoolean(pros.readOnly, false),
-    tableName: getTableName(control),
-    columnName: getColumnName(control)
+    val: control.val
   }
   return <JGCheckBox {...props}></JGCheckBox>
 }

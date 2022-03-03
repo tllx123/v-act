@@ -18,7 +18,7 @@ import type Property from './Property'
 import ReactEnum from './ReactEnum'
 import type Width from './Width'
 import type Window from './Window'
-
+import type JGComponentProps from './JGComponent'
 /**
  * 转换成数值,转换失败将返回def值
  * @deprecated
@@ -115,6 +115,7 @@ interface WidgetConvertContext {
 }
 
 export {
+  JGComponentProps,
   Component,
   Control,
   ControlReact,
