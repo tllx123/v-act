@@ -1,0 +1,27 @@
+{
+  "name": "vjs.framework.extension.platform.interface.route",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-08-24liangzc：处理同一个路由里多次设置同一个规则（前台foreach）的规则返回值，只有第一个生效的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.interface.route"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.async": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

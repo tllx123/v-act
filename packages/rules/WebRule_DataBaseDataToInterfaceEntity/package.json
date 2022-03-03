@@ -1,0 +1,31 @@
+{
+	"name": "@v-act/webrule_databasedatatointerfaceentity",
+	"version": "1.0.0-alpha.1",
+	"description": "2017-12-1tangwf:动态加载时，将实体的树结构转为表的树结构",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_DataBaseDataToInterfaceEntity"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/DynamicLoadCondition": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.repository.access": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.widget.pagination": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+	}
+}

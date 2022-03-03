@@ -1,0 +1,24 @@
+{
+  "name": "vjs.framework.extension.system.rpc.contract.vplatform",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-07-17liangzc：设置sourceWindow参数",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.system.rpc.contract.vplatform"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.metadata": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc.contract": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+  }
+}

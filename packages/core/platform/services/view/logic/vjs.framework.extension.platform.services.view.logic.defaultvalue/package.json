@@ -1,0 +1,24 @@
+{
+  "name": "vjs.framework.extension.platform.services.view.logic.defaultvalue",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-08-16liangzc:处理替换窗体的控件默认值无效的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.view.logic.defaultvalue"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.core": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.logic.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1"
+  }
+}

@@ -17,6 +17,7 @@ import {
   EntityRecord,
   WidgetContextProps
 } from '@v-act/widget-context'
+import { boolean } from 'yargs'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -322,13 +323,13 @@ const setFieldValue = function (
  * 获取组件属性值
  * @param control
  */
-const useGetCompVal = function (control: Control) {
+const useGetCompVal = function (control: Control, type?: string) {
   const context = useContext()
   const properties = control.properties
   const tableName = getTableName(control)
   const columnName = getColumnName(control)
 
-  let props = {
+  let props: any = {
     top: toNumber(properties.top) + 'px',
     left: toNumber(properties.left) + 'px',
     width: toWidth(
@@ -352,12 +353,51 @@ const useGetCompVal = function (control: Control) {
     value:
       tableName && columnName
         ? getFieldValue(tableName, columnName, context)
-        : '',
-    onChanged: (e: any) => {
-      if (tableName && columnName) {
-        setFieldValue(tableName, columnName, context, e.target.value)
+        : undefined
+  }
+
+  switch (type) {
+    case 'JGLongDateTimePicker':
+      ;(props.value =
+        tableName && columnName
+          ? getFieldValue(tableName, columnName, context)
+            ? getFieldValue(tableName, columnName, context)
+            : new Date()
+          : undefined),
+        (props.maxDate = properties.maxDate)
+      props.minDate = properties.minDate
+      props.onChangedForDate = (val: any) => {
+        if (tableName && columnName) {
+          setFieldValue(tableName, columnName, context, val)
+        }
       }
-    }
+      break
+    case 'JGCheckBox':
+      ;(props.value =
+        tableName && columnName
+          ? getFieldValue(tableName, columnName, context)
+          : undefined),
+        (props.value = props.value === 'false' ? '' : props.value)
+      props.value = props.value === null ? '' : props.value
+      props.onChanged = (e: any) => {
+        if (tableName && columnName) {
+          console.log('e.target.checked')
+          console.log(e.target.checked)
+          setFieldValue(
+            tableName,
+            columnName,
+            context,
+            e.target.checked.toString()
+          )
+        }
+      }
+      break
+    default:
+      props.onChanged = (e: any) => {
+        if (tableName && columnName) {
+          setFieldValue(tableName, columnName, context, e.target.value)
+        }
+      }
   }
 
   return props

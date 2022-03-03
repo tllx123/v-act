@@ -1,0 +1,23 @@
+{
+	"name": "@v-act/webfunc_setwindowstate",
+	"version": "1.0.0-alpha.1",
+	"description": "客户端函数",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/funcs/WebFunc_SetWindowState"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.modal": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1"
+	}
+}

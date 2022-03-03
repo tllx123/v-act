@@ -7,6 +7,7 @@ interface PageManagerProperty {
   page: any
   level?: number
   url?: string
+  children?: JSX.Element
 }
 
 const getTitleFromUrl = function (url?: string | null) {

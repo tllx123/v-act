@@ -1,0 +1,25 @@
+{
+  "name": "vjs.framework.extension.platform.engine.expression",
+  "version": "1.0.0-alpha.1",
+  "description": "处理前台语法错误打印信息",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.engine.expression"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.engine.function": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.enum": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.function": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.math": "1.0.0-alpha.1"
+  }
+}

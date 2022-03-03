@@ -1,0 +1,25 @@
+{
+  "name": "vjs.framework.extension.ui.adapter.resourcepackage.web",
+  "version": "1.0.0-alpha.1",
+  "description": "2015-10-12liangchaohui：模块化调整",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.ui.adapter.resourcepackage.web"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.core": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.domain.cookie": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+  }
+}

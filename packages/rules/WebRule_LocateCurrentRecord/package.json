@@ -1,0 +1,29 @@
+{
+	"name": "@v-act/webrule_locatecurrentrecord",
+	"version": "1.0.0-alpha.1",
+	"description": "2017-12-14liangzc：异步化函数有规则路由上下文封装",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_LocateCurrentRecord"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+	}
+}

@@ -1,0 +1,23 @@
+{
+  "name": "vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.ruleset",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-09-17liangzc：规则菜单处理器",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.ruleset"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.core": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1"
+  }
+}
