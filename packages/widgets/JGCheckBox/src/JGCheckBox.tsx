@@ -1,36 +1,9 @@
-import { Property } from 'csstype'
-import Checkbox, { CheckboxProps } from '@mui/material/Checkbox'
+import Checkbox from '@mui/material/Checkbox'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { FieldValue, useContext } from '@v-act/widget-context'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  setFieldValue
-} from '@v-act/widget-utils'
+import { JGComponentProps } from '@v-act/schema-types'
 
-interface JGCheckBoxProps extends CheckboxProps {
-  left?: Property.Left
-  top?: Property.Top
-  height?: Property.Height
-  width?: Property.Width
-  position?: Property.Position
-  margin?: Property.Margin
-  padding?: Property.Padding
-  labeltext?: string
-  labelWidth?: number
-  readonly?: boolean
-  ismust?: boolean
-  disabled?: boolean
-  labelVisible?: boolean
-  val?: any
-  placeholder?: string
-}
-
-const JGCheckBox = (props: JGCheckBoxProps) => {
-  const context = useContext()
-
+const JGCheckBox = (props: JGComponentProps) => {
   const {
     left,
     top,
@@ -46,22 +19,25 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
     labelVisible,
     labelWidth,
     placeholder,
-    val
+    value,
+    onChanged
   } = props
 
   let isDisable = false
   if (readonly || disabled) {
     isDisable = true
   }
+  console.log('Boolean(value)')
+  console.log(Boolean(value))
 
   return (
     <Box
       sx={{
         display: 'flex',
         alignItems: 'center',
-        width: toWidth(width, context, '235px'),
-        height: toHeight(height, context, '26px'),
-        position: context.position,
+        width: width,
+        height: height,
+        position: position,
         left: left,
         top: top,
         margin: margin,
@@ -69,8 +45,8 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
       }}
     >
       <JGInputLabel
-        width={toLabelWidth(labelWidth, context, 94)}
-        height={toHeight(height, context, '26px')}
+        width={labelWidth}
+        height={height}
         visible={labelVisible}
         required={ismust}
       >
@@ -93,16 +69,13 @@ const JGCheckBox = (props: JGCheckBoxProps) => {
           component={Checkbox}
           size="small"
           disableRipple={true}
-          defaultChecked={val.valName}
+          value={value}
+          checked={value === undefined ? value : Boolean(value)}
           disabled={isDisable}
           onChange={(e: Object) => {
-            //  console.log(e)
-            setFieldValue(
-              val.tableName,
-              val.columnName,
-              context,
-              e.target.checked
-            )
+            if (value != undefined) {
+              onChanged && onChanged(e)
+            }
           }}
         >
           {' '}
@@ -133,4 +106,3 @@ JGCheckBox.defaultProps = {
   labelVisible: true
 }
 export default JGCheckBox
-export { JGCheckBox, type JGCheckBoxProps }

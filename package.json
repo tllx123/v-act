@@ -9,7 +9,7 @@
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
-    "dev: jglongtextbox": "node scripts/index.js build -w -s @v-act/jglongtextbox --cp ./apps/runtime",
+    "dev: jgcheckbox": "node scripts/index.js build -w -s @v-act/jgcheckbox --cp ./apps/runtime",
     "dev: schemaTypes": "node scripts/index.js build -w -s @v-act/schema-types --cp ./apps/runtime",
     "dev: widgetContext": "node scripts/index.js build -w -s @v-act/widget-context --cp ./apps/runtime",
     "dev: widgetUtils": "node scripts/index.js build -w -s @v-act/widget-utils --cp ./apps/runtime",
