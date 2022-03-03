@@ -1,33 +1,12 @@
-import { ChangeEvent } from 'react'
-
 import { Input } from 'antd'
-import { Property } from 'csstype'
 import styled from 'styled-components'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
+import { JGComponentProps } from '@v-act/schema-types'
 
 const { TextArea } = Input
 
-export interface JGLongTextBoxProps {
-  left?: Property.Left
-  top?: Property.Top
-  height?: Property.Height
-  width?: Property.Width
-  position?: Property.Position
-  margin?: Property.Margin
-  padding?: Property.Padding
-  readonly?: boolean
-  ismust?: boolean
-  labeltext?: string
-  labelWidth?: number
-  placeholder?: string
-  labelVisible?: boolean
-  disabled?: boolean
-  value?: string
-  onChanged?: (e: ChangeEvent) => void
-}
-
-const JGLongTextBox = (props: JGLongTextBoxProps) => {
+const JGLongTextBox = (props: JGComponentProps) => {
   const {
     left,
     top,
@@ -41,6 +20,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
     labelVisible,
     labelWidth,
     disabled,
+    position,
     value,
     onChanged
   } = props
@@ -49,6 +29,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
   if (readonly || disabled) {
     isDisable = true
   }
+
   return (
     <Box
       sx={{
@@ -56,7 +37,7 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
         alignItems: 'center',
         width: width,
         height: height,
-        position: context.position,
+        position: position,
         left: left,
         top: top,
         margin: margin,
@@ -74,10 +55,10 @@ const JGLongTextBox = (props: JGLongTextBoxProps) => {
       </JGInputLabel>
 
       <VactTextArea
-        //defaultValue={val.valName}
+        defaultValue={value}
         value={value}
         disabled={isDisable}
-        onChange={(e: ChangeEvent) => {
+        onChange={(e) => {
           onChanged && onChanged(e)
         }}
       ></VactTextArea>

@@ -1,6 +1,5 @@
 import { CSSProperties, Fragment } from 'react'
 import { useContext } from '@v-act/widget-context'
-import { FieldValue } from '@v-act/widget-context'
 import { Property as CSSProperty } from 'csstype'
 import { getResHashCode } from '@v-act/component-schema-utils'
 import {
@@ -11,8 +10,7 @@ import {
   Height,
   Property,
   ReactEnum,
-  Width,
-  WidgetRenderContext
+  Width
 } from '@v-act/schema-types'
 import {
   Entities,
@@ -321,32 +319,48 @@ const setFieldValue = function (
 }
 
 /**
- * 设置实体字段值
- * @param tableName 实体编号
- * @param columnName 字段编号
- * @param context 上下文
- * @param val 值
+ * 获取组件属性值
+ * @param control
  */
-const getCompVal = function (control: Control) {
-  let tableNameTemp = getTableName(control)
-  let tableName: string
-  if (tableNameTemp != null) {
-    tableName = tableNameTemp
-  } else {
-    tableName = ''
-  }
-  let columnNameTemp = getColumnName(control)
-  let columnName: string
-  if (columnNameTemp != null) {
-    columnName = columnNameTemp
-  } else {
-    columnName = ''
-  }
-  let val: FieldValue | undefined = undefined
+const useGetCompVal = function (control: Control) {
   const context = useContext()
-  let valTemp = getFieldValue(tableName, columnName, context)
-  val = isNullOrUnDef(valTemp) ? undefined : valTemp
-  return { val, tableName, columnName }
+  const properties = control.properties
+  const tableName = getTableName(control)
+  const columnName = getColumnName(control)
+
+  let props = {
+    top: toNumber(properties.top) + 'px',
+    left: toNumber(properties.left) + 'px',
+    width: toWidth(
+      valueofWidth(properties.multiWidth, '235px'),
+      context,
+      '235px'
+    ),
+    height: toHeight(
+      valueofHeight(properties.multiHeight, '26px'),
+      context,
+      '26px'
+    ),
+    ismust: toBoolean(properties.isMust, false),
+    placeholder: properties.placeholder,
+    position: context.position,
+    disabled: !toBoolean(properties.enabled, true),
+    labeltext: properties.labelText || '',
+    labelWidth: toLabelWidth(toNumber(properties.labelWidth, 94), context, 94),
+    labelVisible: toBoolean(properties.labelVisible, true),
+    readonly: toBoolean(properties.readOnly, false),
+    value:
+      tableName && columnName
+        ? getFieldValue(tableName, columnName, context)
+        : '',
+    onChanged: (e: any) => {
+      if (tableName && columnName) {
+        setFieldValue(tableName, columnName, context, e.target.value)
+      }
+    }
+  }
+
+  return props
 }
 
 /**
@@ -603,7 +617,7 @@ export {
   getFieldValue,
   getIDColumnName,
   getTableName,
-  getCompVal,
+  useGetCompVal,
   isAbsoluteVal,
   isNullOrUnDef,
   isPercent,
