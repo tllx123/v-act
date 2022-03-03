@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.dingding.geolocation",
+  "name": "@v-act/vjs.framework.extension.platform.native.dingding.geolocation",
   "version": "1.0.0-alpha.1",
   "description": "钉钉H5应用JSAPI获取当前经纬度信息",
   "homepage": "https://github.com/opensource-vplatform/v-act",

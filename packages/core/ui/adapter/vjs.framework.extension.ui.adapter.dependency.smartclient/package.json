@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.dependency.smartclient",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.dependency.smartclient",
   "version": "1.0.0-alpha.1",
   "description": "2016-06-14xiedh:解决ui补丁不生效问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

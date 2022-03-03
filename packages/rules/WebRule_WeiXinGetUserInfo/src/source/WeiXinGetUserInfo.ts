@@ -1,7 +1,8 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+
 let undefined
 
 exports.initModule = function (sBox) {}

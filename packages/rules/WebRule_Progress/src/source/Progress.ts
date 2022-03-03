@@ -1,5 +1,5 @@
 import * as ProgressBarUtil from '.BarUtil'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'

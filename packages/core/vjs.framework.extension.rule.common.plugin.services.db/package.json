@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.rule.common.plugin.services.db",
+  "name": "@v-act/vjs.framework.extension.rule.common.plugin.services.db",
   "version": "1.0.0-alpha.1",
   "description": "2015-08-11liangchaohui：处理加载数据时触发新增事件问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

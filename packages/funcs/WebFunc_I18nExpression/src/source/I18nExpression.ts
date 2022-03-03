@@ -1,7 +1,9 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  component as i18n_component,
+  window as i18n_window
+} from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { component as i18n_component } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import { window as i18n_window } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 let sandbox
 //初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 exports.initModule = function (sb) {

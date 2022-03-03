@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.integration.server.ruleset",
+  "name": "@v-act/vjs.framework.extension.platform.services.integration.server.ruleset",
   "version": "1.0.0-alpha.1",
   "description": "2018-06-28liangzc：添加调用webapi接口-invokeV3Webapi",
   "homepage": "https://github.com/opensource-vplatform/v-act",

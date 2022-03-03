@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.skin.mobile.viewport.adapter",
+  "name": "@v-act/vjs.framework.extension.platform.skin.mobile.viewport.adapter",
   "version": "1.0.0-alpha.1",
   "description": "2019-04-26liangzc：移动端视窗适配",
   "homepage": "https://github.com/opensource-vplatform/v-act",

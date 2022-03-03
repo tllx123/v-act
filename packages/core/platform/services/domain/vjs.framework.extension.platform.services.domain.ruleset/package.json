@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.ruleset",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.ruleset",
   "version": "1.0.0-alpha.1",
   "description": "2016-07-06xiedh:支持活动集变量",
   "homepage": "https://github.com/opensource-vplatform/v-act",

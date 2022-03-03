@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.common.action",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.common.action",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-13liangzc：调用控件接口调整",
   "homepage": "https://github.com/opensource-vplatform/v-act",

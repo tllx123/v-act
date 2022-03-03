@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.im.easemob",
+  "name": "@v-act/vjs.framework.extension.platform.im.easemob",
   "version": "1.0.0-alpha.1",
   "description": "WebIM",
   "homepage": "https://github.com/opensource-vplatform/v-act",

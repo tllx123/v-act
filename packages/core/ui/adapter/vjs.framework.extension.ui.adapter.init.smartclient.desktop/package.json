@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.init.smartclient.desktop",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.init.smartclient.desktop",
   "version": "1.0.0-alpha.1",
   "description": "2017-12-11处理窗体加载前回调",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'

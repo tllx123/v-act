@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'

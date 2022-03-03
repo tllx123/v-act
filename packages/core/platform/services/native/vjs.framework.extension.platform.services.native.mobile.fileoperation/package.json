@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.fileoperation",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation",
   "version": "1.0.0-alpha.1",
   "description": "2016-04-28xiedh：去除调用平台内部接口逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",

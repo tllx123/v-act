@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.exception.mobile.handler",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.exception.mobile.handler",
   "version": "1.0.0-alpha.1",
   "description": "2016-12-12xiedh:异常情况处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

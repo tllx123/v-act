@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import * as viewContext from 'module'
 import * as viewModel from 'module'
 import * as formulaUtil from 'module'

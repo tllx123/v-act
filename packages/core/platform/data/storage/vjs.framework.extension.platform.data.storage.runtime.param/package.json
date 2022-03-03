@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.storage.runtime.param",
+  "name": "@v-act/vjs.framework.extension.platform.data.storage.runtime.param",
   "version": "1.0.0-alpha.1",
   "description": "2019-03-07liangzc：处理报错",
   "homepage": "https://github.com/opensource-vplatform/v-act",

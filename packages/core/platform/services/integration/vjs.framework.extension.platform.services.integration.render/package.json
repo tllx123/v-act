@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.integration.render",
+  "name": "@v-act/vjs.framework.extension.platform.services.integration.render",
   "version": "1.0.0-alpha.1",
   "description": "2017-02-10xiedh:关闭第三方窗体添加参数传递",
   "homepage": "https://github.com/opensource-vplatform/v-act",

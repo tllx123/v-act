@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.datasource.smartclient",
+  "name": "@v-act/vjs.framework.extension.platform.datasource.smartclient",
   "version": "1.0.0-alpha.1",
   "description": "2016-12-21xiedh:控件清空值后不触发值改变事件问题处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

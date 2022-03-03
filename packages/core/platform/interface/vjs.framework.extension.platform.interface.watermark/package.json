@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.watermark",
+  "name": "@v-act/vjs.framework.extension.platform.interface.watermark",
   "version": "1.0.0-alpha.1",
   "description": "2018-11-19liangzc：水印",
   "homepage": "https://github.com/opensource-vplatform/v-act",

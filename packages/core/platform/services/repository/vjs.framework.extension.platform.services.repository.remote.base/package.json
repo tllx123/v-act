@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.repository.remote.base",
+  "name": "@v-act/vjs.framework.extension.platform.services.repository.remote.base",
   "version": "1.0.0-alpha.1",
   "description": "2017-08-04liangzc：还原代码，不支持一次查询多个，因为有场景是：后面的查询条件会使用第一个查询的数据",
   "homepage": "https://github.com/opensource-vplatform/v-act",

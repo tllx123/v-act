@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.param.manager",
+  "name": "@v-act/vjs.framework.extension.platform.services.param.manager",
   "version": "1.0.0-alpha.1",
   "description": "2018-11-24liangzc：处理窗体替换后，复制数据到窗体输出没有值的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

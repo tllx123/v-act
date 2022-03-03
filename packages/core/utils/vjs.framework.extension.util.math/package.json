@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.math",
+  "name": "@v-act/vjs.framework.extension.util.math",
   "version": "1.0.0-alpha.1",
   "description": "2019-01-07liangzc：处理计算的值为空时报错的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

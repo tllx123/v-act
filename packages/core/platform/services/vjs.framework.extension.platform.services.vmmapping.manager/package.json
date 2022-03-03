@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.vmmapping.manager",
+  "name": "@v-act/vjs.framework.extension.platform.services.vmmapping.manager",
   "version": "1.0.0-alpha.1",
   "description": "2019-12-30liangzc：处理窗体替换后无法触发值改变问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

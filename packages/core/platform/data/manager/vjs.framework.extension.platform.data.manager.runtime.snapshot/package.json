@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.manager.runtime.snapshot",
+  "name": "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot",
   "version": "1.0.0-alpha.1",
   "description": "2017-12-14liangzc：设置当前服务到规则路由上下文",
   "homepage": "https://github.com/opensource-vplatform/v-act",

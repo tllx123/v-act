@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.date",
+  "name": "@v-act/vjs.framework.extension.util.date",
   "version": "1.0.0-alpha.1",
   "description": "2015-07-30liangchaohui：调整逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",

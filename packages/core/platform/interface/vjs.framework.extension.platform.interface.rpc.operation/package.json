@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.rpc.operation",
+  "name": "@v-act/vjs.framework.extension.platform.interface.rpc.operation",
   "version": "1.0.0-alpha.1",
   "description": "2018-07-11liangzc：添加属性sourceWindow",
   "homepage": "https://github.com/opensource-vplatform/v-act",

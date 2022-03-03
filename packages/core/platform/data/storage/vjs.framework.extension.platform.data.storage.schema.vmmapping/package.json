@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.storage.schema.vmmapping",
+  "name": "@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping",
   "version": "1.0.0-alpha.1",
   "description": "2019-12-31liangzc：修改映射问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

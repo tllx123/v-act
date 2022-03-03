@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.operation.remote.base",
+  "name": "@v-act/vjs.framework.extension.platform.services.operation.remote.base",
   "version": "1.0.0-alpha.1",
   "description": "2017-04-20liangzc：添加跨域请求接口",
   "homepage": "https://github.com/opensource-vplatform/v-act",

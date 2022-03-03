@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { Pay as pay } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.event.handler.rightclick.refresh",
+  "name": "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.refresh",
   "version": "1.0.0-alpha.1",
   "description": "2017-09-28tangwf:修改右键刷新的实现方法",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.weixin.sdk.config",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.weixin.sdk.config",
   "version": "1.0.0-alpha.1",
   "description": "初始化微信jssdk",
   "homepage": "https://github.com/opensource-vplatform/v-act",

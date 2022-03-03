@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.integration.server.ruleset.mobile",
+  "name": "@v-act/vjs.framework.extension.platform.integration.server.ruleset.mobile",
   "version": "1.0.0-alpha.1",
   "description": "后台活动集调用",
   "homepage": "https://github.com/opensource-vplatform/v-act",

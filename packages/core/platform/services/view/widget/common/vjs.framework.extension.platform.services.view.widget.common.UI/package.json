@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.common.UI",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.common.UI",
   "version": "1.0.0-alpha.1",
   "description": "2018-9-10优化添加同样样式名称，替换相同样式名称",
   "homepage": "https://github.com/opensource-vplatform/v-act",

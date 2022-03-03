@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.model.datasource",
+  "name": "@v-act/vjs.framework.extension.platform.interface.model.datasource",
   "version": "1.0.0-alpha.1",
   "description": "2019-07-30liangzc:处理树型复制后触发值改变事件的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

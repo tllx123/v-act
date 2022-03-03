@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.sysconfig",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.sysconfig",
   "version": "1.0.0-alpha.1",
   "description": "获取原生系统配置信息",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.qrcode",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.qrcode",
   "version": "1.0.0-alpha.1",
   "description": "cordova二维码扫描",
   "homepage": "https://github.com/opensource-vplatform/v-act",

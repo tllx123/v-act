@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.plugin.series.bootstrap_mobile.implement.dependency",
+  "name": "@v-act/vjs.framework.extension.platform.plugin.series.bootstrap_mobile.implement.dependency",
   "version": "1.0.0-alpha.1",
   "description": "APP依赖的vjs（过渡方案）",
   "homepage": "https://github.com/opensource-vplatform/v-act",

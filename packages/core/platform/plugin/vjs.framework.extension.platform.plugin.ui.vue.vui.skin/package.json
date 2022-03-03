@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.plugin.ui.vue.vui.skin",
+  "name": "@v-act/vjs.framework.extension.platform.plugin.ui.vue.vui.skin",
   "version": "1.0.0-alpha.1",
   "description": "2019-1-22zhaoyf:处理iframe宽高问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

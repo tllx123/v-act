@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 let undefined
 let undefined

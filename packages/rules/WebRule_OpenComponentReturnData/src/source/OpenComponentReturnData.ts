@@ -1,6 +1,6 @@
 import { log as log } from '@v-act/vjs.framework.extension.util'
 import { UUID as UUID } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
 import { resourcepackage as resourcepackage } from '@v-act/vjs.framework.extension.ui.adapter'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.adapter",
+  "name": "@v-act/vjs.framework.extension.platform.data.adapter",
   "version": "1.0.0-alpha.1",
   "description": "2015-11-04实体类型变量初始化时使用变量名作为实体名",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.scope",
+  "name": "@v-act/vjs.framework.extension.platform.interface.scope",
   "version": "1.0.0-alpha.1",
   "description": "2019-04-02liangzc：域堆栈存储",
   "homepage": "https://github.com/opensource-vplatform/v-act",

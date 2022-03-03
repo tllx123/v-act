@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.splashscreen",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.splashscreen",
   "version": "1.0.0-alpha.1",
   "description": "移动版等待动画vjs",
   "homepage": "https://github.com/opensource-vplatform/v-act",

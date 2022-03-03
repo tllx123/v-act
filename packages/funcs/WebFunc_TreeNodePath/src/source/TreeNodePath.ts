@@ -1,7 +1,8 @@
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { TreeViewUtil as treeViewUtil } from '@v-act/vjs.framework.extension.platform.services.domain.tree'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+
 let undefined
 
 exports.initModule = function (sb) {}

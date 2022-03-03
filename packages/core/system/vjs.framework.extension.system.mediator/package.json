@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.mediator",
+  "name": "@v-act/vjs.framework.extension.system.mediator",
   "version": "1.0.0-alpha.1",
   "description": "2015-12-01xiedh：事务并发处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

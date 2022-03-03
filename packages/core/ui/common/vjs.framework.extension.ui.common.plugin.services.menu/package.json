@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.common.plugin.services.menu",
+  "name": "@v-act/vjs.framework.extension.ui.common.plugin.services.menu",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-15liangzc：传递控件节点",
   "homepage": "https://github.com/opensource-vplatform/v-act",

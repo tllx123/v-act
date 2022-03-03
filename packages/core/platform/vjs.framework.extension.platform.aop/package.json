@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.aop",
+  "name": "@v-act/vjs.framework.extension.platform.aop",
   "version": "1.0.0-alpha.1",
   "description": "2017-08-22liangzc：处理调试后台活动集时，会请求多次的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

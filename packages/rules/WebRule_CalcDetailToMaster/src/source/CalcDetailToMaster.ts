@@ -1,5 +1,5 @@
 import * as viewModel from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import * as formulaUtil from 'module'
 import * as widgetAttribute from 'module'
 import * as viewContext from 'module'

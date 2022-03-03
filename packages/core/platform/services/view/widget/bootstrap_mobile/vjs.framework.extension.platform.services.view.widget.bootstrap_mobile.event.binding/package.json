@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.event.binding",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.event.binding",
   "version": "1.0.0-alpha.1",
   "description": "2018-01-15liangzc：增加接口：genEventHandle",
   "homepage": "https://github.com/opensource-vplatform/v-act",

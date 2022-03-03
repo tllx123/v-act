@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.smartclient.logic.definer",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.logic.definer",
   "version": "1.0.0-alpha.1",
   "description": "2015-08-17liangchaohui：SC默认设置定义工具",
   "homepage": "https://github.com/opensource-vplatform/v-act",

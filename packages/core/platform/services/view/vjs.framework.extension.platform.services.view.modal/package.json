@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.modal",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.modal",
   "version": "1.0.0-alpha.1",
   "description": "2019-05-10liangzc：处理设置窗体模态窗体标题的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

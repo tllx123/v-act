@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.common.plugin.services.renderer",
+  "name": "@v-act/vjs.framework.extension.ui.common.plugin.services.renderer",
   "version": "1.0.0-alpha.1",
   "description": "globalLib拆分",
   "homepage": "https://github.com/opensource-vplatform/v-act",

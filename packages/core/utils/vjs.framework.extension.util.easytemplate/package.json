@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.easytemplate",
+  "name": "@v-act/vjs.framework.extension.util.easytemplate",
   "version": "1.0.0-alpha.1",
   "description": "1.添加条件语句表达式嵌套支持",
   "homepage": "https://github.com/opensource-vplatform/v-act",

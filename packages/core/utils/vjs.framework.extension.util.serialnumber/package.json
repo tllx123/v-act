@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.serialnumber",
+  "name": "@v-act/vjs.framework.extension.util.serialnumber",
   "version": "1.0.0-alpha.1",
   "description": "序列号生成vjs",
   "homepage": "https://github.com/opensource-vplatform/v-act",

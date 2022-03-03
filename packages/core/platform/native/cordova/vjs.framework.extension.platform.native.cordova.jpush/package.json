@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.jpush",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.jpush",
   "version": "1.0.0-alpha.1",
   "description": "cordova极光推送插件",
   "homepage": "https://github.com/opensource-vplatform/v-act",

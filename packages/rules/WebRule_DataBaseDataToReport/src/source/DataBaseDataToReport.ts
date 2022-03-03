@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { QueryCondUtil as QueryCondUtil } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'

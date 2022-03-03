@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.logic.datasource",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.logic.datasource",
   "version": "1.0.0-alpha.1",
   "description": "2018-10-31liangzc：处理报错",
   "homepage": "https://github.com/opensource-vplatform/v-act",

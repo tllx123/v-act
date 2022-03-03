@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.global",
+  "name": "@v-act/vjs.framework.extension.platform.global",
   "version": "1.0.0-alpha.1",
   "description": "2016-07-20xiedh：vbase中快速点击导航栏导致页面混乱",
   "homepage": "https://github.com/opensource-vplatform/v-act",

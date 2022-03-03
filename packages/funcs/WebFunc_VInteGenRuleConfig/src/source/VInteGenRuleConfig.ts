@@ -1,7 +1,7 @@
-import { DatasourceManager as managerService } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import { DatasourceManager as managerService } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 
 let undefined
 let undefined

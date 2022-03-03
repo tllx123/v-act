@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.where.restrict",
+  "name": "@v-act/vjs.framework.extension.platform.services.where.restrict",
   "version": "1.0.0-alpha.1",
   "description": "2018-07-28liangzc：处理前台in的条件值存在空格时获取不到数据的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.init.bootstrap.web",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.init.bootstrap.web",
   "version": "1.0.0-alpha.1",
   "description": "2018-11-06liangzc：处理窗体标题不能多语言的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

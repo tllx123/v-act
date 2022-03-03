@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.speech",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.speech",
   "version": "1.0.0-alpha.1",
   "description": "cordova语音识别",
   "homepage": "https://github.com/opensource-vplatform/v-act",

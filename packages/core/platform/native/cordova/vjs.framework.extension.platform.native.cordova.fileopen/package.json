@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.fileopen",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.fileopen",
   "version": "1.0.0-alpha.1",
   "description": "文件打开服务",
   "homepage": "https://github.com/opensource-vplatform/v-act",

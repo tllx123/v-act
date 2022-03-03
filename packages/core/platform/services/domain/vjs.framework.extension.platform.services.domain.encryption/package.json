@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.encryption",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.encryption",
   "version": "1.0.0-alpha.1",
   "description": "加密/解密接口类",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.storage.schema.param",
+  "name": "@v-act/vjs.framework.extension.platform.data.storage.schema.param",
   "version": "1.0.0-alpha.1",
   "description": "2019-09-06liangzc:添加注册/获取构件元信息接口",
   "homepage": "https://github.com/opensource-vplatform/v-act",

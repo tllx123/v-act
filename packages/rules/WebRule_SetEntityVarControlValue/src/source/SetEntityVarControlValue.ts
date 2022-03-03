@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'

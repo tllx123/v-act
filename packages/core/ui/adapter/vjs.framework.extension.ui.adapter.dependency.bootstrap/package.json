@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.dependency.bootstrap",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.dependency.bootstrap",
   "version": "1.0.0-alpha.1",
   "description": "2018-06-21liangzc：添加自定义窗体加载资源逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",

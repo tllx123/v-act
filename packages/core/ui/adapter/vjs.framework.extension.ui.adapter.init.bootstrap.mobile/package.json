@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.init.bootstrap.mobile",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.init.bootstrap.mobile",
   "version": "1.0.0-alpha.1",
   "description": "2018-10-15liangzc：处理窗体标题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

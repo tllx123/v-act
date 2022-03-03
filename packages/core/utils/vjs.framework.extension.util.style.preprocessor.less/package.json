@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.style.preprocessor.less",
+  "name": "@v-act/vjs.framework.extension.util.style.preprocessor.less",
   "version": "1.0.0-alpha.1",
   "description": "2019-09-25liangzc：处理样式作用域问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

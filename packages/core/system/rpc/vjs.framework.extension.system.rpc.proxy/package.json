@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.rpc.proxy",
+  "name": "@v-act/vjs.framework.extension.system.rpc.proxy",
   "version": "1.0.0-alpha.1",
   "description": "RPC",
   "homepage": "https://github.com/opensource-vplatform/v-act",

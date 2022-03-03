@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.dcs",
+  "name": "@v-act/vjs.framework.extension.platform.services.dcs",
   "version": "1.0.0-alpha.1",
   "description": "文档在线转换服务",
   "homepage": "https://github.com/opensource-vplatform/v-act",

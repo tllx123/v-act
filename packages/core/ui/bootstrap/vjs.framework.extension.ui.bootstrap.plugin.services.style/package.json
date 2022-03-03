@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.bootstrap.plugin.services.style",
+  "name": "@v-act/vjs.framework.extension.ui.bootstrap.plugin.services.style",
   "version": "1.0.0-alpha.1",
   "description": "luot2015-07-02添加支持显示属性",
   "homepage": "https://github.com/opensource-vplatform/v-act",

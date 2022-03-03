@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.relation",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.relation",
   "version": "1.0.0-alpha.1",
   "description": "2018-11-20liangzc：添加resize函数",
   "homepage": "https://github.com/opensource-vplatform/v-act",

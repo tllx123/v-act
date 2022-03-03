@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.string",
+  "name": "@v-act/vjs.framework.extension.util.string",
   "version": "1.0.0-alpha.1",
   "description": "2018-06-22liangzc：调整接口处理逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",

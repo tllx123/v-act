@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl",
+  "name": "@v-act/vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl",
   "version": "1.0.0-alpha.1",
   "description": "加密算法crypto库中的sha1方式",
   "homepage": "https://github.com/opensource-vplatform/v-act",

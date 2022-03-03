@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.mobile.console.config",
+  "name": "@v-act/vjs.framework.extension.platform.services.mobile.console.config",
   "version": "1.0.0-alpha.1",
   "description": "APP控制台配置获取服务",
   "homepage": "https://github.com/opensource-vplatform/v-act",

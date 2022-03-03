@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.playvideo",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.playvideo",
   "version": "1.0.0-alpha.1",
   "description": "cordova端实现：视频播放",
   "homepage": "https://github.com/opensource-vplatform/v-act",

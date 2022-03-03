@@ -1,6 +1,7 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { log } from '@v-act/vjs.framework.extension.util'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+
 let sandbox
 //初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 exports.initModule = function (sb) {

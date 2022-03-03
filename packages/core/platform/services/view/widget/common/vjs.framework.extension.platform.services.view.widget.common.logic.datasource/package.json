@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.common.logic.datasource",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.datasource",
   "version": "1.0.0-alpha.1",
   "description": "2017-05-16tangwf:增加fetched状态",
   "homepage": "https://github.com/opensource-vplatform/v-act",

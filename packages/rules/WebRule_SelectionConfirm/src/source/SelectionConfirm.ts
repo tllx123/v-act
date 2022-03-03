@@ -1,5 +1,5 @@
 import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { BrowserUtil as browserUtil } from '@v-act/vjs.framework.extension.platform.services.browser'

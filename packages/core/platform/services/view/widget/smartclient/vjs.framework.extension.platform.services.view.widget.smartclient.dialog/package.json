@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.smartclient.dialog",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.dialog",
   "version": "1.0.0-alpha.1",
   "description": "2017-02-14liangzc：增加提示框的秒数参数。",
   "homepage": "https://github.com/opensource-vplatform/v-act",

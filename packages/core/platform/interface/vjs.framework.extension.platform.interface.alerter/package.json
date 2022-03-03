@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.alerter",
+  "name": "@v-act/vjs.framework.extension.platform.interface.alerter",
   "version": "1.0.0-alpha.1",
   "description": "2017-11-17liangzc：修复找不到isIE这个方法。",
   "homepage": "https://github.com/opensource-vplatform/v-act",

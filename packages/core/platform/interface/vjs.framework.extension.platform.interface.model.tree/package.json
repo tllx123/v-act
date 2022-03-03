@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.model.tree",
+  "name": "@v-act/vjs.framework.extension.platform.interface.model.tree",
   "version": "1.0.0-alpha.1",
   "description": "2019-08-12zhaoyf：树增加通过id获取行号的接口getIndexById",
   "homepage": "https://github.com/opensource-vplatform/v-act",

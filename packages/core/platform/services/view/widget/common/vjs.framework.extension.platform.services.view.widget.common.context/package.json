@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.common.context",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.common.context",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-17liangzc：控件信息存放位置移动到窗体域上",
   "homepage": "https://github.com/opensource-vplatform/v-act",

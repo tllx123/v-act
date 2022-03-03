@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.viewmodel.datamodel.tree",
+  "name": "@v-act/vjs.framework.extension.platform.services.viewmodel.datamodel.tree",
   "version": "1.0.0-alpha.1",
   "description": "修正树升级降级",
   "homepage": "https://github.com/opensource-vplatform/v-act",

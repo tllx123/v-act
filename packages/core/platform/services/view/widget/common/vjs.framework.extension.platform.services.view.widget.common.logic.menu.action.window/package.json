@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.window",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.window",
   "version": "1.0.0-alpha.1",
   "description": "2019-09-17liangzc：窗体菜单处理器",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -3,7 +3,7 @@ import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platf
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { log as log } from '@v-act/vjs.framework.extension.util'
 import { Camera as CameraService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { ImagePicker as ImagePickerService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
