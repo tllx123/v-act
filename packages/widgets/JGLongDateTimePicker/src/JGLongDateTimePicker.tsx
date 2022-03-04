@@ -57,13 +57,9 @@ const JGLongDateTimePicker = (props: JGLongDateTimePickerProps) => {
         inputFormat="yyyy-MM-dd HH:mm:ss"
         value={value == undefined ? valueTemp : value}
         onChange={(newValue) => {
-          console.log('newValue')
-          console.log(newValue)
           if (value) {
-            console.log(1)
             onChangedForDate && onChangedForDate(newValue)
           } else {
-            console.log(2)
             setValue(newValue)
           }
         }}

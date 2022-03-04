@@ -1,57 +1,19 @@
-import * as React from 'react'
-import { parseISO, format } from 'date-fns'
-import { Property } from 'csstype'
+import { format } from 'date-fns'
+import { useState } from 'react'
 import zhCN from 'date-fns/locale/zh-CN'
 import { DatePicker } from '@mui/lab'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
 import Box from '@mui/material/Box'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { FieldValue, useContext } from '@v-act/widget-context'
-import {
-  toHeight,
-  toLabelWidth,
-  toWidth,
-  getFieldValue,
-  isNullOrUnDef
-} from '@v-act/widget-utils'
+import { JGComponentProps } from '@v-act/schema-types'
 
-interface JGDateTimePickerProps {
-  left?: Property.Left
-  top?: Property.Top
-  width?: Property.Width
-  height?: Property.Height
-  position?: Property.Position
-  margin?: Property.Margin
-  padding?: Property.Padding
-  ismust?: boolean
-  labeltext?: string
-  labelWidth?: number
-  placeholder?: string
-  readonly?: boolean
-  disabled?: boolean
-  labelVisible?: boolean
-  tableName?: string | null
-  columnName?: string | null
+interface JGDateTimePickerProps extends JGComponentProps {
+  onChangedForDate?: (e: any) => void
   dateDisplay?: string
 }
 
 const JGDateTimePicker = (props: JGDateTimePickerProps) => {
-  const context = useContext()
-  let defulValue: any = null
-  let value: FieldValue = ''
-  if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
-  }
-
-  if (value) {
-    defulValue = value
-  }
-
-  // console.log("---value---")
-  // console.log(value)
-
   const {
     left,
     top,
@@ -67,9 +29,12 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     labelVisible,
     labelWidth,
     dateDisplay,
+    value,
+    onChangedForDate,
     ...restProps
   } = props
-  const [valueTemp, setValue] = React.useState<any>(defulValue)
+
+  const [valueTemp, setValue] = useState()
 
   let viewsValue: any = ['year', 'month', 'day']
 
@@ -86,11 +51,10 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
         views={viewsValue}
         disableMaskedInput
         inputFormat="yyyy-MM-dd"
-        value={valueTemp}
+        value={value == undefined ? valueTemp : value}
         onChange={(newValue) => {
           let curr: any = ''
           curr = format(newValue, 'yyyy-MM-dd')
-
           if (dateDisplay === 'month') {
             curr = curr.slice(0, 7) + '-01'
             curr = new Date(curr)
@@ -100,17 +64,20 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
           } else {
             curr = newValue
           }
-
-          setValue(curr)
+          if (value) {
+            onChangedForDate && onChangedForDate(curr)
+          } else {
+            setValue(curr)
+          }
         }}
         renderInput={({ inputRef, inputProps, InputProps }) => (
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
-              width: toWidth(width, context, '235px'),
-              height: toHeight(height, context, '26px'),
-              position: context.position,
+              width: width,
+              height: height,
+              position: position,
               left: left,
               top: top,
               margin: margin,
@@ -118,8 +85,8 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
             }}
           >
             <JGInputLabel
-              width={toLabelWidth(labelWidth, context, 94)}
-              height={toHeight(height, context, '26px')}
+              width={labelWidth}
+              height={height}
               visible={labelVisible}
               required={ismust}
             >
@@ -186,5 +153,3 @@ JGDateTimePicker.defaultProps = {
 }
 
 export default JGDateTimePicker
-
-export { JGDateTimePicker, type JGDateTimePickerProps }

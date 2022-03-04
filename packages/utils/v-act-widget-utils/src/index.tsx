@@ -392,6 +392,21 @@ const useGetCompVal = function (control: Control, type?: string) {
         }
       }
       break
+    case '3333333333':
+      ;(props.value =
+        tableName && columnName
+          ? getFieldValue(tableName, columnName, context)
+            ? getFieldValue(tableName, columnName, context)
+            : new Date()
+          : undefined),
+        (props.dateDisplay = properties.dateDisplay)
+      props.onChangedForDate = (val: any) => {
+        if (tableName && columnName) {
+          setFieldValue(tableName, columnName, context, val)
+        }
+      }
+      break
+
     default:
       props.onChanged = (e: any) => {
         if (tableName && columnName) {
