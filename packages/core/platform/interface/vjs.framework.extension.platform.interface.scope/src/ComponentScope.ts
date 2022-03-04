@@ -1,11 +1,4 @@
-import * as Scope from './api/Scope'
-
-let undefined
-
-let ComponentScope = function (instanceId, componentCode) {
-  Scope.call(this, instanceId)
-  this.properties[this.Keys.componentCode] = componentCode
-}
+import Scope from './Scope'
 
 /**
  * @namespace ComponentScope
@@ -16,41 +9,35 @@ let ComponentScope = function (instanceId, componentCode) {
  * 该定义无法直接创建,请通过域管理器创建({@link ScopeManager#createComponentScope|ScopeManager})
  * @author xiedh
  */
-ComponentScope.prototype = {
-  Keys: {
+class ComponentScope extends Scope {
+  Keys = {
     componentCode: 'componentCode'
-  },
+  }
 
-  initModule: function (sb) {
-    var initFunc = Scope.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    var prototype = Object.create(Scope.prototype)
-    prototype.constructor = ComponentScope
-    sb.util.object.extend(prototype, ComponentScope.prototype)
-    ComponentScope.prototype = prototype
-  },
+  constructor(instanceId: string, componentCode: string) {
+    super(instanceId)
+    this.properties[this.Keys.componentCode] = componentCode
+  }
 
   /**
    * 设置属性值
    * @param {String} key 属性名称
    * @param {Any} val 属性值
    */
-  set: function (key, val) {
+  set(key: string, val: any) {
     /*if(this.Keys.hasOwnProperty(key)){
             throw Error("[ComponentScope.set]"+key+"为内部属性，无法设置，请更改属性名称！");
         }*/
     this.properties[key] = val
-  },
+  }
 
   /**
    *  获取构件编号
    * @return String
    */
-  getComponentCode: function () {
+  getComponentCode() {
     return this.get(this.Keys.componentCode)
   }
 }
 
-return ComponentScope
+export default ComponentScope

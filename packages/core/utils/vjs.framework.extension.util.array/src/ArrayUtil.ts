@@ -1,4 +1,3 @@
-let arraysUtils
 exports.initModule = function (sBox) {
   if (sBox) {
     arraysUtils = sBox.util.arrays
@@ -7,18 +6,23 @@ exports.initModule = function (sBox) {
 /**
  *查找下标
  */
-let indexOf = function (array, obj, pos, endPos) {
-  if (pos == null) pos = 0
-  if (endPos == null) endPos = array.length - 1
+const indexOf = function (
+  array: Array<any>,
+  obj: any,
+  pos?: number,
+  endPos?: number
+) {
+  if (pos == null || pos == undefined) pos = 0
+  if (endPos == null || pos == undefined) endPos = array.length - 1
   for (let i = pos; i <= endPos; i++) if (array[i] == obj) return i
   return -1
 }
 
-const contains = function (array, val) {
+const contains = function (array: Array<any>, val: any) {
   return indexOf(array, val) != -1
 }
 
-const remove = function (array, obj) {
+const remove = function (array: Array<any>, obj: any) {
   let index = indexOf(array, obj)
   if (index == -1) return false
   for (let i = index; i < array.length; i++) array[i] = array[i + 1]
@@ -26,7 +30,7 @@ const remove = function (array, obj) {
   return true
 }
 
-const isArray = function (object) {
+const isArray = function (object: any) {
   return Object.prototype.toString.call(object) === '[object Array]'
 }
 
@@ -45,4 +49,4 @@ const union = function () {
   return params
 }
 
-export { contains, remove, isArray, union }
+export { contains, isArray, remove, union }
