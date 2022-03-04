@@ -60,53 +60,69 @@ let getAllDefines = function (componentCode, windowCode, domain) {
   return defines
 }
 
-const addInputDefines = function (componentCode, windowCode, defines) {
+const addInputDefines = function (
+  componentCode: string,
+  windowCode: string,
+  defines
+) {
   addWindowDefines(componentCode, windowCode, input_param_token, defines)
 }
 
-const addOutputDefines = function (componentCode, windowCode, defines) {
+const addOutputDefines = function (
+  componentCode: string,
+  windowCode: string,
+  defines
+) {
   addWindowDefines(componentCode, windowCode, output_param_token, defines)
 }
 
-const getInputDefine = function (componentCode, windowCode, code) {
+const getInputDefine = function (
+  componentCode: string,
+  windowCode: string,
+  code: string
+) {
   return getWindowDefine(componentCode, windowCode, input_param_token, code)
 }
 
-const getOutputDefine = function (componentCode, windowCode, code) {
+const getOutputDefine = function (
+  componentCode: string,
+  windowCode: string,
+  code: string
+) {
   return getWindowDefine(componentCode, windowCode, output_param_token, code)
 }
 
-const getOutputDefines = function (componentCode, windowCode) {
+const getOutputDefines = function (componentCode: string, windowCode: string) {
   return getAllDefines(componentCode, windowCode, output_param_token)
 }
 
-const getInputDefines = function (componentCode, windowCode) {
+const getInputDefines = function (componentCode: string, windowCode: string) {
   return getAllDefines(componentCode, windowCode, input_param_token)
 }
 
 export {
-  addRuleSetInputs,
-  getRuleSetInputs,
-  exists,
-  getRuleSetInput,
-  initWindowMapping,
-  getWindowMapping,
-  existWindowMapping,
-  addVariantDefines,
-  addOptionDefines,
-  getVariantDefine,
-  getVariantDefines,
-  getOptionDefine,
-  getOptionDefines,
-  registerMetadata,
-  getMetadata,
   addComponentResource,
+  addInputDefines,
+  addOptionDefines,
+  addOutputDefines,
+  addRuleSetInputs,
+  addVariantDefines,
+  exists,
+  existWindowMapping,
   getComponentResourcePath,
   getComponentResourcePaths,
-  addInputDefines,
-  addOutputDefines,
   getInputDefine,
+  getInputDefines,
+  getMetadata,
+  getOptionDefine,
+  getOptionDefines,
   getOutputDefine,
   getOutputDefines,
-  getInputDefines
+  getRuleSetInput,
+  getRuleSetInputs,
+  getVariantDefine,
+  getVariantDefines,
+  getWindowMapping,
+  initWindowMapping,
+  registerMetadata
 }

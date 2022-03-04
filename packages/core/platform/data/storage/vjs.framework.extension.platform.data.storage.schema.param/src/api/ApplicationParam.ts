@@ -1,15 +1,11 @@
-import { ParamConfigFactory as ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { log as logUtil } from '@v-act/vjs.framework.extension.util.json'
 
-let token = 'ApplicationParam_Token_Key',
-  WindowMappingKey = 'ApplicationParam_Token_Window_Mapping'
+const token = 'ApplicationParam_Token_Key'
+const WindowMappingKey = 'ApplicationParam_Token_Window_Mapping'
 
-exports.initModule = function (sb) {}
-
-let getStorage = function (depth, isCreate) {
+const getStorage = function (depth: string[], isCreate: boolean) {
   let rs,
     s = storageManager.get(storageManager.TYPES.MAP, token)
   for (let i = 0, key; (key = depth[i]); i++) {
@@ -27,17 +23,21 @@ let getStorage = function (depth, isCreate) {
 }
 
 const addRuleSetInputs = function (
-  componentCode,
-  windowCode,
-  metaCode,
-  inputs
+  componentCode: string,
+  windowCode: string,
+  metaCode: string,
+  inputs: any
 ) {
   let storage = getStorage([componentCode, windowCode], true)
   let params = ParamConfigFactory.unSerialize(inputs)
   storage.put(metaCode, params)
 }
 
-const getRuleSetInputs = function (componentCode, windowCode, metaCode) {
+const getRuleSetInputs = function (
+  componentCode: string,
+  windowCode: string,
+  metaCode: string
+) {
   let storage = getStorage([componentCode, windowCode], false)
   if (storage && storage.containsKey(metaCode)) {
     return storage.get(metaCode)
@@ -45,16 +45,20 @@ const getRuleSetInputs = function (componentCode, windowCode, metaCode) {
   return null
 }
 
-const exists = function (componentCode, windowCode, metaCode) {
+const exists = function (
+  componentCode: string,
+  windowCode: string,
+  metaCode: string
+) {
   let storage = getStorage([componentCode, windowCode], false)
   return storage && storage.containsKey(metaCode) ? true : false
 }
 
 const getRuleSetInput = function (
-  componentCode,
-  windowCode,
-  metaCode,
-  paramCode
+  componentCode: string,
+  windowCode: string,
+  metaCode: string,
+  paramCode: string
 ) {
   let inputs = exports.getRuleSetInputs(componentCode, windowCode, metaCode)
   if (inputs) {
@@ -75,7 +79,7 @@ let _getWindowMappingStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, WindowMappingKey)
 }
 
-const initWindowMapping = function (mappings) {
+const initWindowMapping = function (mappings: Array<any>) {
   if (mappings && mappings.length > 0) {
     let _storage = _getWindowMappingStorage()
     //目标树,如果没有_parent节点，则为最底层的父窗体
@@ -83,22 +87,14 @@ const initWindowMapping = function (mappings) {
     _storage.put('source', mappings) //原始映射信息
     _storage.put('parent', targetTree.parent) //父窗体为根，子窗体为child节点
     _storage.put('child', targetTree.child) //子窗体为根，父窗体为parent节点
-    //		   for(var i =0,l=mappings.length;i<l;i++){
-    //			   var map = mappings[i];
-    //			   var sourceWindowInfo = map.sourceComponentCode + "$_$" + map.sourceWindowCode;
-    //			   if(_storage.containsKey(sourceWindowInfo)){//已经存在key
-    //				   logUtil.warn("已替换存在的映射关系，key：" + sourceWindowInfo +",原值："+_storage.get(sourceWindowInfo) + ",目标值：" + map.targetComponentCode + "$_$" + map.targetWindowCode);
-    //			   }
-    //			   _storage.put(sourceWindowInfo,{
-    //				   componentCode : map.targetComponentCode,
-    //				   windowCode : map.targetWindowCode,
-    //				   series:map.targetSeries
-    //			   });
-    //		   }
   }
 }
 
-const getWindowMapping = function (sourceWindowInfo) {
+const getWindowMapping = function (sourceWindowInfo: {
+  componentCode: string
+  windowCode: string
+  isTarget?: boolean
+}) {
   let obj = sourceWindowInfo
   if (check(obj)) {
     let sKey = obj.componentCode + '$_$' + obj.windowCode
@@ -133,25 +129,14 @@ const getWindowMapping = function (sourceWindowInfo) {
         return current
       }
     }
-
-    //			if(obj.isTarget === true){
-    //				baseNode = _storage.get("child")
-    //				var infos = parseMappings(_storage).target;
-    //				return infos[sKey];
-    //			}else if(_storage.containsKey(sKey)){
-    //				var arr = _storage.get(sKey);
-    //				var result = {
-    //					componentCode : arr.componentCode,
-    //					windowCode : arr.windowCode,
-    //					series: arr.series
-    //				}
-    //				return result;
-    //			}
   }
   return null
 }
 
-function simple(info1, info2) {
+function simple(
+  info1: { componentCode: string; windowCode: string },
+  info2: { componentCode: string; windowCode: string }
+) {
   if (
     info1 &&
     info2 &&
@@ -165,7 +150,7 @@ function simple(info1, info2) {
 /**
  * 检查参数合法并且刷新窗体映射信息
  * */
-let check = function (params) {
+let check = function (params: { componentCode: string; windowCode: string }) {
   if (params && params.componentCode && params.windowCode) {
     /* 先刷新配置映射信息 */
     refreshWindowMapping()
@@ -174,7 +159,11 @@ let check = function (params) {
   return false
 }
 
-const existWindowMapping = function (params) {
+const existWindowMapping = function (params: {
+  componentCode: string
+  windowCode: string
+  isTarget?: boolean
+}) {
   if (check(params)) {
     let _storage = _getWindowMappingStorage()
     let key = getKey(params.componentCode, params.windowCode)
@@ -198,10 +187,12 @@ const existWindowMapping = function (params) {
  * 刷新窗体映射，因为每次访问前都有可能修改了配置信息
  * */
 let refreshWindowMapping = function () {
+  //@ts-ignore
   let projectMapping = window._$V3PlatformWindowMapping
   if (projectMapping) {
     let _storage = _getWindowMappingStorage()
     /* 是否新定制的版本 */
+    //@ts-ignore
     let newVersion = window._$V3PlatformWindowMapping_iden
     if (true === newVersion) {
       /* 另一个项目定制的窗体映射  */
@@ -234,10 +225,10 @@ let refreshWindowMapping = function () {
     }
   }
 }
-let getKey = function (componentCode, windowCode) {
+let getKey = function (componentCode: string, windowCode: string) {
   return componentCode + '$_$' + windowCode
 }
-let parseKey = function (key) {
+let parseKey = function (key: string) {
   let result = key.split('$_$')
   return {
     componentCode: result[0],
@@ -326,7 +317,14 @@ function putData(mapping, datas, type) {
 /**
  * 将映射关系转成树结构
  * */
-function parseTree(mappings) {
+function parseTree(
+  mappings: Array<{
+    targetComponentCode: string
+    targetWindowCode: string
+    sourceComponentCode: string
+    sourceWindowCode: string
+  }>
+) {
   let targetTree = {}
   let sourceTree = {}
   if (mappings && mappings.length > 0) {
@@ -349,10 +347,10 @@ function parseTree(mappings) {
 }
 export {
   addRuleSetInputs,
-  getRuleSetInputs,
   exists,
+  existWindowMapping,
   getRuleSetInput,
-  initWindowMapping,
+  getRuleSetInputs,
   getWindowMapping,
-  existWindowMapping
+  initWindowMapping
 }
