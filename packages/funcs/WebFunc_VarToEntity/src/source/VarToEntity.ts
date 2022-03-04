@@ -1,9 +1,8 @@
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-let undefined
 
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   let variables = args[0]
   if (variables) {

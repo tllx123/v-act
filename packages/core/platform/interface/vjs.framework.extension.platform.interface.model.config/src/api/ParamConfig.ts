@@ -6,60 +6,70 @@
  * vjs名称：vjs.framework.extension.platform.interface.model.config<br/>
  * vjs服务名称：vjs.framework.extension.platform.interface.model.config.ParamConfig<br/>
  */
-let ParamConfig = function (code, name, type, initValue) {
-  this.code = code
-  this.name = name
-  this.type = type
-  this.initValue = initValue
-  this.configs = null
-}
+class ParamConfig {
+  static putInitor = function (initor: any) {
+    ParamConfig.prototype.initor = initor
+  }
+  initor: any | null = null
+  code: string
+  name: string
+  type: string
+  initValue: any
+  configs: Array<ParamConfig> | null
 
-ParamConfig.prototype = {
+  constructor(code: string, name: string, type: string, initValue: any) {
+    this.code = code
+    this.name = name
+    this.type = type
+    this.initValue = initValue
+    this.configs = null
+  }
+
   /**
    * 设置参数编号
    * @param {String} code 参数编号
    */
-  setCode: function (code) {
+  setCode(code: string) {
     this.code = code
-  },
+  }
 
   /**
    * 设置参数名称
    * @param {String} name 参数名称
    */
-  setName: function (name) {
+  setName(name: string) {
     this.name = name
-  },
+  }
 
   /**
    * 设置参数类型
    * @param {String} type
    */
-  setType: function (type) {
+  setType(type: string) {
     this.type = type
-  },
+  }
 
   /**
    * 设置初始化值
    * @param {Any} initValue 初始化值
    */
-  setInitValue: function (initValue) {
+  setInitValue(initValue: any) {
     this.initValue = initValue
-  },
+  }
 
   /**
    * 设置参数元数据信息(如实体字段信息)
    * @param {Array} configs 参数元数据信息
    */
-  setConfigs: function (configs) {
+  setConfigs(configs: Array<ParamConfig>) {
     this.configs = configs
-  },
+  }
 
   /**
    * 添加参数元数据信息
    * @param {ParamConfig} config 参数配置
    */
-  appendConfig: function (config) {
+  appendConfig(config: ParamConfig) {
     if (!this.configs) {
       this.configs = []
     }
@@ -70,53 +80,53 @@ ParamConfig.prototype = {
         '[ParamConfig.appendConfig]添加的参数配置信息不是ParamConfig的实例，请检查!'
       )
     }
-  },
+  }
 
   /**
    * 获取参数编号
    * @return String
    */
-  getCode: function () {
+  getCode() {
     return this.code
-  },
+  }
 
   /**
    * 获取参数名称
    * @return String
    */
-  getName: function () {
+  getName() {
     return this.name
-  },
+  }
 
   /**
    * 获取参数类型
    * @return String
    */
-  getType: function () {
+  getType() {
     return this.type
-  },
+  }
 
   //TODO 名称写错，将来删除
-  geInitValue: function () {
+  geInitValue() {
     return this.getInitValue()
-  },
+  }
 
   /**
    * 获取初始化值
    * @return Any
    */
-  getInitValue: function () {
+  getInitValue() {
     if (this.initor) return this.initor.init(this)
     else return this.initValue
-  },
+  }
 
   /**
    * 获取参数元数据信息
    * @return Array
    */
-  getConfigs: function () {
+  getConfigs() {
     return this.configs
-  },
+  }
 
   /**
    * 序列化配置信息
@@ -131,7 +141,7 @@ ParamConfig.prototype = {
    * 		"configs" : Array 配置信息
    * }
    */
-  serialize: function () {
+  serialize() {
     return {
       code: this.code,
       name: this.name,
@@ -142,8 +152,4 @@ ParamConfig.prototype = {
   }
 }
 
-ParamConfig.putInitor = function (initor) {
-  ParamConfig.prototype.initor = initor
-}
-
-return ParamConfig
+export default ParamConfig

@@ -1,18 +1,27 @@
-import * as RouteConfig from './api/RouteConfig'
-import * as ParamConfigFactory from './api/ParamConfigFactory'
+import RouteConfig from './RouteConfig'
+import * as ParamConfigFactory from './ParamConfigFactory'
+import ParamConfig from './ParamConfig'
+import { TransactionInfo, RuleInstances } from './types'
 
-let undefined
+interface Param {
+  routeCode: string
+  handler: (...args: any[]) => void
+  transactionType: string
+  transactionInfo: TransactionInfo
+  inputs: Array<ParamConfig>
+  outputs: Array<ParamConfig>
+  variables: Array<ParamConfig>
+  ruleInstances: RuleInstances
+}
 
-exports.initModule = function (sb) {}
-
-let createParam = function (params) {
+let createParam = function (params: Array<ParamConfig>) {
   if (params) {
     return ParamConfigFactory.unSerialize(params)
   }
   return null
 }
 
-const unSerialize = function (json) {
+const unSerialize = function (json: Param) {
   let inputs = createParam(json.inputs)
   let outputs = createParam(json.outputs)
   let vars = createParam(json.variables)
@@ -28,4 +37,4 @@ const unSerialize = function (json) {
   )
 }
 
-export { unSerialize, unSerialize }
+export { unSerialize }

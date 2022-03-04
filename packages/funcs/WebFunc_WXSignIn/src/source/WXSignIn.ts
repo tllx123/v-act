@@ -3,12 +3,10 @@ import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framewo
 import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-let undefined
-
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   let argsLen = args ? args.length : 0
   let entityName = argsLen >= 1 ? args[0] : null

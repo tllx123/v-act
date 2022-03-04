@@ -1,23 +1,19 @@
-import * as ParamConfig from './api/ParamConfig'
+import ParamConfig from './ParamConfig'
 
-let undefined
-
-exports.initModule = function (sb) {}
-
-let createParam = function (json) {
-  let param = new ParamConfig(json.code, json.name, json.type, json.initValue)
-  let configs = json.configs
+const createParam = function (json: ParamConfig) {
+  const param = new ParamConfig(json.code, json.name, json.type, json.initValue)
+  const configs = json.configs
   if (configs && configs.length > 0) {
     for (let i = 0, len = configs.length; i < len; i++) {
-      let pm = createParam(configs[i])
+      const pm = createParam(configs[i])
       param.appendConfig(pm)
     }
   }
   return param
 }
 
-const unSerialize = function (jsonArray) {
-  let params = []
+const unSerialize = function (jsonArray: Array<ParamConfig>) {
+  const params = []
   for (let i = 0, json; (json = jsonArray[i]); i++) {
     params.push(createParam(json))
   }

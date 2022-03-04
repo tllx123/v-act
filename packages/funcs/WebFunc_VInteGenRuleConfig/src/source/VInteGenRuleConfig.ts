@@ -3,15 +3,10 @@ import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.pla
 import { DatasourceManager as managerService } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   let ruleCode = args.length > 0 ? args[0] : null
 

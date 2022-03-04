@@ -648,7 +648,7 @@
         "packages/core/platform/services/view/vjs.framework.extension.platform.services.view.ui/src"
       ],
       "@v-act/vjs.framework.extension.platform.services.view.window.resources": [
-        "packages/core/platform/services/view/vjs.framework.extension.platform.services.view.window.resources/src"
+        "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.resources/src"
       ],
       "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap.dialog": [
         "packages/core/platform/services/view/widget/bootstrap/vjs.framework.extension.platform.services.view.widget.bootstrap.dialog/src"
@@ -1250,7 +1250,10 @@
       "@v-act/webrule_uploadmediafile": ["packages/rules/WebRule_UploadMediaFile/src"],
       "@v-act/webrule_vpay": ["packages/rules/WebRule_VPay/src"],
       "@v-act/webrule_vuc_getvucuserloginstate": ["packages/rules/WebRule_VUC_GetVUCUserLoginState/src"],
-      "@v-act/webrule_weixingetuserinfo": ["packages/rules/WebRule_WeiXinGetUserInfo/src"]
+      "@v-act/webrule_weixingetuserinfo": ["packages/rules/WebRule_WeiXinGetUserInfo/src"],
+      "@v-act/vjs.framework.extension.platform.services.view.window.renderer": [
+        "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.renderer/src"
+      ]
     }
   }
 }

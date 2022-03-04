@@ -3,15 +3,10 @@ import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.ext
 import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   let ruleCode = args.length > 0 ? args[0] : null
 

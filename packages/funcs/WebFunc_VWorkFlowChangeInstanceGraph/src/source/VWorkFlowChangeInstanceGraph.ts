@@ -1,5 +1,4 @@
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-let undefined
 
 //初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 exports.initModule = function (sb) {
@@ -8,7 +7,7 @@ exports.initModule = function (sb) {
 }
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   //获取函数传入的参数
   let args = param.getArgs()
   let destControlId = args.length > 0 ? args[0] : null

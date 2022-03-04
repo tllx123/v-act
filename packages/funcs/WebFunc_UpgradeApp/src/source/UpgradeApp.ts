@@ -1,5 +1,5 @@
 import { Inappbrowser as BrowserService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
+
 //初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 exports.initModule = function (sb) {
   //sb：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
@@ -7,7 +7,7 @@ exports.initModule = function (sb) {
 }
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let FUNCTIONNAME = '函数[升级APP-UpgradeApp]'
   let BROWERTYPE = BrowserService.BROWERTYPE.SystemBrowser
 
