@@ -1,5 +1,5 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { ExpressionEngine as formulaEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { ExpressionContext as ExpressionContext1 } from '@v-act/vjs.framework.extension.platform.engine.expression'

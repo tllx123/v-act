@@ -1,5 +1,6 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
 import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+
 let undefined
 exports.initModule = function (sb) {}
 

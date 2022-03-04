@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.cookie",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.cookie",
   "version": "1.0.0-alpha.1",
   "description": "globalLib拆分",
   "homepage": "https://github.com/opensource-vplatform/v-act",

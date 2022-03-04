@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.dependency.web",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.dependency.web",
   "version": "1.0.0-alpha.1",
   "description": "2018-06-21liangzc：增加对自定义窗体的处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

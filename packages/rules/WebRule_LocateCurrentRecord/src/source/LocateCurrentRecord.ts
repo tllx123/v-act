@@ -1,5 +1,5 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 import { log as log } from '@v-act/vjs.framework.extension.util'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'

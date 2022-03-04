@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.manager.runtime.window.mapping",
+  "name": "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping",
   "version": "1.0.0-alpha.1",
   "description": "2019-07-06liangzc：添加判断是否存在映射的接口",
   "homepage": "https://github.com/opensource-vplatform/v-act",

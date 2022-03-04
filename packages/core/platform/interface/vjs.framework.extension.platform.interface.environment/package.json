@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.environment",
+  "name": "@v-act/vjs.framework.extension.platform.interface.environment",
   "version": "1.0.0-alpha.1",
   "description": "2017-09-04liangzc：增加判断是否ie浏览器的接口",
   "homepage": "https://github.com/opensource-vplatform/v-act",

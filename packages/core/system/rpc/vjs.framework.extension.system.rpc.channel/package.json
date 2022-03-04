@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.rpc.channel",
+  "name": "@v-act/vjs.framework.extension.system.rpc.channel",
   "version": "1.0.0-alpha.1",
   "description": "2016-04-28xiedh：调整默认超时时间为30s",
   "homepage": "https://github.com/opensource-vplatform/v-act",

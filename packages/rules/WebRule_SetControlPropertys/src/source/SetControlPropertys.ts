@@ -1,11 +1,14 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { DialogUtil as rendererUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { DialogUtil as rendererUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import { log } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+
 let undefined
 let undefined
 let undefined

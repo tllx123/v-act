@@ -1,5 +1,6 @@
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { cookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
+import { cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+
 let undefined
 
 exports.initModule = function (sb) {}

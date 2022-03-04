@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.viewmodel.dataadapter",
+  "name": "@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter",
   "version": "1.0.0-alpha.1",
   "description": "2018-02-05tangwf:增加保存时配置为空的处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

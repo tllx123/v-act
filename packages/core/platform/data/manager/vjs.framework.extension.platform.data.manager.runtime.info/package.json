@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.manager.runtime.info",
+  "name": "@v-act/vjs.framework.extension.platform.data.manager.runtime.info",
   "version": "1.0.0-alpha.1",
   "description": "2016-12-29xiedh:窗体初始化请求合并",
   "homepage": "https://github.com/opensource-vplatform/v-act",

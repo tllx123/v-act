@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.bootstrap_mobile.plugin.services.image",
+  "name": "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.image",
   "version": "1.0.0-alpha.1",
   "description": "新增图片src地址转换",
   "homepage": "https://github.com/opensource-vplatform/v-act",

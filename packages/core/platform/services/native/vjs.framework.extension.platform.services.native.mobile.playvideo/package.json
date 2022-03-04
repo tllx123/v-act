@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.playvideo",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.playvideo",
   "version": "1.0.0-alpha.1",
   "description": "app原生功能：播放视频",
   "homepage": "https://github.com/opensource-vplatform/v-act",

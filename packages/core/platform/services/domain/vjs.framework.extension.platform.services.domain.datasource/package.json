@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.datasource",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.datasource",
   "version": "1.0.0-alpha.1",
   "description": "2015-10-29liangchaohui处理设置值时没有触发值改变事件问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

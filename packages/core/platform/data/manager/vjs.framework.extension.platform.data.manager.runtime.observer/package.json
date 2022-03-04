@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.manager.runtime.observer",
+  "name": "@v-act/vjs.framework.extension.platform.data.manager.runtime.observer",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-13liangzc：addObserver方法调整",
   "homepage": "https://github.com/opensource-vplatform/v-act",

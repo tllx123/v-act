@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.engine.route",
+  "name": "@v-act/vjs.framework.extension.platform.engine.route",
   "version": "1.0.0-alpha.1",
   "description": "2019-04-17liangzc：执行活动集接口添加成功回调和失败回调",
   "homepage": "https://github.com/opensource-vplatform/v-act",

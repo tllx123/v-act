@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.filetransfer",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.filetransfer",
   "version": "1.0.0-alpha.1",
   "description": "cordova文件上传",
   "homepage": "https://github.com/opensource-vplatform/v-act",

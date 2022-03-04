@@ -1,6 +1,7 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
 import { DropDownSourceUtil as dropDownSourceUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+
 let undefined
 let undefined
 let undefined

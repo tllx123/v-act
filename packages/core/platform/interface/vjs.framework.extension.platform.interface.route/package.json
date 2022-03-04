@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.route",
+  "name": "@v-act/vjs.framework.extension.platform.interface.route",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-24liangzc：处理同一个路由里多次设置同一个规则（前台foreach）的规则返回值，只有第一个生效的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { EasyTemplateUtil as tmplUtil } from '@v-act/vjs.framework.extension.util'
 import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'

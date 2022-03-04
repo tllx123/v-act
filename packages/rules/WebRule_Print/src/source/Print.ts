@@ -1,6 +1,6 @@
 import * as viewContext from 'module'
 import * as formulaUtil from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 let undefined
 let undefined

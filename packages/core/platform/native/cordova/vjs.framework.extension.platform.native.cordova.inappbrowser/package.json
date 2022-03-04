@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.inappbrowser",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.inappbrowser",
   "version": "1.0.0-alpha.1",
   "description": "cordova即时通讯",
   "homepage": "https://github.com/opensource-vplatform/v-act",

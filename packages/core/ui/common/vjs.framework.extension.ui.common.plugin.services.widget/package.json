@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.common.plugin.services.widget",
+  "name": "@v-act/vjs.framework.extension.ui.common.plugin.services.widget",
   "version": "1.0.0-alpha.1",
   "description": "2015-04-25liangchaohui：提供调用子控件action的接口",
   "homepage": "https://github.com/opensource-vplatform/v-act",

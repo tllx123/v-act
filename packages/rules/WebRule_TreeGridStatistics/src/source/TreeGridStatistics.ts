@@ -1,4 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
 import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util'

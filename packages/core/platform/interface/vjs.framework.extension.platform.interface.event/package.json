@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.event",
+  "name": "@v-act/vjs.framework.extension.platform.interface.event",
   "version": "1.0.0-alpha.1",
   "description": "2018-07-09liangzc：添加postmessage事件",
   "homepage": "https://github.com/opensource-vplatform/v-act",

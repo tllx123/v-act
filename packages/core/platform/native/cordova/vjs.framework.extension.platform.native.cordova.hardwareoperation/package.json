@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.hardwareoperation",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.hardwareoperation",
   "version": "1.0.0-alpha.1",
   "description": "提供一些简单的和设备交互的api",
   "homepage": "https://github.com/opensource-vplatform/v-act",

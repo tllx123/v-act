@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.engine.rule",
+  "name": "@v-act/vjs.framework.extension.platform.engine.rule",
   "version": "1.0.0-alpha.1",
   "description": "2017-08-10liangzc：触发规则执行前事件",
   "homepage": "https://github.com/opensource-vplatform/v-act",

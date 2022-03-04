@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.filetransfer",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer",
   "version": "1.0.0-alpha.1",
   "description": "app原生功能：文件传输功能",
   "homepage": "https://github.com/opensource-vplatform/v-act",

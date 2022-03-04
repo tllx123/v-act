@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.print",
+  "name": "@v-act/vjs.framework.extension.platform.services.print",
   "version": "1.0.0-alpha.1",
   "description": "修改打印增加客户端端口18000，避免8000端口被占用",
   "homepage": "https://github.com/opensource-vplatform/v-act",

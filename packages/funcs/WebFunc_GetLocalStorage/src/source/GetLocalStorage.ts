@@ -1,6 +1,6 @@
-import { cookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
 import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+
 let undefined
 
 exports.initModule = function (sb) {}

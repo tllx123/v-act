@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.integration.render.webview",
+  "name": "@v-act/vjs.framework.extension.platform.integration.render.webview",
   "version": "1.0.0-alpha.1",
   "description": "传递host值在iOS做处理，此处不做处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

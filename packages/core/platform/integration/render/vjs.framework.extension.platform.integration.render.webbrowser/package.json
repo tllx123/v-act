@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.integration.render.webbrowser",
+  "name": "@v-act/vjs.framework.extension.platform.integration.render.webbrowser",
   "version": "1.0.0-alpha.1",
   "description": "2016-11-16xiedh:第三方集成支持将普通窗体渲染到Div中",
   "homepage": "https://github.com/opensource-vplatform/v-act",

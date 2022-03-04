@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.baidutrace",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.baidutrace",
   "version": "1.0.0-alpha.1",
   "description": "百度鹰眼轨迹服务（移动端）",
   "homepage": "https://github.com/opensource-vplatform/v-act",

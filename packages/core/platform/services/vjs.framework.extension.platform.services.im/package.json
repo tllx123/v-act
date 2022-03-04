@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.im",
+  "name": "@v-act/vjs.framework.extension.platform.services.im",
   "version": "1.0.0-alpha.1",
   "description": "环信IMWeb版",
   "homepage": "https://github.com/opensource-vplatform/v-act",

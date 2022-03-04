@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.event.handler.rightclick.cellcopy",
+  "name": "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.cellcopy",
   "version": "1.0.0-alpha.1",
   "description": "2017-11-23:修改右键获取单元格内容的方式",
   "homepage": "https://github.com/opensource-vplatform/v-act",

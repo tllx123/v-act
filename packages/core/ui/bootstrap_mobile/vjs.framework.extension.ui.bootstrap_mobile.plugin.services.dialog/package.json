@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.bootstrap_mobile.plugin.services.dialog",
+  "name": "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.dialog",
   "version": "1.0.0-alpha.1",
   "description": "移动版初始化",
   "homepage": "https://github.com/opensource-vplatform/v-act",

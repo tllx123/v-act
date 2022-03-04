@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.util.extend",
+  "name": "@v-act/vjs.framework.extension.util.extend",
   "version": "1.0.0-alpha.1",
   "description": "2015-08-24liangchaohui：对象继承工具类",
   "homepage": "https://github.com/opensource-vplatform/v-act",

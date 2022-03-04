@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.runtime.manager",
+  "name": "@v-act/vjs.framework.extension.platform.services.runtime.manager",
   "version": "1.0.0-alpha.1",
   "description": "2019-01-18liangzc：处理跨域",
   "homepage": "https://github.com/opensource-vplatform/v-act",

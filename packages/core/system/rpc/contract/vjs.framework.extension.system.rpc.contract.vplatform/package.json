@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.rpc.contract.vplatform",
+  "name": "@v-act/vjs.framework.extension.system.rpc.contract.vplatform",
   "version": "1.0.0-alpha.1",
   "description": "2018-07-17liangzc：设置sourceWindow参数",
   "homepage": "https://github.com/opensource-vplatform/v-act",

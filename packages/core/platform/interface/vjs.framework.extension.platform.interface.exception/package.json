@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.exception",
+  "name": "@v-act/vjs.framework.extension.platform.interface.exception",
   "version": "1.0.0-alpha.1",
   "description": "2018-07-18liangzc：登录超时时，跳转的逻辑调整为当前容器内跳转",
   "homepage": "https://github.com/opensource-vplatform/v-act",

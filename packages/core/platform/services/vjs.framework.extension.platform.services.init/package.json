@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.init",
+  "name": "@v-act/vjs.framework.extension.platform.services.init",
   "version": "1.0.0-alpha.1",
   "description": "2017-11-03liangzc：添加事件：WindowLoaded",
   "homepage": "https://github.com/opensource-vplatform/v-act",

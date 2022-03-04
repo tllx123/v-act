@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.cordova.appversion",
+  "name": "@v-act/vjs.framework.extension.platform.native.cordova.appversion",
   "version": "1.0.0-alpha.1",
   "description": "cordova获取APP版本号",
   "homepage": "https://github.com/opensource-vplatform/v-act",

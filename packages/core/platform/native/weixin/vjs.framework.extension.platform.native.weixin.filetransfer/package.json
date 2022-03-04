@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.weixin.filetransfer",
+  "name": "@v-act/vjs.framework.extension.platform.native.weixin.filetransfer",
   "version": "1.0.0-alpha.1",
   "description": "微信文件传输实现：拍照、相册选择图片后上传mongodb",
   "homepage": "https://github.com/opensource-vplatform/v-act",

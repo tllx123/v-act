@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.rpc",
+  "name": "@v-act/vjs.framework.extension.system.rpc",
   "version": "1.0.0-alpha.1",
   "description": "2019-07-22liangzc：处理传递url的参数时结果不正确的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

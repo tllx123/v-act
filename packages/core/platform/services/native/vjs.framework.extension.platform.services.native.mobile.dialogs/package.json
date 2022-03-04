@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.dialogs",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.dialogs",
   "version": "1.0.0-alpha.1",
   "description": "2017-02-14liangzc：提示接口增加倒计时参数",
   "homepage": "https://github.com/opensource-vplatform/v-act",

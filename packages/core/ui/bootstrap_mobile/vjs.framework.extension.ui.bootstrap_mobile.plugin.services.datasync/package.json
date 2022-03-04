@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.bootstrap_mobile.plugin.services.datasync",
+  "name": "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.datasync",
   "version": "1.0.0-alpha.1",
   "description": "提交",
   "homepage": "https://github.com/opensource-vplatform/v-act",

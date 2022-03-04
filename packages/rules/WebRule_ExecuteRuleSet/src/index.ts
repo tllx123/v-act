@@ -1,5 +1,3 @@
-import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 /**
  *  执行活动集
  *  业务逻辑：
@@ -10,6 +8,8 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
  *  2，执行loacal活动集时，直接调用前端框架API executeRoute。
  *  3，执行api/extensionPoint活动集时，表示构件间通信，则从服务中介Mediator调用对应活动集。
  */
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
@@ -244,9 +244,9 @@ const _setOutputFunc = function (
             })
           }
           const extraParams: {
-            epImpInfo: {} | { [propName: string]: string }
-            sourceType: string
-            returnDatas: any
+            epImpInfo?: { [propName: string]: string }
+            sourceType?: string
+            returnDatas?: any
           } = {}
           //扩展点信息
           if (epImpInfo) {
@@ -268,10 +268,14 @@ const _setOutputFunc = function (
           if (_info.isEntity) {
             const targetDs = _info.ds
             const destFieldMapping = mapping['destFieldMapping']
-            const newMappings = []
+            const newMappings: Array<{
+              destField: string
+              srcValueType: string
+              srcValue: any
+            }> = []
             if (destFieldMapping) {
               const newMappings = []
-              for (const j = 0, len = destFieldMapping.length; j < len; j++) {
+              for (let j = 0, len = destFieldMapping.length; j < len; j++) {
                 newMappings.push({
                   code: destFieldMapping[j]['destField'],
                   type: destFieldMapping[j]['srcValueType'],

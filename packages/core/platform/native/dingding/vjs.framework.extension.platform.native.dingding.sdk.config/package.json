@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.dingding.sdk.config",
+  "name": "@v-act/vjs.framework.extension.platform.native.dingding.sdk.config",
   "version": "1.0.0-alpha.1",
   "description": "钉钉H5应用JSAPI鉴权和初始化",
   "homepage": "https://github.com/opensource-vplatform/v-act",

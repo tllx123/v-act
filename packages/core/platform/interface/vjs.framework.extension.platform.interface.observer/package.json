@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.observer",
+  "name": "@v-act/vjs.framework.extension.platform.interface.observer",
   "version": "1.0.0-alpha.1",
   "description": "2018-08-13liangzc：添加observer时统一域处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

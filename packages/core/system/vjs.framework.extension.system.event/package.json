@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.event",
+  "name": "@v-act/vjs.framework.extension.system.event",
   "version": "1.0.0-alpha.1",
   "description": "2017-06-02xiedh:调整事件回调最大数量",
   "homepage": "https://github.com/opensource-vplatform/v-act",

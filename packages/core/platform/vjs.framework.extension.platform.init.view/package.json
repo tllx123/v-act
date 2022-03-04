@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.init.view",
+  "name": "@v-act/vjs.framework.extension.platform.init.view",
   "version": "1.0.0-alpha.1",
   "description": "2018-11-19liangzc：处理水印",
   "homepage": "https://github.com/opensource-vplatform/v-act",

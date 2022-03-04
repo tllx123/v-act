@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.browser.history",
+  "name": "@v-act/vjs.framework.extension.platform.services.browser.history",
   "version": "1.0.0-alpha.1",
   "description": "2018-01-23liangzc：添加替换历史记录接口-replaceHistory",
   "homepage": "https://github.com/opensource-vplatform/v-act",

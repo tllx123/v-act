@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.system.rpc.channel.native.cordova",
+  "name": "@v-act/vjs.framework.extension.system.rpc.channel.native.cordova",
   "version": "1.0.0-alpha.1",
   "description": "2016-07-05xiedh:后台规则调试支持",
   "homepage": "https://github.com/opensource-vplatform/v-act",

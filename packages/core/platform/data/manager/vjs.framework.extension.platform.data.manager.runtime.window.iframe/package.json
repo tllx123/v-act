@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.manager.runtime.window.iframe",
+  "name": "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe",
   "version": "1.0.0-alpha.1",
   "description": "2020-02-19liangzc：处理参数问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

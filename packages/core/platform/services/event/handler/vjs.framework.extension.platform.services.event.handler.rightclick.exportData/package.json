@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.event.handler.rightclick.exportData",
+  "name": "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.exportData",
   "version": "1.0.0-alpha.1",
   "description": "2017-09-28luot:列表右键导出数据",
   "homepage": "https://github.com/opensource-vplatform/v-act",

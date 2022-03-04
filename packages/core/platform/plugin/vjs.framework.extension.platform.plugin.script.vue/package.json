@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.plugin.script.vue",
+  "name": "@v-act/vjs.framework.extension.platform.plugin.script.vue",
   "version": "1.0.0-alpha.1",
   "description": "2019-05-08liangzc：移动适配",
   "homepage": "https://github.com/opensource-vplatform/v-act",

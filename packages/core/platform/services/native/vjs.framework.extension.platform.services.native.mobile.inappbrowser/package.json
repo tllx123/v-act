@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.inappbrowser",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.inappbrowser",
   "version": "1.0.0-alpha.1",
   "description": "app原生功能：使用APP浏览器打开链接",
   "homepage": "https://github.com/opensource-vplatform/v-act",

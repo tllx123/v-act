@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.native.h5.filetransfer",
+  "name": "@v-act/vjs.framework.extension.platform.native.h5.filetransfer",
   "version": "1.0.0-alpha.1",
   "description": "H5上传文件到mongodb",
   "homepage": "https://github.com/opensource-vplatform/v-act",

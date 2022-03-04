@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.native.mobile.hardwareoperation",
+  "name": "@v-act/vjs.framework.extension.platform.services.native.mobile.hardwareoperation",
   "version": "1.0.0-alpha.1",
   "description": "HardwareOperation服务",
   "homepage": "https://github.com/opensource-vplatform/v-act",

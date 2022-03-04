@@ -1,7 +1,6 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+
 let undefined
 let undefined
 let undefined

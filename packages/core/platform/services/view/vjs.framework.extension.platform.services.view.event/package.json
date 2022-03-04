@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.view.event",
+  "name": "@v-act/vjs.framework.extension.platform.services.view.event",
   "version": "1.0.0-alpha.1",
   "description": "2017-11-10tangwf:调整右键事件触发条件",
   "homepage": "https://github.com/opensource-vplatform/v-act",

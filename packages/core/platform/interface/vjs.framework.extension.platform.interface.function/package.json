@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.function",
+  "name": "@v-act/vjs.framework.extension.platform.interface.function",
   "version": "1.0.0-alpha.1",
   "description": "2015-08-14liangchaohui：函数上下文",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.desktop.plugin.services.dialog",
+  "name": "@v-act/vjs.framework.extension.ui.desktop.plugin.services.dialog",
   "version": "1.0.0-alpha.1",
   "description": "初始化",
   "homepage": "https://github.com/opensource-vplatform/v-act",

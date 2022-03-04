@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.data.storage.schema.route",
+  "name": "@v-act/vjs.framework.extension.platform.data.storage.schema.route",
   "version": "1.0.0-alpha.1",
   "description": "2015-09-08liangchaohui：调整逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",

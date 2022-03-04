@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.ui.adapter.resourcepackage.web",
+  "name": "@v-act/vjs.framework.extension.ui.adapter.resourcepackage.web",
   "version": "1.0.0-alpha.1",
   "description": "2015-10-12liangchaohui：模块化调整",
   "homepage": "https://github.com/opensource-vplatform/v-act",

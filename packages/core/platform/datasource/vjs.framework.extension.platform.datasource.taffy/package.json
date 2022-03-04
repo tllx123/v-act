@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.datasource.taffy",
+  "name": "@v-act/vjs.framework.extension.platform.datasource.taffy",
   "version": "1.0.0-alpha.1",
   "description": "2017-09-11liangzc：_insert接口增加对index的处理",
   "homepage": "https://github.com/opensource-vplatform/v-act",

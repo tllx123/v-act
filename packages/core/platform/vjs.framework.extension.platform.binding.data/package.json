@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.binding.data",
+  "name": "@v-act/vjs.framework.extension.platform.binding.data",
   "version": "1.0.0-alpha.1",
   "description": "2018-06-13liangzc：处理执行observer相关方法时域不正确的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

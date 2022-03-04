@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.model.config",
+  "name": "@v-act/vjs.framework.extension.platform.interface.model.config",
   "version": "1.0.0-alpha.1",
   "description": "2016-12-29xiedh:活动集添加是否有事务属性",
   "homepage": "https://github.com/opensource-vplatform/v-act",

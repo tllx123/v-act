@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.workflow",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.workflow",
   "version": "1.0.0-alpha.1",
   "description": "",
   "homepage": "https://github.com/opensource-vplatform/v-act",

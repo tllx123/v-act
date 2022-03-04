@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.model.manager.tree",
+  "name": "@v-act/vjs.framework.extension.platform.services.model.manager.tree",
   "version": "1.0.0-alpha.1",
   "description": "2019-08-21zhaoyf：解决必填项检查报错问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",

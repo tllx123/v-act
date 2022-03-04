@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.services.domain.tree",
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.tree",
   "version": "1.0.0-alpha.1",
   "description": "2019-06-21liangzc：处理叶子节点数据为空时，新增树节点后数据显示错误的问题",
   "homepage": "https://github.com/opensource-vplatform/v-act",
@@ -15,7 +15,6 @@
     "dist"
   ],
   "dependencies": {
-    "@v-act/GenerateTreeIcon": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.enum": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",

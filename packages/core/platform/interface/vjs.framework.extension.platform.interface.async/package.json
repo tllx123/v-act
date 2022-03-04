@@ -1,5 +1,5 @@
 {
-  "name": "vjs.framework.extension.platform.interface.async",
+  "name": "@v-act/vjs.framework.extension.platform.interface.async",
   "version": "1.0.0-alpha.1",
   "description": "2017-09-20liangzc：添加for逻辑",
   "homepage": "https://github.com/opensource-vplatform/v-act",
