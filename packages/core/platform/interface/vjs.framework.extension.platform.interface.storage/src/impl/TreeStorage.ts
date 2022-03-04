@@ -1,40 +1,46 @@
-let TreeNode = function (id, value, pId, storage) {
-  this.id = id
-  this.pId = pId
-  this.value = value
-  this.children = []
-  this.searchChildren = false
-  this.storage = storage
-}
+class TreeNode {
+  id: string
+  pId: string
+  value?: any
+  children: Array<TreeNode>
+  searchChildren?: boolean
+  storage: TreeStorage | null
+  constructor(id: string, value: any, pId: string, storage: TreeStorage) {
+    this.id = id
+    this.pId = pId
+    this.value = value
+    this.children = []
+    this.searchChildren = false
+    this.storage = storage
+  }
 
-TreeNode.prototype = {
   /**
    *获取树节点id
    * @return String
    */
-  getId: function () {
+  getId() {
     return this.id
-  },
+  }
   /**
    *获取树节点值
    * @return Object
    */
-  getValue: function () {
+  getValue() {
     return this.value
-  },
+  }
   /**
    *获取父节点id
    * @return String
    */
-  getPId: function () {
+  getPId() {
     return this.pId
-  },
+  }
   /**
    *获取子节点：第一代子节点
    *  @return Array
    */
-  getChildren: function () {
-    if (!this.searchChildren) {
+  getChildren() {
+    if (!this.searchChildren && this.storage) {
       let storage = this.storage.storage
       for (let id in storage) {
         if (storage.hasOwnProperty(id)) {
@@ -47,21 +53,21 @@ TreeNode.prototype = {
       this.searchChildren = true
     }
     return this.children
-  },
+  }
 
-  _clearCache: function () {
+  _clearCache() {
     this.searchChildren = false
     this.children = []
-  },
+  }
   /**
    * 销毁树
    */
-  destroy: function () {
+  destroy() {
     this.storage = null
   }
 }
 
-let iterateChildren = function (children, container) {
+let iterateChildren = function (children: TreeNode[], container: TreeNode[]) {
   let childrenArray = []
   for (let i = 0, len = children.length; i < len; i++) {
     let child = children[i]
@@ -83,44 +89,46 @@ let iterateChildren = function (children, container) {
  * 该实例无法直接创建，请通过存储仓库管理器({@link StorageManager#newInstance|StorageManager})创建
  * @author xiedh
  */
-let TreeStorage = function () {
-  this.storage = {}
-}
-
-TreeStorage.prototype = {
+class TreeStorage {
+  storage: { [id: string]: TreeNode }
+  constructor() {
+    this.storage = {}
+  }
   /**
    * 添加数据
    * @param {String} pId 父节点id
    * @param {String} id id值
    * @param {Any} obj
    */
-  add: function (pId, id, obj) {
-    this.storage[id] = new TreeNode(id, obj, pId, this)
-    let parent = this.storage[pId]
-    if (parent) {
-      parent._clearCache()
+  add(pId: string, id: string, obj: any) {
+    if (this.storage) {
+      this.storage[id] = new TreeNode(id, obj, pId, this)
+      let parent = this.storage[pId]
+      if (parent) {
+        parent._clearCache()
+      }
     }
-  },
+  }
 
   /**
    * 获取数据
    * @param {String} id id值
    * @return Any
    */
-  get: function (id) {
+  get(id: string) {
     let node = this.storage[id]
     return node ? node.getValue() : null
-  },
+  }
 
-  getTreeNode: function (id) {
+  getTreeNode(id: string) {
     return this.storage[id]
-  },
+  }
 
   /**
    * 移除数据，子孙数据都会被移除
    * @param {String} id id值
    */
-  remove: function (id) {
+  remove(id: string) {
     let node = this.storage[id]
     if (node) {
       let children = node.getChildren()
@@ -129,41 +137,40 @@ TreeStorage.prototype = {
         let childId = child.getId()
         this.remove(childId)
       }
-      this.storage[id] = null
       try {
         delete this.storage[id]
       } catch (e) {}
     }
-  },
+  }
 
   /**
    * 是否包含指定树节点
    * @param {String} id 树节点id
    * @return Boolean
    */
-  has: function (id) {
+  has(id: string) {
     return this.storage.hasOwnProperty(id)
-  },
+  }
 
   /**
    * 获取树节点值
    * @param {String} id 树节点id
    * @return Any
    */
-  getParent: function (id) {
+  getParent(id: string) {
     let node = this.storage[id]
     if (node) {
       let pId = node.getPId()
       return this.get(pId)
     }
     return null
-  },
+  }
   /**
    * 获取子节点值
    * @param {Object} id 树节点id
    * @return Array
    */
-  getChildren: function (id) {
+  getChildren(id: string) {
     let node = this.storage[id]
     if (node) {
       let children = node.getChildren()
@@ -174,18 +181,18 @@ TreeStorage.prototype = {
       return result
     }
     return null
-  },
+  }
 
   /**
    *　获取子孙节点值
    * @param {String} id 树节点id
    * @return Array
    */
-  getDescendants: function (id) {
+  getDescendants(id: string) {
     let descendants = []
     let node = this.storage[id]
     if (node) {
-      let childrenNode = []
+      let childrenNode: TreeNode[] = []
       let children = node.getChildren()
       childrenNode = childrenNode.concat(children)
       childrenNode = iterateChildren(children, childrenNode)
@@ -194,13 +201,13 @@ TreeStorage.prototype = {
       }
     }
     return descendants
-  },
+  }
   /**
    * 获取兄弟节点值
    * @param {String} id 树节点id
    * @return Array
    */
-  getBrothers: function (id) {
+  getBrothers(id: string) {
     let brothers = []
     let node = this.storage[id]
     if (node) {
@@ -217,7 +224,7 @@ TreeStorage.prototype = {
       }
     }
     return brothers
-  },
+  }
 
   /**
    * 遍历
@@ -225,7 +232,7 @@ TreeStorage.prototype = {
    *  fn参数为：1、id id值
    * 					 2、value
    */
-  iterate: function (fn) {
+  iterate(fn: (key: string, val: any) => void) {
     for (let key in this.storage) {
       if (this.storage.hasOwnProperty(key)) {
         fn(key, this.storage[key].getValue())
@@ -234,6 +241,4 @@ TreeStorage.prototype = {
   }
 }
 
-return TreeStorage
-
-export { get, destory, exists, newInstance }
+export default TreeStorage

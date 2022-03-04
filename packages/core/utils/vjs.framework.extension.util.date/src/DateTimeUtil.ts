@@ -1,11 +1,5 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { DateFormatUtil as dateFormatUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+import { Math as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 let TIME_UNIT_YEAR = 'y' // 时间单位： 年
 let TIME_UNIT_MONTH = 'M' // 时间单位： 月

@@ -1,51 +1,36 @@
-let _storagePool = {}
+import MapStorage from '../impl/MapStorage'
+import TreeStorage from '../impl/TreeStorage'
 
-let _constuctorMap = {}
+const _storagePool: { [type: string]: { [token: string]: any } } = {}
 
-let inited = false
-
-exports.initModule = function () {
-  _init()
+for (let type in exports.TYPES) {
+  _storagePool[exports.TYPES[type]] = {}
 }
 
-let _init = function () {
-  if (!inited) {
-    let TreeStorage = require('vjs/framework/extension/platform/interface/storage/impl/TreeStorage')
-    let MapStorage = require('vjs/framework/extension/platform/interface/storage/impl/MapStorage')
-    _constuctorMap[exports.TYPES.TREE] = TreeStorage
-    _constuctorMap[exports.TYPES.MAP] = MapStorage
-    for (let type in exports.TYPES) {
-      _storagePool[exports.TYPES[type]] = {}
-    }
-    inited = true
-  }
-}
-
-const get = function (type, token) {
-  _init()
+const get = function (type: TYPES, token: string) {
   if (exports.exists(type, token)) {
     let pool = _storagePool[type]
     return pool[token]
   } else {
-    let constructor = _constuctorMap[type]
-    let storage = new constructor()
-    let pool = _storagePool[type]
+    const constructor = type == TYPES.MAP ? MapStorage : TreeStorage
+    const storage = new constructor()
+    const pool = _storagePool[type]
     pool[token] = storage
     return storage
   }
 }
 
-const destory = function (type, token) {
+const destory = function (type: TYPES, token: string) {
   if (exports.contains(type, token)) {
-    let pool = _storagePool[type]
+    const pool = _storagePool[type]
     try {
       delete pool[token]
     } catch (e) {}
   }
 }
 
-const exists = function (type, token) {
-  let pool = _storagePool[type]
+const exists = function (type: TYPES, token: string) {
+  const pool = _storagePool[type]
   if (pool) {
     return pool.hasOwnProperty(token)
   } else {
@@ -55,9 +40,8 @@ const exists = function (type, token) {
   }
 }
 
-const newInstance = function (type) {
-  _init()
-  let constructor = _constuctorMap[type]
+const newInstance = function (type: TYPES) {
+  const constructor = type == TYPES.MAP ? MapStorage : TreeStorage
   return new constructor()
 }
 
@@ -65,11 +49,11 @@ const newInstance = function (type) {
  * 数据仓库类型枚举
  * @enum {String}
  */
-exports.TYPES = {
+enum TYPES {
   /**树形仓库*/
-  TREE: 'tree',
+  TREE = 'tree',
   /**Map型仓库*/
-  MAP: 'map'
+  MAP = 'map'
 }
 
-export { get, destory, exists, newInstance }
+export { destory, exists, get, newInstance, TYPES }

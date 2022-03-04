@@ -1,4 +1,4 @@
-let uuid
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 /**
  * @namespace Scope
@@ -8,113 +8,109 @@ let uuid
  * vjs服务名称：vjs.framework.extension.platform.interface.scope.Scope<br/>
  * @author xiedh
  */
-let Scope = function (instanceId) {
-  this.instanceId = instanceId || uuid.generate()
-  this.properties = {}
-  this.listeners = {}
-  this.handlers = {}
+class Scope {
+  instanceId: string = ''
+  properties: { [propName: string]: any } = {}
+  listeners: { [eventName: string]: Array<(...args: any[]) => void> } = {}
+  handlers: {
+    [id: string]: { once: boolean; handler: (...args: any[]) => void }
+  } = {}
   //设置ProKeys属性，用来保存组件容器id
-  this.ProKeys = {
+  ProKeys: { [propName: string]: string } = {
     ContainerId: '_$ContainerId'
   }
-}
+  destoryed: boolean = false
 
-Scope.prototype = {
-  //设置ProKeys属性，用来保存组件容器id
-  //		var ProKeys ={
-  //				ContainerId:"_$ContainerId"
-  //			},
-
-  initModule: function (sBox) {
-    if (sBox) uuid = sBox.getService('vjs.framework.extension.util.UUID')
-  },
+  constructor(instanceId?: string) {
+    this.instanceId = instanceId || uuid.generate()
+  }
 
   /**
    * 获取实例id
    * @return String
    */
-  getInstanceId: function () {
+  getInstanceId() {
     return this.instanceId
-  },
+  }
 
   /**
    * 设置属性值
    * @param {String} key 属性名称
    * @param {Any} val 属性值
    */
-  set: function (key, val) {
+  set(key: string, val: any) {
     this.properties[key] = val
-  },
+  }
 
   /**
    * 获取属性值
    * @param {String} key 属性名称
    * @return Any
    */
-  get: function (key) {
+  get(key: string) {
     return this.properties[key]
-  },
+  }
   /**
    * 设置组件容器的id
    *
    */
-  setProKeys: function (key, val) {
+  setProKeys(key: string, val: string) {
     this.ProKeys[key] = val
-  },
+  }
   /**
    * 获取组件容器的id
    *
    */
-  getProKeys: function (key) {
+  getProKeys(key: string) {
     return this.ProKeys[key]
-  },
+  }
 
   /**
    * 是否包含指定属性值
    * @param {String} key 属性名称
    * @return Boolean
    */
-  has: function (key) {
+  has(key: string) {
     return this.properties.hasOwnProperty(key)
-  },
+  }
   /**
    * 移除指定属性
    * @param {String} key 属性名称
    */
-  remove: function (key) {
+  remove(key: string) {
     if (this.has(key)) {
       delete this.properties[key]
     }
-  },
+  }
   /**
    * 获取所有属性值
    * @return Object
    */
-  getProperties: function () {
-    let pros = {}
+  getProperties() {
+    let pros: { [proName: string]: any } = {}
     for (let attr in this.properties) {
       if (this.properties.hasOwnProperty(attr)) {
         pros[attr] = this.properties[attr]
       }
     }
     return pros
-  },
+  }
 
   /**
    * 注册事件回调
    * @param {@link ScopeManager#EVENTS|EVENTS} 事件名称
    * @param {Function} 事件回调
    */
-  on: function (eventName, handler) {
+  on(eventName: string, handler: () => void) {
     if (this.listeners.hasOwnProperty(eventName)) {
       this.listeners[eventName].push(handler)
     } else {
       let handlers = [handler]
       this.listeners[eventName] = handlers
     }
-  },
+  }
 
-  un: function (eventName, handler) {
+  un(eventName: string, handler: () => void) {
     if (this.listeners.hasOwnProperty(eventName)) {
       let events = this.listeners
       for (let i = 0, len = this.listeners[eventName].length; i < len; i++) {
@@ -125,22 +121,22 @@ Scope.prototype = {
       }
     }
     return false
-  },
+  }
 
   /**
    * 触发事件回调
    * @param {@link ScopeManager#EVENTS|EVENTS} eventName 事件名称
    */
-  fire: function (eventName) {
+  fire(eventName: string, ...args: any[]) {
     let handlers = this.listeners[eventName]
     if (handlers) {
-      let args = Array.prototype.slice.call(arguments, 1)
+      let args: Array<any> = Array.prototype.slice.call(arguments, 1)
       for (let i = 0, len = handlers.length; i < len; i++) {
         let handler = handlers[i]
         handler.apply(this, args)
       }
     }
-  },
+  }
   /**
    * 注册实例域逻辑
    * @params {Object} params 参数信息
@@ -149,36 +145,38 @@ Scope.prototype = {
    * 		handler:Function
    * }
    */
-  registerHandler: function (params) {
+  registerHandler(params: {
+    once: boolean
+    handler: (...args: any[]) => void
+  }) {
     let id = uuid.generate()
     this.handlers[id] = {
       once: params.once,
       handler: params.handler
     }
     return id
-  },
+  }
 
-  exeHandler: function (id, args) {
+  exeHandler(id: string, args: Array<any>) {
     let cfg = this.handlers[id]
     if (cfg) {
       let handler = cfg.handler
       handler.apply(this, args)
       if (cfg.once) {
-        this.handlers[id] = null
         try {
           delete this.handlers[id]
         } catch (e) {}
       }
     }
-  },
+  }
 
-  _markDestroyed: function () {
+  _markDestroyed() {
     this.destoryed = true
-  },
+  }
 
-  _isDestroyed: function () {
+  _isDestroyed() {
     return this.destoryed
   }
 }
 
-return Scope
+export default Scope
