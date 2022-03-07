@@ -1,4 +1,4 @@
-import { aop } from '@v-act/vjs.framework.extension.platform'
+import { aop } from '@v-act/vjs.framework.extension.platform.aop'
 import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
@@ -8,13 +8,13 @@ import {
   RuleContext
 } from '@v-act/vjs.framework.extension.platform.interface.route'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
+import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
 
-import * as RuleExecutor from './impl/RuleExecutor'
+import * as RuleExecutor from '../impl/RuleExecutor'
 
 export function initModule(sb) {}
 

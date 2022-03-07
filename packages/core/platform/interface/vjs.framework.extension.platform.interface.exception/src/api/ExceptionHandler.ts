@@ -1,6 +1,6 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
-import * as exceptionFactory from './api/ExceptionFactory'
+import * as exceptionFactory from './ExceptionFactory'
 
 let sandbox
 

@@ -1,4 +1,4 @@
-import * as Exception from './impl/Exception'
+import * as Exception from '../impl/Exception'
 
 let handlers = {}
 

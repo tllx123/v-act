@@ -1,4 +1,4 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope.'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 import { EventManager as eventHandler } from '@v-act/vjs.framework.extension.platform.services.view.event'
 

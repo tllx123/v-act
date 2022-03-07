@@ -1,8 +1,8 @@
 import { FrontEndAlerter as FrontEndAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
-import * as Exception from './impl/Exception'
+import * as Exception from './Exception'
 
 let ModuleScriptException = function (message, e, params) {
   this.reason = params.reason

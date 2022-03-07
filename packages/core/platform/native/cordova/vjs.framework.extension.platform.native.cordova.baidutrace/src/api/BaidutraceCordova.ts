@@ -1,9 +1,5 @@
-export function initModule(sb) {
-  let BaidutraceService = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.Baidutrace'
-  )
-  BaidutraceService.putInstance(exports)
-}
+import { BaidutraceService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.Baidutrace'
+BaidutraceService.putInstance(exports)
 
 /**
  * 初始化百度鹰眼服务插件，注为全局对象

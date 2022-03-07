@@ -1,5 +1,5 @@
-import * as dataAdaptorFactory from './adapter/DataAdaptorFactory'
-import * as Field from './api/Field'
+import * as dataAdaptorFactory from '../adapter/DataAdaptorFactory'
+import * as Field from '../api/Field'
 
 /**
  *检查参数

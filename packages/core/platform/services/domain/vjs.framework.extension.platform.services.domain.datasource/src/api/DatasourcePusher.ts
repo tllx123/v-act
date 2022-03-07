@@ -1,7 +1,7 @@
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { uuid as UUID } from '@v-act/vjs.framework.extension.util.uuid'
 

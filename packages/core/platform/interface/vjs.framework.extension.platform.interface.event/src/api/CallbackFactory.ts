@@ -1,4 +1,4 @@
-import * as Callback from './api/Callback'
+import * as Callback from './Callback'
 
 export function initModule(sb) {}
 

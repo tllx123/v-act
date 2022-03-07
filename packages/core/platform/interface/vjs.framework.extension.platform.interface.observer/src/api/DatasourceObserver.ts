@@ -1,6 +1,6 @@
 import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-import * as Observer from './api/Observer'
+import * as Observer from './Observer'
 
 /**
  * @class DatasourceObserver

@@ -1,12 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
-let sb
-
-export function initModule(s) {
-  sb = s
-}
-
 const create = function (ruleCode) {
   let windowScope = scopeManager.getWindowScope()
   let formula

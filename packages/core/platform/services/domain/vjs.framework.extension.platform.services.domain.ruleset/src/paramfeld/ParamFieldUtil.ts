@@ -2,7 +2,7 @@ import { ComponentParam } from '@v-act/vjs.framework.extension.platform.data.sto
 import {
   ExpressionContext,
   ExpressionEngine as ExpressEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { jsonUtil as jsTool } from '@v-act/vjs.framework.extension.util.jsonutil'

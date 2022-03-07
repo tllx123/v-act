@@ -1,4 +1,4 @@
-import { AppVersion as VersionService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { VersionService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.appversion'
 
 export function initModule(sb) {
   VersionService.putInstance(exports)

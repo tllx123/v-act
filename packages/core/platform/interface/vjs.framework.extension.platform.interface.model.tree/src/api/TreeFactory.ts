@@ -1,4 +1,4 @@
-import * as Tree from './api/Tree'
+import * as Tree from './Tree'
 
 export function initModule() {}
 

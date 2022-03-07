@@ -6,7 +6,7 @@ import { EventManager as eventManager } from '@v-act/vjs.framework.extension.pla
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-import * as ruleFactory from './impl/RuleFactory'
+import * as ruleFactory from '../impl/RuleFactory'
 
 let RuleExecutor = function (ruleContext) {
   this.ruleContext = ruleContext

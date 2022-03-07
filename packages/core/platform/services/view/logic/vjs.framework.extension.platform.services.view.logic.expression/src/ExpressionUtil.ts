@@ -1,7 +1,7 @@
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 
 export function initModule(sb) {}
 

@@ -1,4 +1,4 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
 let sandbox,
   modalCode = 'error_modal_div'

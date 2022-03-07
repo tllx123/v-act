@@ -1,5 +1,60 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
+import { ProcessorUtils as processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
+import * as entityEditor from './editors/entity'
+import * as expressionEditor from './editors/expression'
+import * as rulesetEditor from './editors/ruleset'
+import * as resourceEditor from './editors/resource'
+import * as childrenEditor from './editors/children'
+
+import * as addToComponentContainerHandler from './handlers/addToComponentContainer'
+import * as browsercreateDialogHandler from './handlers/browser.createDialog'
+import * as browserredirectHandler from './handlers/browser.redirect'
+import * as browsershowModalHandler from './handlers/browser.showModal'
+import * as componentActionHandler from './handlers/componentAction'
+import * as componentRenderHandler from './handlers/componentRender'
+import * as containerParentHandler from './handlers/containerParent'
+import * as createDatasourceFromJsonHandler from './handlers/createDatasourceFromJson'
+import * as DropdownSourceObserverHandler from './handlers/DropdownSourceObserver'
+import * as getDropDownDataHandler from './handlers/getDropDownData'
+import * as entityHandler from './handlers/entity'
+import * as eventCallerHandler from './handlers/eventCaller'
+import * as eventHandlerHandler from './handlers/eventHandler'
+import * as executeWindowRouteHandler from './handlers/executeWindowRoute'
+import * as expressionHandler from './handlers/expression'
+import * as fieldValueHandler from './handlers/fieldValue'
+import * as getCurrencyFieldHandler from './handlers/getCurrencyField'
+import * as getFieldPropertyFormVMHandler from './handlers/getFieldPropertyFormVM'
+import * as getParentWidgetHandler from './handlers/getParentWidget'
+import * as getTableNameFormVMHandler from './handlers/getTableNameFormVM'
+import * as getTreeHandler from './handlers/getTree'
+import * as getWidgetContextPropertyHandler from './handlers/getWidgetContextProperty'
+import * as handleComponentPackInfoHandler from './handlers/handleComponentPackInfo'
+import * as handleWindowMappingHandler from './handlers/handleWindowMapping'
+import * as instanceHandlerHandler from './handlers/instanceHandler'
+import * as menuActionHandler from './handlers/menuAction'
+import * as onHandler from './handlers/on'
+import * as putWidgetContextPropertyHandler from './handlers/putWidgetContextProperty'
+import * as registerContainerHandler from './handlers/registerContainer'
+import * as remoteMethodAccessorHandler from './handlers/remoteMethodAccessor'
+import * as remoteOperationHandler from './handlers/remoteOperation'
+import * as renderWindowsHandler from './handlers/renderWindows'
+import * as serverExpressionHandler from './handlers/serverExpression'
+import * as treeHandlerHandler from './handlers/treeHandler'
+import * as vPlatformVueHandler from './handlers/vPlatformVue'
+import * as webDesignclonePropsHandler from './handlers/webDesign.cloneProps'
+import * as widgetActionHandler from './handlers/widgetAction'
+import * as widgetChildrenHandler from './handlers/widgetChildren'
+import * as widgetParentHandler from './handlers/widgetParent'
+import * as windowdestroyHandler from './handlers/window.destroy'
+import * as windowopenWindowByRecordHandler from './handlers/window.openWindowByRecord'
+import * as windowrenderToElementHandler from './handlers/window.renderToElement'
+import * as windowrenderToVuiContainerHandler from './handlers/window.renderToVuiContainer'
+import * as windowRelationdestroyHandler from './handlers/windowRelation.destroy'
+import * as windowRelationgetHandler from './handlers/windowRelation.get'
+import * as windowRelationgetByConditionHandler from './handlers/windowRelation.getByCondition'
+import * as windowRelationupdateHandler from './handlers/windowRelation.update'
+import * as windowVariantHandler from './handlers/windowVariant'
+
 var _handlers = {},
   _compatibleHandlers = {},
   _editorHandlers = {}
@@ -13,11 +68,11 @@ _initHandlers()
  */
 var _initEditorHandlers = function () {
   var handlers = [
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/editors/entity'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/editors/expression'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/editors/ruleset'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/editors/resource'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/editors/children')
+    entityEditor,
+    expressionEditor,
+    rulesetEditor,
+    resourceEditor,
+    childrenEditor
   ]
   for (var i = 0, l = handlers.length; i < l; i++) {
     var handler = handlers[i]
@@ -37,54 +92,54 @@ var _initCompatibleHandlers = function () {
 
 var _initHandlers = function () {
   var handlers = [
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/addToComponentContainer'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/browser.createDialog'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/browser.redirect'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/browser.showModal'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/componentAction'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/componentRender'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/containerParent'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/createDatasourceFromJson'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/DropdownSourceObserver'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getDropDownData'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/entity'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/eventCaller'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/eventHandler'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/executeWindowRoute'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/expression'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/fieldValue'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getCurrencyField'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getFieldPropertyFormVM'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getParentWidget'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getTableNameFormVM'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getTree'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/getWidgetContextProperty'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/handleComponentPackInfo'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/handleWindowMapping'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/instanceHandler'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/menuAction'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/on'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/putWidgetContextProperty'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/registerContainer'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/remoteMethodAccessor'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/remoteOperation'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/renderWindows'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/serverExpression'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/treeHandler'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/vPlatformVue'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/webDesign.cloneProps'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/widgetAction'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/widgetChildren'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/widgetParent'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/window.destroy'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/window.openWindowByRecord'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/window.renderToElement'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/window.renderToVuiContainer'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/windowRelation.destroy'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/windowRelation.get'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/windowRelation.getByCondition'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/windowRelation.update'),
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/windowVariant')
+    addToComponentContainerHandler,
+    browsercreateDialogHandler,
+    browserredirectHandler,
+    browsershowModalHandler,
+    componentActionHandler,
+    componentRenderHandler,
+    containerParentHandler,
+    createDatasourceFromJsonHandler,
+    DropdownSourceObserverHandler,
+    getDropDownDataHandler,
+    entityHandler,
+    eventCallerHandler,
+    eventHandlerHandler,
+    executeWindowRouteHandler,
+    expressionHandler,
+    fieldValueHandler,
+    getCurrencyFieldHandler,
+    getFieldPropertyFormVMHandler,
+    getParentWidgetHandler,
+    getTableNameFormVMHandler,
+    getTreeHandler,
+    getWidgetContextPropertyHandler,
+    handleComponentPackInfoHandler,
+    handleWindowMappingHandler,
+    instanceHandlerHandler,
+    menuActionHandler,
+    onHandler,
+    putWidgetContextPropertyHandler,
+    registerContainerHandler,
+    remoteMethodAccessorHandler,
+    remoteOperationHandler,
+    renderWindowsHandler,
+    serverExpressionHandler,
+    treeHandlerHandler,
+    vPlatformVueHandler,
+    webDesignclonePropsHandler,
+    widgetActionHandler,
+    widgetChildrenHandler,
+    widgetParentHandler,
+    windowdestroyHandler,
+    windowopenWindowByRecordHandler,
+    windowrenderToElementHandler,
+    windowrenderToVuiContainerHandler,
+    windowRelationdestroyHandler,
+    windowRelationgetHandler,
+    windowRelationgetByConditionHandler,
+    windowRelationupdateHandler,
+    windowVariantHandler
   ]
   for (var i = 0, l = handlers.length; i < l; i++) {
     var handler = handlers[i]

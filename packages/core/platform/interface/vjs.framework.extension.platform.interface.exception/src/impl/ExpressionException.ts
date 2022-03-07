@@ -1,8 +1,8 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-import * as ExpectedException from './impl/ExpectedException'
-import * as callCommandService from './util/CallCommand'
+import * as ExpectedException from './ExpectedException'
+import * as callCommandService from '../util/CallCommand'
 
 let ExpressionException = function (message, e) {
   ExpectedException.apply(this, arguments)

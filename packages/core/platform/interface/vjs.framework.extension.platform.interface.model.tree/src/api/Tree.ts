@@ -1,5 +1,5 @@
-import * as Node from './api/Node'
-import * as NodeSet from './api/NodeSet'
+import * as Node from './Node'
+import * as NodeSet from './NodeSet'
 
 let Datasource,
   Criteria,

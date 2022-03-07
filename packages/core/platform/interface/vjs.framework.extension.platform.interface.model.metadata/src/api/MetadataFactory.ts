@@ -1,7 +1,7 @@
 import { DatasourceEnums as datasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
 
-import * as fieldFactory from './api/FieldFactory'
-import * as Metadata from './api/Metadata'
+import * as fieldFactory from '../api/FieldFactory'
+import * as Metadata from '../api/Metadata'
 
 export function initModule(sb) {}
 

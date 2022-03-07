@@ -1,4 +1,4 @@
-import * as aes from './cryptoJS/aes'
+import * as aes from '../cryptoJS/aes'
 
 export function initModule() {}
 

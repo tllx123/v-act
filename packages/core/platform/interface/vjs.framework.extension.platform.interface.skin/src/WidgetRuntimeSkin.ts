@@ -1,6 +1,6 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util.array'
-import { lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor'
+import { LessUtil as lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor.less'
 
 import * as skinVariable from './SkinVariable'
 

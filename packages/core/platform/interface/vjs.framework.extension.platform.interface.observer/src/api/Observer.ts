@@ -1,7 +1,7 @@
 import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-import * as ObserverData from './api/ObserverData'
+import * as ObserverData from './ObserverData'
 
 /**
  * @class Observer

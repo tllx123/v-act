@@ -1,5 +1,5 @@
-import * as Node from './api/Node'
-import * as Iterator from './api/NodeSetIterator'
+import * as Node from './Node'
+import * as Iterator from './NodeSetIterator'
 
 /**
  *	@namespace NodeSet

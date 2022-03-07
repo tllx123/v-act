@@ -28,6 +28,4 @@ var setZIndex = function (_zIndex) {
   }
 }
 
-exports.getZIndex = getZIndex
-exports.getFrontZIndex = getFrontZIndex
-exports.setZIndex = setZIndex
+export { getZIndex, getFrontZIndex, setZIndex }

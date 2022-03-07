@@ -1,4 +1,4 @@
-import * as vAsync from './impl/VAsync'
+import * as vAsync from '../impl/VAsync'
 
 //声明依赖模块变量
 

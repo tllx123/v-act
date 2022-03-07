@@ -3,7 +3,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import {
   ExpressionContext,
   ExpressionEngine as expEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import {
   WidgetAction as widgetAction,
   WidgetProperty as widgetProperty

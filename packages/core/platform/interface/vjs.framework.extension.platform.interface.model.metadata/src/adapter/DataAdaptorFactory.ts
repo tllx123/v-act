@@ -1,6 +1,6 @@
-import * as booleanDataAdpator from './adapter/impl/BooleanDataAdaptor'
-import * as numberDataAdaptor from './adapter/impl/NumberDataAdaptor'
-import * as stringDataAdaptor from './adapter/impl/StringDataAdaptor'
+import * as booleanDataAdpator from './impl/BooleanDataAdaptor'
+import * as numberDataAdaptor from './impl/NumberDataAdaptor'
+import * as stringDataAdaptor from './impl/StringDataAdaptor'
 
 export function initModule() {}
 
