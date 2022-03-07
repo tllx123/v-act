@@ -66,12 +66,10 @@ const JGIntegerBox = function (props: JGComponentProps) {
     onChanged,
     placeholder
   } = props
-
   const handleChange = (e) => {
     let hasMinus = e.target.value.indexOf('-') === 0
     let filterVal = e.target.value.replace(/[^0-9]/gi, '')
     if (hasMinus) filterVal = '-' + filterVal
-    // setInputVal(filterVal)
     onChanged && onChanged({ target: { value: filterVal } })
   }
   return (
