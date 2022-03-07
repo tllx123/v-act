@@ -1,10 +1,7 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowDatasource as datasourceManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 let _getManager = function () {
   return datasourceManager
@@ -49,4 +46,4 @@ const getAllWithoutVir = function () {
   return rs
 }
 
-export { register, unRegister, lookup, exists, getAll, getAllWithoutVir }
+export { exists, getAll, getAllWithoutVir, lookup, register, unRegister }

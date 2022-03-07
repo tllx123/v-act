@@ -1,16 +1,14 @@
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { log as log } from '@v-act/vjs.framework.extension.util'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
-let undefined
-let undefined
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dsName = argsLen >= 1 ? args[0] : null,

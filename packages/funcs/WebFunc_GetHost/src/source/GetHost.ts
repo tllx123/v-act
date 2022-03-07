@@ -1,10 +1,8 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let hostUrl = ''
   if (window.GlobalVariables) {
     hostUrl = GlobalVariables.getServerUrl()

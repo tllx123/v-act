@@ -1,25 +1,21 @@
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ArrayUtil as jsTool } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-let undefined
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { ArrayUtil as jsTool } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 //var viewModel ;
-let undefined
-let undefined
-let undefined
+
 let sandbox
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {
+
+export function initModule(sBox) {
   sandbox = sBox
 }
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleInstId = ruleContext.getRuleCfg()['ruleInstId']
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
 

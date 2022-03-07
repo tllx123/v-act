@@ -1,10 +1,9 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     encryptValue = argsLen >= 1 ? args[0] : null

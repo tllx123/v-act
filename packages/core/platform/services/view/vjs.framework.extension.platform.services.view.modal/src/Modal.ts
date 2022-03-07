@@ -1,18 +1,16 @@
-import { ZIndex as zIndex } from '@v-act/vjs.framework.extension.platform.services.view.ui'
-import { BackMask as backMask } from '@v-act/vjs.framework.extension.platform.services.view.ui'
+import {
+  BackMask as backMask,
+  ZIndex as zIndex
+} from '@v-act/vjs.framework.extension.platform.services.view.ui'
+
 import * as initor from './ModalInitor'
-import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { WindowContainer as WindowContainer } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
 
 let WindowContaine, dragParams
 let headerH
-let undefined
+
 let borderWidth
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   dragParams = 'dragParams'
   headerH = 47
   borderWidth = 4
@@ -712,4 +710,4 @@ let _addEvent = function (elem, type, handler) {
     elem['on' + type] = handler
   }
 }
-export { renderIFrameToDom, create, createOld, create, setModalWindowState }
+export { create, createOld, renderIFrameToDom, setModalWindowState }

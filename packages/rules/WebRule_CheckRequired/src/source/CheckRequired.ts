@@ -8,28 +8,14 @@ import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.ext
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import {
-  EasyTemplateUtil as easyTemplateUtil,
-  MapUtil as mapUtil
-} from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { EasyTemplateUtil as easyTemplateUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 let sb
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sb = sBox
 }
 
@@ -45,7 +31,7 @@ let executeExpress = function (ruleContext, value) {
 }
 
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 处理规则配置值

@@ -1,1 +1,1 @@
-export * from './ArrayUtil'
+export * as ArrayUtil from './ArrayUtil'

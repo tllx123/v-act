@@ -1,6 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 /**
  * @class Contract

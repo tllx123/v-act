@@ -1,3 +1,4 @@
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
@@ -6,11 +7,9 @@ import {
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0
 

@@ -1,7 +1,5 @@
 import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
-let undefined
-
 /**
  *@class Request
  * @desc 前端请求定义<br/>

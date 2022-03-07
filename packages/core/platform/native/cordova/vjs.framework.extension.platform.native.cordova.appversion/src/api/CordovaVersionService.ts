@@ -1,7 +1,6 @@
 import { AppVersion as VersionService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   VersionService.putInstance(exports)
 }
 
@@ -34,4 +33,4 @@ const getAppName = function (callback) {
   })
 }
 
-export { getVersionNumber, getAppName }
+export { getAppName, getVersionNumber }

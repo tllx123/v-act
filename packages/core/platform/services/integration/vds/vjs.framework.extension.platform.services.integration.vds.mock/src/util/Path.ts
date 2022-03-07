@@ -39,7 +39,7 @@ define('./Path', function (require, exports, module) {
     return (isAbs ? '/' : '') + path
   }
 
-  exports.join = function () {
+  export function join() {
     var paths = []
     for (var i = 0; i < arguments.length; i++) {
       var arg = arguments[i]

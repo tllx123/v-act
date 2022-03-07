@@ -1,6 +1,4 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let Snapshot = function () {
   this.id = uuid.generate()

@@ -1,6 +1,6 @@
 import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util.json'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 const token = 'ApplicationParam_Token_Key'
 const WindowMappingKey = 'ApplicationParam_Token_Window_Mapping'

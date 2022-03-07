@@ -1,14 +1,12 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const request = function (params) {
   let operation = new Operation()
@@ -66,4 +64,4 @@ const evalExpression = function (params) {
   return result
 }
 
-export { request, evalExpression }
+export { evalExpression, request }

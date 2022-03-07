@@ -1,24 +1,25 @@
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { RemoteMethodAccessor as RemoteMethodAccessorUtil } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { DatasourceFactory as DatasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext,
+  ExpressionEngine as ExpressEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { RemoteMethodAccessor as RemoteMethodAccessorUtil } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
 import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+
 // 初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 let sandBox
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   // sBox:前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandBox = sBox
 }
 
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值

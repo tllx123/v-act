@@ -1,4 +1,4 @@
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   let skin = sBox.getService(
     'vjs.framework.extension.platform.interface.skin.variable'
   )

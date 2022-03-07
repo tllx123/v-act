@@ -4,7 +4,7 @@ import * as rpxPlugins from './rpxPlugins'
 let lessPlugins,
   template_index = 0
 
-exports.initModule = function () {}
+export function initModule() {}
 
 /**
  * 解析less内容，生成css

@@ -1,19 +1,20 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { EasyTemplateUtil as tmplUtil } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext,
+  ExpressionEngine as ExpressEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { WidgetAction as WidgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { EasyTemplateUtil as tmplUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 let sandBox,
   printer,
   isLoaded = false
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
   window.showModalDialog = function (strPURL) {
     window.open(
@@ -24,7 +25,7 @@ exports.initModule = function (sBox) {
   }
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   ruleContext.markRouteExecuteUnAuto()
   let scopeId = ScopeManager.getCurrentScopeId()
   let ruleCfgValue = ruleContext.getRuleCfg()

@@ -1,14 +1,12 @@
+import * as jsonUtil from 'module'
 import * as viewContext from 'module'
 import * as viewOperation from 'module'
-import * as jsonUtil from 'module'
 
 // 加载
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 //主入口(必须有)
-let main = function (ip, port) {
+const main = function (ip, port) {
   try {
     let expression = 'StartDebuggerFunc("' + ip + '","' + port + '")'
     let findParam = {

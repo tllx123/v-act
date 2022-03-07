@@ -1,8 +1,8 @@
 let environment
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let fileId = args[0]
   let url = getImageSrc(fileId)

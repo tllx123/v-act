@@ -1,11 +1,10 @@
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 //加载模块
 let jsonUtil
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   let sourcedata = param.getArgs()
   let _result = ChangeToChinese(sourcedata)
   return _result

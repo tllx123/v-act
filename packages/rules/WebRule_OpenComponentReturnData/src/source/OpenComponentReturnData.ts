@@ -1,51 +1,36 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { UUID as UUID } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { resourcepackage as resourcepackage } from '@v-act/vjs.framework.extension.ui.adapter'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { DatasourcePusher as dbUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { ApplicationParam as AppData } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
+import { DatasourcePusher as dbUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-let undefined
-let undefined
-let undefined
-let undefined
+import {
+  ComponentParam as componentParam,
+  WindowParam as windowParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import {
+  WidgetAction as actionHandler,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { uuid as UUID } from '@v-act/vjs.framework.extension.util.uuid'
+
 let sandBox
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+
 let ExpressionEngine
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
   openWindow(inParams, ruleContext)
   return true
@@ -1025,4 +1010,4 @@ let getFreeDBCopyFieldsMapping = function (fieldMappings) {
   return copyFieldsMapping
 }
 
-export { main, getOpenWindowInputParams }
+export { getOpenWindowInputParams, main }

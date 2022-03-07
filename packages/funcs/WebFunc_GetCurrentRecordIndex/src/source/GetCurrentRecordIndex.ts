@@ -1,21 +1,20 @@
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-//初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-let undefined
-let undefined
-let undefined
-let undefined
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
-exports.initModule = function (sb) {
+//初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
+
+export function initModule(sb) {
   //sb：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   /*
    * 先根据参数获取数据眼
    * 再调用数据源的getSelectedRecords方法获取选中行

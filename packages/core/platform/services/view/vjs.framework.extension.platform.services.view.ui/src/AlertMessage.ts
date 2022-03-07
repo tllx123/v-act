@@ -10,7 +10,7 @@ define('./AlertMessage', function (require, exports, module) {
     stringUtils,
     i18n
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     backMask = require('vjs/framework/extension/platform/services/view/ui/BackMask')
     zindex = require('vjs/framework/extension/platform/services/view/ui/ZIndex')
     log = sb.getService('vjs.framework.extension.util.log')

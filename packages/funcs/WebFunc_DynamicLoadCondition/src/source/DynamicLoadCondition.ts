@@ -1,9 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 主入口
@@ -12,7 +10,7 @@ exports.initModule = function (sb) {}
  * @param loadLevel 动态加载层次
  * @param whereObjJson where条件对象json
  */
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let dataSourceName = args[0]
   let loadLevel = args[1]

@@ -1,13 +1,10 @@
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 
 let sb
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

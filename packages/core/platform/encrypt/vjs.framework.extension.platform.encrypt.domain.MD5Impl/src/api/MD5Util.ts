@@ -1,7 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
-exports.initModule = function (sb) {}
+
+export function initModule(sb) {}
 
 let genHash = function (encryptValue) {
   //生成加密后的hash值
@@ -272,4 +272,4 @@ let executeExpression = function (windowCode, encryptValue) {
   })
   return result
 }
-export { genHashSeparatePlatform, genHash }
+export { genHash, genHashSeparatePlatform }

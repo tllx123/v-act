@@ -1,27 +1,22 @@
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { StoreTypes as storeTypes } from '@v-act/vjs.framework.extension.platform.interface.enum'
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 let sandbox
-let undefined
-let undefined
-exports.initModule = function (sBox) {
+
+export function initModule(sBox) {
   sandbox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

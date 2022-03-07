@@ -1,33 +1,28 @@
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { Browser as BrowserUtil } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { render as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-let undefined
-let undefined
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Browser as BrowserUtil } from '@v-act/vjs.framework.extension.platform.services.browser'
+import {
+  ExpressionContext,
+  ExpressionEngine as ExpressEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { render as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration'
+import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import {
+  WidgetAction as widgetAction,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
+
 let viewContext
 let actionHandler
-let undefined
 
 //加载表达式计算模块
 //	var formulaUtil ;
 let rendererUtil
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sandBox) {}
+export function initModule(sandBox) {}
 //dengb:去掉来源类型的判断逻辑，现在只要一直来源就是表达式
 //值类型(1:实体字段,2:系统变量,3:组件变量,4:常量,5:自定义,6:表达式)
 /*var TYPE_ENTITY_FIELD='1';
@@ -44,7 +39,7 @@ let TARGET_TYPE_COMPONENT_CONTAINER = 2
 let TARGET_TYPE_COMPONENT_NEW_TAB = 3
 let TARGET_TYPE_DIV_CONTAINER = 4
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams
   let inParamObj = jsonUtil.json2obj(inParams)

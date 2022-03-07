@@ -1,10 +1,9 @@
-import * as Datasource from './api/Datasource'
 import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.expression'
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { Log as log } from '@v-act/vjs.framework.extension.util.log'
+
+import * as Datasource from './api/Datasource'
 
 let sandbox
 
@@ -116,7 +115,7 @@ const create = function (metadata) {
   return datasource
 }
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandbox = sBox
 }
 
@@ -146,4 +145,4 @@ const _getDatasourceConstructor = function () {
   return Datasource
 }
 
-export { create, unSerialize, isDatasource, _getDatasourceConstructor }
+export { _getDatasourceConstructor, create, isDatasource, unSerialize }

@@ -1,13 +1,9 @@
-import { widgetModule as widgetModule } from '@v-act/vjs.framework.extension.widget.manager'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-let undefined
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamObj = jsonUtil.json2obj(inParams)

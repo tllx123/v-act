@@ -1,4 +1,4 @@
-let main = function (param) {
+const main = function (param) {
   return null
 }
 

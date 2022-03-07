@@ -1,14 +1,10 @@
 import { DropDownSourceUtil as dropDownSourceUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let widgetId = args[0]
   let IsLoadData = args[1]

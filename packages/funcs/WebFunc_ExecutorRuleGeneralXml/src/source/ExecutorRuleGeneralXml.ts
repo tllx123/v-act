@@ -1,14 +1,6 @@
-import * as log from 'module'
 import * as viewModel from 'module'
-import * as viewContext from 'module'
-import * as operationLib from 'module'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 /**
  * 主入口
@@ -17,7 +9,7 @@ exports.initModule = function () {}
  * @param tableName 业务表名称
  * @param columnName 业务表字段名
  */
-let main = function (type, ruleChainId, tableName, columnName, ruleName) {
+const main = function (type, ruleChainId, tableName, columnName, ruleName) {
   if (typeof type == 'undefined' || type === '' || type === null) {
     throw new Error('[ExecutorRuleGeneralXml.main]入参type不允许为空')
   }

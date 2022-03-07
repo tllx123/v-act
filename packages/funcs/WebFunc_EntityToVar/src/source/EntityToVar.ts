@@ -1,11 +1,10 @@
 import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 // 主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let str = args[0]
   if (str) {

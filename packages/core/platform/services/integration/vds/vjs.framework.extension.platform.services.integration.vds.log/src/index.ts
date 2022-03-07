@@ -18,7 +18,7 @@ define('./index', function (require, exports, module) {
 
   var logUtil
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     logUtil = sb.getService('vjs.framework.extension.util.log')
   }
 
@@ -28,7 +28,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.log.log("日志信息");
    */
-  exports.log = function (msg) {
+  export function log(msg) {
     return logUtil.log(msg)
   }
 
@@ -38,7 +38,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.log.warn("警告日志");
    */
-  exports.warn = function (msg) {
+  export function warn(msg) {
     return logUtil.warn(msg)
   }
 
@@ -48,7 +48,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.log.error("错误日志");
    */
-  exports.error = function (msg) {
+  export function error(msg) {
     return logUtil.error(msg)
   }
 

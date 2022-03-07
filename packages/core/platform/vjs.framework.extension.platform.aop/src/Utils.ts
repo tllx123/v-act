@@ -1,8 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const getComponentCode = function () {
   let scope = scopeManager.getScope()
@@ -21,19 +19,16 @@ const isWindowScope = function () {
 
 export {
   _putAop,
+  addRequest,
+  clear,
+  genParams,
+  getComponentCode,
   getHook,
-  isInited,
+  getWindowCode,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
+  isInited,
+  isWindowScope,
   remove,
-  genParams,
-  _putAop,
-  getHook,
-  update,
-  getComponentCode,
-  getWindowCode,
-  isWindowScope
+  update
 }

@@ -1,8 +1,8 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-let undefined
-exports.initModule = function (sBox) {}
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {}
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // dengb:xiedh说不需要事务
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()

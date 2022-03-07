@@ -1,17 +1,20 @@
-import { AbstractChannel as AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { Manager as channelManager } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Environment as Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global.task'
+import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import {
+  AbstractChannel,
+  Manager as channelManager
+} from '@v-act/vjs.framework.extension.system.rpc.channel'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
 
 let objectUtil
-let undefined
-let undefined
 
 let MultiVPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)

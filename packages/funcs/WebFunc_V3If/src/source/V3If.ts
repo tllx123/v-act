@@ -1,4 +1,4 @@
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     logical_test = argsLen >= 1 ? args[0] : null,

@@ -1,16 +1,17 @@
-import * as hardwareOperationService from '.'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
+import * as hardwareOperationService from './'
 
 //初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let routeContext = ruleContext.getRouteContext()
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParamObj = jsonUtil.json2obj(ruleCfgValue['inParams'])

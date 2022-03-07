@@ -2,11 +2,9 @@ import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.pla
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dataSourceName = argsLen >= 1 ? args[0] : null,

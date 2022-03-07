@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 初始化IM

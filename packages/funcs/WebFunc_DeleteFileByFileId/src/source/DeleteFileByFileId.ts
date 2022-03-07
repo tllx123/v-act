@@ -1,10 +1,10 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
-exports.initModule = function (sBox) {}
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+
+export function initModule(sBox) {}
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let args = ruleContext.getArgs()
   let argsLen = args ? args.length : 0
   let fileid = argsLen == 1 ? args[0] : null

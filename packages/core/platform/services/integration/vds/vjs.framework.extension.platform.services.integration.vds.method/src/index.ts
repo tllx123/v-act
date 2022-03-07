@@ -25,7 +25,7 @@ define('./index', function (require, exports, module) {
     RouteContext,
     componentInit
 
-  exports.initModule = function (sandbox) {
+  export function initModule(sandbox) {
     componentInit = sandbox.getService(
       'vjs.framework.extension.platform.services.init.ComponentInit'
     )
@@ -56,7 +56,7 @@ define('./index', function (require, exports, module) {
    * @example
    * var method = vds.method.get("methodCode1");
    * */
-  exports.get = function (methodCode, componentCode, windowCode) {
+  export function get(methodCode, componentCode, windowCode) {
     if (null == methodCode) {
       return null
     }
@@ -107,7 +107,7 @@ define('./index', function (require, exports, module) {
    * }
    * @returns {Promise}
    */
-  exports.execute = function (methodCode, params) {
+  export function execute(methodCode, params) {
     var _info = _getInfo()
     return new Promise(function (resolve, reject) {
       try {

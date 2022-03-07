@@ -1,7 +1,7 @@
 let openNotificationListener
 let lastopenNotificationEvent
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let JPushrService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.jpush'
   )

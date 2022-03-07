@@ -1,9 +1,8 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let currentWindowInstanceCode = scopeManager.getCurrentScopeId()
   return currentWindowInstanceCode ? currentWindowInstanceCode : null
 }

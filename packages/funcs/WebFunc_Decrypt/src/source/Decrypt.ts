@@ -1,13 +1,12 @@
-import { EncryptUtil as math } from '@v-act/vjs.framework.extension.platform.services.domain.encrypt'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
-let undefined
-exports.initModule = function (sb) {
+import { EncryptUtil as math } from '@v-act/vjs.framework.extension.platform.services.domain.encrypt'
+
+export function initModule(sb) {
   sandbox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let decryptValue = args[0] //需解密的值
   let type = args[1] //加密类型

@@ -1,10 +1,10 @@
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 import { RouteConfigFactory as routeConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let token = 'ComponentRoute_RouteConfig_Key'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 /**
  * 替换构件包信息
  * */

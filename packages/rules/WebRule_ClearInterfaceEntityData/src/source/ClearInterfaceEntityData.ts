@@ -1,11 +1,10 @@
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

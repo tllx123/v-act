@@ -1,16 +1,14 @@
+import { Tree } from '@v-act/vjs.framework.extension.platform.interface.model.tree'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WindowVMMappingManager as vmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { Tree as Tree } from '@v-act/vjs.framework.extension.platform.interface.model.tree'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import { WindowVMMappingManager as vmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 
 let __treeViewModelInstanceCache = {}
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const lookup = function (params) {
   let datasourceName = params.datasourceName,

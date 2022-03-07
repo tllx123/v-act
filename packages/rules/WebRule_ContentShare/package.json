@@ -18,6 +18,6 @@
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.share": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1"
 	}
 }

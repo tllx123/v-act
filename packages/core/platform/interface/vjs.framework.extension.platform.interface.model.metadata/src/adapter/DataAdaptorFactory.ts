@@ -1,10 +1,8 @@
-import * as stringDataAdaptor from './adapter/impl/StringDataAdaptor'
-import * as numberDataAdaptor from './adapter/impl/NumberDataAdaptor'
 import * as booleanDataAdpator from './adapter/impl/BooleanDataAdaptor'
+import * as numberDataAdaptor from './adapter/impl/NumberDataAdaptor'
+import * as stringDataAdaptor from './adapter/impl/StringDataAdaptor'
 
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 const getDataValidator = function (fieldType) {
   switch (fieldType) {

@@ -1,7 +1,6 @@
 import * as bcryptUtil from './src/bcrypt'
-let undefined
 
-exports.initModule = function () {}
+export function initModule() {}
 
 let genHash = function (encryptValue) {
   //生成加密后的hash值

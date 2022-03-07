@@ -1,18 +1,16 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as Exception from './impl/Exception'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
+import * as Exception from './impl/Exception'
+import * as callCommandService from './util/CallCommand'
+
 let jsonUtil, sandbox
-let undefined
 
 let ServiceException = function (message, e) {
   Exception.apply(this, arguments)
 }
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 ServiceException.prototype = {
   initModule: function (sandbox) {
@@ -48,11 +46,11 @@ ServiceException.prototype = {
 return ServiceException
 
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

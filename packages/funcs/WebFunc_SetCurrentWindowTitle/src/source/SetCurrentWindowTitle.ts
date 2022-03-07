@@ -1,9 +1,9 @@
-import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-exports.initModule = function (sb) {}
+import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 
-let main = function (param) {
+export function initModule(sb) {}
+
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     newTitle = argsLen >= 1 ? args[0] : null

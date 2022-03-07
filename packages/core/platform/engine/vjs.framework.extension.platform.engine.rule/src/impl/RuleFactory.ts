@@ -3,7 +3,7 @@ import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.plat
 
 let sb
 
-exports.initModule = function (s) {
+export function initModule(s) {
   sb = s
 }
 

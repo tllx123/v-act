@@ -1,20 +1,21 @@
-import { query as dataQuery } from '@v-act/vjs.framework.extension.platform.services.repository'
-import { save as dataSave } from '@v-act/vjs.framework.extension.platform.services.repository'
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceEnums as DatasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
+import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
+import { DatasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { snapshotManager as snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
+import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
+import {
+  ExpressionContext,
+  ExpressionEngine as expressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { localdb as localDB } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import {
+  query as dataQuery,
+  save as dataSave
+} from '@v-act/vjs.framework.extension.platform.services.repository'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const queryData = function (params) {
   let config = params.config,

@@ -11,33 +11,21 @@ import {
   QueryCondUtil as util,
   WhereRestrict as whereRestrict
 } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { log, UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 //加载
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+
 let viewModel
 let viewContextManager
 let queryConditionUtil
 let operationLib
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 当任何一条匹配数据不满足比较条件时，返回false，否则返回true(包括两种情况：不存在匹配数据或所有匹配数据都满足比较条件)；
   let bussinessReturnValue = true
 

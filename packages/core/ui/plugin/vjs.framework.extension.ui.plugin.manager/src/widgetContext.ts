@@ -1,9 +1,8 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let _context = {}
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 let _getScopeContext = function () {
   let scopeId = ScopeManager.getCurrentScopeId()
@@ -48,14 +47,14 @@ let getAll = function (widgetId) {
 }
 
 export {
-  Show,
-  Hide,
-  fireEvent,
   addEventHandler,
   fireDynamicWidgetEvent,
-  removeAllEventHandler,
+  fireEvent,
   get,
   getAll,
+  Hide,
+  put,
   putAll,
-  put
+  removeAllEventHandler,
+  Show
 }

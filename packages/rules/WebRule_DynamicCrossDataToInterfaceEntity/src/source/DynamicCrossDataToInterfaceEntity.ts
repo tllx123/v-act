@@ -1,35 +1,26 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ExpressionEngine as formulaEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext1 } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { QueryCondUtil as util } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
-import { facade as paginationService } from '@v-act/vjs.framework.extension.platform.services.widget.pagination'
-import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
-import { object as DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.data'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import {
+  ExpressionContext as ExpressionContext1,
+  ExpressionEngine as formulaEngine
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { object as DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.data'
+import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import {
+  QueryCondUtil as util,
+  WhereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { facade as paginationService } from '@v-act/vjs.framework.extension.platform.services.widget.pagination'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
 let sandBox
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 //判断字符是否为空的方法
 function isEmpty(obj) {
   if (typeof obj == 'undefined' || obj == null || obj == '') {
@@ -39,7 +30,7 @@ function isEmpty(obj) {
   }
 }
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   //获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']

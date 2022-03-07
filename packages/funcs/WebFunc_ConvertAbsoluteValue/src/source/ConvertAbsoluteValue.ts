@@ -1,12 +1,12 @@
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   //sb：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   //获取函数传入的参数
   let args = param.getArgs()
   //var routeContext = param.getRouteContext(); //获取路由上下文，函数里想执行一些表达式逻辑需要用到

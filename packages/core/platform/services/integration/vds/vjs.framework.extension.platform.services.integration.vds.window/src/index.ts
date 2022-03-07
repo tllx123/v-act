@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
     Modal,
     widgetContext
 
-  exports.initModule = function (sandbox) {
+  export function initModule(sandbox) {
     windowParam = sandbox.getService(
       'vjs.framework.extension.platform.services.param.manager.WindowParam'
     )
@@ -73,7 +73,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.getInput("var1");
    */
-  exports.getInput = function (code) {
+  export function getInput(code) {
     var value = windowParam.getInput({
       code: code
     })
@@ -90,7 +90,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.getOutput("var1");
    */
-  exports.getOutput = function (code) {
+  export function getOutput(code) {
     var value = windowParam.getOutput({
       code: code
     })
@@ -107,7 +107,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.setOutput("var1", "value1");
    */
-  exports.setOutput = function (code, value) {
+  export function setOutput(code, value) {
     if (!code) {
       return null
     }
@@ -127,7 +127,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.setInput("var1", "value1");
    */
-  exports.setInput = function (code, value) {
+  export function setInput(code, value) {
     if (!code) {
       return
     }
@@ -146,7 +146,7 @@ define('./index', function (require, exports, module) {
    * @example
    * var value = vds.window.getVariable("code1");
    * */
-  exports.getVariable = function (code) {
+  export function getVariable(code) {
     var scope = scopeManager.getWindowScope()
     if (scope) {
       var value = scope.get(code)
@@ -165,7 +165,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.dispose(ruleContext);
    * */
-  exports.dispose = function (ruleContext) {
+  export function dispose(ruleContext) {
     if (!ruleContext) {
       return
     }
@@ -188,7 +188,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.getCode();
    * */
-  exports.getCode = function () {
+  export function getCode() {
     var windowScope = scopeManager.getWindowScope()
     if (windowScope) {
       return windowScope.getWindowCode()
@@ -200,7 +200,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.cancelClose();
    * */
-  exports.cancelClose = function () {
+  export function cancelClose() {
     var windowScope = scopeManager.getWindowScope() //获取窗体域
     windowScope.cancelClose()
   }
@@ -211,7 +211,7 @@ define('./index', function (require, exports, module) {
    * @example
    * var type = vds.window.getInputType("code1");
    * */
-  exports.getInputType = function (code) {
+  export function getInputType(code) {
     var input = windowParam.getInputDefine({
       code: code
     })
@@ -227,7 +227,7 @@ define('./index', function (require, exports, module) {
    * @example
    * var type = vds.window.getOutputType("code1");
    * */
-  exports.getOutputType = function (code) {
+  export function getOutputType(code) {
     var output = windowParam.getOutputDefine({
       code: code
     })
@@ -252,7 +252,7 @@ define('./index', function (require, exports, module) {
   //    /**
   //     * 渲染窗体
   //     * */
-  exports.render = function () {}
+  export function render() {}
   /**
    * 判断窗体实例id是否存在
    * @params {String} instanceId 窗体实例id
@@ -260,7 +260,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.exist("facedbf6edc9fc63679d830af4b60e13");
    * */
-  exports.exist = function (instanceId) {
+  export function exist(instanceId) {
     if (scopeManager.isWindowScope(instanceId)) {
       return true
     }
@@ -272,7 +272,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.setTitle("新窗体标题");
    * */
-  exports.setTitle = function (title) {
+  export function setTitle(title) {
     var scope = scopeManager.getWindowScope()
     if (scope) {
       windowContainerManager.updateTitleByScopeId(scope.getInstanceId(), title)
@@ -298,7 +298,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.setState(vds.window.state.Maximized);
    * */
-  exports.setState = function (state) {
+  export function setState(state) {
     switch (state) {
       case exports.State.Maximized:
       case exports.State.Normal:
@@ -313,7 +313,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.getInstanceId();
    * */
-  exports.getInstanceId = function () {
+  export function getInstanceId() {
     var scope = scopeManager.getWindowScope()
     if (scope) {
       return scope.getInstanceId()
@@ -326,7 +326,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.getCurrencyField();
    * */
-  exports.getCurrencyField = function () {
+  export function getCurrencyField() {
     var currencyField = null
     var windowScope = scopeManager.getWindowScope()
     if (windowScope) {
@@ -342,7 +342,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.window.isMobile();
    * */
-  exports.isMobile = function () {
+  export function isMobile() {
     var winScope = scopeManager.getWindowScope()
     if (winScope) {
       if (winScope.getSeries && winScope.getSeries() == 'bootstrap_mobile') {

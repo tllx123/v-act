@@ -5,7 +5,7 @@ import * as formulaUtil from 'module'
 
 let sandBox, widgetContext, jsonUtil
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     sandBox = sb
     widgetContext = sb.getService(

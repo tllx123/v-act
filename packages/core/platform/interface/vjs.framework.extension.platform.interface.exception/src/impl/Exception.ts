@@ -1,9 +1,8 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 import * as exceptionFactory from './api/ExceptionFactory'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
 let exceptionManager
-let undefined
 
 /**
  * @namespace Exception
@@ -28,7 +27,7 @@ function Exception(message, e) {
   this.stacks.push(message)
 }
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 Exception.prototype = {
   _putManager: function (manager) {
@@ -186,11 +185,11 @@ Error.prepareStackTrace = function (error, stack) {
 
 return Exception
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

@@ -1,11 +1,8 @@
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { aop as debugService } from '@v-act/vjs.framework.extension.platform'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 开启调试

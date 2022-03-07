@@ -1,8 +1,6 @@
-import * as ObserverData from './api/ObserverData'
-import * as Observer from './api/Observer'
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-let undefined
+import * as Observer from './api/Observer'
 
 /**
  * @class DatasourceObserver

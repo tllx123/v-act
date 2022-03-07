@@ -1,12 +1,13 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { Record as Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let sandBox
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   //处理规则的入参
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']

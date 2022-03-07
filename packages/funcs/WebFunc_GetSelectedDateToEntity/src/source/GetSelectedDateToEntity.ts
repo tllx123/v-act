@@ -1,12 +1,10 @@
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   if (args.length != 3)
     exceptionHandler('函数 GetSelectedDateToEntity 参数个数必须为3个!')

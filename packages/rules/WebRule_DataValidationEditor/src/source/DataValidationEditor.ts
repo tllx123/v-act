@@ -12,36 +12,17 @@ import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import {
-  EasyTemplateUtil as easyTemplateUtil,
-  log,
-  Math as mathUtil
-} from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { EasyTemplateUtil as easyTemplateUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 let expressType
-let undefined
-let ERRORNAME
-let undefined
 
-exports.initModule = function (sBox) {
+let ERRORNAME
+
+export function initModule(sBox) {
   sb = sBox
 }
 /**
@@ -344,7 +325,7 @@ let regs = [
 ]
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   ERRORNAME = '规则[DataValidationEditor]: '
   let checkResult = true
   let userConfirm = true

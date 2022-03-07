@@ -20,7 +20,7 @@
 		"@v-act/vjs.framework.extension.platform.services.repository.remote.base": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
 	}
 }

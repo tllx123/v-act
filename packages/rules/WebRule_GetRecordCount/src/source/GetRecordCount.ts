@@ -1,21 +1,18 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ErrorUtil as rendererUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.error'
-import { QueryCondUtil as queryConditionUtil } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let rpcEnum
-let undefined
-exports.initModule = function (sBox) {}
+import {
+  QueryCondUtil as queryConditionUtil,
+  WhereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let main = function (ruleContext) {
+let rpcEnum
+
+export function initModule(sBox) {}
+
+const main = function (ruleContext) {
   let ruleCfg = ruleContext.getRuleCfg()
   let params = ruleCfg['inParams']
   let ruleInstId = ruleCfg['ruleInstId']

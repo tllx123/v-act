@@ -91,7 +91,7 @@ let iterateFieldMappingItem = function (dsItem, callback) {
   }
 }
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   keys = sb.util.object.keys
   each = sb.util.collections.each
 }

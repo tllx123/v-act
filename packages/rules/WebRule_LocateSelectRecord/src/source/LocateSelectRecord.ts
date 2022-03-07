@@ -1,25 +1,18 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg().inParams)
   // 源实体
   let sourceName = inParams.sourceName

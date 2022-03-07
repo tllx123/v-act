@@ -135,7 +135,7 @@ define('./index', function (require, exports, module) {
     'sortBy'
   ]
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     var utils = sb.util.collections
     for (var i = 0, l = methods.length; i < l; i++) {
       var methodName = methods[i]

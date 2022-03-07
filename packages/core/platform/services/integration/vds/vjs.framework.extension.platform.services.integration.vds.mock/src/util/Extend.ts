@@ -1,5 +1,5 @@
 define('./Extend', function (require, exports, module) {
-  exports.extend = function (subClass, superClass, sandbox) {
+  export function extend(subClass, superClass, sandbox) {
     var initFunc = superClass.prototype.initModule
     if (initFunc) {
       initFunc.call(subClass, sandbox)

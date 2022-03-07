@@ -1,13 +1,15 @@
-import * as ProgressBarUtil from '.BarUtil'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+import * as ProgressBarUtil from '.BarUtil'
 
-let main = function (ruleContext) {
+export function initModule(sBox) {}
+
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()

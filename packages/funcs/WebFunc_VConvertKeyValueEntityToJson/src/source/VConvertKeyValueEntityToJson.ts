@@ -4,11 +4,11 @@ import {
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   // 参数1：实体名称
   let entityCode = args[0]

@@ -1,7 +1,6 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 移动的状态ss
@@ -73,4 +72,4 @@ let destroy = function () {
   delete __treeViewModelInstanceCache[scopeId]
 }
 
-export { getInstance, getInstance, Enum_MoveTo, destroy }
+export { destroy, Enum_MoveTo, getInstance }

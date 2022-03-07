@@ -1,31 +1,23 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-let undefined
+import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+
 let viewModel
 // 增加公式解析引用 zhangliang
 let ExceptionFactory
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
-let main = function (ruleContext) {
+export function initModule(sBox) {}
+const main = function (ruleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams
   let inParamObj = jsonUtil.json2obj(inParams)

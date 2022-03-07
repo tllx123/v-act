@@ -3,17 +3,17 @@ import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.servi
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ArrayUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { ArrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 let sandBox
-let undefined
-exports.initModule = function (sBox) {
+
+export function initModule(sBox) {
   sandBox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let ruleConfig = jsonUtil.json2obj(inParams)

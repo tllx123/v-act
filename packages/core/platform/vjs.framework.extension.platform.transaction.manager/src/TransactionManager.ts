@@ -1,19 +1,13 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import * as transactionInstancePool from './TransactionInstancePool'
-import * as Transaction from './Transaction'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as RollbackRequest from './RollbackRequest'
-import * as rollbackRequestManager from './RollbackRequestManager'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-let undefined
-let undefined
-let undefined
+import * as Transaction from './Transaction'
+import * as transactionInstancePool from './TransactionInstancePool'
+
 let collectionUtil
 let registered = false
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   collectionUtil = sb.util.collections
 }
 
@@ -100,17 +94,16 @@ const isRollbacked = function (transactionId) {
 
 export {
   add,
-  put,
-  get,
-  remove,
-  getByScopeId,
-  getAll,
-  remove,
-  newTransaction,
   doBegin,
   doCommit,
   doRollback,
+  get,
+  getAll,
+  getByScopeId,
   isBegined,
   isCommited,
-  isRollbacked
+  isRollbacked,
+  newTransaction,
+  put,
+  remove
 }

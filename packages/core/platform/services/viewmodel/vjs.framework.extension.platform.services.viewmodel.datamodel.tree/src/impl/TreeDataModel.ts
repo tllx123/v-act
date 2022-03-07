@@ -1,29 +1,16 @@
-import * as viewModel from 'module'
-import * as rendererUtil from 'module'
-import * as whereRestrict from 'module'
-import * as log from 'module'
-import * as dbManager from 'module'
-import * as formulaUtil from 'module'
-import * as jsTool from 'module'
-import * as viewContext from 'module'
-import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
 import * as actionHandler from 'module'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import * as dbManager from 'module'
+import * as jsTool from 'module'
+import * as log from 'module'
+import * as rendererUtil from 'module'
+import * as viewContext from 'module'
+import * as viewModel from 'module'
+import * as whereRestrict from 'module'
 
-exports.initModule = function (sBox) {}
+import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
+export function initModule(sBox) {}
 
 /**
  * 移动的状态ss

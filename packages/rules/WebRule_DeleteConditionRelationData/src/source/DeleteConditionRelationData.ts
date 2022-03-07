@@ -1,30 +1,20 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WindowVMMappingManager as windowVMMappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WhereRestrict as whereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {}
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { WhereRestrict as whereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let main = function (ruleContext) {
+export function initModule(sb) {}
+
+const main = function (ruleContext) {
   let ruleCfg = ruleContext.getRuleCfg()
   let params = ruleCfg['inParams']
   let ruleInstId = ruleCfg['ruleInstId']
@@ -247,4 +237,4 @@ let removeRecordsByWidgetType = function (dsName, removeIds, treeStruct) {
   }
 }
 
-export { main, getRemoveIds, _removeRecords }
+export { _removeRecords, getRemoveIds, main }

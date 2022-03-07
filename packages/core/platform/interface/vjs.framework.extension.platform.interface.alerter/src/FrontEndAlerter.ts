@@ -5,7 +5,7 @@ let sandbox,
 
 let errorStack = []
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 /**

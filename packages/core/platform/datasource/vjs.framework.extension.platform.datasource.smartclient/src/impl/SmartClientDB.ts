@@ -1,10 +1,8 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-let undefined
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let isEmpty, sandbox
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   isEmpty = sBox.util.object.isEmpty
   sandbox = sBox
 }
@@ -413,4 +411,4 @@ const getConstructor = function () {
   return DataSourceExt
 }
 
-export { getConstructor, DB, unSerialize }
+export { DB, getConstructor, unSerialize }

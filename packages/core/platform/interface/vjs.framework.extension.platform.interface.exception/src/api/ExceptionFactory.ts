@@ -1,18 +1,8 @@
-import * as undefined from './impl/BusinessException'
-import * as undefined from './impl/DialogException'
-import * as undefined from './impl/UnLoginException'
-import * as undefined from './impl/ExpectedException'
-import * as undefined from './impl/UnExpectedException'
-import * as undefined from './impl/ExpressionException'
-import * as undefined from './impl/ModuleScriptException'
-import * as undefined from './impl/NetworkException'
-import * as undefined from './impl/ServiceException'
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
 let constructors = {}
-let undefined
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 /**
  * 异常类型

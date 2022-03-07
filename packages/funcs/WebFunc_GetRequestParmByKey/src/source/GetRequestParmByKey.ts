@@ -1,6 +1,6 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let key = args[0]
   //是否解码,默认解码

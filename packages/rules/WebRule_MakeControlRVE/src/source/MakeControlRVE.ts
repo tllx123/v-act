@@ -1,15 +1,13 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 let CONTROLTYPE_READONLY = '1' //控制类型：只读
 let CONTROLTYPE_ENABLE = '2' //控制类型：使能
 let CONTROLTYPE_VISIBLE = '3' //控制类型：显示
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

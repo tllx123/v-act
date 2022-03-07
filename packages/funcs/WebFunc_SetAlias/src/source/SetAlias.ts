@@ -1,11 +1,10 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { JPush as jpushService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 let jpush
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   FUNCNAME = '函数[SetAlias]：'
   let args = param.getArgs()
   if (args.length != 1) {

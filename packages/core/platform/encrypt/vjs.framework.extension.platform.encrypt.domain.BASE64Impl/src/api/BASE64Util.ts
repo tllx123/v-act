@@ -1,6 +1,6 @@
 import * as base64 from './src/aes'
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 
 let genHash = function (encryptValue) {
   let wordArray = base64.CryptoJS.enc.Utf8.parse(encryptValue)
@@ -14,4 +14,4 @@ let decryptHash = function (decryptValue) {
   return result
 }
 
-export { genHash, decryptHash }
+export { decryptHash, genHash }

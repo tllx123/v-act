@@ -1,13 +1,8 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as Exception from './impl/Exception'
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { FrontEndAlerter as FrontEndAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import { FrontEndAlerter as FrontEndAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 
-let undefined
-let undefined
-let undefined
+import * as Exception from './impl/Exception'
 
 let ModuleScriptException = function (message, e, params) {
   this.reason = params.reason
@@ -26,7 +21,7 @@ let ModuleScriptException = function (message, e, params) {
   }
 }
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 ModuleScriptException.prototype = {
   initModule: function (sandbox) {
@@ -165,11 +160,11 @@ ModuleScriptException.prototype = {
 
 return ModuleScriptException
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

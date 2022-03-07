@@ -1,13 +1,11 @@
-import { ExceptionFactory as exceptionFatory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import * as DevRPC from './DevRPC'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import * as DebugInfoManager from './DebugInfoManager'
-import { UUID as uuidServer } from '@v-act/vjs.framework.extension.util'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+import * as DebugInfoManager from './DebugInfoManager'
+import * as DevRPC from './DevRPC'
 
 let aop, objUtils
-let undefined
 
 let testUrl = '/WebDebugRest/GetConnection'
 
@@ -21,10 +19,6 @@ let request = {}
 
 //当前服务的标识id
 let NowServerUUID
-
-let undefined
-
-let undefined
 
 let utils = {
   /**
@@ -316,7 +310,7 @@ let api = {
   }
 }
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   objUtils = sb.util.object
 }
 
@@ -332,15 +326,13 @@ const getHook = function () {
 
 export {
   _putAop,
+  addRequest,
+  clear,
+  genParams,
   getHook,
-  isInited,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
+  isInited,
   remove,
-  genParams,
-  _putAop,
-  getHook
+  update
 }

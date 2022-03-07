@@ -1,10 +1,6 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import * as widgetAction from './WidgetAction'
 
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let set = function (widgetId, propertyName, propertyValue) {
   let actionName = 'set' + propertyName
@@ -28,16 +24,16 @@ let hasProperty = function (widgetId, propertyName) {
 }
 
 export {
-  getService,
-  isWidgetActionExist,
-  isComponentActionExist,
-  getWidgetActionHandler,
-  getComponentActionHandler,
-  executeWidgetAction,
-  executeSubWidgetAction,
   executeComponentAction,
-  getProxyWidgetId,
+  executeSubWidgetAction,
+  executeWidgetAction,
   get,
-  set,
-  hasProperty
+  getComponentActionHandler,
+  getProxyWidgetId,
+  getService,
+  getWidgetActionHandler,
+  hasProperty,
+  isComponentActionExist,
+  isWidgetActionExist,
+  set
 }

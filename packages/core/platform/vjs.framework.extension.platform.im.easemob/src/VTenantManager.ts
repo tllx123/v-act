@@ -1,9 +1,9 @@
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import {
+  RemoteMethodAccessor as remoteMethodAccessor,
+  RemoteOperation as remoteOperation
+} from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let tenantAOPInstance
 
@@ -115,28 +115,28 @@ let clearTenantInfo = function () {
 }
 
 export {
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
   addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  initIM,
   addListener,
-  sendText,
-  sendCmdText,
-  sendMedia,
-  register,
-  loginWithPwd,
-  loginWithToken,
-  quit,
-  putInstance,
+  addToGroupBlackList,
+  changeGroupInfo,
+  clearTenantInfo,
+  createGroup,
+  destroyGroup,
+  getGroupBlackList,
   getTenantCode,
   getUserName,
-  clearTenantInfo
+  initIM,
+  leaveGroup,
+  listGroups,
+  loginWithPwd,
+  loginWithToken,
+  putInstance,
+  queryGroupInfo,
+  queryRoomMember,
+  quit,
+  register,
+  removeFromGroupBlackList,
+  sendCmdText,
+  sendMedia,
+  sendText
 }

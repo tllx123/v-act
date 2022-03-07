@@ -1,7 +1,7 @@
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let param1 = args[0]
   let param2: string | boolean = ''

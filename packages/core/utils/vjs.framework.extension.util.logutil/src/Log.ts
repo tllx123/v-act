@@ -11,7 +11,7 @@
  * 		......
  */
 
-import ScopeManager from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 const _logCache = null
 

@@ -1,17 +1,26 @@
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import * as undefined from './impl/CurrentOperation'
-import * as undefined from './impl/DeleteOperation'
-import * as undefined from './impl/LoadOperation'
-import * as undefined from './impl/FetchOperation'
-import * as undefined from './impl/FetchedOperation'
-import * as undefined from './impl/InsertOperation'
-import * as undefined from './impl/SelectOperation'
-import * as undefined from './impl/UpdateOperation'
-import * as UnknowOperation from './impl/UnknowOperation'
+import * as CurrentOperation from './CurrentOperation'
+import * as DeleteOperation from './DeleteOperation'
+import * as FetchedOperation from './FetchedOperation'
+import * as FetchOperation from './FetchOperation'
+import * as InsertOperation from './InsertOperation'
+import * as LoadOperation from './LoadOperation'
+import * as SelectOperation from './SelectOperation'
+import * as UnknowOperation from './UnknowOperation'
+import * as UpdateOperation from './UpdateOperation'
 
-let contructors = {}
+let contructors = {
+  CurrentOperation,
+  DeleteOperation,
+  LoadOperation,
+  FetchOperation,
+  FetchedOperation,
+  InsertOperation,
+  SelectOperation,
+  UpdateOperation,
+  UnknowOperation
+}
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const create = function (params) {
   let eventName = params.eventName
@@ -31,11 +40,11 @@ const create = function (params) {
 }
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
-  destroy,
+  addObserver,
   addOperation,
-  create
+  create,
+  destroy,
+  fire,
+  getBindedDatasourceNames
 }

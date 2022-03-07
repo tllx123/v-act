@@ -1,17 +1,17 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import { Initor as dataInitor } from '@v-act/vjs.framework.extension.platform.data.adapter'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
 import { ComponentParam as schemaComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Initor as dataInitor } from '@v-act/vjs.framework.extension.platform.data.adapter'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { WindowRuntimeInit as windowRuntimeInit } from '@v-act/vjs.framework.extension.platform.init.view'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { RPC as rpcOperation } from '@v-act/vjs.framework.extension.system'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const setVariant = function (params) {
   //不能获取窗体域，当可能在构件域(构件方法)中调用
@@ -254,12 +254,12 @@ const getMetadata = function (componentCode, domain) {
 }
 
 export {
-  getRuleSetInputs,
-  setVariant,
-  setVariants,
-  initVariant,
-  getVariant,
+  getMetadata,
   getOption,
+  getRuleSetInputs,
+  getVariant,
+  initVariant,
   refreshVariant,
-  getMetadata
+  setVariant,
+  setVariants
 }

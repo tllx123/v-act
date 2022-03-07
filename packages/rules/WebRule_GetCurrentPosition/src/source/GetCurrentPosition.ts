@@ -1,8 +1,6 @@
 import { Geolocation as service } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 function main(ruleContext) {
   let success = function (rs) {

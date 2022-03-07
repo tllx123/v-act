@@ -1,15 +1,10 @@
 import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 // 主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 定义行列字段映射
   // var fieldMapping = [ {
   // "desc" : "productCode",

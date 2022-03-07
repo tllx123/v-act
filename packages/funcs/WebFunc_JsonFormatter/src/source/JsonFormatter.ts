@@ -1,6 +1,6 @@
-exports.initModule = function () {}
+export function initModule() {}
 
-let main = function (json) {
+const main = function (json) {
   if (!json) {
     return null
   }

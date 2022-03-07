@@ -1,15 +1,10 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 // 业务返回值：是否被引用,true表示有引用
 let BIZ_RESULT_ISREFERENCED = 'isReferenced'

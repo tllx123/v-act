@@ -1,12 +1,9 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
 let hexcase = 0,
   chrsz = 8
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     retVal = '',

@@ -1,7 +1,4 @@
-import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 /**
  * @namespace Record
@@ -328,4 +325,4 @@ Record.putDataAdapter = function (adapter) {
 
 return Record
 
-export { create, unSerialize, isDatasource, _getDatasourceConstructor }
+export { _getDatasourceConstructor, create, isDatasource, unSerialize }

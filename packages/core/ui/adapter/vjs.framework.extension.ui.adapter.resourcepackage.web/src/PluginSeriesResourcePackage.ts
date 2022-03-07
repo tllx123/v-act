@@ -2,7 +2,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { cookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
 
 let sandBox
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandBox = sb
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'

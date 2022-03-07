@@ -2,12 +2,12 @@ import * as actionHandler from 'module'
 import * as viewModel from 'module'
 
 //加载actionHandler模块
-let undefined
+
 //加载jsonUtil模块
 let jsonUtil
 let ScopeManager
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     jsonUtil = sb.getService('vjs.framework.extension.util.JsonUtil')
     ScopeManager = sb.getService(
@@ -22,7 +22,7 @@ exports.initModule = function (sb) {
  * @param configDataJson 初始化数据
  * @param tabSetInitConfig
  */
-let main = function (widgetId, configDataJson, tabSetInitConfig) {
+const main = function (widgetId, configDataJson, tabSetInitConfig) {
   let configDataJsonArr = jsonUtil.json2obj(configDataJson)
   let tabSetInitConfigArr = jsonUtil.json2obj(tabSetInitConfig)
   if (configDataJsonArr && configDataJsonArr.length > 0) {

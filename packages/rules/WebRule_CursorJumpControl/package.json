@@ -18,6 +18,6 @@
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.ui.plugin.manager": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1"
 	}
 }

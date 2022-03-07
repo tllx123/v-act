@@ -1,8 +1,6 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let render = sb.getService(
     'vjs.framework.extension.platform.services.integration.render'
   )
@@ -194,10 +192,10 @@ const closeCurrentWindow = function (params) {
 }
 
 export {
-  renderAsModal,
-  renderAsWindow,
-  renderAsElement,
-  preLoad,
+  closeCurrentWindow,
   openUrl,
-  closeCurrentWindow
+  preLoad,
+  renderAsElement,
+  renderAsModal,
+  renderAsWindow
 }

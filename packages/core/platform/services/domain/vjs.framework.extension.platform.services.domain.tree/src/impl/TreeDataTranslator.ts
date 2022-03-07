@@ -1,23 +1,18 @@
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util'
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { Record as Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as expEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import {
+  WidgetAction as widgetAction,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util.file'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 /**
  * 二维数据转换成树形结构数据

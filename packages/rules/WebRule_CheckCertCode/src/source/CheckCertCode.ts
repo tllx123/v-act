@@ -1,31 +1,27 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExpressionContext as expressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { FrontEndAlerter as frontAlert } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { FrontEndAlerter as frontAlert } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-let viewModel
-let undefined
-let operationLib
-let undefined
-let accessor
-let undefined
-let ExpressionContext
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext as expressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-exports.initModule = function (sBox) {}
+let viewModel
+
+let operationLib
+
+let accessor
+
+let ExpressionContext
+
+export function initModule(sBox) {}
 /**
  * 获取文件标识数据
  * */
@@ -36,7 +32,7 @@ function getCookie(name) {
   else return null
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

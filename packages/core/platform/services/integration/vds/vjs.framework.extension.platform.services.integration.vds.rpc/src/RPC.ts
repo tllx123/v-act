@@ -72,7 +72,7 @@ define('./RPC', function (require, exports, module) {
     widgetAction,
     WhereRestrict
   var engine, EngineContext, dataQuery
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     RPC = sBox.getService('vjs.framework.extension.system.RPC')
     sysConstant = sBox.getService(
       'vjs.framework.extension.platform.services.constant.SystemConstant'
@@ -155,7 +155,7 @@ define('./RPC', function (require, exports, module) {
    * 获取当前日期（同步）
    * @return {Date} 返回日期对象
    * */
-  exports.getDate = function () {
+  export function getDate() {
     var value = sysConstant.get({
       type: sysConstant.TYPES.CurrentTime,
       params: ['yyyy-MM-dd HH:mm:ss']
@@ -204,7 +204,7 @@ define('./RPC', function (require, exports, module) {
    *  }]
    * ]);
    */
-  exports.saveData = function (configs, ruleContext, params) {
+  export function saveData(configs, ruleContext, params) {
     return new Promise(function (resolve, reject) {
       try {
         if (!configs) {
@@ -323,7 +323,7 @@ define('./RPC', function (require, exports, module) {
    *   "fail" {Function} 失败回调
    * }
    */
-  exports.queryDataSync = function (
+  export function queryDataSync(
     sourceCode,
     sourceType,
     target,
@@ -546,7 +546,7 @@ define('./RPC', function (require, exports, module) {
    * }
    * @returns {Promise}
    */
-  exports.queryData = function (
+  export function queryData(
     sourceCode,
     sourceType,
     target,
@@ -766,7 +766,7 @@ define('./RPC', function (require, exports, module) {
    *  console.err("调用失败.");
    * })
    */
-  exports.callCommand = function (code, datas, params) {
+  export function callCommand(code, datas, params) {
     var __info = _getWindowInfo.apply(this)
     return new Promise(function (resolve, reject) {
       try {
@@ -882,7 +882,7 @@ define('./RPC', function (require, exports, module) {
    *  }
    * });
    */
-  exports.callCommandSync = function (code, datas, params) {
+  export function callCommandSync(code, datas, params) {
     params = params || {}
     var success = params.success || function () {}
     var fail = params.fail || function () {}
@@ -987,7 +987,7 @@ define('./RPC', function (require, exports, module) {
    * 	console.log("请求失败");
    * })
    * */
-  exports.callWebapi = function (webAPISite, params) {
+  export function callWebapi(webAPISite, params) {
     return new Promise(function (resolve, reject) {
       try {
         if (!webAPISite) {
@@ -1081,7 +1081,7 @@ define('./RPC', function (require, exports, module) {
    *  }]
    * }]);
    * */
-  exports.importExcel = function (configs, params) {
+  export function importExcel(configs, params) {
     var __params = params || {}
     var __info = _getWindowInfo()
     return new Promise(function (resolve, reject) {

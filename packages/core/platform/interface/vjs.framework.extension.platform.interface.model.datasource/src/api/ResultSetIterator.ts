@@ -1,7 +1,4 @@
-import * as Record from './api/Record'
-import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util.array'
 
 /**
  * @namespace ResultSetIterator
@@ -51,4 +48,4 @@ ResultSetIterator.prototype = {
 
 return ResultSetIterator
 
-export { create, unSerialize, isDatasource, _getDatasourceConstructor }
+export { _getDatasourceConstructor, create, isDatasource, unSerialize }

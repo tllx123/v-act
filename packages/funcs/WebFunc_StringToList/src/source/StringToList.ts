@@ -1,14 +1,10 @@
 import * as stringUtil from 'module'
-import * as mathUtil from 'module'
 import * as viewModel from 'module'
 
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+export function initModule() {}
 
 //主入口(必须有)
-let main = function (str, separator, tableName, columnName) {
+const main = function (str, separator, tableName, columnName) {
   if (stringUtil.isEmpty(str)) {
     throw new Error('字串不允许为空，请检查')
   }

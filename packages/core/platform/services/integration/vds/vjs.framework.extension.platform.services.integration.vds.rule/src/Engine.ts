@@ -6,7 +6,7 @@ import * as manager from '@v-act/vjs.framework.extension.platform.services.model
 import * as baseVarOperation from '@v-act/vjs.framework.extension.platform.services.window.variable.operation.BaseVarOperation'
 import * as entityVarOperation from '@v-act/vjs.framework.extension.platform.services.window.variable.operation.EntityVarOperation'
 import * as jsonUtil from '@v-act/vjs.framework.extension.util.JsonUtil'
-import * as logUtil from '@v-act/vjs.framework.extension.util.log'
+import * as logUtil from '@v-act/vjs.framework.extension.util.logutil'
 
 import RuleContext from './RuleContext'
 

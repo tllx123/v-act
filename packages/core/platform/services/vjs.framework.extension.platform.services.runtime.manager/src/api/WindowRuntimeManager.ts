@@ -1,21 +1,22 @@
-import { WindowRuntimeInit as windowRuntime } from '@v-act/vjs.framework.extension.platform.init.view'
-import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
 import { Initor as dataInitor } from '@v-act/vjs.framework.extension.platform.data.adapter'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import { VPlatfromIframeManager as iframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
+import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
+import { WindowRuntimeInit as windowRuntime } from '@v-act/vjs.framework.extension.platform.init.view'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { Permission as permission } from '@v-act/vjs.framework.extension.platform.services.view.permission'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { VPlatfromIframeManager as iframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -325,12 +326,12 @@ const setWindowSeries = function (params) {
 
 export {
   addRequestOperation,
-  hasPermission,
-  initWindow,
   cleanWindowInfo,
-  hasWindowPermission,
-  isWidgetPermissionInited,
   getWidgetPermission,
   getWindowSeries,
+  hasPermission,
+  hasWindowPermission,
+  initWindow,
+  isWidgetPermissionInited,
   setWindowSeries
 }

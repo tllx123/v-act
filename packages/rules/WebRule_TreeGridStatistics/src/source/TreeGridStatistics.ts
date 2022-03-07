@@ -1,19 +1,12 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)
@@ -279,4 +272,4 @@ let _getFieldName = function (fieldName) {
   return fieldName
 }
 
-export { main, _getChangedColumnsValue, _getParentNode }
+export { _getChangedColumnsValue, _getParentNode, main }

@@ -1,12 +1,13 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 // 字段映射关系中的源数据来源类型
 let SOURCE_TYPE = {
@@ -16,7 +17,7 @@ let SOURCE_TYPE = {
   EXPRESSION: '4' // 表达式
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg().inParams)
   // 复制数据来源实体
   let sourceName = inParams.sourceTable

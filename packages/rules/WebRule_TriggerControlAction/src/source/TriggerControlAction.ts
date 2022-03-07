@@ -1,14 +1,12 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
-// 加载
-let undefined
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+// 加载
+
+export function initModule(sBox) {}
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']

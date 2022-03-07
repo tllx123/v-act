@@ -1,18 +1,13 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let deleteParams = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
   let dsName = deleteParams['TableName']
   let condition = deleteParams['Condition']
@@ -160,4 +155,4 @@ let getDataSource = function (ds, ruleContext, EntityType) {
   return datasource
 }
 
-export { main, getRemoveIds, _removeRecords }
+export { _removeRecords, getRemoveIds, main }

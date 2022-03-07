@@ -1,12 +1,6 @@
-import * as log from 'module'
 import * as viewModel from 'module'
-import * as viewContext from 'module'
-import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 /**
  * 主入口
  * @param type 类型(USER,ROLE,METHOD)
@@ -14,7 +8,7 @@ exports.initModule = function () {}
  * @param tableName 业务表名称
  * @param columnName 业务表字段名
  */
-let main = function (type, ruleChainId, tableName, columnName) {
+const main = function (type, ruleChainId, tableName, columnName) {
   //alert('cccccccccc')
   //从DB中取值业务表中的ID
   let records = viewModel.getDataModule().getAllRecordsByDS(tableName)

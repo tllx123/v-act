@@ -1,20 +1,14 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WindowVMMappingManager as widgetMapping } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   //debugger;
 
   //获取函数传入的参数

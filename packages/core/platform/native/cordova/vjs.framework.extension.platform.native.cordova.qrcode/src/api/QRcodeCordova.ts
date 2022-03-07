@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let QrcodeService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.Qrcode'
   )

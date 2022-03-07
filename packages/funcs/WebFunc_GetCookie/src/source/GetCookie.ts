@@ -1,12 +1,10 @@
 import { cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     name = argsLen >= 1 ? args[0] : null,

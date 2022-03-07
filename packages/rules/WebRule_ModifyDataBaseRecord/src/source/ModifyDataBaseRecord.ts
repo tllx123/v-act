@@ -1,33 +1,23 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { DatasourceManager as datasourcemanager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { ExceptionFactory as exception } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-let undefined
-let context
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as datasourcemanager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let main = function (ruleContext) {
+let context
+
+export function initModule(sBox) {}
+
+const main = function (ruleContext) {
   let isCascadeSave = true
   let ruleConfig = ruleContext.getRuleCfg()
   let paramsValue = ruleConfig['inParams']

@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const inputListen = function (el, callBack) {
   if (!callBack instanceof Function || !el instanceof HTMLElement) {

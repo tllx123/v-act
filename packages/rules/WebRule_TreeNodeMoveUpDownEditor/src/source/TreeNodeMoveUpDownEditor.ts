@@ -1,26 +1,20 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ErrorUtil as errorUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.error'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
+import { ErrorUtil as errorUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.error'
+import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let formulaUtil
 let objectUtil
 let sandbox
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   objectUtil = sb.util.object
 }
@@ -346,7 +340,7 @@ let getFieldName = function (fieldName) {
   return retvalue
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)
@@ -406,4 +400,4 @@ let main = function (ruleContext) {
   }
 }
 
-export { main, _getDefaultValue, TreeNodeEditor }
+export { _getDefaultValue, main, TreeNodeEditor }

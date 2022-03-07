@@ -1,9 +1,7 @@
 import { WindowRuntimeInit as windowInit } from '@v-act/vjs.framework.extension.platform.init.view'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let undefined
-
-exports.initModule = function (sb) {
+export function initModule(sb) {
   exports.Events['OnBindRule'] = windowInit.Events.onBindRule
   exports.Events['BeforeDataLoad'] = windowInit.Events.beforeDataLoad
   exports.Events['AfterDataLoad'] = windowInit.Events.afterDataLoad

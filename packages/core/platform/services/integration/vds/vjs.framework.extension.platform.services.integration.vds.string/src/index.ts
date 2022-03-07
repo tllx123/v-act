@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
     encryptUtil,
     mathUtil
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     strUtil = sBox.getService('vjs.framework.extension.util.StringUtil')
     encryptUtil = sBox.getService(
       'vjs.framework.extension.platform.services.domain.encrypt.EncryptUtil'
@@ -49,7 +49,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.concat("a","b");//ab
    */
-  exports.concat = function (str1, str2) {
+  export function concat(str1, str2) {
     return strUtil.concat(str1, str2)
   }
 
@@ -64,7 +64,7 @@ define('./index', function (require, exports, module) {
    * vds.string.indexOf("abc","d");//-1
    * vds.string.indexOf("abcabc","b",2);4
    */
-  exports.indexOf = function (str, value, begin) {
+  export function indexOf(str, value, begin) {
     return strUtil.indexOf(str, value, begin)
   }
 
@@ -78,7 +78,7 @@ define('./index', function (require, exports, module) {
    * vds.string.isEmpty(undefined);//true
    * vds.string.isEmpty("adsf");//false
    */
-  exports.isEmpty = function (str) {
+  export function isEmpty(str) {
     return strUtil.isEmpty(str)
   }
 
@@ -91,7 +91,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.lastIndexOf("abcabc","b");//4
    */
-  exports.lastIndexOf = function (str, value, begin) {
+  export function lastIndexOf(str, value, begin) {
     return strUtil.lastIndexOf(str, value, begin)
   }
 
@@ -102,7 +102,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.ltrim("   abc");//abc
    */
-  exports.ltrim = function (str) {
+  export function ltrim(str) {
     return strUtil.ltrim(str)
   }
 
@@ -116,7 +116,7 @@ define('./index', function (require, exports, module) {
    * vds.string.replace("abcabc","a","ddd");//dddbcabc
    * vds.string.replace("abbcabc",/b+/,"ddd");//adddcabc
    */
-  exports.replace = function (str, replace, replacement) {
+  export function replace(str, replace, replacement) {
     return strUtil.replace(str, replace, replacement)
   }
 
@@ -130,7 +130,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.replaceByIndex("abc","ddd",1,2);//adddc
    */
-  exports.replaceByIndex = function (str, replacement, begin, end) {
+  export function replaceByIndex(str, replacement, begin, end) {
     return strUtil.replaceByIndex(str, replacement, begin, end)
   }
 
@@ -141,7 +141,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.rtrim("abc   ");//abc
    */
-  exports.rtrim = function (str) {
+  export function rtrim(str) {
     return strUtil.rtrim(str)
   }
 
@@ -152,7 +152,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.trim("   abc   ");//abc
    */
-  exports.trim = function (str) {
+  export function trim(str) {
     if (null == str || typeof str != 'string') {
       return str
     }
@@ -168,7 +168,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.substr("abcdefg",1,3);//bcd
    */
-  exports.substr = function (str, begin, length) {
+  export function substr(str, begin, length) {
     return strUtil.substr(str, begin, length)
   }
 
@@ -181,7 +181,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.substring("abcdefg",1,3);//bc
    */
-  exports.substring = function (str, begin, end) {
+  export function substring(str, begin, end) {
     return strUtil.substring(str, begin, end)
   }
 
@@ -192,7 +192,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.toLowerCase("AbcD");//abcd
    */
-  exports.toLowerCase = function (str) {
+  export function toLowerCase(str) {
     return strUtil.toLowerCase(str)
   }
 
@@ -203,7 +203,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.toUpperCase("AbcD");//ABCD
    */
-  exports.toUpperCase = function (str) {
+  export function toUpperCase(str) {
     return strUtil.toUpperCase(str)
   }
 
@@ -214,7 +214,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.genHash("yindangu");
    */
-  exports.genHash = function (val) {
+  export function genHash(val) {
     return encryptUtil.genHash(val, 'base64') //默认base64加密，后续有需求再开放加密类型
   }
 
@@ -225,7 +225,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.toMD5("yindangu");
    */
-  exports.toMD5 = function (val) {
+  export function toMD5(val) {
     return desUtil.toMD5(val)
   }
 
@@ -235,7 +235,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.uuid();
    */
-  exports.uuid = function (val) {
+  export function uuid(val) {
     return uuid.generate()
   }
 
@@ -247,7 +247,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.isInArray("AAA", ["AAA","BBB","CCC"]);//true
    */
-  exports.isInArray = function (str, array) {
+  export function isInArray(str, array) {
     return strUtil.isInArray(str, array)
   }
 
@@ -259,7 +259,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.template("${a}和${b}的天气不错.",{"a":"昨天","b":"今天"});//昨天和今天的天气不错.
    */
-  exports.template = function (template, slot) {
+  export function template(template, slot) {
     return easyTemplateUtil.easyTemplate(template, slot)
   }
   /**
@@ -269,7 +269,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.string.toJson({key1:"value1",key2:true});//'{"key1":"value1","key2":true}'
    */
-  exports.toJson = function (obj) {
+  export function toJson(obj) {
     return jsonUtil.obj2json(obj)
   }
   /**
@@ -312,7 +312,7 @@ define('./index', function (require, exports, module) {
    * vds.import("vds.string.*");
    * var value = vds.string.encrypt("12345",exports.EncryptType.md5);
    * */
-  exports.encrypt = function (value, type, secretKey) {
+  export function encrypt(value, type, secretKey) {
     var result
     switch (type) {
       case exports.EncryptType.AES:
@@ -335,7 +335,7 @@ define('./index', function (require, exports, module) {
    * vds.import("vds.string.*");
    * vds.string.decrypt("12345","abc");
    * */
-  exports.decryptAES = function (value, secretKey) {
+  export function decryptAES(value, secretKey) {
     if (null == value || null == secretKey) {
       return null
     }
@@ -347,7 +347,7 @@ define('./index', function (require, exports, module) {
    * @param {Integer} num 累加的加数
    * @return {String}
    * */
-  exports.numberAdd = function (numStr, num) {
+  export function numberAdd(numStr, num) {
     return mathUtil.numberCodeAdd(numStr, num)
   }
   return exports

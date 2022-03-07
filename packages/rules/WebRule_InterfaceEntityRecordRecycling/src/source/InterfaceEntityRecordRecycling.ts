@@ -1,21 +1,17 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ComponentParam as ComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { WindowParam as WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as Engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceUtil as DatasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { ComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
+import {
+  ExpressionContext,
+  ExpressionEngine as Engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { DatasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 // 加载
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
+
+export function initModule(sBox) {}
 let TYPENAME = 'SourceType' // mappingItems中类型字段的名称
 let FORMULANAME = 'FieldValue' // mappingItems中来源字段的名称
 let DESTFIELD = 'TargetField' // mappingItems中目标字段的名称
@@ -27,7 +23,7 @@ let TYPE_EXPRESSION = '2' // 类型：表达式
 let TYPE_EXPRESSIONS = 'expression'
 
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 获取数据
   let ruleCfg = ruleContext.getRuleCfg()
   let params = ruleCfg['inParams']

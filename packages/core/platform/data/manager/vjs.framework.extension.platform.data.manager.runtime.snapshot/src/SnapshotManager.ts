@@ -5,7 +5,7 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 let stack = [],
   token = 'WINDOW_RUNTIME_SNAPSHOT'
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let ruleContext = sb.getService(
     'vjs.framework.extension.platform.interface.route.RuleContext'
   )

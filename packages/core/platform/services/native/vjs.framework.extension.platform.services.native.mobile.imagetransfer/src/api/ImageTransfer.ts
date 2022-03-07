@@ -1,4 +1,4 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { Log as log } from '@v-act/vjs.framework.extension.util.log'
 
 let instance
 let VJSNAME = 'VJS[ImageTransfer]：'
@@ -16,7 +16,7 @@ let IMGFROMAt = {
   }
 }
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const putInstance = function (ins) {
   instance = ins
@@ -109,4 +109,4 @@ function getParamByURL(paramName, url) {
   return null
 }
 
-export { putInstance, getImage }
+export { getImage, putInstance }

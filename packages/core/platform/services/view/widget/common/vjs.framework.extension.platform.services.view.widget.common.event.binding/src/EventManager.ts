@@ -3,7 +3,7 @@ import { EventManager as oldEventManager } from '@v-act/vjs.framework.extension.
 
 let sb
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let pool = {}
 

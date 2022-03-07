@@ -1,11 +1,11 @@
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 常量枚举

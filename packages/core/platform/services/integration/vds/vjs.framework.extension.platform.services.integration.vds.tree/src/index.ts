@@ -23,7 +23,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox, treeManager, Tree, TreeStruct
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     treeManager = sBox.getService(
       'vjs.framework.extension.platform.services.model.manager.tree.TreeManager'
@@ -35,7 +35,7 @@ define('./index', function (require, exports, module) {
    * 二开规范的树型结构适配成控件所需的结构
    * @ignore
    * */
-  exports._toTreeStruct = function (treeCode, treeStruct) {
+  export function _toTreeStruct(treeCode, treeStruct) {
     if (treeStruct instanceof TreeStruct) {
       //新规范
       return treeStruct['treeStruct']
@@ -70,7 +70,7 @@ define('./index', function (require, exports, module) {
    * @param {TreeStruct} treeStruct 树结构对象
    * @returns {Tree} 树数据源实例
    * */
-  exports.lookup = function (treeCode, treeStruct) {
+  export function lookup(treeCode, treeStruct) {
     if (!treeCode || !treeStruct) {
       return null
     }
@@ -93,7 +93,7 @@ define('./index', function (require, exports, module) {
    * @param {String} isLeafCode 叶子节点编码
    * @param {String} filterCode 过滤字段编码(可选)
    * */
-  exports.createTreeStruct = function (
+  export function createTreeStruct(
     treeCode,
     pId,
     orderNo,
@@ -123,7 +123,7 @@ define('./index', function (require, exports, module) {
    * var trees = vds.tree.getAll("treeCode1");
    * console.log(trees.length);
    * */
-  exports.getAll = function (treeCode) {
+  export function getAll(treeCode) {
     var trees = treeCode
       ? treeManager.lookupByName({
           datasourceName: treeCode

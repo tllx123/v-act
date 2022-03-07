@@ -1,4 +1,4 @@
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   let exceptionManager = sandbox.getService(
     'vjs.framework.extension.platform.interface.exception.ExceptionManager'
   )

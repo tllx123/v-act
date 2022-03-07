@@ -1,12 +1,13 @@
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Manager as contractManager } from '@v-act/vjs.framework.extension.system.rpc.contract'
-import { Manager as channelManager } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { Proxy as Proxy } from '@v-act/vjs.framework.extension.system.rpc.proxy'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Manager as channelManager } from '@v-act/vjs.framework.extension.system.rpc.channel'
+import { Manager as contractManager } from '@v-act/vjs.framework.extension.system.rpc.contract'
+import { Proxy } from '@v-act/vjs.framework.extension.system.rpc.proxy'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let _URI = 'module-operation!'
 
@@ -14,10 +15,7 @@ let SimpleRequestURI = _URI + 'executeOperation'
 
 let MultiRequestURI = _URI + 'executeMultiOperation'
 
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * result  后台返回结果 result
@@ -129,10 +127,10 @@ const crossDomainRequest = function (params) {
 //TODO
 window.RPC = exports
 export {
-  invokeOperation,
+  crossDomainRequest,
   invokeExtensibleOperation,
-  request,
-  orginalRequest,
+  invokeOperation,
   log,
-  crossDomainRequest
+  orginalRequest,
+  request
 }

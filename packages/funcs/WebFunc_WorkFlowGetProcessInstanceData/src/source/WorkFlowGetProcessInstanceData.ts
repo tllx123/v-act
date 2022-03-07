@@ -1,8 +1,7 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 /**
  * 主入口
@@ -10,7 +9,7 @@ import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interfa
  * @param treeStructMap 树结构配置信息
  * @param loadLevel 动态加载层次
  */
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let processInstanceId = args.length > 0 ? args[0] : null
   if (null == processInstanceId || '' == processInstanceId) {

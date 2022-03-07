@@ -29,6 +29,6 @@
     "@v-act/vjs.framework.extension.ui.adapter.dependency": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1"
   }
 }

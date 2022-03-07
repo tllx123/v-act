@@ -1,6 +1,6 @@
 let sandbox, cssHide, topNodeName
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   topNodeName = '_topnode'
   // 该 css 定义在 12render-web-bootstrap/.../bootstrap.extra.css

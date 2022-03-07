@@ -1,13 +1,9 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-let undefined
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let historyStack = []
 
-let undefined
-
-exports.initModule = function (sb) {
+export function initModule(sb) {
   History.Adapter.bind(window, 'popstate', function () {
     let index = historyStack.length
     --index
@@ -195,4 +191,4 @@ const getHistoryStack = function () {
   return historyStack
 }
 
-export { addHistory, replaceHistory, removeHistory, getHistoryStack }
+export { addHistory, getHistoryStack, removeHistory, replaceHistory }

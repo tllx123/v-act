@@ -1,5 +1,5 @@
-import * as AbstractOperation from './impl/AbstractOperation'
-import * as utils from './util/OperationUtils'
+import * as utils from '../util/OperationUtils'
+import * as AbstractOperation from './AbstractOperation'
 
 let objUtils
 
@@ -72,11 +72,11 @@ Operation.prototype = {
 return Operation
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
-  destroy,
+  addObserver,
   addOperation,
-  create
+  create,
+  destroy,
+  fire,
+  getBindedDatasourceNames
 }

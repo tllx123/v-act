@@ -1,6 +1,4 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let RightClickEventHandler = function (params) {
   this.id = uuid.generate()
@@ -38,14 +36,14 @@ RightClickEventHandler.prototype = {
 return RightClickEventHandler
 
 export {
-  hasPlatformEventHandler,
-  fireEvent,
   addEventHandler,
-  existEvent,
-  removeEventHandler,
-  fireDynamicWidgetEvent,
-  removeAllEventHandler,
   addPlatformEventHandler,
+  existEvent,
+  fireDynamicWidgetEvent,
+  fireEvent,
   firePlatformEvent,
-  PlatformEvents
+  hasPlatformEventHandler,
+  PlatformEvents,
+  removeAllEventHandler,
+  removeEventHandler
 }

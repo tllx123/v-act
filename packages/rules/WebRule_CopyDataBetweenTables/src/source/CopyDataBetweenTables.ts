@@ -1,25 +1,17 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ParamFeldUtil as ParamFieldUtil } from '@v-act/vjs.framework.extension.platform.services.domain.ruleset'
 import { ExceptionFactory as exception } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ParamFeldUtil as ParamFieldUtil } from '@v-act/vjs.framework.extension.platform.services.domain.ruleset'
 import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { WhereRestrict as whereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { QueryCondUtil as util } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import {
+  QueryCondUtil as util,
+  WhereRestrict as whereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 let operationLib
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 function main(ruleContext) {
   debugger

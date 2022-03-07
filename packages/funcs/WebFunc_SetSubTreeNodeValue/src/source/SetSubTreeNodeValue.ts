@@ -1,11 +1,7 @@
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as stringUtil from 'module'
+import * as viewModel from 'module'
 
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
   }
 }
@@ -16,7 +12,12 @@ exports.initModule = function (sb) {
  * @param {Object} fieldValue  给字段设置的值数组， 传入为表达式类型
  * @param {Object} treeStructCfgStr
  */
-let main = function (dataSourceName, fieldName, fieldValue, treeStructCfgStr) {
+const main = function (
+  dataSourceName,
+  fieldName,
+  fieldValue,
+  treeStructCfgStr
+) {
   //示例：IsLeaf("datasourceName", "ID", "type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField")
   let treeStructCfgObj = parseCfgObj(treeStructCfgStr)
   //树类型，1=层级码，2=左右树, 3=编码树

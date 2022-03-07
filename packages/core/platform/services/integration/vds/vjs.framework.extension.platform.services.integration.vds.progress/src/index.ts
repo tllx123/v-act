@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox, progressBarUtil, scopeManager
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     progressBarUtil = sBox.getService(
       'vjs.framework.extension.platform.services.view.widget.common.progressbar.ProgressBarUtil'
@@ -49,7 +49,7 @@ define('./index', function (require, exports, module) {
    *  "global":false
    * });
    * */
-  exports.show = function (msg, params) {
+  export function show(msg, params) {
     if (!msg) {
       return
     }
@@ -112,7 +112,7 @@ define('./index', function (require, exports, module) {
    *  "global":false
    * });
    * */
-  exports.hide = function (params) {
+  export function hide(params) {
     var global = params && params.global === false ? false : true
     var winScope = scopeManager.getWindowScope()
     if (!winScope) {

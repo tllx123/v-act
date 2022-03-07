@@ -1,6 +1,6 @@
-exports.initModule = function () {}
+export function initModule() {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     checkStr = argsLen >= 1 ? args[0] : null

@@ -1,4 +1,4 @@
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 let WindowContainer = function (params) {
   this.id = uuidUtil.generate()

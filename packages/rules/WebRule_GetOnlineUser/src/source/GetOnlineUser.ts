@@ -1,20 +1,12 @@
 import * as log from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import * as viewContext from 'module'
-import * as viewModel from 'module'
-import * as viewOperation from 'module'
-import * as rendererUtil from 'module'
 import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import * as rendererUtil from 'module'
+import * as viewModel from 'module'
 
-exports.initModule = function (sBox) {}
-let main = function (ruleContext) {
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {}
+const main = function (ruleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams
   let inParamObj = jsonUtil.json2obj(inParams)

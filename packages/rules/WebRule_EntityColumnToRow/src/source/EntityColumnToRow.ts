@@ -1,22 +1,12 @@
+import * as jsTool from 'module'
 import * as mathUtil from 'module'
 import * as viewModel from 'module'
-import * as viewContext from 'module'
-import * as jsTool from 'module'
-import * as log from 'module'
+
 // 加载mathUtil模块
-let undefined
 
-let undefined
-
-let undefined
-
-let undefined
-
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 // 主入口(必须有)
-let main = function (
+const main = function (
   srcEntityName,
   destEntityName,
   destKeyColumn,

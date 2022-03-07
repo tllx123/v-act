@@ -1,16 +1,18 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ExpressionContext as expressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import {
+  ExpressionContext as expressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let missUpdate, sandbox
 //初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   //sBox：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sBox
 }
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()
   //		// 获取规则链路由上下文的配置参数值

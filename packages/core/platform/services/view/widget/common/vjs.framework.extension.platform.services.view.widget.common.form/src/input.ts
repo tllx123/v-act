@@ -1,10 +1,8 @@
 import * as iptlisten from './inputListen/inputListen'
-import * as iptScroll from './inputScroll/inputScroll'
 import * as iptReadOnly from './inputReadOnly/inputReadOnly'
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {}
+import * as iptScroll from './inputScroll/inputScroll'
+
+export function initModule(sb) {}
 
 const inputlisten = function (el, callBack) {
   el = $(el)
@@ -29,4 +27,4 @@ const readOnlyToggle = function (obj, scopeId, focus, blur, state) {
   iptReadOnly.readOnlyToggle.call(obj, scopeId, focus, blur, state)
 }
 
-export { inputlisten, inputScroll, readOnlyOn, readOnlyOff, readOnlyToggle }
+export { inputlisten, inputScroll, readOnlyOff, readOnlyOn, readOnlyToggle }

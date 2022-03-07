@@ -1,17 +1,18 @@
+import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
+import {
+  ExceptionFactory as exceptionFactory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { callbackFactory as callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
-import * as RightClickEventHandler from './RightClickEventHandler'
 
-let undefined
+import * as RightClickEventHandler from './RightClickEventHandler'
 
 let SCOPE_STORAGE_TOKEN = 'EVENTMANAGER_STORAGE'
 
 let platformEventStorage
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 增加事件处理器
@@ -356,14 +357,14 @@ let PlatformEvents = {
 }
 
 export {
-  hasPlatformEventHandler,
-  fireEvent,
   addEventHandler,
-  existEvent,
-  removeEventHandler,
-  fireDynamicWidgetEvent,
-  removeAllEventHandler,
   addPlatformEventHandler,
+  existEvent,
+  fireDynamicWidgetEvent,
+  fireEvent,
   firePlatformEvent,
-  PlatformEvents
+  hasPlatformEventHandler,
+  PlatformEvents,
+  removeAllEventHandler,
+  removeEventHandler
 }

@@ -1,7 +1,7 @@
-import { Math as math } from '@v-act/vjs.framework.extension.util.math'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { Math as math } from '@v-act/vjs.framework.extension.util.math'
 
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0
 

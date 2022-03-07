@@ -18,7 +18,7 @@ define('./index', function (require, exports, module) {
 
   var dateUtil, formatUtil, mathUtil
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     dateUtil = sb.getService('vjs.framework.extension.util.date.DateTimeUtil')
     formatUtil = sb.getService('vjs.framework.extension.util.DateFormatUtil')
     mathUtil = sb.getService('vjs.framework.extension.util.Math')
@@ -64,7 +64,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.date.add("2012-03-05 18:20:30",30,vds.date.Units.Hour);//2012-03-07 00:20:30
    */
-  exports.add = function (date, num, type) {
+  export function add(date, num, type) {
     return dateUtil.dateAdd(date, num, type)
   }
 
@@ -76,7 +76,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.date.convert(30,"s",vds.date.Units.Minute)//0.5
    */
-  exports.convert = function (num, timeUnit, destTimeUnit) {
+  export function convert(num, timeUnit, destTimeUnit) {
     return dateUtil.dateConvert(num, timeUnit, destTimeUnit)
   }
 
@@ -89,7 +89,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.date.diff("2012-11-25 00:00:00","2012-11-26 12:00:00",vds.date.Units.Day)//1.5
    */
-  exports.diff = function (src, dest, timeUnit) {
+  export function diff(src, dest, timeUnit) {
     return dateUtil.datediff(src, dest, timeUnit)
   }
 
@@ -101,7 +101,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.date.format(new Date("2021-05-12"),"yyyy-MM-dd");//2021-05-12
    */
-  exports.format = function (date, format) {
+  export function format(date, format) {
     var formatter = formatUtil.newInstance(format)
     return formatter.format(date)
   }
@@ -113,7 +113,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.date.valueOf("2021-05-12");
    */
-  exports.valueOf = function (dateStr) {
+  export function valueOf(dateStr) {
     return mathUtil.toDate(dateStr)
   }
 

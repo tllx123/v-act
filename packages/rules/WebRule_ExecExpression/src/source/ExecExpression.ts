@@ -1,17 +1,18 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 //加载jsonUtil模块
-let undefined
+
 //加载表达式计算模块
 let formulaUtil
-let undefined
+
 let sandBox
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   //获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   //处理规则配置值

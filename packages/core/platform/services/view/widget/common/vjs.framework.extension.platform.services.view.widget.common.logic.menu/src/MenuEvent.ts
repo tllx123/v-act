@@ -1,11 +1,11 @@
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { resourcepackage as resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util.file'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let sandbox, widgetAction, routeEngine, browser, remoteMethodAccessor
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 let menuEvent = function (currentScopeId, widget, items, handler, cbFunc) {
@@ -249,4 +249,4 @@ let MenuData = function (items, ctype) {
   } else return
 }
 
-export { getMenuDataByRuleSet, menuEvent, MenuData }
+export { getMenuDataByRuleSet, MenuData, menuEvent }

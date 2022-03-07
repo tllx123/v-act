@@ -1,21 +1,24 @@
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { Camera as CameraService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-import { ImagePicker as ImagePickerService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-import { WidgetDatasource as widgetDatasource } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.datasource'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  Camera as CameraService,
+  ImagePicker as ImagePickerService
+} from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+
 let FileTransferService, routeContext, ImageService, sandbox
 let ERRORNAME
 //初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   //sBox：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sBox
   if (isWeiXin()) {
@@ -41,7 +44,7 @@ exports.initModule = function (sBox) {
 }
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   if (isWeiXin()) {
     WXUpload(ruleContext)
   } else {

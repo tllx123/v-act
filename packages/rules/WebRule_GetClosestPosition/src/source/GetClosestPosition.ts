@@ -1,13 +1,14 @@
-import { JsonUtil as JsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DialogUtil as DialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { DialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import { jsonUtil as JsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   debugger
   let runtimeRouteContext = ruleContext.getRouteContext()
 

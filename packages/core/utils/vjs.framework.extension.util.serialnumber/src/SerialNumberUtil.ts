@@ -1,6 +1,6 @@
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
-exports.initModule = function (sb) {}
+
+export function initModule(sb) {}
 
 const getSerialNumber = function (params) {
   let moduleId = params.moduleId

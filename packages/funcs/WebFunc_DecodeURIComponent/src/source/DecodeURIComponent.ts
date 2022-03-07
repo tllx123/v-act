@@ -1,6 +1,6 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let str = args[0]
   let retStr = decodeURIComponent(str)

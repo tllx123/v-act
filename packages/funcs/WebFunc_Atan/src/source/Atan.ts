@@ -1,10 +1,11 @@
-import { Math as math } from '@v-act/vjs.framework.extension.util'
+import { MathUtil as math } from '@v-act/vjs.framework.extension.util.math'
+
 let sandbox
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   sandbox = sb
 }
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let num = args[0]
   if (math.isEmpty(num)) {

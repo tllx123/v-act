@@ -1,7 +1,7 @@
 let sandbox
 let formulaUtil
 let viewModel
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

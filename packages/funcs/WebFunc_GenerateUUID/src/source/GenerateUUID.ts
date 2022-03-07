@@ -1,9 +1,8 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-let undefined
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   return uuid.generate()
 }
 

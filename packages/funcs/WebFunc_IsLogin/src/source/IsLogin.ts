@@ -1,11 +1,9 @@
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-let undefined
-let undefined
-exports.initModule = function (sb) {}
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-let main = function (param) {
+export function initModule(sb) {}
+
+const main = function (param) {
   let scope = scopeManager.getWindowScope(),
     windowCode = scope.getWindowCode(),
     result = false

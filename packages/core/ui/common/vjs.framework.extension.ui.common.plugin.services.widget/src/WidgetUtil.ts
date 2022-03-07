@@ -1,11 +1,9 @@
-import * as rendererUtil from 'module'
 import * as actionHandler from 'module'
+import * as rendererUtil from 'module'
 
 let sandbox
-let undefined
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

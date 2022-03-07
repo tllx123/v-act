@@ -2,10 +2,8 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 
 let sb
-let undefined
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

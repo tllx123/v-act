@@ -1,7 +1,7 @@
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
 let sandBox
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 let rebuildUrl = function (

@@ -1,10 +1,9 @@
+import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { Record as Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
 //加载actionHandler模块
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 主入口
@@ -12,7 +11,7 @@ exports.initModule = function (sb) {}
  * @param configDataJson 初始化数据
  * @param tabSetInitConfig
  */
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let portalOldTable = args[0]
   let portalTable = args[1]

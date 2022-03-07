@@ -1,14 +1,11 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { Share as service } from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 function main(ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()

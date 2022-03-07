@@ -2,7 +2,7 @@ import * as Exception from './impl/Exception'
 
 let handlers = {}
 
-exports.initModule = function () {
+export function initModule() {
   Exception.prototype._putManager(exports)
 }
 

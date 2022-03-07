@@ -1,6 +1,6 @@
 let ScopeManager
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     let dependency = sb.getService(
       'vjs.framework.extension.ui.adapter.dependency'

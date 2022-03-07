@@ -1,7 +1,6 @@
 import { config as sdkConfigService } from '@v-act/vjs.framework.extension.platform.service.native.sdk'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   console.log('GeolocationDingTalk 初始化')
 }
 

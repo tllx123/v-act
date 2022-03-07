@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let PlayVideoService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.PlayVideo'
   )

@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox, environmentUtil, scopeManager
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     environmentUtil = sBox.getService(
       'vjs.framework.extension.platform.interface.environment.Environment'
@@ -40,7 +40,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.environment.getContextPath();
    * */
-  exports.getContextPath = function () {
+  export function getContextPath() {
     return environmentUtil.getContextPath()
   }
 
@@ -51,7 +51,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.environment.isMobileWindow();
    * */
-  exports.isMobileWindow = function () {
+  export function isMobileWindow() {
     var winScope = scopeManager.getWindowScope()
     if (winScope) {
       if (winScope.getSeries && winScope.getSeries() == 'bootstrap_mobile') {
@@ -72,7 +72,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.environment.parseCss(".app{color:red;border:1px solid #e5e5e5;}");
    * */
-  exports.parseCss = function (css) {
+  export function parseCss(css) {
     if (null != css) {
       environmentUtil.parseCssStr(css)
     }

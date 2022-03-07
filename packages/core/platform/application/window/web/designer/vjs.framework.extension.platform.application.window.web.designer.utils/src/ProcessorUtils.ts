@@ -6,7 +6,7 @@
 
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
-import { jsonUtils } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 export function copyMethod(export1, export2) {
   for (var key in export1) {
@@ -253,7 +253,7 @@ export function getDataByKey(data, mappings, key) {
  * 生成父级格式
  * */
 export function genParentFormat(property, assignParentCode) {
-  var propertys = exports.genParentFormats([property], assignParentCode)
+  var propertys = genParentFormats([property], assignParentCode)
   return propertys[0]
 }
 /**

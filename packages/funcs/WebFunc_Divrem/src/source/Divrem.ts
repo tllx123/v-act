@@ -1,10 +1,8 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
-let undefined
+export function initModule(sandbox) {}
 
-exports.initModule = function (sandbox) {}
-
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     arg1 = argsLen >= 1 ? args[0] : null,

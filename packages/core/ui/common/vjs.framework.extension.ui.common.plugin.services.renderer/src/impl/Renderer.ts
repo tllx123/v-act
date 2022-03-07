@@ -2,7 +2,7 @@ let sandbox
 let seriesService
 let widgetContext
 let log
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   if (sb) {
     log = sb.getService('vjs.framework.extension.util.log')

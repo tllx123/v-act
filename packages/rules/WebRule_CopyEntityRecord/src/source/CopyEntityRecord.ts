@@ -6,26 +6,15 @@ import {
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { log, UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-let undefined
-let undefined
 let viewModel
 let ruleContext
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 // 复制类型
 let COPY_TYPE = {
   SELECTEDROWS: '1', // 选中行
@@ -48,7 +37,7 @@ let OPERATOR_TYPE = {
   MERGE: '4' // 合并
 }
 
-let main = function (ruleCtxt) {
+const main = function (ruleCtxt) {
   ruleContext = ruleCtxt
   let inParams = jsonUtil.json2obj(ruleCtxt.getRuleCfg().inParams)
 

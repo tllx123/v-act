@@ -1,7 +1,6 @@
 import { VTenantManager as vTenantManager } from '@v-act/vjs.framework.extension.platform.im'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let IMUserService = sb.getService(
     'vjs.framework.extension.platform.services.im.User'
   )
@@ -102,24 +101,24 @@ const quit = function (successCB, errorCB) {
 }
 
 export {
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
   addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  initIM,
   addListener,
-  sendText,
-  sendCmdText,
-  sendMedia,
-  register,
+  addToGroupBlackList,
+  changeGroupInfo,
+  createGroup,
+  destroyGroup,
+  getGroupBlackList,
+  initIM,
+  leaveGroup,
+  listGroups,
   loginWithPwd,
   loginWithToken,
-  quit
+  queryGroupInfo,
+  queryRoomMember,
+  quit,
+  register,
+  removeFromGroupBlackList,
+  sendCmdText,
+  sendMedia,
+  sendText
 }

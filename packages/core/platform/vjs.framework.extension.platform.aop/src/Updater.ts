@@ -1,10 +1,10 @@
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
+import {
+  ComponentParam as componentParam,
+  WindowParam as windowParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _iterate = function (obj, fn) {
   if (obj) {
@@ -142,16 +142,13 @@ const update = function (data, routeContext) {
 
 export {
   _putAop,
+  addRequest,
+  clear,
+  genParams,
   getHook,
-  isInited,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
+  isInited,
   remove,
-  genParams,
-  _putAop,
-  getHook,
   update
 }

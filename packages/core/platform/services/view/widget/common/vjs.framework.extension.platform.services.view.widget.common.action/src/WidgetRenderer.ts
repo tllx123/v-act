@@ -1,15 +1,12 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
+
 import * as widgetAction from './WidgetAction'
 
 let sb
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 
@@ -171,23 +168,23 @@ let executeComponentRenderAction = function (actionName) {
 }
 
 export {
-  getService,
-  isWidgetActionExist,
-  isComponentActionExist,
-  getWidgetActionHandler,
-  getComponentActionHandler,
-  executeWidgetAction,
-  executeSubWidgetAction,
   executeComponentAction,
-  getProxyWidgetId,
-  get,
-  set,
-  hasProperty,
-  isWidgetRenderActionExist,
-  isComponentRenderActionExist,
-  getWidgetRenderActionHandler,
-  getComponentRenderActionHandler,
-  executeWidgetRenderAction,
+  executeComponentRenderAction,
+  executeSubWidgetAction,
   executeSubWidgetRenderAction,
-  executeComponentRenderAction
+  executeWidgetAction,
+  executeWidgetRenderAction,
+  get,
+  getComponentActionHandler,
+  getComponentRenderActionHandler,
+  getProxyWidgetId,
+  getService,
+  getWidgetActionHandler,
+  getWidgetRenderActionHandler,
+  hasProperty,
+  isComponentActionExist,
+  isComponentRenderActionExist,
+  isWidgetActionExist,
+  isWidgetRenderActionExist,
+  set
 }

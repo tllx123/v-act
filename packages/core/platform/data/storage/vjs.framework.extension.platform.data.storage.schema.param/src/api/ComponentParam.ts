@@ -9,7 +9,7 @@ let ParamConfigFactory,
   logUtil,
   sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     sandbox = sb
     StorageManager = sb.getService(

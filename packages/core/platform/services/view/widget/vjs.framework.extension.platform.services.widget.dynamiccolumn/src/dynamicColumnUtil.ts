@@ -1,10 +1,7 @@
 import * as viewContext from 'module'
 import * as vmMappingManager from 'module'
 
-let undefined
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 // vmmapping动态列标识
 let VM_FIELD_DYNAMIC_MARK = '__dynamic__'
@@ -1052,11 +1049,11 @@ let toArrays4HTML = function (columnTreeAnaly) {
 
 export {
   cleanDynamicMappingItems,
-  getGridField2DefineMap,
   genGridColumnDefines,
   genRefreshColumn,
+  getGridField2DefineMap,
   newColumnTreeAnalyInstance,
   toArrays,
-  toArrays4Wooui,
-  toArrays4HTML
+  toArrays4HTML,
+  toArrays4Wooui
 }

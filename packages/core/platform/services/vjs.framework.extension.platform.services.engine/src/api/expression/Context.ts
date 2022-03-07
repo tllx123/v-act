@@ -1,7 +1,5 @@
 import { ExpressionContext as Context } from '@v-act/vjs.framework.extension.platform.engine.expression'
 
-let undefined
-
 /**
  * @class ExpressionContext
  * @desc 表达式引擎上下文<br/>

@@ -1,10 +1,9 @@
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
-import * as Snapshot from './Snapshot'
+
 import * as DatasourceSnapshot from './DatasourceSnapshot'
+import * as Snapshot from './Snapshot'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const create = function () {
   let snapshot = new Snapshot()

@@ -1,12 +1,13 @@
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
-let main = function (param) {
+const main = function (param) {
   let args = param.args
 
   let widgetCode = args[0]

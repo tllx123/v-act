@@ -3,7 +3,7 @@ let token = 'Platform_Component_Pack_Data'
 let sandbox
 let loadedIconCodes = []
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     sandbox = sb
     StorageManager = sb.getService(

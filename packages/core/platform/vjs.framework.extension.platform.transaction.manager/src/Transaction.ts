@@ -1,9 +1,9 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { RPC as operation } from '@v-act/vjs.framework.extension.system'
-import * as utils from './Utils'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 import * as RollbackRequest from './RollbackRequest'
 import * as rollbackRequestManager from './RollbackRequestManager'
+import * as utils from './Utils'
 
 // 事务状态常量
 let STATUS_ACTIVE = 'ACTIVE'
@@ -11,12 +11,6 @@ let STATUS_ROLLEDBACK = 'ROLLEDBACK'
 let STATUS_NO_TRANSACTION = 'NO_TRANSACTION'
 let STATUS_COMMITTED = 'COMMITTED'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 function Transaction(transactionId) {
   this.componentCode
   this.scopeId

@@ -1,9 +1,7 @@
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { VTenantManager as vTenantManager } from '@v-act/vjs.framework.extension.platform.im'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-let undefined
-let undefined
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let IMSendMessageService = sb.getService(
     'vjs.framework.extension.platform.services.im.SendMessage'
   )
@@ -209,20 +207,20 @@ const sendMedia = function (
 }
 
 export {
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
   addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  initIM,
   addListener,
-  sendText,
+  addToGroupBlackList,
+  changeGroupInfo,
+  createGroup,
+  destroyGroup,
+  getGroupBlackList,
+  initIM,
+  leaveGroup,
+  listGroups,
+  queryGroupInfo,
+  queryRoomMember,
+  removeFromGroupBlackList,
   sendCmdText,
-  sendMedia
+  sendMedia,
+  sendText
 }

@@ -1,7 +1,5 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 
-let undefined
-
 let Channel = function () {
   this.type = 'POST'
   this.isAsync = true
@@ -59,4 +57,4 @@ Channel.prototype = {
 
 return Channel
 
-export { injectCurrentChannel, getCurrentChannelService }
+export { getCurrentChannelService, injectCurrentChannel }

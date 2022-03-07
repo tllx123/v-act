@@ -1,10 +1,4 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
-import { FieldFactory as fieldFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-let undefined
 
 /**
  * @class VPlatformContract

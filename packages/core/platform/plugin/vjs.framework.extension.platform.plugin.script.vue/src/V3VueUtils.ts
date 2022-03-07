@@ -2,7 +2,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 
 let urlEnhancer, cssProcessor
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const putUrlEnhancer = function (func) {
   urlEnhancer = func

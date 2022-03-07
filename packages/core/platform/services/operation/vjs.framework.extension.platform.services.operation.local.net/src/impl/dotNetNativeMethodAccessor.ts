@@ -1,10 +1,10 @@
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 let invoke = function (
   nativeMethod,

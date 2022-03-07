@@ -1,16 +1,14 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     actionXML = argsLen >= 1 ? args[0] : null

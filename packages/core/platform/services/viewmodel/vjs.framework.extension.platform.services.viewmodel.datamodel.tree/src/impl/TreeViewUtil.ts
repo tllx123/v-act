@@ -1,28 +1,15 @@
-import { WindowVMMappingManager as vmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import * as viewModel from 'module'
-import * as treeViewModelFactory from './impl/TreeDataModelFactory'
 import * as formulaUtil from 'module'
-import * as viewContext from 'module'
-import * as log from 'module'
-import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util'
-import * as vmMappingManager from 'module'
-import * as Record from 'module'
 import * as propertyHandler from 'module'
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import * as Record from 'module'
+import * as viewContext from 'module'
+import * as viewModel from 'module'
+import * as vmMappingManager from 'module'
 
-let undefined
+import { WindowVMMappingManager as vmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util.file'
+import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   treeManager = sBox.getService('')
 }
 
@@ -687,23 +674,22 @@ let _setTreeNodeIcon = function (node, treeIcons) {
 }
 
 export {
-  getInstance,
-  getInstance,
-  Enum_MoveTo,
+  changeDBRecord2TreeNode,
+  changeRecordsTreeStructData,
   destroy,
-  translate,
-  getTreeStruct,
-  getTreeViewModel,
-  getParentIdRefField,
-  getTextRefField,
-  getOrderNoRefField,
-  getIsLeafRefField,
-  getInnerCodeRefField,
-  getImplementType,
+  Enum_MoveTo,
   getBusinessCodeFormat,
   getBusinessCodeRefField,
-  getTreeStructData2UI,
-  changeDBRecord2TreeNode,
   getChildrensMapWithIdKey,
-  changeRecordsTreeStructData
+  getImplementType,
+  getInnerCodeRefField,
+  getInstance,
+  getIsLeafRefField,
+  getOrderNoRefField,
+  getParentIdRefField,
+  getTextRefField,
+  getTreeStruct,
+  getTreeStructData2UI,
+  getTreeViewModel,
+  translate
 }

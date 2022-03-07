@@ -1,7 +1,6 @@
-import { ImageTransfer as ImageTransfer } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
+import { ImageTransfer } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   ImageTransfer.putInstance(exports)
 }
 

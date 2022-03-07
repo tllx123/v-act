@@ -8,7 +8,7 @@ let Datasource_Token = 'WINDOW_MAPPING_DATASOURCE',
   token = 'WINDOW_INSTANCE_DATASOURCE',
   Ruleset_Token = 'WINDOW_MAPPING_RULESET'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 /**
  * 获取数据源映射仓库
  */

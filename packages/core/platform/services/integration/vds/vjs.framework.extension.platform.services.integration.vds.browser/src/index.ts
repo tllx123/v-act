@@ -31,7 +31,7 @@ define('./index', function (require, exports, module) {
     webViewService,
     viewModel
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     browserUtils = sandbox.getService(
       'vjs.framework.extension.platform.services.browser.Browser'
@@ -93,7 +93,7 @@ define('./index', function (require, exports, module) {
    * vds.import("vds.browser.*");
    * vds.browser.redirect("v3_example", "index");
    */
-  exports.redirect = function (componentCode, windowCode, params) {
+  export function redirect(componentCode, windowCode, params) {
     if (!componentCode || !windowCode) {
       return
     }
@@ -135,7 +135,7 @@ define('./index', function (require, exports, module) {
    * vds.import("vds.browser.*");
    * vds.browser.dialog("http://www.yindangu.com");
    */
-  exports.dialog = function (url, params) {
+  export function dialog(url, params) {
     var __params = params || {}
     var func = function (resolve, reject) {
       try {
@@ -236,7 +236,7 @@ define('./index', function (require, exports, module) {
    * 	alert("模态窗体打开失败")
    * })
    * */
-  exports.dialogWindow = function (componentCode, windowCode, params) {
+  export function dialogWindow(componentCode, windowCode, params) {
     var __params = params || {}
     var func = function (resovle, reject) {
       var params = __params
@@ -276,7 +276,7 @@ define('./index', function (require, exports, module) {
    * vds.import("vds.browser.*");
    * vds.browser.newTab("http://www.yindangu.com");
    */
-  exports.newTab = function (url, params) {
+  export function newTab(url, params) {
     if (!url) {
       return
     }
@@ -301,7 +301,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.browser.redirectByUrl("http://www.yindangu.com");
    * */
-  exports.redirectByUrl = function (url) {
+  export function redirectByUrl(url) {
     _getBrowserUtils().currentPageOpen({
       url: url
     })
@@ -317,7 +317,7 @@ define('./index', function (require, exports, module) {
    *  inputParams {Object} 输入参数
    * }
    * */
-  exports.newWindow = function (componentCode, windowCode, params) {
+  export function newWindow(componentCode, windowCode, params) {
     if (!componentCode || !windowCode) {
       throw vds.exception.newConfigException('构件编码和窗体编码不能为空.')
     }
@@ -357,7 +357,7 @@ define('./index', function (require, exports, module) {
    *  inited {Function} 窗体初始化后事件
    * }
    * */
-  exports.renderToContainer = function (
+  export function renderToContainer(
     componentCode,
     windowCode,
     containerCode,
@@ -417,7 +417,7 @@ define('./index', function (require, exports, module) {
    *  ruleContext {@link RuleContext} 规则上下文
    * }
    * */
-  exports.renderToDivContainerByUrl = function (
+  export function renderToDivContainerByUrl(
     url,
     widgetCode,
     containerTagCode,
@@ -507,7 +507,7 @@ define('./index', function (require, exports, module) {
    * }
    * @returns {Promise}
    * */
-  exports.renderToDivContainer = function (
+  export function renderToDivContainer(
     componentCode,
     windowCode,
     widgetCode,
@@ -571,7 +571,7 @@ define('./index', function (require, exports, module) {
    *  inputParams {Object} 输入参数
    * }
    * */
-  exports.renderToHomeTab = function (componentCode, windowCode, params) {
+  export function renderToHomeTab(componentCode, windowCode, params) {
     var __params = params || {}
     return new Promise(function (resolve, reject) {
       try {
@@ -623,7 +623,7 @@ define('./index', function (require, exports, module) {
    * }
    * @returns {Promise}
    * */
-  exports.renderToHomeTabByUrl = function (url, params) {
+  export function renderToHomeTabByUrl(url, params) {
     var __params = params || {}
     return new Promise(function (resolve, reject) {
       try {
@@ -659,7 +659,7 @@ define('./index', function (require, exports, module) {
    *  winName {String} 在指定窗体标识中刷新，默认为空，当值为空时刷新当前浏览器页
    * }
    * */
-  exports.refresh = function (componentCode, windowCode, params) {
+  export function refresh(componentCode, windowCode, params) {
     if (!componentCode || !windowCode) {
       throw vds.exception.newConfigException('构件编码和窗体编码不能为空.')
     }
@@ -740,7 +740,7 @@ define('./index', function (require, exports, module) {
    *  }
    * });
    * */
-  exports.createDialog = function (params) {
+  export function createDialog(params) {
     var modalParams = {
       title: params.title,
       width: params.width,

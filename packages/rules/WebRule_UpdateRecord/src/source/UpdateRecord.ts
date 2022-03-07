@@ -1,16 +1,18 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let sandbox
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandbox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let isSuccess = true // 用于记录保存是否成功
   let ruleCfg = ruleContext.getRuleCfg()
   let paramsValue = ruleCfg['inParams']

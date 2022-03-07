@@ -1,8 +1,6 @@
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-let undefined
-exports.initModule = function (sb) {}
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+export function initModule(sb) {}
 
 /**
  * 设置输入框类控件在只读下
@@ -62,12 +60,9 @@ let readOnlyToggle = function (scopeId, focus, blur, state) {
 }
 export {
   inputlisten,
-  inputScroll,
-  readOnlyOn,
-  readOnlyOff,
-  readOnlyToggle,
   inputListen,
-  readOnlyOn,
+  inputScroll,
   readOnlyOff,
+  readOnlyOn,
   readOnlyToggle
 }

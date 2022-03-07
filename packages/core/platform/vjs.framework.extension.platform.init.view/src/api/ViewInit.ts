@@ -1,21 +1,25 @@
-import * as windowRuntime from './api/WindowRuntimeInit'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { AppInfo as appInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { ComponentInfo as componentInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { ApplicationParam as ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import {
+  AppInfo as appInfo,
+  ComponentInfo as componentInfo,
+  WindowInfo as windowInfo
+} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global.task'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
+import * as windowRuntime from './api/WindowRuntimeInit'
 
 let sandbox,
   token = 'VIEW_INIT_WINDOW_RUNTIME_HANDLER',
   eventToken = 'VIEW_INIT_WINDOW_RUNTIME_EVENT'
 let storage
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   let storageManager = sb.getService(
     'vjs.framework.extension.platform.interface.storage.StorageManager'
@@ -327,9 +331,9 @@ const init = function (params) {
 }
 
 export {
+  init,
   initAppSchema,
   initComponentSchema,
-  initWindowSchema,
   initWindowRuntime,
-  init
+  initWindowSchema
 }

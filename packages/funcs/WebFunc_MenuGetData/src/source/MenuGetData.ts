@@ -1,16 +1,12 @@
 import * as log from 'module'
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+import * as viewContext from 'module'
+
+export function initModule() {}
 /**
  * 主入口
  */
-let main = function (bindMenuId) {
+const main = function (bindMenuId) {
   if (null == bindMenuId || '' == bindMenuId) {
     log.error('[MenuGetData.main]菜单ID为空，请检查配置')
     return null

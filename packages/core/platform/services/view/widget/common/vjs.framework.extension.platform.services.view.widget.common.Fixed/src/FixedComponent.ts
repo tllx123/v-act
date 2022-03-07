@@ -1,16 +1,12 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 
 let widgetAction
 let eventManager
 let widgetRenderer
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {}
+
+export function initModule(sb) {}
 
 const getBottomWidget = function () {
   let result = []

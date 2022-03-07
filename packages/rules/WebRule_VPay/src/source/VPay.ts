@@ -1,18 +1,17 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { Pay as pay } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let context
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
+
+export function initModule(sBox) {}
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   context = new ExpressionContext()
   let routeRuntime = ruleContext.getRouteContext()
   context.setRouteContext(routeRuntime)

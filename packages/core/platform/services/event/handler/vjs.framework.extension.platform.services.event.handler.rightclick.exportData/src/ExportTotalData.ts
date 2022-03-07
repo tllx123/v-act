@@ -3,7 +3,7 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 let EventManager
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let RightClickEventHander = sb.getService(
     'vjs.framework.extension.platform.services.view.event.RightClickEventHandler'
   )

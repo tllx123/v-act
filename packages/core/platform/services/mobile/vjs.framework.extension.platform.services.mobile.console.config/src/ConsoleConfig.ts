@@ -7,7 +7,7 @@ let consoleConfig = {
   isStartWithGuidePage: '' //本次访问APP是否开启引导页
 }
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const setConfig = function (key, value) {
   if (key) {

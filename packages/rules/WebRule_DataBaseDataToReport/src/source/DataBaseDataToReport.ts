@@ -1,27 +1,33 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { QueryCondUtil as QueryCondUtil } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { WidgetAction as WidgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { DialogUtil as DialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine.route'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourcePusher as datasourcePusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-let sandBox
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine.route'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import {
+  WidgetAction,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { DialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import {
+  QueryCondUtil,
+  WhereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-exports.initModule = function (sBox) {
+let sandBox
+
+export function initModule(sBox) {
   sandBox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let scope = ScopeManager.getScope()
   let componentCode = scope.getComponentCode()
   let windowCode = scope.getWindowCode()

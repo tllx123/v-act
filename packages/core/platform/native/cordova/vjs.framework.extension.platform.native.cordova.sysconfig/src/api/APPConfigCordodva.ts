@@ -1,7 +1,6 @@
 import { Sysconfig as APPConfig } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   APPConfig.putInstance(exports)
 }
 
@@ -42,11 +41,11 @@ const getPreferences = function (successCallback, param) {
 }
 
 export {
-  isAwakeByURL,
-  getAwakeParams,
-  clear,
-  pasteBoard,
   call,
-  setPreferences,
-  getPreferences
+  clear,
+  getAwakeParams,
+  getPreferences,
+  isAwakeByURL,
+  pasteBoard,
+  setPreferences
 }

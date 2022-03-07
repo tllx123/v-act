@@ -1,12 +1,10 @@
-import {
-  DateFormatUtil as dateFormatUtil,
-  Math as mathUtil
-} from '@v-act/vjs.framework.extension.util'
+import { DateTimeUtil as dateFormatUtil } from '@v-act/vjs.framework.extension.util.date'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 let dateSection, dayOfWeek
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   dateSection = {
     '0': '0',
     '1': 'yyyy',
@@ -37,7 +35,7 @@ exports.initModule = function (sb) {
   //		};
 }
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dateStr = argsLen >= 1 ? args[0] : null,

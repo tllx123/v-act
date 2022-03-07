@@ -1,6 +1,6 @@
 let sandbox, topNodeName, secNodeName, attReadOnly
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   topNodeName = '_topnode'
   secNodeName = '_secondnode'

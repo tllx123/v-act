@@ -1,19 +1,17 @@
-import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  Browser as browser,
+  BrowserUtil as browserUtil
+} from '@v-act/vjs.framework.extension.platform.services.browser'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { BrowserUtil as browserUtil } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let viewModel
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let inParamsObj = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
   //用户的确定或取消选项 , 0：取消；1：确定
   let selectionConfirm = inParamsObj['SelectionConfirm']

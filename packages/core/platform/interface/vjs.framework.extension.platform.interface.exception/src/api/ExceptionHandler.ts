@@ -1,12 +1,10 @@
-import * as exceptionFactory from './api/ExceptionFactory'
-import { log as log } from '@v-act/vjs.framework.extension.util'
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
-let undefined
-let sandbox
-let undefined
+import * as exceptionFactory from './api/ExceptionFactory'
 
-exports.initModule = function (sb) {
+let sandbox
+
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -64,4 +62,4 @@ const getExceptionHtml = function (
   return html
 }
 
-export { create, isException, handle, getExceptionHtml }
+export { create, getExceptionHtml, handle, isException }

@@ -2,7 +2,7 @@ import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.exten
 
 let sb
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

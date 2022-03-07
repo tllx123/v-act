@@ -1,10 +1,7 @@
-import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-
 //主入口(必须有)
-let main = function () {
+const main = function () {
   if (!isWeiXinFunc()) {
     alert('【获取微信用户信息】函数仅支持微信端使用!')
     return ''

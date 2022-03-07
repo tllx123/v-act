@@ -1,17 +1,16 @@
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let datasource
 
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   // 参数1：Json字符串
   let json = args[0]

@@ -1,8 +1,6 @@
 import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const getSelectedAndCurrentRecords = function (params) {
   let datasource = dsManager.lookup({ datasourceName: params.datasourceName })
@@ -63,4 +61,4 @@ const createRecords = function (params) {
   return []
 }
 
-export { getSelectedAndCurrentRecords, hasChanged, getFieldName, createRecords }
+export { createRecords, getFieldName, getSelectedAndCurrentRecords, hasChanged }

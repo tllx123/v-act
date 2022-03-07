@@ -1,11 +1,9 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

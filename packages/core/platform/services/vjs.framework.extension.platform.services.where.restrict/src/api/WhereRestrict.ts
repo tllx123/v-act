@@ -1,8 +1,6 @@
 import * as queryConditionUtil from './util/queryConditionUtil'
 
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 /**
  * 继承、克隆使用工具，目前是直接使用jQuery中的继承

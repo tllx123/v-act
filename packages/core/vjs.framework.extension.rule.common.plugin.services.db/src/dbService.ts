@@ -1,19 +1,12 @@
+import * as dbManager from 'module'
+import * as formulaUtil from 'module'
+import * as jsTool from 'module'
 import * as viewContext from 'module'
 import * as viewModel from 'module'
-import * as jsTool from 'module'
-import * as dbManager from 'module'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import * as formulaUtil from 'module'
 
 let sandbox
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

@@ -1,7 +1,7 @@
-import { RemoteOperation as remoteRequest } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteOperation as remoteRequest } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let aop, objUtils
 
@@ -196,4 +196,4 @@ Request.prototype = {
 
 return Request
 
-export { _putAop, getHook, isInited, init, isDebugger, update, clear }
+export { _putAop, clear, getHook, init, isDebugger, isInited, update }

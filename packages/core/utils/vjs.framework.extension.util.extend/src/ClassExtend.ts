@@ -1,5 +1,5 @@
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }

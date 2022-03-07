@@ -18,7 +18,7 @@ define('./index', function (require, exports, module) {
 
   var componentParam, scopeManager, componentParamService, componentPackData
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     componentParam = sBox.getService(
       'vjs.framework.extension.platform.data.storage.runtime.param.ComponentParam'
     )
@@ -40,7 +40,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.component.getVariant("var1");
    */
-  exports.getVariant = function (code) {
+  export function getVariant(code) {
     return componentParam.getVariant({
       code: code
     })
@@ -53,7 +53,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.component.refreshVariant(["code1","code2"]);
    */
-  exports.refreshVariant = function (array) {
+  export function refreshVariant(array) {
     componentParamService.refreshVariant({
       codes: array
     })
@@ -66,7 +66,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.component.setVariant("code1","123");
    */
-  exports.setVariant = function (code, val) {
+  export function setVariant(code, val) {
     componentParamService.setVariant({
       code: code,
       value: val
@@ -80,7 +80,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.component.getMetadata("v3_example","BizWindowInstanceData");
    * */
-  exports.getMetadata = function (componentCode, domain) {
+  export function getMetadata(componentCode, domain) {
     return new Promise(function (resolve, reject) {
       try {
         var defferend = componentParamService.getMetadata(componentCode, domain)
@@ -97,7 +97,7 @@ define('./index', function (require, exports, module) {
    * @returns {String}
    * var url = vds.component.getResourceUrl("file.jpg");
    * */
-  exports.getResourceUrl = function (resourceName) {
+  export function getResourceUrl(resourceName) {
     var scope = scopeManager.getScope()
     if (scope && resourceName) {
       var componentCode = scope.getComponentCode()
@@ -112,7 +112,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.component.getCode();
    * */
-  exports.getCode = function () {
+  export function getCode() {
     var scope = scopeManager.getScope()
     if (scope) {
       return scope.getComponentCode()
@@ -126,7 +126,7 @@ define('./index', function (require, exports, module) {
    * @param {String} methodCode 方法编码
    * @returns {Object}
    * */
-  exports.getPack = function (componentCode, methodCode) {
+  export function getPack(componentCode, methodCode) {
     return new Promise(function (resolve, reject) {
       try {
         var tmpMapping = componentPackData.getMapping({

@@ -1,6 +1,6 @@
 let uuid, arrayUtil, scopeManager
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   if (sBox) {
     uuid = sBox.getService('vjs.framework.extension.util.UUID')
     arrayUtil = sBox.getService('vjs.framework.extension.util.ArrayUtil')

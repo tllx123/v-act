@@ -1,9 +1,9 @@
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 import * as DataAccessObject from './api/object/DataAccessObject'
 import * as DataProvider from './api/object/DataProvider'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 const serializer = function (rsDataValueStr, queryParam) {
   let rsDataObj = jsonUtil.json2obj(rsDataValueStr)

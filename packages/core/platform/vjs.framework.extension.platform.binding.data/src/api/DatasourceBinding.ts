@@ -1,7 +1,7 @@
 let sb
 let scopeManager
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

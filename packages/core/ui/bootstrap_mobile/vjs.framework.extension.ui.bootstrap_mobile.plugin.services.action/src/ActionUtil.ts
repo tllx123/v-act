@@ -1,9 +1,9 @@
 import * as formulaUtil from 'module'
 import * as viewModel from 'module'
+
 let sandbox
-let undefined
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -122,13 +122,13 @@ let getRefieldByWidgetCode = function (widgetCode) {
 }
 
 export {
-  setValue,
-  setSingleRecordMultiValue,
-  getValue,
-  getSingleRecordMultiValue,
-  handleColor,
   getExpressionValue,
-  getValueFromValueAccessor,
   getRefieldByWidgetCode,
-  getSingleColumnWidgetDefaultValue
+  getSingleColumnWidgetDefaultValue,
+  getSingleRecordMultiValue,
+  getValue,
+  getValueFromValueAccessor,
+  handleColor,
+  setSingleRecordMultiValue,
+  setValue
 }

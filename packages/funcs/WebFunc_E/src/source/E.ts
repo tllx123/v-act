@@ -1,9 +1,8 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
-let main = function (param) {
+const main = function (param) {
   return mathUtil.getE()
 }
 

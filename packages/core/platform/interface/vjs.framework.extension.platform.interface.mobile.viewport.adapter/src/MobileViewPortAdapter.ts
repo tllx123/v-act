@@ -102,7 +102,7 @@ let BottomHeight = [
  * 部分适配数据
  * */
 let FixDatas = {}
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandbox = sBox
 }
 

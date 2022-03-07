@@ -303,7 +303,7 @@ define('./index', function (require, exports, module) {
     'isUndefined'
   ]
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     var utils = sb.getService('vjs.framework.extension.util.ObjectUtil')
     for (var i = 0, l = methods.length; i < l; i++) {
       var methodName = methods[i]

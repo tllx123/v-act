@@ -6,7 +6,7 @@ import {
   WindowContainerManager as windowRelation
 } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.log'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 const _renderWinsPool = {}
 

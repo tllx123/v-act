@@ -1,26 +1,21 @@
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  Operation,
+  Request
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Request as Request } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { QueryCondUtil as queryConditionUtil } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import {
+  QueryCondUtil as queryConditionUtil,
+  WhereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 let sandbox
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -783,17 +778,17 @@ let getDataByDataSource = function (dropDownSource, valueField, textField) {
 }
 
 export {
-  getDataByDataSource,
+  doDataSourceLoadConditionMap,
+  doRequestCfg,
+  doResultDatasWithLoadCondition,
   genCustomConst,
-  genSQLData,
-  genTableQueryData,
   genEntityData,
   genSQLConfig,
-  doRequestCfg,
-  getDataSourceFindDatas,
-  doDataSourceLoadConditionMap,
-  doResultDatasWithLoadCondition,
-  genTableQueryConfig,
+  genSQLData,
   genTableQuery,
-  genwhereRestrict
+  genTableQueryConfig,
+  genTableQueryData,
+  genwhereRestrict,
+  getDataByDataSource,
+  getDataSourceFindDatas
 }

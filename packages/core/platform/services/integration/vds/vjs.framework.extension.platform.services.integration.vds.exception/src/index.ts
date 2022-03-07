@@ -18,7 +18,7 @@ define('./index', function (require, exports, module) {
 
   var logUtil, factory, exceptionHandler
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     logUtil = sb.getService('vjs.framework.extension.util.log')
     factory = sb.getService(
       'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
@@ -34,7 +34,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.exception.newConfigException("配置错误");
    * */
-  exports.newConfigException = function (msg) {
+  export function newConfigException(msg) {
     var exception = factory.create({
       message: msg,
       type: factory.TYPES.Config
@@ -48,7 +48,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.exception.newBusinessException("业务错误");
    * */
-  exports.newBusinessException = function (msg) {
+  export function newBusinessException(msg) {
     var exception = factory.create({
       message: msg,
       type: factory.TYPES.Business
@@ -62,7 +62,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.exception.newDevException("环境错误");
    * */
-  exports.newDevException = function (msg) {
+  export function newDevException(msg) {
     var exception = factory.create({
       message: msg,
       type: factory.TYPES.Dev
@@ -76,7 +76,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.exception.newConfigException("系统错误");
    * */
-  exports.newSystemException = function (msg) {
+  export function newSystemException(msg) {
     var exception = factory.create({
       message: msg,
       type: factory.TYPES.System
@@ -92,7 +92,7 @@ define('./index', function (require, exports, module) {
    * vds.exception.isException(exception);//true
    * vds.exception.isException(new Error("系统错误"));//false
    * */
-  exports.isException = function (obj) {
+  export function isException(obj) {
     return factory.isException(obj)
   }
   /**
@@ -104,7 +104,7 @@ define('./index', function (require, exports, module) {
    * vds.exception.handle(exception);
    * vds.exception.handle(new Error("系统错误"));
    * */
-  exports.handle = function (exception) {
+  export function handle(exception) {
     exceptionHandler.handle(exception)
   }
   //    /**暂时不出，目前的问题场景（CallWebapi）可以把异常创建逻辑写在接口内部
@@ -113,7 +113,7 @@ define('./index', function (require, exports, module) {
   //     * @param {String} type 异常类型
   //     * @param {String} detail 异常详情
   //     * */
-  //    exports.newServiceException = function(message, type, detail){
+  //    export function newServiceException(message, type, detail){
   //    	var exception = factory.create({
   //    		"message":message,
   //    		"type":type,

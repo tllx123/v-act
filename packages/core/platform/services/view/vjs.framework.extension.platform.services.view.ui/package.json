@@ -17,7 +17,7 @@
   "dependencies": {
     "@v-act/vjs.framework.core": "^1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.i18n": "^1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "^1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.string": "^1.0.0-alpha.1"
   }
 }

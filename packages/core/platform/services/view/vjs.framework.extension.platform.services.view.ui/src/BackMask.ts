@@ -3,14 +3,14 @@ define('./BackMask', function (require, exports, module) {
     windowZindex = [],
     bodyOver = true
 
-  exports.initModule = function (sandbox) {
+  export function initModule(sandbox) {
     sb = sandbox
   }
 
   /**
    * @param Number tmpZIndex 层级，可不传
    * */
-  exports.Show = function (tmpZIndex) {
+  export function Show(tmpZIndex) {
     if (bodyOver) {
       var _$body = $('body')
       if (_$body.css('overflow') != 'hidden') {
@@ -46,7 +46,7 @@ define('./BackMask', function (require, exports, module) {
     }
   }
 
-  exports.Hide = function () {
+  export function Hide() {
     if ($('#windowBackMark').length > 0) {
       if (windowZindex.length > 1) {
         var zindex = windowZindex.pop()

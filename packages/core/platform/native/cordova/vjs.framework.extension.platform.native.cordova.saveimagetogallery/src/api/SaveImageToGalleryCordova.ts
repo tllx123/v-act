@@ -1,6 +1,6 @@
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   let SaveImageToGalleryService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.SaveImageToGallery'
   )

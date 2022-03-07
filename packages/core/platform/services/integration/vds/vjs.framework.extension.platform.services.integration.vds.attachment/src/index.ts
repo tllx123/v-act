@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox, dcs
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     dcs = sBox.getService('vjs.framework.extension.platform.services.Dcs')
   }
@@ -40,7 +40,7 @@ define('./index', function (require, exports, module) {
    * 	console.log("预览失败");
    * })
    * */
-  exports.preview = function (fileId) {
+  export function preview(fileId) {
     return new Promise(function (resolve, reject) {
       try {
         if (!fileId) {
@@ -66,7 +66,7 @@ define('./index', function (require, exports, module) {
    * 	console.log("转换失败");
    * })
    * */
-  exports.convert = function (fileId) {
+  export function convert(fileId) {
     return new Promise(function (resolve, reject) {
       try {
         if (!fileId) {

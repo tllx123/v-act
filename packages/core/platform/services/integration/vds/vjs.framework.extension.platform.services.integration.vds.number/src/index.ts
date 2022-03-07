@@ -18,7 +18,7 @@ define('./index', function (require, exports, module) {
 
   var mathUtil
 
-  exports.initModule = function (sb) {
+  export function initModule(sb) {
     mathUtil = sb.getService('vjs.framework.extension.util.Math')
   }
 
@@ -29,7 +29,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.number.isInfinity(12);//false
    */
-  exports.isInfinity = function (num) {
+  export function isInfinity(num) {
     return mathUtil.isInfinity(num)
   }
 
@@ -41,7 +41,7 @@ define('./index', function (require, exports, module) {
    * vds.number.isInteger(12);//true
    * vds.number.isInteger("34");//true
    */
-  exports.isInteger = function (num) {
+  export function isInteger(num) {
     return mathUtil.judgeInt(num)
   }
 
@@ -55,7 +55,7 @@ define('./index', function (require, exports, module) {
    * vds.number.toFixed(123.3345,3);//123.335
    * vds.number.toFixed(23.452,2);//23.45
    */
-  exports.toFixed = function (num, precision) {
+  export function toFixed(num, precision) {
     return mathUtil.toDecimal(num, precision)
   }
 
@@ -68,7 +68,7 @@ define('./index', function (require, exports, module) {
    * vds.number.toFloorFixed(123.3345,3);//123.334
    * vds.number.toFixed(23.452,2);//23.45
    */
-  exports.toFloorFixed = function (num, precision) {
+  export function toFloorFixed(num, precision) {
     return mathUtil.toDecimalExt(num, precision)
   }
 

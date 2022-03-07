@@ -5,7 +5,7 @@ let storageManager,
   input_param_token = 'WindowParam_Input_Token_Key',
   output_param_token = 'WindowParam_Output_Token_Key'
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     storageManager = sb.getService(
       'vjs.framework.extension.platform.interface.storage.StorageManager'

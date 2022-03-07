@@ -3,7 +3,7 @@ import { EventManager as oldEventManager } from '@v-act/vjs.framework.extension.
 
 let sb
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

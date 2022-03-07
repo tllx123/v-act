@@ -5,7 +5,7 @@ let storageToken = 'STORAGE_RUNTIME_PARAM_COMPONENTPARAM',
   optionToken = 'RUNTIME_COMPONENT_OPTION',
   initedToken = 'RUNTIME_COMPONENT_INITED'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let getStorage = function (depth, isCreate) {
   let rs,

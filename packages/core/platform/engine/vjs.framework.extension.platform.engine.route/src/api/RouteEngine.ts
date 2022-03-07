@@ -1,22 +1,25 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { aop as aop } from '@v-act/vjs.framework.extension.platform'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { snapshotManager as snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
-import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { aop } from '@v-act/vjs.framework.extension.platform'
+import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
 import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global.task'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import {
+  ExceptionFactory as exceptionFactory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
+import { log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 let sb
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

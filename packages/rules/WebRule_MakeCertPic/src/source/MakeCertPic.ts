@@ -1,24 +1,17 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
+import { FrontEndAlerter as frontAlert } from '@v-act/vjs.framework.extension.platform.interface.alerter'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { FrontEndAlerter as frontAlert } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sb = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

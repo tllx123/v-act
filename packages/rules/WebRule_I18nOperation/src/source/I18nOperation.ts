@@ -1,26 +1,27 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { RemoteMethodAccessor as remoteServer } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { DatasourceFactory as dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import {
+  ExpressionContext,
+  ExpressionEngine as formulaUtil
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { FrontEndAlerter as frontAlert } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { ExpressionEngine as formulaUtil } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ProgressBarUtil as ProgressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { DatasourceFactory as dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteMethodAccessor as remoteServer } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import {
+  ComponentParam as componentParam,
+  WindowParam as windowParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { DatasourceUtil as dbService } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { ProgressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
 let sandbox
-let undefined
+
 //cookie里i18n标识
 let VPLATFORMI18NIDEN = 'langCookie'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -70,7 +71,7 @@ function setLanguage(value) {
   window.location.reload()
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg(),
     inParams = ruleCfgValue['inParams']
 

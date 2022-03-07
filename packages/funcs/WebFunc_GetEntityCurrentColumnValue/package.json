@@ -17,6 +17,6 @@
 	"scripts": {},
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1"
 	}
 }

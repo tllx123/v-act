@@ -1,19 +1,13 @@
-import * as log from 'module'
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
+import * as viewContext from 'module'
 
-exports.initModule = function () {}
+export function initModule() {}
 /**
  * 主入口
  * @param schedulerIds 计划任务id(逗号分割)
  * @param isDelete 是否删除计划任务
  */
-let main = function (schedulerIds, isDelete) {
+const main = function (schedulerIds, isDelete) {
   if (schedulerIds == null || schedulerIds == '') {
     throw new Error('待发布的计划任务id不能为空，请检查')
   }

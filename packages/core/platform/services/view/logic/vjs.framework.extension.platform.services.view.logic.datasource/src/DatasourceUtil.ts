@@ -1,20 +1,14 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
+import { datasource as datasourceEventBinding } from '@v-act/vjs.framework.extension.platform.binding.data'
+import {
+  ExpressionContext,
+  ExpressionEngine as expressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { datasource as datasourceEventBinding } from '@v-act/vjs.framework.extension.platform.binding.data'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let getDatasource = function (datasourceName) {
   if (undefined == datasourceName || null == datasourceName) return null
@@ -578,23 +572,23 @@ let getEntity = function (entityName, entityType, ruleContext) {
 }
 
 export {
-  insertOrUpdateRecords2Entity,
-  isEntity,
+  addDatasourceCurrentEventHandler,
+  addDatasourceCurrentRecordFieldUpdateEventHandler,
+  addDatasourceCurrentRecordUpdateEventHandler,
+  addDatasourceDeleteEventHandler,
+  addDatasourceFieldUpdateEventHandler,
+  addDatasourceInsertEventHandler,
+  addDatasourceLoadEventHandler,
+  addDatasourceSelectEventHandler,
+  addDatasourceUpdateEventHandler,
   getDatasource,
   getDatasourceField,
-  resetDatasource,
-  resultsetToMapArray,
-  setBaseValue,
   getSingleValue,
   getWidgetCodesByDatasource,
-  addDatasourceLoadEventHandler,
-  addDatasourceUpdateEventHandler,
-  addDatasourceFieldUpdateEventHandler,
-  addDatasourceCurrentRecordUpdateEventHandler,
-  addDatasourceCurrentRecordFieldUpdateEventHandler,
-  addDatasourceDeleteEventHandler,
-  addDatasourceInsertEventHandler,
-  addDatasourceCurrentEventHandler,
-  addDatasourceSelectEventHandler,
-  rebindDatasourceEvent
+  insertOrUpdateRecords2Entity,
+  isEntity,
+  rebindDatasourceEvent,
+  resetDatasource,
+  resultsetToMapArray,
+  setBaseValue
 }

@@ -18,6 +18,6 @@
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.native.mobile.jpush": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1"
 	}
 }

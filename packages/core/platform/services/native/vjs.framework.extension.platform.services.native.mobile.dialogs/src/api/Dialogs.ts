@@ -1,7 +1,7 @@
 import { AlertMessage as alertMessage } from '@v-act/vjs.framework.extension.platform.services.view.ui'
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

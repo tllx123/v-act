@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox, cookieUtil
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
     cookieUtil = sandbox.getService(
       'vjs.framework.extension.platform.services.domain.cookie.cookieUtil'
@@ -41,7 +41,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.cookie.remove("yindangu");
    * */
-  exports.remove = function (code, options) {
+  export function remove(code, options) {
     cookieUtil.vcookie({
       name: code,
       value: null,
@@ -55,7 +55,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.cookie.get("yindangu");
    * */
-  exports.get = function (code) {
+  export function get(code) {
     var cookieVal = cookieUtil.vcookie({
       name: code
     })
@@ -77,7 +77,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.cookie.set("yindangu","123456");
    * */
-  exports.set = function (code, value, options) {
+  export function set(code, value, options) {
     cookieUtil.vcookie({
       name: code,
       value: value,

@@ -1,12 +1,12 @@
 //加载模块
 let sandBox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandBox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let argsLen = args ? args.length : 0
   let phoneNumber = argsLen >= 1 ? args[0] : null

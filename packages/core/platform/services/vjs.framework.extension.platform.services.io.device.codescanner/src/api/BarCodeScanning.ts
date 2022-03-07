@@ -1,4 +1,4 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 /*
  * 1、创建隐藏文本域
@@ -8,9 +8,9 @@ import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.pla
  *
  *
  * */
-let undefined
+
 let barCode
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 let listenBarCodeScanning = function (options, callback) {
   let currentScopeId = ScopeManager.getCurrentScopeId()
   $('body').startListen(
@@ -225,4 +225,4 @@ $.fn.startListen = function (options, callback) {
     barCode.setOptions(settings)
   }
 }
-export { listenCodeScanner, clearListen }
+export { clearListen, listenCodeScanner }

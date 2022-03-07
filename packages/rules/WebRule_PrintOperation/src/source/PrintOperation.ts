@@ -1,9 +1,7 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 // 操作类型：0为打印预览，1为打印
 let OP_PRINT_PREVIEW = '0',
   OP_PRINT = '1'

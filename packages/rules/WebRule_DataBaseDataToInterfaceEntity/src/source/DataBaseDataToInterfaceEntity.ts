@@ -1,20 +1,24 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WhereRestrict as WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { QueryCondUtil as queryConditionUtil } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { WindowVMMappingManager as windowVMMappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as windowVMMappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import {
+  QueryCondUtil as queryConditionUtil,
+  WhereRestrict
+} from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let sandBox
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

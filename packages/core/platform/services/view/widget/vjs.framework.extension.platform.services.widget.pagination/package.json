@@ -18,6 +18,6 @@
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1"
   }
 }

@@ -1,9 +1,7 @@
-import { RPC as operation } from '@v-act/vjs.framework.extension.system'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC as operation } from '@v-act/vjs.framework.extension.system'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const save = function (params) {
   let dataSchemas = params.dataSchemas,

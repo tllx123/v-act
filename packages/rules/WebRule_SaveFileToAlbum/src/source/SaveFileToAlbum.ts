@@ -1,21 +1,22 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { SaveImageToGallery as saveImageToGalleryService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { SaveImageToGallery as saveImageToGalleryService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let ERRORNAME
 //初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   //sBox：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sBox
 }
 
 //规则主入口(必须有)d
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   ERRORNAME = '规则[SaveFileByUrl]'
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()

@@ -1,8 +1,8 @@
 import { Modal as modal } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-import * as eventObserver from './EventObserver'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
+
 import * as dataManager from './DataManager'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import * as eventObserver from './EventObserver'
 
 //var css = ".vprofiles{z-index:999999999;width:88px;height:auto;position:fixed;top:10px;right:15px}.vprofiles ul{display:block;list-style:none;padding-left:0px;}.vprofiles ul li a{width:88px;height:54px;line-height:54px;text-align:center;background-color:#fff;color:#32c96a;display:block}.vprofiles ul li a.cur,.vprofiles ul li a:hover{background-color:#32c92a;color:#fff}";
 
@@ -38,7 +38,7 @@ let ConsumeTimeDom =
   '</section>'
 let closeFuncHandler
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const render = function () {
   //		environment.parseCssStr(css);
@@ -233,14 +233,14 @@ let addTopNode = function (params) {
 
 export {
   add,
-  remove,
   clear,
   clearTreeData,
-  genViewTimePoint,
+  doClear,
   doStart,
   doStop,
-  doClear,
-  register,
+  genViewTimePoint,
   isOpenMonitor,
+  register,
+  remove,
   render
 }

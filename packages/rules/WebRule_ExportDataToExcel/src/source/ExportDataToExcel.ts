@@ -7,18 +7,10 @@ import {
   QueryCondUtil as util,
   WhereRestrict as whereRestrict
 } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 function MapTransform(cfg, ruleContext) {
   let _result = {}
   let _deColumnMap = []
@@ -63,7 +55,7 @@ function MapTransform(cfg, ruleContext) {
   }
   return _result
 }
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
 
   let inParams = ruleConfig.inParams

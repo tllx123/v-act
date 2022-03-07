@@ -3,8 +3,8 @@ import { ProcessorUtils as designerUtils } from '@v-act/vjs.framework.extension.
  * 窗体设计器运行时处理器
  * */
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { configDataUtil } from '@v-act/vjs.framework.extension.platform.util.configDataUtil'
-import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.json'
+import { ConfigDataUtil as configDataUtil } from '@v-act/vjs.framework.extension.platform.util.config.data'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 /**
  * 窗体viewlib渲染时调用的接口
@@ -12,7 +12,7 @@ import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.json'
  * 	"viewlib" : 窗体viewlib对象
  * }
  * */
-exports.render = function (params) {
+export function render(params) {
   var viewlib = params.viewlib
   if (viewlib) {
     var viewInfo = getViewlibData({
@@ -56,7 +56,7 @@ exports.render = function (params) {
  * @param	{Object}	designDatas		设计器数据
  * @param	{Object}	mappingDatas	映射数据，用于区分多个窗体
  * */
-exports.toRenderData = function (designDatas, mappingDatas) {
+export function toRenderData(designDatas, mappingDatas) {
   var datas = {}
   if (designDatas && designDatas.Forms[0] && designDatas.Forms[0].Widgets) {
     var componentCode = designDatas.Component
@@ -144,7 +144,7 @@ var getWidgetDesignService = function (widgetType) {
  * 	"callback"		:	Function//回调函数
  * }
  * */
-exports.designer = function (params) {
+export function designer(params) {
   var componentCode = params.componentCode
   var windowCode = params.windowCode
   var formWidgets = []

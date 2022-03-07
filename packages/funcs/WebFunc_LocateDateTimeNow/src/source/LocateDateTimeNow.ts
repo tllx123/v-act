@@ -1,9 +1,6 @@
-import { DateFormatUtil as dateFormatUtil } from '@v-act/vjs.framework.extension.util'
-let undefined
+import { DateTimeUtil as dateFormatUtil } from '@v-act/vjs.framework.extension.util.date'
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+const main = function (param) {
   let df = dateFormatUtil.newInstance('yyyy-MM-dd HH:mm:ss')
   return df.format(new Date())
 }

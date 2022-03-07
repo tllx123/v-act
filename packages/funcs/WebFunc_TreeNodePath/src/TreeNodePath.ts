@@ -1,10 +1,10 @@
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { TreeViewUtil as treeViewUtil } from '@v-act/vjs.framework.extension.platform.services.domain.tree'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dataSource = argsLen >= 1 ? args[0] : null,

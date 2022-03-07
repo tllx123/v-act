@@ -1,6 +1,6 @@
 let RouteConfigFactory, ParamConfigFactory, StorageManager, sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     StorageManager = sb.getService(
       'vjs.framework.extension.platform.interface.storage.StorageManager'
@@ -190,23 +190,23 @@ const getComponentType = function () {
 }
 
 export {
+  addComponentOptionDefines,
+  addComponentRouteInfo,
+  addComponentVariantDefines,
   addRuleSetInputs,
-  getRuleSetInputs,
+  componentIsInited,
+  componentIsLoaded,
+  destroy,
   exists,
+  getComponentOptionDefine,
+  getComponentType,
+  getComponentVariantDefine,
+  getRouteConfig,
   getRuleSetInput,
+  getRuleSetInputs,
   isAppConfigInfoLoaded,
   markAppConfigInfoLoaded,
-  addComponentRouteInfo,
-  getRouteConfig,
-  addComponentVariantDefines,
-  getComponentVariantDefine,
-  addComponentOptionDefines,
-  getComponentOptionDefine,
-  destroy,
-  componentIsLoaded,
-  markForComponentLoaded,
-  componentIsInited,
   markForComponentInited,
-  setComponentType,
-  getComponentType
+  markForComponentLoaded,
+  setComponentType
 }

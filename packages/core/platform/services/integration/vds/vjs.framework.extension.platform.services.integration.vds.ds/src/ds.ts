@@ -30,7 +30,7 @@ define('./ds', function (require, exports, module) {
     NewCriteria
   var engine, ExpressionContext, Metadata
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     dsManager = sBox.getService(
       'vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
     )
@@ -85,7 +85,7 @@ define('./ds', function (require, exports, module) {
    * @example
    * var ds = vds.ds.lookup("ds1");
    */
-  exports.lookup = function (code) {
+  export function lookup(code) {
     var ds = dsManager.lookup({
       datasourceName: code
     })
@@ -104,7 +104,7 @@ define('./ds', function (require, exports, module) {
    * @example
    * vds.ds.register("ds1",datasource);//true:注册成功,false:注册失败
    */
-  exports.register = function (code, datasource) {
+  export function register(code, datasource) {
     return dsManager.register({
       datasourceName: code,
       datasource: datasource._get()
@@ -118,7 +118,7 @@ define('./ds', function (require, exports, module) {
    * @example
    * vds.ds.unRegister("ds1");//true:销毁成功,false:销毁失败
    */
-  exports.unRegister = function (code) {
+  export function unRegister(code) {
     return dsManager.unRegister({
       datasourceName: code
     })
@@ -131,7 +131,7 @@ define('./ds', function (require, exports, module) {
    * @example
    * vds.ds.exists("ds1");//true:存在,false:不存在
    */
-  exports.exists = function (code) {
+  export function exists(code) {
     return dsManager.exists({
       datasourceName: code
     })
@@ -157,7 +157,7 @@ define('./ds', function (require, exports, module) {
 }]);
 vds.ds.register("persion",datasource);
 	 */
-  exports.mock = function (datas) {
+  export function mock(datas) {
     if (dsFactory.isDatasource(datas)) {
       return new Datasource(datas)
     }
@@ -172,7 +172,7 @@ vds.ds.register("persion",datasource);
    * vds.ds.isDatasource(11)//false
    * vds.ds.isDatasource(vds.ds.lookup("ds1"));//true
    */
-  exports.isDatasource = function (ds) {
+  export function isDatasource(ds) {
     if (ds && ds instanceof Datasource) {
       return true
     }
@@ -182,7 +182,7 @@ vds.ds.register("persion",datasource);
   /**
    * @ignore
    */
-  exports._genDatasourceByDs = function (ds) {
+  export function _genDatasourceByDs(ds) {
     if (ds) {
       return new Datasource(ds)
     }
@@ -192,7 +192,7 @@ vds.ds.register("persion",datasource);
    * 平台内部封装数据对象
    * @ignore
    * */
-  exports._genRecord = function (record) {
+  export function _genRecord(record) {
     if (record) {
       return new Record(record)
     }
@@ -202,7 +202,7 @@ vds.ds.register("persion",datasource);
    * 平台内部封装数据集对象
    * @ignore
    * */
-  exports._genResultSet = function (resultset) {
+  export function _genResultSet(resultset) {
     if (resultset) {
       return new ResultSet(resultset)
     }
@@ -224,7 +224,7 @@ vds.ds.register("persion",datasource);
    *  "dataFileType":{String} 来源数据过滤类型，枚举：modify:修改过的(新增、修改、删除的数据)，all:(默认)（可选）
    * }
    * */
-  exports.copy = function (sourceEntity, destEntity, fieldMappings, params) {
+  export function copy(sourceEntity, destEntity, fieldMappings, params) {
     if (
       !exports.isDatasource(sourceEntity) ||
       !exports.isDatasource(destEntity) ||
@@ -278,7 +278,7 @@ vds.ds.register("persion",datasource);
    * }
    * @returns {Datasouce} 数据源实例
    * */
-  exports.unSerialize = function (fields, params) {
+  export function unSerialize(fields, params) {
     if (fields instanceof Array) {
       var datas = params && params.datas instanceof Array ? params.datas : []
       var dsCode =
@@ -316,7 +316,7 @@ vds.ds.register("persion",datasource);
    *  "methodContext": ruleContext.getMethodContext()
    * });
    * */
-  exports.createWhere = function (params) {
+  export function createWhere(params) {
     if (!params) {
       return WhereRestrict.init()
     }
@@ -334,7 +334,7 @@ vds.ds.register("persion",datasource);
    * @example
    * var criteria = vds.ds.createCriteria();
    * */
-  exports.createCriteria = function () {
+  export function createCriteria() {
     var criteria = new Criteria()
     return criteria
   }
@@ -388,7 +388,7 @@ vds.ds.register("persion",datasource);
    *  isClear {Boolean} 是否清空目标实体数据，当mergeType = MergeType.InsertOrUpdate有效, 默认false（可选）
    * }
    */
-  exports.merge = function (
+  export function merge(
     targetDs,
     records,
     mappings,
@@ -588,7 +588,7 @@ vds.ds.register("persion",datasource);
    * 平台内部封装元数据
    * @ignore
    * */
-  exports._genMetadata = function (metadata) {
+  export function _genMetadata(metadata) {
     return new Metadata(metadata)
   }
 

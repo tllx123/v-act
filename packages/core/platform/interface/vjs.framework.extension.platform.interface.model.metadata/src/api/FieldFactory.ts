@@ -1,8 +1,6 @@
 import * as dataAdaptorFactory from './adapter/DataAdaptorFactory'
 import * as Field from './api/Field'
 
-let undefined
-
 /**
  *检查参数
  * @param {Object} params 参数
@@ -66,7 +64,7 @@ let _generate = function (params, defaultVal, type) {
   return __return.call(this, field)
 }
 
-exports.initModule = function () {}
+export function initModule() {}
 
 const Char = function (params) {
   return _generate.call(this, params, null, 'char')
@@ -131,20 +129,18 @@ const unSerialize = function (params) {
 }
 
 export {
-  getDataValidator,
   adapt,
-  adapt,
-  adapt,
-  Char,
-  Text,
-  Number,
-  Boolean,
-  Date,
-  LongDate,
-  File,
-  Object,
-  Integer,
   begin,
+  Boolean,
+  Char,
   collect,
+  Date,
+  File,
+  getDataValidator,
+  Integer,
+  LongDate,
+  Number,
+  Object,
+  Text,
   unSerialize
 }

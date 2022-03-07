@@ -23,7 +23,7 @@ define('./index', function (require, exports, module) {
     scopeManager,
     windowRelation
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     windowVMManager = sBox.getService(
       'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
     )
@@ -89,7 +89,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getWidgetCodes("user");
    */
-  exports.getWidgetCodes = function (datasource, fieldCode) {
+  export function getWidgetCodes(datasource, fieldCode) {
     //    	if(_isComponentScope()){
     //    		return [];
     //    	}
@@ -119,7 +119,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getStoreType("JGTextBox1");
    */
-  exports.getStoreType = function (code) {
+  export function getStoreType(code) {
     //    	if(_isComponentScope()){
     //    		return null;
     //    	}
@@ -134,7 +134,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.setProperty("JGTextBox1", "ReadOnly", true);
    */
-  exports.setProperty = function (widgetCode, propertyCode, propertyValue) {
+  export function setProperty(widgetCode, propertyCode, propertyValue) {
     //    	if(_isComponentScope()){
     //    		return;
     //    	}
@@ -150,7 +150,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getType("JGTextBox1");//JGTextBox
    */
-  exports.getType = function (widgetCode) {
+  export function getType(widgetCode) {
     //    	if(_isComponentScope()){
     //    		return null;
     //    	}
@@ -166,7 +166,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getProperty("JGTextBox1", "ReadOnly");//false
    */
-  exports.getProperty = function (widgetCode, propertyCode) {
+  export function getProperty(widgetCode, propertyCode) {
     //    	if(_isComponentScope()){
     //    		return null;
     //    	}
@@ -184,7 +184,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.exists("JGTextBox1");//true
    */
-  exports.exists = function (widgetCode) {
+  export function exists(widgetCode) {
     //    	if(_isComponentScope()){
     //    		return false;
     //    	}
@@ -198,7 +198,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getDatasourceCodes("JGTextBox1");
    */
-  exports.getDatasourceCodes = function (widgetCode) {
+  export function getDatasourceCodes(widgetCode) {
     //    	if(_isComponentScope()){
     //    		return [];
     //    	}
@@ -216,7 +216,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.getFieldCodes("entityCode1","JGTextBox1");
    * */
-  exports.getFieldCodes = function (datasourceCode, widgetCode) {
+  export function getFieldCodes(datasourceCode, widgetCode) {
     //    	if(_isComponentScope()){
     //    		return [];
     //    	}
@@ -236,7 +236,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.execute("JGTextBox1","setVisible",[false]);
    * */
-  exports.execute = function (widgetCode, funCode, params) {
+  export function execute(widgetCode, funCode, params) {
     //    	if(_isComponentScope()){
     //    		return;
     //    	}
@@ -256,7 +256,7 @@ define('./index', function (require, exports, module) {
    * @example
    * var codes = vds.widget.getWidgetCodesByType("code1");
    * */
-  exports.getWidgetCodesByType = function (widgetType) {
+  export function getWidgetCodesByType(widgetType) {
     //    	if(_isComponentScope()){
     //    		return null;
     //    	}
@@ -291,7 +291,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.widget.scrollTo("JGDataGrid");
    * */
-  exports.scrollTo = function (widgetCode) {
+  export function scrollTo(widgetCode) {
     var widget = widgetContext.get(widgetCode, 'widgetObj')
     if (widget) {
       var scopeId = widget.getScopeId()

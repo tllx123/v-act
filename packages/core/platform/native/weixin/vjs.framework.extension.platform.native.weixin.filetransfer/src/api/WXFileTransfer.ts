@@ -1,13 +1,12 @@
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { RouteEngine as RouteEngine } from '@v-act/vjs.framework.extension.platform.services.engine.route'
-import { Image as ImageService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Image as ImageService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import {
+  RemoteMethodAccessor as remoteMethodAccessor,
+  RemoteOperation as remoteOperation
+} from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-let undefined
-
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let fileService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.FileTransfer'
   )
@@ -456,4 +455,4 @@ let getWXPlatform = function (callback) {
   })
 }
 
-export { uploadFiles, filetransferUpload, wxUpload }
+export { filetransferUpload, uploadFiles, wxUpload }

@@ -24,7 +24,7 @@ define('./index', function (require, exports, module) {
 
   var sandbox
 
-  exports.initModule = function (sBox) {
+  export function initModule(sBox) {
     sandbox = sBox
   }
 
@@ -35,7 +35,7 @@ define('./index', function (require, exports, module) {
    * @example
    * vds.i18n.get("保存","保存按钮的文字");//save
    * */
-  exports.get = function (text, desc) {
+  export function get(text, desc) {
     if (typeof text == 'string') {
       //兼容处理，二次开发脚本未被解析成多语言格式
       return text

@@ -1,33 +1,24 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { StoreTypes as storeTypes } from '@v-act/vjs.framework.extension.platform.interface.enum'
-import { DatasourceManager as datasourcemanager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { StoreTypes as storeTypes } from '@v-act/vjs.framework.extension.platform.interface.enum'
+import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as datasourcemanager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+
 let context
-let undefined
-let undefined
-let undefined
-let undefined
+
 let rulecontext
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 /**
  * 给数据源插入记录的对象
@@ -251,7 +242,7 @@ let _getDefaultValue = function (datasource, mappings, tableName) {
   return returnValue
 }
 //规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   rulecontext = ruleContext
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']

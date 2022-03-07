@@ -2,7 +2,7 @@ let COMPONENT_RESOURCE_KEY = 'COMPONENT_RESOURCE_KEY',
   StorageManager,
   sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     StorageManager = sb.getService(
       'vjs.framework.extension.platform.interface.storage.StorageManager'

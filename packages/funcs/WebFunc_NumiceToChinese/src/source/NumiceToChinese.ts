@@ -1,11 +1,11 @@
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   sandbox = sb
 }
 
 //主入口(必须有)
-let main = function (param) {
+const main = function (param) {
   //获取函数传入的参数
   let num
   let zeroType

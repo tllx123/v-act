@@ -3,7 +3,7 @@ import * as viewModel from 'module'
 import * as routeManager from 'module'
 
 let sandbox, fileUtil, scopeManager, ScopeManager, scopeContext, resourcePackage
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     sandbox = sb
     scopeContext = sb.getService(

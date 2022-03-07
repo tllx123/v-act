@@ -1,8 +1,6 @@
 import * as Node from './api/Node'
 import * as Iterator from './api/NodeSetIterator'
 
-let undefined
-
 /**
  *	@namespace NodeSet
  *  @class NodeSet

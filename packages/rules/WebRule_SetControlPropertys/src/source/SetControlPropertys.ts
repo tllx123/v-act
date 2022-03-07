@@ -5,20 +5,11 @@ import {
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { DialogUtil as rendererUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { log } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 //定义常量
 let READONLY = 'readonly'
@@ -37,7 +28,7 @@ let MAXCHILDNUM = 'maxchildnum'
 let VALUEFORECOLOR = 'valueforecolor'
 let VALUEBACKCOLOR = 'valuebackcolor'
 
-let main = function (ruleContext) {
+const main = function (ruleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)

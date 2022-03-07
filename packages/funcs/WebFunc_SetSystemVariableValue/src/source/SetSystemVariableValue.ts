@@ -1,19 +1,15 @@
 import * as log from 'module'
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+import * as viewContext from 'module'
+
+export function initModule() {}
 /**
  * 主入口
  * @param dataSourceName 数据源名称
  * @param treeStructMap 树结构配置信息
  * @param loadLevel 动态加载层次
  */
-let main = function (variableName, variableValue) {
+const main = function (variableName, variableValue) {
   if (null == variableName || '' == variableName) {
     log.error('[SetSystemVariableValue.main]变量名称为空，请检查配置')
     return null

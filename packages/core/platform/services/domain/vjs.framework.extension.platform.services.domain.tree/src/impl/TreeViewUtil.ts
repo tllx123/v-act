@@ -1,29 +1,12 @@
-import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util'
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { WindowVMMappingManager as WindowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { WidgetContext as WidgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceEnums as DatasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { TreeManager as TreeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-import { WidgetProperty as WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { DatasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
+import { TreeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 import { object as DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.data'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as WindowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 /**
  * @param widgetId 控件id
@@ -376,9 +359,9 @@ const getTreeNodePath = function (params) {
 }
 
 export {
-  translate,
-  getTree,
-  getTreeStructData,
   genLoadSubTreeAccerror,
-  getTreeNodePath
+  getTree,
+  getTreeNodePath,
+  getTreeStructData,
+  translate
 }

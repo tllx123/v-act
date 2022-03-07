@@ -1,6 +1,6 @@
 let isMust, topNodeName
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   topNodeName = '_topnode'
   isMust = 'has-error'
 }

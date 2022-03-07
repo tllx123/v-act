@@ -1,8 +1,6 @@
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 function getHost() {
   //上传服务器地址
