@@ -1,7 +1,5 @@
 import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
 
-let undefined
-
 let WindowContainer = function (params) {
   this.id = uuidUtil.generate()
   if (!params) return
@@ -143,4 +141,4 @@ WindowContainer.prototype = {
   }
 }
 
-return WindowContainer
+export default WindowContainer

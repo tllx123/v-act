@@ -1,24 +1,20 @@
-window._$v3platform_runtime_env = true
-let storage,
-  token = 'ENVIRONMENT_V3_INFO',
-  RUNNING_MODE = 'RUNNING_MODE',
-  DEBUG_KEY = 'DEBUG_KEY',
-  CTX_PATH = 'CTX_PATH',
-  CTX_HOST = 'CTX_HOST',
-  PLATFORM_TYPE = 'PLATFORM_TYPE',
-  LOGIN_INFO = 'LOGIN_INFO',
-  IS_ASYNC = 'IS_ASYNC',
-  DEV_ID = 'DEV_ID',
-  DEBUGGER_PORT = 'DEBUGGER_PORT'
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
-exports.initModule = function (sb) {
-  let storageManager = sb.getService(
-    'vjs.framework.extension.platform.interface.storage.StorageManager'
-  )
-  storage = storageManager.get(storageManager.TYPES.MAP, token)
-}
+//@ts-ignore
+this._$v3platform_runtime_env = true
+const token = 'ENVIRONMENT_V3_INFO'
+const RUNNING_MODE = 'RUNNING_MODE'
+const DEBUG_KEY = 'DEBUG_KEY'
+const CTX_PATH = 'CTX_PATH'
+const CTX_HOST = 'CTX_HOST'
+const PLATFORM_TYPE = 'PLATFORM_TYPE'
+const LOGIN_INFO = 'LOGIN_INFO'
+const IS_ASYNC = 'IS_ASYNC'
+const DEV_ID = 'DEV_ID'
+const DEBUGGER_PORT = 'DEBUGGER_PORT'
+const storage = StorageManager.get(StorageManager.TYPES.MAP, token)
 
-const setRunningMode = function (mode) {
+const setRunningMode = function (mode: string) {
   storage.put(RUNNING_MODE, mode)
 }
 
@@ -26,7 +22,7 @@ const getRunningMode = function () {
   return storage.get(RUNNING_MODE)
 }
 
-const setDebug = function (debug) {
+const setDebug = function (debug: boolean) {
   storage.put(DEBUG_KEY, debug)
 }
 
@@ -34,7 +30,7 @@ const isDebug = function () {
   return storage.get(DEBUG_KEY)
 }
 
-const setContextPath = function (ctxPath) {
+const setContextPath = function (ctxPath: string) {
   storage.put(CTX_PATH, ctxPath)
 }
 
@@ -42,7 +38,7 @@ const getContextPath = function () {
   return storage.get(CTX_PATH)
 }
 
-const setPlatformType = function (type) {
+const setPlatformType = function (type: string) {
   storage.put(PLATFORM_TYPE, type)
 }
 
@@ -54,11 +50,11 @@ const isAsync = function () {
   return storage.containsKey(IS_ASYNC) ? storage.get(IS_ASYNC) : true
 }
 
-const setAsync = function (async) {
+const setAsync = function (async: boolean) {
   storage.put(IS_ASYNC, async)
 }
 
-const setHost = function (host) {
+const setHost = function (host: string) {
   storage.put(CTX_HOST, host)
 }
 
@@ -66,7 +62,7 @@ const getHost = function () {
   return storage.containsKey(CTX_HOST) ? storage.get(CTX_HOST) : ''
 }
 
-const setLoginInfo = function (params) {
+const setLoginInfo = function (params: any) {
   storage.put(LOGIN_INFO, params)
 }
 
@@ -103,7 +99,7 @@ const isLogin = function () {
   return storage.containsKey(LOGIN_INFO)
 }
 
-const parseCssStr = function (css) {
+const parseCssStr = function (css: string) {
   if (css) {
     let wrapDiv = document.getElementById('_$styleWrapDiv')
     if (!wrapDiv) {
@@ -121,7 +117,7 @@ const parseCssStr = function (css) {
   }
 }
 
-const setDebugPort = function (port) {
+const setDebugPort = function (port: number) {
   storage.put(DEBUGGER_PORT, port)
 }
 
@@ -129,7 +125,7 @@ const getDebugPort = function () {
   return storage.get(DEBUGGER_PORT)
 }
 
-const setDevId = function (id) {
+const setDevId = function (id: string) {
   storage.put(DEV_ID, id)
 }
 
@@ -255,7 +251,7 @@ let version = function () {
         }
       }
     })()
-  return parseInt(minorVersion)
+  return parseInt(minorVersion + '')
 }
 
 let isSafari = function () {
@@ -287,31 +283,31 @@ let isIE11 = function () {
 }
 
 export {
-  setRunningMode,
-  getRunningMode,
-  setDebug,
-  isDebug,
-  setContextPath,
   getContextPath,
-  setPlatformType,
-  getPlatformType,
-  isAsync,
-  setAsync,
-  setHost,
+  getDebugPort,
+  getDevId,
   getHost,
-  setLoginInfo,
   getLoginInfo,
   getLoginUrl,
-  isLogin,
-  parseCssStr,
-  setDebugPort,
-  getDebugPort,
-  setDevId,
-  getDevId,
+  getPlatformType,
+  getRunningMode,
+  isAsync,
+  isChrome,
+  isDebug,
   isIE,
-  isIE8,
-  isIE9,
   isIE10,
   isIE11,
-  isChrome
+  isIE8,
+  isIE9,
+  isLogin,
+  parseCssStr,
+  setAsync,
+  setContextPath,
+  setDebug,
+  setDebugPort,
+  setDevId,
+  setHost,
+  setLoginInfo,
+  setPlatformType,
+  setRunningMode
 }

@@ -1,11 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let sb
-let undefined
-
-exports.initModule = function (sandbox) {
-  sb = sandbox
-}
 /**
  * 获取当前构件体系下的服务
  *

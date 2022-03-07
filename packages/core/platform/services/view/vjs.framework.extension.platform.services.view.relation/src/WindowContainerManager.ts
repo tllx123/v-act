@@ -1,15 +1,6 @@
-let sandbox
-let StorageManager
-let Scope_Instance_Storage_Token = 'Window_Container_Storage_Token'
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
-exports.initModule = function (sb) {
-  if (sb) {
-    sandbox = sb
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-  }
-}
+let Scope_Instance_Storage_Token = 'Window_Container_Storage_Token'
 
 /**
  * 获取窗体容器仓库
@@ -21,7 +12,7 @@ let _getWindowContainerStorage = function () {
   )
 }
 
-const get = function (containerId) {
+const get = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   if (storage.containsKey(containerId)) {
     return storage.get(containerId)
@@ -29,7 +20,7 @@ const get = function (containerId) {
   return null
 }
 
-const getScopeId = function (containerId) {
+const getScopeId = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   if (storage.containsKey(containerId)) {
     let params = storage.get(containerId)
@@ -38,17 +29,17 @@ const getScopeId = function (containerId) {
   return null
 }
 
-const put = function (container) {
+const put = function (container: any) {
   let id = container.getId()
   let storage = _getWindowContainerStorage()
   storage.put(id, container)
   return id
 }
 
-const getByScopeId = function (scopeId) {
+const getByScopeId = function (scopeId: string) {
   let storage = _getWindowContainerStorage()
   let containerId
-  storage.iterate(function (id, container) {
+  storage.iterate(function (id: string, container: any) {
     if (container.getScopeId() == scopeId) {
       containerId = id
       return false
@@ -62,10 +53,10 @@ const getByScopeId = function (scopeId) {
  * @params String scopeId 窗体域id
  * @return  窗体容器实例
  */
-let _getContainerByScopeId = function (scopeId) {
+let _getContainerByScopeId = function (scopeId: string) {
   let storage = _getWindowContainerStorage()
   let tmpContainer = null
-  storage.iterate(function (id, container) {
+  storage.iterate(function (id: string, container: any) {
     if (container.getScopeId() == scopeId) {
       tmpContainer = container
       return true
@@ -74,7 +65,7 @@ let _getContainerByScopeId = function (scopeId) {
   return tmpContainer
 }
 
-const updateTitleByScopeId = function (scopeId, newTitle) {
+const updateTitleByScopeId = function (scopeId: string, newTitle: string) {
   let container = _getContainerByScopeId(scopeId)
   if (container) {
     if (container.getWindowType() == 'ComponentContainer') {
@@ -98,19 +89,19 @@ const updateTitleByScopeId = function (scopeId, newTitle) {
   return false
 }
 
-const getScopeIdByContainerId = function (containerId) {
+const getScopeIdByContainerId = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   let sId
   let container = storage.get(containerId)
   return container.getScopeId()
 }
 
-const destroy = function (containerId) {
+const destroy = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   return storage.remove(containerId)
 }
 
-const updateWindowInfo = function (containerId, params) {
+const updateWindowInfo = function (containerId: string, params) {
   let storage = _getWindowContainerStorage()
   if (params && storage.containsKey(containerId)) {
     let container = storage.get(containerId)
@@ -170,7 +161,7 @@ exports.OPENTYPE = {
   DEFAULT: 'default'
 }
 
-const getOpenType = function (scopeId) {
+const getOpenType = function (scopeId: string) {
   let container = _getContainerByScopeId(scopeId)
   if (null != container) {
     let openType = container.getWindowType()
@@ -185,15 +176,15 @@ const getOpenType = function (scopeId) {
 }
 
 export {
-  get,
-  getScopeId,
-  put,
-  getByScopeId,
-  updateTitleByScopeId,
-  getScopeIdByContainerId,
   destroy,
-  updateWindowInfo,
   existWindowInfo,
   fireResize,
-  getOpenType
+  get,
+  getByScopeId,
+  getOpenType,
+  getScopeId,
+  getScopeIdByContainerId,
+  put,
+  updateTitleByScopeId,
+  updateWindowInfo
 }

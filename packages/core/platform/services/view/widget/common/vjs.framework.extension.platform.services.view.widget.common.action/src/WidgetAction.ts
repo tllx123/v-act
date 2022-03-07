@@ -2,15 +2,6 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 
-let sb
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sandbox) {
-  sb = sandbox
-}
-
 /**
  * 判断控件是否存在指定的接口
  *
@@ -241,20 +232,20 @@ let executeComponentAction = function (actionName) {
   }
 }
 
-let getProxyWidgetId = function (widgetId) {
+let getProxyWidgetId = function (widgetId: string) {
   let proxyWidgetId = widgetContext.get(widgetId, 'ProxyWidgetId')
   if (undefined != proxyWidgetId && null != proxyWidgetId) return proxyWidgetId
   else return null
 }
 
 export {
-  getService,
-  isWidgetActionExist,
-  isComponentActionExist,
-  getWidgetActionHandler,
-  getComponentActionHandler,
-  executeWidgetAction,
-  executeSubWidgetAction,
   executeComponentAction,
-  getProxyWidgetId
+  executeSubWidgetAction,
+  executeWidgetAction,
+  getComponentActionHandler,
+  getProxyWidgetId,
+  getService,
+  getWidgetActionHandler,
+  isComponentActionExist,
+  isWidgetActionExist
 }
