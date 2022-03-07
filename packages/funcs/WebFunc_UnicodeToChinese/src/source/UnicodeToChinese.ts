@@ -1,11 +1,9 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
+import { Math as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
-let undefined
-
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //�����(������)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     arg1 = argsLen >= 1 ? args[0] : null

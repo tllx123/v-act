@@ -1,9 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 
-let undefined
-let undefined
-
 let COMPONENT_TYPE = 'Component'
 let WIDGET_CONTEXT_TYPE = 'widgetType'
 let WIDGET_CONTEXT_CODE = 'widgetCode'
@@ -31,8 +28,6 @@ var _destroy = function(){
         _unRegistered = false;
     }
 }*/
-
-exports.initModule = function (sb) {}
 
 /**
  * 获取控件上下文信息
@@ -172,24 +167,24 @@ const destroy = function (scopeId) {
 }
 
 export {
+  COMPONENT_TYPE,
   destroy,
   get,
+  getAll,
+  getStoreType,
+  getType,
+  getWidgetList,
+  isWidgetExist,
   put,
   putAll,
-  getAll,
-  isWidgetExist,
-  getWidgetList,
-  getType,
-  getStoreType,
-  COMPONENT_TYPE,
-  WIDGET_CONTEXT_TYPE,
+  WIDGET_CONTEXT_BUSINESSREF,
   WIDGET_CONTEXT_CODE,
-  WIDGET_CONTEXT_RAWTYPE,
-  WIDGET_CONTEXT_STORETYPE,
-  WIDGET_CONTEXT_RUNTIMEOBJECT,
-  WIDGET_CONTEXT_PROPERTY,
-  WIDGET_CONTEXT_RELATION,
   WIDGET_CONTEXT_EXTWIDGETIDRELA,
   WIDGET_CONTEXT_EXTWIDGETTYPERELA,
-  WIDGET_CONTEXT_BUSINESSREF
+  WIDGET_CONTEXT_PROPERTY,
+  WIDGET_CONTEXT_RAWTYPE,
+  WIDGET_CONTEXT_RELATION,
+  WIDGET_CONTEXT_RUNTIMEOBJECT,
+  WIDGET_CONTEXT_STORETYPE,
+  WIDGET_CONTEXT_TYPE
 }

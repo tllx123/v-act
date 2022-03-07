@@ -1,8 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
-let undefined
-let undefined
 let collectionUtil
 
 // 关系类型
@@ -11,10 +9,6 @@ let SCOPE_STORAGE_TOKEN = 'WIDGETRELATION_STORAGE'
 
 // 控件关系池
 let relationPool = {}
-
-exports.initModule = function (sb) {
-  collectionUtil = sb.util.collections
-}
 
 /**
  * 设置控件关系
@@ -135,4 +129,4 @@ const getParents = function (widgetId, relationType) {
   return parents
 }
 
-export { getParent, getParents, get, put, getWidgetList, WIDGET_RELATION }
+export { get, getParent, getParents, getWidgetList, put, WIDGET_RELATION }

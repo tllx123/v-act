@@ -1,1 +1,1 @@
-export * from './WindowRenderer'
+export * as WindowRenderer from './WindowRenderer'

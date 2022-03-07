@@ -1,4 +1,8 @@
-let _get = function (obj, attr, code) {
+import ParamConfig from './ParamConfig'
+import { TransactionInfo, RuleInstances } from './types'
+
+const _get = function (obj: RouteConfig, attr: string, code: string) {
+  //@ts-ignore
   let array = obj[attr]
   if (array) {
     for (let i = 0, c; (c = array[i]); i++) {
@@ -17,133 +21,141 @@ let _get = function (obj, attr, code) {
  * @desc 活动集配置定义信息<br/>
  * 该定义无法直接创建，请使用活动集配置定义工厂创建({@link RouteConfigFactory#unSerialize|RouteConfigFactory})
  */
-let RouteConfig = function (
-  routeCode,
-  handler,
-  inputs,
-  outputs,
-  variables,
-  transactionInfo,
-  ruleInstances,
-  transactionType
-) {
-  this.routeCode = routeCode
-  this.handler = handler
-  this.outputs = outputs
-  this.inputs = inputs
-  this.variables = variables
-  this.__transcationInfo__ = transactionInfo
-  this.ruleInstances = ruleInstances
-  this.transactionType = transactionType
-}
+class RouteConfig {
+  routeCode: string
+  handler: (...args: any[]) => void
+  outputs: Array<ParamConfig> | null
+  inputs: Array<ParamConfig> | null
+  variables: Array<ParamConfig> | null
+  __transcationInfo__: TransactionInfo
+  ruleInstances: RuleInstances
+  transactionType: string
+  constructor(
+    routeCode: string,
+    handler: (...args: any[]) => void,
+    inputs: Array<ParamConfig> | null,
+    outputs: Array<ParamConfig> | null,
+    variables: Array<ParamConfig> | null,
+    transactionInfo: TransactionInfo,
+    ruleInstances: RuleInstances,
+    transactionType: string
+  ) {
+    this.routeCode = routeCode
+    this.handler = handler
+    this.outputs = outputs
+    this.inputs = inputs
+    this.variables = variables
+    this.__transcationInfo__ = transactionInfo
+    this.ruleInstances = ruleInstances
+    this.transactionType = transactionType
+  }
 
-RouteConfig.prototype = {
   /**
    *设置活动集编号
    * @param {String} 活动集编号
    */
-  setCode: function (routeCode) {
+  setCode(routeCode: string) {
     this.routeCode = routeCode
-  },
+  }
 
   /**
    *获取活动集编号
    * @return String
    */
-  getCode: function () {
+  getCode() {
     return this.routeCode
-  },
+  }
 
   /**
    * 设置活动集执行句柄
    * @param {Function} 活动集执行句柄
    */
-  setHandler: function (handler) {
+  setHandler(handler: (...args: any[]) => void) {
     this.handler = handler
-  },
+  }
 
   /**
    * 获取活动集执行句柄
    * @return Function
    */
-  getHandler: function () {
+  getHandler() {
     return this.handler
-  },
+  }
 
   /**
    *设置活动集输入参数定义
    * @param {Array<{@link ParamConfig}>} inputs 输入参数
    */
-  setInputs: function (inputs) {
+  setInputs(inputs: Array<ParamConfig>) {
     this.inputs = inputs
-  },
+  }
 
   /**
    * 获取活动集所有输入参数定义
    * @return Array<{@link ParamConfig}>
    */
-  getInputs: function () {
+  getInputs() {
     return this.inputs
-  },
+  }
 
   /**
    *获取活动集指定输入参数配置
    * @param {String} code 输入参数编号
    * @return {@link ParamConfig}
    */
-  getInput: function (code) {
+  getInput(code: string) {
     return _get(this, 'inputs', code)
-  },
+  }
 
   /**
    * 设置活动集输出参数定义
    * @param {Array<{@link ParamConfig}>} 输出参数
    */
-  setOutputs: function (outputs) {
+  setOutputs(outputs: Array<ParamConfig>) {
     this.outputs = outputs
-  },
+  }
 
   /**
    * 获取活动集所有输出参数
    * @return Array<{@link ParamConfig}>
    */
-  getOutputs: function () {
+  getOutputs() {
     return this.outputs
-  },
+  }
 
   /**
    * 获取活动集指定输出参数定义
    * @param {String} code 输出参数编号
    * @return {@link ParamConfig}
    */
-  getOutput: function (code) {
+  getOutput(code: string) {
     return _get(this, 'outputs', code)
-  },
+  }
 
   /**
    *设置活动集变量定义
    * @param {Array<{@link ParamConfig}>} 活动集变量定义
    */
-  setVars: function (vars) {
+  setVars(vars: Array<ParamConfig>) {
     this.variables = vars
-  },
+  }
 
   /**
    *获取活动集所有变量配置
    *  @return Array<{@link ParamConfig}>
    */
-  getVars: function () {
+  getVars() {
     return this.variables
-  },
+  }
 
   /**
    * 获取活动集指定变量配置
    * @param {String} code 变量编号
    * @return {@link ParamConfig}
    */
-  getVar: function (code) {
+  getVar(code: string) {
     return _get(this, 'variables', code)
-  },
+  }
 
   /**
    * 设置活动集事务信息
@@ -155,17 +167,17 @@ RouteConfig.prototype = {
    * 		}
    * 	}
    */
-  setTranscationInfo: function (transactionInfo) {
+  setTranscationInfo(transactionInfo: TransactionInfo) {
     this.__transcationInfo__ = transactionInfo
-  },
+  }
 
   /**
    * 获取活动集事务信息
    * @return Object
    */
-  getTranscationInfo: function () {
+  getTranscationInfo() {
     return this.__transcationInfo__
-  },
+  }
 
   /**
    *设置规则实例信息
@@ -183,40 +195,35 @@ RouteConfig.prototype = {
    * 		}
    * }
    */
-  setRuleInstances: function (ruleInstances) {
+  setRuleInstances(ruleInstances: RuleInstances) {
     this.ruleInstances = ruleInstances
-  },
+  }
 
   /**
    * 获取所有规则实例信息
    * @return Object
    */
-  getRuleInstances: function () {
+  getRuleInstances() {
     return this.ruleInstances
-  },
+  }
 
   /**
    * 根据规则编号获取规则实例信息
    * @param Object
    */
-  getRuleInstance: function (instanceCode) {
+  getRuleInstance(instanceCode: string) {
     let ruleInstance = null
     if (this.ruleInstances) {
       ruleInstance = this.ruleInstances[instanceCode]
     }
-    /*if(!ruleInstance){
-            throw Error("[RouteConfig.getRuleInstance]获取规则实例失败！规则实例Code："+instanceCode);
-        }*/
     return ruleInstance
-  },
+  }
   /**
    * 获取活动集类型
    */
-  getTransactionType: function () {
+  getTransactionType() {
     return this.transactionType
   }
 }
 
-return RouteConfig
-
-export { unSerialize }
+export default RouteConfig

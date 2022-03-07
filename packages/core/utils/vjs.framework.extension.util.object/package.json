@@ -14,5 +14,8 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@types/underscore": "^1.11.4",
+    "underscore": "^1.13.2"
+  }
 }

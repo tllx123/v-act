@@ -1,1 +1,1 @@
-export * from './Log'
+export * as Log from './Log'
