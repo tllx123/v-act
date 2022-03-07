@@ -10,7 +10,7 @@ import { AppData } from '@v-act/vjs.framework.extension.platform.global'
 
 import { ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 
-import { componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 

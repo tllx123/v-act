@@ -6,7 +6,7 @@ import {
 import {
   ScopeTask,
   TaskManager as taskManager
-} from '@v-act/vjs.framework.extension.platform.global.task'
+} from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'

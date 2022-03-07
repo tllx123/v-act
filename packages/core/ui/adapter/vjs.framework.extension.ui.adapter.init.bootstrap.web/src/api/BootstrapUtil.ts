@@ -1,9 +1,9 @@
 import { ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 import {
   ScopeTask,
   TaskManager
-} from '@v-act/vjs.framework.extension.platform.global.task'
+} from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'

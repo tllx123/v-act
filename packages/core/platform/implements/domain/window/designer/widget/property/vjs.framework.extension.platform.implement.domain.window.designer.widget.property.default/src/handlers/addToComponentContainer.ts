@@ -1,65 +1,29 @@
-var sandBox,
-  scopeManager,
-  widgetContext,
-  componentPack,
-  windowMapping,
-  windowParam,
-  widgetRenderer
-var WindowContainer,
-  windowRelation,
-  eventManager,
-  widgetAction,
-  ScopeTask,
-  resourcePackage
-var widgetRenderer, containerRelation, exceptionFactory
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { componentPack } from './handleComponentPackInfo'
+import { windowMapping } from './handleWindowMapping'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 
-export function initModule(sBox) {
-  sandBox = sBox
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  widgetContext = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-  )
-  componentPack = require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/handleComponentPackInfo')
-  windowMapping = require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/handlers/handleWindowMapping')
-  windowParam = sBox.getService(
-    'vjs.framework.extension.platform.services.param.manager.WindowParam'
-  )
-  widgetRenderer = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetRenderer'
-  )
-  WindowContainer = sBox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainer'
-  )
-  windowRelation = sBox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-  )
-  eventManager = sBox.getService(
-    'vjs.framework.extension.platform.services.view.event.EventManager'
-  )
-  widgetAction = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-  )
-  ScopeTask = sBox.getService(
-    'vjs.framework.extension.platform.global.task.ScopeTask'
-  )
-  TaskManager = sBox.getService(
-    'vjs.framework.extension.platform.global.task.TaskManager'
-  )
-  resourcePackage = sBox.getService(
-    'vjs.framework.extension.ui.adapter.resourcepackage'
-  )
-  exceptionFactory = sBox.getService(
-    'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-  )
-  widgetRenderer = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetRenderer'
-  )
-  containerRelation = sBox.getService(
-    'vjs.framework.extension.ui.common.plugin.services.container.ContainerRelation'
-  )
-}
+import { WindowContainer } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+
+import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+
+import { ScopeTask } from '@v-act/vjs.framework.extension.platform.global'
+
+import { TaskManager } from '@v-act/vjs.framework.extension.platform.global'
+
+import { resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
+
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+
+import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+
+import { ContainerRelation as containerRelation } from '@v-act/vjs.framework.extension.ui.common.plugin.services.container'
 
 // 设置语言
 var _setCurLanguage = function (newScopeId, preScopeId, componentCode) {

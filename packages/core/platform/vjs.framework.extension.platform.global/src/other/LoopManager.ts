@@ -4,22 +4,14 @@
  * vjs服务：vjs.framework.extension.platform.global.LoopManager
  */
 
-var uuid,
-  sandbox,
-  //此处value用列表是因为可能循环同一个函数
-  //循环列表 key 循环速度  value 循环id列表
-  loopList = {},
-  //循环标识 key 循环速度  value 循环标识
-  loopIden = {}
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+//此处value用列表是因为可能循环同一个函数
+//循环列表 key 循环速度  value 循环id列表
+const loopList = {}
+//循环标识 key 循环速度  value 循环标识
+const loopIden = {}
 //循环映射 key 循环id value 循环函数
-loopMappings = {}
-
-export function initModule(sBox) {
-  if (sBox) {
-    sandbox = sBox
-    uuid = sBox.getService('vjs.framework.extension.util.UUID')
-  }
-}
+const loopMappings = {}
 
 /**
  * 根据循环速度生成循环函数

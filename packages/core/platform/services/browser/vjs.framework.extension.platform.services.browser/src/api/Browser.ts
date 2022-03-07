@@ -1,5 +1,5 @@
 import { ApplicationParam as AppData } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 import { FrontEndAlerter as AlertUtils } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'

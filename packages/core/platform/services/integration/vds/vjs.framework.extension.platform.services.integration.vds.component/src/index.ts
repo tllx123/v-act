@@ -8,29 +8,14 @@
  * vds.import("vds.component.*");
  * vds.component.getVariant("var1");
  */
-window.vds = window.vds || {}
-window.vds.component = window.vds.component || {}
 
-var com = window.vds.component
+import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
 
-exports = com
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-var componentParam, scopeManager, componentParamService, componentPackData
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 
-export function initModule(sBox) {
-  componentParam = sBox.getService(
-    'vjs.framework.extension.platform.data.storage.runtime.param.ComponentParam'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  componentPackData = sBox.getService(
-    'vjs.framework.extension.platform.global.data.ComponentPackData'
-  )
-  componentParamService = sBox.getService(
-    'vjs.framework.extension.platform.services.param.manager.ComponentParam'
-  )
-}
+import { ComponentParam as componentParamService } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
 /**
  * 获取构件变量

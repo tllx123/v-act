@@ -1,7 +1,7 @@
 import {
   ScopeTask,
   TaskManager as taskManager
-} from '@v-act/vjs.framework.extension.platform.global.task'
+} from '@v-act/vjs.framework.extension.platform.global'
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'

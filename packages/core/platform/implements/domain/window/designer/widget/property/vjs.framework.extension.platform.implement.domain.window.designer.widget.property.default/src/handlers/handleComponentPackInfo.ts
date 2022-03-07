@@ -1,6 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 
 /**
  * 处理构件包信息

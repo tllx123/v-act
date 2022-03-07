@@ -4,7 +4,7 @@ import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platf
 import {
   ScopeTask,
   TaskManager as taskManager
-} from '@v-act/vjs.framework.extension.platform.global.task'
+} from '@v-act/vjs.framework.extension.platform.global'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import {
   ExceptionFactory as exceptionFactory,
