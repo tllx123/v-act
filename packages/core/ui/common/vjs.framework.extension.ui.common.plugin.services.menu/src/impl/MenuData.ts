@@ -1,18 +1,4 @@
-import * as viewOperation from 'module'
-import * as viewContext from 'module'
-import * as operationLib from 'module'
-import * as formulaUtil from 'module'
-
-let sandBox, widgetContext, jsonUtil
-
-export function initModule(sb) {
-  if (sb) {
-    sandBox = sb
-    widgetContext = sb.getService(
-      'vjs.framework.extension.widget.manager.widgetContext'
-    )
-  }
-}
+import { widgetContext as widgetContext } from 'vjs.framework.extension.widget.manager'
 
 let getMenuDataByRuleSet = function (widgetId) {
   let isAsync = false //(typeof(config.isAsync) == "undefined") ? false : config.isAsync;

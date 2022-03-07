@@ -1,16 +1,8 @@
-let ScopeManager
+import { dependency } from 'vjs.framework.extension.ui.adapter.dependency'
 
-export function initModule(sb) {
-  if (sb) {
-    let dependency = sb.getService(
-      'vjs.framework.extension.ui.adapter.dependency'
-    )
-    ScopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    dependency.putInstance(exports)
-  }
-}
+import { ScopeManager } from 'vjs.framework.extension.platform.interface.scope'
+
+dependency.putInstance(exports)
 
 const loadDependencyLib = function (
   componentCode,

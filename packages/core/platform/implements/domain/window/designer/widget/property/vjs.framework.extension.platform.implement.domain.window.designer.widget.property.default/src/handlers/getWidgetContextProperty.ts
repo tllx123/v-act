@@ -1,27 +1,18 @@
-define('./getWidgetContextProperty', function (require, exports, module) {
-  var scopeManager, widgetContext
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    widgetContext = sb.getService(
-      'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-    )
-  }
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 
-  export function getHandlerName() {
-    return 'getWidgetContextProperty'
-  }
+export function getHandlerName() {
+  return 'getWidgetContextProperty'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (widgetCode, propertyCode) {
-          return widgetContext.get(widgetCode, propertyCode)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (widgetCode, propertyCode) {
+        return widgetContext.get(widgetCode, propertyCode)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

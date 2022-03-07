@@ -1,31 +1,22 @@
-define('./serverExpression', function (require, exports, module) {
-  var scopeManager, remoteOperation
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    remoteOperation = sb.getService(
-      'vjs.framework.extension.platform.services.domain.operation.RemoteOperation'
-    )
-  }
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 
-  export function getHandlerName() {
-    return 'serverExpression'
-  }
+export function getHandlerName() {
+  return 'serverExpression'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var windowCode = scopeManager.getWindowScope().getWindowCode()
-      var handler = scopeManager.createScopeHandler({
-        handler: function (expression) {
-          return remoteOperation.executeFormulaExpression({
-            windowCode: windowCode,
-            expression: expression
-          })
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var windowCode = scopeManager.getWindowScope().getWindowCode()
+    var handler = scopeManager.createScopeHandler({
+      handler: function (expression) {
+        return remoteOperation.executeFormulaExpression({
+          windowCode: windowCode,
+          expression: expression
+        })
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

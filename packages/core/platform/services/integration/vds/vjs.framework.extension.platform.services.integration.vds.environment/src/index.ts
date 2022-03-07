@@ -8,75 +8,73 @@
  * vds.import("vds.environment.*");
  * vds.environment.getContextPath();
  */
-define('./index', function (require, exports, module) {
-  var vds = window.vds
-  if (!vds) {
-    vds = {}
-    window.vds = vds
-  }
-  var environment = vds.environment
-  if (!environment) {
-    environment = {}
-    vds.environment = environment
-  }
+var vds = window.vds
+if (!vds) {
+  vds = {}
+  window.vds = vds
+}
+var environment = vds.environment
+if (!environment) {
+  environment = {}
+  vds.environment = environment
+}
 
-  exports = environment
+exports = environment
 
-  var sandbox, environmentUtil, scopeManager
+var sandbox, environmentUtil, scopeManager
 
-  export function initModule(sBox) {
-    sandbox = sBox
-    environmentUtil = sBox.getService(
-      'vjs.framework.extension.platform.interface.environment.Environment'
-    )
-    scopeManager = sBox.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-  }
+export function initModule(sBox) {
+  sandbox = sBox
+  environmentUtil = sBox.getService(
+    'vjs.framework.extension.platform.interface.environment.Environment'
+  )
+  scopeManager = sBox.getService(
+    'vjs.framework.extension.platform.interface.scope.ScopeManager'
+  )
+}
 
-  /**
-   * 获取上下文路径
-   * @returns {String} 上下文路径
-   * @example
-   * vds.environment.getContextPath();
-   * */
-  export function getContextPath() {
-    return environmentUtil.getContextPath()
-  }
+/**
+ * 获取上下文路径
+ * @returns {String} 上下文路径
+ * @example
+ * vds.environment.getContextPath();
+ * */
+export function getContextPath() {
+  return environmentUtil.getContextPath()
+}
 
-  /**
-   * 判断当前是否处于移动窗体(废弃，请使用：vds.window.isMobile)
-   * @returns {Boolean}
-   * @deprecated
-   * @example
-   * vds.environment.isMobileWindow();
-   * */
-  export function isMobileWindow() {
-    var winScope = scopeManager.getWindowScope()
-    if (winScope) {
-      if (winScope.getSeries && winScope.getSeries() == 'bootstrap_mobile') {
-        return true
-      }
-    } else if (
-      navigator.userAgent &&
-      navigator.userAgent.indexOf('ydgApp') != -1
-    ) {
-      //触发起源不是平台窗体，如第三方页面
+/**
+ * 判断当前是否处于移动窗体(废弃，请使用：vds.window.isMobile)
+ * @returns {Boolean}
+ * @deprecated
+ * @example
+ * vds.environment.isMobileWindow();
+ * */
+export function isMobileWindow() {
+  var winScope = scopeManager.getWindowScope()
+  if (winScope) {
+    if (winScope.getSeries && winScope.getSeries() == 'bootstrap_mobile') {
       return true
     }
-    return false
+  } else if (
+    navigator.userAgent &&
+    navigator.userAgent.indexOf('ydgApp') != -1
+  ) {
+    //触发起源不是平台窗体，如第三方页面
+    return true
   }
-  /**
-   * 解析css
-   * @param {String} css css样式
-   * @example
-   * vds.environment.parseCss(".app{color:red;border:1px solid #e5e5e5;}");
-   * */
-  export function parseCss(css) {
-    if (null != css) {
-      environmentUtil.parseCssStr(css)
-    }
+  return false
+}
+/**
+ * 解析css
+ * @param {String} css css样式
+ * @example
+ * vds.environment.parseCss(".app{color:red;border:1px solid #e5e5e5;}");
+ * */
+export function parseCss(css) {
+  if (null != css) {
+    environmentUtil.parseCssStr(css)
   }
+}
 
-  module.exports = exports
-})
+module.exports = exports

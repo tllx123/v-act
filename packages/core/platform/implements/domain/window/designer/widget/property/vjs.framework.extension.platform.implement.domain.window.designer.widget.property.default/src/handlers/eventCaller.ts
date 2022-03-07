@@ -1,27 +1,18 @@
-define('./eventCaller', function (require, exports, module) {
-  var scopeManager, eventHandler
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope.'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    eventHandler = sb.getService(
-      'vjs.framework.extension.platform.services.view.event.EventManager'
-    )
-  }
+import { EventManager as eventHandler } from '@v-act/vjs.framework.extension.platform.services.view.event'
 
-  export function getHandlerName() {
-    return 'eventCaller'
-  }
+export function getHandlerName() {
+  return 'eventCaller'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (eventName, success, fail) {
-          return eventHandler.fireDynamicWidgetEvent(eventName, success, fail)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (eventName, success, fail) {
+        return eventHandler.fireDynamicWidgetEvent(eventName, success, fail)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

@@ -1,27 +1,18 @@
-define('./registerContainer', function (require, exports, module) {
-  var scopeManager, containerRelation
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    containerRelation = sb.getService(
-      'vjs.framework.extension.ui.common.plugin.services.container.ContainerRelation'
-    )
-  }
+import { ContainerRelation as containerRelation } from '@v-act/vjs.framework.extension.ui.common.plugin.services.container'
 
-  export function getHandlerName() {
-    return 'registerContainer'
-  }
+export function getHandlerName() {
+  return 'registerContainer'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (domID, child, property) {
-          return containerRelation.register(domID, child, property)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (domID, child, property) {
+        return containerRelation.register(domID, child, property)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

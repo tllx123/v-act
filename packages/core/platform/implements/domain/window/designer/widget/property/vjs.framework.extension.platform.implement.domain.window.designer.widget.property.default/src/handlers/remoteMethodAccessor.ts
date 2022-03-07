@@ -1,27 +1,18 @@
-define('./remoteMethodAccessor', function (require, exports, module) {
-  var scopeManager, remoteMethodAccessor
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    remoteMethodAccessor = sb.getService(
-      'vjs.framework.extension.platform.services.operation.remote.RemoteMethodAccessor'
-    )
-  }
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 
-  export function getHandlerName() {
-    return 'remoteMethodAccessor'
-  }
+export function getHandlerName() {
+  return 'remoteMethodAccessor'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (params) {
-          return remoteMethodAccessor.invoke(params)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (params) {
+        return remoteMethodAccessor.invoke(params)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

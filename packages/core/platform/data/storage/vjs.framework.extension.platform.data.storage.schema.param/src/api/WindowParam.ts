@@ -1,21 +1,9 @@
-let storageManager,
-  ParamConfigFactory,
-  sandbox,
-  token = 'WindowParam_Token_Key',
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+
+import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+let token = 'WindowParam_Token_Key',
   input_param_token = 'WindowParam_Input_Token_Key',
   output_param_token = 'WindowParam_Output_Token_Key'
-
-export function initModule(sb) {
-  if (sb) {
-    storageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    ParamConfigFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.config.ParamConfigFactory'
-    )
-    sandbox = sb
-  }
-}
 
 let getWindowStorage = function (depth, isCreate) {
   let rs,

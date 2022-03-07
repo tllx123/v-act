@@ -1,31 +1,22 @@
-define('./getTree', function (require, exports, module) {
-  var scopeManager, treeManager
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    treeManager = sb.getService(
-      'vjs.framework.extension.platform.services.model.manager.tree.TreeManager'
-    )
-  }
+import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 
-  export function getHandlerName() {
-    return 'getTree'
-  }
+export function getHandlerName() {
+  return 'getTree'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (dsName, treeStruct) {
-          var treeInstance = treeManager.lookup({
-            datasourceName: dsName,
-            treeStruct: treeStruct
-          })
-          return treeInstance
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (dsName, treeStruct) {
+        var treeInstance = treeManager.lookup({
+          datasourceName: dsName,
+          treeStruct: treeStruct
+        })
+        return treeInstance
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

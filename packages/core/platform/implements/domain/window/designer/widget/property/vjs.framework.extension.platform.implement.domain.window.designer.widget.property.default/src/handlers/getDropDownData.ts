@@ -1,32 +1,23 @@
-define('./getDropDownData', function (require, exports, module) {
-  var scopeManager, widgetContext, dropDownSourceUtil
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    dropDownSourceUtil = sb.getService(
-      'vjs.framework.extension.platform.services.domain.dropdown.DropDownSourceUtil'
-    )
-  }
+import { DropDownSourceUtil as dropDownSourceUtil } from '@v-act/vjs.framework.extension.platform.services.domain.dropdown'
 
-  export function getHandlerName() {
-    return 'getDropDownData'
-  }
+export function getHandlerName() {
+  return 'getDropDownData'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (dataSource, valueFieldName, textFieldName) {
-          var dropData = dropDownSourceUtil.getDataByDataSource(
-            dataSource,
-            valueFieldName,
-            textFieldName
-          )
-          return dropData
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (dataSource, valueFieldName, textFieldName) {
+        var dropData = dropDownSourceUtil.getDataByDataSource(
+          dataSource,
+          valueFieldName,
+          textFieldName
+        )
+        return dropData
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

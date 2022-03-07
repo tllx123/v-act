@@ -1,27 +1,18 @@
-define('./createDatasourceFromJson', function (require, exports, module) {
-  var scopeManager, datasourceFactory
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    datasourceFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-    )
-  }
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-  export function getHandlerName() {
-    return 'createDatasourceFromJson'
-  }
+export function getHandlerName() {
+  return 'createDatasourceFromJson'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (json) {
-          return datasourceFactory.unSerialize(json)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (json) {
+        return datasourceFactory.unSerialize(json)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

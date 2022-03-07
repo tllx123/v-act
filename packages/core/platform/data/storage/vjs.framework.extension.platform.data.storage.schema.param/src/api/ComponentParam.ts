@@ -1,32 +1,13 @@
-let ParamConfigFactory,
-  tokenPrefix = 'COMPONENT_SCHEMA_PARAM',
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+
+let tokenPrefix = 'COMPONENT_SCHEMA_PARAM',
   COMPONENT_VARIANT_INFO_KEY = 'COMPONENT_VARIANT_INFO_KEY',
   COMPONENT_OPTION_INFO_KEY = 'COMPONENT_OPTION_INFO_KEY',
-  StorageManager,
-  componentMetadataToken = 'COMPONENT_METADATA',
-  componentInit,
-  scopeManager,
-  logUtil,
-  sandbox
-
-export function initModule(sb) {
-  if (sb) {
-    sandbox = sb
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    ParamConfigFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.config.ParamConfigFactory'
-    )
-    componentInit = sb.getService(
-      'vjs.framework.extension.platform.services.init.ComponentInit'
-    )
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    logUtil = sb.getService('vjs.framework.extension.util.log')
-  }
-}
+  componentMetadataToken = 'COMPONENT_METADATA'
 
 /**
  * 生成数据仓库标志id
@@ -34,7 +15,7 @@ export function initModule(sb) {
  * @param {String} domain 领域
  * @return String
  */
-let generateToken = function (componentCode, domain) {
+const generateToken = function (componentCode, domain) {
   return tokenPrefix + componentCode + '_' + domain
 }
 

@@ -1,36 +1,26 @@
-define('./expression', function (require, exports, module) {
-  var scopeManager, expEngine, ExpContext
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    expEngine = sb.getService(
-      'vjs.framework.extension.platform.services.engine.expression.ExpressionEngine'
-    )
-    ExpContext = sb.getService(
-      'vjs.framework.extension.platform.services.engine.expression.ExpressionContext'
-    )
-  }
+import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
 
-  export function getHandlerName() {
-    return 'expression'
-  }
+import { ExpressionContext as ExpContext } from '@v-act/vjs.framework.extension.platform.services.engine'
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (exp) {
-          var ctx = new ExpContext()
-          return exp == null || exp == ''
-            ? ''
-            : expEngine.execute({
-                expression: exp,
-                context: ctx
-              })
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandlerName() {
+  return 'expression'
+}
+
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (exp) {
+        var ctx = new ExpContext()
+        return exp == null || exp == ''
+          ? ''
+          : expEngine.execute({
+              expression: exp,
+              context: ctx
+            })
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

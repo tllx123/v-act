@@ -1,11 +1,11 @@
 import { aop } from '@v-act/vjs.framework.extension.platform'
 import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 import {
   ScopeTask,
   TaskManager as taskManager
-} from '@v-act/vjs.framework.extension.platform.global.task'
+} from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import {
   ExceptionFactory as exceptionFactory,
@@ -14,14 +14,13 @@ import {
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
-
-let sb
-
-export function initModule(sandbox) {
-  sb = sandbox
-}
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.init.view'
+import { TransactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
+import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 
 const execute = function (params) {
   let targetConfig = params.targetConfig,
@@ -97,9 +96,6 @@ const executeWindowRoute = function (params) {
  *执行后台活动集
  */
 let exeServerRuleSet = function (targetConfig, inputParam, config, callback) {
-  let DBFactory = sb.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-  )
   let params = []
   for (let attr in inputParam) {
     let val = inputParam[attr]
@@ -580,9 +576,7 @@ let exeComponentRuleSet = function (
       ruleSetCode = newInfo.funcCode
     }
   }
-  let viewInit = sb.getService(
-    'vjs.framework.extension.platform.init.view.ViewInit'
-  )
+
   let scopeId = scopeManager.getCurrentScopeId()
   let errorFunc = config.error
   viewInit.initComponentSchema({
@@ -761,9 +755,8 @@ let _doTransaction = function (routeContext, type) {
  *获取事务管理服务
  */
 let _getTransactionManager = function () {
-  return sb.getService('vjs.framework.extension.platform.transaction.manager')
+  return TransactionManager
 }
-
 /**
  *初始化路由运行时上下文
  */
@@ -777,17 +770,11 @@ let initRouteContext = function (params) {
     type = params.type
   let routeCfg
   if (routeType == 'component') {
-    let componentRoute = sb.getService(
-      'vjs.framework.extension.platform.data.storage.schema.route.ComponentRoute'
-    )
     routeCfg = componentRoute.getRoute({
       componentCode: componentCode,
       routeCode: ruleSetCode
     })
   } else {
-    let windowRoute = sb.getService(
-      'vjs.framework.extension.platform.data.storage.schema.route.WindowRoute'
-    )
     routeCfg = windowRoute.getRoute({
       componentCode: componentCode,
       windowCode: windowCode,
@@ -802,9 +789,7 @@ let initRouteContext = function (params) {
     )
     return null
   }
-  let RouteContext = sb.getService(
-    'vjs.framework.extension.platform.interface.route.RouteContext'
-  )
+
   let ctx = new RouteContext(routeCfg, parentRouteContext)
   ctx.setParentRuleContext(parentRuleContext)
   if (parentRouteContext && parentRouteContext.snapshotId) {

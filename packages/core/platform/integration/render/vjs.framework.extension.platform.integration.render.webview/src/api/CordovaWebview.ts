@@ -1,9 +1,8 @@
-export function initModule(sb) {
-  let webviewService = sb.getService(
-    'vjs.framework.extension.platform.services.integration.render'
-  )
-  webviewService._putInstance(exports)
-}
+import { webviewService } from '@v-act/vjs.framework.extension.platform.services.integration.render'
+import { Browser as browser } from '@v-act/vjs.framework.extension.platform.services.browser'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+webviewService._putInstance(exports)
 
 /**
  * 初始化cordova的webview插件，注为全局对象
@@ -58,9 +57,7 @@ const renderAsModal = function (params) {
     success: function (sb) {
       let componentCode = params.componentCode,
         windowCode = params.windowCode
-      let scopeManager = sb.getService(
-        'vjs.framework.extension.platform.interface.scope.ScopeManager'
-      )
+
       let newScopeId = scopeManager.createWindowScope({
         parentScopeId: null,
         componentCode: componentCode,
@@ -70,9 +67,6 @@ const renderAsModal = function (params) {
       V3Integration.load({
         vjsList: ['vjs.framework.extension.platform.services.browser'],
         success: function (sb) {
-          let browser = sb.getService(
-            'vjs.framework.extension.platform.services.browser.Browser'
-          )
           scopeManager.openScope(newScopeId)
           browser.showModalModule({
             componentCode: params.componentCode,

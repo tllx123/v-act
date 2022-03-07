@@ -1,30 +1,20 @@
-define('./webDesign.cloneProps', function (require, exports, module) {
-  var scopeManager, datasourceManager, processorUtils
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    datasourceManager = sb.getService(
-      'vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
-    )
-    processorUtils = sb.getService(
-      'vjs.framework.extension.platform.application.window.web.designer.utils'
-    )
-  }
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
-  export function getHandlerName() {
-    return 'webDesign.cloneProps'
-  }
+import { processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (designerMenuDatas, items, itemCodeMap) {
-          processorUtils.cloneProps(designerMenuDatas, items, itemCodeMap)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandlerName() {
+  return 'webDesign.cloneProps'
+}
+
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (designerMenuDatas, items, itemCodeMap) {
+        processorUtils.cloneProps(designerMenuDatas, items, itemCodeMap)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}

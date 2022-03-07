@@ -1,27 +1,18 @@
-define('./DropdownSourceObserver', function (require, exports, module) {
-  var scopeManager, DropdownSourceObserver
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-  export function initModule(sb) {
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    DropdownSourceObserver = sb.getService(
-      'vjs.framework.extension.ui.common.plugin.services.widget.DropdownSourceObserver'
-    )
-  }
+import { DropdownSourceObserver } from '@v-act/vjs.framework.extension.ui.common.plugin.services.widget'
 
-  export function getHandlerName() {
-    return 'DropdownSourceObserver'
-  }
+export function getHandlerName() {
+  return 'DropdownSourceObserver'
+}
 
-  export function getHandler() {
-    return function (property, widgetProperty) {
-      var handler = scopeManager.createScopeHandler({
-        handler: function (params) {
-          return new DropdownSourceObserver(params)
-        }
-      })
-      widgetProperty[property.code] = handler
-    }
+export function getHandler() {
+  return function (property, widgetProperty) {
+    var handler = scopeManager.createScopeHandler({
+      handler: function (params) {
+        return new DropdownSourceObserver(params)
+      }
+    })
+    widgetProperty[property.code] = handler
   }
-})
+}
