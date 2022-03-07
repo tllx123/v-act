@@ -1,24 +1,33 @@
 export class Field {
-  public code: string
-  public name: string
-  public type: string
+  public code!: string
+  public name!: string
+  public type!: string
   public length: number = 255
-  public defaultValue: string
-  public precision: string
-  public expression: string
-  public remark: string
+  public defaultValue!: string
+  public precision!: string
+  public expression!: string
+  public remark!: string
   public dataAdaptor = null
   public defaultValueGenerator = null
   constructor(
-    code: string,
-    name: string,
-    type: string,
-    length: number,
-    defaultValue: string,
-    precision: string,
-    expression: string,
-    remark: string
-  ) {}
+    code_: string,
+    name_: string,
+    type_: string,
+    length_: number,
+    defaultValue_: string,
+    precision_: string,
+    expression_: string,
+    remark_: string
+  ) {
+    this.code = code_
+    this.name = name_
+    this.type = type_
+    this.length = length_
+    this.defaultValue = defaultValue_
+    this.precision = precision_
+    this.expression = expression_
+    this.remark = remark_
+  }
 
   getCode() {
     return this.code

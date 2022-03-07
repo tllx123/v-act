@@ -1,5 +1,3 @@
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let undefined
 exports.initModule = function (sb) {
   sandbox = sb
 }

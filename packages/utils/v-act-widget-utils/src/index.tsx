@@ -17,7 +17,6 @@ import {
   EntityRecord,
   WidgetContextProps
 } from '@v-act/widget-context'
-import { boolean } from 'yargs'
 
 /**
  * 转换成数值,转换失败将返回def值
@@ -381,8 +380,6 @@ const useGetCompVal = function (control: Control, type?: string) {
       props.value = props.value === null ? '' : props.value
       props.onChanged = (e: any) => {
         if (tableName && columnName) {
-          console.log('e.target.checked')
-          console.log(e.target.checked)
           setFieldValue(
             tableName,
             columnName,
@@ -392,19 +389,7 @@ const useGetCompVal = function (control: Control, type?: string) {
         }
       }
       break
-    case '3333333333':
-      ;(props.value =
-        tableName && columnName
-          ? getFieldValue(tableName, columnName, context)
-            ? getFieldValue(tableName, columnName, context)
-            : new Date()
-          : undefined),
-        (props.dateDisplay = properties.dateDisplay)
-      props.onChangedForDate = (val: any) => {
-        if (tableName && columnName) {
-          setFieldValue(tableName, columnName, context, val)
-        }
-      }
+    case 'JGDateTimePicker':
       break
 
     default:

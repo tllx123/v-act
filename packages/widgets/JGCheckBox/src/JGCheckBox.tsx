@@ -27,8 +27,6 @@ const JGCheckBox = (props: JGComponentProps) => {
   if (readonly || disabled) {
     isDisable = true
   }
-  console.log('Boolean(value)')
-  console.log(Boolean(value))
 
   return (
     <Box

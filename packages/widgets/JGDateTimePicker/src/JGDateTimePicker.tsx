@@ -9,7 +9,6 @@ import { JGInputLabel } from '@v-act/jginputlabel'
 import { JGComponentProps } from '@v-act/schema-types'
 
 interface JGDateTimePickerProps extends JGComponentProps {
-  onChangedForDate?: (e: any) => void
   dateDisplay?: string
 }
 
@@ -30,11 +29,11 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
     labelWidth,
     dateDisplay,
     value,
-    onChangedForDate,
+    onChanged,
     ...restProps
   } = props
 
-  const [valueTemp, setValue] = useState()
+  const [valueTemp, setValue] = useState(undefined)
 
   let viewsValue: any = ['year', 'month', 'day']
 
@@ -64,9 +63,12 @@ const JGDateTimePicker = (props: JGDateTimePickerProps) => {
           } else {
             curr = newValue
           }
+
           if (value) {
-            onChangedForDate && onChangedForDate(curr)
+            console.log(1)
+            onChanged && onChanged(curr)
           } else {
+            console.log(2)
             setValue(curr)
           }
         }}
