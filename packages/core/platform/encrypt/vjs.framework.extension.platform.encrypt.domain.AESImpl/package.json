@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/vjs.framework.extension.platform.encrypt.domain.AESImpl",
+  "name": "@v-act/vjs.framework.extension.platform.encrypt.domain.aesimpl",
   "version": "1.0.0-alpha.1",
   "description": "AES加密/解密实现类",
   "homepage": "https://github.com/opensource-vplatform/v-act",
