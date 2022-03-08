@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, number }
 
-const main = function (arg1, arg2) {
+var main = function (arg1, arg2) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('求浮点数的值函数参数为空，请检查')
   var result = new Number(arg1).toString()

@@ -14,7 +14,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 const vds = { widget, exception, tree }
 
-const main = function (widgetCode, recordId, spitStr) {
+var main = function (widgetCode, recordId, spitStr) {
   if (!widgetCode || '' == widgetCode) {
     var exception =
       vds.exception.newConfigException('函数第一个参数,实体编码不能为空!')

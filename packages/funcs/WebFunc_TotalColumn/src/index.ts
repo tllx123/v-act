@@ -11,7 +11,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { object, string, ds, exception, expression }
 
-const main = function (dsName, columnName) {
+var main = function (dsName, columnName) {
   if (dsName == null)
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')
   if (columnName == null)

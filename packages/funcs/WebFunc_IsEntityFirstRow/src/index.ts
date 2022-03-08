@@ -10,7 +10,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { ds, exception }
 
-const main = function (sourceName) {
+var main = function (sourceName) {
   if (sourceName == undefined || sourceName == null || sourceName == '') {
     //throw new Error("参数错误！实体名称必填!");
     var exception = vds.exception.newConfigException('参数错误！实体名称必填!')

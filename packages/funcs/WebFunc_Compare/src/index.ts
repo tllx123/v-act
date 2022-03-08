@@ -10,7 +10,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { object, string }
 
-const main = function (firstStr, secondStr, isSubOrSup) {
+var main = function (firstStr, secondStr, isSubOrSup) {
   if (firstStr === null) firstStr = ''
 
   firstStr = firstStr + ''

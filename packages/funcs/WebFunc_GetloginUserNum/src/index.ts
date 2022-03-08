@@ -1,7 +1,7 @@
 /**
  * GetloginUserNum 返回当前的在线用户数(实时获取) 代码示例:GetloginUserNum() 返回值为当前在线的用户数 无参数 返回值为数值
  */
-const main = function (param) {
+var main = function (param) {
   try {
     var expression = 'GetloginUserNum()'
     var findParam = {

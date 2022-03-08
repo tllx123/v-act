@@ -18,7 +18,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, string, number }
 
-const main = function (origStr, replaceStr, beginIndex, endIndex) {
+var main = function (origStr, replaceStr, beginIndex, endIndex) {
   if (vds.object.isUndefOrNull(origStr)) return ''
   if (vds.object.isUndefOrNull(replaceStr))
     throw new Error('替换字符串为空，请检查')

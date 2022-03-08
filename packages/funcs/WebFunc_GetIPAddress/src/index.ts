@@ -5,7 +5,7 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { rpc, exception }
 
-const main = function () {
+var main = function () {
   try {
     var expression = 'GetIPAddressFunc()'
     var findParam = {

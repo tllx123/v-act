@@ -9,7 +9,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 const vds = { object, ds, exception, string, tree }
 
-const main = function (dataSourceName, nodeId, treeStructCfgStr) {
+var main = function (dataSourceName, nodeId, treeStructCfgStr) {
   // 示例：IsLeaf("datasourceName", "ID", "type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField")
   var treeStructCfgObj = parseCfgObj(treeStructCfgStr)
 

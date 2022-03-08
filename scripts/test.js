@@ -184,6 +184,6 @@ const dir = path.resolve(
   'packages/core/platform/services/integration/vds'
 )
 //moveTo(dir)
-//convertWebFuncs();
-convertWebRules()
+convertWebFuncs()
+//convertWebRules()
 //convertWebFunc("D:\\Workspace\\github\\vplatform-plugin-function-client\\Webfunc_WXGetUserInfo", "D:\\Workspace\\github\\v-act\\packages\\funcs");

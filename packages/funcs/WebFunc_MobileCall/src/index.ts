@@ -1,7 +1,7 @@
 /**
  *  拨打电话函数
  */
-const main = function (param) {
+var main = function (param) {
   var args = param.getArgs()
   var argsLen = args ? args.length : 0
   var phoneNumber = argsLen >= 1 ? args[0] : null

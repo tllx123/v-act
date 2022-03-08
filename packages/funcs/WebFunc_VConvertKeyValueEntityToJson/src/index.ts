@@ -3,7 +3,7 @@
  */
 //规则主入口(必须有)
 vds.import('vds.ds.*', 'vds.exception.*', 'vds.object.*')
-const main = function (
+var main = function (
   entityCode,
   keyColumn,
   valueColumn,

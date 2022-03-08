@@ -323,4 +323,6 @@ Record.putDataAdapter = function (adapter) {
   Record.prototype.dataAdapter = adapter
 }
 
-export default Record
+return Record
+
+export { _getDatasourceConstructor, create, isDatasource, unSerialize }

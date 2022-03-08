@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, math }
 
-const main = function (arg1, arg2) {
+var main = function (arg1, arg2) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('求两数最小值函数参数为空，请检查')
   if (!vds.object.isNumber(arg1) || !vds.object.isNumber(arg2))

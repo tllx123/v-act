@@ -6,6 +6,10 @@ let TRANSACTION_BEGIN = 'transaction_begin'
 let TRANSACTION_COMMIT = 'transaction_commit'
 let TRANSACTION_ROLLBACK = 'transaction_rollback'
 
+export function initModule(sb) {}
+
+const undefined
+
 const commit = function (params) {
   params.transactionType = TRANSACTION_COMMIT
   return this.rpc(params)

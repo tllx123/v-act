@@ -7,7 +7,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, exception, rpc }
 
-const main = function (dsName) {
+var main = function (dsName) {
   if (vds.object.isUndefOrNull(dsName))
     throw vds.exception.newConfigException('传入表名为空，请检查')
 

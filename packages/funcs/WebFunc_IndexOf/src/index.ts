@@ -10,7 +10,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, string, number }
 
-const main = function (arg1, arg2, arg3) {
+var main = function (arg1, arg2, arg3) {
   if (vds.object.isUndefOrNull(arg1)) {
     //throw new Error("字符串为空，请检查");
   }

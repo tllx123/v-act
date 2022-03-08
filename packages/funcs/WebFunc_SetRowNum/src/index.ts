@@ -7,7 +7,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { ds, exception, expression }
 
-const main = function (dsName, columnName) {
+var main = function (dsName, columnName) {
   //...
   //根据参数实现函数处理逻辑
   //todo:

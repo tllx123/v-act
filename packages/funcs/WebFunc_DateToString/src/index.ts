@@ -6,7 +6,7 @@ import * as date from '@v-act/vjs.framework.extension.platform.services.integrat
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { object, date, string }
 
-const main = function (fromatStr, dateStr) {
+var main = function (fromatStr, dateStr) {
   if (vds.object.isUndefOrNull(fromatStr)) return ''
   if (vds.string.isEmpty(dateStr) || typeof dateStr != 'string') return null
 

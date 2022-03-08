@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, number }
 
-const main = function (str1, index, str2) {
+var main = function (str1, index, str2) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(index)) throw new Error('起始下标为空，请检查')
   else {

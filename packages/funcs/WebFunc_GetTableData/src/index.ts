@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, exception, rpc }
 
-const main = function (columnNames, dataSourceName, queryStr) {
+var main = function (columnNames, dataSourceName, queryStr) {
   if (
     vds.object.isUndefOrNull(dataSourceName) ||
     vds.object.isUndefOrNull(columnNames) ||

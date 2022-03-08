@@ -14,7 +14,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, ds, widget }
 
-const main = function (widgetCode, entityCode, fieldName) {
+var main = function (widgetCode, entityCode, fieldName) {
   if (!widgetCode)
     exceptionHandler('函数 SelectedDateFromEntity 第一个参数,控件Code不能为空!')
 

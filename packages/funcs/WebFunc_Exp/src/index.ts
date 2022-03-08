@@ -1,5 +1,3 @@
-import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
-import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 /**
  *	e的指定次幂
  *  代码示例:Exp(2)返回值为7.38905609893065
@@ -8,10 +6,11 @@ import * as number from '@v-act/vjs.framework.extension.platform.services.integr
  *  返回值为小数
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-
+import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
+import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, math, number }
 
-const main = function (arg) {
+var main = function (arg) {
   if (vds.object.isUndefOrNull(arg))
     throw new Error('e的指定次幂函数参数为空，请检查')
   if (!vds.object.isNumber(arg))

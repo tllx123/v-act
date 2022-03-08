@@ -9,7 +9,7 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { object }
 
-const main = function (encryptValue) {
+var main = function (encryptValue) {
   var retVal = ''
   if (vds.object.isUndefOrNull(encryptValue)) return ''
   retVal = b64_md5(utf16to8(encryptValue))

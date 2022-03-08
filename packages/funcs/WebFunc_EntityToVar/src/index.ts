@@ -5,7 +5,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { ds, exception }
 
-const main = function (str) {
+var main = function (str) {
   if (str) {
     var entities = str.split(',')
     var entitiesObj = {}

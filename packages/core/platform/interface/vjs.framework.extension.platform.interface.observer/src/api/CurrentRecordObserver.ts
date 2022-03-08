@@ -116,4 +116,4 @@ CurrentRecordObserver.prototype = {
   }
 }
 
-export default CurrentRecordObserver
+return CurrentRecordObserver

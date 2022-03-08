@@ -8,7 +8,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { ds, expression, object, string }
 
-const main = function (json, entityCode) {
+var main = function (json, entityCode) {
   var datasource = GetDataSource(entityCode)
 
   if (!json) return null

@@ -18,7 +18,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, widget }
 
-const main = function (widgetCode, fieldCode) {
+var main = function (widgetCode, fieldCode) {
   //图表构件编码
   if (!widgetCode || '' == widgetCode) {
     var exception = vds.exception.newConfigException(

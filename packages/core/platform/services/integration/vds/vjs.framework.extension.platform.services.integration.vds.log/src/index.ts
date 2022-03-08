@@ -8,8 +8,18 @@
  * vds.import("vds.log.*");
  * vds.log.warn("打印警告信息！");
  */
+window.vds = window.vds || {}
+window.vds.log = window.vds.log || {}
 
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+var log = window.vds.log
+
+exports = log
+
+var logUtil
+
+export function initModule(sb) {
+  logUtil = sb.getService('vjs.framework.extension.util.log')
+}
 
 /**
  * 打印日志信息
@@ -40,3 +50,5 @@ export function warn(msg) {
 export function error(msg) {
   return logUtil.error(msg)
 }
+
+return exports

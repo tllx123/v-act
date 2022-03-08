@@ -1,9 +1,9 @@
 import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
-import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic'
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.expression'
+import { Log as log } from '@v-act/vjs.framework.extension.util.log'
 
-import * as Datasource from './Datasource'
+import * as Datasource from './api/Datasource'
 
 let sandbox
 

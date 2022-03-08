@@ -3,10 +3,9 @@
  *
  */
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-
 const vds = { rpc }
 
-const main = function (fileid, FileInfoType) {
+var main = function (fileid, FileInfoType) {
   try {
     return executeExpression(fileid, FileInfoType)
   } catch (e) {

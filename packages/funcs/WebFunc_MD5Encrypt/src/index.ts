@@ -8,7 +8,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, exception, rpc }
 
-const main = function (encryptValue) {
+var main = function (encryptValue) {
   if (vds.object.isUndefOrNull(encryptValue)) return ''
 
   try {

@@ -7,7 +7,7 @@ import * as widget from '@v-act/vjs.framework.extension.platform.services.integr
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 const vds = { exception, widget, log }
 
-const main = function (widgetCode, propertyName) {
+var main = function (widgetCode, propertyName) {
   if (widgetCode == undefined || widgetCode === '') {
     var exception = vds.exception.newConfigException('控件编码不能为空！')
     throw exception

@@ -1096,4 +1096,4 @@ Datasource._putSnapshotManager = function (manager) {
   Datasource.prototype._snapshotManager = manager
 }
 
-export default Datasource
+return Datasource

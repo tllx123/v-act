@@ -23,4 +23,11 @@ const executeWindowRoute = function (params) {
   return RouteEngine.executeWindowRoute(params)
 }
 
-export { excuteRouteExp, execute, executeWindowRoute, parseVars }
+export {
+  execute,
+  excuteRouteExp,
+  parseVars,
+  execute,
+  execute,
+  executeWindowRoute
+}

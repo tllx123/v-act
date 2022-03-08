@@ -2,7 +2,7 @@
  *
  *
  */
-const main = function (LogMessage, Operation) {
+var main = function (LogMessage, Operation) {
   try {
     if (LogMessage == null || LogMessage == undefined) {
       LogMessage = ''

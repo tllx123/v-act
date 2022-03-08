@@ -9,7 +9,7 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, exception, log, math }
 
-const main = function (value, now_su, target_unit) {
+var main = function (value, now_su, target_unit) {
   /*获取当前值，并转换成数字*/
   var nowValue = parseFloat(value)
   if (!vds.object.isNumber(nowValue)) {

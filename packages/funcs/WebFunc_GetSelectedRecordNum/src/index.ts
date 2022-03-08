@@ -1,12 +1,11 @@
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 /**
  * 从指定的界面实体获取选中行的个数 参数数量:1 参数1 表名 (字符串类型) 返回值为数据源的选中行的个数
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 const vds = { object, ds }
 
-const main = function (param) {
+var main = function (param) {
   var args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dsName = argsLen >= 1 ? args[0] : null

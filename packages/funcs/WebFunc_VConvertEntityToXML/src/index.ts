@@ -9,7 +9,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, ds, exception, string, rpc }
 
-const main = function () {
+var main = function () {
   if (vds.object.isUndefOrNull(arguments) || arguments.length <= 0) {
     var exception = vds.exception.newConfigException(
       '[VConvertEntityToXML.main]执行失败，必须配置至少一个参数作为表名'

@@ -5,7 +5,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, math }
 
-const main = function (multiplier1, multiplier2) {
+var main = function (multiplier1, multiplier2) {
   if (
     vds.object.isUndefOrNull(multiplier1) ||
     vds.object.isUndefOrNull(multiplier2)

@@ -8,7 +8,7 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { object }
 
-const main = function (param) {
+var main = function (param) {
   var args = param.getArgs(),
     argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null

@@ -10,7 +10,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { object, ds, exception, expression }
 
-const main = function (tableName, columnName) {
+var main = function (tableName, columnName) {
   if (vds.object.isUndefOrNull(tableName)) {
     throw vds.exception.newConfigException('参数1-实体编码不能为空')
   }

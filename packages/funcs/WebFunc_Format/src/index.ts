@@ -6,10 +6,9 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-
 const vds = { object, string }
 
-const main = function () {
+var main = function () {
   var args = arguments,
     argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null

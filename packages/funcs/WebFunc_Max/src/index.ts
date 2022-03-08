@@ -20,7 +20,7 @@ var judgeNumExt = function (arg) {
   var result = new Number(arg).toString()
   return result.toUpperCase() == 'NAN' ? false : true
 }
-const main = function (arg1, arg2) {
+var main = function (arg1, arg2) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('求两数最大值函数参数为空，请检查')
   if (!judgeNumExt(arg1) || !judgeNumExt(arg2))

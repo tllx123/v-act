@@ -6,7 +6,7 @@ import * as number from '@v-act/vjs.framework.extension.platform.services.integr
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, number, exception }
 
-const main = function (content, type) {
+var main = function (content, type) {
   var result = false
   // 传入参数不能为空
   if (vds.object.isUndefOrNull(type)) {

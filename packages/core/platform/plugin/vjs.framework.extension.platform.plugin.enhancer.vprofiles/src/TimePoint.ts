@@ -318,4 +318,17 @@ TimePoint.Types = TimePoint.prototype.Types
 
 TimePoint.Series = TimePoint.prototype.Series
 
-export default TimePoint
+return TimePoint
+
+export {
+  add,
+  remove,
+  clear,
+  clearTreeData,
+  genViewTimePoint,
+  doStart,
+  doStop,
+  doClear,
+  register,
+  isOpenMonitor
+}

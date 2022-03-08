@@ -2,7 +2,7 @@
  *
  *
  */
-const main = function (param1) {
+var main = function (param1) {
   //获取函数传入的参数
   //var routeContext = param.getRouteContext(); //获取路由上下文，函数里想执行一些表达式逻辑需要用到
   //获取参数示例：

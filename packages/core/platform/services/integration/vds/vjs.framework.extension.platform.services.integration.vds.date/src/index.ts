@@ -8,9 +8,20 @@
  * vds.import("vds.date.*");
  * vds.date.add("2012-03-05 18:20:30",30,vds.date.Units.Hour);
  */
+window.vds = window.vds || {}
+window.vds.date = window.vds.date || {}
 
-import { DateTimeUtil as dateUtil } from '@v-act/vjs.framework.extension.util.date'
-import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+var date = window.vds.date
+
+exports = date
+
+var dateUtil, formatUtil, mathUtil
+
+export function initModule(sb) {
+  dateUtil = sb.getService('vjs.framework.extension.util.date.DateTimeUtil')
+  formatUtil = sb.getService('vjs.framework.extension.util.DateFormatUtil')
+  mathUtil = sb.getService('vjs.framework.extension.util.Math')
+}
 
 /**
  * 日期单位枚举
@@ -104,3 +115,5 @@ export function format(date, format) {
 export function valueOf(dateStr) {
   return mathUtil.toDate(dateStr)
 }
+
+return exports

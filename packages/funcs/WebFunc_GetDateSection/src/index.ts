@@ -8,7 +8,7 @@ import * as date from '@v-act/vjs.framework.extension.platform.services.integrat
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, date, exception }
 
-const main = function (dateStr, field) {
+var main = function (dateStr, field) {
   if (field != null) {
     field += ''
   }

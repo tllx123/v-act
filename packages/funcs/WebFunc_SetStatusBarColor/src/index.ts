@@ -2,7 +2,7 @@
  *
  *
  */
-const main = function (param) {
+var main = function (param) {
   //获取函数传入的参数
   var args = param.getArgs()
 

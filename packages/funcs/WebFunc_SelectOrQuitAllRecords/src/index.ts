@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { ds, exception, object }
 
-const main = function (dsName, operType) {
+var main = function (dsName, operType) {
   if (vds.object.isUndefOrNull(dsName))
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')
   if (vds.object.isUndefOrNull(operType))

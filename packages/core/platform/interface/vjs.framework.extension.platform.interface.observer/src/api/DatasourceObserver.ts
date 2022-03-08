@@ -187,4 +187,4 @@ DatasourceObserver.prototype = {
   }
 }
 
-export default DatasourceObserver
+return DatasourceObserver

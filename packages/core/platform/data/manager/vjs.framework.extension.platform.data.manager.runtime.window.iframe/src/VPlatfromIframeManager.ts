@@ -680,7 +680,7 @@ let excuteModalLogic = function (urlObj, params) {
     mappingInfos = {}
   }
   let callback = function (dom, closeModalFunc, setTitleFunc, renderParams) {
-    dom = getDomObj(dom)
+    let dom = getDomObj(dom)
     if (dom.length < 1) {
       logUtil.warn('打开url失败. 原因：无法在指定位置添加元素.')
       return

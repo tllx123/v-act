@@ -1,7 +1,7 @@
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { math }
 
-const main = function (param) {
+var main = function (param) {
   FUNCNAME = '函数[SetAlias]：'
   var args = param.getArgs()
   if (args.length != 1) {

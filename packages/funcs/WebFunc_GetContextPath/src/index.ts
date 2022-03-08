@@ -4,7 +4,7 @@
 import * as environment from '@v-act/vjs.framework.extension.platform.services.integration.vds.environment'
 const vds = { environment }
 
-const main = function () {
+var main = function () {
   var path = vds.environment.getContextPath()
   return path ? path : ''
 }

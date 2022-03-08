@@ -21,4 +21,4 @@ Snapshot.prototype = {
   }
 }
 
-export default Snapshot
+return Snapshot

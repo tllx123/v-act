@@ -46,4 +46,4 @@ DefaultPropertyHandler.prototype = {
   }
 }
 
-export default DefaultPropertyHandler
+return DefaultPropertyHandler

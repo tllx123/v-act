@@ -173,4 +173,6 @@ Field.prototype.serialize = function () {
   }
 }
 
-export { adapt, getDataValidator }
+return Field
+
+export { getDataValidator, adapt, adapt, adapt }

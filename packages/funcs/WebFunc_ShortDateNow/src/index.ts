@@ -5,7 +5,7 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as date from '@v-act/vjs.framework.extension.platform.services.integration.vds.date'
 const vds = { rpc, date }
 
-const main = function () {
+var main = function () {
   var value = vds.date.format(vds.rpc.getDate(), 'yyyy-MM-dd')
   return value
 }

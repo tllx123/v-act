@@ -1,7 +1,7 @@
 /**
  * 获取用户信息(暂时只获取用户唯一标识：用户帐号)
  */
-const main = function () {
+var main = function () {
   if (!isWeiXinFunc()) {
     alert('【获取微信用户信息】函数仅支持微信端使用!')
     return ''

@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { object, string }
 
-const main = function (str1, str2) {
+var main = function (str1, str2) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(str2)) str2 = ''
   str1 = String(str1)

@@ -5,7 +5,7 @@
  * 输出：解密后的值
  *
  */
-const main = function (decryptValue, type, secretkey) {
+var main = function (decryptValue, type, secretkey) {
   var result = ''
   if (decryptValue == null || decryptValue == undefined) {
     var exception = vds.exception.newConfigException('解密的值不能为空!')

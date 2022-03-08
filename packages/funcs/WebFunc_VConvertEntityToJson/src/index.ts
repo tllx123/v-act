@@ -6,7 +6,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { ds, expression, exception, string, object }
 
-const main = function (entityCode, recordType, objFieldString) {
+var main = function (entityCode, recordType, objFieldString) {
   var records = []
   //获取数据源
   var datasource = GetDataSource(entityCode)

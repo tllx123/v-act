@@ -10,7 +10,7 @@ import * as math from '@v-act/vjs.framework.extension.platform.services.integrat
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, math, number }
 
-const main = function (arg1, arg2) {
+var main = function (arg1, arg2) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('指定数字的幂函数参数为空，请检查')
   if (!vds.object.isNumber(arg1) || !vds.object.isNumber(arg2))

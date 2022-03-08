@@ -4,7 +4,7 @@
 import * as date from '@v-act/vjs.framework.extension.platform.services.integration.vds.date'
 const vds = { date }
 
-const main = function () {
+var main = function () {
   var value = vds.date.format(new Date(), 'yyyy-MM-dd HH:mm:ss')
   return value
 }

@@ -6,7 +6,7 @@ let keys = {
 
 let tokenPrefix = 'AppData_'
 
-let appConfigInfoLoaded = false
+let isAppConfigInfoLoaded = false
 
 export function initModule(sb) {
   if (sb) {
@@ -72,11 +72,11 @@ const getRuleSetInput = function (
 }
 
 const isAppConfigInfoLoaded = function () {
-  return appConfigInfoLoaded
+  return isAppConfigInfoLoaded
 }
 
 const markAppConfigInfoLoaded = function () {
-  appConfigInfoLoaded = true
+  isAppConfigInfoLoaded = true
 }
 
 export {

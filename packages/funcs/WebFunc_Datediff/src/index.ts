@@ -10,7 +10,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as date from '@v-act/vjs.framework.extension.platform.services.integration.vds.date'
 const vds = { object, date }
 
-const main = function (srcTime, destTime, timeUnit) {
+var main = function (srcTime, destTime, timeUnit) {
   if (vds.object.isUndefOrNull(srcTime)) throw new Error('参数1为空，请检查')
   if (vds.object.isUndefOrNull(destTime)) throw new Error('参数2为空，请检查')
   if (vds.object.isUndefOrNull(timeUnit)) throw new Error('参数3为空，请检查')

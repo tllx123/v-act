@@ -4,10 +4,9 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-
 const vds = { ds, exception, expression }
 
-const main = function (dsName, columnCode) {
+var main = function (dsName, columnCode) {
   if (!dsName) {
     throw vds.exception.newConfigException('参数1实体变量不能为空')
   }

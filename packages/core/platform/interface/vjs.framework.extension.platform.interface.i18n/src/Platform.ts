@@ -24,13 +24,16 @@ const has = function (params) {
 }
 
 export {
-  get,
-  getExpLanguage,
-  getResourcePackage,
-  has,
-  hasExpLanguage,
-  hasResourcePackage,
+  initResourcePackage,
   init,
   initExp,
-  initResourcePackage
+  getResourcePackage,
+  getExpLanguage,
+  get,
+  hasResourcePackage,
+  hasExpLanguage,
+  has,
+  init,
+  get,
+  has
 }

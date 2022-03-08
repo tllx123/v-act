@@ -6,10 +6,9 @@
  *  返回值为布尔类型
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-
 const vds = { object }
 
-const main = function (str1, str2) {
+var main = function (str1, str2) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(str2)) str2 = ''
 

@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as cookie from '@v-act/vjs.framework.extension.platform.services.integration.vds.cookie'
 const vds = { object, exception, cookie }
 
-const main = function (
+var main = function (
   CookieName,
   CookieValue,
   Expires,

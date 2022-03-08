@@ -6,7 +6,7 @@ import * as window from '@v-act/vjs.framework.extension.platform.services.integr
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { window, rpc }
 
-const main = function () {
+var main = function () {
   try {
     return executeExpression()
   } catch (e) {

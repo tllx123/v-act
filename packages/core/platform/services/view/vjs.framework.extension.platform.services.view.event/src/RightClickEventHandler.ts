@@ -33,4 +33,17 @@ RightClickEventHandler.prototype = {
   }
 }
 
-export default RightClickEventHandler
+return RightClickEventHandler
+
+export {
+  addEventHandler,
+  addPlatformEventHandler,
+  existEvent,
+  fireDynamicWidgetEvent,
+  fireEvent,
+  firePlatformEvent,
+  hasPlatformEventHandler,
+  PlatformEvents,
+  removeAllEventHandler,
+  removeEventHandler
+}
