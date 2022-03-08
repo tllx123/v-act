@@ -1,2 +1,4 @@
-export * as RouteContext from './RouteContext'
-export * as RuleContext from './RuleContext'
+import RouteContext from './RouteContext'
+import RuleContext from './RuleContext'
+
+export { RouteContext, RuleContext }

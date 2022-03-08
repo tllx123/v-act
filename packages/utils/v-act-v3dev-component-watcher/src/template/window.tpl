@@ -1,5 +1,6 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useRouter } from 'next/router';
+import {ViewLib as viewLib} from '@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib'
 import dynamic from 'next/dynamic';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
@@ -34,6 +35,41 @@ function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
+    useEffect(()=>{
+      try{
+        viewLib.init({
+          "paramCfg": {
+            "skinType": "default",
+            "runningMode": "test",
+            "debug": false,
+            "debugPort": "",
+            "devId": "",
+            "contextPath": "",
+            "refComponents": {},
+            "showChromePlugin": false
+          },
+          "languageCode": "",
+          "componentCode": "{{@ componentCode}}",
+          "windowCode": "{{@ windowCode}}",
+          "componentPackMappingDatas": {},
+          "envirmentContext": {
+            "optimizeLink": true,
+            "isEncryptToken": false,
+            "ExceptionInstanceIden": "vxl0b2bdLP7aSIRoZJlf1Q__",
+            "CompatibleMode": true
+          },
+          "inputParam": {
+            "variable": {
+              "windowCode": "{{@ windowCode}}",
+              "componentCode": "{{@ componentCode}}",
+              "workspaceKey": "",
+            }
+          }
+        });
+      }catch(e){
+        console.error(e);
+      }
+    });
     return (
         <React.Fragment>
             {parseWindowSchema("{{@ componentCode}}",windowObjs,widgetDefines,{router,stackInfo})}

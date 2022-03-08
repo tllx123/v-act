@@ -1,8 +1,6 @@
 import * as operationLib from 'module'
 import * as viewContext from 'module'
 
-export function initModule() {}
-
 /**
  * 主入口
  * @param ids

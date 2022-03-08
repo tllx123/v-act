@@ -1,9 +1,10 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import {
+  ExpressionContext,
+  ExpressionEngine as expressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 
 //主入口(必须有)
 const main = function (param: FunctionContext) {
@@ -40,7 +41,7 @@ const main = function (param: FunctionContext) {
   }
 
   //
-  let expression = 'VConvertEntityToXML('
+  expression = 'VConvertEntityToXML('
   for (let i = 0; i < entityCodes.length; i++) {
     let entityCode = entityCodes[i]
     let entityCodeStr = '"' + entityCode + '"'

@@ -1,10 +1,5 @@
-import { Inappbrowser as BrowserService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-
-//初始化vjs模块，如果函数逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-export function initModule(sb) {
-  //sb：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
-  sandbox = sb
-}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { Inappbrowser as BrowserService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.appversion'
 
 //主入口(必须有)
 const main = function (param: FunctionContext) {
@@ -30,7 +25,7 @@ const main = function (param: FunctionContext) {
  * name 参数名称
  * paramArray 参数值
  * */
-function CheckParamNum(funName, paramArray, targetNum) {
+function CheckParamNum(funName: string, paramArray: any[], targetNum: number) {
   if (paramArray.length != targetNum) {
     throw new Error(
       funName +
@@ -46,7 +41,7 @@ function CheckParamNum(funName, paramArray, targetNum) {
  * paramName 参数名称
  * paramValue 参数值
  * */
-function CheckParamEmpty(funName, paramName, paramValue) {
+function CheckParamEmpty(funName: string, paramName: string, paramValue: any) {
   if (paramValue == null) {
     throw new Error(funName + '的参数[' + paramName + ']不能为空！')
   }

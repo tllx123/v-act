@@ -51,4 +51,4 @@ ExpressionContext.prototype = {
   }
 }
 
-return ExpressionContext
+export default ExpressionContext
