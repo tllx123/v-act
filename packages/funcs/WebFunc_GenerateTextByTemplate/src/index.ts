@@ -9,7 +9,7 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { ds, exception, expression, string }
 
-var main = function (templateStr) {
+const main = function (templateStr) {
   if (!templateStr) return ''
 
   // 在模板中提取所有要替换的串，${tableName.fieldName}

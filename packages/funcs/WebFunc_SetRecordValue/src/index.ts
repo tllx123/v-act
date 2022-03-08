@@ -7,7 +7,7 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { ds, expression, exception }
 
-var main = function (tableName, index, fields, values) {
+const main = function (tableName, index, fields, values) {
   if (tableName == null || tableName == '')
     throw vds.exception.newConfigException(
       '函数[SetRecordValue]：第一个参数不能为空'

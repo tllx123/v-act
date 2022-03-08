@@ -5,7 +5,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, rpc }
 
-var main = function (fileid) {
+const main = function (fileid) {
   if (vds.object.isUndefOrNull(fileid)) {
     throw new Error('参数不能为空，请检查')
   }

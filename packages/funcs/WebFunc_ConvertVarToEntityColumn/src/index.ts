@@ -7,7 +7,7 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { exception, ds, log, expression }
 
-var main = function (sourceValue, entityCode, fieldCode, separate) {
+const main = function (sourceValue, entityCode, fieldCode, separate) {
   //获取参数示例：
   if (undefined == sourceValue || null == sourceValue || sourceValue == '') {
     vds.log.log('来源字符串为空，不做处理！')

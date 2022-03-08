@@ -1,8 +1,17 @@
 /**
  * 默认属性处理器
  * */
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { widgetModule } from '@v-act/vjs.framework.extension.widget.manager'
+var scopeManager, sandbox, widgetModule
+
+export function initModule(sb) {
+  sandbox = sb
+  scopeManager = sb.getService(
+    'vjs.framework.extension.platform.interface.scope.ScopeManager'
+  )
+  widgetModule = sb.getService(
+    'vjs.framework.extension.widget.manager.widgetModule'
+  )
+}
 
 /**
  * 处理接口

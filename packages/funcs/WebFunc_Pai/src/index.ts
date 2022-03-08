@@ -7,7 +7,7 @@
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { math }
 
-var main = function () {
+const main = function () {
   return vds.math.pi()
 }
 export { main }

@@ -7,7 +7,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { exception, ds, expression }
 
-var main = function (tableName) {
+const main = function (tableName) {
   /*
    * 先根据参数获取数据眼
    * 再调用数据源的getSelectedRecords方法获取选中行

@@ -6,7 +6,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, ds, exception }
 
-var main = function (variables) {
+const main = function (variables) {
   if (variables) {
     variables =
       typeof variables == 'string' ? eval('(' + variables + ')') : variables

@@ -14,7 +14,7 @@ function toUnicode(data) {
   }
   return retVal
 }
-var main = function () {
+const main = function () {
   var argsLen = arguments.length
   var arg1 = argsLen >= 1 ? arguments[0] : null
 

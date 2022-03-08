@@ -24,6 +24,7 @@ const convertWebFunc = function (sourceDir, desDir) {
       let funcContent = new String(fs.readFileSync(sourceIndexPath))
       const reg = /vds\.import\((.+?)\)[;]/
       const match = funcContent.match(reg)
+      const dependencies = []
       if (match) {
         const importStr = match[1]
         const allImportStr = match[0]
@@ -46,6 +47,9 @@ const convertWebFunc = function (sourceDir, desDir) {
                 namespaces[namespaces.length - 1]
               } from '@v-act/vjs.framework.extension.platform.services.integration.${str}'\n`
             )
+            dependencies.push(
+              `@v-act/vjs.framework.extension.platform.services.integration.${str}`
+            )
           }
         })
         if (tempArray.length > 0) {
@@ -60,7 +64,44 @@ const convertWebFunc = function (sourceDir, desDir) {
         funcContent = funcContent.replace(allImportStr, scripts.join(''))
       }
       //console.log(funcContent);
+      funcContent = funcContent.replace(
+        'var main = function',
+        'const main = function'
+      )
       writeFile(path.resolve(distDir, 'src', 'index.ts'), funcContent)
+      const distPackagePath = path.resolve(distDir, 'package.json')
+      let distPackageObj
+      if (fs.existsSync(distPackagePath)) {
+        distPackageObj = JSON.parse(
+          new String(fs.readFileSync(distPackagePath))
+        )
+      } else {
+        distPackageObj = {
+          name: '@v-act/webfunc_' + funcCode.toLowerCase(),
+          version: '1.0.0-alpha.1',
+          description: '',
+          homepage: 'https://github.com/opensource-vplatform/v-act',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/opensource-vplatform/v-act.git',
+            directory: 'packages/rules/WebFunc_' + funcCode
+          },
+          main: 'dist/index.js',
+          module: 'dist/index.es.js',
+          types: 'dist/index.d.ts',
+          files: ['dist'],
+          scripts: {},
+          dependencies: {}
+        }
+      }
+      if (dependencies.length > 0) {
+        dependencies.forEach((dep) => {
+          let deps = distPackageObj.dependencies || {}
+          deps[dep] = '^1.0.0-alpha.1'
+          distPackageObj.dependencies = deps
+        })
+      }
+      writeFile(distPackagePath, JSON.stringify(distPackageObj, null, '\t'))
     } catch (e) {
       console.error('路径：' + manifestPath)
       console.error(e)
@@ -91,6 +132,7 @@ const convertWebRule = function (sourceDir, desDir) {
       let funcContent = new String(fs.readFileSync(sourceIndexPath))
       const reg = /vds\.import\((.+?)\)[;]/
       const match = funcContent.match(reg)
+      const dependencies = []
       if (match) {
         const importStr = match[1]
         const allImportStr = match[0]
@@ -113,6 +155,9 @@ const convertWebRule = function (sourceDir, desDir) {
                 namespaces[namespaces.length - 1]
               } from '@v-act/vjs.framework.extension.platform.services.integration.${str}'\n`
             )
+            dependencies.push(
+              `@v-act/vjs.framework.extension.platform.services.integration.${str}`
+            )
           }
         })
         if (tempArray.length > 0) {
@@ -130,8 +175,40 @@ const convertWebRule = function (sourceDir, desDir) {
         'var main = function',
         'const main = function'
       )
-      //console.log(funcContent);
       writeFile(path.resolve(distDir, 'src', 'index.ts'), funcContent)
+      const distPackagePath = path.resolve(distDir, 'package.json')
+      let distPackageObj
+      if (fs.existsSync(distPackagePath)) {
+        distPackageObj = JSON.parse(
+          new String(fs.readFileSync(distPackagePath))
+        )
+      } else {
+        distPackageObj = {
+          name: '@v-act/webrule_' + funcCode.toLowerCase(),
+          version: '1.0.0-alpha.1',
+          description: '',
+          homepage: 'https://github.com/opensource-vplatform/v-act',
+          repository: {
+            type: 'git',
+            url: 'https://github.com/opensource-vplatform/v-act.git',
+            directory: 'packages/rules/WebRule_' + funcCode
+          },
+          main: 'dist/index.js',
+          module: 'dist/index.es.js',
+          types: 'dist/index.d.ts',
+          files: ['dist'],
+          scripts: {},
+          dependencies: {}
+        }
+      }
+      if (dependencies.length > 0) {
+        dependencies.forEach((dep) => {
+          let deps = distPackageObj.dependencies || {}
+          deps[dep] = '^1.0.0-alpha.1'
+          distPackageObj.dependencies = deps
+        })
+      }
+      writeFile(distPackagePath, JSON.stringify(distPackageObj, null, '\t'))
     } catch (e) {
       console.error('路径：' + manifestPath)
       console.error(e)
@@ -184,6 +261,14 @@ const dir = path.resolve(
   'packages/core/platform/services/integration/vds'
 )
 //moveTo(dir)
-convertWebFuncs()
+//convertWebFuncs()
 //convertWebRules()
+const tmpDir = 'D:\\Workspace\\github\\v-act\\packages\\rules'
+const dirNames = fs.readdirSync(tmpDir)
+dirNames.forEach((dirName) => {
+  const p = path.resolve(tmpDir, dirName, 'packaget.json')
+  if (fs.existsSync(p)) {
+    fs.unlinkSync(p)
+  }
+})
 //convertWebFunc("D:\\Workspace\\github\\vplatform-plugin-function-client\\Webfunc_WXGetUserInfo", "D:\\Workspace\\github\\v-act\\packages\\funcs");

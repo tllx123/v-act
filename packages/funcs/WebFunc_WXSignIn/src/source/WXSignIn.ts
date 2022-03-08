@@ -1,21 +1,10 @@
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
-import { RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
+import {
+  RemoteMethodAccessor,
+  RemoteOperation as remoteOperation
+} from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-
-type Data = {
-  username?: string
-  latitude: number
-  longitude: number
-  fileId?: string
-  phone?: string
-  wechatName?: string
-  signTime?: string
-  resultMsgMainTitle?: string
-  resultMsgSubTitle?: string
-}
 
 //主入口(必须有)
 const main = function (param: FunctionContext) {
@@ -29,16 +18,10 @@ const main = function (param: FunctionContext) {
 }
 
 //微信就绪后获取地理位置信息
-let getLocation = function (entityName: string) {
+let getLocation = function (entityName) {
   progressBar.showProgress('正在获取您的位置...')
-  //@ts-ignore
   wx.getLocation({
-    success: function (res: {
-      latitude: number
-      longitude: number
-      speed: number
-      accuracy: number
-    }) {
+    success: function (res) {
       let latitude = res.latitude // 纬度，浮点数，范围为90 ~ -90
       let longitude = res.longitude // 经度，浮点数，范围为180 ~ -180。
       let speed = res.speed // 速度，以米/每秒计
@@ -52,7 +35,7 @@ let getLocation = function (entityName: string) {
       //			   progressBar.showProgress("请拍摄您的环境照片");
       chooseImage(entityName, data)
     },
-    fail: function () {
+    fail: function (res) {
       alert('获取地理位置失败，请检查并开启定位功能后再次尝试！')
       progressBar.hideProgress()
     }
@@ -62,18 +45,17 @@ let getLocation = function (entityName: string) {
 /**
  * 图片选择
  */
-let chooseImage = function (entityName: string, data: Data) {
-  //@ts-ignore
+let chooseImage = function (entityName, data) {
   wx.chooseImage({
     count: 1, // 默认9
     sizeType: ['compressed'], // 可以指定是原图还是压缩图 （ 原图：  'original'）
     sourceType: ['camera'], // 可以指定来源是相册还是相机，(相册：'album')
-    success: function (res: { localIds: string }) {
+    success: function (res) {
       progressBar.showProgress('正在上传图片...')
       let localId = res.localIds // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
       uploadImage(localId, entityName, data)
     },
-    cancel: function () {
+    cancel: function (res) {
       progressBar.hideProgress()
     }
   })
@@ -82,16 +64,15 @@ let chooseImage = function (entityName: string, data: Data) {
 /**
  * 图片上传接口
  */
-let uploadImage = function (localId: string, entityName: string, data: Data) {
-  //@ts-ignore
+let uploadImage = function (localId, entityName, data) {
   wx.uploadImage({
     localId: localId.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
     isShowProgressTips: 0, // 默认为1，显示进度提示
-    success: function (res: { serverId: string }) {
+    success: function (res) {
       let imageId = res.serverId // 返回图片的服务器端ID
       saveImage(imageId, entityName, data)
     },
-    fail: function () {
+    fail: function (res) {
       alert('上传图片失败，请检查网络后重新尝试！')
       progressBar.hideProgress()
     }
@@ -101,9 +82,9 @@ let uploadImage = function (localId: string, entityName: string, data: Data) {
 /**
  * 保存图片
  */
-let saveImage = function (imageId: string, entityName: string, data: Data) {
-  let cb = function (res: { responseText: string }) {
-    let obj = jsonUtil.json2obj(res.responseText)
+let saveImage = function (imageId, entityName, data) {
+  let cb = function (res) {
+    let obj = $.parseJSON(res.responseText)
     let fileId = obj.fileId
     data['fileId'] = fileId
     getUserInfo(data, entityName)
@@ -121,22 +102,19 @@ let saveImage = function (imageId: string, entityName: string, data: Data) {
 }
 
 //获取当前用户信息
-let getUserInfo = function (data: Data, entityName: string) {
+let getUserInfo = function (data, entityName) {
   let code = location.href.substring(
     location.href.indexOf('&code=') + 6,
     location.href.indexOf('&state')
   )
-  let cb = function (res: { responseText: string }) {
+  let cb = function (res) {
     //alert("用户信息"+res.responseText);
-    let obj = jsonUtil.json2obj(res.responseText)
+    let obj = $.parseJSON(res.responseText)
     data.username = obj.userid
     data.phone = obj.mobile
     data.wechatName = obj.name
-    //@ts-ignore
     window.WXUserID = obj.userid
-    //@ts-ignore
     window.WXWechatName = obj.name
-    //@ts-ignore
     window.WXPhone = obj.mobile
     saveRecord(data, entityName)
   }
@@ -145,13 +123,9 @@ let getUserInfo = function (data: Data, entityName: string) {
     location.href.substring(0, location.href.indexOf('module-operation')) +
     '/module-operation!executeOperation?operation=WexinGetUserInfo'
   //缓存当前用户名
-  //@ts-ignore
   if (window.WXUserID) {
-    //@ts-ignore
     data.username = window.WXUserID
-    //@ts-ignore
     data.phone = window.WXPhone
-    //@ts-ignore
     data.wechatName = window.WXWechatName
     saveRecord(data, entityName)
   } else {
@@ -165,7 +139,7 @@ let getUserInfo = function (data: Data, entityName: string) {
 }
 
 //保存打卡记录
-let saveRecord = function (config: Data, entityName: string) {
+let saveRecord = function (config, entityName) {
   progressBar.showProgress('正在保存数据...')
   let username = config.username
   let latitude = config.latitude
@@ -174,11 +148,7 @@ let saveRecord = function (config: Data, entityName: string) {
   let phone = config.phone
   let wechatName = config.wechatName
 
-  let ruleSetCallBack = function (rs: {
-    isSuccess: boolean
-    errorDetail: string
-    signTime: string
-  }) {
+  let ruleSetCallBack = function (rs) {
     let isSuccess = rs.isSuccess
     let errorDetail = rs.errorDetail
     let signTime = rs.signTime
@@ -212,7 +182,7 @@ let saveRecord = function (config: Data, entityName: string) {
 }
 
 //加载前台实体
-let loadData2Entity = function (data: Data, entityName: string) {
+let loadData2Entity = function (data, entityName) {
   let datamap = {
     wechataccountid: data.username,
     latitude: data.latitude,

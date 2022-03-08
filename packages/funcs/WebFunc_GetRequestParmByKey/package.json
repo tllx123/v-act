@@ -1,0 +1,21 @@
+{
+	"name": "@v-act/webfunc_getrequestparmbykey",
+	"version": "1.0.0-alpha.1",
+	"description": "2018-11-23获取的参数默认解码，可通过第二个参数（true/false）设置是否需要解码",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/funcs/WebFunc_GetRequestParmByKey"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.object": "^1.0.0-alpha.1"
+	}
+}

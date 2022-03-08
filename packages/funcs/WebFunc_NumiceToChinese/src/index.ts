@@ -13,7 +13,7 @@
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { exception }
 
-var main = function (num, zeroType, formatStr) {
+const main = function (num, zeroType, formatStr) {
   //获取函数传入的参数
   var num
   var zeroType

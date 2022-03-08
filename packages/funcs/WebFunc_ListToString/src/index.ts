@@ -7,7 +7,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { object, ds, exception, expression }
 
-var main = function (
+const main = function (
   dsName,
   columnName,
   separator,

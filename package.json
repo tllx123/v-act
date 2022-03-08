@@ -15,7 +15,8 @@
     "dev: widgetUtils": "node scripts/index.js build -w -s @v-act/widget-utils --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
     "prepare": "husky install && node scripts/index.js env",
-    "sync: widgets": "node scripts/index.js sync -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime"
+    "sync: widgets": "node scripts/index.js sync -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
+    "test": "node scripts/test.js"
   },
   "dependencies": {
     "@mui/icons-material": "^5.2.1",

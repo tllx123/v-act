@@ -14,7 +14,7 @@ vds.import(
 
 var formatHelperUtils,
   isAddStyle = false
-var main = function (widgetCode, entityCode, title, value) {
+const main = function (widgetCode, entityCode, title, value) {
   if (
     vds.object.isUndefOrNull(widgetCode) ||
     widgetCode == '' ||

@@ -1,12 +1,12 @@
-const obj2json = function (obj: object, encodeFunc?: boolean) {
+const obj2json = function (obj, encodeFunc) {
   return encode(obj, encodeFunc)
 }
 
-const json2obj = function (json: string) {
+const json2obj = function (json) {
   return decode(json)
 }
 
-const clone = function (obj: object) {
+const clone = function (obj) {
   let json = encode(obj)
   return decode(json)
 }
@@ -40,7 +40,7 @@ let m = {
   '\\': '\\\\'
 }
 
-let encodeString = function (s: string) {
+let encodeString = function (s) {
   if (/["\\\x00-\x1f]/.test(s)) {
     return (
       '"' +
@@ -58,7 +58,7 @@ let encodeString = function (s: string) {
   return '"' + s + '"'
 }
 
-let encodeArray = function (o: any[], encodeFunc?: boolean) {
+let encodeArray = function (o, encodeFunc) {
   let a = ['['],
     b,
     i,
@@ -91,7 +91,7 @@ let encodeArray = function (o: any[], encodeFunc?: boolean) {
   return a.join('')
 }
 
-let encodeDate = function (o: Date) {
+let encodeDate = function (o) {
   return (
     '"' +
     o.getFullYear() +
@@ -109,10 +109,10 @@ let encodeDate = function (o: Date) {
   )
 }
 
-let encode = function (o: object, encodeFunc?: boolean) {
+let encode = function (o, encodeFunc) {
   if (typeof o == 'undefined' || o === null) {
     return 'null'
-  } else if (Array.isArray(o)) {
+  } else if (Object.prototype.toString.call(o) === '[object Array]') {
     return encodeArray(o, encodeFunc)
   } else if (o instanceof Date) {
     return encodeDate(o)
@@ -163,7 +163,7 @@ let encode = function (o: object, encodeFunc?: boolean) {
   }
 }
 
-let decode = function (json: string) {
+let decode = function (json) {
   if (json == null || json == '') {
     return json
   }
@@ -189,4 +189,4 @@ let decode = function (json: string) {
   }
 }
 
-export { clone, json2obj, obj2json }
+export { obj2json, json2obj, clone }

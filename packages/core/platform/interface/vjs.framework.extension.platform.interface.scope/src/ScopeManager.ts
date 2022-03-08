@@ -321,7 +321,7 @@ const on = function (eventName: string, handler: (...args: any[]) => void) {
   storage.put(eventName, handlers)
 }
 
-const getScope = function (scopeId?: string) {
+const getScope = function (scopeId: string) {
   scopeId = scopeId || exports.getCurrentScopeId()
   const storage = _getScopeInstanceStorage()
   return storage.get(scopeId)

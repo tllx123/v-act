@@ -12,7 +12,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, widget }
 
-var main = function (entityName, indexNum) {
+const main = function (entityName, indexNum) {
   if (entityName == undefined || entityName === '') {
     var exception = vds.exception.newConfigException('实体名不能为空！')
     throw exception

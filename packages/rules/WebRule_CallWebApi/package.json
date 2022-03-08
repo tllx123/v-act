@@ -1,0 +1,36 @@
+{
+	"name": "@v-act/webrule_callwebapi",
+	"version": "1.0.0-alpha.1",
+	"description": "2019-10-22liangzc：处理参数丢失问题",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_CallWebApi"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.component": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.ds": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.exception": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.expression": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.object": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.rpc": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.widget": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.window": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.logic.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1"
+	}
+}

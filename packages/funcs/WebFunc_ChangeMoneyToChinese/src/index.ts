@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { exception, object }
 
-var main = function (money) {
+const main = function (money) {
   var cnNums = new Array(
     '零',
     '壹',

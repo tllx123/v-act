@@ -5,7 +5,7 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 const vds = { ds }
 
-var main = function (dsName, recordVals, fileCode, separator, type) {
+const main = function (dsName, recordVals, fileCode, separator, type) {
   ERRORNAME = '函数[实体记录多选]'
   //获取参数
   if (!separator) {

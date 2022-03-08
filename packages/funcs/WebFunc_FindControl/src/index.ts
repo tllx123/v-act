@@ -17,7 +17,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 const vds = { exception }
 
 vds.import('vds.widget.*')
-var main = function (entityName, fieldName, controlType, indexNum) {
+const main = function (entityName, fieldName, controlType, indexNum) {
   if (entityName == undefined || entityName === '') {
     var exception = vds.exception.newConfigException('实体名不能为空！')
     throw exception

@@ -2,7 +2,7 @@
  *
  *
  */
-var main = function () {
+const main = function () {
   var result = new Date().getTime()
   return result
 }

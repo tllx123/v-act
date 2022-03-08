@@ -4,7 +4,7 @@
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { rpc }
 
-var main = function (param) {
+const main = function (param) {
   var result = false
   vds.rpc.callCommandSync('IsLoginExpression', null, {
     isOperation: true,

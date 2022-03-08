@@ -1,4 +1,4 @@
-var main = function (str) {
+const main = function (str) {
   var retStr = encodeURIComponent(str)
   return retStr
 }

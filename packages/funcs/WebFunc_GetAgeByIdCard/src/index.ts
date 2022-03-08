@@ -3,7 +3,7 @@
  *
  */
 vds.import('vds.object.*', 'vds.exception.*', 'vds.date.*', 'vds.rpc.*')
-var main = function (idcard) {
+const main = function (idcard) {
   var result = 0
   if (vds.object.isUndefOrNull(idcard)) {
     throw vds.exception.newConfigException('身份证号不能为空')

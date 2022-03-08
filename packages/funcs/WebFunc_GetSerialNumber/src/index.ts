@@ -6,7 +6,7 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, rpc, exception }
 
-var main = function (
+const main = function (
   TableName,
   TableColumn,
   prefix,

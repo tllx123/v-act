@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, exception, rpc }
 
-var main = function (key, serialNumber) {
+const main = function (key, serialNumber) {
   if (vds.object.isUndefOrNull(key) || vds.object.isUndefOrNull(serialNumber))
     throw vds.exception.newConfigException('传入参数不能为空，请检查')
 

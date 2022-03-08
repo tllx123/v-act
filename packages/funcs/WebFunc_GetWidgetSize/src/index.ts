@@ -7,7 +7,7 @@ import * as widget from '@v-act/vjs.framework.extension.platform.services.integr
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { exception, widget, object }
 
-var main = function (widgetCode, valueCode) {
+const main = function (widgetCode, valueCode) {
   if (!widgetCode)
     throw vds.exception.newConfigException(
       '函数 GetWidgetSize 第一个参数，控件Code不能为空！'

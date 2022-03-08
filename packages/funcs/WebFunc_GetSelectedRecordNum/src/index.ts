@@ -5,7 +5,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 const vds = { object, ds }
 
-var main = function (param) {
+const main = function (param) {
   var args = param.getArgs(),
     argsLen = args ? args.length : 0,
     dsName = argsLen >= 1 ? args[0] : null

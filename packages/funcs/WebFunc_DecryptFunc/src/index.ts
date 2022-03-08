@@ -9,7 +9,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { exception, string }
 
-var main = function (decryptValue, type, algorithmKey) {
+const main = function (decryptValue, type, algorithmKey) {
   var result = ''
   if (decryptValue == null) {
     var exception = vds.exception.newConfigException('解密的值不能为空!')

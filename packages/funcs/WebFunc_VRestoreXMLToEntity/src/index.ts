@@ -9,7 +9,7 @@ vds.import(
   'vds.log.*',
   'vds.rpc.*'
 )
-var main = function (actionXML) {
+const main = function (actionXML) {
   if (vds.object.isUndefOrNull(actionXML) || actionXML == '') {
     var exception = vds.exception.newConfigException(
       '[VRestoreXMLToEntity.main]执行失败，参数1:流程动作XML配置信息为空'

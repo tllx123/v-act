@@ -1,0 +1,21 @@
+{
+	"name": "@v-act/webfunc_evalexpression",
+	"version": "1.0.0-alpha.1",
+	"description": "2019-01-10liangzc:处理无法执行字符串的表达式",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/funcs/WebFunc_EvalExpression"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.expression": "^1.0.0-alpha.1"
+	}
+}

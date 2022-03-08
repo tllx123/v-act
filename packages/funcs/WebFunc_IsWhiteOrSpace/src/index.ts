@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { object, string }
 
-var main = function (str) {
+const main = function (str) {
   if (vds.object.isUndefOrNull(str)) {
     if (str === null) return true
     else throw new Error('传入参数不存在，请检查!')

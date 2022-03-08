@@ -13,7 +13,7 @@
 var hexcase = 0,
   chrsz = 8
 
-var main = function (encryptValue, unit, upperType) {
+const main = function (encryptValue, unit, upperType) {
   if (encryptValue == null || encryptValue == '') return ''
 
   if (vds.object.isUndefOrNull(unit)) {

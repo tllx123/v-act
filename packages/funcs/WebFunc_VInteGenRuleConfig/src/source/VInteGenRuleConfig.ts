@@ -1,5 +1,4 @@
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import { DatasourceManager as managerService } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
@@ -30,7 +29,7 @@ const main = function (param: FunctionContext) {
     return null
   }
 
-  let ruleConfinMap: { [code: string]: any } = {}
+  let ruleConfinMap = {}
   for (let i = 0; i < defines.length; i++) {
     let define = defines[i]
     let paramCode = define.paramCode
@@ -64,7 +63,7 @@ const main = function (param: FunctionContext) {
  * @param records Record对象列表
  * @return 对Record转换后的二维数组
  */
-let genDataMaps = function (records: Array<Record>) {
+let genDataMaps = function (records) {
   let dataMaps = []
   if (records && records.length > 0) {
     for (let i = 0; i < records.length; i++) {

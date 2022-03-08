@@ -2,7 +2,7 @@
  *
  *
  */
-var main = function (param) {
+const main = function (param) {
   //获取函数传入的参数
   if (undefined != browserService && window.VJSBridge) {
     ERRORNAME = '函数[OpenLinkByBrowser]：'

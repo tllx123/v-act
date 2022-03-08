@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as cookie from '@v-act/vjs.framework.extension.platform.services.integration.vds.cookie'
 const vds = { object, exception, cookie }
 
-var main = function (name, defaultVal) {
+const main = function (name, defaultVal) {
   if (vds.object.isUndefOrNull(name))
     throw vds.exception.newConfigException('传入cookie名称为空，请检查')
   if (vds.object.isUndefOrNull(defaultVal))

@@ -9,7 +9,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, widget }
 
-var main = function (widgetCode) {
+const main = function (widgetCode) {
   //获取函数传入的参数
   if (vds.object.isUndefOrNull(widgetCode)) {
     var exception = vds.exception.newConfigException(

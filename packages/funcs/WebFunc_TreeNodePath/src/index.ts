@@ -8,7 +8,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 const vds = { object, ds, exception, tree }
 
-var main = function (dsName, fieldName, spliter, treeStructCfgStr) {
+const main = function (dsName, fieldName, spliter, treeStructCfgStr) {
   dsName = vds.object.isUndefOrNull(dsName) ? null : dsName
   fieldName = vds.object.isUndefOrNull(fieldName) ? null : fieldName
   spliter = vds.object.isUndefOrNull(spliter) ? null : spliter

@@ -8,7 +8,7 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 const vds = { object, ds, exception, expression, log }
 
-var main = function (dsName, condition) {
+const main = function (dsName, condition) {
   if (dsName == null) {
     throw vds.exception.newConfigException('实体编码不允许为空，请检查配置')
   }

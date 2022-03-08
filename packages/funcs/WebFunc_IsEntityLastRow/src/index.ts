@@ -10,7 +10,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { ds, exception }
 
-var main = function (param) {
+const main = function (param) {
   var args = param.getArgs()
   var sourceName = args[0]
   if (sourceName == undefined || sourceName == null || sourceName == '') {

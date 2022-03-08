@@ -9,7 +9,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { exception, string }
 
-var main = function (encryptValue, type, algorithmKey) {
+const main = function (encryptValue, type, algorithmKey) {
   var result = ''
 
   if (encryptValue == null) {

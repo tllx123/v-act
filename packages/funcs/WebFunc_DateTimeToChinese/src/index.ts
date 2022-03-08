@@ -16,7 +16,7 @@ import * as math from '@v-act/vjs.framework.extension.platform.services.integrat
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { math, exception }
 
-var main = function (dateStr, formatStr) {
+const main = function (dateStr, formatStr) {
   //获取函数传入的参数
   if (dateStr == null || dateStr == '') {
     var exception = vds.exception.newConfigException('需要转换的日期不能为空！')

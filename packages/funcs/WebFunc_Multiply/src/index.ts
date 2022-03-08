@@ -1,7 +1,7 @@
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { math }
 
-var main = function (param) {
+const main = function (param) {
   var args = arguments,
     argsLen = args ? args.length : 0
 

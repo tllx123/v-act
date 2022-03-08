@@ -8,7 +8,7 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { object }
 
-var main = function (str1, str2) {
+const main = function (str1, str2) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(str2))
     throw new Error('字符串验证包含时第二个参数为空，请检查!')

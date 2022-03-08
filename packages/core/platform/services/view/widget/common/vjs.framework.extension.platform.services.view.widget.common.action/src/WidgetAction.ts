@@ -93,11 +93,7 @@ let getComponentActionHandler = function () {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeWidgetAction = function (
-  widgetId: string,
-  actionName: string,
-  ...args: any[]
-) {
+let executeWidgetAction = function (widgetId, actionName) {
   let scope = scopeManager.getChildWindowScope()
   let scopeId = scope ? scope.getInstanceId() : scopeManager.getCurrentScopeId()
   return scopeManager
@@ -200,11 +196,7 @@ let executeWidgetAction = function (
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeSubWidgetAction = function (
-  widgetId: string,
-  actionName: string,
-  ...args: any[]
-) {
+let executeSubWidgetAction = function (widgetId, actionName) {
   let widgetRelationList = widgetRelation.get(widgetId, false)
   for (let i = 0; i < widgetRelationList.length; i++) {
     let subWidgetId = widgetRelationList[i]

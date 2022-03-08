@@ -7,7 +7,7 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { ds, exception, log, expression }
 
-var main = function (dsName, fieldName) {
+const main = function (dsName, fieldName) {
   var datasource = null
   if (dsName == null)
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')

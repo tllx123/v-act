@@ -6,7 +6,7 @@ const vds = { object }
 
 vds.import('vds.exception.*')
 vds.import('vds.rpc.*')
-var main = function (key, model, sn) {
+const main = function (key, model, sn) {
   if (vds.object.isUndefOrNull(key) || vds.object.isUndefOrNull(model))
     throw vds.exception.newConfigException('传入参数不能为空，请检查')
 

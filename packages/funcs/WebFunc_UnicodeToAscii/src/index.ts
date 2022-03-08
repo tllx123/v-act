@@ -18,7 +18,7 @@ var toAscii = function (data) {
   }
   return retVal
 }
-var main = function (arg1) {
+const main = function (arg1) {
   if (vds.object.isUndefOrNull(arg1)) return ''
 
   arg1 = String(arg1)

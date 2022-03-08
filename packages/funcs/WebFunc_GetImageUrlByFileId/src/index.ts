@@ -25,7 +25,7 @@ var _handleImageValueRel = function (imageValueRel) {
   return imageValueRel
 }
 
-var main = function (fileId) {
+const main = function (fileId) {
   var url = getImageSrc(fileId)
   return url
 }

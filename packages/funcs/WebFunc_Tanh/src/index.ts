@@ -5,7 +5,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, math }
 
-var main = function (arg) {
+const main = function (arg) {
   if (vds.object.isUndefOrNull(arg))
     throw new Error('双曲正切值函数参数为空，请检查')
   if (!vds.object.isNumber(arg))

@@ -2,7 +2,7 @@
  *
  *
  */
-var main = function (unixTimestamp, dateFormat) {
+const main = function (unixTimestamp, dateFormat) {
   if (arguments.length < 1) {
     throw new Error(
       '参数个数不正确,要求参数个数1或2个,实际参数个数=' + args.length

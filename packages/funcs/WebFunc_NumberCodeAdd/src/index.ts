@@ -8,7 +8,7 @@
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { string }
 
-var main = function (numberCode, num) {
+const main = function (numberCode, num) {
   if (typeof numberCode == 'string' && numberCode != '')
     numberCode = vds.string.trim(numberCode)
 

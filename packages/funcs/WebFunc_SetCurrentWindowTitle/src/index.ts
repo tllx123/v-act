@@ -6,7 +6,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 const vds = { object, window }
 
-var main = function (newTitle) {
+const main = function (newTitle) {
   if (vds.object.isUndefOrNull(newTitle)) return
 
   vds.window.setTitle(newTitle)

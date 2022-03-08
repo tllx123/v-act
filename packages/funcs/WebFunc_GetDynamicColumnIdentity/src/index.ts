@@ -5,7 +5,7 @@
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { widget }
 
-var main = function (widgetId, columnName) {
+const main = function (widgetId, columnName) {
   var widget = vds.widget.getProperty(widgetId, 'widgetObj')
   if (widget && columnName) {
     var field = widget.lastClickField

@@ -4,7 +4,7 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { object }
 
-var main = function (name, defaultVal) {
+const main = function (name, defaultVal) {
   var get_name = 'toone_v3_mobile_localStorage_itemName_' + name
 
   if (vds.object.isUndefOrNull(name))

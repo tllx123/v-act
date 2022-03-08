@@ -36,7 +36,7 @@ var _getDataSource = function (dsName) {
   return datasource
 }
 
-var main = function (widgetCode, entityCode, fieldName) {
+const main = function (widgetCode, entityCode, fieldName) {
   if (!widgetCode)
     throw vds.exception.newConfigException(
       '函数 GetSelectedDateToEntity 第一个参数,控件Code不能为空!'

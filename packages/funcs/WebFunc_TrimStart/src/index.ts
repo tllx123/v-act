@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { object, string }
 
-var main = function (str) {
+const main = function (str) {
   if (vds.object.isUndefOrNull(str)) return ''
   else {
     //替换掉前空格

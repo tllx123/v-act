@@ -14,7 +14,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 const vds = { object, math, string, exception, ds }
 
-var main = function (dsName, columnName) {
+const main = function (dsName, columnName) {
   var datasource = null
   if (dsName == null) {
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')

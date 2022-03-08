@@ -8,7 +8,7 @@
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { exception }
 
-var main = function (decryptValue, type, secretkey) {
+const main = function (decryptValue, type, secretkey) {
   var result = ''
   if (decryptValue == null || decryptValue == undefined) {
     var exception = vds.exception.newConfigException('加密的值不能为空!')

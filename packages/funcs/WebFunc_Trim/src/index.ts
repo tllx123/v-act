@@ -9,7 +9,7 @@
  *  返回值为字符串类型
  *
  */
-var main = function (param1, param2) {
+const main = function (param1, param2) {
   if (!param2) {
     param2 = ''
   }

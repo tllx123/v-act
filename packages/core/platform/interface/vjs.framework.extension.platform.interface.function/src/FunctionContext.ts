@@ -1,5 +1,4 @@
 import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
-
 /**
  *  @class FunctionContext
  * @desc 函数上下文<br/>
@@ -10,8 +9,8 @@ import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.
  */
 class FunctionContext {
   args: Array<any>
-  routeContext?: RouteContext | null
-  constructor(args?: Array<any>, routeContext?: RouteContext | null) {
+  routeContext: RoutContext
+  constructor(args?: Array<any>, routeContext?: RouteContext) {
     this.args = args | []
     this.routeContext = routeContext
   }

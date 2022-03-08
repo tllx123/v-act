@@ -10,7 +10,7 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, string, number }
 
-var main = function (str, index1, index2) {
+const main = function (str, index1, index2) {
   if (vds.object.isUndefOrNull(str)) return ''
 
   str = String(str)

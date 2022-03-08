@@ -1,4 +1,4 @@
-var main = function () {
+const main = function () {
   return null
 }
 export { main }

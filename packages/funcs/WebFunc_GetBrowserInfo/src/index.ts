@@ -6,7 +6,7 @@
  * 参数3：字符串，选填，仅适用于参数1=“Match”时，选填)，关键字2，主要用于判断App平台或手机品牌等，不区分大小写
  * 参数4：字符串，选填，仅适用于参数1=“Match”时，选填，默认“and”)，关系操作符 枚举值：and/or ，不区分大小写
  */
-var main = function (Operation, KeyWord1, KeyWord2, Symbol) {
+const main = function (Operation, KeyWord1, KeyWord2, Symbol) {
   // 容错处理，默认获取name
   if (Operation == null || Operation == undefined) {
     Operation = 'name'
