@@ -99,6 +99,16 @@ class WidgetPropertySyntax extends Syntax {
       return `CC.${this.getWidgetCode()}.${this.getPropertyCode()}`
     }
   }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitWidgetPropertySyntax) {
+      return visitor.visitWidgetPropertySyntax(this, (syntax) => syntax.visit())
+    } else {
+      return false
+    }
+  }
 }
 
 export default WidgetPropertySyntax

@@ -68,6 +68,10 @@ class ComponentVarSyntax extends Syntax {
       return `@@${this.getCode()}`
     }
   }
+
+  visit() {
+    return false
+  }
 }
 
 export default ComponentVarSyntax

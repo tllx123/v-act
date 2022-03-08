@@ -22,6 +22,7 @@ class NotEqualSyntax extends ComparatorSyntax {
   getSymbol(): string {
     return NotEqualSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -30,6 +31,14 @@ class NotEqualSyntax extends ComparatorSyntax {
     } else {
       return super.toString()
     }
+  }
+
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitNotEqualSyntax
+      ? visitor.visitNotEqualSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

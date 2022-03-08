@@ -98,6 +98,16 @@ class EntityFieldSyntax extends Syntax {
       return `[${this.getEntityCode()}].[${this.getFieldCode()}]`
     }
   }
+
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitEntityFieldSyntax) {
+      visitor.visitEntityFieldSyntax(this, (syntax) => syntax.visit())
+    } else {
+      return false
+    }
+  }
 }
 
 export default EntityFieldSyntax

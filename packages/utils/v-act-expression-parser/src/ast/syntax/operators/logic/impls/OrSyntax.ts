@@ -27,6 +27,7 @@ class OrSyntax extends LogicSyntax {
   getSymbol(): string {
     return this.getOperator()
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -35,6 +36,13 @@ class OrSyntax extends LogicSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitOrSyntax
+      ? visitor.visitOrSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

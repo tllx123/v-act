@@ -25,6 +25,7 @@ class SubtractSyntax extends BinaryExpressionSyntax {
   getSymbol(): string {
     return SubtractSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -33,6 +34,14 @@ class SubtractSyntax extends BinaryExpressionSyntax {
     } else {
       return super.toString()
     }
+  }
+
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitSubtractSyntax
+      ? visitor.visitSubtractSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

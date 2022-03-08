@@ -142,6 +142,19 @@ abstract class BinaryExpressionSyntax extends Syntax {
     }
     return script.join('')
   }
+  visit(): boolean | string {
+    let script = []
+    let leftSyntax = this.getLeft()
+    if (leftSyntax) {
+      script.push(leftSyntax.visit())
+    }
+    this.constructor.toString()
+    let rightSyntax = this.getRight()
+    if (rightSyntax) {
+      script.push(rightSyntax.visit())
+    }
+    return script.join(',')
+  }
 }
 
 export default BinaryExpressionSyntax

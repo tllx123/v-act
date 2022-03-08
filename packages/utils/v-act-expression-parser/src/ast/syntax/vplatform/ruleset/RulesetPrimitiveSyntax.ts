@@ -65,6 +65,10 @@ abstract class RulesetPrimitiveSyntax extends Syntax {
   toString() {
     return this.getPrefix() + `.${this.getCode()}`
   }
+
+  visit() {
+    return false
+  }
 }
 
 export default RulesetPrimitiveSyntax

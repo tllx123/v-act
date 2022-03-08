@@ -99,6 +99,10 @@ class BusinessWidgetPropertySyntax extends Syntax {
       return `BC.${this.getWidgetCode()}.${this.getPropertyCode()}`
     }
   }
+
+  visit() {
+    return false
+  }
 }
 
 export default BusinessWidgetPropertySyntax

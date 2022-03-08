@@ -26,6 +26,7 @@ class RulesetEntityFieldInputSyntax extends RulesetEntitySyntax {
   getPrefix(): string {
     return RulesetEntityFieldInputSyntax.PREFIX
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -36,6 +37,14 @@ class RulesetEntityFieldInputSyntax extends RulesetEntitySyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    // const ctx = this.getContext(), visitor = ctx.getVisitor()
+
+    // return visitor && visitor.visitRulesetEntityFieldInputSyntax
+    // ? visitor.visitRulesetEntityFieldInputSyntax(this, syntax => syntax.visit()) : super.visit()
+
+    return false
   }
 }
 

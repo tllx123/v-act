@@ -26,6 +26,7 @@ class MultiplySyntax extends BinaryExpressionSyntax {
   getSymbol(): string {
     return MultiplySyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -34,6 +35,14 @@ class MultiplySyntax extends BinaryExpressionSyntax {
     } else {
       return super.toString()
     }
+  }
+
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitMultiplySyntax
+      ? visitor.visitMultiplySyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

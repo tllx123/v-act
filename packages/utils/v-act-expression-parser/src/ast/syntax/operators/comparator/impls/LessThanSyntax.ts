@@ -33,6 +33,7 @@ class LessThanSyntax extends ComparatorSyntax {
   getSymbol(): string {
     return LessThanSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -41,6 +42,13 @@ class LessThanSyntax extends ComparatorSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitLessThanSyntax
+      ? visitor.visitLessThanSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 
