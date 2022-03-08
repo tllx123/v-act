@@ -1,0 +1,11 @@
+{
+	"name": "@v-act/vjs.framework.extension.platform.services.integration.vds.window",
+	"version": "1.0.0-alpha.1",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"scripts": {},
+	"devDependencies": {}
+}

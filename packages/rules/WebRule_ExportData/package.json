@@ -1,0 +1,25 @@
+{
+	"name": "@v-act/webrule_exportdata",
+	"version": "1.0.0-alpha.1",
+	"description": "",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_ExportData"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+	}
+}

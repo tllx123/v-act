@@ -1,0 +1,42 @@
+{
+  "name": "@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib",
+  "version": "1.0.0-alpha.1",
+  "description": "",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.core"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.application.window.web.designer": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.info": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.param": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.alerter": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.environment": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.i18n": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.browser": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.init": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.relation": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.relation": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.window.property.processor": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.window.renderer": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.window.resources": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.mediator": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.dependency": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.init.smartclient.web": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.manager": "^1.0.0-alpha.1"
+  }
+}

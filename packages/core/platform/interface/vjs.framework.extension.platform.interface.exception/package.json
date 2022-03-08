@@ -1,0 +1,28 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.interface.exception",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-07-18liangzc：登录超时时，跳转的逻辑调整为当前容器内跳转",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.interface.exception"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.alerter": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.i18n": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

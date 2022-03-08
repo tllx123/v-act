@@ -1,0 +1,23 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.im.easemob",
+  "version": "1.0.0-alpha.1",
+  "description": "WebIM",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.im.easemob"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.im": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.base": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1"
+  }
+}

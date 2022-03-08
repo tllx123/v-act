@@ -1,0 +1,26 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.viewmodel.datamodel.tree",
+  "version": "1.0.0-alpha.1",
+  "description": "修正树升级降级",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.viewmodel.datamodel.tree"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.tree": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.file": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.map": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

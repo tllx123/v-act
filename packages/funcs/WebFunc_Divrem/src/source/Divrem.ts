@@ -1,0 +1,20 @@
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+
+export function initModule(sandbox) {}
+
+const main = function (param) {
+  let args = param.getArgs(),
+    argsLen = args ? args.length : 0,
+    arg1 = argsLen >= 1 ? args[0] : null,
+    arg2 = argsLen >= 2 ? args[1] : null
+
+  if (mathUtil.isEmpty(arg1) || mathUtil.isEmpty(arg2))
+    throw new Error('整数商函数参数为空，请检查')
+  if (!mathUtil.judgeNum(arg1) || !mathUtil.judgeNum(arg2))
+    throw new Error('整数商函数参数不是数字，请检查')
+  if (arg2 == 0) throw new Error('整数商函数除数不能为0，请检查')
+
+  return mathUtil.divrem(arg1, arg2)
+}
+
+export { main }

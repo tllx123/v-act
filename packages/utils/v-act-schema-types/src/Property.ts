@@ -315,6 +315,10 @@ interface Property {
    * 合计
    */
   showGridSummary?: string
+  /**
+   * 期次类型
+   */
+  periodType?: string
 }
 
 export default Property

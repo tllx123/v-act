@@ -1,0 +1,29 @@
+{
+	"name": "@v-act/webrule_vuc_getvucuserloginstate",
+	"version": "1.0.0-alpha.1",
+	"description": "2018-4-16tangjy：forin循环导致前台抛空异常，改为i++判断循环",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_VUC_GetVUCUserLoginState"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.browser": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.render": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.modal": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+	}
+}

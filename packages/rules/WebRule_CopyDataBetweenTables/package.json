@@ -1,0 +1,26 @@
+{
+	"name": "@v-act/webrule_copydatabetweentables",
+	"version": "1.0.0-alpha.1",
+	"description": "2018-01-12tangwf:来源表增加对'查询'的支持",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_CopyDataBetweenTables"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.domain.ruleset": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1"
+	}
+}

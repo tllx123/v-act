@@ -1,0 +1,35 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.tree",
+  "version": "1.0.0-alpha.1",
+  "description": "2019-06-21liangzc：处理叶子节点数据为空时，新增树节点后数据显示错误的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.domain.tree"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.enum": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.tree": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.repository.access": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.file": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.map": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

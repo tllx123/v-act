@@ -1,0 +1,46 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.init.view",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-11-19liangzc：处理水印",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.init.view"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.binding.data": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.adapter": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.info": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.storage.runtime.param": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.storage.schema.param": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.global": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.config": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.rpc.operation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.watermark": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.init": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.operation.remote.base": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.runtime.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.relation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.event": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.system.rpc": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.databinding": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

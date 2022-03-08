@@ -1,0 +1,137 @@
+/* ��ʾ�Ի�����ʽ */
+.dialogContainer * {
+	box-sizing: content-box !important;
+	-moz-box-sizing: content-box !important;
+	-webkit-box-sizing: content-box !important;
+}
+.dialogContainer {
+//	min-width: 270px;
+//	max-width: 550px;
+	width:270px;
+	height: auto;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+	display: none;
+	border-radius:6px;
+	overflow:hidden;
+	outline: none;
+}
+.dialogContainer > div {
+	-webkit-transform: scale(0.8);
+	-moz-transform: scale(0.8);
+	-ms-transform: scale(0.8);
+	transform: scale(0.8);
+	opacity: 0;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	transition: all 0.3s;
+}
+// .dialogContainer-border {
+// 	border: 1px solid @v-dialog-color;
+// }
+.dialogContainer.dialog-show {
+	display: block;
+}
+.dialogContainer.dialog-show > div {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+.dialogContainer .header {
+	height:24px;
+	background-color:#fff;/*@v-dialog-color*/
+	line-height:24px;
+	padding:10px 15px 0;
+	color: #212121;
+	text-align: center;
+	font-size:16px;
+}
+.dialogContainer .content {
+	padding: 15px;
+	background-color: #FFF;
+	font-size:14px;
+	color:#757575;
+	text-align:center;
+    word-break: break-all;   /*ǿ����ʾ��Ϣ����*/
+}
+.dialogContainer .foot {
+	height: 44px;
+	background-color: #FFF;
+	position:relative;
+}
+.dialogContainer .foot:after{
+	width: 100%;
+    height: 1px;
+    border-top:1px solid #ddd;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+}
+.dialogContainer .foot .foot_buttons {
+	text-align: center;
+	display:-webkit-box;
+    display:-webkit-flex;
+    display:flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.dialogContainer .foot .foot_buttons input[type='button'] {
+	-webkit-appearance: none;
+	border-radius: 0;
+	font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	font-style: normal;
+	padding: 0 12px;
+	outline: none;
+	height: 44px;
+	border:none;
+	line-height: 44px;
+	width:100%;
+}
+
+.dialogContainer .foot .foot_buttons .dialogConfirmSelect {
+	color:#0894ec;
+}
+.dialogContainer .foot .foot_buttons .dialogConfirmUnSelect {
+	color:#505050;
+}
+
+.dialogContainer .foot .foot_buttons #dialogConfirm {
+	background-color: #FFF;
+	border-right:1px solid #eee;
+}
+
+.dialogContainer .foot .foot_buttons #dialogCancel {
+	background-color: #FFF;
+}
+.dialogContainer .foot .foot_buttons #dialogIKnow {
+	font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	font-style: normal;
+	padding: 0 12px;
+	outline: none;
+	height: 44px;
+	line-height:44px;
+	width:100%;
+	border:none;
+	color:#0894ec;
+}
+.dialogContainer .foot .foot_buttons #dialogIKnow > span {
+	font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+	font-size: 14px;
+	font-weight: normal;
+	font-style: normal;
+	color: red;
+}
+
+/* ��ʾ�Ի�����ʽ */

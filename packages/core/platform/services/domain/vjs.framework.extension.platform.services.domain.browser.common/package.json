@@ -1,0 +1,18 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.domain.browser.common",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-07-09liangzc：修改退出时的触发的跨域逻辑",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.domain.browser.common"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}

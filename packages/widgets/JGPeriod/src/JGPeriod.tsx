@@ -1,6 +1,5 @@
 import React, { CSSProperties, forwardRef, useRef, useState } from 'react'
 
-import { Property } from 'csstype'
 import zhCN from 'date-fns/locale/zh-CN'
 import moment from 'moment'
 
@@ -19,89 +18,13 @@ import Menu from '@mui/material/Menu'
 import TextField from '@mui/material/TextField'
 import { styled } from '@mui/system'
 import { JGInputLabel } from '@v-act/jginputlabel'
-import { Height, Width } from '@v-act/schema-types'
-import { FieldValue, useContext } from '@v-act/widget-context'
-import {
-  getFieldValue,
-  isNullOrUnDef,
-  toHeight,
-  toLabelWidth,
-  toWidth
-} from '@v-act/widget-utils'
+import { JGComponentProps } from '@v-act/schema-types'
 
 type enumLayoutData = {
   title: number
   enumArr: string[]
 }
-interface JGPeriodProps extends InputUnstyledProps {
-  /**
-   * 左边距
-   */
-  left?: Property.Left
-  /**
-   * 上边距
-   */
-  top?: Property.Top
-  /**
-   * 高度
-   */
-  multiHeight?: Height
-  /**
-   * 宽度
-   */
-  multiWidth?: Width
-  /**
-   * 标题
-   */
-  labelText?: string
-  /**
-   * 标题宽度
-   */
-  labelWidth?: number
-  /**
-   * 提醒文字
-   */
-  placeholder?: string
-  /**
-   * 必填
-   */
-  isMust?: boolean
-  /**
-   * 显示
-   */
-  visible?: boolean
-
-  /**
-   * 显示标题
-   */
-  labelVisible?: boolean
-
-  /**
-   * 显示宽度
-   */
-  width?: Property.Width
-
-  /**
-   * 显示高度
-   */
-  height?: Property.Height
-
-  /**
-   * 输入框显示类型
-   */
-  inputType?: string
-  /**
-   * 禁用
-   */
-  disabled?: boolean
-  /**
-   * 实体编号
-   */
-  tableName?: string | null
-  /**
-   * 字段编号
-   */
-  columnName?: string | null
+interface JGPeriodProps extends JGComponentProps {
   periodType?: string
 }
 
@@ -134,7 +57,7 @@ const StyledInputElement = styled('input')`
 `
 
 const CustomInput = forwardRef(function (
-  props: JGPeriodProps,
+  props: InputUnstyledProps,
   ref: React.ForwardedRef<HTMLDivElement>
 ) {
   return (
@@ -151,16 +74,27 @@ let maxDate = new Date(moment().add(5, 'years').format('YYYY'))
 let minDateName = moment(minDate).format('YYYY')
 let maxDateName = moment(maxDate).format('YYYY')
 const JGPeriod = function (props: JGPeriodProps) {
-  if (!props.visible) {
-    return null
-  }
-  const context = useContext()
-  let value: FieldValue = ''
-  if (props.tableName && props.columnName) {
-    value = getFieldValue(props.tableName, props.columnName, context)
-    value = isNullOrUnDef(value) ? '' : value
-  }
-  const [inputVal, setInputVal] = useState<any>('')
+  const {
+    left,
+    top,
+    height,
+    width,
+    ismust,
+    labeltext,
+    margin,
+    padding,
+    readonly,
+    labelVisible,
+    labelWidth,
+    disabled,
+    position,
+    value,
+    onChanged,
+    periodType,
+    placeholder
+  } = props
+
+  const [inputVal, setInputVal] = useState<any>(value)
   const [minDateVal, setMinDateVal] = useState<any>(minDate)
   const [maxDateVal, setMaxDateVal] = useState<any>(maxDate)
   const [minDateNameVal, setMinDateNameVal] = useState<any>(minDateName)
@@ -170,6 +104,8 @@ const JGPeriod = function (props: JGPeriodProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
   const menuWrapScope = useRef(null)
+  if (value !== inputVal) setInputVal(value)
+  console.log('变了？', value, inputVal)
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(menuWrapScope.current)
   }
@@ -217,16 +153,6 @@ const JGPeriod = function (props: JGPeriodProps) {
     }
   }
 
-  const monthData = () => {
-    let initMonth = 1
-    let retMonth = []
-    while (initMonth <= 12) {
-      retMonth.push({ title: '', enumArr: initMonth })
-      initMonth++
-    }
-    return {}
-  }
-
   const [dateModalSelectedVal, setDateModalSelectedVal] = useState(
     +moment().format('YYYY')
   )
@@ -259,34 +185,39 @@ const JGPeriod = function (props: JGPeriodProps) {
   }
 
   const [enumSelectedYearVal, setEnumSelectedYearVal] = useState<any>(
-    props.periodType ? dateEnumData[props.periodType]?.initYear : void 0
+    periodType ? dateEnumData[periodType]?.initYear : void 0
   )
   const [enumSelectedVal, setEnumSelectedVal] = useState<any>(
-    props.periodType ? dateEnumData[props.periodType]?.initActive : void 0
+    periodType ? dateEnumData[periodType]?.initActive : void 0
   )
 
   const [dateEnumVal, setDateEnumVal] = useState<any>(
-    props.periodType ? dateEnumData[props.periodType]?.data : void 0
+    periodType ? dateEnumData[periodType]?.data : void 0
   )
   const handleConfirmDate = () => {
+    if (!inputVal) handleSelectedCurrent()
     handleClose()
   }
-
+  const handleSyncValue = (val: string) => {
+    console.log('有值不：', { target: { value: val } })
+    onChanged && onChanged({ target: { value: val } })
+    setInputVal(val)
+  }
   const handleSelectedCurrent = () => {
     let currentYear = +moment().format('YYYY')
-    switch (props.periodType) {
+    switch (periodType) {
       case 'years':
         let min = new Date(moment().subtract(6, 'years').format('YYYY'))
         let max = new Date(moment().add(5, 'years').format('YYYY'))
         setMinDateVal(min)
         setMaxDateVal(max)
-        setInputVal(moment().format('YYYY') + '年')
+        handleSyncValue(moment().format('YYYY') + '年')
         setInputDateVal(new Date())
         handleClose()
         break
       case 'halfyear':
         let currentHalfYear = moment().month() < 6 ? '上半年' : '下半年'
-        setInputVal(moment().format('YYYY') + currentHalfYear)
+        handleSyncValue(moment().format('YYYY') + currentHalfYear)
         setDateModalSelectedVal(currentYear)
         setDateModalVal(calcDateModalData(currentYear))
         setDateEnumVal(calcEnumLayoutData(currentYear, ['上半年', '下半年']))
@@ -295,7 +226,7 @@ const JGPeriod = function (props: JGPeriodProps) {
         break
       case 'quarter':
         let currentQuarter = String(moment().quarter())
-        setInputVal(`${moment().format('YYYY')}年0${currentQuarter}季`)
+        handleSyncValue(`${moment().format('YYYY')}年0${currentQuarter}季`)
         setDateModalSelectedVal(currentYear)
         setDateModalVal(calcDateModalData(currentYear))
         setDateEnumVal(calcEnumLayoutData(currentYear, [1, 2, 3, 4]))
@@ -306,7 +237,7 @@ const JGPeriod = function (props: JGPeriodProps) {
   }
 
   const handleClearSelectDate = () => {
-    setInputVal('')
+    handleSyncValue('')
     handleClose()
   }
 
@@ -338,7 +269,7 @@ const JGPeriod = function (props: JGPeriodProps) {
     let minDate = String(val - 6)
     let maxDate = String(val + 5)
     setDateModalVal(calcDateModalData(val))
-    switch (props.periodType) {
+    switch (periodType) {
       case 'years':
         setMinDateVal(() => {
           return new Date(minDate)
@@ -374,42 +305,22 @@ const JGPeriod = function (props: JGPeriodProps) {
       halfyear: `${yearNum}${clickVal}`,
       quarter: `${yearNum}年0${clickVal}季`
     }
-    setInputVal(props.periodType ? showVals[props.periodType] : void 0)
+    handleSyncValue(periodType ? showVals[periodType] : void 0)
     setEnumSelectedYearVal(yearNum)
     setEnumSelectedVal(clickVal)
   }
   const handleChangeForYearView = (date: any) => {
-    setInputVal(moment(date).format('YYYY') + '年')
+    handleSyncValue(moment(date).format('YYYY') + '年')
     setInputDateVal(date)
   }
   const handleChangeForMonthView = (date: any) => {
-    setInputVal(moment(date).format('YYYY' + '年' + 'MM' + '月'))
+    handleSyncValue(moment(date).format('YYYY' + '年' + 'MM' + '月'))
     handleClose()
-  }
-  const width = toWidth(props.multiWidth, context, '235px')
-  const height = toHeight(props.multiHeight, context, '26px')
-  const labelWidth = props.labelVisible
-    ? toLabelWidth(props.labelWidth, context, 94)
-    : 0
-  const wrapStyles: CSSProperties = {
-    width: width,
-    height: height,
-    fontSize: '14px',
-    display: 'flex',
-    position: context.position,
-    left: props.left,
-    top: props.top,
-    fontFamily:
-      'Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\\8F6F\\96C5\\9ED1,Arial,sans-serif'
   }
   let inputWidth = String(width)
 
   if (inputWidth.indexOf('px') !== -1) inputWidth = inputWidth.replace(/px/, '')
-  const inputStyles = {
-    width: '100%',
-    height: height,
-    display: 'inline-block'
-  }
+
   const yearPickerWrap: CSSProperties = {
     width: '350px',
     fontSize: '14px'
@@ -428,13 +339,6 @@ const JGPeriod = function (props: JGPeriodProps) {
   const calendarOperateWrapStyles: CSSProperties = {
     display: 'flex',
     justifyContent: 'space-around'
-  }
-  const calendarOperateIconStyles: CSSProperties = {
-    padding: '2px 14px',
-    borderRadius: '25px',
-    backgroundColor: '#1976d2',
-    color: '#fff',
-    cursor: 'pointer'
   }
 
   const datePickerHeaderWrapStyle: CSSProperties = {
@@ -489,14 +393,27 @@ const JGPeriod = function (props: JGPeriodProps) {
     backgroundColor: '#356abb'
   }
   return (
-    <div style={wrapStyles}>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: width,
+        height: height,
+        position: position,
+        left: left,
+        top: top,
+        margin: margin,
+        padding: padding,
+        pointerEvents: readonly ? 'none' : 'auto'
+      }}
+    >
       <JGInputLabel
         width={labelWidth}
         height={height}
-        visible={props.labelVisible}
-        required={props.isMust}
+        visible={labelVisible}
+        required={ismust}
       >
-        {props.labelText}
+        {labeltext}
       </JGInputLabel>
       <div
         style={calendarBoxStyles}
@@ -507,12 +424,11 @@ const JGPeriod = function (props: JGPeriodProps) {
         ref={menuWrapScope}
       >
         <CustomInput
-          style={inputStyles}
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           type={'text'}
-          onChange={(e) => setInputVal(e.target.value)}
+          onChange={(e) => handleSyncValue(e.target.value)}
           value={inputVal}
-          disabled={props.disabled}
+          disabled={disabled}
         />
         <IconButton
           aria-label="日期按钮"
@@ -532,14 +448,14 @@ const JGPeriod = function (props: JGPeriodProps) {
         sx={{
           '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper':
             {
-              width: props.periodType !== 'month' ? '249px' : 'auto'
+              width: periodType !== 'month' ? '249px' : 'auto'
             },
           '& .MuiYearPicker-root button': {
             height: '30px'
           }
         }}
       >
-        {props.periodType !== 'month' && (
+        {periodType !== 'month' && (
           <div style={datePickerHeaderWrapStyle}>
             <IconButton
               aria-label="日期后退按钮"
@@ -553,7 +469,7 @@ const JGPeriod = function (props: JGPeriodProps) {
                 }}
               />
             </IconButton>
-            {props.periodType === 'month' && (
+            {periodType === 'month' && (
               <div
                 style={datePickerHeaderTextStyle}
                 id="menuWrapScopeForDateModal"
@@ -566,7 +482,7 @@ const JGPeriod = function (props: JGPeriodProps) {
                 {monthNameVal}年
               </div>
             )}
-            {props.periodType !== 'month' && (
+            {periodType !== 'month' && (
               <div
                 style={datePickerHeaderTextStyle}
                 id="menuWrapScopeForDateModal"
@@ -593,7 +509,7 @@ const JGPeriod = function (props: JGPeriodProps) {
             </IconButton>
           </div>
         )}
-        {props.periodType === 'years' && (
+        {periodType === 'years' && (
           <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
             <YearPicker
               date={inputDateVal}
@@ -605,7 +521,7 @@ const JGPeriod = function (props: JGPeriodProps) {
           </LocalizationProvider>
         )}
 
-        {props.periodType &&
+        {periodType &&
           dateEnumVal &&
           dateEnumVal.map((val: enumLayoutData) => (
             <Box sx={dateYearItemWrap}>
@@ -629,7 +545,7 @@ const JGPeriod = function (props: JGPeriodProps) {
             </Box>
           ))}
 
-        {props.periodType === 'month' && (
+        {periodType === 'month' && (
           <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
             <StaticDatePicker
               displayStaticWrapperAs="desktop"
@@ -646,7 +562,7 @@ const JGPeriod = function (props: JGPeriodProps) {
             />
           </LocalizationProvider>
         )}
-        {props.periodType !== 'month' && (
+        {periodType !== 'month' && (
           <div style={calendarOperateWrapStyles}>
             <Button variant="contained" onClick={handleSelectedCurrent}>
               本年
@@ -690,25 +606,21 @@ const JGPeriod = function (props: JGPeriodProps) {
             </li>
           ))}
       </Menu>
-    </div>
+    </Box>
   )
 }
 
 JGPeriod.defaultProps = {
-  left: '0px',
-  top: '0px',
-  multiHeight: '26px',
-  multiWidth: '235px',
-  labelWidth: 94,
-  labelText: '期次',
+  labeltext: '文本',
+  width: '235px',
+  height: '26px',
+  position: 'absolute',
+  left: 0,
+  top: 0,
   placeholder: '',
-  isMust: false,
-  visible: true,
   labelVisible: true,
-  disabled: false,
+  labelWidth: 94,
   periodType: 'years'
 }
 
 export default JGPeriod
-export { JGPeriod }
-export type { JGPeriodProps }

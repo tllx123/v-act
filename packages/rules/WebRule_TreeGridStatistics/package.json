@@ -1,0 +1,28 @@
+{
+	"name": "@v-act/webrule_treegridstatistics",
+	"version": "1.0.0-alpha.1",
+	"description": "2017-09-14kangyz：树表向上汇总改为支持其他事件",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_TreeGridStatistics"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.interface.model.tree": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.tree": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.logic.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.math": "1.0.0-alpha.1"
+	}
+}

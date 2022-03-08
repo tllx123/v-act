@@ -1,0 +1,32 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-02-05tangwf:增加保存时配置为空的处理",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.viewmodel.dataadapter"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.enum": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.metadata": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.model.manager.tree": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.native.mobile.localdb": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.repository.remote.base": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

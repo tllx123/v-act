@@ -1,0 +1,32 @@
+{
+	"name": "@v-act/webrule_exporttabledata",
+	"version": "1.0.0-alpha.1",
+	"description": "2019-02-19liangzc：处理导出内容包含单引号报错的问题2019-12-10导出表格数据到Excel，合并单元格的数据导出后没有合并",
+	"homepage": "https://github.com/opensource-vplatform/v-act",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/opensource-vplatform/v-act.git",
+		"directory": "packages/rules/WebRule_ExportTableData"
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.engine.expression": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.domain.tree": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.widget.dynamiccolumn": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.ui.plugin.manager": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.map": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+	}
+}

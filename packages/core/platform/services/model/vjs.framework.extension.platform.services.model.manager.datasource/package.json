@@ -1,0 +1,24 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.model.manager.datasource",
+  "version": "1.0.0-alpha.1",
+  "description": "2016-06-21xiedh：添加新接口，获取除虚拟数据源外所有数据源实例",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.model.manager.datasource"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.metadata": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1"
+  }
+}

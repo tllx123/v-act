@@ -1,0 +1,24 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.view.relation",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-11-20liangzc：添加resize函数",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.view.relation"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.core": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.alerter": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+  }
+}

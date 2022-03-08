@@ -1,0 +1,22 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.interface.skin",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-12-04liangzc：皮肤变量vjs",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.interface.skin"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.interface.environment": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.style.preprocessor.less": "1.0.0-alpha.1"
+  }
+}

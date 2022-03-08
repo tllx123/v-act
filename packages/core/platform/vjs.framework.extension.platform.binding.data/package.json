@@ -1,0 +1,23 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.binding.data",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-06-13liangzc：处理执行observer相关方法时域不正确的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.binding.data"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.observer": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1"
+  }
+}

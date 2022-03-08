@@ -1,0 +1,18 @@
+{
+  "name": "@v-act/vjs.framework.extension.system.event",
+  "version": "1.0.0-alpha.1",
+  "description": "2017-06-02xiedh:调整事件回调最大数量",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.system.event"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}
