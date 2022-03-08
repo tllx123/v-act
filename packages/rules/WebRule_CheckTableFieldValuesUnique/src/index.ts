@@ -9,8 +9,9 @@ import * as message from '@v-act/vjs.framework.extension.platform.services.integ
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 const vds = { ds, expression, log, message, string }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var returnValue = true //处理此规则时，记录是否中断业务规则不再往下执行，返回true:不中断，false:中断

@@ -7,10 +7,12 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
 const vds = { ds, log, object, rpc, string }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var dtChileMaps = inParamsObj['dtChileMaps']

@@ -14,6 +14,11 @@
  *  @author dengb
  */
 
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 var Record
 var nativeMethodAccessorService
 
@@ -27,12 +32,9 @@ exports.initModule = function (sBox) {
   )
 }
 
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { ds, object }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   //处理规则的入参
   var inParamsObj = ruleContext.getVplatformInput()
   var invokeTarget = inParamsObj['invokeTarget']

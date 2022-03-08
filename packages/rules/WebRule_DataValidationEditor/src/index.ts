@@ -3,6 +3,19 @@
  *
  */
 
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 /**
  * 校验不为空
  */
@@ -313,16 +326,6 @@ var regs = [
   checkRegularExp //20.正则表达式
 ]
 
-import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 const vds = {
   component,
   ds,
@@ -336,9 +339,8 @@ const vds = {
   window
 }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var expressType
       var checkResult = true

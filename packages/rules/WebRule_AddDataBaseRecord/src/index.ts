@@ -1,18 +1,20 @@
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 /**
  *	新增数据库中的记录
  */
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-const vds = { rpc, log, exception, expression, string }
-
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
+const vds = { rpc, log, exception, expression, string }
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParams = ruleContext.getVplatformInput()
       if (!inParams) {

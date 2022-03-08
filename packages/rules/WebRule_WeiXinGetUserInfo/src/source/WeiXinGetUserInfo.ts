@@ -1,3 +1,4 @@
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
@@ -5,7 +6,7 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 export function initModule(sBox) {}
 
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   let routeContext = ruleContext.getRouteContext()
   if (!isWeiXinFunc()) {
     alert('【获取微信用户信息】规则仅支持微信端使用!')

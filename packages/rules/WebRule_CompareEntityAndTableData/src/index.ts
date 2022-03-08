@@ -9,9 +9,12 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+// 规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   component,
   ds,
@@ -24,9 +27,8 @@ const vds = {
   window
 }
 
-// 规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       // 当任何一条匹配数据不满足比较条件时，返回false，否则返回true(包括两种情况：不存在匹配数据或所有匹配数据都满足比较条件)；
       var bussinessReturnValue = true
@@ -512,5 +514,4 @@ var getDsName = function (widgetCode) {
 }
 
 //#endregion
-
 export { main }

@@ -1,14 +1,19 @@
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 /**
  *  给界面实体/控件/变量赋值
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+/**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   ds,
   exception,
@@ -20,11 +25,8 @@ const vds = {
   widget
 }
 
-/**
- * 规则入口
- */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParams = ruleContext.getVplatformInput()
       if (!inParams) {

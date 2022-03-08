@@ -13,7 +13,8 @@ export function initModule(sBox) {
 }
 
 //规则主入口(必须有)
-const main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   debugger
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()

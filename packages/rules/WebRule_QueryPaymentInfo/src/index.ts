@@ -12,8 +12,9 @@ vds.import(
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var cfg = ruleContext.getVplatformInput()
       if (!cfg) {

@@ -7,8 +7,9 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
 const vds = { ds, expression, message }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
 

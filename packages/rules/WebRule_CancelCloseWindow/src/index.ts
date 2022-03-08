@@ -3,12 +3,14 @@
  *
  */
 
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = { window }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       vds.window.cancelClose()
       resolve()

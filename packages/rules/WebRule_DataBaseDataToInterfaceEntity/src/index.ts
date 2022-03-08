@@ -23,8 +23,9 @@ const vds = {
   window
 }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       filterConfig(inParamsObj)
@@ -33,7 +34,7 @@ const main = function (ruleContext) {
       var treeStruct = inParamsObj['treeStruct']
 
       var asyFun = function (itemConfig, isLast) {
-        return new Promise(
+        return new Promise<void>(
           (function (itemConfig, isLast) {
             return function (_resolve, _reject) {
               var isType = itemConfig['Istype']

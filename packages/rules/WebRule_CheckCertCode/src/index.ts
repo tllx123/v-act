@@ -28,8 +28,9 @@ const vds = {
 }
 
 // 规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       //图片组件ID

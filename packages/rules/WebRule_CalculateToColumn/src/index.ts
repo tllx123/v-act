@@ -3,17 +3,19 @@
  * fPrice*fAmount。)
  */
 
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { object, exception, expression, message, log, ds, widget }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       //获取参数：赋值字段（格式：数据源.字段参数）

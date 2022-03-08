@@ -1,4 +1,9 @@
 /**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+/**
  *	修改数据库中的记录
  */
 vds.import(
@@ -12,11 +17,9 @@ vds.import(
   'vds.string.*',
   'vds.rpc.*'
 )
-/**
- * 规则入口
- */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParams = ruleContext.getVplatformInput()
       if (!inParams) {

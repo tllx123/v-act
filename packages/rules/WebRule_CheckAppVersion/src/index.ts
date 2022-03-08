@@ -4,11 +4,13 @@
  */
 
 import * as app from '@v-act/vjs.framework.extension.platform.services.integration.vds.app'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 const vds = { app }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var callback = function (version) {
         setBusinessRuleResult(ruleContext, version)

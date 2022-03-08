@@ -5,14 +5,16 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+// 规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { ds, i18n, message, string, tree, widget }
 
-// 规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       // 处理规则配置值
       var inParamsObjs = ruleContext.getVplatformInput()

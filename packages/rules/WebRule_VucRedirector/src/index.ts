@@ -1,16 +1,18 @@
+import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
 /**
  *统一认证跳转
  */
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-const vds = { expression, browser, string }
-
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
+const vds = { expression, browser, string }
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       // 获取开发系统配置的参数
       var inParamsObj = ruleContext.getVplatformInput()

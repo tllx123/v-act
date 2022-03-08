@@ -3,10 +3,12 @@
  */
 
 import * as app from '@v-act/vjs.framework.extension.platform.services.integration.vds.app'
+
 const vds = { app }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var success = function (result) {
         if (ruleContext.setResult) {

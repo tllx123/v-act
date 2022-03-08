@@ -4,7 +4,8 @@ import { HardwareOperation as hardwareOperationService } from '@v-act/vjs.framew
 export function initModule(sBox) {}
 
 //规则主入口(必须有)
-const main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   //		// 获取规则链路由上下文,终止执行后续规则
   //		var routeContext = ruleContext.getRouteContext();
   //		// 获取规则链路由上下文的配置参数值

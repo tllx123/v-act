@@ -5,6 +5,8 @@ import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import {
   FileTransfer as FileTransferService,
@@ -16,8 +18,7 @@ export function initModule(sBox) {
   sandbox = sBox
 }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值

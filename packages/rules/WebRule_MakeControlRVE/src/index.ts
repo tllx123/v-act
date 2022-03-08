@@ -1,20 +1,23 @@
 /**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+/**
  *  当指定字段满足某条件时控制其他控件的只读、使能、显示
  *	适用场景：组件加载时，无数据时允许某些控件使用或不使用，或某个值改变后允许某些控件使用或不使用。
  *	适用事件：值改变,按钮事件，组件加载
  *	功能描述：控制指定控件是否是可用状态
  */
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { widget }
 
 var CONTROLTYPE_READONLY = '1' //控制类型：只读
 var CONTROLTYPE_ENABLE = '2' //控制类型：使能
 var CONTROLTYPE_VISIBLE = '3' //控制类型：显示
-/**
- * 规则入口
- */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var mapping = inParamsObj['mapping'] // 控件数组

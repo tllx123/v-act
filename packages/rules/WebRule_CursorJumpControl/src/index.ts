@@ -4,11 +4,13 @@
  */
 
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { exception, widget }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       var widgetId = inParamObj['ControlCode']

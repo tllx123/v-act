@@ -36,12 +36,14 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = { component, ds, exception, expression, rpc, string, window }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       if (!check(inParamObj)) {
@@ -299,5 +301,4 @@ var _getFieldName = function (field) {
 }
 
 //#endregion
-
 export { main }

@@ -3,10 +3,12 @@ import * as operationLib from 'module'
 import * as rendererUtil from 'module'
 import * as viewModel from 'module'
 
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 export function initModule(sBox) {}
-const main = function (ruleContext) {
+
+const main = function (ruleContext: RuleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams
   let inParamObj = jsonUtil.json2obj(inParams)

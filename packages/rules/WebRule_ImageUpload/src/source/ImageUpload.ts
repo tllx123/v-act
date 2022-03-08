@@ -5,6 +5,8 @@ import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import {
   Camera as CameraService,
@@ -43,8 +45,7 @@ export function initModule(sBox) {
   }
 }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   if (isWeiXin()) {
     WXUpload(ruleContext)
   } else {

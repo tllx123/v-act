@@ -3,6 +3,7 @@
  */
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+
 const vds = { expression, message }
 
 var SHOWTYPE_ALERT_CONTINUE = '0' //0:提示，可以继续
@@ -12,8 +13,9 @@ var SHOWTYPE_CONFIRM = '3' //3:询问（确定/取消），根据用户选择继
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var showType = inParamsObj['showType'] // 提示类型(硬编码来区分类型)

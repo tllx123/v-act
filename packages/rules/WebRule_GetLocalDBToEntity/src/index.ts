@@ -15,8 +15,9 @@ vds.import(
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       if (!inParamsObj) {
@@ -30,7 +31,7 @@ const main = function (ruleContext) {
       var dtds = []
       var nowDtd = null
       var asyFun = function (config, isLast) {
-        return new Promise(
+        return new Promise<void>(
           (function (itemConfig, _isLast) {
             return function (_resolve, _reject) {
               var isType = itemConfig['Istype']

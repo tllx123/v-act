@@ -22,8 +22,9 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 const vds = { component, ds, expression, rpc, window }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var sepcialStrArr = ['/', '%', '_', '[', ']'] //特殊字符
       var params = ruleContext.getVplatformInput()

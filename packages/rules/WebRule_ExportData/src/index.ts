@@ -43,10 +43,12 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = { component, ds, expression, log, string, widget, window }
 
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var ruleConfig = ruleContext.getRuleCfg()
       var cfg = ruleContext.getVplatformInput()
@@ -300,5 +302,4 @@ var getDsName = function (widgetCode) {
 }
 
 //#endregion
-
 export { main }

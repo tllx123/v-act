@@ -1,4 +1,9 @@
 /**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+/**
  * 多语言操作
  */
 /**
@@ -17,11 +22,9 @@ vds.import(
   'vds.log.*',
   'vds.exception.*'
 )
-/**
- * 规则入口
- */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       if (!inParamObj) {

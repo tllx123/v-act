@@ -3,6 +3,7 @@ import {
   ExpressionContext,
   ExpressionEngine as ExpressEngine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
@@ -25,7 +26,7 @@ export function initModule(sBox) {
   }
 }
 
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   ruleContext.markRouteExecuteUnAuto()
   let scopeId = ScopeManager.getCurrentScopeId()
   let ruleCfgValue = ruleContext.getRuleCfg()

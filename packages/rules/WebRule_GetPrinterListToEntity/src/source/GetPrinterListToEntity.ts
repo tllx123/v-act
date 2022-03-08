@@ -2,6 +2,8 @@ import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
@@ -11,8 +13,7 @@ export function initModule(sBox) {
   sandbox = sBox
 }
 
-//规则主入口(必须有)
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
   let masterConfig = inParams.masterConfig.datas.values
   //获取传入的参数

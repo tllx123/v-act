@@ -41,6 +41,7 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   component,
   ds,
@@ -55,7 +56,7 @@ const vds = {
 }
 
 function main(ruleContext) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       if (!check(inParamObj)) {
@@ -474,5 +475,4 @@ var _getFieldName = function (field) {
 }
 
 //#endregion
-
 export { main }

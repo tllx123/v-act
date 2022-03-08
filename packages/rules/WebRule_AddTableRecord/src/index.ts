@@ -26,14 +26,17 @@
  * }
  */
 
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = { ds, expression, message, window, component, log, widget, object }
 
 var randomFuncNames = [
@@ -217,9 +220,9 @@ var _getDefaultValue = function (datasource, mappings, ruleContext) {
   }
   return returnValue
 }
-//规则主入口(必须有)
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     var inParamsObj = ruleContext.getVplatformInput()
     var numCountFormula = inParamsObj['NumCount']
     //初始值来源的映射信息

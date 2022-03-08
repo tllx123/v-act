@@ -1,15 +1,17 @@
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+/**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 /**
  * 步骤条操作
  */
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+
 const vds = { widget, expression }
 
-/**
- * 规则入口
- */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       if (!inParamsObj) {

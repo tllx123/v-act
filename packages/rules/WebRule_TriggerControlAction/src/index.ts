@@ -2,6 +2,9 @@
  * 触发控件事件
  */
 
+// 规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 // 加载
 var jsonUtil
 var scopeManager
@@ -16,8 +19,8 @@ exports.initModule = function (sBox) {
     'vjs.framework.extension.platform.services.view.event.EventManager'
   )
 }
-// 规则主入口(必须有)
-const main = function (ruleContext) {
+
+const main = function (ruleContext: RuleContext) {
   // 获取规则上下文中的规则配置值
   var ruleCfgValue = ruleContext.getRuleCfg()
   var inParams = ruleCfgValue['inParams']

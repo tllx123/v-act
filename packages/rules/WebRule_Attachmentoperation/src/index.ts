@@ -18,9 +18,11 @@ import * as environment from '@v-act/vjs.framework.extension.platform.services.i
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   attachment,
   browser,
@@ -41,8 +43,9 @@ var OP_UPLOAD = '1',
   OP_DELETE = '3',
   OP_PREVIEW = '4'
 var ERRORNAME = '规则[Attachmentoperation]：'
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       /* 预览类型：新标签页-newTabPage，当前页面-currentPage，新窗体-newWindow */

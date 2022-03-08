@@ -1,3 +1,4 @@
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 /**
  *  weicd 2011-11-30
  *  树形操作：
@@ -9,13 +10,13 @@
  *
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
-import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   ds,
   tree,
@@ -30,8 +31,9 @@ const vds = {
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var dataSourceName = inParamsObj['dataSourceName']

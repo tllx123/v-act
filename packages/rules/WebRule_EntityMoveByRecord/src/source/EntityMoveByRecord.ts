@@ -1,4 +1,6 @@
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+// 规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
@@ -8,8 +10,7 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 // 初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
 export function initModule(sBox) {}
 
-// 规则主入口(必须有)
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   let inParamsObj = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
 
   //解析参数

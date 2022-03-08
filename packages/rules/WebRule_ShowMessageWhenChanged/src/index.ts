@@ -9,8 +9,9 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 const vds = { object, exception, expression, message, ds }
 
 var SHOWTYPE_CONFIRM = '1' // 1:询问（确定/取消），根据用户选择继续或终止
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamsObj = ruleContext.getVplatformInput()
       var showType = inParamsObj['showType'] // 0为不询问（直接返回改变状态T/F），1为询问（确定/取消）

@@ -1,8 +1,10 @@
 /**
  * 中断方法的执行
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     // 获取方法上下文
     var methodContext = ruleContext.getMethodContext()
     // 获取规则配置

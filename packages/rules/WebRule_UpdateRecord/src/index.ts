@@ -1,17 +1,19 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 /**
  *	保存前端实体到数据库
  */
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
-const vds = { rpc, ds, expression, tree }
-
 /**
  * 规则入口
  */
-const main = function (ruleContext) {
-  return new Promise(function (resolve, reject) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
+
+const vds = { rpc, ds, expression, tree }
+
+const main = function (ruleContext: RuleContext) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var paramsJson = ruleContext.getVplatformInput()
       var treeStructMapArray = paramsJson['treeStruct']

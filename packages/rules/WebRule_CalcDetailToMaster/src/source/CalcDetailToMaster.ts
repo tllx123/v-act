@@ -26,7 +26,8 @@ let FORMULATYPE_MAX = '2' // 最大值
 let FORMULATYPE_MIN = '3' // 最小值
 
 // 规则主入口(必须有)
-const main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   // 获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 处理规则配置值

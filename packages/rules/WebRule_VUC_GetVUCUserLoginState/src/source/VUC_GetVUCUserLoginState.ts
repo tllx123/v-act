@@ -2,6 +2,7 @@ import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let context
@@ -10,7 +11,7 @@ let rulecontext
 
 export function initModule(sandBox) {}
 
-const main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   let uatSHA1, bizSysId, vucUrl
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams

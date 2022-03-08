@@ -13,7 +13,7 @@ import * as window from '@v-act/vjs.framework.extension.platform.services.integr
 const vds = { component, ds, expression, log, rpc, string, widget, window }
 
 function main(ruleContext) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var inParamObj = ruleContext.getVplatformInput()
       if (!check(inParamObj)) {

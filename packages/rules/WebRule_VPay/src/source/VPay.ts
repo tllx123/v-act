@@ -11,7 +11,8 @@ let context
 export function initModule(sBox) {}
 
 //规则主入口(必须有)
-const main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   context = new ExpressionContext()
   let routeRuntime = ruleContext.getRouteContext()
   context.setRouteContext(routeRuntime)
