@@ -8,40 +8,15 @@
  * vds.import("vds.widget.*");
  * vds.widget.getStoreType("JGButton1");
  */
-window.vds = window.vds || {}
-window.vds.widget = window.vds.widget || {}
 
-var widget = window.vds.widget
-
-exports = widget
-
-var windowVMManager,
-  widgetContext,
-  widgetProperty,
-  widgetAction,
-  scopeManager,
-  windowRelation
-
-export function initModule(sBox) {
-  windowVMManager = sBox.getService(
-    'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
-  )
-  widgetContext = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-  )
-  widgetProperty = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetProperty'
-  )
-  widgetAction = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  windowRelation = sBox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-  )
-}
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import {
+  WidgetAction as widgetAction,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 
 /**
  * 判断是否构件域
@@ -351,4 +326,3 @@ export function scrollTo(widgetCode) {
     }
   }
 }
-return exports

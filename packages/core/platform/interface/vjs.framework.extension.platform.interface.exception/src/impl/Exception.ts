@@ -183,13 +183,4 @@ Error.prepareStackTrace = function (error, stack) {
   return stack
 }
 
-return Exception
-export {
-  _getHandler,
-  create,
-  getExceptionHtml,
-  handle,
-  isException,
-  onBeforeHandler,
-  onHandleFunction
-}
+export default Exception

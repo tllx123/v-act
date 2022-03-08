@@ -144,4 +144,4 @@ Operation.prototype = {
   }
 }
 
-return Operation
+export default Operation

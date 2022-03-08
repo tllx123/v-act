@@ -27,4 +27,4 @@ Method.prototype = {
   }
 }
 
-module.exports = Method
+export default Method

@@ -126,7 +126,7 @@ const startCrossDomainListener = function () {
                           ) {
                             var nowPM = fInfo.nowPM
                             var parentPM = fInfo.parentPM
-                            var type = fInfo.type
+                            type = fInfo.type
                             var origin = fInfo.origin
                             try {
                               if (eval(rInfo.condition)) {

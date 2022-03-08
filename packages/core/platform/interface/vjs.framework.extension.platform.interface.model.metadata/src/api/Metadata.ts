@@ -110,23 +110,4 @@ Metadata.prototype.serialize = function () {
   return { model: [model] }
 }
 
-return Metadata
-
-export {
-  getDataValidator,
-  adapt,
-  adapt,
-  adapt,
-  Char,
-  Text,
-  Number,
-  Boolean,
-  Date,
-  LongDate,
-  File,
-  Object,
-  Integer,
-  begin,
-  collect,
-  unSerialize
-}
+export default Metadata

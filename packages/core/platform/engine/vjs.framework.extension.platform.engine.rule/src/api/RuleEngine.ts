@@ -150,7 +150,7 @@ const executeRouteRule = function (params) {
   let rr = new RouteContext(routeCfg)
   rr.isVirtual = true //TODO 标记为虚拟路由，用于前端执行耗时展示
   rr.setScopeId(scopeId)
-  let args = Array.prototype.slice.call(args, 0)
+  args = Array.prototype.slice.call(args, 0)
   _putArgsToRouteContext(rr, args)
   let mapping = params.argMapping
   let argIndex = params.argIndex

@@ -1,4 +1,4 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 let TIME_UNIT_YEAR = 'y' // 时间单位： 年

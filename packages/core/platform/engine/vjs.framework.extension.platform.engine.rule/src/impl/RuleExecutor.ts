@@ -147,6 +147,4 @@ RuleExecutor.prototype = {
   }
 }
 
-return RuleExecutor
-
-export { execute, executeRouteRule, executeWithRouteCallback }
+export default RuleExecutor

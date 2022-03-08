@@ -8,18 +8,8 @@
  * vds.import("vds.number.*");
  * vds.number.isInteger(521.54);//false
  */
-window.vds = window.vds || {}
-window.vds.number = window.vds.number || {}
 
-var number = window.vds.number
-
-exports = number
-
-var mathUtil
-
-export function initModule(sb) {
-  mathUtil = sb.getService('vjs.framework.extension.util.Math')
-}
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 /**
  * 判断是否无穷数
@@ -70,5 +60,3 @@ export function toFixed(num, precision) {
 export function toFloorFixed(num, precision) {
   return mathUtil.toDecimalExt(num, precision)
 }
-
-return exports
