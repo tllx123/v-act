@@ -1,6 +1,6 @@
 let configInited = false
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const initConfig = function (successCB, errorCB, apiList) {
   if (configInited) {

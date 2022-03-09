@@ -8,7 +8,7 @@ let tokenPrefix = 'AppData_'
 
 let isAppConfigInfoLoaded = false
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     StorageManager = sb.getService(
       'vjs.framework.extension.platform.interface.storage.StorageManager'
@@ -81,9 +81,9 @@ const markAppConfigInfoLoaded = function () {
 
 export {
   addRuleSetInputs,
-  getRuleSetInputs,
   exists,
   getRuleSetInput,
+  getRuleSetInputs,
   isAppConfigInfoLoaded,
   markAppConfigInfoLoaded
 }

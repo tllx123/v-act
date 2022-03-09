@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let CameraService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.Camera'
   )

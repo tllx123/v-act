@@ -82,6 +82,16 @@ class NotSyntax extends Syntax {
       return `!${rigthSyntax ? rigthSyntax.toString() : ''}`
     }
   }
+
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitNotSyntax
+      ? visitor.visitNotSyntax(this, (syntax) => syntax.visit())
+      : this.getRight()
+      ? this.getRight().visit()
+      : false
+  }
 }
 
 export default NotSyntax

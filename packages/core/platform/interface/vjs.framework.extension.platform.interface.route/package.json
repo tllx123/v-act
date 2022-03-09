@@ -21,7 +21,7 @@
     "@v-act/vjs.framework.extension.platform.interface.event": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
   }
 }

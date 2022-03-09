@@ -135,6 +135,17 @@ class BracketSyntax extends Syntax {
       return `(${this.getBody().toString()})`
     }
   }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+
+    if (visitor && visitor.visitBacketSyntax) {
+      return visitor.visitBacketSyntax(this, (syntax) => syntax.visit())
+    } else {
+      return `${this.getBody().visit()}`
+    }
+  }
 }
 
 export default BracketSyntax

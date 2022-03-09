@@ -1,8 +1,6 @@
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-let undefined
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 const fileOpen = function (DOMID, fileID, fileName) {
   if (!fileName) {

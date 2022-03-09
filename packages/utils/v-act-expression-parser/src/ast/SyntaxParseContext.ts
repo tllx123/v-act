@@ -1,19 +1,23 @@
 import Printer from '../Printer'
 import Syntax from './syntax/Syntax'
 import Token from './tokenizer/Token'
+import Visitor from '../Visitor'
 
 class SyntaxParseContext {
   index: number
   tokens: Array<Token | Syntax>
   printer: Printer
+  visitor: Visitor
   constructor(
     index?: number,
     tokens?: Array<Token | Syntax>,
-    printer?: Printer
+    printer?: Printer,
+    visitor?: Visitor
   ) {
     this.index = index
     this.tokens = tokens
     this.printer = printer
+    this.visitor = visitor
   }
 
   getIndex() {
@@ -42,6 +46,14 @@ class SyntaxParseContext {
 
   setPrinter(printer: Printer) {
     this.printer = printer
+  }
+
+  setVisitor(visitor: Visitor) {
+    this.visitor = visitor
+  }
+
+  getVisitor() {
+    return this.visitor
   }
 }
 

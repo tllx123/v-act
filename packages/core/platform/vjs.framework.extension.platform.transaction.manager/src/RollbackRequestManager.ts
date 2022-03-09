@@ -1,10 +1,9 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
 let requestList = []
 let intervalIndex = null
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const add = function (request) {
   requestList.push(request)

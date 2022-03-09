@@ -1,7 +1,6 @@
 import * as SHA1Util from './src/SHA1'
-let undefined
 
-exports.initModule = function () {}
+export function initModule() {}
 
 let genHash = function (encryptValue) {
   //生成加密后的hash值

@@ -1,6 +1,6 @@
 import * as aes from './src/aes'
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 
 let genHash = function (encryptValue) {
   let result = aes.CryptoJS.AES.encrypt(encryptValue, '')
@@ -26,4 +26,4 @@ let decryptPwdHash = function (decryptValue, pwd) {
   return result
 }
 
-export { genHash, genPwdHash, decryptHash, decryptPwdHash }
+export { decryptHash, decryptPwdHash, genHash, genPwdHash }

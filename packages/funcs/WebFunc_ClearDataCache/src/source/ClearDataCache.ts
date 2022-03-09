@@ -1,19 +1,17 @@
+import * as jsonUtil from 'module'
 import * as viewContext from 'module'
 import * as viewOperation from 'module'
-import * as jsonUtil from 'module'
 
 // 加载引用模块
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 /**
  * 主入口
  * @param dataKey 要清除的数据key
  * @param isInitKey 是否缓存过
  * @param initKeyValueKey isInitKey标识值key
  */
-let main = function (dataKey, isInitKey, initKeyValueKey) {
+const main = function (dataKey, isInitKey, initKeyValueKey) {
   if (dataKey === null) {
     throw new Error('传入要清除缓存的数据Key为空，请检查')
   }

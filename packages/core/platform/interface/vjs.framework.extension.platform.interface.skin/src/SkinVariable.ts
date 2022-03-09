@@ -2,7 +2,7 @@ let sandbox
 //皮肤变量数据
 let SkinVariableDatas = {}
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandbox = sBox
 }
 

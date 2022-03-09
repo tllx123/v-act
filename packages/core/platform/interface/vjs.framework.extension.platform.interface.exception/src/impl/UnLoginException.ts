@@ -1,27 +1,20 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
+import * as ExpectedException from './ExpectedException'
+import * as callCommandService from '../util/CallCommand'
+
 let storage
-let undefined
 
 let UnLoginException = function (message, e) {
   ExpectedException.apply(this, arguments)
 }
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 let _getStorage = function () {
   if (!storage) {
@@ -137,11 +130,11 @@ UnLoginException.prototype = {
 return UnLoginException
 
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

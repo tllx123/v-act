@@ -1,24 +1,24 @@
-import * as viewModel from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 import * as formulaUtil from 'module'
-import * as widgetAttribute from 'module'
-import * as viewContext from 'module'
 import * as log from 'module'
+import * as viewContext from 'module'
+import * as viewModel from 'module'
+import * as widgetAttribute from 'module'
+
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 // 加载viewModel模块
-let undefined
-// 加载jsonUtil模块
-let undefined
-// 加载formulaUtil模块
-let undefined
-// 加载widgetAttribute模块
-let undefined
-// 加载viewContext模块
-let undefined
-//加载log模块
-let undefined
 
-exports.initModule = function (sBox) {}
+// 加载jsonUtil模块
+
+// 加载formulaUtil模块
+
+// 加载widgetAttribute模块
+
+// 加载viewContext模块
+
+//加载log模块
+
+export function initModule(sBox) {}
 
 let FORMULATYPE_SUM = '0' // 求和
 let FORMULATYPE_AVG = '1' // 平均值
@@ -26,7 +26,8 @@ let FORMULATYPE_MAX = '2' // 最大值
 let FORMULATYPE_MIN = '3' // 最小值
 
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   // 获取规则上下文中的规则配置值
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 处理规则配置值

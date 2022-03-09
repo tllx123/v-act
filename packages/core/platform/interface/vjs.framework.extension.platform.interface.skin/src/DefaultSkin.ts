@@ -1,7 +1,8 @@
-import * as skinVariable from './SkinVariable'
-import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util'
-import { lessUtil as lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util.array'
+import { LessUtil as lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor.less'
+
+import * as skinVariable from './SkinVariable'
 
 let sandbox
 

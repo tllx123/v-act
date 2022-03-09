@@ -1,4 +1,4 @@
-import { ObjectUtil as objUtils } from '@v-act/vjs.framework.extension.util'
+import { ObjectUtil as objUtils } from '@v-act/vjs.framework.extension.util.object'
 
 let WINDOW_I18N = {}
 
@@ -6,9 +6,7 @@ let WIDGET_I18N = {}
 
 let EXP_I18N = {}
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const initWindow = function (params) {
   let componentCode = params.componentCode,
@@ -148,29 +146,18 @@ const hasWidgetInfo = function (params) {
 }
 
 export {
-  initResourcePackage,
-  init,
-  initExp,
-  getResourcePackage,
-  getExpLanguage,
-  get,
-  hasResourcePackage,
-  hasExpLanguage,
-  has,
-  init,
-  get,
-  has,
-  init,
   get,
   getAll,
-  has,
-  initWindow,
-  initWidget,
-  initExp,
-  get,
   getExpLanguage,
+  getResourcePackage,
   getWidgetInfo,
   has,
   hasExpLanguage,
-  hasWidgetInfo
+  hasResourcePackage,
+  hasWidgetInfo,
+  init,
+  initExp,
+  initResourcePackage,
+  initWidget,
+  initWindow
 }

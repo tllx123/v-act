@@ -25,6 +25,7 @@ class DivideSyntax extends BinaryExpressionSyntax {
   getSymbol(): string {
     return DivideSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -32,6 +33,16 @@ class DivideSyntax extends BinaryExpressionSyntax {
       return printer.printDivideSyntax(this, (syntax) => syntax.toString())
     } else {
       return super.toString()
+    }
+  }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitDivideSyntax) {
+      return visitor.visitDivideSyntax(this, (syntax) => syntax.visit())
+    } else {
+      return super.visit()
     }
   }
 }

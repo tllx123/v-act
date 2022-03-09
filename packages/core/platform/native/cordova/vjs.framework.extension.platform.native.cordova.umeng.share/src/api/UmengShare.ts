@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let UmengShareService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.umeng.Share'
   )

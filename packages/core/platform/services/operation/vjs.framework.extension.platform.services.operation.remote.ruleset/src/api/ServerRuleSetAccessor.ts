@@ -1,14 +1,9 @@
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { JsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const invoke = function (params) {
   let ruleSetCode = params.ruleSetCode,

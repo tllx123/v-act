@@ -1,11 +1,5 @@
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
-let sb
-
-exports.initModule = function (sandbox) {
-  sb = sandbox
-}
-
 const execute = function (params) {
   let functionName = params.functionName,
     context = params.context,

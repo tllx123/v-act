@@ -1,15 +1,18 @@
-import { ComponentParam as componentSchemaParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WindowParam as windowSchemaParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
-import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import {
+  ComponentParam as componentSchemaParam,
+  WindowParam as windowSchemaParam
+} from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ComponentParam as componentParam,
+  WindowParam as windowParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+
 import * as utils from './Utils'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _genParamFromDefine = function (componentCode, defines, fn) {
   let rs = {}
@@ -159,13 +162,13 @@ const genParams = function (routeContext) {
 
 export {
   _putAop,
+  addRequest,
+  clear,
+  genParams,
   getHook,
-  isInited,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
+  isInited,
   remove,
-  genParams
+  update
 }

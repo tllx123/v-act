@@ -1,1 +1,1 @@
-export * from './ObjectUtil'
+export * as ObjectUtil from './ObjectUtil'

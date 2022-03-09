@@ -1,8 +1,6 @@
 import { ProgressBarUtil as util } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 显示进度条
@@ -23,4 +21,4 @@ let hideProgress = function () {
   }
 }
 
-export { showProgress, hideProgress }
+export { hideProgress, showProgress }

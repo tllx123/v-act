@@ -2,7 +2,7 @@ import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.pla
 
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

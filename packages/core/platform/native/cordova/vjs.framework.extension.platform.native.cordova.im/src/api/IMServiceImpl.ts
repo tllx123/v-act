@@ -1,7 +1,6 @@
 import { IM as IMService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   IMService.putInstance(exports)
 }
 
@@ -103,4 +102,4 @@ function customerChatWithEM(params) {
     user_info: user_info
   })
 }
-export { login, logout, customerChat }
+export { customerChat, login, logout }

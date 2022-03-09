@@ -1,21 +1,20 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as expContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import {
+  ExpressionContext as expContext,
+  ExpressionEngine as expEngine
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import * as utils from './Utils'
-import * as paramGener from './ParamGener'
-import * as updater from './Updater'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 import * as browserDebugger from './BrowserDebugger'
-import * as rpcDebugger from './RPCDebugger'
+import * as DebugInfoManager from './DebugInfoManager'
 import * as IteratorRequest from './IteratorRequest'
 import * as requestManager from './IteratorRequestManager'
-import * as DebugInfoManager from './DebugInfoManager'
+import * as paramGener from './ParamGener'
+import * as rpcDebugger from './RPCDebugger'
+import * as updater from './Updater'
+import * as utils from './Utils'
 
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {
+export function initModule(sb) {
   browserDebugger._putAop(exports)
   rpcDebugger._putAop(exports)
   IteratorRequest.prototype._putAop(exports)
@@ -205,35 +204,31 @@ const getDevId = function () {
 }
 
 export {
+  _getCurrentRouteContext,
+  _getRemoteDebugHost,
   _putAop,
+  addRequest,
+  beforeRuleExecute,
+  clear,
+  exeExp,
+  genParams,
+  getBusinessData,
+  getComponentCode,
+  getDevHook,
+  getDevId,
   getHook,
-  isInited,
+  getWindowCode,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
-  remove,
-  genParams,
-  _putAop,
-  getHook,
-  update,
-  getComponentCode,
-  getWindowCode,
-  isWindowScope,
-  getDevHook,
-  beforeRuleExecute,
-  getBusinessData,
-  ruleExecuted,
-  startServerRuleDebugger,
-  stopServerRuleDebugger,
-  update,
-  exeExp,
-  setRemoteDebugHost,
   isEnable,
+  isInited,
+  isWindowScope,
   markDebugDisable,
   markDebugEnable,
-  _getRemoteDebugHost,
-  _getCurrentRouteContext,
-  getDevId
+  remove,
+  ruleExecuted,
+  setRemoteDebugHost,
+  startServerRuleDebugger,
+  stopServerRuleDebugger,
+  update
 }

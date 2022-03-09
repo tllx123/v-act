@@ -1,11 +1,12 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { RPC as operation } from '@v-act/vjs.framework.extension.system'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC as operation } from '@v-act/vjs.framework.extension.system'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let sandBox
 
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 

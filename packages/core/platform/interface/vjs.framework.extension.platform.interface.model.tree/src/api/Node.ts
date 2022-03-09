@@ -1,4 +1,4 @@
-import * as NodeSet from './api/NodeSet'
+import * as NodeSet from './NodeSet'
 
 let Record,
   collectionUtil,

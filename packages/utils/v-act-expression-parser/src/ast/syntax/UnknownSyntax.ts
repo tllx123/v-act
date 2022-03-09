@@ -52,6 +52,22 @@ class UnknownSyntax extends Syntax {
       return script.join('')
     }
   }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitUnknownSyntax) {
+      return visitor.visitUnknownSyntax(this, (syntax) => syntax.visit())
+    } else {
+      const script: string[] = []
+      if (this.tokens) {
+        this.tokens.forEach((token) => {
+          script.push(token.toString())
+        })
+      }
+      return script.join('')
+    }
+  }
 }
 
 export default UnknownSyntax

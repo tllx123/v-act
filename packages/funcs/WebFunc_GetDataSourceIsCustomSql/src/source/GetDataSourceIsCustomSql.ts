@@ -1,20 +1,13 @@
-import * as log from 'module'
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as operationLib from 'module'
+import * as viewContext from 'module'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 /**
  * 主入口
  * @param dataSourceName 数据源名称
  */
-let main = function (dataSourceName) {
+const main = function (dataSourceName) {
   if (!dataSourceName || '' == dataSourceName) {
     throw new Error('[GetDataSourceIsCustomSql.main]数据源名称为空，请检查配置')
   }

@@ -1,9 +1,8 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
 let sandbox
-let undefined
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 const getLessPlugin = function () {
   return {
@@ -132,4 +131,4 @@ const getLessPlugin = function () {
   }
 }
 
-export { getLessPlugin, getLessPlugin, render, getLessPlugin }
+export { getLessPlugin, render }

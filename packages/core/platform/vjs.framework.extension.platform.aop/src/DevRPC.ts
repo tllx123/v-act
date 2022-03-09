@@ -1,7 +1,6 @@
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ProgressBarUtil as progressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let aop
 let charMap = {
@@ -176,4 +175,4 @@ DevRPC.prototype = {
 
 return DevRPC
 
-export { _putAop, getHook, isInited, init, isDebugger, update, clear }
+export { _putAop, clear, getHook, init, isDebugger, isInited, update }

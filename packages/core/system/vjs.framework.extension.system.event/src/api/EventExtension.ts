@@ -1,8 +1,7 @@
 import * as EE from './impl/eventemitter2'
 
-let undefined
 let EEInstancePool = {}
-exports.initModule = function () {}
+export function initModule() {}
 
 const getInstance = function (name) {
   if (!EEInstancePool[name]) {

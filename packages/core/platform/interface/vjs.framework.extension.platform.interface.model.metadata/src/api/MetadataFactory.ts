@@ -1,10 +1,9 @@
-import * as fieldFactory from './api/FieldFactory'
-import * as Metadata from './api/Metadata'
 import { DatasourceEnums as datasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
 
-let undefined
+import * as fieldFactory from '../api/FieldFactory'
+import * as Metadata from '../api/Metadata'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const create = function (params) {
   let dataSourceName = params.dataSourceName,
@@ -60,22 +59,19 @@ const unSerialize = function (input) {
 }
 
 export {
-  getDataValidator,
   adapt,
-  adapt,
-  adapt,
-  Char,
-  Text,
-  Number,
-  Boolean,
-  Date,
-  LongDate,
-  File,
-  Object,
-  Integer,
   begin,
+  Boolean,
+  Char,
   collect,
-  unSerialize,
   create,
+  Date,
+  File,
+  getDataValidator,
+  Integer,
+  LongDate,
+  Number,
+  Object,
+  Text,
   unSerialize
 }

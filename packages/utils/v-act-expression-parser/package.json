@@ -19,7 +19,9 @@
     "debug": "node debug/index.js"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "ts-node": "^10.6.0"
+  },
   "publishConfig": {
     "access": "public"
   }

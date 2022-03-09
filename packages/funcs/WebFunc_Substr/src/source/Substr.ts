@@ -1,12 +1,9 @@
-import { Math as mathUtil } from '@v-act/vjs.framework.extension.util'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-let undefined
+export function initModule(sb) {}
 
-exports.initModule = function (sb) {}
-
-let main = function (arg1, arg2) {
+const main = function (arg1, arg2) {
   if (mathUtil.isEmpty(arg1)) {
     throw new Error('字符串为空，请检查')
   }

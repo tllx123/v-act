@@ -1,8 +1,10 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { remove } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
 import * as nRecord from './api/Record'
 import * as ResultSet from './api/ResultSet'
+
+const remove = arrayUtil.remove
 
 let primaryKey = 'id',
   each,

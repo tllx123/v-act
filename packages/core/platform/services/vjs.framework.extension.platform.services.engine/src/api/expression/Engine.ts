@@ -1,7 +1,7 @@
 import * as Context from './api/expression/Context'
 let sandBox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandBox = sb
 }
 

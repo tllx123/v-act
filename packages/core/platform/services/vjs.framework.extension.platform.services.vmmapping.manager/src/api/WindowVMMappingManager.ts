@@ -1,9 +1,7 @@
 import { WindowVMMapping as windowVM } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 获取子窗体域，如果没有子窗体域，则获取当前窗体域
@@ -175,17 +173,17 @@ const putVMMapping = function (vmmapping) {
 }
 
 export {
+  _getVMMapping,
   getDatasourceNamesByWidgetCode,
-  getFieldCodesByWidgetCode,
   getFieldCodeByPropertyCode,
+  getFieldCodesByWidgetCode,
   getPropertyCodeByFieldCode,
   getWidgetCodesByDatasourceName,
   getWidgetCodesByFieldCode,
+  getWindowDataSources,
   isCustomSqlDataSource,
   isVirtualDataSource,
-  getWindowDataSources,
-  resetToDefault,
+  putVMMapping,
   removeVMapping,
-  _getVMMapping,
-  putVMMapping
+  resetToDefault
 }

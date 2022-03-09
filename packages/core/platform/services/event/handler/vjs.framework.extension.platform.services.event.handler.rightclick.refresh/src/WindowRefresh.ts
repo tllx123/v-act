@@ -1,14 +1,12 @@
-import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { EventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { EventManager as EventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 
 let sandbox
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   sandbox = sb
   let RightClickEventHander = sb.getService(
     'vjs.framework.extension.platform.services.view.event.RightClickEventHandler'

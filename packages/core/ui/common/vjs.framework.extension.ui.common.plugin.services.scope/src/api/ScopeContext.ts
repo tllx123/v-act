@@ -1,8 +1,6 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let undefined
-
-exports.initModule = function (sbox) {}
+export function initModule(sbox) {}
 
 /**
  * 从线程变量获取窗体唯一标识
@@ -18,4 +16,4 @@ let getComponentCode = function () {
   return ScopeManager.getProperty('componentCode')
 }
 
-export { getWindowCode, getComponentCode }
+export { getComponentCode, getWindowCode }

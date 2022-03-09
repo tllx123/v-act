@@ -1,8 +1,8 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let allEventHandler = {}
-let undefined
-exports.initModule = function (sBox) {}
+
+export function initModule(sBox) {}
 
 let handleError = function (e) {
   if (e.handle) {
@@ -103,10 +103,10 @@ let fireEvent = function (widgetId, eventName) {
 }
 
 export {
-  Show,
-  Hide,
-  fireEvent,
   addEventHandler,
   fireDynamicWidgetEvent,
-  removeAllEventHandler
+  fireEvent,
+  Hide,
+  removeAllEventHandler,
+  Show
 }

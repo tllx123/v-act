@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   //		var Window = sb.getService("vjs.framework.extension.platform.services.domain.browser.Window");
   //		Window.putInstance(exports);
 }

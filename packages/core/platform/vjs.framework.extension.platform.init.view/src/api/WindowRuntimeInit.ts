@@ -1,31 +1,36 @@
+import { datasource as datasourceBind } from '@v-act/vjs.framework.extension.platform.binding.data'
+import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import {
+  ExceptionFactory as exceptionFactory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
+  Operation,
+  Request as vrequest
+} from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { WaterMark as waterMark } from '@v-act/vjs.framework.extension.platform.interface.watermark'
+import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
-import { EventManager as eventManagerService } from '@v-act/vjs.framework.extension.platform.services.view.event'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
-import { ApplicationParam as ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { datasource as datasourceBind } from '@v-act/vjs.framework.extension.platform.binding.data'
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { Request as vrequest } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Operation as Operation } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
-import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { WaterMark as waterMark } from '@v-act/vjs.framework.extension.platform.interface.watermark'
+import { EventManager as eventManagerService } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let token = 'WINDOW_VIEW_INIT_EVENT',
   storage
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   storage = storageManager.get(storageManager.TYPES.MAP, token)
 }
 let _fire = function (componentCode, windowCode, eventName, args) {
@@ -516,16 +521,15 @@ const hasPermission = function (params) {
 }
 
 export {
+  applyMultRequest,
+  fireEventFunc,
+  hasPermission,
+  init,
   initAppSchema,
   initComponentSchema,
-  initWindowSchema,
   initWindowRuntime,
-  init,
-  init,
-  registerSchemaHandler,
+  initWindowSchema,
   registerHandler,
-  registerVariableHandler,
-  hasPermission,
-  applyMultRequest,
-  fireEventFunc
+  registerSchemaHandler,
+  registerVariableHandler
 }

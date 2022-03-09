@@ -1,7 +1,5 @@
-import * as AbstractOperation from './impl/AbstractOperation'
-import * as utils from './util/OperationUtils'
-
-let undefined
+import * as utils from '../util/OperationUtils'
+import * as AbstractOperation from './AbstractOperation'
 
 let Operation = function (params) {
   AbstractOperation.call(this, params)
@@ -54,10 +52,10 @@ Operation.prototype = {
 return Operation
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
+  addObserver,
+  addOperation,
   destroy,
-  addOperation
+  fire,
+  getBindedDatasourceNames
 }

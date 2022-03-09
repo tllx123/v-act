@@ -1,7 +1,7 @@
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

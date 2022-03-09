@@ -67,6 +67,9 @@ class BooleanIdentifierSyntax extends Syntax {
       return this.getValue() ? 'True' : 'False'
     }
   }
+  visit() {
+    return false
+  }
 }
 
 BooleanIdentifierSyntax.accept = function (context) {

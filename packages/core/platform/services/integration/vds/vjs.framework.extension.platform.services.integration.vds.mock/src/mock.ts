@@ -58,7 +58,7 @@ var show404Html = function (relativePath: string) {
  * @param {Object|String} metadata 插件元数据定义或插件元数据路径
  * @returns {Promise}
  */
-exports.init = function (metadata: object | string) {
+export function init(metadata: object | string) {
   return new Promise(function (resolve, reject) {
     var callback = function (data, baseUrl) {
       var scopeId = scopeManager.createWindowScope({

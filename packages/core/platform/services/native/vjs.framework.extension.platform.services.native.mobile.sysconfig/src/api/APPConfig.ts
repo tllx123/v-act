@@ -1,9 +1,9 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { Log as log } from '@v-act/vjs.framework.extension.util.log'
 
 let instance
 let VJSNAME = 'VJS[APPConfig]：'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const putInstance = function (ins) {
   instance = ins
@@ -66,12 +66,12 @@ const getPreferences = function (successCallback, param) {
 }
 
 export {
-  putInstance,
-  isAwakeByURL,
-  getAwakeParams,
-  clear,
-  pasteBoard,
   call,
-  setPreferences,
-  getPreferences
+  clear,
+  getAwakeParams,
+  getPreferences,
+  isAwakeByURL,
+  pasteBoard,
+  putInstance,
+  setPreferences
 }

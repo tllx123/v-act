@@ -1,11 +1,11 @@
+import {
+  ExpressionContext,
+  ExpressionEngine as expressionEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { UUID as UUID } from '@v-act/vjs.framework.extension.util'
+import { uuid as UUID } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const removeAllRecords = function (params) {
   let dsName = params.datasourceName
@@ -131,13 +131,13 @@ const loadRecords = function (params) {
 }
 
 export {
+  copyBetweenEntities,
+  createRecords,
+  getFieldName,
   getSelectedAndCurrentRecords,
   hasChanged,
-  getFieldName,
-  createRecords,
+  loadRecords,
   removeAllRecords,
   setFieldValue,
-  setValues,
-  copyBetweenEntities,
-  loadRecords
+  setValues
 }

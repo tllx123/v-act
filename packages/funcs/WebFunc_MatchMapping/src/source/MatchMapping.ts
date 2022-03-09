@@ -1,11 +1,7 @@
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as stringUtil from 'module'
+import * as viewModel from 'module'
 
-let undefined
-let undefined
-let undefined
-exports.initModule = function () {}
+export function initModule() {}
 /**
  *
  * @param {Object} insertDataSource 待插入的实体名称
@@ -16,7 +12,7 @@ exports.initModule = function () {}
  *               "destNameField" : "22", //目标下拉框的name列的名称
  *               "srcKeyField" : "11",  //源弹出框列的名称
  */
-let main = function (
+const main = function (
   insertDataSource,
   destSourceName,
   srcSourceName,

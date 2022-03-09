@@ -13,7 +13,7 @@ let TimePoint_Method = 'Time_Point_Method_Data'
 let TimePoint_Rule = 'Time_Point_Rule_Data'
 let TimePoint_WinComNet = 'Time_Point_WinComNet_Data'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _getStorage = function () {
   if (!storage) {
@@ -304,7 +304,7 @@ const genViewTimePoint = function (ruleKey) {
   return _getRenderData(resultMap)
 }
 
-//	exports.genViewData = function(){
+//	export function genViewData(){
 ////		var datas=[];
 ////		var allTimePoint = {};
 ////		s.iterate(function(key,times){
@@ -451,7 +451,7 @@ let _getRenderData = function (params) {
  * 获取预览数据
  * @param String ruleKey 规则key
  * */
-//	exports.getViewTimeData = function(ruleKey){
+//	export function getViewTimeData(ruleKey){
 //		var s = _getDataStorage();
 //		if(!s.containsKey(TreeData)){
 //			_resetViewData();

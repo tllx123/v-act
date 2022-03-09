@@ -1,8 +1,8 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { logUtil as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -39,4 +39,4 @@ const adapt = function (params) {
   return temp
 }
 
-export { adapt, init, init, adapt }
+export { adapt, init }

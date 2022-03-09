@@ -1,8 +1,5 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-
-let undefined
 let cssString
-exports.initModule = function (sb) {
+export function initModule(sb) {
   cssString = {}
 }
 

@@ -1,15 +1,14 @@
-import * as Record from 'module'
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util'
-import * as propertyHandler from 'module'
 import * as actionHandler from 'module'
-import * as viewContext from 'module'
 import * as formulaUtil from 'module'
-import * as viewModel from 'module'
 import * as metaModule from 'module'
-import * as dbManager from 'module'
-let undefined
+import * as propertyHandler from 'module'
+import * as Record from 'module'
+import * as viewContext from 'module'
+import * as viewModel from 'module'
 
-exports.initModule = function (sBox) {}
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util.file'
+
+export function initModule(sBox) {}
 /**
  *普通树数据转化
  * 转换类容：
@@ -383,4 +382,4 @@ let _getPropertyIgnoreCase = function (obj, property) {
   return null
 }
 
-export { getInstance, getInstance, Enum_MoveTo, destroy, translate }
+export { destroy, Enum_MoveTo, getInstance, translate }

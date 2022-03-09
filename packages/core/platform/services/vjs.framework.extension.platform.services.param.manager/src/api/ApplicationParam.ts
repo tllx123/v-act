@@ -1,8 +1,6 @@
 import { ApplicationParam as appParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const getRuleSetInputs = function (params) {
   let componentCode = params.componentCode,

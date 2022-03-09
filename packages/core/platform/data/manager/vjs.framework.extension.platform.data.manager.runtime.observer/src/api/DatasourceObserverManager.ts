@@ -1,20 +1,20 @@
+import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import * as datasourceOperationManager from './api/DatasourceOperationManager'
-import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
+import * as datasourceOperationManager from '../api/DatasourceOperationManager'
 
 let storageToken = 'WINDOW_INSTANCE_OBSERVER_STORAGE',
   token = 'WINDOW_INSTANCE_OBSERVER'
 
 let AsyncKey = 'async'
 let NotAsyncKey = 'notasync'
-let undefined
 
 let _combineOperation = true
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _getObserverStorage = function () {
   let scope = scopeManager.getScope()
@@ -122,9 +122,9 @@ const destroy = function (ids) {
 }
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
-  destroy
+  addObserver,
+  destroy,
+  fire,
+  getBindedDatasourceNames
 }

@@ -1,11 +1,11 @@
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { VPlatfromIframeManager as vplatformIframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+
 import * as modalUtil from './Modal'
 
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -246,4 +246,4 @@ let getUrlHost = function (url) {
   }
 }
 
-export { renderIFrameToDom, create, createOld }
+export { create, createOld, renderIFrameToDom }

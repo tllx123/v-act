@@ -21,7 +21,7 @@ const test = function () {
   let syntax = parser.parse(exp)
   let endTime = new Date().getTime()
   console.log(`表达式解析完成，总耗时：${endTime - startTime}毫秒`)
-  console.log(syntax.toString())
+  console.log(syntax.visit())
 }
 
 const testPrint = function (exp) {
@@ -134,8 +134,8 @@ const testPrintAll = function () {
   console.log(`表达式个数：${exps.length}，总耗时：${endTime - startTime}毫秒`)
 }
 
-//test()
+test()
 //testAll()
 //testPrint()
-testPrintAll()
+// testPrintAll()
 //console.log(testPrint("IsEmpty(BR_VAR_PARENT.applicationId)||IsEmpty(BR_VAR_PARENT.bizWindow)"))

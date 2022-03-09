@@ -116,6 +116,9 @@ class NumberIdentifierSyntax extends Syntax {
       return this.getValue() + ''
     }
   }
+  visit() {
+    return false
+  }
 }
 
 export default NumberIdentifierSyntax

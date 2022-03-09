@@ -1,10 +1,8 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
+import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 const getPagingInfoByDataSource = function (entityName) {
   let widgetCodes = windowVMManager.getWidgetCodesByDatasourceName({

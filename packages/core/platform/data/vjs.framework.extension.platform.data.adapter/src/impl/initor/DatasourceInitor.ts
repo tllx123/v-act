@@ -1,9 +1,7 @@
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const init = function (params) {
   let configs = params.configs
@@ -31,4 +29,4 @@ const init = function (params) {
   return datasourceFactory.unSerialize(data)
 }
 
-export { adapt, init, init, adapt, adapt, adapt, init }
+export { adapt, init }

@@ -1,9 +1,3 @@
-let sb
-
-exports.initModule = function (sandbox) {
-  sb = sandbox
-}
-
 let getDataBindingWithType = function (type) {
   let databindingService = sb.getService(
     'vjs.framework.extension.ui.plugin.databinding',

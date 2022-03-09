@@ -1,10 +1,12 @@
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { JsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util'
 import { Environment as environmentUtils } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  ExceptionFactory as exceptionFactory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 let storage,
   token = 'V3_Platform_Services_Event_AOP',
@@ -15,7 +17,7 @@ let storage,
     'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN_THREE'
 crossDomainEventKey = 'Coross_Domain_Event_Key'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _getStorage = function () {
   if (!storage) {
@@ -327,11 +329,11 @@ exports.Events = {
 
 export {
   create,
-  isCallback,
-  register,
   fire,
-  startCrossDomainListener,
+  fireCrossDomainEvent,
+  isCallback,
   onCrossDomainEvent,
-  unCrossDomainEvent,
-  fireCrossDomainEvent
+  register,
+  startCrossDomainListener,
+  unCrossDomainEvent
 }

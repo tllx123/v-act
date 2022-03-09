@@ -1,8 +1,6 @@
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let handleKeyDown = function (widgetCode, eventName) {
   let handler = eventManager.fireEvent(widgetCode, eventName)
@@ -24,4 +22,4 @@ let handleKeyDown = function (widgetCode, eventName) {
   }
 }
 
-export { loadDropDownSourceFromEntity, handleKeyDown }
+export { handleKeyDown, loadDropDownSourceFromEntity }

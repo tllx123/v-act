@@ -15,5 +15,7 @@
 		"dist"
 	],
 	"scripts": {},
-	"dependencies": {}
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.string": "^1.0.0-alpha.1"
+	}
 }

@@ -1,1 +1,1 @@
-export * as dateTimeUtil from './DateTimeUtil'
+export * as DateTimeUtil from './DateTimeUtil'

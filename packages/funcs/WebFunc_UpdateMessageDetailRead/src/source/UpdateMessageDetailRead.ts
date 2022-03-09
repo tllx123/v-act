@@ -1,16 +1,14 @@
-import * as log from 'module'
-import * as viewModel from 'module'
-import * as viewContext from 'module'
 import * as operationLib from 'module'
+import * as viewContext from 'module'
 
-exports.initModule = function () {}
+export function initModule() {}
 
 /**
  * 主入口
  * @param ids
  * @param isReaded true:已读/false:未读
  */
-let main = function (ids, isReaded) {
+const main = function (ids, isReaded) {
   if (ids == null || ids == '')
     throw new Error(
       'UpdateMessageDetailRead函数,id值不能为空，请检查(多个id以英文逗号分割)'

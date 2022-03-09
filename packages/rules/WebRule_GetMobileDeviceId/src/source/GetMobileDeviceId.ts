@@ -1,12 +1,11 @@
 import { HardwareOperation as hardwareOperationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 
-let undefined
-
 //初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   //		// 获取规则链路由上下文,终止执行后续规则
   //		var routeContext = ruleContext.getRouteContext();
   //		// 获取规则链路由上下文的配置参数值

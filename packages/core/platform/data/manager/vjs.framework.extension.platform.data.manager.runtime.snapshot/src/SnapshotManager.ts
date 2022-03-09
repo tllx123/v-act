@@ -5,12 +5,8 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 let stack = [],
   token = 'WINDOW_RUNTIME_SNAPSHOT'
 
-exports.initModule = function (sb) {
-  let ruleContext = sb.getService(
-    'vjs.framework.extension.platform.interface.route.RuleContext'
-  )
-  ruleContext.prototype.setSnapshotManager(exports)
-}
+import { RouteContext as ruleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+ruleContext.prototype.setSnapshotManager(exports)
 
 let _getStorage = function () {
   let scope = scopeManager.getWindowScope()

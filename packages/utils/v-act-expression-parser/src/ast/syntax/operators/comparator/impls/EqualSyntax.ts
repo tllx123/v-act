@@ -23,6 +23,7 @@ class EqualSyntax extends ComparatorSyntax {
   getSymbol(): string {
     return EqualSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -31,6 +32,14 @@ class EqualSyntax extends ComparatorSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+
+    return visitor && visitor.visitEqualSyntax
+      ? visitor.visitEqualSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

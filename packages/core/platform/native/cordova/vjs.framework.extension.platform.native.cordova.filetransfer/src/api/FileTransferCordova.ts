@@ -1,11 +1,11 @@
 import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
-let undefined
+
 let flag = false
 let count = 1
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let FileTransferService = sb.getService(
     'vjs.framework.extension.platform.services.native.mobile.FileTransfer'
   )
@@ -210,4 +210,4 @@ function isFunction(arg) {
   }
   return false
 }
-export { filetransferUpload, filetransferDownload }
+export { filetransferDownload, filetransferUpload }

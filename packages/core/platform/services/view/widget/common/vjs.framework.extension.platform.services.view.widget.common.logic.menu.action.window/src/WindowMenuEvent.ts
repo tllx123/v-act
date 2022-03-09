@@ -4,7 +4,7 @@ import { Browser as browser } from '@v-act/vjs.framework.extension.platform.serv
 
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

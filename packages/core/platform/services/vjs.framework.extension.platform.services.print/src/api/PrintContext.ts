@@ -1,9 +1,7 @@
 import { FrontEndAlerter as frontEndAlerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Modal as viewModel } from '@v-act/vjs.framework.extension.platform.services.view.modal'
 
-let undefined
-
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 const print = function (cfg, offset) {
   doPrint(cfg, offset, 'print')
@@ -685,4 +683,4 @@ let addImg = function (printer, imgs, tableIndex, tMargin, lMargin) {
   }
 }
 
-export { print, preview, selectPrint }
+export { preview, print, selectPrint }

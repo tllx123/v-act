@@ -17,6 +17,8 @@
 	"scripts": {},
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.services.domain.operation": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.rpc": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.window": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.math": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
 	}

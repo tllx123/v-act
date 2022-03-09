@@ -1,10 +1,6 @@
-let objUtils
+import { ObjectUtil as objUtils } from '@v-act/vjs.framework.extension.util.object'
 
-exports.initModule = function (sb) {
-  objUtils = sb.util.object
-}
-
-const combine = function (aim, source) {
+export function combine(aim, source) {
   let params = source.getParams()
   let rs = aim.getParams().resultSet
   params.resultSet.iterate(function (rd) {
@@ -15,7 +11,7 @@ const combine = function (aim, source) {
   source.markDestroy()
 }
 
-;(exports.destroy = function (before, after) {
+export function destroy(before, after) {
   var rs = before.getParams().resultSet,
     opRs = after.getParams().resultSet
   var remove = [],
@@ -41,30 +37,30 @@ const combine = function (aim, source) {
   if (rs.isEmpty()) {
     before.markDestroy()
   }
-}),
-  (exports.destroyBefore = function (before, after) {
-    var bRs = before.getParams().resultSet,
-      aRs = after.getParams().resultSet
-    var remove = []
-    bRs.iterate(function (rd, i) {
-      var id = rd.getSysId()
-      aRs.iterate(function (record, index) {
-        if (
-          id == record.getSysId() &&
-          after.getRecordPosition(record) > before.getRecordPosition(rd)
-        ) {
-          remove.push(i)
-          return false
-        }
-      })
+}
+export function destroyBefore(before, after) {
+  var bRs = before.getParams().resultSet,
+    aRs = after.getParams().resultSet
+  var remove = []
+  bRs.iterate(function (rd, i) {
+    var id = rd.getSysId()
+    aRs.iterate(function (record, index) {
+      if (
+        id == record.getSysId() &&
+        after.getRecordPosition(record) > before.getRecordPosition(rd)
+      ) {
+        remove.push(i)
+        return false
+      }
     })
-    bRs.removeByIndexs(remove)
-    if (bRs.isEmpty()) {
-      before.markDestroy()
-    }
   })
+  bRs.removeByIndexs(remove)
+  if (bRs.isEmpty()) {
+    before.markDestroy()
+  }
+}
 
-const opUpdateWhenInsert = function (insert, update) {
+export function opUpdateWhenInsert(insert, update) {
   let resultSet = update.getParams().resultSet
   let iRs = insert.getParams().resultSet
   let toRemove = []
@@ -91,7 +87,7 @@ const opUpdateWhenInsert = function (insert, update) {
   }
 }
 
-const destroyCurrent = function (current, operation) {
+export function destroyCurrent(current, operation) {
   let resultSet = operation.getParams().resultSet
   if (resultSet) {
     let id = current.getParams().currentRecord.getSysId()
@@ -107,7 +103,7 @@ const destroyCurrent = function (current, operation) {
   }
 }
 
-const destroyWhenLoad = function (operation, load) {
+export function destroyWhenLoad(operation, load) {
   let params = load.getParams()
   let isAppend = params.isAppend
   if (!isAppend) {
@@ -128,7 +124,7 @@ const destroyWhenLoad = function (operation, load) {
   }
 }
 
-const opSelectWhenDelete = function (select, deleted) {
+export function opSelectWhenDelete(select, deleted) {
   let rs = deleted.getParams().resultSet,
     sRs = select.getParams().resultSet
   let index = {}
@@ -149,19 +145,4 @@ const opSelectWhenDelete = function (select, deleted) {
   if (sRs.isEmpty()) {
     select.markDestroy()
   }
-}
-
-export {
-  addObserver,
-  fire,
-  _callAsyncObservers,
-  getBindedDatasourceNames,
-  destroy,
-  addOperation,
-  create,
-  combine,
-  opUpdateWhenInsert,
-  destroyCurrent,
-  destroyWhenLoad,
-  opSelectWhenDelete
 }

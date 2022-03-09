@@ -1,16 +1,19 @@
-import * as observerManager from './api/DatasourceObserverManager'
-import * as operationFactory from './impl/OperationFactory'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import * as DatasourceObserver from './impl/DatasourceObserver'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
+
+import * as observerManager from '../api/DatasourceObserverManager'
+import * as DatasourceObserver from '../impl/DatasourceObserver'
+import * as operationFactory from '../impl/OperationFactory'
 
 let token = 'WINDOW_INSTANCE_OBSERVER_COMBINE_STORAGE'
 
 let observerTask = {}
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let getDatasourceObserver = function (datasourceName) {
   let scope = scopeManager.getWindowScope()
@@ -82,10 +85,10 @@ const addOperation = function (params) {
 }
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
+  addObserver,
+  addOperation,
   destroy,
-  addOperation
+  fire,
+  getBindedDatasourceNames
 }

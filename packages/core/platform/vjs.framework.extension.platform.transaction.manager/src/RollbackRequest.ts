@@ -1,7 +1,6 @@
-import * as utils from './Utils'
-import { log as log } from '@v-act/vjs.framework.extension.util'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
+import * as utils from './Utils'
 
 let RollbackRequest = function (params) {
   this.steps = params.steps

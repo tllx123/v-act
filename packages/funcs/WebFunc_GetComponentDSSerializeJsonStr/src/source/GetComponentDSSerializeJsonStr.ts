@@ -1,11 +1,11 @@
 import * as dbManager from 'module'
 import * as jsonUtil from 'module'
+
 //加载
-let undefined
-let undefined
-exports.initModule = function () {}
+
+export function initModule() {}
 //主入口(必须有)
-let main = function () {
+const main = function () {
   let retObj = {}
   if (arguments.length == 0) {
     let dbArr = dbManager.getAllDB()

@@ -1,15 +1,15 @@
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { cookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
-import * as TimePoint from './TimePoint'
+import { cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
+
 import * as dataManager from './DataManager'
+import * as TimePoint from './TimePoint'
 
 let splitChar = '$_$',
   startFlag = false
 let OpenMonitor = 'OpenConsumingTimeMonitor'
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let isEnable = function () {
   return startFlag
@@ -412,13 +412,13 @@ const register = function () {
 
 export {
   add,
-  remove,
   clear,
   clearTreeData,
-  genViewTimePoint,
+  doClear,
   doStart,
   doStop,
-  doClear,
+  genViewTimePoint,
+  isOpenMonitor,
   register,
-  isOpenMonitor
+  remove
 }

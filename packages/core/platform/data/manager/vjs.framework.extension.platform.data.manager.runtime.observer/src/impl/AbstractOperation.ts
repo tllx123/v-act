@@ -1,6 +1,4 @@
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-
-let undefined
+import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
 let Operation = function (params) {
   this.params = params
@@ -88,10 +86,10 @@ Operation.prototype = {
 return Operation
 
 export {
-  addObserver,
-  fire,
   _callAsyncObservers,
-  getBindedDatasourceNames,
+  addObserver,
+  addOperation,
   destroy,
-  addOperation
+  fire,
+  getBindedDatasourceNames
 }

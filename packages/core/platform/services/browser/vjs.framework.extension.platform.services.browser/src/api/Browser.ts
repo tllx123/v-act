@@ -1,25 +1,22 @@
-import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { Config as consoleConfigService } from '@v-act/vjs.framework.extension.platform.services.mobile.console'
 import { ApplicationParam as AppData } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
 import { FrontEndAlerter as AlertUtils } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { WindowContainerManager as WindowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Config as consoleConfigService } from '@v-act/vjs.framework.extension.platform.services.mobile.console'
+import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { CreateModalByUrl as modalUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import {
+  WidgetAction as actionHandler,
+  WidgetRenderer as widgetRenderer
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 关闭模态窗体
@@ -871,18 +868,18 @@ let currentPageOpen = function (params) {
   //获取当前窗体所在容器信息
 }
 export {
-  setWindowTitle,
-  callModuleEx,
-  getWindowUrl,
-  redirectLocation,
-  currentPageOpen,
-  closeModalWindow,
-  redirectModule,
-  callBrowserWindow,
   callBrowserModalWindow,
+  callBrowserWindow,
+  callModuleEx,
+  closeModalWindow,
+  currentPageOpen,
+  getWindowUrl,
+  openWindowToDiv,
+  redirectLocation,
+  redirectModule,
+  setWindowTitle,
+  showModalDialogEx,
   showModalModule,
   showModelessDialogEx,
-  showModelessDialogExNewTab,
-  showModalDialogEx,
-  openWindowToDiv
+  showModelessDialogExNewTab
 }

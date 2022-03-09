@@ -17,6 +17,7 @@
 	"scripts": {},
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.exception": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1"
 	}

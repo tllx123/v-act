@@ -1,15 +1,5 @@
-let COMPONENT_RESOURCE_KEY = 'COMPONENT_RESOURCE_KEY',
-  StorageManager,
-  sandbox
-
-exports.initModule = function (sb) {
-  if (sb) {
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    sandbox = sb
-  }
-}
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+let COMPONENT_RESOURCE_KEY = 'COMPONENT_RESOURCE_KEY'
 
 /**
  * 获取窗体资源仓库

@@ -22,6 +22,7 @@ class AndSyntax extends LogicSyntax {
   getSymbol(): string {
     return AndSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -30,6 +31,13 @@ class AndSyntax extends LogicSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitAndSyntax
+      ? visitor.visitAndSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

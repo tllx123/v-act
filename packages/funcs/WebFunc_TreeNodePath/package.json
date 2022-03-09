@@ -17,6 +17,10 @@
 	"scripts": {},
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.services.domain.tree": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.ds": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.exception": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.object": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.tree": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.model.manager.tree": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"

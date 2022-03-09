@@ -1,9 +1,8 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util'
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let showGlobalProgress = function (msg) {
   let div = $('#_waitMsgTD')
@@ -107,4 +106,4 @@ let hideProgress = function (isGlobal) {
   }
 }
 
-export { showProgress, hideProgress }
+export { hideProgress, showProgress }

@@ -1,9 +1,8 @@
 import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.interface.view.widget.common.dialog'
 
 let sb
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 
@@ -59,4 +58,4 @@ let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
   dialog.infoDialog(content, responseCallBackFunc, isUseDefault)
 }
 
-export { confirmDialog, propmtDialog, errorDialog, warnDialog, infoDialog }
+export { confirmDialog, errorDialog, infoDialog, propmtDialog, warnDialog }

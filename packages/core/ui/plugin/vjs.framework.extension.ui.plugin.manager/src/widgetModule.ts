@@ -1,7 +1,7 @@
 let sb
 let seriesService
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
   if (sandbox) {
     seriesService = sb.getService(

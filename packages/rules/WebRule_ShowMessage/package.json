@@ -1,11 +1,15 @@
 {
-  "name": "@v-act/webrule_showmessage",
-  "version": "1.0.0-alpha.1",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "main": "dist/index.js",
-  "module": "dist/index.es.js",
-  "scripts": {},
-  "devDependencies": {}
+	"name": "@v-act/webrule_showmessage",
+	"version": "1.0.0-alpha.1",
+	"description": "",
+	"license": "ISC",
+	"author": "",
+	"main": "dist/index.js",
+	"module": "dist/index.es.js",
+	"scripts": {},
+	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.expression": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.message": "^1.0.0-alpha.1"
+	},
+	"devDependencies": {}
 }

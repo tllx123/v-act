@@ -1,9 +1,9 @@
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let DebugInfoManager = function () {}
-let undefined
-exports.initModule = function (sb) {}
+
+export function initModule(sb) {}
 
 //定义初始化标记变量
 let initFlag = false
@@ -210,4 +210,4 @@ const clear = function () {
   initMapping = {}
 }
 
-export { _putAop, getHook, isInited, init, isDebugger, update, clear }
+export { _putAop, clear, getHook, init, isDebugger, isInited, update }

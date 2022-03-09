@@ -16,6 +16,9 @@
 	],
 	"scripts": {},
 	"dependencies": {
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.date": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.number": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.object": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.date": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.math": "1.0.0-alpha.1"
 	}

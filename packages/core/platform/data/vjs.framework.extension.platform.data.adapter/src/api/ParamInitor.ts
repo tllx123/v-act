@@ -1,9 +1,7 @@
 import * as adapter from './api/Adapter'
 import * as datasourceInitor from './impl/initor/DatasourceInitor'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const init = function (param) {
   let type = param.getType()
@@ -26,4 +24,4 @@ const init = function (param) {
   }
 }
 
-export { adapt, init, init }
+export { adapt, init }

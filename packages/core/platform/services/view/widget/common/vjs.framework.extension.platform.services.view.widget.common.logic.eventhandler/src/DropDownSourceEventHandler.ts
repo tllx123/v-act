@@ -1,14 +1,9 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
+import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 const loadDropDownSourceFromEntity = function (widgetCode) {
   let widget = widgetContext.get(widgetCode, 'widgetObj')

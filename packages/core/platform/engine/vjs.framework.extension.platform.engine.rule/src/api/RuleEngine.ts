@@ -1,21 +1,22 @@
-import * as RuleExecutor from './impl/RuleExecutor'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { RuleContext as RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RouteContext as RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { aop } from '@v-act/vjs.framework.extension.platform.aop'
 import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
-import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
-import { aop as aop } from '@v-act/vjs.framework.extension.platform'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { callbackFactory as callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  RouteContext,
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
 
-let undefined
+import * as RuleExecutor from '../impl/RuleExecutor'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 let _isBusinessRule = function (ruleInstance) {
   return ruleInstance.hasOwnProperty('transactionType')

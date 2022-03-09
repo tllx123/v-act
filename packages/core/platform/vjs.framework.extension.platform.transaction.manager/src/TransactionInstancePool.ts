@@ -1,7 +1,7 @@
 let _pool = {}
 let collectionUtil, objectUtil
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   collectionUtil = sb.util.collections
   objectUtil = sb.util.object
 }

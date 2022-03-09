@@ -21,6 +21,17 @@
 		"@v-act/vjs.framework.extension.platform.services.browser": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.dcs": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.domain.datasource": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.attachment": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.browser": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.component": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.ds": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.environment": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.exception": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.expression": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.rpc": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.string": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.widget": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.window": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.model.manager.datasource": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.repository.access": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.view.logic.datasource": "1.0.0-alpha.1",
@@ -30,7 +41,7 @@
 		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.where.restrict": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.widget.pagination": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1"
 	}
 }

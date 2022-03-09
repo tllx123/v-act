@@ -1,7 +1,7 @@
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+
 /*
 	var arrayUtil;
 	var windowVmManager;
@@ -13,12 +13,8 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
 	var datasourceObserverManager;
 	var datasourceUtil;
 */
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 获取固定布局下控件布局的位置

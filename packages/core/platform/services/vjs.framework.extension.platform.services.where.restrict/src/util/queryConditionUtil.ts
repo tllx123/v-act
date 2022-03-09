@@ -1,12 +1,12 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { StringUtil as strUtil } from '@v-act/vjs.framework.extension.util'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import {
+  ExpressionContext,
+  ExpressionEngine as expressionEngine
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as strUtil } from '@v-act/vjs.framework.extension.util.string'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 是否不需要参数化的操作符，例如is,is not
@@ -850,4 +850,4 @@ const ExtraConditionNode = function (routeContext) {
   }
 }
 
-export { init, genCustomParams, ExtraConditionNode }
+export { ExtraConditionNode, genCustomParams, init }

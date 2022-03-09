@@ -1,15 +1,14 @@
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WindowParam as schemaWinParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
+import { WindowParam as schemaWinParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let storageToken = 'STORAGE_RUNTIME_PARAM_WINDOWPARAM',
   inputToken = 'RUNTIME_WINDOW_INPUT',
   outputToken = 'RUNTIME_WINDOW_OUTPUT'
-let undefined
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 let _getWindowScope = function () {
   let scope = scopeManager.getWindowScope()
   return scope
@@ -163,20 +162,20 @@ const initInputs = function (inputParam) {
 }
 
 export {
-  setVariant,
-  existsVariant,
-  getVariant,
-  getOption,
+  existsInput,
   existsOption,
-  markVariantInited,
-  isVariantInited,
-  setInput,
+  existsOutput,
+  existsVariant,
   getInput,
   getInputs,
-  existsInput,
-  setOutput,
+  getOption,
   getOutput,
   getOutputs,
-  existsOutput,
-  initInputs
+  getVariant,
+  initInputs,
+  isVariantInited,
+  markVariantInited,
+  setInput,
+  setOutput,
+  setVariant
 }

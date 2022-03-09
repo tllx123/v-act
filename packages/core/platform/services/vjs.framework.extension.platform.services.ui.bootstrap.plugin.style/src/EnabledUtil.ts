@@ -1,6 +1,6 @@
 let sandbox, topNodeName, secNodeName, attDisable
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   topNodeName = '_topnode'
   secNodeName = '_secondnode'

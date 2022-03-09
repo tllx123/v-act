@@ -22,8 +22,8 @@
     "@v-act/vjs.framework.extension.platform.interface.exception": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.array": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.object": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
   }

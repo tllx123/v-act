@@ -1,13 +1,11 @@
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import * as viewContext from 'module'
-import * as viewModel from 'module'
 import * as formulaUtil from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
-let main = function (ruleContext) {
+import * as viewContext from 'module'
+
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {}
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParamsValue = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParamsValue)

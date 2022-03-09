@@ -1,20 +1,24 @@
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { Mediacapture as MediacaptureService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-exports.initModule = function (sBox) {
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  FileTransfer as FileTransferService,
+  Mediacapture as MediacaptureService
+} from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {
   sandbox = sBox
 }
 
-//规则主入口(必须有)
-let main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值

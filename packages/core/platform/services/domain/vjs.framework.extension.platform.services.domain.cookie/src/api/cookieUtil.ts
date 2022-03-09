@@ -1,7 +1,6 @@
-import * as aes from './cryptoJS/aes'
-let undefined
+import * as aes from '../cryptoJS/aes'
 
-exports.initModule = function () {}
+export function initModule() {}
 
 // Use native String.trim function wherever possible
 let trim = function (text) {

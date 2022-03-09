@@ -1,8 +1,6 @@
-import * as Tree from './api/Tree'
+import * as Tree from './Tree'
 
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 
 const isTree = function (tree) {
   return tree instanceof Tree

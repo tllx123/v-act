@@ -1,20 +1,14 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsTool } from '@v-act/vjs.framework.extension.util'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as ExpressEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ComponentParam as ComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { WindowParam as WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { ComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
+import {
+  ExpressionContext,
+  ExpressionEngine as ExpressEngine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { jsonUtil as jsTool } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 let getInstance = function (itemsField, mapping, routeContext) {
   return new ParamFieldUtil(itemsField, mapping, routeContext)

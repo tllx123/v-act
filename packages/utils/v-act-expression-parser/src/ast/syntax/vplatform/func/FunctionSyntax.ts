@@ -187,6 +187,30 @@ class FunctionSyntax extends Syntax {
       })`
     }
   }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    const scripts: any[] = []
+
+    if (visitor && visitor.visitParseResultSyntax) {
+      return visitor.visitFunctionSyntax(
+        this,
+        (syntax) => <string>syntax.visit()
+      )
+    } else {
+      scripts.push(this.getCode())
+      let args = this.getArgs()
+      if (args && args.length > 0) {
+        args.forEach((arg) => {
+          let target = arg.visit()
+          target !== 'false' && scripts.push(target)
+        })
+      }
+    }
+
+    return scripts.join(',')
+  }
 }
 
 export default FunctionSyntax

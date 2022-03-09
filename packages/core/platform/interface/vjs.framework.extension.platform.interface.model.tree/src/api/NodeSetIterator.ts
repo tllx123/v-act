@@ -1,6 +1,4 @@
-import * as Node from './api/Node'
-
-let undefined
+import * as Node from './Node'
 
 /**
  * @namespace NodeSetIterator

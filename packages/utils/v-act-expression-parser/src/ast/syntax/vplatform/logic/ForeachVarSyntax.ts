@@ -94,6 +94,9 @@ class ForeachVarSyntax extends Syntax {
       return `LV.${this.getVarCode()}.${this.getFieldCode()}`
     }
   }
+  visit() {
+    return false
+  }
 }
 
 export default ForeachVarSyntax

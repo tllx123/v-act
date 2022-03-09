@@ -19,4 +19,4 @@ Callback.prototype = {
   }
 }
 
-return Callback
+export default Callback

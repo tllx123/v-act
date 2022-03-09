@@ -1,8 +1,6 @@
 import * as Record from './api/Record'
 import * as ResultSetIterator from './api/ResultSetIterator'
 
-let undefined
-
 /**
  *	@namespace ResultSet
  *  @class ResultSet
@@ -158,4 +156,4 @@ ResultSet.prototype = {
 
 return ResultSet
 
-export { create, unSerialize, isDatasource, _getDatasourceConstructor }
+export { _getDatasourceConstructor, create, isDatasource, unSerialize }

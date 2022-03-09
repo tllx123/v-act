@@ -26,7 +26,7 @@
     "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.transaction.manager": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
   }
 }

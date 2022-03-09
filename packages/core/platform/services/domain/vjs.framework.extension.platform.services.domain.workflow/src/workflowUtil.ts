@@ -1,27 +1,14 @@
-import * as systemConstant from 'module'
-import * as operationLib from 'module'
 import * as formulaUtil from 'module'
-import * as definerUtil from 'module'
+import * as log from 'module'
+import * as operationLib from 'module'
+import * as systemConstant from 'module'
 import * as viewContext from 'module'
 import * as viewModel from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import * as jsTool from 'module'
-import * as vmUtil from 'module'
-import * as log from 'module'
 import * as viewOperation from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sBox) {}
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {}
 
 //流程图XML所在字段名
 let __processGraphXmlField__ = 'ProcessGraphXml'
@@ -727,22 +714,22 @@ let getDymanicProcessVariant = function (
 }
 
 export {
-  getProcessGraphXmlField,
-  getProcessDefinitionXmlField,
-  getProcessDefinitionIdField,
-  getProcessInstanceIdField,
-  getProcessTaskIdField,
-  getProcessIdField,
+  checkProcessDefinitionValid,
   generateNextExecutionUnitIds,
   getComponentId,
+  getNextActivityIds,
+  getNextActivityInfo,
+  getNextActivityIsEnd,
+  getNextActivityIsStart,
+  getProcessDefinitionIdField,
+  getProcessDefinitionXmlField,
+  getProcessGraphXmlField,
+  getProcessIdField,
+  getProcessInstanceIdField,
+  getProcessTaskIdField,
   getProcessVariables,
   getRecordsFromOpenModule,
   getRecordsFromOpenModuleAsync,
-  getNextActivityInfo,
-  getNextActivityIds,
-  getNextActivityIsStart,
-  getNextActivityIsEnd,
-  processOperation,
   isDeployedProcessDefinition,
-  checkProcessDefinitionValid
+  processOperation
 }

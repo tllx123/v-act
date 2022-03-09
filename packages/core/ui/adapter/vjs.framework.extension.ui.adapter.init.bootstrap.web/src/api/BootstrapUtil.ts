@@ -1,18 +1,18 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as TaskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { ComponentData as ComponentData } from '@v-act/vjs.framework.extension.platform.global.data'
-import { AppData as AppData } from '@v-act/vjs.framework.extension.platform.global.data'
-import { ApplicationParam as ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
+import { ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
+import {
+  ScopeTask,
+  TaskManager
+} from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -736,10 +736,10 @@ let renderWindows = function (windowsCfg, config) {
 
 export {
   execute,
-  renderWindows,
+  prepareComponent,
+  renderComponent,
   renderComponentById,
   renderComponentToElement,
-  renderComponent,
-  prepareComponent,
+  renderWindows,
   setRunningMode
 }

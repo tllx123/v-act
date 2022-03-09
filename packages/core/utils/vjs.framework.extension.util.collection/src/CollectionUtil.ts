@@ -1,4 +1,4 @@
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   if (sBox) {
     let utils = sBox.util.collections
     module.exports = utils

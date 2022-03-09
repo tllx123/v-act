@@ -7,7 +7,7 @@ let sb
 // 权限池
 let permissionPool = {}
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 

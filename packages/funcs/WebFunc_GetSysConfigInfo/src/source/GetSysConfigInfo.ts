@@ -1,19 +1,17 @@
-import * as viewContext from 'module'
 import * as jsonUtil from 'module'
+import * as viewContext from 'module'
 import * as viewOperation from 'module'
 
 //加载viewContext模块
-let undefined
-//加载jsonUtil模块
-let undefined
-let undefined
 
-exports.initModule = function () {}
+//加载jsonUtil模块
+
+export function initModule() {}
 
 /**
  * 主入口
  */
-let main = function (key) {
+const main = function (key) {
   // 构造参数
   let expression = 'GetSysConfigInfoFunc("' + key + '")'
 

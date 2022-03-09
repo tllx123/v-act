@@ -26,6 +26,7 @@ class GreaterOrEqualSyntax extends ComparatorSyntax {
   getSymbol(): string {
     return GreaterOrEqualSyntax.SYMBOL
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -36,6 +37,13 @@ class GreaterOrEqualSyntax extends ComparatorSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    return visitor && visitor.visitGreaterOrEqualSyntax
+      ? visitor.visitGreaterOrEqualSyntax(this, (syntax) => syntax.visit())
+      : super.visit()
   }
 }
 

@@ -1,16 +1,17 @@
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import * as componentUtil from './api/BootstrapUtil'
-import { WindowContainer as WindowContainer } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { VPlatfromIframeManager as iframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  WindowContainer,
+  WindowContainerManager as windowRelation
+} from '@v-act/vjs.framework.extension.platform.services.view.relation'
+
+import * as componentUtil from './api/BootstrapUtil'
 
 let sandbox
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 

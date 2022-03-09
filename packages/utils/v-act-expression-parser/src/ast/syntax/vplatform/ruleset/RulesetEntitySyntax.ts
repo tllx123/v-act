@@ -98,6 +98,9 @@ abstract class RulesetEntitySyntax extends Syntax {
       this.getPrefix() + `.[${this.getEntityCode()}].[${this.getFieldCode()}]`
     )
   }
+  visit() {
+    return false
+  }
 }
 
 export default RulesetEntitySyntax

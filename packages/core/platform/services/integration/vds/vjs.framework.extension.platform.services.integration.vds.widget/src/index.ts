@@ -8,334 +8,319 @@
  * vds.import("vds.widget.*");
  * vds.widget.getStoreType("JGButton1");
  */
-define('./index', function (require, exports, module) {
-  window.vds = window.vds || {}
-  window.vds.widget = window.vds.widget || {}
+window.vds = window.vds || {}
+window.vds.widget = window.vds.widget || {}
 
-  var widget = window.vds.widget
+var widget = window.vds.widget
 
-  exports = widget
+exports = widget
 
-  var windowVMManager,
-    widgetContext,
-    widgetProperty,
-    widgetAction,
-    scopeManager,
-    windowRelation
+var windowVMManager,
+  widgetContext,
+  widgetProperty,
+  widgetAction,
+  scopeManager,
+  windowRelation
 
-  exports.initModule = function (sBox) {
-    windowVMManager = sBox.getService(
-      'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
-    )
-    widgetContext = sBox.getService(
-      'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-    )
-    widgetProperty = sBox.getService(
-      'vjs.framework.extension.platform.services.view.widget.common.action.WidgetProperty'
-    )
-    widgetAction = sBox.getService(
-      'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-    )
-    scopeManager = sBox.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    windowRelation = sBox.getService(
-      'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-    )
-  }
+export function initModule(sBox) {
+  windowVMManager = sBox.getService(
+    'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
+  )
+  widgetContext = sBox.getService(
+    'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
+  )
+  widgetProperty = sBox.getService(
+    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetProperty'
+  )
+  widgetAction = sBox.getService(
+    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
+  )
+  scopeManager = sBox.getService(
+    'vjs.framework.extension.platform.interface.scope.ScopeManager'
+  )
+  windowRelation = sBox.getService(
+    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
+  )
+}
 
+/**
+ * 判断是否构件域
+ * */
+var _isComponentScope = function () {
+  //先去掉校验，有构件方法中执行控件方法的场景Task20210809156
+  return false
+  //    	var isComponentScope = scopeManager.isComponentScope(scopeManager.getCurrentScopeId())
+  //    	return isComponentScope;
+}
+
+/**
+ * 控件存储类型
+ * @enum {String}
+ */
+exports.StoreType = {
   /**
-   * 判断是否构件域
-   * */
-  var _isComponentScope = function () {
-    //先去掉校验，有构件方法中执行控件方法的场景Task20210809156
+   * 集合数据存储类型
+   */
+  Set: 'set',
+  /**
+   * 单行数据存储类型
+   */
+  SingleRecord: 'singleRecord',
+  /**
+   * 单行数据存储类型
+   */
+  SingleRecordMultiValue: 'singleRecordMultiValue',
+  /**
+   * 多集合
+   */
+  MultiSet: 'multiSet',
+  /**
+   * 无数据存储类型
+   */
+  None: 'none'
+}
+
+/**
+ * 根据数据源名称获取绑定的控件编号
+ * @param {String} datasource 数据源编号
+ * @param {String} fieldCode 字段编码，默认为空，不为空时，获取绑定数据源指定字段的控件（可选）
+ * @returns Array
+ * @example
+ * vds.widget.getWidgetCodes("user");
+ */
+export function getWidgetCodes(datasource, fieldCode) {
+  //    	if(_isComponentScope()){
+  //    		return [];
+  //    	}
+  var winScope = scopeManager.getWindowScope()
+  var data = scopeManager.createScopeHandler({
+    scopeId: winScope.getInstanceId(),
+    handler: function () {
+      if (!fieldCode) {
+        return windowVMManager.getWidgetCodesByDatasourceName({
+          datasourceName: datasource
+        })
+      } else {
+        return windowVMManager.getWidgetCodesByFieldCode({
+          datasourceName: datasource,
+          fieldCode: fieldCode
+        })
+      }
+    }
+  })()
+  return data
+}
+
+/**
+ * 获取控件存储类型
+ * @deprecated
+ * @param {String} code 控件编号
+ * @example
+ * vds.widget.getStoreType("JGTextBox1");
+ */
+export function getStoreType(code) {
+  //    	if(_isComponentScope()){
+  //    		return null;
+  //    	}
+  return widgetContext.getStoreType(code)
+}
+
+/**
+ * 设置控件属性
+ * @param {String} widgetCode 控件编码
+ * @param {String} propertyCode 属性编码
+ * @param {Any} propertyValue 属性值
+ * @example
+ * vds.widget.setProperty("JGTextBox1", "ReadOnly", true);
+ */
+export function setProperty(widgetCode, propertyCode, propertyValue) {
+  //    	if(_isComponentScope()){
+  //    		return;
+  //    	}
+  if (widgetCode && propertyCode) {
+    widgetProperty.set(widgetCode, propertyCode, propertyValue)
+  }
+}
+
+/**
+ * 获取控件类型
+ * @param {String} widgetCode 控件编码
+ * @returns {String} 控件类型
+ * @example
+ * vds.widget.getType("JGTextBox1");//JGTextBox
+ */
+export function getType(widgetCode) {
+  //    	if(_isComponentScope()){
+  //    		return null;
+  //    	}
+  var type = widgetCode ? widgetContext.getType(widgetCode) : null
+  return type
+}
+
+/**
+ * 获取控件属性
+ * @param {String} widgetCode 控件编码
+ * @param {String} propertyCode 属性编码
+ * @returns {Any} 属性值
+ * @example
+ * vds.widget.getProperty("JGTextBox1", "ReadOnly");//false
+ */
+export function getProperty(widgetCode, propertyCode) {
+  //    	if(_isComponentScope()){
+  //    		return null;
+  //    	}
+  var val =
+    widgetCode && propertyCode
+      ? widgetContext.get(widgetCode, propertyCode)
+      : null
+  return val
+}
+
+/**
+ * 判断控件是否存在
+ * @param {String} widgetCode 控件编码
+ * @returns {Boolean} true: 控件存在 false:控件不存在
+ * @example
+ * vds.widget.exists("JGTextBox1");//true
+ */
+export function exists(widgetCode) {
+  //    	if(_isComponentScope()){
+  //    		return false;
+  //    	}
+  return widgetContext.isWidgetExist(widgetCode)
+}
+
+/**
+ * 根据控件编码获取绑定的数据源编码
+ * @param {String} widgetCode 控件编码
+ * @returns {Array<String>} 数据源编码列表
+ * @example
+ * vds.widget.getDatasourceCodes("JGTextBox1");
+ */
+export function getDatasourceCodes(widgetCode) {
+  //    	if(_isComponentScope()){
+  //    		return [];
+  //    	}
+  var datasourceCodes = windowVMManager.getDatasourceNamesByWidgetCode({
+    widgetCode: widgetCode
+  })
+  return datasourceCodes
+}
+
+/**
+ * 获取控件绑定的字段列表
+ * @param {String} datasourceCode 实体编码
+ * @param {String} widgetCode 控件编码
+ * @returns {Array<String>} 字段编码列表
+ * @example
+ * vds.widget.getFieldCodes("entityCode1","JGTextBox1");
+ * */
+export function getFieldCodes(datasourceCode, widgetCode) {
+  //    	if(_isComponentScope()){
+  //    		return [];
+  //    	}
+  var fieldCodes = windowVMManager.getFieldCodesByWidgetCode({
+    datasourceName: datasourceCode,
+    widgetCode: widgetCode
+  })
+  return fieldCodes
+}
+
+/**
+ * 执行控件方法
+ * @param {String} widgetCode 控件编码
+ * @param {String} funCode 方法编码
+ * @param {Array<Any>} params 参数列表
+ * @returns {Any} 控件方法的返回值
+ * @example
+ * vds.widget.execute("JGTextBox1","setVisible",[false]);
+ * */
+export function execute(widgetCode, funCode, params) {
+  //    	if(_isComponentScope()){
+  //    		return;
+  //    	}
+  if (!widgetCode || !funCode) {
+    return
+  }
+  var array = [widgetCode, funCode]
+  if (params instanceof Array) {
+    array = array.concat(params)
+  }
+  return widgetAction.executeWidgetAction.apply(this, array)
+}
+/**
+ * 根据控件类型获取控件编码列表
+ * @param {String} widgetType
+ * @returns {Array<String>} 控件编码列表
+ * @example
+ * var codes = vds.widget.getWidgetCodesByType("code1");
+ * */
+export function getWidgetCodesByType(widgetType) {
+  //    	if(_isComponentScope()){
+  //    		return null;
+  //    	}
+  var result = []
+  var windowScope = scopeManager.getWindowScope()
+  var widgets = windowScope.getWidgets()
+  if (widgets) {
+    for (var code in widgets) {
+      if (
+        widgets.hasOwnProperty(code) &&
+        widgets[code].type &&
+        widgets[code].type == widgetType
+      ) {
+        result.push(code)
+      }
+    }
+  }
+  return result
+}
+/**
+ * 判断是否有纵向滚动条
+ * */
+var hasScroll = function (element) {
+  if (!element) {
     return false
-    //    	var isComponentScope = scopeManager.isComponentScope(scopeManager.getCurrentScopeId())
-    //    	return isComponentScope;
   }
-
-  /**
-   * 控件存储类型
-   * @enum {String}
-   */
-  exports.StoreType = {
-    /**
-     * 集合数据存储类型
-     */
-    Set: 'set',
-    /**
-     * 单行数据存储类型
-     */
-    SingleRecord: 'singleRecord',
-    /**
-     * 单行数据存储类型
-     */
-    SingleRecordMultiValue: 'singleRecordMultiValue',
-    /**
-     * 多集合
-     */
-    MultiSet: 'multiSet',
-    /**
-     * 无数据存储类型
-     */
-    None: 'none'
-  }
-
-  /**
-   * 根据数据源名称获取绑定的控件编号
-   * @param {String} datasource 数据源编号
-   * @param {String} fieldCode 字段编码，默认为空，不为空时，获取绑定数据源指定字段的控件（可选）
-   * @returns Array
-   * @example
-   * vds.widget.getWidgetCodes("user");
-   */
-  exports.getWidgetCodes = function (datasource, fieldCode) {
-    //    	if(_isComponentScope()){
-    //    		return [];
-    //    	}
-    var winScope = scopeManager.getWindowScope()
-    var data = scopeManager.createScopeHandler({
-      scopeId: winScope.getInstanceId(),
-      handler: function () {
-        if (!fieldCode) {
-          return windowVMManager.getWidgetCodesByDatasourceName({
-            datasourceName: datasource
-          })
-        } else {
-          return windowVMManager.getWidgetCodesByFieldCode({
-            datasourceName: datasource,
-            fieldCode: fieldCode
-          })
-        }
-      }
-    })()
-    return data
-  }
-
-  /**
-   * 获取控件存储类型
-   * @deprecated
-   * @param {String} code 控件编号
-   * @example
-   * vds.widget.getStoreType("JGTextBox1");
-   */
-  exports.getStoreType = function (code) {
-    //    	if(_isComponentScope()){
-    //    		return null;
-    //    	}
-    return widgetContext.getStoreType(code)
-  }
-
-  /**
-   * 设置控件属性
-   * @param {String} widgetCode 控件编码
-   * @param {String} propertyCode 属性编码
-   * @param {Any} propertyValue 属性值
-   * @example
-   * vds.widget.setProperty("JGTextBox1", "ReadOnly", true);
-   */
-  exports.setProperty = function (widgetCode, propertyCode, propertyValue) {
-    //    	if(_isComponentScope()){
-    //    		return;
-    //    	}
-    if (widgetCode && propertyCode) {
-      widgetProperty.set(widgetCode, propertyCode, propertyValue)
-    }
-  }
-
-  /**
-   * 获取控件类型
-   * @param {String} widgetCode 控件编码
-   * @returns {String} 控件类型
-   * @example
-   * vds.widget.getType("JGTextBox1");//JGTextBox
-   */
-  exports.getType = function (widgetCode) {
-    //    	if(_isComponentScope()){
-    //    		return null;
-    //    	}
-    var type = widgetCode ? widgetContext.getType(widgetCode) : null
-    return type
-  }
-
-  /**
-   * 获取控件属性
-   * @param {String} widgetCode 控件编码
-   * @param {String} propertyCode 属性编码
-   * @returns {Any} 属性值
-   * @example
-   * vds.widget.getProperty("JGTextBox1", "ReadOnly");//false
-   */
-  exports.getProperty = function (widgetCode, propertyCode) {
-    //    	if(_isComponentScope()){
-    //    		return null;
-    //    	}
-    var val =
-      widgetCode && propertyCode
-        ? widgetContext.get(widgetCode, propertyCode)
-        : null
-    return val
-  }
-
-  /**
-   * 判断控件是否存在
-   * @param {String} widgetCode 控件编码
-   * @returns {Boolean} true: 控件存在 false:控件不存在
-   * @example
-   * vds.widget.exists("JGTextBox1");//true
-   */
-  exports.exists = function (widgetCode) {
-    //    	if(_isComponentScope()){
-    //    		return false;
-    //    	}
-    return widgetContext.isWidgetExist(widgetCode)
-  }
-
-  /**
-   * 根据控件编码获取绑定的数据源编码
-   * @param {String} widgetCode 控件编码
-   * @returns {Array<String>} 数据源编码列表
-   * @example
-   * vds.widget.getDatasourceCodes("JGTextBox1");
-   */
-  exports.getDatasourceCodes = function (widgetCode) {
-    //    	if(_isComponentScope()){
-    //    		return [];
-    //    	}
-    var datasourceCodes = windowVMManager.getDatasourceNamesByWidgetCode({
-      widgetCode: widgetCode
-    })
-    return datasourceCodes
-  }
-
-  /**
-   * 获取控件绑定的字段列表
-   * @param {String} datasourceCode 实体编码
-   * @param {String} widgetCode 控件编码
-   * @returns {Array<String>} 字段编码列表
-   * @example
-   * vds.widget.getFieldCodes("entityCode1","JGTextBox1");
-   * */
-  exports.getFieldCodes = function (datasourceCode, widgetCode) {
-    //    	if(_isComponentScope()){
-    //    		return [];
-    //    	}
-    var fieldCodes = windowVMManager.getFieldCodesByWidgetCode({
-      datasourceName: datasourceCode,
-      widgetCode: widgetCode
-    })
-    return fieldCodes
-  }
-
-  /**
-   * 执行控件方法
-   * @param {String} widgetCode 控件编码
-   * @param {String} funCode 方法编码
-   * @param {Array<Any>} params 参数列表
-   * @returns {Any} 控件方法的返回值
-   * @example
-   * vds.widget.execute("JGTextBox1","setVisible",[false]);
-   * */
-  exports.execute = function (widgetCode, funCode, params) {
-    //    	if(_isComponentScope()){
-    //    		return;
-    //    	}
-    if (!widgetCode || !funCode) {
-      return
-    }
-    var array = [widgetCode, funCode]
-    if (params instanceof Array) {
-      array = array.concat(params)
-    }
-    return widgetAction.executeWidgetAction.apply(this, array)
-  }
-  /**
-   * 根据控件类型获取控件编码列表
-   * @param {String} widgetType
-   * @returns {Array<String>} 控件编码列表
-   * @example
-   * var codes = vds.widget.getWidgetCodesByType("code1");
-   * */
-  exports.getWidgetCodesByType = function (widgetType) {
-    //    	if(_isComponentScope()){
-    //    		return null;
-    //    	}
-    var result = []
-    var windowScope = scopeManager.getWindowScope()
-    var widgets = windowScope.getWidgets()
-    if (widgets) {
-      for (var code in widgets) {
-        if (
-          widgets.hasOwnProperty(code) &&
-          widgets[code].type &&
-          widgets[code].type == widgetType
-        ) {
-          result.push(code)
-        }
-      }
-    }
-    return result
-  }
-  /**
-   * 判断是否有纵向滚动条
-   * */
-  var hasScroll = function (element) {
-    if (!element) {
-      return false
-    }
-    return element.scrollHeight > element.clientHeight
-  }
-  /**
-   * 滚动到指定控件
-   * @param {String} widgetCode
-   * @example
-   * vds.widget.scrollTo("JGDataGrid");
-   * */
-  exports.scrollTo = function (widgetCode) {
-    var widget = widgetContext.get(widgetCode, 'widgetObj')
-    if (widget) {
-      var scopeId = widget.getScopeId()
-      var containerId = windowRelation.getByScopeId(scopeId)
-      var positionDom = widget.getClipHandle()
-      //var topX = widget.getOffsetTop();
-      //var leftY = widget.getOffsetLeft();
-      var topX = $(positionDom).offset().top
-      var leftY = $(positionDom).offset().left
-      if (containerId) {
-        var container = windowRelation.get(containerId)
-        if (container.ele && hasScroll($('#' + container.ele)[0])) {
-          //存在纵向滚动条时才能滚动
-          var scrollEle = container.ele
-          var containerTop = $('#' + scrollEle).offset().top
-          var containerLeft = $('#' + scrollEle).offset().left
-          topX = topX - containerTop
-          leftY = leftY - containerLeft
-          $('#' + scrollEle).animate(
-            {
-              scrollTop: topX
-            },
-            0
-          )
-          $('#' + scrollEle).animate(
-            {
-              scrollLeft: leftY
-            },
-            0
-          )
-        } else {
-          $('html, body').animate(
-            {
-              scrollTop: topX
-            },
-            0
-          )
-          $('html, body').animate(
-            {
-              scrollLeft: leftY
-            },
-            0
-          )
-        }
+  return element.scrollHeight > element.clientHeight
+}
+/**
+ * 滚动到指定控件
+ * @param {String} widgetCode
+ * @example
+ * vds.widget.scrollTo("JGDataGrid");
+ * */
+export function scrollTo(widgetCode) {
+  var widget = widgetContext.get(widgetCode, 'widgetObj')
+  if (widget) {
+    var scopeId = widget.getScopeId()
+    var containerId = windowRelation.getByScopeId(scopeId)
+    var positionDom = widget.getClipHandle()
+    //var topX = widget.getOffsetTop();
+    //var leftY = widget.getOffsetLeft();
+    var topX = $(positionDom).offset().top
+    var leftY = $(positionDom).offset().left
+    if (containerId) {
+      var container = windowRelation.get(containerId)
+      if (container.ele && hasScroll($('#' + container.ele)[0])) {
+        //存在纵向滚动条时才能滚动
+        var scrollEle = container.ele
+        var containerTop = $('#' + scrollEle).offset().top
+        var containerLeft = $('#' + scrollEle).offset().left
+        topX = topX - containerTop
+        leftY = leftY - containerLeft
+        $('#' + scrollEle).animate(
+          {
+            scrollTop: topX
+          },
+          0
+        )
+        $('#' + scrollEle).animate(
+          {
+            scrollLeft: leftY
+          },
+          0
+        )
       } else {
         $('html, body').animate(
           {
@@ -350,7 +335,20 @@ define('./index', function (require, exports, module) {
           0
         )
       }
+    } else {
+      $('html, body').animate(
+        {
+          scrollTop: topX
+        },
+        0
+      )
+      $('html, body').animate(
+        {
+          scrollLeft: leftY
+        },
+        0
+      )
     }
   }
-  return exports
-})
+}
+return exports

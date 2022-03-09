@@ -18,6 +18,10 @@
 	"dependencies": {
 		"@v-act/vjs.framework.extension.platform.engine.expression": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.domain.tree": "1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.exception": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.expression": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.tree": "^1.0.0-alpha.1",
+		"@v-act/vjs.framework.extension.platform.services.integration.vds.widget": "^1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.platform.services.vmmapping.manager": "1.0.0-alpha.1"
 	}

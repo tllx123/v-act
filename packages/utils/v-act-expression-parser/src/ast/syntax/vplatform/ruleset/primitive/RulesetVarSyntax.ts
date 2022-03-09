@@ -18,6 +18,7 @@ class RulesetVarSyntax extends RulesetPrimitiveSyntax {
   getPrefix(): string {
     return RulesetVarSyntax.PREFIX
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -26,6 +27,9 @@ class RulesetVarSyntax extends RulesetPrimitiveSyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    return false
   }
 }
 

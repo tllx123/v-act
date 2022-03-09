@@ -8,9 +8,7 @@ let toLoadResources = []
 
 // var Resource;
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /*
  * var _getVueLibPath = function(){ var namespace =

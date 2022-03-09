@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 设置输入框类控件在Android下，聚焦 || 输入 不能自动滚动到合适位置

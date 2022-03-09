@@ -57,6 +57,7 @@ export async function viteBuild(scopes, copyToPath, watch) {
             drop_console: watch === true
           }
         },
+
         emptyOutDir: true,
         lib: {
           entry,
@@ -75,7 +76,6 @@ export async function viteBuild(scopes, copyToPath, watch) {
       plugins: [
         vitePluginReact(),
         vitePluginDts(),
-        // cssInjectedByJsPlugin(),
         cssInjectedByJsPlugin(),
         // usePluginImport({
         //   libraryName: 'antd',
@@ -89,10 +89,13 @@ export async function viteBuild(scopes, copyToPath, watch) {
               const distDir = path.resolve(`${copyToPath}/node_modules/${name}`)
               fs.copySync(root, distDir)
               const nodemodules = path.resolve(`${distDir}/node_modules/`)
-              fs.rmSync(nodemodules, {
-                recursive: true,
-                force: true
-              })
+
+              // node v14.14.0以上可用
+              fs.rmSync &&
+                fs.rmSync(nodemodules, {
+                  recursive: true,
+                  force: true
+                })
             }
           }
         }
@@ -112,16 +115,22 @@ export async function viteBuild(scopes, copyToPath, watch) {
       '@v-act/window-schema-utils'
     ]).forEach((pkg) => {
       const distDir = path.resolve(`${copyToPath}/node_modules/${pkg.name}/`)
-      fs.rmSync(distDir, {
-        force: true,
-        recursive: true
-      })
+
+      // node v14.14.0以上可用
+      fs.rmSync &&
+        fs.rmSync(distDir, {
+          force: true,
+          recursive: true
+        })
       fs.copySync(pkg.location, distDir)
       const nodemodules = path.resolve(`${distDir}/node_modules/`)
-      fs.rmSync(nodemodules, {
-        recursive: true,
-        force: true
-      })
+
+      // node v14.14.0以上可用
+      fs.rmSync &&
+        fs.rmSync(nodemodules, {
+          recursive: true,
+          force: true
+        })
     })
   }
 }

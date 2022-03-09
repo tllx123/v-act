@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 let _handleColor = function (colors) {
   let _handleColor = ''
   _color = colors.split(',')

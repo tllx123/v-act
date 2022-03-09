@@ -1,48 +1,39 @@
-import * as windowRuntime from './api/WindowRuntimeInit'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
-import { AppInfo as appInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { ComponentInfo as componentInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { ApplicationParam as ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import {
+  AppInfo as appInfo,
+  ComponentInfo as componentInfo,
+  WindowInfo as windowInfo
+} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
+import * as windowRuntime from './api/WindowRuntimeInit'
+
+import { snapshotManager } from 'vjs.framework.extension.platform.data.manager.runtime.snapshot'
+import { Datasource } from 'vjs.framework.extension.platform.interface.model.datasource'
+import { StorageManager as storageManager } from 'vjs.framework.extension.platform.interface.storage'
+
+import { Adapter as dataAdapter } from 'vjs.framework.extension.platform.data.adapter'
+
+import { Record as record } from 'vjs.framework.extension.platform.interface.model.datasource'
+import { ParamConfig as paramConfig } from 'vjs.framework.extension.platform.interface.model.config'
+
+import { ParamInitor as paramInitor } from 'vjs.framework.extension.platform.data.adapter'
 let sandbox,
   token = 'VIEW_INIT_WINDOW_RUNTIME_HANDLER',
   eventToken = 'VIEW_INIT_WINDOW_RUNTIME_EVENT'
 let storage
 
-exports.initModule = function (sb) {
-  sandbox = sb
-  let storageManager = sb.getService(
-    'vjs.framework.extension.platform.interface.storage.StorageManager'
-  )
-  storage = storageManager.get(storageManager.TYPES.MAP, token)
-  let dataAdapter = sb.getService(
-    'vjs.framework.extension.platform.data.adapter.Adapter'
-  )
-  let record = sb.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.Record'
-  )
-  record.putDataAdapter(dataAdapter)
-  let paramConfig = sb.getService(
-    'vjs.framework.extension.platform.interface.model.config.ParamConfig'
-  )
-  let paramInitor = sb.getService(
-    'vjs.framework.extension.platform.data.adapter.ParamInitor'
-  )
-  paramConfig.putInitor(paramInitor)
-  let snapshotManager = sb.getService(
-    'vjs.framework.extension.platform.data.manager.runtime.snapshot.snapshotManager'
-  )
-  let Datasource = sb.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.Datasource'
-  )
-  Datasource._putSnapshotManager(snapshotManager)
-}
+storage = storageManager.get(storageManager.TYPES.MAP, token)
+record.putDataAdapter(dataAdapter)
+paramConfig.putInitor(paramInitor)
+
+Datasource._putSnapshotManager(snapshotManager)
 
 let taskPool = {}
 
@@ -327,9 +318,9 @@ const init = function (params) {
 }
 
 export {
+  init,
   initAppSchema,
   initComponentSchema,
-  initWindowSchema,
   initWindowRuntime,
-  init
+  initWindowSchema
 }

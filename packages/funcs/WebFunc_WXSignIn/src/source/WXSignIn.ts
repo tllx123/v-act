@@ -1,12 +1,13 @@
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { RemoteMethodAccessor as RemoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { DatasourceManager as DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  RemoteMethodAccessor,
+  RemoteOperation as remoteOperation
+} from '@v-act/vjs.framework.extension.platform.services.operation.remote'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-
 //主入口(必须有)
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let argsLen = args ? args.length : 0
   let entityName = argsLen >= 1 ? args[0] : null

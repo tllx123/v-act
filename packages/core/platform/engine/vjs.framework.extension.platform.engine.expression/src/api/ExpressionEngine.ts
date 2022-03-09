@@ -1,10 +1,10 @@
 import * as formulaEngine from 'module'
+
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+
 import * as ExpressionContext from './api/ExpressionContext'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const execute = function (params) {
   let context = params.context,

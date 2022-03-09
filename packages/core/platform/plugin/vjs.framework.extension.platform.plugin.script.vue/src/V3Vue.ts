@@ -1,15 +1,16 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  CurrentRecordObserver,
+  DatasourceObserver
+} from '@v-act/vjs.framework.extension.platform.interface.observer'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
-import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { CurrentRecordObserver as CurrentRecordObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
-import { StorageManager as StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { DatasourceObserver as DatasourceObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
-import * as v3VueUtil from './V3VueUtils'
 import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
+import * as v3VueUtil from './V3VueUtils'
 
 let sandbox, objectUtil
 let Vue_Event_Manager_Storage_Token = 'Vue_Event_Manager_Storage_Token'

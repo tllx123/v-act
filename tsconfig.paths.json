@@ -1253,7 +1253,72 @@
       "@v-act/webrule_weixingetuserinfo": ["packages/rules/WebRule_WeiXinGetUserInfo/src"],
       "@v-act/vjs.framework.extension.platform.services.view.window.renderer": [
         "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.renderer/src"
-      ]
+      ],
+      "@v-act/vjs.framework.extension.platform.application.window.web.designer.utils": [
+        "packages/core/platform/application/window/web/designer/vjs.framework.extension.platform.application.window.web.designer.utils/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.application.window.web.designer": [
+        "packages/core/platform/application/window/web/designer/vjs.framework.extension.platform.application.window.web.designer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.config.data.webDesign": [
+        "packages/core/platform/config/data/vjs.framework.extension.platform.config.data.webDesign/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.aesimpl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.AESImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.base64impl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.BASE64Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.cryptosha1impl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.md5impl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.MD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.sha1impl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.SHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.standardmd5impl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.StandardMD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.bcryptimpl": [
+        "packages/core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.bcryptImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implement.domain.window.designer.widget.property.default": [
+        "packages/core/platform/implements/domain/window/designer/widget/property/vjs.framework.extension.platform.implement.domain.window.designer.widget.property.default/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implements.view.window.widget.property.processor.formtitle": [
+        "packages/core/platform/implements/view/window/widget/property/processor/vjs.framework.extension.platform.implements.view.window.widget.property.processor.formtitle/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implements.view.window.widget.property.processor.permission": [
+        "packages/core/platform/implements/view/window/widget/property/processor/vjs.framework.extension.platform.implements.view.window.widget.property.processor.permission/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.domain.window.designer.widget.property": [
+        "packages/core/platform/interface/domain/window/designer/widget/vjs.framework.extension.platform.interface.domain.window.designer.widget.property/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.view.window.widget.property.processor": [
+        "packages/core/platform/interface/view/window/widget/property/vjs.framework.extension.platform.interface.view.window.widget.property.processor/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.property.processor": [
+        "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.property.processor/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.window.property": [
+        "packages/core/platform/vjs.framework.extension.platform.window.property/src"
+      ],
+      "@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib": [
+        "packages/core/publish/window/render/smartclient/vjs.framework.extension.publish.window.render.smartclient.viewlib/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.init.smartclient.web": [
+        "packages/core/ui/adapter/vjs.framework.extension.ui.adapter.init.smartclient.web/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.smartclient.plugin.services.treehandler": [
+        "packages/core/ui/smartclient/plguin/services/vjs.framework.extension.ui.smartclient.plugin.services.treehandler/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.util.config.data": [
+        "packages/core/utils/vjs.framework.extension.platform.util.config.data/src"
+      ],
+      "@v-act/vjs.framework.extension.util.logutil": ["packages/core/utils/vjs.framework.extension.util.logutil/src"],
+      "@v-act/vjs.framework.extension.util.jsonutil": ["packages/core/utils/vjs.framework.extension.util.jsonutil/src"]
     }
   }
 }

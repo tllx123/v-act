@@ -1,14 +1,12 @@
-import * as viewContext from 'module'
 import * as formulaUtil from 'module'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-let undefined
-let undefined
-let undefined
-exports.initModule = function (sBox) {}
+
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+export function initModule(sBox) {}
 // 规则主入口(必须有)
-let main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   // 获取规则上下文中的规则配置值
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams

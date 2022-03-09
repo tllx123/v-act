@@ -1,17 +1,20 @@
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import * as ContactsService from '.'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-let undefined
-exports.initModule = function (sBox) {
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+import * as ContactsService from './'
+
+export function initModule(sBox) {
   sandbox = sBox
 }
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const main = function (ruleContext: RuleContext) {
   debugger
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()

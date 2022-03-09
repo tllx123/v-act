@@ -1,9 +1,10 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util.log'
-import { snapshotManager as snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
+import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+
 import RouteContext from './RouteContext'
 
 /**

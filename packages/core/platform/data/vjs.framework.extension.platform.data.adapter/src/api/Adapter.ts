@@ -1,9 +1,8 @@
-import * as stringDataAdaptor from './impl/adapter/StringDataAdaptor'
-import * as numberDataAdaptor from './impl/adapter/NumberDataAdaptor'
-import * as booleanDataAdpator from './impl/adapter/BooleanDataAdaptor'
-let undefined
+import * as booleanDataAdpator from '../impl/adapter/BooleanDataAdaptor'
+import * as numberDataAdaptor from '../impl/adapter/NumberDataAdaptor'
+import * as stringDataAdaptor from '../impl/adapter/StringDataAdaptor'
 
-exports.initModule = function () {}
+export function initModule() {}
 
 const adapt = function (params) {
   let type = params.type

@@ -1,7 +1,5 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-
-let undefined
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let Manager = function () {
   //任务列表
@@ -35,7 +33,7 @@ Manager.prototype = {
 
 let singlton = new Manager()
 
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 const addRequest = function (request) {
   let taskId = uuid.generate()
@@ -55,12 +53,12 @@ const remove = function (instanceId) {
 
 export {
   _putAop,
+  addRequest,
+  clear,
   getHook,
-  isInited,
   init,
   isDebugger,
-  update,
-  clear,
-  addRequest,
-  remove
+  isInited,
+  remove,
+  update
 }

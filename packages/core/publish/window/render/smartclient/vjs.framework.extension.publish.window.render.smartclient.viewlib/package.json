@@ -36,6 +36,7 @@
     "@v-act/vjs.framework.extension.system.mediator": "^1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.ui.adapter.dependency": "^1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.ui.adapter.init.smartclient.web": "^1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "^1.0.0-alpha.1"
+    "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.ui.plugin.manager": "^1.0.0-alpha.1"
   }
 }

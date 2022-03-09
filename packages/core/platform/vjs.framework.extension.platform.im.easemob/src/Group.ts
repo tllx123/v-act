@@ -1,6 +1,6 @@
 import { VTenantManager as vTenantManager } from '@v-act/vjs.framework.extension.platform.im'
-let undefined
-exports.initModule = function (sb) {
+
+export function initModule(sb) {
   let IMGroupService = sb.getService(
     'vjs.framework.extension.platform.services.im.Group'
   )
@@ -120,15 +120,15 @@ const leaveGroup = function (roomId, memberId, successCB, failCB) {
 }
 
 export {
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
   addGroupMembers,
   addToGroupBlackList,
-  removeFromGroupBlackList,
+  changeGroupInfo,
+  createGroup,
   destroyGroup,
-  leaveGroup
+  getGroupBlackList,
+  leaveGroup,
+  listGroups,
+  queryGroupInfo,
+  queryRoomMember,
+  removeFromGroupBlackList
 }

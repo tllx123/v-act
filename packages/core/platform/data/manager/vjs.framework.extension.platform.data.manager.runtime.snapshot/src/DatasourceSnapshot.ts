@@ -1,6 +1,4 @@
-import { Datasource as Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-
-let undefined
+import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
 let Snapshot = function (datasource) {
   this.datasource = datasource

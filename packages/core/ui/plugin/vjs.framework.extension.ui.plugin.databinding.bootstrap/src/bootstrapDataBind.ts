@@ -2,7 +2,7 @@ let viewContext = require('system/view/viewContext')
 let viewModel = require('system/view/viewModel')
 let logUtil = require('system/util/logUtil')
 let sandBox
-exports.initModule = function (sBox) {
+export function initModule(sBox) {
   sandBox = sBox
 }
 

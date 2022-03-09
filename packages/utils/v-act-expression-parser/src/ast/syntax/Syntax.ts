@@ -1,7 +1,7 @@
 import Position from '../Position'
 import SyntaxParseContext from '../SyntaxParseContext'
 
-class Syntax {
+abstract class Syntax {
   tokenStartIndex: number
 
   tokenEndIndex: number
@@ -51,6 +51,8 @@ class Syntax {
   getTokenEndIndex() {
     return this.tokenEndIndex
   }
+
+  abstract visit(): string | boolean
 }
 
 export default Syntax

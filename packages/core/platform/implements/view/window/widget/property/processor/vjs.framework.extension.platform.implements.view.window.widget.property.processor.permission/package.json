@@ -1,0 +1,22 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.implements.view.window.widget.property.processor.permission",
+  "version": "1.0.0-alpha.1",
+  "description": "后台活动集调用",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.integration.server.ruleset.mobile"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.data.manager.runtime.info": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "^1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": "^1.0.0-alpha.1"
+  }
+}

@@ -2,10 +2,9 @@ import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platf
 import { WindowParam as schemaWinParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let undefined
 //dataInitor;
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const setInput = function (params) {
   let c = params.code,
@@ -177,24 +176,24 @@ const getInputDefines = function (componentCode, windowCode) {
 }
 
 export {
-  getRuleSetInputs,
-  setVariant,
-  setVariants,
-  initVariant,
-  getVariant,
-  getOption,
-  refreshVariant,
-  getMetadata,
-  setInput,
-  getInput,
-  getInputs,
-  getInputDefine,
-  setOutput,
-  getOutput,
-  getOutputDefine,
-  getOutputs,
   addInputDefines,
   addOutputDefines,
+  getInput,
+  getInputDefine,
+  getInputDefines,
+  getInputs,
+  getMetadata,
+  getOption,
+  getOutput,
+  getOutputDefine,
   getOutputDefines,
-  getInputDefines
+  getOutputs,
+  getRuleSetInputs,
+  getVariant,
+  initVariant,
+  refreshVariant,
+  setInput,
+  setOutput,
+  setVariant,
+  setVariants
 }

@@ -1,8 +1,6 @@
-import * as Callback from './api/Callback'
+import * as Callback from './Callback'
 
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 exports.Types = {
   Success: 'Success',

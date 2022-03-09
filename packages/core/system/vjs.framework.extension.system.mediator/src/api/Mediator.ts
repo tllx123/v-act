@@ -1,11 +1,10 @@
-import { EventEmitterManager as eventExtension } from '@v-act/vjs.framework.extension.system.event'
-import { default as spiMappingUtils } from '@v-act/vjs.framework.extension.platform.data.spi.mapings'
+import spiMappingUtils from '@v-act/vjs.framework.extension.platform.data.spi.mapings'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-let undefined
-let undefined
+import { EventEmitterManager as eventExtension } from '@v-act/vjs.framework.extension.system.event'
+
 let SERVICE_MAPPING_DATAS = 'Service_Mapping_Datas'
 let MEDIATOR_SERVICE = 'mediator'
-exports.initModule = function (sBox) {}
+export function initModule(sBox) {}
 
 let getStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, SERVICE_MAPPING_DATAS)
@@ -213,11 +212,11 @@ let isArray = function (object) {
   return Object.prototype.toString.call(object) === '[object Array]'
 }
 export {
-  subscribe,
-  publish,
-  publishSerializable,
   emitNext,
   getAllService,
   getServiceName,
-  isExistService
+  isExistService,
+  publish,
+  publishSerializable,
+  subscribe
 }

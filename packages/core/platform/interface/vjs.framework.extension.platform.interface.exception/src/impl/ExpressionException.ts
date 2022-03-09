@@ -1,17 +1,14 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as callCommandService from './util/CallCommand'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let undefined
-let undefined
+import * as ExpectedException from './ExpectedException'
+import * as callCommandService from '../util/CallCommand'
 
 let ExpressionException = function (message, e) {
   ExpectedException.apply(this, arguments)
 }
 
-exports.initModule = function (sandbox) {}
+export function initModule(sandbox) {}
 
 ExpressionException.prototype = {
   initModule: function (sandbox) {
@@ -54,11 +51,11 @@ ExpressionException.prototype = {
 return ExpressionException
 
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

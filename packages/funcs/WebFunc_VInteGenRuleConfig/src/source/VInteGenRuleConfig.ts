@@ -1,12 +1,11 @@
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import { DatasourceManager as managerService } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-
-import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 //主入口(必须有)
-let main = function (param: FunctionContext) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let ruleCode = args.length > 0 ? args[0] : null
 

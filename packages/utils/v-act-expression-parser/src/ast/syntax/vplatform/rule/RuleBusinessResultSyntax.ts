@@ -98,6 +98,10 @@ class RuleBusinessResultSyntax extends Syntax {
       return `BR_OUT.${this.getInstanceCode()}.${this.getResultCode()}`
     }
   }
+
+  visit() {
+    return false
+  }
 }
 
 export default RuleBusinessResultSyntax

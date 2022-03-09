@@ -1,6 +1,6 @@
 let sandbox, dialogService
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   if (sb) {
     sandbox = sb
     dialogService = sandbox.getService(

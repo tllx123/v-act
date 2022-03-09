@@ -1,11 +1,9 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-let undefined
-let undefined
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
-let main = function (param) {
+const main = function (param) {
   let args = param.getArgs()
   let loginParams = {}
   if (args.length < 1) {

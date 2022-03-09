@@ -1,15 +1,9 @@
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import { WindowRuntimeManager as windowRuntimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
 
 let sandbox
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.dependency'

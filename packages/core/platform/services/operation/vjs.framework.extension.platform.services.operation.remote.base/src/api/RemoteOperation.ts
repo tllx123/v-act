@@ -1,12 +1,10 @@
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
 
-let undefined
-
 let _URI = 'module-operation!'
 
 let MultiRequestURI = _URI + 'executeMultiOperation'
 
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 const request = function (params) {
   return rpc.request(params.request)
@@ -20,4 +18,4 @@ const crossDomainRequest = function (params) {
   return rpc.crossDomainRequest(params)
 }
 
-export { request, orginalRequest, crossDomainRequest }
+export { crossDomainRequest, orginalRequest, request }

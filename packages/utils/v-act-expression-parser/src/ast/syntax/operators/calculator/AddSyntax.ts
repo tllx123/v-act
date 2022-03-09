@@ -38,6 +38,17 @@ class AddSyntax extends BinaryExpressionSyntax {
       return super.toString()
     }
   }
+
+  visit() {
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+
+    if (visitor && visitor.visitAddSyntax) {
+      return visitor.visitAddSyntax(this, (syntax) => syntax.visit())
+    } else {
+      return super.visit()
+    }
+  }
 }
 
 export default AddSyntax

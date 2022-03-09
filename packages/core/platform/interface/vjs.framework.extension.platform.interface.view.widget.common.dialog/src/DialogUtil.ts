@@ -1,9 +1,8 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let sb
-let undefined
 
-exports.initModule = function (sandbox) {
+export function initModule(sandbox) {
   sb = sandbox
 }
 
@@ -121,4 +120,4 @@ let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
   }
 }
 
-export { confirmDialog, propmtDialog, errorDialog, warnDialog, infoDialog }
+export { confirmDialog, errorDialog, infoDialog, propmtDialog, warnDialog }

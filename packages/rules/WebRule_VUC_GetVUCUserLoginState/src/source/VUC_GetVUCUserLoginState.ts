@@ -1,19 +1,17 @@
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-let undefined
-let undefined
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let context
-let undefined
-let undefined
-let undefined
+
 let rulecontext
 
-exports.initModule = function (sandBox) {}
+export function initModule(sandBox) {}
 
-let main = function (ruleContext) {
+const main = function (ruleContext: RuleContext) {
   let uatSHA1, bizSysId, vucUrl
   let ruleConfig = ruleContext.getRuleCfg()
   let inParams = ruleConfig.inParams

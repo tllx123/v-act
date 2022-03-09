@@ -2,7 +2,7 @@ let sandBox
 let controlRelation = {}
 let parentRelation = {}
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandBox = sb
 }
 

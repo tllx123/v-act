@@ -1,4 +1,4 @@
-exports.initModule = function (sb) {
+export function initModule(sb) {
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'
   )

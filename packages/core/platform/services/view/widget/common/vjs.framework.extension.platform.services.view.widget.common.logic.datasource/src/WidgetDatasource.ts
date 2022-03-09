@@ -1,25 +1,16 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import {
+  CurrentRecordObserver,
+  DatasourceObserver
+} from '@v-act/vjs.framework.extension.platform.interface.observer'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { DatasourceObserverManager as datasourceObserverManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
+import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.expression'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { CurrentRecordObserver as CurrentRecordObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
-import { DatasourceObserver as DatasourceObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
-import { DatasourceObserverManager as datasourceObserverManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
-import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
-import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.expression'
+import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-let undefined
-
-exports.initModule = function (sb) {}
+export function initModule(sb) {}
 
 /**
  * 获取控件绑定的数据源名称<br />
@@ -582,26 +573,26 @@ let setBaseValue = function (widgetId, records) {
 }
 
 export {
-  getBindDatasourceName,
-  getBindDatasourceNames,
-  getBindDatasource,
-  getBindDatasources,
-  getBindDatasourceFields,
+  addBindDatasourceCurrentEventHandler,
+  addBindDatasourceCurrentRecordClearEventHandler,
   addBindDatasourceCurrentRecordEventHandler,
   addBindDatasourceCurrentRecordUpdateEventHandler,
-  addBindDatasourceCurrentRecordClearEventHandler,
-  addBindDatasourceCurrentEventHandler,
-  addBindDatasourceSelectEventHandler,
-  addBindDatasourceLoadEventHandler,
-  addBindDatasourceFetchEventHandler,
-  addBindDatasourceFetchedEventHandler,
-  addBindDatasourceUpdateEventHandler,
   addBindDatasourceDeleteEventHandler,
+  addBindDatasourceFetchedEventHandler,
+  addBindDatasourceFetchEventHandler,
   addBindDatasourceInsertEventHandler,
-  getSingleValue,
-  setSingleValue,
+  addBindDatasourceLoadEventHandler,
+  addBindDatasourceSelectEventHandler,
+  addBindDatasourceUpdateEventHandler,
   clearValue,
-  setSingleRecordMultiValue,
+  getBindDatasource,
+  getBindDatasourceFields,
+  getBindDatasourceName,
+  getBindDatasourceNames,
+  getBindDatasources,
   getSingleColumnWidgetDefaultValue,
-  setBaseValue
+  getSingleValue,
+  setBaseValue,
+  setSingleRecordMultiValue,
+  setSingleValue
 }

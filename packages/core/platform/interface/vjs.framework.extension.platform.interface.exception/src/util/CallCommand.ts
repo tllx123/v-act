@@ -1,9 +1,9 @@
 import { FrontEndAlerter as alerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 let sandbox
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   sandbox = sb
 }
 
@@ -28,13 +28,13 @@ const callCommand = function (value, callback) {
 }
 
 export {
+  _getHandler,
+  callCommand,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
   onHandleFunction,
-  _getHandler,
-  showDialog,
-  callCommand
+  showDialog
 }

@@ -1,7 +1,7 @@
 let pool = {},
   objectUtils
 
-exports.initModule = function (sb) {
+export function initModule(sb) {
   objectUtils = sb.util.object
 }
 

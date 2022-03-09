@@ -46,7 +46,7 @@ for (let n = 0, d; (d = m[n]); n++) {
  * @param Array array
  * @param Integer<可选> n 
 
-exports.first = function(array,n){
+export function first(array,n){
     
 }
      */
@@ -57,7 +57,7 @@ exports.first = function(array,n){
  * @param Array arrray
  * @param Integer<可选> n
 
-exports.last = function(array,n){
+export function last(array,n){
     
 }
  */
@@ -68,7 +68,7 @@ exports.last = function(array,n){
  * @param Array array
  * @param Integer<可选> n 
 
-exports.initial = function(array,n){
+export function initial(array,n){
     
 }
  */
@@ -79,7 +79,7 @@ exports.initial = function(array,n){
  * @param Array array
  * @param Integer<可选> n 
 
-exports.rest = function(array,n){
+export function rest(array,n){
     
 }
  */
@@ -87,7 +87,7 @@ exports.rest = function(array,n){
  * 返回所有数组元素的并集部分
  * 例： union([3,2,1],[5,6,7],[3,4,9]) -> [3,2,1,5,6,7,4,9]
  
-exports.union = function(){
+export function union(){
     
 }
 */
@@ -95,7 +95,7 @@ exports.union = function(){
  *返回所有数组中的交集部分 
  * 例：intersection([3,1,4],[3,1,6],[3,6,7]) -> [3]
  
-exports.intersection = function(){
+export function intersection(){
     
 }
 */
@@ -103,7 +103,7 @@ exports.intersection = function(){
  * 返回指定数组中与其他数据不同部分
  * 例： difference([3,2,1],[3,4,6],[6,7,8]) -> [2,1]
  
-exports.difference = function(){
+export function difference(){
     
 }
 */
@@ -112,46 +112,46 @@ exports.difference = function(){
  * 例：object(['moe', 'larry', 'curly'], [30, 40, 50]); -> {moe: 30, larry: 40, curly: 50}
        object([['moe', 30], ['larry', 40], ['curly', 50]]);-> {moe: 30, larry: 40, curly: 50} 
  
-exports.object = function(){
+export function object(){
     
 }
 
-exports.indexOf = function(){
+export function indexOf(){
     
 }
 
-exports.lastIndexOf = function(){
+export function lastIndexOf(){
     
 }
 
-exports.range = function(){
+export function range(){
     
 }
 
-exports.compact = function(){
+export function compact(){
     
 }
 
-exports.flatten = function(){
+export function flatten(){
     
 }
 
-exports.without = function(){
+export function without(){
     
 }
 
-exports.partition = function(){
+export function partition(){
     
 }
 
-exports.uniq = function(){
+export function uniq(){
     
 }
 
-exports.zip = function(){
+export function zip(){
     
 }
 
-exports.sortedIndex = function(){
+export function sortedIndex(){
     
 }*/

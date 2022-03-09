@@ -26,6 +26,7 @@ class RulesetEntityFieldVarSyntax extends RulesetEntitySyntax {
   getPrefix(): string {
     return RulesetEntityFieldVarSyntax.PREFIX
   }
+
   toString() {
     const ctx = this.getContext()
     const printer = ctx.getPrinter()
@@ -36,6 +37,9 @@ class RulesetEntityFieldVarSyntax extends RulesetEntitySyntax {
     } else {
       return super.toString()
     }
+  }
+  visit() {
+    return false
   }
 }
 

@@ -1,13 +1,11 @@
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+
 import * as widget from './FixedComponent'
-import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-let undefined
-let undefined
-let undefined
+
 let keyBoradFixed
-let undefined
-exports.initModule = function (sb) {}
+
+export function initModule(sb) {}
 
 const init = function () {
   if (!window.keyBoradFixed) {
@@ -159,4 +157,4 @@ resizeFixed.prototype = {
     this.widget = this.widget.concat(widget.getBottomWidget())
   }
 }
-export { getBottomWidget, init, addEventlistener, addEventlisteners }
+export { addEventlistener, addEventlisteners, getBottomWidget, init }

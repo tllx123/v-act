@@ -1,22 +1,13 @@
-import * as mathUtil from 'module'
 import * as dbManager from 'module'
-import * as viewModel from 'module'
+import * as mathUtil from 'module'
 import * as viewContext from 'module'
-import * as jsTool from 'module'
+import * as viewModel from 'module'
+
 // 加载mathUtil模块
-let undefined
 
-let undefined
-
-let undefined
-
-let undefined
-
-let undefined
-
-exports.initModule = function () {}
+export function initModule() {}
 // 主入口(必须有)
-let main = function (varName, entityName, clearTarget) {
+const main = function (varName, entityName, clearTarget) {
   if (mathUtil.isEmpty(varName)) {
     throw new Error('组件变量为空，请检查')
   }

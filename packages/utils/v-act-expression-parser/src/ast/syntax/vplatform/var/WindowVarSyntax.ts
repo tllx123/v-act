@@ -64,6 +64,10 @@ class WindowVarSyntax extends Syntax {
       return `@${this.getCode()}`
     }
   }
+
+  visit() {
+    return false
+  }
 }
 
 export default WindowVarSyntax
