@@ -14,9 +14,14 @@
  */
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+
+interface week {
+  [key: string]: string // 字段扩展声明
+}
+
 const vds = { math, exception }
 
-const main = function (dateStr, formatStr) {
+const main = function (dateStr: string, formatStr: string) {
   //获取函数传入的参数
   if (dateStr == null || dateStr == '') {
     var exception = vds.exception.newConfigException('需要转换的日期不能为空！')
@@ -27,7 +32,7 @@ const main = function (dateStr, formatStr) {
     throw exception
   }
   //转换格式
-  function geneDateStr(dateStr, formatStr) {
+  function geneDateStr(dateStr: string, formatStr: string) {
     var yearStart = 'start'
     var yearNum = 0
     var monStart = 'start'
@@ -49,56 +54,56 @@ const main = function (dateStr, formatStr) {
     for (var i = 0; i < formatStr.length; i++) {
       if (formatStr[i] == 'y') {
         if (yearStart == 'start') {
-          yearStart = i
+          yearStart = ''
         }
         yearNum++
       }
       if (formatStr[i] == 'M') {
         if (monStart == 'start') {
-          monStart = i
+          monStart = ''
         }
         monNum++
       }
       if (formatStr[i] == 'd') {
         if (dayStart == 'start') {
-          dayStart = i
+          dayStart = ''
         }
         dayNum++
       }
 
       if (formatStr[i] == 'h' || formatStr[i] == 'H') {
         if (hourStart == 'start') {
-          hourStart = i
+          hourStart = ''
         }
         hourNum++
       }
       if (formatStr[i] == 'm') {
         if (minStart == 'start') {
-          minStart = i
+          minStart = ''
         }
         minNum++
       }
       if (formatStr[i] == 's') {
         if (secondStart == 'start') {
-          secondStart = i
+          secondStart = ''
         }
         secondNum++
       }
       if (formatStr[i] == 'S') {
         if (hsecondStart == 'start') {
-          hsecondStart = i
+          hsecondStart = ''
         }
         hsecondNum++
       }
       if (formatStr[i] == 'q') {
         if (quarterStart == 'start') {
-          quarterStart = i
+          quarterStart = ''
         }
         quarterNum++
       }
       if (formatStr[i] == 'E') {
         if (weekStart == 'start') {
-          weekStart = i
+          weekStart = ''
         }
         weekNum++
       }
@@ -106,45 +111,45 @@ const main = function (dateStr, formatStr) {
     var newDateStr = ''
     var year = ''
     if (yearStart != 'start') {
-      year = dateStr.substr(yearStart, yearNum)
+      year = dateStr.substr(Number(yearStart), yearNum)
     }
     var mon = ''
     if (monStart != 'start') {
-      mon = dateStr.substr(monStart, monNum)
+      mon = dateStr.substr(Number(monStart), monNum)
     }
     var day = ''
     if (dayStart != 'start') {
-      day = dateStr.substr(dayStart, dayNum)
+      day = dateStr.substr(Number(dayStart), dayNum)
     }
 
     var hour = ''
     if (hourStart != 'start') {
-      hour = dateStr.substr(hourStart, hourNum)
-      var hourUnit = formatStr.substr(hourStart, 1)
+      hour = dateStr.substr(Number(hourStart), hourNum)
+      var hourUnit = formatStr.substr(Number(hourStart), 1)
       if (hour == '') {
         hour = '0'
       }
       if (hourUnit == 'h') {
-        hour = hour % 12 == 0 ? 12 : hour % 12
+        hour = (Number(hour) % 12 == 0 ? 12 : Number(hour) % 12).toString()
       }
     }
     var min = ''
     if (minStart != 'start') {
-      min = dateStr.substr(minStart, minNum)
+      min = dateStr.substr(Number(minStart), minNum)
       if (min == '') {
         min = '0'
       }
     }
     var second = ''
     if (secondStart != 'start') {
-      second = dateStr.substr(secondStart, secondNum)
+      second = dateStr.substr(Number(secondStart), secondNum)
       if (second == '') {
         second = '0'
       }
     }
     var hsecond = ''
     if (hsecondStart != 'start') {
-      hsecond = dateStr.substr(hsecondStart, hsecondNum)
+      hsecond = dateStr.substr(Number(hsecondStart), hsecondNum)
       if (hsecond == '') {
         hsecond = '0'
       }
@@ -174,11 +179,12 @@ const main = function (dateStr, formatStr) {
       }
       var testDate = new Date(dateC)
       if (quarterStart != 'start') {
-        quarter = vds.math.floor((testDate.getMonth() + 3) / 3) //季度
+        quarter = vds.math.floor((testDate.getMonth() + 3) / 3).toString() //季度
       }
       if (weekStart != 'start') {
-        var fmt = formatStr.substr(weekStart, weekNum)
-        var week = {
+        var fmt = formatStr.substr(Number(weekStart), weekNum)
+
+        var week: week = {
           '0': '日',
           '1': '一',
           '2': '二',
@@ -234,7 +240,7 @@ const main = function (dateStr, formatStr) {
 
   //转化年
   var cnNums = ['〇', '一', '二', '三', '四', '五', '六', '七', '八', '九']
-  function getchinese(p) {
+  function getchinese(p: string) {
     var input = p
     if (input == '0') return cnNums[0]
     else if (input == '1') return cnNums[1]
@@ -250,14 +256,14 @@ const main = function (dateStr, formatStr) {
   }
 
   //转化其它
-  function getUnitChinese(num) {
+  function getUnitChinese(num: number) {
     var cnNums = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
     var cnIntUnits = ['', '万', '亿', '万亿']
     var cnIntRadice = ['', '十', '百', '千']
     var chnStr = '',
       intNum = '',
       deciNum = '',
-      parts = ''
+      parts: Array<string> = []
     var number = Math.abs(num)
     if (num === 0) {
       return cnNums[0]
@@ -265,12 +271,12 @@ const main = function (dateStr, formatStr) {
     if (number > 0 && number < 1) {
       chnStr = cnNums[0]
     }
-    number = number.toString()
-    if (number.indexOf('.') == -1) {
-      intNum = number
+    let numberString = number.toString()
+    if (numberString.indexOf('.') == -1) {
+      intNum = numberString
       deciNum = ''
     } else {
-      parts = number.split('.')
+      parts = numberString.split('.')
       intNum = parts[0]
       deciNum = parts[1]
     }
@@ -288,14 +294,16 @@ const main = function (dateStr, formatStr) {
         if (n == '0') {
           zeroCount++
         } else {
+          let nNum = Number(n)
+
           if (zeroCount > 0) {
             chnStr += cnNums[0]
           }
           zeroCount = 0
-          if (n == 1 && m == 1) {
+          if (nNum == 1 && m == 1) {
             chnStr += cnIntRadice[m]
           } else {
-            chnStr += cnNums[parseInt(n)] + cnIntRadice[m]
+            chnStr += cnNums[nNum] + cnIntRadice[m]
           }
         }
         if (m == 0 && zeroCount < 4) {
@@ -309,7 +317,7 @@ const main = function (dateStr, formatStr) {
   //转换方法
   var str = geneDateStr(dateStr, formatStr)
   var regYear = new RegExp('(\\d+)年', 'g')
-  function testYear($1) {
+  function testYear($1: string) {
     var yearN = ''
     for (var i = 0; i < $1.length; i++) {
       yearN += getchinese($1[i])
@@ -317,16 +325,16 @@ const main = function (dateStr, formatStr) {
     return yearN
   }
   str = str.replace(regYear, testYear)
-  function test($1) {
+  function test($1: string) {
     var num = $1.substr(0, $1.length - 1)
     var unit = $1.substr($1.length - 1, 1)
-    var numBig = getUnitChinese(num)
+    var numBig = getUnitChinese(Number(num))
     return numBig + unit
   }
-  function test2($1) {
+  function test2($1: string) {
     var num = $1.substr(0, $1.length - 2)
     var unit = $1.substr($1.length - 2, 2)
-    var numBig = getUnitChinese(num)
+    var numBig = getUnitChinese(Number(num))
     return numBig + unit
   }
   // 月，时，分，秒，毫秒的替换

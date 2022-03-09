@@ -6,7 +6,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { exception, object }
 
-const main = function (money) {
+const main = function (money: number): string {
   var cnNums = new Array(
     '零',
     '壹',
@@ -36,7 +36,7 @@ const main = function (money) {
       '函数ChangeMoneyToChinese传入的参数为空！'
     )
   }
-  money = parseFloat(money)
+  money = parseFloat(money.toString())
   if (isNaN(money)) {
     throw vds.exception.newConfigException(
       '函数ChangeMoneyToChinese 参数[' + money + ']数据格式错误'
@@ -57,12 +57,12 @@ const main = function (money) {
     ChineseStr = cnNums[0] + cnIntLast + cnInteger
     return ChineseStr
   }
-  money = money.toString() //转换为字符串
-  if (money.indexOf('.') == -1) {
-    IntegerNum = money
+  let moneyString = money.toString() //转换为字符串
+  if (moneyString.indexOf('.') == -1) {
+    IntegerNum = moneyString
     DecimalNum = ''
   } else {
-    parts = money.split('.')
+    parts = moneyString.split('.')
     IntegerNum = parts[0]
     DecimalNum = parts[1].substr(0, 4)
   }

@@ -34,7 +34,7 @@ import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.in
  */
 export function execute(
   expression: string,
-  context: {
+  context?: {
     ruleContext?: RuleContext
     records?: Array<Record>
     variables?: { [proName: string]: any }

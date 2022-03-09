@@ -5,7 +5,7 @@
  *  参数1(字符串类型)
  *  返回值为布尔型
  */
-const main = function (checkStr) {
+const main = function (checkStr: string): boolean {
   if (undefined == checkStr || null == checkStr) return false
   else {
     checkStr = checkStr + ''

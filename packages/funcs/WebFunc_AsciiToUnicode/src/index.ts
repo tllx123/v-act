@@ -5,7 +5,7 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { object }
 
-function toUnicode(data) {
+function toUnicode(data: string): string {
   if (vds.object.isUndefOrNull(data)) return ''
 
   var retVal = ''

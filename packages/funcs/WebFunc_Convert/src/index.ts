@@ -6,8 +6,8 @@ import * as number from '@v-act/vjs.framework.extension.platform.services.integr
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, number, exception }
 
-const main = function (content, type) {
-  var result = false
+const main = function (content: string, type: number) {
+  var result: string | boolean | number = false
   // 传入参数不能为空
   if (vds.object.isUndefOrNull(type)) {
     throw vds.exception.newConfigException('传入转换类型为空，请检查')
@@ -31,7 +31,6 @@ const main = function (content, type) {
       // 转换为字符串,传入数据不为空即可
       else if (type == 2) {
         if (vds.object.isUndefOrNull(content)) return ''
-
         result = content
       }
       // 转换为布尔值

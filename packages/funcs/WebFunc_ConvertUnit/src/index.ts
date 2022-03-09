@@ -9,7 +9,7 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, exception, log, math }
 
-const main = function (value, now_su, target_unit) {
+const main = function (value: string, now_su: string, target_unit: string) {
   /*获取当前值，并转换成数字*/
   var nowValue = parseFloat(value)
   if (!vds.object.isNumber(nowValue)) {
@@ -31,7 +31,12 @@ const main = function (value, now_su, target_unit) {
  * now_su 当前单位
  * target_su 目标单位
  * */
-var ConvertStorageUnit = function (nowValue, now_su, target_su) {
+var ConvertStorageUnit = function (
+  nowValue: number,
+  now_su: string,
+  target_su: string
+) {
+  let resultString = ''
   if (vds.object.isUndefOrNull(now_su)) {
     throw vds.exception.newBusinessException('当前单位不能为空')
   }
@@ -213,21 +218,28 @@ var ConvertStorageUnit = function (nowValue, now_su, target_su) {
       if (oper_type == 'multiply') now_unit_index--
       else now_unit_index++
     }
-    result = result + ''
-    if (result.indexOf('e') != -1 || result.indexOf('E') != -1) {
-      return result + result_dw
+    resultString = result + ''
+    if (resultString.indexOf('e') != -1 || resultString.indexOf('E') != -1) {
+      return resultString + result_dw
     }
     /*指定单位转换的，有小数位的话，保留一位有效数字。*/
     var reg = /[\d]+[.][0]*[1-9]/
-    if (
-      result.indexOf('.') != -1 &&
-      result.match(reg) &&
-      result.match(reg).length > 0
-    ) {
-      result = result.match(reg)[0]
+    let rsMatch = resultString.match(reg)
+    if (rsMatch !== null) {
+      if (
+        resultString.indexOf('.') != -1 &&
+        resultString.match(reg) &&
+        rsMatch.length > 0
+      ) {
+        resultString = rsMatch[0]
+      }
     }
   }
-  return result + result_dw
+  if (resultString === '') {
+    return result + result_dw
+  } else {
+    return resultString + result_dw
+  }
 }
 
 /**
@@ -236,8 +248,12 @@ var ConvertStorageUnit = function (nowValue, now_su, target_su) {
  * base_data 基准数据
  * type 操作类型
  * */
-var OperationMain = function (nowValue, base_data, type) {
-  var result = ''
+var OperationMain = function (
+  nowValue: number,
+  base_data: number,
+  type: string
+): number {
+  var result: number = 0
   switch (type) {
     case 'multiply':
       result = vds.math.multiply(nowValue, base_data)

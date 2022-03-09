@@ -6,7 +6,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { math, object, number }
 
-const main = function (num) {
+const main = function (num: number): number {
   if (vds.object.isUndefOrNull(num)) {
     throw new Error('反正弦函数参数为空，请检查')
   }

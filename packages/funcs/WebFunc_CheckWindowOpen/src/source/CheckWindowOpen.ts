@@ -2,10 +2,10 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 
 //加载模块
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
 //主入口(必须有)
-const main = function (componentCode, windowCode) {
+const main = function (componentCode: string, windowCode: string) {
   if (componentCode && windowCode) {
     let windosInstansIds = scopeManager._getInstanceIds(
       componentCode,

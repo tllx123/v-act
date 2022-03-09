@@ -7,7 +7,11 @@ import * as viewModel from 'module'
 
 export function initModule() {}
 // 主入口(必须有)
-const main = function (varName, entityName, clearTarget) {
+const main = function (
+  varName: string,
+  entityName: string,
+  clearTarget: boolean
+) {
   if (mathUtil.isEmpty(varName)) {
     throw new Error('组件变量为空，请检查')
   }
@@ -27,6 +31,7 @@ const main = function (varName, entityName, clearTarget) {
   let isDs = dbManager.isDataSource(val)
 
   if (isDs) {
+    let insertRecords = []
     //清除数据源
     if (isClear == true) {
       viewModel.getDataModule().resetDS(entityName)
@@ -37,7 +42,7 @@ const main = function (varName, entityName, clearTarget) {
     if (allRecords.length > 0) {
       let record = allRecords[0]
       let metadata = val.getMetadata()
-      let sourceFieldMap = {}
+      let sourceFieldMap: any = {}
       for (let i = 0, model; (model = metadata[i]); i++) {
         let fields = model.fields
         for (let j = 0, field; (field = fields[j]); j++) {
@@ -58,7 +63,6 @@ const main = function (varName, entityName, clearTarget) {
         }
       }
 
-      let insertRecords = []
       for (let i = 0; i < allRecords.length; i++) {
         //设置需要复制的字段的值
         let insertRecord = viewModel
