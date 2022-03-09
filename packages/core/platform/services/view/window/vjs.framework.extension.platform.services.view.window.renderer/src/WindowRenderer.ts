@@ -1,12 +1,12 @@
-import { desigerUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
-import { environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ProcessorUtils as desigerUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import {
   WindowContainer,
-  windowRelation
+  WindowContainerManager as windowRelation
 } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { logUtil } from '@v-act/vjs.framework.extension.util.log'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.log'
 
 const _renderWinsPool = {}
 
@@ -89,7 +89,7 @@ const compatibleScWindow = function (params) {
  * 		fail : Function 打开失败回调
  * }
  */
-exports.render = function (params) {
+export function render(params) {
   if (_needToRender(params)) {
     if (params.scParamConfig) {
       //sc窗体模板调用
@@ -100,7 +100,7 @@ exports.render = function (params) {
     )
     if (services && services.length > 0) {
       const task = []
-      for (const i = 0, l = services.length; i < l; i++) {
+      for (let i = 0, l = services.length; i < l; i++) {
         const service = services[i]
         task.push(service.process(params))
       }
@@ -300,9 +300,9 @@ const getViewlib = function (callback, componentCode, windowCode, dtd) {
   const services = sb.getAllServices(vjsName)
   const handler = function (services) {
     if (services) {
-      const exist = false
+      let exist = false
       const seriesArr = []
-      for (const i = 0, len = services.length; i < len; i++) {
+      for (let i = 0, len = services.length; i < len; i++) {
         const service = services[i]
         const tmpSeries = service.getSeries()
         if ('smartclient' == tmpSeries) {
@@ -359,7 +359,7 @@ const getViewlib = function (callback, componentCode, windowCode, dtd) {
   }
 }
 const getMappings = function (viewlib) {
-  const mappings = viewlib.getWidgetPropertys()
+  let mappings = viewlib.getWidgetPropertys()
   if (mappings.WidgetProperty) {
     mappings = mappings.WidgetProperty
   }
@@ -372,17 +372,12 @@ const getMappings = function (viewlib) {
  * @param	{String}	propetyName		属性编码
  * */
 const findWidgetProperty = function (viewlib, widgetCode, propertyName) {
-  const value
+  let value
   const mappings = getMappings(viewlib)
   const widgetProperty = mappings[widgetCode]
   if (widgetProperty) {
     if (widgetProperty.hasOwnProperty(propertyName)) {
       return widgetProperty[propertyName]
-    }
-    if (null == desigerUtils) {
-      desigerUtils = sb.getService(
-        'vjs.framework.extension.platform.application.window.web.designer.utils'
-      )
     }
     value = desigerUtils.getDefaultDesignProps({
       series: 'smartclient',
@@ -412,7 +407,7 @@ const getDesignerProperty = function (
   if (componentCode && windowCode) {
     const callback = function (viewlib) {
       if (viewlib && viewlib.getWidgetPropertys) {
-        const _value = findWidgetProperty(viewlib, windowCode, propertyName)
+        let _value = findWidgetProperty(viewlib, windowCode, propertyName)
         if (typeof valueHandler == 'function') {
           _value = valueHandler(_value, viewlib)
         }
@@ -427,16 +422,16 @@ const getDesignerProperty = function (
   }
   return dtd
 }
-export function calHeight(value, viewlib) {
+export function calHeight(value: null, viewlib: any) {
   if (value != -1) {
     const mappings = getMappings(viewlib)
     if (mappings) {
-      const sum = 0
-      const fix = 0
-      const hasformLayout = false
-      const hasOtherLayout = false
-      const formatLayoutWidgetCount = 0
-      const otherLayoutWidgetCount = 0
+      let sum = 0
+      let fix = 0
+      let hasformLayout = false
+      let hasOtherLayout = false
+      let formatLayoutWidgetCount = 0
+      let otherLayoutWidgetCount = 0
       for (const widgetCode in mappings) {
         const widget = mappings[widgetCode]
         if (widget.type == 'JGFormLayout' || widget.type == 'JGGroupPanel') {
@@ -482,13 +477,16 @@ export function calHeight(value, viewlib) {
  * }
  * @returns dtd 使用样例：dtd.then(function(value){ //todo... }) Integer	窗体宽度 若value为-1，表示未查询到指定窗体信息
  * */
-export function getDesignerWidth(params) {
+export function getDesignerWidth(params: {
+  componentCode: string
+  windowCode: string
+}) {
   return getDesignerProperty(
     params.componentCode,
     params.windowCode,
     'Width',
     -1,
-    function (value) {
+    function (value: number) {
       if (value != -1) {
         value += 12
       }
@@ -505,7 +503,10 @@ export function getDesignerWidth(params) {
  * }
  * @returns dtd 使用样例：dtd.then(function(value){ //todo... }) Integer	窗体高度 若value为-1，表示未查询到指定窗体信息
  * */
-export function getDesignerHeight(params) {
+export function getDesignerHeight(params: {
+  componentCode: string
+  windowCode: string
+}) {
   return getDesignerProperty(
     params.componentCode,
     params.windowCode,
@@ -523,13 +524,16 @@ export function getDesignerHeight(params) {
  * }
  * @returns dtd 使用样例：dtd.then(function(value){ //todo... }) Boolean	窗体是否最大化 若value为null，表示未查询到指定窗体信息
  * */
-export function isDefaultMaximize(params) {
+export function isDefaultMaximize(params: {
+  componentCode: string
+  windowCode: string
+}) {
   return getDesignerProperty(
     params.componentCode,
     params.windowCode,
     'WindowState',
     false,
-    function (val) {
+    function (val: string) {
       return val == 'Maximized'
     }
   )

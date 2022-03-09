@@ -1,14 +1,22 @@
-const adapt = function (value, field, callback) {
-  //值如果为null则退出
-  if (value == null) {
+import Field from '../../api/Field'
+
+function adapt(
+  value: null,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+): null
+function adapt(
+  value: any,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+) {
+  if (typeof value === null) {
     return value
-  }
-  let temp = value
-  if (typeof value != 'string') temp += ''
-  if (typeof callback == 'function') {
+  } else {
+    let temp = value.toString()
     callback(field.getCode(), temp, value)
+    return temp
   }
-  return temp
 }
 
-export { getDataValidator, adapt, adapt, adapt }
+export { adapt }

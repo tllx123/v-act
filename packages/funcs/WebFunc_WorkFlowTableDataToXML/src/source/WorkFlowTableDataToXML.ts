@@ -7,7 +7,7 @@ exports.initModule = function (sb) {
  * 主入口
  * @param arguments 表名集合
  */
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   let functionEngine = sandbox.getService(
     'vjs.framework.extension.platform.services.engine.function.FunctionEngine'

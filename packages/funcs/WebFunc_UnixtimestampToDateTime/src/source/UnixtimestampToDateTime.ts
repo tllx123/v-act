@@ -5,7 +5,7 @@ exports.initModule = function (sb) {
 }
 
 //主入口(必须有)
-let main = function (param) {
+let main = function (param: FunctionContext) {
   //获取函数传入的参数
   let args = param.getArgs()
   //var routeContext = param.getRouteContext(); //获取路由上下文，函数里想执行一些表达式逻辑需要用到

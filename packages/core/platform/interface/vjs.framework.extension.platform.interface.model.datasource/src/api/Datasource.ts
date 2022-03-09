@@ -20,6 +20,7 @@ let primaryKey = 'id',
  * vjs名称：vjs.framework.extension.platform.interface.model.datasource<br/>
  * vjs服务名称：vjs.framework.extension.platform.interface.model.datasource.Datasource<br/>
  */
+
 let Datasource = function (metadata, db) {
   this.metadata = metadata
   this.metadataJson = null

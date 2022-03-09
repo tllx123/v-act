@@ -1,18 +1,26 @@
-let sandbox
+import Field from '../../api/Field'
 
-exports.initModule = function (sb) {
+let sandbox: never
+
+function initModule(sb: never) {
   if (sb) sandbox = sb
 }
 
-const adapt = function (value, field, callback) {
-  //值如果为null则退出
-  if (value == null) {
+function adapt(
+  value: null,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+): null
+function adapt(
+  value: any,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+) {
+  if (typeof value === null) {
     return value
-  }
-  let temp = value
-  let fieldCode = field.getCode()
-  if (isNaN(value) || value == '') {
-    //空字符串时,isNaN为false
+  } else if (isNaN(value) || value == '') {
+    let temp = value
+    let fieldCode = field.getCode()
     let log = sandbox.getService('vjs.framework.extension.util.log')
     log.warn(
       '[DataValidator.__fixFieldValueDecimal__]' +
@@ -23,17 +31,13 @@ const adapt = function (value, field, callback) {
         ',不是一个合法的数值型,自动适配成null值'
     )
     temp = null
-  }
-  if (temp != null) {
+  } else {
+    let temp = value
     let precision = field.getPrecision()
     temp = parseFloat(temp)
     let n = Math.pow(10, precision)
     temp = Math.round(temp * n) / n
   }
-  if (typeof callback == 'function') {
-    callback(fieldCode, temp, value)
-  }
-  return temp
 }
 
-export { getDataValidator, adapt, adapt }
+export { initModule, adapt }

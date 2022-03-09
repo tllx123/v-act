@@ -1,22 +1,25 @@
-import * as dataAdaptorFactory from './adapter/DataAdaptorFactory'
-import * as Field from './api/Field'
+import * as dataAdaptorFactory from '../adapter/DataAdaptorFactory'
+import Field from '../api/Field'
 
-let undefined
+interface params extends Field {
+  [key: string]: any
+}
 
 /**
  *检查参数
  * @param {Object} params 参数
  */
-let _checkArguments = function (params) {
+let _checkArguments = function (params: params) {
   if (!params.hasOwnProperty('code')) {
     throw Error('[Field._checkArguments]字段初始化失败，必须设置字段编码！')
   }
 }
+
 /**
  *填充参数并返回实例
  * @param params 参数
  */
-let _fillParamAndReturn = function (params) {
+let _fillParamAndReturn = function (params: params) {
   return new Field(
     params.code,
     params.name,
@@ -32,7 +35,7 @@ let _fillParamAndReturn = function (params) {
 /**
  *设置字段类型
  */
-let _fillFieldType = function (field, type) {
+let _fillFieldType = function (field: Field, type: string) {
   field.type = type
   field.setDataAdaptor(dataAdaptorFactory.getDataValidator(type))
 }
@@ -43,83 +46,59 @@ let _fillFieldType = function (field, type) {
  * @param {String} proName 属性名称
  * @param {any} val 属性值
  */
-let _fillParam = function (params, proName, val) {
+let _fillParam = function (params: params, proName: string, val: any) {
   if (!params.hasOwnProperty(proName)) {
     params[proName] = val
   }
 }
 
-let __return = function (field) {
-  if (this.__recurCreate) {
-    this.__temp.push(field)
-    return this
-  } else {
-    return field
-  }
-}
-
-let _generate = function (params, defaultVal, type) {
+let _generate = function (params: params, defaultVal: any, type: string) {
   _checkArguments(params)
   _fillParam(params, 'defaultValue', defaultVal)
   let field = _fillParamAndReturn(params)
   _fillFieldType(field, type)
-  return __return.call(this, field)
+  return field
 }
 
-exports.initModule = function () {}
-
-const Char = function (params) {
-  return _generate.call(this, params, null, 'char')
+const Char = function (params: params) {
+  return _generate(params, null, 'char')
 }
 
-const Text = function (params) {
-  return _generate.call(this, params, null, 'text')
+const Text = function (params: params) {
+  return _generate(params, null, 'text')
 }
 
-const Number = function (params) {
-  return _generate.call(this, params, null, 'number')
+const Number = function (params: params) {
+  return _generate(params, null, 'number')
 }
 
-const Boolean = function (params) {
+const Boolean = function (params: params) {
   params.length = 1
-  return _generate.call(this, params, false, 'boolean')
+  return _generate(params, false, 'boolean')
 }
 
-const Date = function (params) {
-  return _generate.call(this, params, null, 'date')
+const Date = function (params: params) {
+  return _generate(params, null, 'date')
 }
 
-const LongDate = function (params) {
-  return _generate.call(this, params, null, 'longDate')
+const LongDate = function (params: params) {
+  return _generate(params, null, 'longDate')
 }
 
-const File = function (params) {
-  return _generate.call(this, params, null, 'file')
+const File = function (params: params) {
+  return _generate(params, null, 'file')
 }
 
-const Object = function (params) {
-  return _generate.call(this, params, null, 'object')
+const Object = function (params: params) {
+  return _generate(params, null, 'object')
 }
 
-const Integer = function (params) {
+const Integer = function (params: params) {
   params.precision = 0
-  return _generate.call(this, params, null, 'integer')
+  return _generate(params, null, 'integer')
 }
 
-const begin = function () {
-  this.__recurCreate = true
-  this.__temp = []
-  return this
-}
-
-const collect = function () {
-  this.__recurCreate = false
-  let result = this.__temp
-  delete this.__temp
-  return result
-}
-
-const unSerialize = function (params) {
+const unSerialize = function (params: params) {
   let type = params.type
   let methodName = type.substring(0, 1).toUpperCase() + type.substring(1)
   let constructor = exports[methodName]
@@ -131,10 +110,6 @@ const unSerialize = function (params) {
 }
 
 export {
-  getDataValidator,
-  adapt,
-  adapt,
-  adapt,
   Char,
   Text,
   Number,
@@ -144,7 +119,5 @@ export {
   File,
   Object,
   Integer,
-  begin,
-  collect,
   unSerialize
 }

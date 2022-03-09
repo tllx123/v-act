@@ -1,21 +1,20 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
 import { WindowVMMapping as windowVM } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DefaultValueGenerator as DefaultValueGenerator } from '@v-act/vjs.framework.extension.platform.services.view.logic.defaultvalue'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
+  DatasourcePuller as puller,
+  DatasourcePusher as pusher
+} from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import { DefaultValueGenerator } from '@v-act/vjs.framework.extension.platform.services.view.logic.defaultvalue'
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
 
 let token = 'WINDOW_INSTANCE_DATASOURCE'
-let undefined
-let undefined
 
-exports.initModule = function (sb) {}
+exports.initModule = function (sb: any) {}
 
-let _getJsonFromCfg = function (dsName, cfg) {
+let _getJsonFromCfg = function (dsName: string, cfg: object) {
   let defaultValues = cfg.defaultValues
   for (let i = 0; i < defaultValues.length; i++) {
     let fieldCode = defaultValues[i].name
@@ -184,4 +183,4 @@ const getAll = function () {
   return result
 }
 
-export { init, initDefaultDatas, lookup, register, unRegister, exists, getAll }
+export { exists, getAll, init, initDefaultDatas, lookup, register, unRegister }

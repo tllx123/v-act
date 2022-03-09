@@ -8,13 +8,10 @@ import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
 import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 
 let datasource
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   // 参数1：Json字符串
   let json = args[0]

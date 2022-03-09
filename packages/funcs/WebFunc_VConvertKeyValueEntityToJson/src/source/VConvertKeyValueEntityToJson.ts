@@ -6,14 +6,9 @@ import {
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util.json'
 
-let undefined
-let undefined
-let undefined
-let undefined
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-exports.initModule = function (sb) {}
-
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs()
   // 参数1：实体名称
   let entityCode = args[0]

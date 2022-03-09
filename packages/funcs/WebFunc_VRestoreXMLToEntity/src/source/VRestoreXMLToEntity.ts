@@ -7,14 +7,10 @@ import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platf
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-let undefined
-let undefined
-let undefined
-let undefined
 
-exports.initModule = function (sb) {}
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
-let main = function (param) {
+let main = function (param: FunctionContext) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     actionXML = argsLen >= 1 ? args[0] : null

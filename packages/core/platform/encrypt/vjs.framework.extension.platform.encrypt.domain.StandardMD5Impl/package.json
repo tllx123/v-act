@@ -1,5 +1,5 @@
 {
-  "name": "@v-act/vjs.framework.extension.platform.encrypt.domain.StandardMD5Impl",
+  "name": "@v-act/vjs.framework.extension.platform.encrypt.domain.standardmd5impl",
   "version": "1.0.0-alpha.1",
   "description": "增加对移动窗体的支持",
   "homepage": "https://github.com/opensource-vplatform/v-act",

@@ -1,48 +1,64 @@
-let sandbox
+import Field from '../../api/Field'
 
-exports.initModule = function (sb) {
+let sandbox: never
+function initModule(sb: never) {
   if (sb) sandbox = sb
 }
 
 let regex = /(^\s*)|(\s*$)/g
 
-/**
- * 去除字符串左右两侧的空格
- */
-let _trim = function (str) {
+function _trim(str: string) {
   return str.replace(regex, '')
 }
 
-const adapt = function (value, field, callback) {
-  //值如果不存在或是布尔类型则退出
+function adapt(
+  value: boolean,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+): boolean
+function adapt(
+  value: undefined,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+): undefined
+function adapt(
+  value: null,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+): null
+function adapt(
+  value: any,
+  field: Field,
+  callback: (fieldCode: string, temp: any, value: string) => void
+) {
   if (
-    value == null ||
-    typeof value == 'undefined' ||
-    typeof value == 'boolean'
+    typeof value === 'boolean' ||
+    typeof value === 'undefined' ||
+    typeof value === null
   ) {
     return value
-  }
-  let temp = _trim(value + '').toLowerCase()
-  let fieldCode = field.getCode()
-  if (temp == 'true' || temp == '1') {
-    temp = true
-  } else if (temp == 'false' || temp == '0') {
-    temp = false
   } else {
-    let log = sandbox.getService('vjs.framework.extension.util.log')
-    log.warn(
-      '[BooleanDataAdaptor.validate]名字为' +
-        fieldCode +
-        '的字段值为' +
-        value +
-        ',不是一个合法的布尔型,自动适配成null值'
-    )
-    temp = null
-  }
-  if (typeof callback == 'function') {
-    callback(fieldCode, temp, value)
-  }
-  return temp
-}
+    let temp = _trim(value.toString()).toLowerCase()
+    let fieldCode = field.getCode()
+    let tempVal: boolean | null = null
+    if (temp == 'true' || temp == '1') {
+      tempVal = true
+    } else if (temp == 'false' || temp == '0') {
+      tempVal = false
+    } else {
+      let log = sandbox.getService('vjs.framework.extension.util.log')
+      log.warn(
+        '[BooleanDataAdaptor.validate]名字为' +
+          fieldCode +
+          '的字段值为' +
+          value +
+          ',不是一个合法的布尔型,自动适配成null值'
+      )
+      tempVal = null
+    }
 
-export { getDataValidator, adapt }
+    callback(fieldCode, tempVal, value)
+    return tempVal
+  }
+}
+export { initModule, adapt }

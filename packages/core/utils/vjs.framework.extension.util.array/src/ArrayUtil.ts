@@ -1,8 +1,5 @@
-exports.initModule = function (sBox) {
-  if (sBox) {
-    arraysUtils = sBox.util.arrays
-  }
-}
+import { union as un } from 'underscore'
+
 /**
  *查找下标
  */
@@ -44,7 +41,8 @@ const union = function () {
     }
   }
   if (params.length > 0) {
-    params = arraysUtils.union.apply(this, params)
+    //@ts-ignore
+    params = un.apply(this, params)
   }
   return params
 }

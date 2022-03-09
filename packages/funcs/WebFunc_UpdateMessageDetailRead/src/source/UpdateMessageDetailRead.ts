@@ -2,10 +2,6 @@ import * as log from 'module'
 import * as viewModel from 'module'
 import * as viewContext from 'module'
 import * as operationLib from 'module'
-let undefined
-let undefined
-let undefined
-let undefined
 
 exports.initModule = function () {}
 

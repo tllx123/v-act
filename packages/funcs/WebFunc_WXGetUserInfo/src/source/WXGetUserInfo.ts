@@ -1,7 +1,7 @@
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-let undefined
-exports.initModule = function (sb) {}
+
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
 let main = function () {
