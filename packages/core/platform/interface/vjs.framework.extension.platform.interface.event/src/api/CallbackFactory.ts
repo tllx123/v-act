@@ -1,18 +1,19 @@
-import * as Callback from './Callback'
+import Callback from './Callback'
 
-export function initModule(sb) {}
-
-exports.Types = {
+const Types = {
   Success: 'Success',
   Fail: 'Fail'
 }
 
-const create = function (params) {
+const create = function (params: {
+  type: string
+  handler: (...args: any[]) => void
+}) {
   return new Callback(params.type, params.handler)
 }
 
-const isCallback = function (inst) {
+const isCallback = function (inst: any) {
   return inst instanceof Callback
 }
 
-export { create, isCallback }
+export { create, isCallback, Types }

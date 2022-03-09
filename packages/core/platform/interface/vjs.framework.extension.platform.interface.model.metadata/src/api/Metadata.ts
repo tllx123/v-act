@@ -86,6 +86,23 @@ Metadata.prototype.getDatasourceName = function () {
 Metadata.prototype.setDatasourceName = function (dsName) {
   this.dataSourceName = dsName
 }
+
+/**
+ *设置中文名称
+ * @param {String} chineseName 数据源名称
+ */
+Metadata.prototype.setChineseName = function (chineseName) {
+  this.chineseName = chineseName
+}
+
+/**
+ *获取中文名称
+ * @return String
+ */
+Metadata.prototype.getChineseName = function () {
+  return this.chineseName
+}
+
 /**
  *序列化
  * @return Object 格式
@@ -113,11 +130,16 @@ Metadata.prototype.serialize = function () {
 return Metadata
 
 export {
+  initModule,
   getDataValidator,
+  initModule,
+  adapt,
+  initModule,
   adapt,
   adapt,
-  adapt,
+  initModule,
   Char,
+  Any,
   Text,
   Number,
   Boolean,

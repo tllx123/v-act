@@ -1,22 +1,19 @@
-import { aop } from '@v-act/vjs.framework.extension.platform.aop'
-import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import * as RuleExecutor from './impl/RuleExecutor'
+import * as ruleFactory from './impl/RuleFactory'
+import { log as log } from '@v-act/vjs.framework.extension.util'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import {
-  RouteContext,
-  RuleContext
-} from '@v-act/vjs.framework.extension.platform.interface.route'
+import { RuleContext as RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
-
-import * as RuleExecutor from '../impl/RuleExecutor'
-
-export function initModule(sb) {}
+import { RouteContext as RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
+import { aop as aop } from '@v-act/vjs.framework.extension.platform'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { callbackFactory as callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util'
+const initModule = function (sb) {}
 
 let _isBusinessRule = function (ruleInstance) {
   return ruleInstance.hasOwnProperty('transactionType')
@@ -32,6 +29,46 @@ const execute = function (params) {
     return false
   }
   let routeConfig = routeCtx.getRouteConfig()
+  if (!routeConfig) {
+    let scope = scopeManager.getScope()
+    let componentCode = scope.getComponentCode()
+    let windowCode = scopeManager.isWindowScope(scope.getInstanceId())
+      ? scope.getWindowCode()
+      : null
+    let arr = ruleCode.split('.')
+    let hasWinCode = arr.length == 3
+    let comCode = arr[0]
+    let winCode = hasWinCode ? arr[1] : null
+    let activeCode = hasWinCode ? arr[2] : arr[1]
+    let activeInfo = activeCode
+    let name = '活动集编码'
+    if (componentCode != comCode || windowCode != winCode) {
+      //非同一个窗体/构件内，显示具体的构件/窗体编码
+      name = '活动集信息'
+      activeInfo =
+        '构件编码：' +
+        comCode +
+        (hasWinCode ? ',窗体编码：' + winCode : '') +
+        ',活动集编码：' +
+        activeCode
+    }
+    let exceptionDatas = [
+      { name: '构件编码', code: 'componentCode', value: comCode }
+    ]
+    if (hasWinCode) {
+      exceptionDatas.push({
+        name: '窗体编码',
+        code: 'windowCode',
+        value: windowCode
+      })
+    }
+    exceptionDatas.push({ name: name, code: 'activeInfo', value: activeInfo })
+    throw exceptionFactory.create({
+      type: exceptionFactory.TYPES.Config,
+      exceptionDatas: exceptionDatas,
+      message: '获取活动集' + activeCode + '信息失败,请检查配置！'
+    })
+  }
   let ruleInstance = routeConfig.getRuleInstance(ruleCode)
   if (!ruleInstance) {
     let scope = scopeManager.getScope()
@@ -52,7 +89,7 @@ const execute = function (params) {
   executor.on(executor.EVENTS.BEGIN, function () {
     let ruleCtx = this.getRuleContext()
     let ruleCfg = ruleCtx.getRuleCfg()
-    if (_isBusinessRule(ruleCfg)) {
+    if (_isBusinessRule(ruleCfg) && scopeManager.getScope()) {
       //内置规则无需打印
       log.debug(
         '[RuleExecutor.execute]开始执行规则，' +
@@ -65,7 +102,7 @@ const execute = function (params) {
   executor.on(executor.EVENTS.END, function () {
     let ruleCtx = this.getRuleContext()
     let ruleCfg = ruleCtx.getRuleCfg()
-    if (_isBusinessRule(ruleCfg)) {
+    if (_isBusinessRule(ruleCfg) && scopeManager.getScope()) {
       //内置规则无需打印
       log.debug(
         '[RuleExecutor.execute]规则执行结束，' +
@@ -154,6 +191,18 @@ const executeRouteRule = function (params) {
   _putArgsToRouteContext(rr, args)
   let mapping = params.argMapping
   let argIndex = params.argIndex
+  if (scopeId) {
+    scopeManager.openScope(scopeId)
+    let dtd = $.Deferred()
+    let completeCB = function () {
+      dtd.resolve()
+    }
+    let scope = scopeManager.getScope(scopeId)
+    let dtdList = scope.get('completeDTDList') || []
+    dtdList.push(dtd)
+    scope.set('completeDTDList', dtdList)
+    rr.onCompleteCallback(completeCB)
+  }
   if (routeCfg) {
     let instance = routeCfg.getRuleInstance(ruleCode)
     let inParam = jsonUtil.json2obj(instance.inParams)
@@ -211,7 +260,14 @@ const executeRouteRule = function (params) {
 
 let _putArgsToRouteContext = function (routeRuntime, args) {
   let len = args.length
-  let lastArgs = args[len - 1]
+  let index = -1
+  for (let i = len - 1; i >= 0; i--) {
+    if (typeof args[i] == 'object' && !callbackFactory.isCallback(args[i])) {
+      index = i
+      break
+    }
+  }
+  let lastArgs = index != -1 ? args[index] : undefined //参数有增加，不能直接取最后一个。Task20210201108
   if (
     lastArgs &&
     typeof lastArgs == 'object' &&
@@ -220,7 +276,8 @@ let _putArgsToRouteContext = function (routeRuntime, args) {
     !lastArgs.isPrimitive
   ) {
     routeRuntime.putEventArgument(lastArgs)
-    args.pop()
+    args.splice(index, 1)
+    //			args.pop();
   }
   let types = callbackFactory.Types
   for (let i = 0, l = args.length; i < l; i++) {
@@ -231,10 +288,11 @@ let _putArgsToRouteContext = function (routeRuntime, args) {
       if (type == types.Success) {
         routeRuntime.onRouteCallBack(handler)
       } else if (type == types.Fail) {
-        routeRuntime.on({
-          eventName: routeRuntime.Events.EXCEPTION,
-          handler: handler
-        })
+        routeRuntime.setExceptionHandler(handler)
+        /*routeRuntime.on({
+                    "eventName":routeRuntime.Events.EXCEPTION,
+                    "handler":handler
+                });*/
       }
       arrayUtil.remove(args, arg)
       i--
@@ -322,4 +380,14 @@ let _getRuleCallbackHandler = function () {
   }
 }
 
-export { execute, executeRouteRule, executeWithRouteCallback }
+const createRuleException = function (params) {
+  return ruleFactory.createRuleException(params)
+}
+
+export {
+  initModule,
+  execute,
+  executeRouteRule,
+  executeWithRouteCallback,
+  createRuleException
+}

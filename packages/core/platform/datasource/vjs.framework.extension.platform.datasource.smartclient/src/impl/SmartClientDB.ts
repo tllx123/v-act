@@ -106,9 +106,7 @@ DataSourceExt.prototype = {
       for (let i = 0, record; (record = datas[i]); i++) {
         let primaryVal = record[primaryKey]
         if (this.recordIndexs.hasOwnProperty(primaryVal)) {
-          throw Error(
-            '[smartclientDB._load]加载数据失败！存在相同的主键值：' + primaryVal
-          )
+          throw Error('加载数据失败，存在相同主键值【' + primaryVal + '】')
         }
         this.recordIndexs[primaryVal] = record
       }
@@ -121,9 +119,7 @@ DataSourceExt.prototype = {
     for (let i = 0, record; (record = records[i]); i++) {
       let primaryId = record.getSysId()
       if (this.recordIndexs[primaryId]) {
-        throw Error(
-          '[DataSourceExt._insert]DB新增记录失败！存在相同主键值：' + primaryId
-        )
+        throw Error('新增记录失败，存在相同主键值【' + primaryId + '】')
       } else {
         let data = record.toMap()
         list.push(data)
@@ -164,8 +160,7 @@ DataSourceExt.prototype = {
     }
     if (notFound.length > 0) {
       throw Error(
-        '[smartclientDB._update]更新记录失败！找不到对应的记录，主键值：' +
-          notFound.join(',')
+        '更新记录失败！找不到对应的记录，主键值：' + notFound.join(',')
       )
     }
     let olds = []
@@ -296,6 +291,30 @@ DataSourceExt.prototype = {
           var preData = db._getPreData(record)
           requestProperties.preData = preData
           ScopeManager.closeScope()
+          break
+        case 'updateList':
+          ScopeManager.openScope(this.scopeId)
+          for (var i = 0; i < data.length; i++) {
+            var record
+            if (data[i] && data[i].hasOwnProperty('id')) {
+              record = ds.getRecordById(data[i].id)
+            } else {
+              record = ds.getCurrentRecord()
+            }
+            record.setDatas(data[i])
+            // 如果在这里把更新记录提交的话，DB的修改记录无法同步到UI
+            // 把需要更新记录缓存起来，afterPerformDSOperation中再提交记录
+            if (!requestProperties.record) {
+              requestProperties.record = []
+            }
+            requestProperties.record.push(record)
+            var preData = db._getPreData(record)
+            if (!requestProperties.preData) {
+              requestProperties.preData = []
+            }
+            requestProperties.preData.push(preData)
+          }
+          ScopeManager.closeScope()
       }
     }
     this._db.afterPerformDSOperation = function (
@@ -329,6 +348,28 @@ DataSourceExt.prototype = {
             ds.updateRecords({
               records: [requestProperties.record]
             })
+          ScopeManager.closeScope()
+          return false
+        case 'updateList':
+          ScopeManager.openScope(this.scopeId)
+          if (requestProperties.preData) {
+            for (var i = 0; i < requestProperties.preData.length; i++) {
+              var preData = requestProperties.preData[i]
+              for (var fieldCode in preData) {
+                if (preData.hasOwnProperty(fieldCode)) {
+                  requestProperties.record[i].__recordData__[fieldCode] =
+                    preData[fieldCode]
+                }
+              }
+            }
+            requestProperties.preData = null
+          }
+          if (requestProperties.record) {
+            ds.updateRecords({
+              records: requestProperties.record
+            })
+          }
+
           ScopeManager.closeScope()
           return false
       }
@@ -371,6 +412,25 @@ DataSourceExt.prototype = {
       })
     }
     return this._db.applyFilter(datas, adCriteria)
+  },
+  _getNextRecordId: function (widget, ids) {
+    widget.getNextRecordId(ids)
+  },
+  _clear: function () {
+    this.recordIndexs = {}
+    this._db.cacheData.clear()
+  },
+  getNextRecordId: function (ids) {
+    let nextRecordId = null
+    if (this._db.bindWidgets) {
+      for (let i = 0; i < this._db.bindWidgets.length; i++) {
+        if (this._db.bindWidgets[i].getNextRecordId) {
+          nextRecordId = this._db.bindWidgets[i].getNextRecordId(ids)
+          break
+        }
+      }
+    }
+    return nextRecordId
   }
 }
 

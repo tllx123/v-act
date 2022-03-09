@@ -1,16 +1,17 @@
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import * as ExpectedException from './impl/ExpectedException'
+import { log as log } from '@v-act/vjs.framework.extension.util'
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import * as callCommandService from './util/CallCommand'
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
-
-import * as ExpectedException from './ExpectedException'
-import * as callCommandService from '../util/CallCommand'
-
+let sb
 let storage
 
-let UnLoginException = function (message, e) {
+let UnLoginException = function (message, e, errInfo, json) {
   ExpectedException.apply(this, arguments)
 }
 
@@ -40,10 +41,7 @@ UnLoginException.prototype = {
   handling: function () {
     if (this.isInApp()) {
       let result = confirm(
-        i18n.get(
-          '当前页面已过期，需要重新登录\n点击【确认】跳转到登录页面',
-          '未登录异常弹框的提示信息'
-        )
+        i18n.get('当前页面已过期，需要重新登录', '未登录异常弹框的提示信息')
       )
       if (result == true) {
         let url = envir.getLoginUrl()
@@ -55,6 +53,7 @@ UnLoginException.prototype = {
       }
     } else {
       let eventName = 'unlogin_' + uuidUtil.generate()
+      let _this = this
       let cb = scopeManager.createScopeHandler({
         handler: function () {
           let storage = _getStorage()
@@ -74,16 +73,26 @@ UnLoginException.prototype = {
               title: i18n.get('错误', '未登录异常弹框的标题'),
               msgHeader: i18n.get('未登录异常', '为登录异常弹框头部信息'),
               msg: i18n.get(
-                '当前页面已过期，需要重新登录\n点击【确认】跳转到登录页面',
+                '当前页面已过期，需要重新登录',
                 '未登录异常弹框显示的错误信息'
               ),
               detail: i18n.get(
-                '当前页面已过期，需要重新登录\n点击【确认】跳转到登录页面',
+                '当前页面已过期，需要重新登录',
                 '为登录异常弹框的详细描述信息'
               ),
-              callback: callback
+              callback: callback,
+              exceptionData: _this.getExceptionData(),
+              exceptionMap: _this.serialize(),
+              viewonly: _this.isViewonly(),
+              network: _this.isNetwork(),
+              isLoginException:
+                true /* 标记此信息为未登录异常，会根据此标识调整异常弹框上可操作的按钮（登录异常只有一个确定按钮，没有反馈、查看详情等按钮） */,
+              hideFeeback: _this.getHideFeeback(),
+              containerId: _this.getContainerId()
             }
-            callCommandService.callCommand(params)
+            if (_this.isSubmit())
+              //服务端异常不需要提交，服务端异常在创建异常对象时会标记为服务端异常
+              callCommandService.callCommand(params)
             callCommandService.showDialog(params, callback)
           }
         }
@@ -130,11 +139,26 @@ UnLoginException.prototype = {
 return UnLoginException
 
 export {
-  _getHandler,
+  plupload,
+  initModule,
   create,
-  getExceptionHtml,
-  handle,
   isException,
+  isAcceptType,
+  genError,
+  getExceptionTypeByError,
+  unSerialize,
+  initModule,
+  handle,
+  getExceptionHtml,
+  initModule,
   onBeforeHandler,
-  onHandleFunction
+  onHandleFunction,
+  _getHandler,
+  initModule,
+  initModule,
+  initModule,
+  initModule,
+  initModule,
+  initModule,
+  initModule
 }

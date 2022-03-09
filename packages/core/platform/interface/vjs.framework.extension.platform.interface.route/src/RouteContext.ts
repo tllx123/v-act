@@ -13,10 +13,10 @@ import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.arra
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
 
-const extend = ObjectUtil.extend
-
 import { TransactionInfo } from '../../vjs.framework.extension.platform.interface.model.config/src/api/types'
 import RuleContext from './RuleContext'
+
+const extend = ObjectUtil.extend
 
 /**
  * @namespace RouteContext
@@ -157,6 +157,16 @@ class RouteContext {
       )
     }
   }
+  //添加Deferred
+  addCompleteDeferred(dtd) {
+    this.__completeDtdList.push(dtd)
+  }
+  //路由执行完成回调
+  onCompleteCallback(func) {
+    if (typeof func == 'function') {
+      this.__onCompleteCallback.push(func)
+    }
+  }
 
   /*
    * 获取异步工厂
@@ -170,8 +180,8 @@ class RouteContext {
    * @return {@link RouteContext}
    */
   clone() {
-    const rr = new RouteContext()
-    extend(rr, this)
+    let rr = new RouteContext()
+    sb.util.object.extend(rr, this)
     return rr
   }
 
@@ -190,8 +200,16 @@ class RouteContext {
     for (let i = 0, handler; (handler = this.__routeCallBack[i]); i++) {
       handler.call(this, outputs)
     }
+    let dtdList = this.__completeDtdList
+    let _this = this
+    $.when.apply($, dtdList).done(function () {
+      let completeCallbacks = _this.__onCompleteCallback
+      for (let j = 0; j < completeCallbacks.length; j++) {
+        let func = completeCallbacks[j]
+        func.call(_this, outputs)
+      }
+    })
   }
-
   /**
    * @private
    * 执行则路由余下逻辑
@@ -619,10 +637,24 @@ class RouteContext {
    * @param {Object} outputType
    */
   getOutPut(outputType: string) {
-    if (this.__routeConfig__) {
-      throw Error('未处理逻辑！')
+    let outputCfg = this.__routeConfig__.getOutputCfg()
+    if (outputCfg) {
+      let cmpModule = viewModel.getCmpModule()
+      scopeManager.openScope(this.__scopeId__)
+      let variablesMapping = cmpModule.genOutputVariablesMapping(
+        outputCfg.outputVariables
+      )
+      let result = cmpModule.genOutputValueResult(
+        outputCfg.widgetCodes,
+        variablesMapping,
+        outputCfg.dsToFields,
+        outputType
+      )
+      scopeManager.closeScope()
+      return result
+    } else {
+      return []
     }
-    return []
   }
   /**
    *获取事务实例id
@@ -1138,7 +1170,14 @@ class RouteContext {
     if (this.__routeConfig__) {
       let input = this.__routeConfig__.getInput(paramCode)
       if (input) {
-        //@ts-ignore
+        let type = input.type
+        //TODO 数据校验
+        /*var isMatch = dataValidateUtil.dataValidate(paramValue,type);
+            if(isMatch)
+            { 
+                this.__inputParam[paramCode] = paramValue;
+      }
+            return isMatch;*/
         this._putCode(paramCode, paramValue, this.getInputParamType)
         this.__inputParam[paramCode] = paramValue
       }
@@ -1221,7 +1260,14 @@ class RouteContext {
     if (this.__routeConfig__) {
       let input = this.__routeConfig__.getOutput(paramCode)
       if (input) {
-        //@ts-ignore
+        let type = input.type
+        //TODO 数据校验
+        /*var isMatch = dataValidateUtil.dataValidate(paramValue,type);
+            if(isMatch)
+            { 
+                this.__outputParam[paramCode] = paramValue;
+            }	
+            return isMatch;*/
         this._putCode(paramCode, paramValue, this.getOutPutParamType)
         this.__outputParam[paramCode] = paramValue
       }
@@ -1237,7 +1283,14 @@ class RouteContext {
     if (this.__routeConfig__) {
       let variable = this.__routeConfig__.getVar(variableCode)
       if (variable) {
-        //@ts-ignore
+        let type = variable.type
+        //TODO 数据校验
+        /*var isMatch = dataValidateUtil.dataValidate(value,type);
+            if(isMatch)
+            { 
+        this.__variables[variableCode] = value
+      }
+            return isMatch;*/
         this._putCode(variableCode, value, this.getVariableType)
         this.__variables[variableCode] = value
       }

@@ -1,18 +1,22 @@
-import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowVMMapping as windowVM } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import {
-  DatasourcePuller as puller,
-  DatasourcePusher as pusher
-} from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DefaultValueGenerator } from '@v-act/vjs.framework.extension.platform.services.view.logic.defaultvalue'
+import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import { DefaultValueGenerator as DefaultValueGenerator } from '@v-act/vjs.framework.extension.platform.services.view.logic.defaultvalue'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
+import { Environment as environmentUtil } from '@v-act/vjs.framework.extension.platform.interface.environment'
+3
 
 let token = 'WINDOW_INSTANCE_DATASOURCE'
+let sandbox
 
-export function initModule(sb) {}
+const initModule = function (sb) {
+  sandbox = sb
+}
 
 let _getJsonFromCfg = function (dsName, cfg) {
   let defaultValues = cfg.defaultValues
@@ -27,7 +31,13 @@ let _getJsonFromCfg = function (dsName, cfg) {
   }
   return {
     metadata: {
-      model: [{ datasourceName: dsName, fields: cfg.initMetaFields }]
+      model: [
+        {
+          datasourceName: dsName,
+          fields: cfg.initMetaFields,
+          chineseName: cfg.chineseName
+        }
+      ]
     }
   }
 }
@@ -39,10 +49,52 @@ let _getWindowVM = function () {
   return windowVM.getVMMapping(componentCode, windowCode)
 }
 
+let _initDsInfo = function () {
+  let currentScope = scopeManager.getWindowScope()
+  let componentCode = currentScope.getComponentCode()
+  let windowCode = currentScope.getWindowCode()
+  //var props = sandbox.getService("vjs.framework.extension.publish." + componentCode + "." + windowCode + ".widget.property");
+  let serverName1 =
+    'vjs.framework.extension.publish.' +
+    componentCode +
+    '.' +
+    windowCode +
+    '.widget.property'
+  let domain = environmentUtil.getDomain()
+  let props
+  if (domain) {
+    let serverName2 = serverName1 + '.' + domain
+    props = sandbox.getService(serverName2)
+  }
+  if (!props) {
+    props = sandbox.getService(serverName1)
+  }
+  let vmmapping = {}
+  if (props && props.getDatasourceMapping) {
+    vmmapping.dataSources = props.getDatasourceMapping()
+    vmmapping.widgets = props.getWidgetDSMapping()
+    windowVM.addVMMapping(componentCode, windowCode, vmmapping)
+    currentScope.markInitedDatasource && currentScope.markInitedDatasource()
+  }
+}
+
 const init = function () {
+  let windowScope = scopeManager.getWindowScope()
+  if (
+    windowScope &&
+    windowScope.isInitedDatasource &&
+    windowScope.isInitedDatasource()
+  ) {
+    return //已经注册过的就不需要重复注册
+  }
   let vmInfo = _getWindowVM()
-  let dsCfg = vmInfo.dataSources
-  if (dsCfg) {
+  if (null == vmInfo) {
+    //网页窗体继承普通窗体，补偿初始化
+    _initDsInfo()
+    vmInfo = _getWindowVM()
+  }
+  if (vmInfo && vmInfo.dataSources) {
+    let dsCfg = vmInfo.dataSources
     for (let ds in dsCfg) {
       let cfg = dsCfg[ds]
       let json = _getJsonFromCfg(ds, cfg)
@@ -174,7 +226,7 @@ const exists = function (params) {
 const getAll = function () {
   let windowScope = scopeManager.getScope()
   let result = []
-  if (windowScope.has(token)) {
+  if (windowScope && windowScope.has(token)) {
     let storage = windowScope.get(token)
     storage.iterate(function (key, val) {
       result.push(val)
@@ -183,4 +235,13 @@ const getAll = function () {
   return result
 }
 
-export { exists, getAll, init, initDefaultDatas, lookup, register, unRegister }
+export {
+  initModule,
+  init,
+  initDefaultDatas,
+  lookup,
+  register,
+  unRegister,
+  exists,
+  getAll
+}

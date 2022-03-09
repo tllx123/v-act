@@ -1,6 +1,9 @@
-import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { ParamConfigFactory as ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
 const token = 'ApplicationParam_Token_Key'
 const WindowMappingKey = 'ApplicationParam_Token_Window_Mapping'
@@ -79,9 +82,36 @@ let _getWindowMappingStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, WindowMappingKey)
 }
 
-const initWindowMapping = function (mappings: Array<any>) {
+const initWindowMapping = function (mappings) {
   if (mappings && mappings.length > 0) {
     let _storage = _getWindowMappingStorage()
+    //目标树,如果没有_parent节点，则为最底层的父窗体
+    let targetTree = parseTree(mappings)
+    _storage.put('source', mappings) //原始映射信息
+    _storage.put('parent', targetTree.parent) //父窗体为根，子窗体为child节点
+    _storage.put('child', targetTree.child) //子窗体为根，父窗体为parent节点
+    //		   for(var i =0,l=mappings.length;i<l;i++){
+    //			   var map = mappings[i];
+    //			   var sourceWindowInfo = map.sourceComponentCode + "$_$" + map.sourceWindowCode;
+    //			   if(_storage.containsKey(sourceWindowInfo)){//已经存在key
+    //				   logUtil.warn("已替换存在的映射关系，key：" + sourceWindowInfo +",原值："+_storage.get(sourceWindowInfo) + ",目标值：" + map.targetComponentCode + "$_$" + map.targetWindowCode);
+    //			   }
+    //			   _storage.put(sourceWindowInfo,{
+    //				   componentCode : map.targetComponentCode,
+    //				   windowCode : map.targetWindowCode,
+    //				   series:map.targetSeries
+    //			   });
+    //		   }
+  }
+}
+
+const addWindowMapping = function (mappings) {
+  if (mappings && mappings.length > 0) {
+    let _storage = _getWindowMappingStorage()
+    let exist = _storage.get('source') //已经存在的映射信息
+    if (exist) {
+      mappings = mappings.concat(exist)
+    }
     //目标树,如果没有_parent节点，则为最底层的父窗体
     let targetTree = parseTree(mappings)
     _storage.put('source', mappings) //原始映射信息
@@ -90,11 +120,8 @@ const initWindowMapping = function (mappings: Array<any>) {
   }
 }
 
-const getWindowMapping = function (sourceWindowInfo: {
-  componentCode: string
-  windowCode: string
-  isTarget?: boolean
-}) {
+const getWindowMapping = function (sourceWindowInfo) {
+  //console.log("[getWindowMapping]获取映射关系：" + JSON.stringify(sourceWindowInfo));
   let obj = sourceWindowInfo
   if (check(obj)) {
     let sKey = obj.componentCode + '$_$' + obj.windowCode
@@ -129,8 +156,43 @@ const getWindowMapping = function (sourceWindowInfo: {
         return current
       }
     }
+
+    //			if(obj.isTarget === true){
+    //				baseNode = _storage.get("child")
+    //				var infos = parseMappings(_storage).target;
+    //				return infos[sKey];
+    //			}else if(_storage.containsKey(sKey)){
+    //				var arr = _storage.get(sKey);
+    //				var result = {
+    //					componentCode : arr.componentCode,
+    //					windowCode : arr.windowCode,
+    //					series: arr.series
+    //				}
+    //				return result;
+    //			}
   }
   return null
+}
+
+const getWindowMappingSync = function (sourceWindowInfo) {
+  //console.log("[getWindowMappingSync]获取映射关系：" + JSON.stringify(sourceWindowInfo));
+  let dtd = $.Deferred()
+  let cb = (function (infos, func, _d) {
+    return function () {
+      let datas = func(infos)
+      _d.resolve(datas)
+    }
+  })(sourceWindowInfo, exports.getWindowMapping, dtd)
+  if (sourceWindowInfo.componentCode) {
+    componentInit.initComponent({
+      componentCode: sourceWindowInfo.componentCode,
+      success: cb,
+      error: cb
+    })
+  } else {
+    setTimeout(cb, 1)
+  }
+  return dtd
 }
 
 function simple(
@@ -317,17 +379,22 @@ function putData(mapping, datas, type) {
 /**
  * 将映射关系转成树结构
  * */
-function parseTree(
-  mappings: Array<{
-    targetComponentCode: string
-    targetWindowCode: string
-    sourceComponentCode: string
-    sourceWindowCode: string
-  }>
-) {
+function parseTree(sMaps) {
   let targetTree = {}
   let sourceTree = {}
-  if (mappings && mappings.length > 0) {
+  if (sMaps && sMaps.length > 0) {
+    let removeArray = function (nowMappings, newMappings) {
+      for (let i = 0, len = nowMappings.length; i < len; i++) {
+        let mapping = nowMappings[i]
+        if (mapping instanceof Array) {
+          removeArray(mapping, newMappings)
+        } else {
+          newMappings.push(mapping)
+        }
+      }
+    }
+    let mappings = []
+    removeArray(sMaps, mappings) //后台生成窗体映射信息时，多嵌套了一层数组Task20200903009
     for (let i = 0, len = mappings.length; i < len; i++) {
       let mapping = mappings[i]
       let componentCode = mapping.targetComponentCode
@@ -346,11 +413,14 @@ function parseTree(
   }
 }
 export {
+  initModule,
   addRuleSetInputs,
-  exists,
-  existWindowMapping,
-  getRuleSetInput,
   getRuleSetInputs,
+  exists,
+  getRuleSetInput,
+  initWindowMapping,
+  addWindowMapping,
   getWindowMapping,
-  initWindowMapping
+  getWindowMappingSync,
+  existWindowMapping
 }

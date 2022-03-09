@@ -239,6 +239,16 @@ class TreeStorage {
       }
     }
   }
+  /**
+   * 获取所有
+   */
+  getAllfunction() {
+    let result = []
+    this.iterate(function (id, value) {
+      result.push(value)
+    })
+    return result
+  }
 }
 
 export default TreeStorage

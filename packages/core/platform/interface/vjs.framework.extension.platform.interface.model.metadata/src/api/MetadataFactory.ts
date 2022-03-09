@@ -7,7 +7,8 @@ export function initModule(sb) {}
 
 const create = function (params) {
   let dataSourceName = params.dataSourceName,
-    fields = params.fields
+    fields = params.fields,
+    chineseName = params.chineseName
   let hasPrimaryKey = false
   for (let i = 0, field; (field = params.fields[i]); i++) {
     let code = field.code.toLowerCase()
@@ -26,7 +27,9 @@ const create = function (params) {
       })
     )
   }
-  return new Metadata(dataSourceName, fields)
+  let metadata = new Metadata(dataSourceName, fields)
+  metadata.setChineseName(chineseName)
+  return metadata
 }
 
 const unSerialize = function (input) {
@@ -36,6 +39,7 @@ const unSerialize = function (input) {
   }
   model = model[0]
   let dataSourceName = model.datasourceName
+  let chineseName = model.chineseName
   let fields = []
   let fieldCfg = model.fields
   let hasPrimaryKey = false
@@ -55,23 +59,36 @@ const unSerialize = function (input) {
       })
     )
   }
-  return this.create({ dataSourceName: dataSourceName, fields: fields })
+  return this.create({
+    dataSourceName: dataSourceName,
+    fields: fields,
+    chineseName: chineseName
+  })
 }
 
 export {
-  adapt,
-  begin,
-  Boolean,
-  Char,
-  collect,
-  create,
-  Date,
-  File,
+  initModule,
   getDataValidator,
-  Integer,
-  LongDate,
-  Number,
-  Object,
+  initModule,
+  adapt,
+  initModule,
+  adapt,
+  adapt,
+  initModule,
+  Char,
+  Any,
   Text,
+  Number,
+  Boolean,
+  Date,
+  LongDate,
+  File,
+  Object,
+  Integer,
+  begin,
+  collect,
+  unSerialize,
+  initModule,
+  create,
   unSerialize
 }

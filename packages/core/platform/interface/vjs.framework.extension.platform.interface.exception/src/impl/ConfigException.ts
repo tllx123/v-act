@@ -5,36 +5,36 @@ import * as callCommandService from './util/CallCommand'
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 let sandbox
 
-let BusinessException = function (message, e, errInfo, json) {
+let ConfigException = function (message, e, errInfo, json) {
   ExpectedException.call(this, message, e, errInfo, json)
 }
 
 const initModule = function (sandbox) {}
 
-BusinessException.prototype = {
+ConfigException.prototype = {
   initModule: function (sandbox) {
     var Extend = require('vjs/framework/extension/platform/interface/exception/util/Extend')
-    Extend.extend(BusinessException, ExpectedException, sandbox)
+    Extend.extend(ConfigException, ExpectedException, sandbox)
   },
 
   getClassName: function () {
-    return 'BusinessException'
+    return 'ConfigException'
   },
 
   /**
    * 异常标题
    * */
   getTitle: function () {
-    return i18n.get('错误', '业务异常弹框的标题')
+    return i18n.get('错误', '配置异常弹框的标题')
   },
   /**
    * 异常弹框顶部信息
    * */
   getMsgHeader: function () {
-    return i18n.get('业务异常', '业务异常弹框的顶部描述信息')
+    return i18n.get('配置异常', '配置弹框的顶部描述信息')
   }
 }
-return BusinessException
+return ConfigException
 
 export {
   plupload,
@@ -52,5 +52,6 @@ export {
   onBeforeHandler,
   onHandleFunction,
   _getHandler,
+  initModule,
   initModule
 }

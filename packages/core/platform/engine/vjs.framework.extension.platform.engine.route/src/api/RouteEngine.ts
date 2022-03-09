@@ -1,26 +1,24 @@
-import { aop } from '@v-act/vjs.framework.extension.platform.aop'
-import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
-import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
-import {
-  ScopeTask,
-  TaskManager as taskManager
-} from '@v-act/vjs.framework.extension.platform.global'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import {
-  ExceptionFactory as exceptionFactory,
-  ExceptionHandler as exceptionHandler
-} from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { log as logUtil } from '@v-act/vjs.framework.extension.util'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
+import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { aop as aop } from '@v-act/vjs.framework.extension.platform'
+import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global.task'
+import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global.task'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { snapshotManager as snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.init.view'
-import { TransactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
-import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
-import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global.data'
+
+let sb
+
+const initModule = function (sandbox) {
+  sb = sandbox
+}
 
 const execute = function (params) {
   let targetConfig = params.targetConfig,
@@ -96,6 +94,9 @@ const executeWindowRoute = function (params) {
  *执行后台活动集
  */
 let exeServerRuleSet = function (targetConfig, inputParam, config, callback) {
+  let DBFactory = sb.getService(
+    'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
+  )
   let params = []
   for (let attr in inputParam) {
     let val = inputParam[attr]
@@ -139,6 +140,7 @@ let exeServerRuleSet = function (targetConfig, inputParam, config, callback) {
     parentRuleContext: parentRuleContext,
     type: 'server'
   })
+  rr.setExceptionHandler(config.error)
   let tmpUUID = uuidUtil.generate()
   //监控标志 用于标识路由
   rr._monitorSign = 'ROUTE_' + tmpUUID
@@ -232,7 +234,8 @@ let exeServerRuleSet = function (targetConfig, inputParam, config, callback) {
           if (errorFunc) {
             _exeFunc(errorFunc, routeRuntime, [e])
           } else {
-            exceptionHandler.handle(e)
+            rr.handleException(e)
+            //							exceptionHandler.handle(e);
           }
         }
       })(rr)
@@ -405,7 +408,10 @@ let exeWindowRuleSet = function (targetConfig, inputParam, config, callback) {
 let getTargetRuleInfo = function (params) {
   let scopeId = params.scopeId
   let ruleSetCode = params.ruleSetCode
-  let scope = scopeManager.getScope(scopeId)
+  //兼容处理：移动窗体，客户端调用窗体方法传过来是构件域id
+  let scope = scopeManager.isComponentScope(scopeId)
+    ? scopeManager.getWindowScope(scopeId)
+    : scopeManager.getScope(scopeId)
   let componentCode = scope.getComponentCode()
   let windowCode = scope.getWindowCode()
   if (componentCode && windowCode) {
@@ -476,14 +482,15 @@ let _exeWindowHandler = function (params) {
       ruleSetCode = newParams.ruleSetCode
     }
   }
+
   let routeContext = initRouteContext({
-    //componentCode,windowCode,ruleSetCode,"window",parentRouteContext
     componentCode: componentCode,
     windowCode: windowCode,
     ruleSetCode: ruleSetCode,
     routeType: 'window',
     parentRouteContext: parentRouteContext,
-    parentRuleContext: parentRuleContext
+    parentRuleContext: parentRuleContext,
+    completed: config.completed
   })
   if (routeContext) {
     putRouteContextCallback(routeContext, config.callback)
@@ -506,6 +513,7 @@ let _exeWindowHandler = function (params) {
         throw e
       }
     }
+    routeContext.setExceptionHandler(errorFunc)
     let handler = routeCfg.getHandler()
     routeContext.setScopeId(scopeId)
     let tmpUUID = uuidUtil.generate()
@@ -522,8 +530,7 @@ let _exeWindowHandler = function (params) {
       _exeHandler(handler, routeContext, routeCfg, inputParam)
     } catch (e) {
       if (errorFunc) {
-        let ep = exceptionFactory.create({ error: e })
-        errorFunc.apply(routeContext, [ep])
+        errorFunc.apply(routeContext, [e])
       } else {
         throw e
       }
@@ -576,7 +583,9 @@ let exeComponentRuleSet = function (
       ruleSetCode = newInfo.funcCode
     }
   }
-
+  let viewInit = sb.getService(
+    'vjs.framework.extension.platform.init.view.ViewInit'
+  )
   let scopeId = scopeManager.getCurrentScopeId()
   let errorFunc = config.error
   viewInit.initComponentSchema({
@@ -591,15 +600,21 @@ let exeComponentRuleSet = function (
         callback: callback
       })
     },
-    error: function () {
+    error: function (error) {
       _fireExceptionEvent(config.parentRouteContext)
-      let ep = exceptionFactory.create({
-        type: exceptionFactory.TYPES.Dialog,
-        message:
-          '执行目标构件活动集出错！请检查目标构件:' +
-          componentCode +
-          '是否已部署！'
-      })
+      let ep
+      if (error && exceptionFactory.isException(error)) {
+        /* 如果入参为平台对象，则不需要创建异常对象 Task20210910023 */
+        ep = error
+      } else {
+        ep = exceptionFactory.create({
+          type: exceptionFactory.TYPES.System,
+          message:
+            '执行目标构件活动集出错！请检查目标构件:' +
+            componentCode +
+            '是否已部署！'
+        })
+      }
       if (errorFunc) {
         errorFunc.apply(this, [ep])
       } else {
@@ -646,6 +661,7 @@ let _exeComponentHandler = function (params) {
       }
     })()
     let errorFunc = config.error
+    routeContext.setExceptionHandler(errorFunc)
     putRouteContextCallback(routeContext, cbk)
     let routeCfg = routeContext.getRouteConfig()
     if (!routeCfg) {
@@ -755,8 +771,9 @@ let _doTransaction = function (routeContext, type) {
  *获取事务管理服务
  */
 let _getTransactionManager = function () {
-  return TransactionManager
+  return sb.getService('vjs.framework.extension.platform.transaction.manager')
 }
+
 /**
  *初始化路由运行时上下文
  */
@@ -767,14 +784,21 @@ let initRouteContext = function (params) {
     routeType = params.routeType,
     parentRouteContext = params.parentRouteContext,
     parentRuleContext = params.parentRuleContext,
-    type = params.type
+    type = params.type,
+    completed = params.completed
   let routeCfg
   if (routeType == 'component') {
+    let componentRoute = sb.getService(
+      'vjs.framework.extension.platform.data.storage.schema.route.ComponentRoute'
+    )
     routeCfg = componentRoute.getRoute({
       componentCode: componentCode,
       routeCode: ruleSetCode
     })
   } else {
+    let windowRoute = sb.getService(
+      'vjs.framework.extension.platform.data.storage.schema.route.WindowRoute'
+    )
     routeCfg = windowRoute.getRoute({
       componentCode: componentCode,
       windowCode: windowCode,
@@ -783,15 +807,55 @@ let initRouteContext = function (params) {
   }
   //获取活动集配置信息
   if (!routeCfg && type != 'server') {
-    logUtil.log(
-      '[RouteEngie.initRouteContext]未找到可执行的规则路由,路由code为：' +
+    let exceptionDatas = [
+      { name: '构件编码', code: 'componentCode', value: componentCode }
+    ]
+    let name = '客户端'
+    let winVal = ''
+    if (windowCode) {
+      name = '窗体'
+      winVal = '，窗体编码：' + windowCode
+      exceptionDatas.push({
+        name: '窗体编码',
+        code: 'windowCode',
+        value: windowCode
+      })
+    }
+    exceptionDatas.push({
+      name: name + '方法编码',
+      code: 'activeCode',
+      value: ruleSetCode
+    })
+    let exception = factory.create({
+      type: exceptionFactory.TYPES.Config,
+      exceptionDatas: exceptionDatas,
+      message:
+        name +
+        '方法不存在，请检查配置，构件编码：' +
+        componentCode +
+        winVal +
+        '，方法编码：' +
         ruleSetCode
-    )
+    })
+    if (
+      typeof environment.useCompatibleMode == 'function' &&
+      environment.useCompatibleMode() != false
+    ) {
+      //沿用旧版逻辑，不存在的活动集不弹提示框，只打印日志Task20210625044
+      exception.markTiped()
+    }
+    throw exception
+    //			logUtil.log("[RouteEngie.initRouteContext]未找到可执行的规则路由,路由code为："+ruleSetCode);
     return null
   }
-
+  let RouteContext = sb.getService(
+    'vjs.framework.extension.platform.interface.route.RouteContext'
+  )
   let ctx = new RouteContext(routeCfg, parentRouteContext)
   ctx.setParentRuleContext(parentRuleContext)
+  if (completed) {
+    ctx.onCompleteCallback(completed)
+  }
   if (parentRouteContext && parentRouteContext.snapshotId) {
     ctx.snapshotId = parentRouteContext.snapshotId
   } else {

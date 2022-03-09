@@ -12,11 +12,11 @@ const scopeStack: string[] = []
 const token = 'WINDOW_INSTANCE_DATASOURCE'
 
 if (window) {
-  const unloadFunc = window.onunload
+  let unloadFunc = window.onunload
   window.onunload = function () {
-    const storage = _getScopeInstanceStorage()
-    storage.iterate(function (id: string, scope: Scope) {
-      exports.destroy(id)
+    let storage = _getScopeInstanceStorage()
+    storage.iterate(function (id: string) {
+      destroy(id)
     })
     if (unloadFunc) {
       //@ts-ignore
@@ -28,7 +28,7 @@ if (window) {
 /**
  * 获取域实例仓库
  */
-const _getScopeInstanceStorage = function () {
+let _getScopeInstanceStorage = function () {
   return StorageManager.get(
     StorageManager.TYPES.TREE,
     Scope_Instance_Storage_Token
@@ -38,53 +38,58 @@ const _getScopeInstanceStorage = function () {
 /**
  * 获取域管理事件仓库
  */
-const _getScopeManagerEventStorage = function () {
+let _getScopeManagerEventStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, Scope_Event_Storage_Token)
 }
 
-const _putScopeIntoStorage = function (parentScopeId: string, scope: Scope) {
-  const scopeId = scope.getInstanceId()
-  const storage = _getScopeInstanceStorage()
+let _putScopeIntoStorage = function (
+  parentScopeId: string | null,
+  scope: Scope
+) {
+  let scopeId = scope.getInstanceId()
+  let storage = _getScopeInstanceStorage()
   storage.add(parentScopeId, scopeId, scope)
   return scopeId
 }
 
 const createScope = function (parentScopeId: string, scopeId: string) {
-  const scope = new Scope(scopeId)
+  let scope = new Scope(scopeId)
   return _putScopeIntoStorage(parentScopeId, scope)
 }
 
 const createWindowScope = function (params: {
   componentCode: string
   windowCode: string
-  parentScopeId: string
-  scopeId: string
   series: string
+  scopeId: string | null
+  parentScopeId: string | null
   isTarget?: boolean
 }) {
-  const componentCode = params.componentCode
-  const windowCode = params.windowCode
-  const scope = new WindowScope(
+  let componentCode = params.componentCode
+  let windowCode = params.windowCode
+  let scope = new WindowScope(
     params.scopeId,
     componentCode,
     windowCode,
     params.series
   )
-  const isTarget = params.isTarget === false ? false : true
-  const infos = getSource(componentCode, windowCode, isTarget)
-  const tmpScope = null
+  let isTarget = params.isTarget === false ? false : true
+  let infos = getSource(componentCode, windowCode, isTarget)
+  let tmpScope = null
   if (infos && infos.componentCode && infos.windowCode) {
-    const sId = exports.createWindowScope({
+    let sId = createWindowScope({
+      scopeId: null,
+      parentScopeId: null,
       componentCode: infos.componentCode,
       windowCode: infos.windowCode,
       series: params.series
     })
     if (isTarget) {
       scope.setExtendId(sId)
-      exports.getScope(sId).setChildId(scope.getInstanceId())
+      getScope(sId).setChildId(scope.getInstanceId())
     } else {
       scope.setChildId(sId)
-      exports.getScope(sId).setExtendId(scope.getInstanceId())
+      getScope(sId).setExtendId(scope.getInstanceId())
     }
   }
   return _putScopeIntoStorage(params.parentScopeId, scope)
@@ -93,17 +98,17 @@ const createWindowScope = function (params: {
 /**
  * 替换构件包信息
  * */
-const replaceComponentPackInfo = function (
+let replaceComponentPackInfo = function (
   componentCode: string,
   windowCode: string
 ) {
   let result = null
-  const info = {
+  let info = {
     componentCode: componentCode,
     code: windowCode
   }
   if (componentPackData.existMapping(info)) {
-    const newInfo = componentPackData.getMapping(info)
+    let newInfo = componentPackData.getMapping(info)
     if (newInfo) {
       result = {
         componentCode: newInfo.componentCode,
@@ -121,26 +126,23 @@ const replaceComponentPackInfo = function (
  * */
 function getSource(comCode: string, winCode: string, isTarget: boolean) {
   let result = null
-  if (componentPackData) {
-    //替换构件包映射信息
-    const newInfo = replaceComponentPackInfo(comCode, winCode)
-    if (newInfo) {
-      comCode = newInfo.componentCode
-      winCode = newInfo.windowCode
-    }
+  //替换构件包映射信息
+  let newInfo = replaceComponentPackInfo(comCode, winCode)
+  if (newInfo) {
+    comCode = newInfo.componentCode
+    winCode = newInfo.windowCode
   }
-  if (ApplicationParam) {
-    const windowMappingInfo = ApplicationParam.getWindowMapping({
-      componentCode: comCode,
-      windowCode: winCode,
-      isTarget: isTarget
-    })
-    if (windowMappingInfo != null) {
-      result = {
-        componentCode: windowMappingInfo.componentCode,
-        windowCode: windowMappingInfo.windowCode,
-        series: windowMappingInfo.series
-      }
+
+  let windowMappingInfo = ApplicationParam.getWindowMapping({
+    componentCode: comCode,
+    windowCode: winCode,
+    isTarget: isTarget
+  })
+  if (windowMappingInfo != null) {
+    result = {
+      componentCode: windowMappingInfo.componentCode,
+      windowCode: windowMappingInfo.windowCode,
+      series: windowMappingInfo.series
     }
   }
   return result
@@ -151,49 +153,59 @@ const createComponentScope = function (params: {
   componentCode: string
   parentScopeId: string
 }) {
-  const scope = new ComponentScope(params.scopeId, params.componentCode)
+  let scope = new ComponentScope(params.scopeId, params.componentCode)
   return _putScopeIntoStorage(params.parentScopeId, scope)
 }
 
-const isWindowScope = function (scopeId: string) {
-  const scope = exports.getScope(scopeId)
+let _isWindowScope = function (scope: Scope) {
   return scope
     ? scope instanceof WindowScope || scope.constructor === WindowScope
     : false
 }
 
-const isComponentScope = function (scopeId: string) {
-  const scope = exports.getScope(scopeId)
+const isWindowScope = function (scopeId: string) {
+  return _isWindowScope(getScope(scopeId))
+}
+
+let _isComponentScope = function (scope: Scope) {
   return scope
     ? scope instanceof ComponentScope || scope.constructor === ComponentScope
     : false
 }
 
+const isComponentScope = function (scopeId: string) {
+  return _isComponentScope(getScope(scopeId))
+}
+
 const getWindowScope = function () {
-  let scopeId = exports.getCurrentScopeId()
+  let scopeId = getCurrentScopeId()
   while (scopeId != null) {
-    const flag = exports.isWindowScope(scopeId)
+    let flag = isWindowScope(scopeId)
     if (flag) {
-      return exports.getScope(scopeId)
+      return getScope(scopeId)
     } else {
-      const storage = _getScopeInstanceStorage()
-      const parent = storage.getParent(scopeId)
+      let storage = _getScopeInstanceStorage()
+      let parent = storage.getParent(scopeId)
       scopeId = parent == null ? null : parent.getInstanceId()
     }
   }
   return null
 }
 
-const openScope = function (scopeId: string) {
-  //把当前域存到window上，在div中触发事件时可以拿到当前域对象
-  //@ts-ignore
-  if (!window.VPlatformScope) {
+const openScope = function (scopeId: string | null) {
+  if (scopeId !== null) {
+    //把当前域存到window上，在div中触发事件时可以拿到当前域对象
     //@ts-ignore
-    window.VPlatformScope = []
+    if (!window.VPlatformScope) {
+      //@ts-ignore
+      window.VPlatformScope = []
+    }
+    //@ts-ignore
+    window.VPlatformScope.push(scopeId)
+    scopeStack.push(scopeId)
+  } else {
+    throw Error('scopeId不能为null')
   }
-  //@ts-ignore
-  window.VPlatformScope.push(scopeId)
-  scopeStack.push(scopeId)
 }
 
 const getCurrentScopeId = function () {
@@ -201,8 +213,8 @@ const getCurrentScopeId = function () {
 }
 
 const getParentScopeId = function (scopeId: string) {
-  const storage = _getScopeInstanceStorage()
-  const node = storage.getTreeNode(scopeId)
+  let storage = _getScopeInstanceStorage()
+  let node = storage.getTreeNode(scopeId)
   if (node) {
     return node.getPId()
   }
@@ -211,7 +223,7 @@ const getParentScopeId = function (scopeId: string) {
 
 const closeScope = function () {
   //@ts-ignore
-  if (window && !window.VPlatformScope) {
+  if (!window.VPlatformScope) {
     //@ts-ignore
     window.VPlatformScope = []
   } else {
@@ -221,33 +233,47 @@ const closeScope = function () {
   scopeStack.pop()
 }
 
-const _fire = function (eventName: string, scope: Scope) {
-  const scopeId = scope.getInstanceId()
-  const args = Array.prototype.slice.call(arguments, 2)
+let _fire = function (eventName: string, scope: Scope, ...args1: any[]) {
+  let scopeId = scope.getInstanceId()
+  let args = Array.prototype.slice.call(arguments, 2)
   try {
-    const storage = _getScopeManagerEventStorage()
-    exports.openScope(scopeId)
+    let storage = _getScopeManagerEventStorage()
+    openScope(scopeId)
     if (storage.containsKey(eventName)) {
-      const handlers = storage.get(eventName)
-      handlers.forEach((handler: (...params: any[]) => void) => {
-        handler.apply(exports, args)
+      let handlers = storage.get(eventName)
+      handlers.forEach((handler: (...args: any[]) => void) => {
+        handler(...args)
       })
     }
-    const args1 = [eventName].concat(args)
-    //@ts-ignore
-    scope.fire.apply(scope, args1)
+    scope.fire(eventName, ...args)
   } finally {
-    exports.closeScope()
+    closeScope()
   }
 }
 
 const getChildrenScopes = function (scopeId: string) {
-  const storage = _getScopeInstanceStorage()
-  const children = storage.getChildren(scopeId)
-  const rs = []
+  if (scopeId) {
+    while (true) {
+      let scope = getScope(scopeId)
+      if (scope && typeof scope.getChildId == 'function') {
+        //窗体继承时，子域是关联到继承窗体，被继承窗体没有子域信息Task20210527032
+        let childId = scope.getChildId()
+        if (childId && childId != scopeId) {
+          scopeId = childId
+        } else {
+          break
+        }
+      } else {
+        break
+      }
+    }
+  }
+  let storage = _getScopeInstanceStorage()
+  let children = storage.getChildren(scopeId)
+  let rs = []
   if (children) {
     for (let i = 0, l = children.length; i < l; i++) {
-      const child = children[i]
+      let child = children[i]
       if (!child._isDestroyed()) {
         rs.push(child)
       }
@@ -257,32 +283,29 @@ const getChildrenScopes = function (scopeId: string) {
 }
 
 const destroy = function (scopeId: string) {
-  const storage = _getScopeInstanceStorage()
-  const descendants = storage.getDescendants(scopeId)
-  const args = Array.prototype.slice.call(arguments, 1)
+  if (isDestroy(scopeId)) return
+  let storage = _getScopeInstanceStorage()
+  let descendants = storage.getDescendants(scopeId)
+  let args = Array.prototype.slice.call(arguments, 1)
   while (descendants.length > 0) {
-    const child = descendants.pop()
+    let child = descendants.pop()
     if (!child._isDestroyed()) {
-      const args1 = [exports.EVENTS.DESTROY, child].concat(args)
-      //@ts-ignore
-      _fire.apply(this, args1)
       //TODO
       child._markDestroyed()
+      _fire(EVENTS.DESTROY, child, ...args)
     }
   }
-  const scope = storage.get(scopeId)
+  let scope = storage.get(scopeId)
   if (scope && !scope._isDestroyed()) {
-    const args1 = [exports.EVENTS.DESTROY, scope].concat(args)
-    //@ts-ignore
-    _fire.apply(this, args1)
     //TODO
     scope._markDestroyed()
+    _fire(EVENTS.DESTROY, scope, ...args)
   }
   //TODO
   setTimeout(function () {
-    const descendants = storage.getDescendants(scopeId)
+    let descendants = storage.getDescendants(scopeId)
     while (descendants.length > 0) {
-      const child = descendants.pop()
+      let child = descendants.pop()
       storage.remove(child.getInstanceId())
     }
     storage.remove(scopeId)
@@ -293,76 +316,101 @@ const destroy = function (scopeId: string) {
  * 事件名称
  * @enum {String}
  */
-exports.EVENTS = {
+const EVENTS = {
   /**域销毁事件*/
   DESTROY: 'destroy',
   //域销毁前事件
   BEFOREDESTROY: 'beforeDestroy',
   //域销毁后事件
-  AFTERDESTROY: 'afterDestroy'
+  AFTERDESTROY: 'afterDestroy',
+  //全局渲染事件
+  RENDERED: 'rendered'
 }
 
-exports.OpenMode = {
+const OpenMode = {
   //模态容器打开
   ModalContaniner: 'ModalContainer',
   //普通模态窗口
   ModalCommon: 'dialog'
 }
 
-const isDestroy = function (scopeId: string) {
-  const scope = getScope(scopeId)
+const CloseMode = {
+  //销毁域
+  DestroyScope: 'DestroyScope',
+  //自定义关闭函数
+  CustomFunc: 'CustomFunc'
+}
+
+let _isDestroy = function (scope: Scope) {
   return !scope || scope._isDestroyed()
 }
 
+const isDestroy = function (scopeId: string) {
+  return _isDestroy(getScope(scopeId))
+}
+
 const on = function (eventName: string, handler: (...args: any[]) => void) {
-  const storage = _getScopeManagerEventStorage()
-  const handlers = storage.containsKey(eventName) ? storage.get(eventName) : []
+  let storage = _getScopeManagerEventStorage()
+  let handlers = storage.containsKey(eventName) ? storage.get(eventName) : []
   handlers.push(handler)
   storage.put(eventName, handlers)
 }
 
-const getScope = function (scopeId: string) {
-  scopeId = scopeId || exports.getCurrentScopeId()
-  const storage = _getScopeInstanceStorage()
+const un = function (eventName: string) {
+  let storage = _getScopeManagerEventStorage()
+  if (storage.containsKey(eventName)) {
+    let handlers = storage.get(eventName)
+    for (let i = handlers.length - 1; i >= 0; i--) {
+      handlers.splice(i)
+    }
+  }
+}
+
+const getScope = function (scopeId?: string | null) {
+  scopeId = scopeId || getCurrentScopeId()
+  let storage = _getScopeInstanceStorage()
   return storage.get(scopeId)
 }
 
 const getProperty = function (key: string) {
-  const scopeId = exports.getCurrentScopeId()
-  return exports.getPropertyById(scopeId, key)
+  let scopeId = getCurrentScopeId()
+  return getPropertyById(scopeId, key)
 }
 
-const getPropertyById = function (scopeId: string, key: string) {
-  const scope = exports.getScope(scopeId)
-  return scope.get(key)
+const getPropertyById = function (scopeId: string | null, key: string) {
+  if (scopeId !== null) {
+    let scope = getScope(scopeId)
+    return scope.get(key)
+  }
+  return null
 }
 
 const setProperty = function (key: string, val: any) {
-  const scopeId = exports.getCurrentScopeId()
-  const scope = exports.getScope(scopeId)
+  let scopeId = getCurrentScopeId()
+  let scope = getScope(scopeId)
   scope.set(key, val)
 }
 
 const hasProperty = function (key: string) {
-  const scopeId = exports.getCurrentScopeId()
-  const scope = exports.getScope(scopeId)
+  let scopeId = getCurrentScopeId()
+  let scope = getScope(scopeId)
   return scope.has(key)
 }
 
 const removeProperty = function (key: string) {
-  const scopeId = exports.getCurrentScopeId()
-  const scope = exports.getScope(scopeId)
+  let scopeId = getCurrentScopeId()
+  let scope = getScope(scopeId)
   return scope.remove(key)
 }
 
 const _getInstanceIds = function (componentCode: string, windowCode: string) {
-  const instanceIds: string[] = []
-  const storage = _getScopeInstanceStorage()
+  let instanceIds: string[] = []
+  let storage = _getScopeInstanceStorage()
   storage.iterate(function (scopeId: string, scope: Scope) {
     if (!scope._isDestroyed()) {
       //TODO
-      const cCode = scope.get('componentCode')
-      const wCode = scope.get('windowCode')
+      let cCode = scope.get('componentCode')
+      let wCode = scope.get('windowCode')
       if (componentCode == cCode && windowCode == wCode) {
         instanceIds.push(scopeId)
       }
@@ -372,33 +420,40 @@ const _getInstanceIds = function (componentCode: string, windowCode: string) {
 }
 
 const createScopeHandler = function (params: {
-  scopeId?: string
+  scopeId: string
   handler: (...args: any[]) => void
   callObject?: any
-}) {
-  const scopeId = params.scopeId ? params.scopeId : exports.getCurrentScopeId()
-  const handle = params.handler
-  //@ts-ignore
-  const _this = params.callObject ? params.callObject : this
-  return function (...args: any[]) {
+}): (...args: any[]) => any {
+  let scopeId = params.scopeId ? params.scopeId : getCurrentScopeId()
+  let handle = params.handler
+  const callObject = params.callObject
+  return (...args: any[]) => {
     if (typeof handle == 'function') {
-      exports.openScope(scopeId)
-      const result = handle.apply(_this, args)
-      exports.closeScope()
+      let result
+      openScope(scopeId)
+      try {
+        if (callObject) {
+          result = handle.apply(callObject, args)
+        } else {
+          handle(...args)
+        }
+      } finally {
+        closeScope()
+      }
       return result
     }
   }
 }
 
-const existEntity = function (
+let existEntity = function (
   scopeId: string,
   dsName: string,
   recursion: boolean
 ) {
-  const result = exports.createScopeHandler({
+  let result = createScopeHandler({
     scopeId: scopeId,
     handler: function (sId: string, code: string) {
-      var windowScope = exports.getScope()
+      var windowScope = getScope()
       var targetScopeId = null
       var entity = null
       if (windowScope && windowScope.has(token)) {
@@ -420,23 +475,23 @@ const existEntity = function (
 }
 
 const checkEntity = function (params: {
-  recursion?: boolean
   scopeId: string
   datasourceName: string
+  recursion: boolean
 }) {
-  const recursion = params.recursion === false ? false : true
-  const result = existEntity(params.scopeId, params.datasourceName, recursion)
+  let recursion = params.recursion === false ? false : true
+  let result = existEntity(params.scopeId, params.datasourceName, recursion)
   return result
 }
 
 const getChildWindowScope = function (scopeId: string) {
-  let scope = scopeId ? exports.getScope(scopeId) : exports.getWindowScope()
+  let scope = scopeId ? getScope(scopeId) : getWindowScope()
   if (scope) {
     try {
       while (true) {
-        const childId = scope.getChildId()
+        let childId = scope.getChildId()
         if (childId) {
-          scope = exports.getScope(childId)
+          scope = getScope(childId)
         } else {
           break
         }
@@ -449,11 +504,11 @@ const getChildWindowScope = function (scopeId: string) {
 }
 
 const getParentWindowScope = function (scopeId: string) {
-  let scope = scopeId ? exports.getScope(scopeId) : exports.getWindowScope()
+  let scope = scopeId ? getScope(scopeId) : getWindowScope()
   try {
     while (true) {
       if (scope && scope.getExtendId()) {
-        scope = exports.getScope(scope.getExtendId())
+        scope = getScope(scope.getExtendId())
       } else {
         break
       }
@@ -464,15 +519,36 @@ const getParentWindowScope = function (scopeId: string) {
   return scope
 }
 
+const getAllWindowScopes = function () {
+  let result = []
+  let storage = _getScopeInstanceStorage()
+  let rs = storage.getAll()
+  for (let i = 0, l = rs.length; i < l; i++) {
+    let scope = rs[i]
+    if (
+      !_isDestroy(scope) &&
+      _isWindowScope(scope) &&
+      scope.getComponentCode() &&
+      scope.getWindowCode()
+    ) {
+      result.push(scope)
+    }
+  }
+  return result
+}
+
 export {
   _getInstanceIds,
   checkEntity,
+  CloseMode,
   closeScope,
   createComponentScope,
   createScope,
   createScopeHandler,
   createWindowScope,
   destroy,
+  EVENTS,
+  getAllWindowScopes,
   getChildrenScopes,
   getChildWindowScope,
   getCurrentScopeId,
@@ -487,7 +563,9 @@ export {
   isDestroy,
   isWindowScope,
   on,
+  OpenMode,
   openScope,
   removeProperty,
-  setProperty
+  setProperty,
+  un
 }

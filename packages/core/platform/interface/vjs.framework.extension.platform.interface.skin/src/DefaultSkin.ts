@@ -12,6 +12,7 @@ let Skin = function (params) {
   this.interfaceName = params.interfaceName
   this.deps = params.deps
   this.templateInfo = {}
+  this.css = params.css && params.css != '_$NotParseCss' ? params.css : ''
   this.render()
 }
 
@@ -21,19 +22,21 @@ Skin.prototype = {
   },
 
   render: function () {
-    let selfDeps = this._getSelfDeps()
-    let less = [this.varScript, this.lessScript, this.getVarScript()]
+    //			var selfDeps = this._getSelfDeps();
+    //			var less = [this.varScript,this.lessScript,this.getVarScript()];
     /*for (var i = 0; i < selfDeps.length; i++) {
             this._appendVarScript(less, selfDeps[i]);
         }*/
     //less.push(this.lessScript);
-    let res = lessUtil.render({
-      less: less.join(''),
-      templates: this.getTemplate()
-    })
-    this.templateInfo.template = res.template
-    this.templateInfo.templateId = res.templateId
-    environment.parseCssStr(res.css)
+    //			var res = lessUtil.render({
+    //				less: less.join(''),
+    //				templates:this.getTemplate()
+    //			});
+    //			this.templateInfo.template = res.template;
+    //			this.templateInfo.templateId = res.templateId;
+    if (this.css && environment) {
+      environment.parseCssStr(this.css)
+    }
   },
 
   getDeps: function () {
@@ -130,7 +133,7 @@ Skin.prototype = {
   },
 
   _getSelfDeps: function () {
-    return this.deps
+    return this.deps || []
   }
 }
 

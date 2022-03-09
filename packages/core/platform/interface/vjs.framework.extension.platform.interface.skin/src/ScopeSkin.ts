@@ -10,6 +10,7 @@ let Skin = function (params) {
   this.varScript = params.varScript
   this.interfaceName = params.interfaceName
   this.deps = params.deps
+  this.css = params.css && params.css != '_$NotParseCss' ? params.css : ''
   this.render()
 }
 
@@ -36,26 +37,29 @@ Skin.prototype = {
   },
 
   render: function () {
-    let css = []
-    for (let j = 0; j < this.lessScripts.length; j++) {
-      let lessObj = this.lessScripts[j]
-      if (lessObj.less) {
-        let less = [lessObj.less, this.varScript]
-        let selfDeps = this._getSelfDeps()
-        for (let i = 0; i < selfDeps.length; i++) {
-          this._appendVarScript(less, selfDeps[i])
-        }
-        let res = lessUtil.render({
-          less: less.join(''),
-          templates: this.getTemplate(),
-          scopeId: lessObj.scopedId
-        })
-        css.push(res.css)
-      } else if (lessObj.css) {
-        css.push(lessObj.css)
-      }
+    //			var css = [];
+    //			for(var j = 0; j < this.lessScripts.length; j++){
+    //				var lessObj = this.lessScripts[j];
+    //				if(lessObj.less){
+    //					var less = [lessObj.less,this.varScript];
+    //					var selfDeps = this._getSelfDeps();
+    //					for (var i = 0; i < selfDeps.length; i++) {
+    //						this._appendVarScript(less, selfDeps[i]);
+    //					}
+    //					var res = lessUtil.render({
+    //						less: less.join(''),
+    //						templates:this.getTemplate(),
+    //						scopeId : lessObj.scopedId
+    //					});
+    //					css.push(res.css);
+    //				}else if(lessObj.css){
+    //					css.push(lessObj.css);
+    //				}
+    //			}
+    //			environment.parseCssStr(css.join(''));
+    if (this.css) {
+      environment.parseCssStr(this.css)
     }
-    environment.parseCssStr(css.join(''))
   },
 
   getTemplate: function () {

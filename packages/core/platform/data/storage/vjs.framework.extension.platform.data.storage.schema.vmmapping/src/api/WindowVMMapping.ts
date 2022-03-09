@@ -1,4 +1,7 @@
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 /**
  *	vmmapping格式
  * 	{
@@ -101,9 +104,65 @@ const addVMMapping = function (componentCode, windowCode, vmmapping) {
   wStorage.put(token_window_vm, vmmapping)
 }
 
+let _getDatasourceFromWindowProperty = function () {
+  let windowScope = scopeManager.getWindowScope()
+  let windowCode = windowScope.getWindowCode()
+  let entitys = widgetContext.get(windowCode, 'entitys')
+  if (entitys) {
+    let dsCfg = {}
+    for (let i = 0, l = entitys.length; i < l; i++) {
+      let entity = entitys[i]
+      let entityCode = entity.code
+      let initMetaFields = []
+      dsCfg[entity.code] = {
+        tables: entityCode,
+        whereClause: '',
+        initMetaFields: initMetaFields,
+        fetchMode: 'dataSet',
+        chineseName: 'ds',
+        defaultValues: [],
+        persistence: false,
+        id: entityCode,
+        isVirtual: true
+      }
+      let entityFields = entity.entityFields
+      if (entityFields) {
+        for (let j = 0, len = entityFields.length; j < len; j++) {
+          let entityField = entityFields[j]
+          initMetaFields.push({
+            code: entityField.code,
+            name: entityField.name,
+            type: entityField.type,
+            length: parseInt(entityField.length),
+            precision:
+              entityField.precision == '' ? 0 : parseInt(entityField.precision),
+            expression: entityField.expression
+          })
+        }
+      }
+      let entityDefRows = entity.entityDefRows
+      if (entityDefRows && entityDefRows.length > 0) {
+        dsCfg[entity.code].initDefaultData = entityDefRows
+      }
+    }
+    return dsCfg
+  }
+  return null
+}
+
 const getVMMapping = function (componentCode, windowCode) {
+  let windowScope = scopeManager.getWindowScope()
+  let windowCode = windowScope.getWindowCode()
+  let version = widgetContext.get(windowCode, 'version')
   let wStorage = getWindowStorage(componentCode, windowCode, false)
-  return wStorage.get(token_window_vm)
+  if (!wStorage || !wStorage.get(token_window_vm)) {
+    if (version == '4') {
+      let dsCfg = _getDatasourceFromWindowProperty()
+      this.addVMMapping(componentCode, windowCode, { dataSources: dsCfg })
+      wStorage = getWindowStorage(componentCode, windowCode, false)
+    }
+  }
+  return wStorage ? wStorage.get(token_window_vm) : null
 }
 
 const getWidgetCodesByDatasourceName = function (
@@ -168,9 +227,20 @@ const getFieldCodesByWidgetCode = function (
   let fieldCodes = []
   let widgets = getWidgets(componentCode, windowCode)
   if (widgets) {
+    if (!widgets[widgetCode]) {
+      //当前验证场景：打开窗体返回值给控件赋值
+      throw new Error(
+        '控件【' + widgetCode + '】不存在，请检查配置.',
+        undefined,
+        undefined,
+        exceptionFactory.TYPES.Config
+      )
+    }
     iterateFromWidgetMp(widgetCode, widgets[widgetCode], function (code, item) {
       iterateFieldMappingItem(item, function (mappingItem) {
-        fieldCodes.push(mappingItem.refField)
+        if (mappingItem.refField)
+          //弹出选择只绑定显示字段会报错Task20201109080
+          fieldCodes.push(mappingItem.refField)
       })
     })
   }
@@ -304,6 +374,7 @@ const removeVMapping = function (
 }
 
 export {
+  initModule,
   addVMMapping,
   getVMMapping,
   getWidgetCodesByDatasourceName,

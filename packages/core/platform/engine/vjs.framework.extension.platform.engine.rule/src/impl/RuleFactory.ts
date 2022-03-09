@@ -1,6 +1,12 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
+let sb
+
+const initModule = function (s) {
+  sb = s
+}
+
 const create = function (ruleCode) {
   let windowScope = scopeManager.getWindowScope()
   let formula
@@ -29,4 +35,23 @@ const create = function (ruleCode) {
   }
 }
 
-export { execute, executeRouteRule, executeWithRouteCallback, create }
+const createRuleException = function (params) {
+  let ruleContext = params.ruleContext,
+    e = params.exception,
+    message = params.message
+  if (factory.isException(e)) {
+    return e
+  }
+  return ruleContext.createRuleException(params)
+}
+
+export {
+  initModule,
+  execute,
+  executeRouteRule,
+  executeWithRouteCallback,
+  createRuleException,
+  initModule,
+  create,
+  createRuleException
+}

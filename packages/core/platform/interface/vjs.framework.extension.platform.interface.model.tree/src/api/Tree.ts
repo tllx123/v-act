@@ -289,6 +289,7 @@ Tree.prototype.createNodeFromRecord = function (record) {
  * @param {Object} params 参数信息
  * {
  * 		"nodes" : Array<{@link Node}> 树节点信息
+ * 		"resetCurrent" : Boolean 是否重置当前行
  * }
  */
 Tree.prototype.insertRoots = function (params) {
@@ -309,7 +310,7 @@ Tree.prototype.insertRoots = function (params) {
   collectionUtil.each(nodes, function (node) {
     node.set(parentField, parentId).set(orderField, orderIndex)
   })
-  this.insertRecords({ records: nodes })
+  this.insertRecords({ records: nodes, resetCurrent: params.resetCurrent })
   return nodes
 }
 
@@ -357,6 +358,7 @@ Tree.prototype.removeNodeByIds = function (params) {
   if (ids && ids.length > 0) {
     let treeStruct = this.getTreeStruct()
     let refWidgetId = treeStruct.refWidgetId
+    let widget = widgetContext.get(refWidgetId, 'widgetObj')
     let parentToLeaf = false
     let toRemoveIds = []
     let parentIds = []
@@ -383,6 +385,7 @@ Tree.prototype.removeNodeByIds = function (params) {
                             toRemoveIds.push(record.getSysId());
                         });
                     }*/
+
         let descendantIds = tree._getDescendantIds(id)
         descendantIds.push(id)
         toRemoveIds = toRemoveIds.concat(descendantIds)
@@ -394,6 +397,7 @@ Tree.prototype.removeNodeByIds = function (params) {
     collectionUtil.each(toRemoveIds, function (id) {
       arrayUtil.remove(parentIds, id)
     })
+
     this.removeRecordByIds({ ids: toRemoveIds })
     let parentNodes = [],
       tree = this
@@ -407,6 +411,7 @@ Tree.prototype.removeNodeByIds = function (params) {
         }
       }
     })
+
     if (parentNodes && parentNodes.length > 0) {
       this.updateRecords({ records: parentNodes })
     }

@@ -1,22 +1,28 @@
-import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-
-import * as exceptionFactory from './ExceptionFactory'
-
+import * as exceptionFactory from './api/ExceptionFactory'
+import { log as log } from '@v-act/vjs.framework.extension.util'
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 let sandbox
 
-export function initModule(sb) {
+const initModule = function (sb) {
   sandbox = sb
+  if (VMetrix && typeof VMetrix.setExceptionFactory == 'function') {
+    VMetrix.setExceptionFactory(exceptionFactory)
+  }
 }
 
-const handle = function (e) {
+const handle = function (e, handler) {
   if (exceptionFactory.isException(e)) {
     e.handle()
   } else {
     let exception = exceptionFactory.create({
-      message: i18n.get('未识别异常', '无指定异常类型时信息') + e.message,
-      type: exceptionFactory.TYPES.UnExpected,
+      message: i18n.get('未识别异常:', '无指定异常类型时信息') + e.message,
+      type: exceptionFactory.getExceptionTypeByError(
+        e,
+        exceptionFactory.TYPES.System
+      ),
       error: e
     })
+    exception.setModalClosedHandler && exception.setModalClosedHandler(handler)
     exception.handle()
     //			log.error("系统内部执行错误:" + e.toString());
     //			alert("系统内部错误，请联系系统管理员处理。");
@@ -62,4 +68,16 @@ const getExceptionHtml = function (
   return html
 }
 
-export { create, getExceptionHtml, handle, isException }
+export {
+  plupload,
+  initModule,
+  create,
+  isException,
+  isAcceptType,
+  genError,
+  getExceptionTypeByError,
+  unSerialize,
+  initModule,
+  handle,
+  getExceptionHtml
+}

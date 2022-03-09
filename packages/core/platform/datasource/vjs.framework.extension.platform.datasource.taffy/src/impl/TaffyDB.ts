@@ -36,7 +36,7 @@ TaffyDB.prototype = {
       this.indexData[data[this.primaryKey]] = data
       record._setOriginalData(data)
     }
-    if (typeof index == 'number') {
+    if (typeof index == 'number' && index != -1) {
       let param = [index, 0]
       param = param.concat(datas)
       this.datas.splice.apply(this.datas, param)
@@ -157,6 +157,9 @@ TaffyDB.prototype = {
       }
     }
     return querydata
+  },
+  getNextRecordId: function (ids) {
+    return null
   }
 }
 
@@ -189,4 +192,14 @@ const getConstructor = function () {
   return TaffyDB
 }
 
-export { DB, unSerialize, isDB, getConstructor }
+export {
+  initModule,
+  DB,
+  unSerialize,
+  isDB,
+  getConstructor,
+  DB,
+  unSerialize,
+  isDB,
+  getConstructor
+}

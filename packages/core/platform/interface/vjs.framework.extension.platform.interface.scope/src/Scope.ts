@@ -21,7 +21,7 @@ class Scope {
   }
   destoryed: boolean = false
 
-  constructor(instanceId?: string) {
+  constructor(instanceId: string | null) {
     this.instanceId = instanceId || uuid.generate()
   }
 
