@@ -1,6 +1,6 @@
 import Printer from '../Printer'
 import Syntax from './syntax/Syntax'
-import Token from './tokenizer/Token'
+import { Token } from '@v-act/tokenizer'
 import Visitor from '../Visitor'
 
 class SyntaxParseContext {

@@ -1,28 +1,30 @@
 {
-  "name": "@v-act/expression-parser",
+  "name": "@v-act/tokenizer",
   "version": "1.0.0",
   "private": false,
-  "description": "表达式解析器",
+  "description": "V-Act词法解析插件",
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",
-    "directory": "packages/v-act-expression-parser"
+    "directory": "packages/v-act-tokenizer"
   },
   "license": "ISC",
   "author": "opensource.vplatform",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "debug": "node debug/index.js"
+    "dev": "rollup -wc"
   },
-  "dependencies": {},
   "devDependencies": {
-    "ts-node": "^10.6.0"
+    "typescript": "^4.4.4"
   },
+  "peerDependencies": {},
   "publishConfig": {
     "access": "public"
   }

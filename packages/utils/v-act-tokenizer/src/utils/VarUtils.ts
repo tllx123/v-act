@@ -1,4 +1,4 @@
-import { Token } from '@v-act/tokenizer'
+import Token from '../tokenizer/Token'
 
 const isVarChar = function (chr: string) {
   return isWordChar(chr) || isNumberChar(chr) || isUnderScoreChar(chr)

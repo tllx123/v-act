@@ -1,9 +1,7 @@
 import { parseToSyntax } from '../../../../Parser'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
-import NotToken from '../../../../tokenizer/operator/logic/NotToken'
-import BlankToken from '../../../../tokenizer/punctuation/BlankToken'
-import Token from '../../../../tokenizer/Token'
+import { Token, BlankToken, NotToken } from '@v-act/tokenizer'
 import Syntax from '../../../Syntax'
 
 const getRightSyntax = function (index: number, tokens: Token[]) {

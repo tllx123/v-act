@@ -1,9 +1,9 @@
 import Syntax from '../../Syntax'
-import Token from '../../../tokenizer/Token'
+import { Token } from '@v-act/tokenizer'
 import Position from '../../../Position'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
+import { DotToken } from '@v-act/tokenizer'
 import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
-import RightBracketToken from '../../../tokenizer/punctuation/RightBracketToken'
+import { RightBracketToken } from '@v-act/tokenizer'
 import SyntaxParseContext from '../../../SyntaxParseContext'
 
 abstract class RulesetEntitySyntax extends Syntax {

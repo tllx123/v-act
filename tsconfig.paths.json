@@ -1318,7 +1318,20 @@
         "packages/core/utils/vjs.framework.extension.platform.util.config.data/src"
       ],
       "@v-act/vjs.framework.extension.util.logutil": ["packages/core/utils/vjs.framework.extension.util.logutil/src"],
-      "@v-act/vjs.framework.extension.util.jsonutil": ["packages/core/utils/vjs.framework.extension.util.jsonutil/src"]
+      "@v-act/vjs.framework.extension.util.jsonutil": ["packages/core/utils/vjs.framework.extension.util.jsonutil/src"],
+      "@v-act/webfunc_decryptfunc": ["packages/funcs/WebFunc_DecryptFunc/src"],
+      "@v-act/webfunc_encryptfunc": ["packages/funcs/WebFunc_EncryptFunc/src"],
+      "@v-act/webfunc_generatesequencenumber": ["packages/funcs/WebFunc_GenerateSequenceNumber/src"],
+      "@v-act/webfunc_generatesequencenumberquick": ["packages/funcs/WebFunc_GenerateSequenceNumberQuick/src"],
+      "@v-act/webfunc_recyclingsequencenumber": ["packages/funcs/WebFunc_RecyclingSequenceNumber/src"],
+      "@v-act/webfunc_settoolbartext": ["packages/funcs/WebFunc_SetToolBarText/src"],
+      "@v-act/webrule_jgstepsoperation": ["packages/rules/WebRule_JGStepsOperation/src"],
+      "@v-act/webrule_languageoperation": ["packages/rules/WebRule_LanguageOperation/src"],
+      "@v-act/webrule_querypaymentinfo": ["packages/rules/WebRule_QueryPaymentInfo/src"],
+      "@v-act/webrule_savefile": ["packages/rules/WebRule_SaveFile/src"],
+      "@v-act/webrule_vucredirector": ["packages/rules/WebRule_VucRedirector/src"],
+      "@v-act/tokenizer": ["packages/utils/v-act-tokenizer/src"],
+      "@v-act/xml-parser": ["packages/utils/v-act-xml-parser/src"]
     }
   }
 }

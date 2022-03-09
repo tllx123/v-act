@@ -1,10 +1,12 @@
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import NumberToken from '../../tokenizer/literal/NumberToken'
-import MinusToken from '../../tokenizer/operator/calculator/MinusToken'
-import BlankToken from '../../tokenizer/punctuation/BlankToken'
-import DotToken from '../../tokenizer/punctuation/DotToken'
-import Token from '../../tokenizer/Token'
+import {
+  Token,
+  DotToken,
+  BlankToken,
+  MinusToken,
+  NumberToken
+} from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 
 const getPositiveNumber = function (index: number, tokens: Token[]) {

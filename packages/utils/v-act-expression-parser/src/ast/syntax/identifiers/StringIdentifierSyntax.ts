@@ -1,8 +1,6 @@
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import LineBreakToken from '../../tokenizer/punctuation/LineBreakToken'
-import QuoteToken from '../../tokenizer/punctuation/QuoteToken'
-import Token from '../../tokenizer/Token'
+import { Token, QuoteToken, LineBreakToken } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 import UnknownSyntax from '../UnknownSyntax'
 

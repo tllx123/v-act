@@ -1,31 +1,33 @@
 {
-    "name": "@v-act/xml-parser",
-    "version": "1.0.0",
-    "private": false,
-    "description": "V-Act xml解析插件",
-    "homepage": "https://github.com/opensource-vplatform/v-act",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/opensource-vplatform/v-act.git",
-        "directory": "packages/v-act-xml-parser"
-    },
-    "license": "ISC",
-    "author": "opensource.vplatform",
-    "main": "dist/index.js",
-    "module": "dist/index.esm.js",
-    "types": "dist/index.d.ts",
-    "files": [
-        "dist"
-    ],
-    "scripts": {
-        "build": "rollup -c",
-        "dev": "rollup -wc"
-    },
-    "devDependencies": {
-        "typescript": "^4.4.4"
-    },
-    "peerDependencies": {},
-    "publishConfig": {
-        "access": "public"
-    }
+  "name": "@v-act/xml-parser",
+  "version": "1.0.0",
+  "private": false,
+  "description": "V-Act xml解析插件",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/v-act-xml-parser"
+  },
+  "license": "ISC",
+  "author": "opensource.vplatform",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "node debug/index.js"
+  },
+  "dependencies": {
+    "xml-js": "^1.6.11"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

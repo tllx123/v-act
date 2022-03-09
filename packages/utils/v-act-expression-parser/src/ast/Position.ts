@@ -1,4 +1,4 @@
-import Token from './tokenizer/Token'
+import { Token } from '@v-act/tokenizer'
 import Syntax from './syntax/Syntax'
 
 class Position {

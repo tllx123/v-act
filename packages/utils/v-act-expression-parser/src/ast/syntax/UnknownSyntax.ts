@@ -1,6 +1,6 @@
 import Position from '../Position'
 import SyntaxParseContext from '../SyntaxParseContext'
-import Token from '../tokenizer/Token'
+import { Token } from '@v-act/tokenizer'
 import Syntax from './Syntax'
 
 class UnknownSyntax extends Syntax {
