@@ -1,12 +1,15 @@
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 //规则主入口(必须有)
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import {
+  RouteContext,
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import {
   FileTransfer as FileTransferService,
@@ -14,13 +17,9 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sBox) {
-  sandbox = sBox
-}
-
 const main = function (ruleContext: RuleContext) {
   // 获取规则链路由上下文,终止执行后续规则
-  routeContext = ruleContext.getRouteContext()
+  let routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 获取开发系统配置的参数
@@ -95,14 +94,20 @@ let getAudioFile = function (inParamObj, routeContext, ruleContext) {
 /**
  * 上传媒体文件
  */
-let uploadMediaFile = function (imagePath, inParamObj, ruleContext) {
+let uploadMediaFile = function (
+  imagePath: string,
+  inParamObj,
+  ruleContext: RuleContext
+) {
   debugger
   let entityCode = inParamObj.entityCode //实体编码
   let fieldFileID = inParamObj.fieldId //字段编码（文件ID）
   let dataSource = getDataSource(entityCode, routeContext)
   //上传后的回调,设置规则返回值
   let scopeId = scopeManager.getCurrentScopeId()
-  let uploadSuccess = function (results) {
+  let uploadSuccess = function (
+    results: Array<{}> | { success: boolean | string }
+  ) {
     if (undefined != scopeId) {
       scopeManager.openScope(scopeId)
     }
@@ -139,7 +144,7 @@ let uploadMediaFile = function (imagePath, inParamObj, ruleContext) {
 }
 
 //获取实体对象
-function getDataSource(entityCode, routeContext) {
+function getDataSource(entityCode: string, routeContext: RouteContext) {
   let dsName = entityCode
   let datasource = null
   if (DBFactory.isDatasource(dsName)) {
@@ -166,7 +171,7 @@ function getDataSource(entityCode, routeContext) {
  * @ruleContext 规则上下文
  * @error_msg 提示信息
  */
-function HandleException(ruleContext, error_msg) {
+function HandleException(ruleContext: RuleContext, error_msg: string) {
   error_msg = ERRORNAME + error_msg
   let exception = factory.create({
     type: factory.TYPES.Business,
@@ -178,7 +183,7 @@ function HandleException(ruleContext, error_msg) {
 /**
  * 设置业务返回结果
  */
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: any) {
   if (ruleContext.setBusinessRuleResult) {
     ruleContext.setBusinessRuleResult({
       isSuccess: result

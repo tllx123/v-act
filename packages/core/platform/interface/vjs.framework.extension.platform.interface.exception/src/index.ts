@@ -1,5 +1,7 @@
 import * as $ from 'jquery'
 
+export * as ExceptionFactory from './api/ExceptionFactory'
+
 var addFile = function (file) {
   $('.panelTips').hide()
   var html = []

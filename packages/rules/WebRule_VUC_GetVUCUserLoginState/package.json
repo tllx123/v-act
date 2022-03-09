@@ -24,6 +24,7 @@
 		"@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.jsonutil": "1.0.0-alpha.1",
 		"@v-act/vjs.framework.extension.util.logutil": "1.0.0-alpha.1",
-		"@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1"
+		"@v-act/vjs.framework.extension.util.uuid": "1.0.0-alpha.1",
+		"jquery": "^3.6.0"
 	}
 }

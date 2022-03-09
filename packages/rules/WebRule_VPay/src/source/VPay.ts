@@ -1,19 +1,15 @@
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { Pay as pay } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { Pay as pay } from '@v-act/vjs.framework.extension.platform.services.native.mobile.pay'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let context
-
-export function initModule(sBox) {}
-
-//规则主入口(必须有)
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
-  context = new ExpressionContext()
+  let context = new ExpressionContext()
   let routeRuntime = ruleContext.getRouteContext()
   context.setRouteContext(routeRuntime)
   let ruleConfig = ruleContext.getRuleCfg()
@@ -59,7 +55,7 @@ const main = function (ruleContext: RuleContext) {
     return false
   }
   let extendInfoArray = cfg.extendInfo.datas.values
-  let extendInfo = {}
+  let extendInfo: { [code: string]: any } = {}
   for (let i = 0; i < extendInfoArray.length; i = i + 1) {
     let code = extendInfoArray[i].code
     let value = extendInfoArray[i].value
@@ -84,7 +80,7 @@ const main = function (ruleContext: RuleContext) {
   }
 
   //rs的返回值说明见：https://www.pingxx.com/api#charges-支付
-  let success = function (rs) {
+  let success = function (rs: { isSuccess: boolean; errorMsg: string }) {
     rs.isSuccess = true
     rs.errorMsg = ''
     if (ruleContext.setBusinessRuleResult) {
@@ -93,7 +89,7 @@ const main = function (ruleContext: RuleContext) {
     ruleContext.fireRouteCallback()
   }
 
-  let fail = function (errorMsg) {
+  let fail = function (errorMsg: string) {
     if (ruleContext.setBusinessRuleResult) {
       ruleContext.setBusinessRuleResult({
         isSuccess: false,
@@ -113,7 +109,7 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 判断字符串是否为空
  */
-function stringIsBlank(str) {
+function stringIsBlank(str: string) {
   if (str == undefined || str == null || str == '') {
     return true
   } else {
