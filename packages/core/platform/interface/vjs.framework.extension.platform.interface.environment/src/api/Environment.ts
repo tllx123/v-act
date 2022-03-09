@@ -1,20 +1,60 @@
-import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+window._$v3platform_runtime_env = true
+let storage,
+  token = 'ENVIRONMENT_V3_INFO',
+  RUNNING_MODE = 'RUNNING_MODE',
+  DEBUG_KEY = 'DEBUG_KEY',
+  CTX_PATH = 'CTX_PATH',
+  CTX_HOST = 'CTX_HOST',
+  PLATFORM_TYPE = 'PLATFORM_TYPE',
+  LOGIN_INFO = 'LOGIN_INFO',
+  IS_ASYNC = 'IS_ASYNC',
+  DEV_ID = 'DEV_ID',
+  DEBUGGER_PORT = 'DEBUGGER_PORT',
+  //�Ż���ַ
+  OPTIMIZELINK_KEY = 'OPTIMIZELINK_KEY',
+  //�Ƿ����token
+  ENCRYPT_TOKEN_KEY = 'ENCRYPT_TOKEN_KEY',
+  //�Ƿ��ڴ����������
+  IS_WEB_DESIGN_KEY = 'IS_WEB_DESIGN_KEY',
+  //�쳣ʵ����ʶ
+  EXCEPTION_INSTANCE_IDEN_KEY = 'EXCEPTION_INSTANCE_IDEN_KEY',
+  //�Ƿ�ʹ�ü���ģʽ
+  COMPATIBLE_MODE_KEY = 'COMPATIBLE_MODE_KEY',
+  DOMAIN_KEY = 'DOMAIN_KEY'
 
-//@ts-ignore
-this._$v3platform_runtime_env = true
-const token = 'ENVIRONMENT_V3_INFO'
-const RUNNING_MODE = 'RUNNING_MODE'
-const DEBUG_KEY = 'DEBUG_KEY'
-const CTX_PATH = 'CTX_PATH'
-const CTX_HOST = 'CTX_HOST'
-const PLATFORM_TYPE = 'PLATFORM_TYPE'
-const LOGIN_INFO = 'LOGIN_INFO'
-const IS_ASYNC = 'IS_ASYNC'
-const DEV_ID = 'DEV_ID'
-const DEBUGGER_PORT = 'DEBUGGER_PORT'
-const storage = StorageManager.get(StorageManager.TYPES.MAP, token)
+const initModule = function (sb) {
+  let storageManager = sb.getService(
+    'vjs.framework.extension.platform.interface.storage.StorageManager'
+  )
+  storage = storageManager.get(storageManager.TYPES.MAP, token)
+}
 
-const setRunningMode = function (mode: string) {
+const init = function (params) {
+  if (params) {
+    exports.setDomain(params.domain)
+    setOptimizeLink(params.optimizeLink)
+    storage.put(ENCRYPT_TOKEN_KEY, params.isEncryptToken ? true : false)
+    storage.put(EXCEPTION_INSTANCE_IDEN_KEY, params.ExceptionInstanceIden)
+    storage.put(COMPATIBLE_MODE_KEY, !!params.CompatibleMode)
+  }
+}
+
+const useCompatibleMode = function () {
+  let val = storage.get(COMPATIBLE_MODE_KEY)
+  return false === val ? false : true
+}
+
+const getExceptionInstanceId = function () {
+  let val = storage.get(EXCEPTION_INSTANCE_IDEN_KEY)
+  return val
+}
+
+const isEncryptToken = function () {
+  let val = storage.get(ENCRYPT_TOKEN_KEY)
+  return val === true
+}
+
+const setRunningMode = function (mode) {
   storage.put(RUNNING_MODE, mode)
 }
 
@@ -35,7 +75,8 @@ const setContextPath = function (ctxPath: string) {
 }
 
 const getContextPath = function () {
-  return storage.get(CTX_PATH)
+  let contextPath = storage.get(CTX_PATH)
+  return contextPath ? contextPath : ''
 }
 
 const setPlatformType = function (type: string) {
@@ -131,6 +172,44 @@ const setDevId = function (id: string) {
 
 const getDevId = function () {
   return storage.get(DEV_ID)
+}
+
+const getDomain = function () {
+  let vjsContext = VMetrix.getVjsContext()
+  if (vjsContext) {
+    return vjsContext['domain']
+  }
+  //		return storage.get(DOMAIN_KEY);
+}
+
+const setDomain = function (domain) {
+  if (!domain || null == domain) {
+    domain = null
+  }
+  VMetrix.putAllVjsContext({
+    domain: domain
+  })
+  //		return storage.put(DOMAIN_KEY, domain);
+}
+
+/**
+ * �����Ż�����
+ * @params	{Boolean}	optimize true���Ż���false�����Ż�
+ * */
+let setOptimizeLink = function (optimize) {
+  storage.put(OPTIMIZELINK_KEY, optimize === true)
+}
+
+const isOptimizeLink = function () {
+  return storage.get(OPTIMIZELINK_KEY)
+}
+
+const isWebDesign = function () {
+  return storage.get(IS_WEB_DESIGN_KEY) == true
+}
+
+const setWebDesign = function () {
+  storage.put(IS_WEB_DESIGN_KEY, true)
 }
 
 let isOpera = function () {
@@ -283,31 +362,41 @@ let isIE11 = function () {
 }
 
 export {
+  initModule,
+  init,
+  useCompatibleMode,
+  getExceptionInstanceId,
+  isEncryptToken,
+  setRunningMode,
+  getRunningMode,
+  setDebug,
+  isDebug,
+  setContextPath,
   getContextPath,
-  getDebugPort,
-  getDevId,
+  setPlatformType,
+  getPlatformType,
+  isAsync,
+  setAsync,
+  setHost,
   getHost,
+  setLoginInfo,
   getLoginInfo,
   getLoginUrl,
-  getPlatformType,
-  getRunningMode,
-  isAsync,
-  isChrome,
-  isDebug,
-  isIE,
-  isIE10,
-  isIE11,
-  isIE8,
-  isIE9,
   isLogin,
   parseCssStr,
-  setAsync,
-  setContextPath,
-  setDebug,
   setDebugPort,
+  getDebugPort,
   setDevId,
-  setHost,
-  setLoginInfo,
-  setPlatformType,
-  setRunningMode
+  getDevId,
+  getDomain,
+  setDomain,
+  isOptimizeLink,
+  isWebDesign,
+  setWebDesign,
+  isIE,
+  isIE8,
+  isIE9,
+  isIE10,
+  isIE11,
+  isChrome
 }

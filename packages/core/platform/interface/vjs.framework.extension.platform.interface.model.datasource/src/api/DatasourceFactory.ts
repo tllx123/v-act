@@ -123,7 +123,7 @@ const unSerialize = function (input) {
   if (typeof input == 'string') {
     input = eval('(' + input + ')')
   }
-  let constructor = _getDSContructor()
+  //		var constructor = _getDSContructor();
   let metadata = metadataFactory.unSerialize(input.metadata)
   let datasource = this.create(metadata)
   let datas = input.datas
@@ -137,6 +137,118 @@ const unSerialize = function (input) {
   return datasource
 }
 
+const createJsonFromConfig = function (config) {
+  let fields = []
+  let freeDBName = 'freeDB_' + uuidUtil.generate()
+  let data = []
+  if (config && config.fields) {
+    if (config.datasourceName) {
+      freeDBName = config.datasourceName
+    }
+    if (config.datas instanceof Array) {
+      data = config.datas
+    }
+    if (config.fields) {
+      let fieldConfig = config.fields
+      for (let i = 0, l = fieldConfig.length; i < l; i++) {
+        let param = fieldConfig[i]
+        fields.push({
+          code: param.code,
+          name: param.name,
+          type: param.type,
+          defaultValue: param.initValue
+        })
+      }
+    }
+  }
+  return {
+    datas: {
+      values: data
+    },
+    metadata: {
+      model: [
+        {
+          datasourceName: freeDBName,
+          fields: fields
+        }
+      ]
+    }
+  }
+}
+
+const createDatasourceFromConfig = function (config) {
+  let ds = exports.unSerialize(exports.createJsonFromConfig(config))
+  return ds
+}
+
+_getFieldFromValue = function (code, value) {
+  let type = typeof value
+  switch (type) {
+    case 'string':
+      if (dateUtils.isDate(value)) {
+        type = 'date'
+      } else if (dateUtils.isDateTime(value)) {
+        type = 'longDate'
+      } else {
+        type = 'char'
+      }
+      return {
+        code: code,
+        name: name,
+        type: type
+      }
+    case 'boolean':
+      return {
+        code: code,
+        name: name,
+        type: 'boolean'
+      }
+    case 'number':
+      type =
+        (parseInt(value) + '').length == (value + '').length
+          ? 'integer'
+          : 'number'
+      return {
+        code: code,
+        name: name,
+        type: type
+      }
+  }
+}
+
+const createFromDatas = function (datas, datasourceName) {
+  let fields = []
+  let existField = []
+  for (let i = 0, l = datas.length; i < l; i++) {
+    let data = datas[i]
+    for (let key in data) {
+      if (data.hasOwnProperty(key) && existField.indexOf(key) == -1) {
+        let value = data[key]
+        fields.push(_getFieldFromValue(key, value))
+        existField.push(key)
+      }
+    }
+  }
+  let freeDBName = datasourceName
+    ? datasourceName
+    : 'freeDB_' + uuidUtil.generate()
+  let metadata = {
+    datas: {
+      recordCount: datas.length,
+      values: datas
+    },
+    metadata: {
+      model: [
+        {
+          datasourceName: freeDBName,
+          fields: fields
+        }
+      ]
+    }
+  }
+  return this.unSerialize(metadata)
+}
+
 const isDatasource = function (datasource) {
   return datasource instanceof Datasource
 }
@@ -145,4 +257,13 @@ const _getDatasourceConstructor = function () {
   return Datasource
 }
 
-export { _getDatasourceConstructor, create, isDatasource, unSerialize }
+export {
+  create,
+  initModule,
+  unSerialize,
+  createJsonFromConfig,
+  createDatasourceFromConfig,
+  createFromDatas,
+  isDatasource,
+  _getDatasourceConstructor
+}

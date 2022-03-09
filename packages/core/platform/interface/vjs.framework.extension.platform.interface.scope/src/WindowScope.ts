@@ -1,5 +1,5 @@
 import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { i18nWindowManager } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18nWindowManager } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
 import Scope from './Scope'
 import * as ScopeManager from './ScopeManager'
@@ -43,8 +43,24 @@ class WindowScope extends Scope {
     widgets: 'widgets'
   }
 
+  initDatasource: boolean = false
+
+  rendered: boolean = false
+
+  vjsContext: { [key: string]: any } = {}
+
+  resizeFunc: null | ((...args: any[]) => void) = null
+
+  currencyFields: any
+
+  viewonly: boolean = false
+
+  closeMode: string | null = null
+
+  customCloseFunc: null | ((...args: any[]) => void) = null
+
   constructor(
-    instanceId: string,
+    instanceId: string | null,
     componentCode: string,
     windowCode: string,
     series: string
@@ -404,6 +420,115 @@ class WindowScope extends Scope {
   getOpenMode() {
     //获取窗体打开模式
     return this.openMode
+  }
+
+  setResizeTo(resizeToFunc: (...args: any[]) => void) {
+    this.resizeFunc = resizeToFunc
+  }
+
+  resizeTo(width: number, height: number) {
+    if (typeof this.resizeFunc == 'function') {
+      this.resizeFunc.apply(this, [width, height])
+    }
+  }
+  /**
+   * 设置窗体内的货币字段信息
+   * */
+  setCurrencyField(fields: any) {
+    this.currencyFields = fields
+  }
+  /**
+   * 获取窗体内货币字段信息
+   * */
+  getCurrencyField() {
+    return this.currencyFields
+  }
+
+  /**
+   * 设置预览模式
+   * */
+  setViewonly() {
+    this.viewonly = true
+  }
+
+  /**
+   * 判断是否预览模式
+   * */
+  isViewonly() {
+    return !!this.viewonly
+  }
+
+  setCloseMode(mode: string) {
+    this.closeMode = mode
+  }
+
+  getCloseMode() {
+    return this.closeMode
+  }
+
+  setCustomCloseFunc(func: (...args: any[]) => void) {
+    this.customCloseFunc = func
+  }
+
+  getCustomCloseFunc() {
+    return this.customCloseFunc
+  }
+
+  putVjsContext(key: string, value: any) {
+    if (!this.vjsContext) {
+      this.vjsContext = {}
+    }
+    this.vjsContext[key] = value
+  }
+
+  setVjsContext(vjsContext: { [key: string]: any }) {
+    this.vjsContext = vjsContext
+  }
+
+  getVjsContext() {
+    let copyMap = function (
+      source: { [key: string]: any },
+      target: { [key: string]: any }
+    ) {
+      if (source) {
+        for (let key in source) {
+          if (source.hasOwnProperty(key)) target[key] = source[key]
+        }
+      }
+    }
+    let contexts = {}
+    let scopeId = this.instanceId
+    let parentScopeId = ScopeManager.getParentScopeId(scopeId)
+    if (parentScopeId) {
+      let parentScope = ScopeManager.getScope(parentScopeId)
+      if (parentScope) copyMap(parentScope.getVjsContext(), contexts)
+    }
+    copyMap(this.vjsContext, contexts)
+    return contexts
+  }
+  /**
+   * 判断是否渲染完成
+   * */
+  isRendered() {
+    return this.rendered
+  }
+  /**
+   * 标记窗体已渲染完成
+   * */
+  markRendered() {
+    this.rendered = true
+  }
+  /**
+   * 标记已经初始化数据源
+   * */
+  markInitedDatasource() {
+    this.initDatasource = true
+  }
+  /**
+   * 是否已经初始化数据源
+   * */
+  isInitedDatasource() {
+    return this.initDatasource
   }
 }
 

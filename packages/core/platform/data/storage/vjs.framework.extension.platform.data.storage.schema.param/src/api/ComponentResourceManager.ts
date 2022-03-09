@@ -38,6 +38,8 @@ const getComponentResourcePath = function (params) {
         '?hashcode=' +
         hashCode
       )
+    } else {
+      return 'itop/resources/' + params.componentCode + '_' + params.fullName
     }
   }
   return null

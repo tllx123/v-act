@@ -18,7 +18,9 @@ let _dispatcher = function (funcName) {
 
 Snapshot.prototype = {
   initModule: function (sb) {
-    Datasource.prototype.initModule.call(this, sb)
+    if (Datasource.prototype.initModule) {
+      Datasource.prototype.initModule.call(this, sb)
+    }
     var proto = Datasource.prototype
     var snapshotPro = Snapshot.prototype
     for (var attr in proto) {
@@ -80,6 +82,18 @@ Snapshot.prototype = {
   setCurrentRecord: function (params) {
     let record = params.record
     this.currentId = record.getSysId()
+  },
+
+  setCurrentId: function (id) {
+    this.currentId = id
+  },
+
+  isCurrentById: function (id) {
+    return id == this.currentId
+  },
+
+  getCurrentId: function () {
+    return this.currentId
   }
 }
 

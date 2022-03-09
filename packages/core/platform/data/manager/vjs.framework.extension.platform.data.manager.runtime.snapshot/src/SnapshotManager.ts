@@ -56,7 +56,7 @@ const getCurrentSnapshot = function () {
   if (stack.length > 0) {
     let snapshotId = stack[stack.length - 1]
     let storage = _getStorage()
-    return storage.get(snapshotId)
+    return storage && storage.get(snapshotId)
   }
   return null
 }

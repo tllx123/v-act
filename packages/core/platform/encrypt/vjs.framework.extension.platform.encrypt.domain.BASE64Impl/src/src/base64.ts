@@ -845,4 +845,4 @@ CryptoJS.lib.Cipher ||
   u.AES = p._createHelper(d)
 })()
 
-export { genHash, decryptHash, CryptoJS }
+export { initModule, genHash, decryptHash, CryptoJS }

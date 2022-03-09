@@ -1,11 +1,38 @@
 import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-import RouteContext from './RouteContext'
+import * as VObject from './mode/VObject'
+
+let DataContainer = function () {
+  this.data = {}
+  this._inputDatas = {}
+}
+DataContainer.prototype = {
+  //设置输出数据
+  set: function (code, value) {
+    this.data[code] = value
+    return this
+  },
+  //获取输出数据
+  get: function (code) {
+    return this.data[code]
+  },
+  //设置输入数据
+  _setInput: function (code, value) {
+    this._inputDatas[code] = value
+    return this
+  },
+  //获取输入数据
+  _getInput: function (code) {
+    if (!code) {
+      return this._inputDatas
+    }
+    return this._inputDatas[code]
+  }
+}
 
 /**
  * @namespace RuleContext
@@ -62,7 +89,11 @@ class RuleContext {
         }
       })(this)
     )
+    this._container = new DataContainer()
+    this._mockDatas = {}
+    this._cacheInputDatas = {}
   }
+
   /**
    * 获取规则实例配置
    * @return Object
@@ -74,7 +105,7 @@ class RuleContext {
    * 设置规则业务返回值
    * @param {Any} result 业务返回值
    */
-  setBusinessRuleResult(result: any) {
+  setBusinessRuleResult(result) {
     this.businessResult = result
   }
   /**
@@ -99,7 +130,7 @@ class RuleContext {
    * 		"handler" : {Function} 事件回调
    * }
    */
-  on(params: { eventName: string; handler: (...args: any[]) => void }) {
+  on(params) {
     let eventName = params.eventName,
       handler = params.handler
     let handlers = this.handlers[eventName]
@@ -118,7 +149,7 @@ class RuleContext {
    * 		"args" : {Array} 参数信息
    * }
    */
-  fireListener(params: { eventName: string; args: any[] }) {
+  fireListener(params) {
     let eventName = params.eventName,
       args = params.args || []
     let handlers = this.handlers[eventName]
@@ -139,7 +170,7 @@ class RuleContext {
    * 设置规则执行状态
    * @param {Boolean} status 执行状态
    */
-  setRuleStatus(status: boolean) {
+  setRuleStatus(status) {
     if (typeof status == 'boolean') {
       this.__status = status
     }
@@ -155,35 +186,78 @@ class RuleContext {
    *  处理规则执行异常
    * @param {Error} e 异常
    */
-  handleException(e: any) {
+  handleException(e) {
     //modify by xiedh 2015-04-30 规则异步回调中调用此接口造成域不正确问题处理 缺陷编号：55
-    let routeContext = this.getRouteContext()
-    let scopeId = routeContext.getScopeId()
-    scopeManager.openScope(scopeId)
-    try {
-      if (routeContext.duringTransaction()) {
-        let transactionId = routeContext.getTransactionId()
-        if (transactionManager) {
-          transactionManager.doRollback(transactionId)
-          transactionManager.remove(transactionId)
-          routeContext.clearTransaction()
-        }
-      }
-      exceptionHandler.handle(e)
-    } catch (e: any) {
-      logUtil.error(
-        '[ruleContext.handleException]规则链处理异常时出现错误！message：' +
-          e.message
-      )
-    } finally {
-      scopeManager.closeScope()
+    let exception = e
+    if (e instanceof Error && !factory.isException(exception)) {
+      //统一处理回调中的规则异常
+      exception = this.createRuleException({
+        exception: e
+      })
     }
+    let routeContext = this.getRouteContext()
+    routeContext.handleException(exception)
+  }
+  /**
+   * 把异常对象封装成规则异常对象
+   * @param	{Object}	exception	当前异常对象
+   * @param	{Object}	message		指定异常信息
+   * @param	{Object}	exceptionType	指定异常类型
+   * */
+  createRuleException(params) {
+    let e = params.exception,
+      message = params.message
+    let ruleCfg = this.getRuleCfg()
+    let exceptionType = params.exceptionType
+      ? params.exceptionType
+      : factory.getExceptionTypeByError
+      ? factory.getExceptionTypeByError(e, factory.TYPES.System)
+      : factory.TYPES.System
+    let scope = scopeManager.getScope()
+    let componentCode = scope.getComponentCode()
+    let windowCode = scopeManager.isWindowScope(scope.getInstanceId())
+      ? scope.getWindowCode()
+      : null
+    let isAppend =
+      factory.isException(e) && e.getDetailInfo && e.getDetailInfo() != null
+    let pre = isAppend ? '所在' : ''
+    let exceptionDatas = [
+      { name: '构件编码', code: 'componentCode', value: componentCode },
+      {
+        name: pre + '规则实例名称',
+        code: 'ruleInstanceName',
+        value: ruleCfg.instanceName
+      },
+      {
+        name: pre + '规则实例编码',
+        code: 'ruleInstanceCode',
+        value: ruleCfg.instanceCode
+      },
+      { name: '规则编码', code: 'ruleCode', value: ruleCfg.ruleCode },
+      { name: '规则名称', code: 'ruleName', value: ruleCfg.ruleName },
+      { name: '规则配置', code: 'ruleConfig', value: ruleCfg }
+    ]
+    if (windowCode) {
+      exceptionDatas.splice(1, 0, {
+        name: '窗体编码',
+        code: 'windowCode',
+        value: windowCode
+      })
+    }
+    return factory.create({
+      error: e,
+      exceptionDatas: exceptionDatas,
+      type: exceptionType,
+      message: message
+        ? message
+        : '规则【' + ruleCfg.ruleCode + '】执行失败，错误原因：' + e.message
+    })
   }
   /**
    * 设置活动集回调
    * @param {Function} callback 活动集回调
    */
-  setRouteCallback(callback: (...args: any[]) => void) {
+  setRouteCallback(callback) {
     this.routeCallback.push(callback)
   }
   _getScopeId() {
@@ -193,15 +267,19 @@ class RuleContext {
   /**
    * 触发活动集回调
    */
-  fireRouteCallback(...args: any[]) {
+  fireRouteCallback() {
     let routeCtx = this.getRouteContext()
     let scopeId = this._getScopeId()
+    //如果域销毁了，则标记规则链中断全局，防止执行异常//退出规则可销毁域，应当中断当前域的规则Task20201117075
+    if (scopeManager.isDestroy(scopeId)) {
+      routeCtx.markForInterrupt(routeCtx.INSTANCE)
+    }
     scopeManager.openScope(scopeId)
     snapshotManager.begine(routeCtx.snapshotId)
     try {
       this.fireListener({
         eventName: this.Events.ROUTECALLBACK,
-        args: args
+        args: arguments
       })
       for (let i = 0, len = this.routeCallback.length; i < len; i++) {
         this.routeCallback[i].call(routeCtx, routeCtx, this)
@@ -218,7 +296,7 @@ class RuleContext {
    * 设置规则回调
    * @param {Function} callback 规则回调
    */
-  setRuleCallback(callback: (ctx: RouteContext) => void) {
+  setRuleCallback(callback) {
     this.ruleCallback = callback
   }
   /**
@@ -228,10 +306,17 @@ class RuleContext {
     if (typeof this.ruleCallback == 'function') {
       let ctx = this.routeContext
       let scopeId = ctx.getScopeId()
-      scopeManager.openScope(scopeId)
-      let rr = ctx.cloneForRuleCallback()
-      this.ruleCallback(rr)
-      scopeManager.closeScope()
+      if (!scopeManager.isDestroy()) {
+        scopeManager.openScope(scopeId)
+        let rr = ctx.cloneForRuleCallback()
+        //设置当前规则业务返回值，在规则回调中可能会使用到  2020-07-06 xiedh Task20200706169
+        rr.setBusinessRuleResult(
+          this.getRuleCfg().instanceCode,
+          this.getAllBusinessRuleResult() || {}
+        )
+        this.ruleCallback(rr)
+        scopeManager.closeScope()
+      }
     }
   }
   /**
@@ -249,30 +334,78 @@ class RuleContext {
   /**
    * 生成异步回调
    */
-  genAsynCallback(func: (...args: any[]) => void) {
+  genAsynCallback(func) {
     let scopeId = this._getScopeId()
     let _snapshot = this._SnapshotManager
     let routeContext = this.getRouteContext()
     let _snapshotId = routeContext.snapshotId
-    return (...args: any[]) => {
+    let _this = this
+    return function () {
+      let result
       scopeManager.openScope(scopeId)
       if (_snapshot && _snapshotId) {
         _snapshot.begine(_snapshotId)
       }
       try {
         if (typeof func == 'function') {
-          func.apply(this, args)
+          result = func.apply(this, arguments)
         }
       } catch (e) {
-        this.handleException(e)
+        _this.handleException(e)
       } finally {
         if (_snapshot && _snapshotId) {
           _snapshot.end()
         }
         scopeManager.closeScope()
       }
+      return result
     }
   }
+  getInput(code) {
+    if (this._cacheInputDatas[code]) {
+      return this._cacheInputDatas[code]
+    }
+    this.getVObject().getInput(code)
+    let value = this._container._getInput(code)
+    if (value && vds.ds.isDatasource(value)) {
+      let resultSet = value.getAllRecords()
+      let datas = []
+      resultSet.iterate(function (record) {
+        datas.push(record.toMap())
+      })
+      value = datas
+      this._cacheInputDatas[code] = value
+    }
+    return value
+  }
+  newOutputVo() {
+    return this._container
+  }
+  __getOutputs() {
+    return this._container.data
+  }
+  __setMockInput(code, value, dsObj) {
+    let source = datasourceFactory.isDatasource(dsObj) ? dsObj : value
+    this.getVObject().__setMockInput(code, source)
+    this._container._setInput(code, value)
+  }
+  getVObject() {
+    if (!this._vObject) {
+      this._vObject = new VObject()
+    }
+    return this._vObject
+  }
+  getInputSize() {
+    let inputs = this._container._getInput()
+    let count = 0
+    for (let key in inputs) {
+      if (inputs.hasOwnProperty(key)) {
+        count++
+      }
+    }
+    return count
+  }
+
   setSnapshotManager(manager: snapshotManager) {
     this._SnapshotManager = manager
   }

@@ -151,8 +151,30 @@ const initInputs = function (inputParam) {
         )
         if (define) {
           let type = define.getType()
-          if (type == 'entity' && !datasourceFactory.isDatasource(val)) {
-            val = datasourceFactory.unSerialize(val)
+          if (type == 'entity') {
+            if (arrayUtil.isArray(val)) {
+              //支持实体数据
+              let fields = []
+              let cfgs = define.getConfigs()
+              if (cfgs && cfgs.length) {
+                for (let i = 0, l = cfgs.length; i < l; i++) {
+                  let cfg = cfgs[i]
+                  fields.push({
+                    code: cfg.getCode(),
+                    name: cfg.getName(),
+                    type: cfg.getType(),
+                    defaultValue: cfg.getInitValue()
+                  })
+                }
+              }
+              val = datasourceFactory.createJsonFromConfig({
+                datas: val,
+                fields: fields
+              })
+              val = datasourceFactory.unSerialize(val)
+            } else if (!datasourceFactory.isDatasource(val)) {
+              val = datasourceFactory.unSerialize(val)
+            }
           }
         }
         exports.setInput(name, val)
@@ -162,20 +184,22 @@ const initInputs = function (inputParam) {
 }
 
 export {
-  existsInput,
-  existsOption,
-  existsOutput,
+  initModule,
+  setVariant,
   existsVariant,
+  getVariant,
+  getOption,
+  existsOption,
+  markVariantInited,
+  isVariantInited,
+  initModule,
+  setInput,
   getInput,
   getInputs,
-  getOption,
+  existsInput,
+  setOutput,
   getOutput,
   getOutputs,
-  getVariant,
-  initInputs,
-  isVariantInited,
-  markVariantInited,
-  setInput,
-  setOutput,
-  setVariant
+  existsOutput,
+  initInputs
 }

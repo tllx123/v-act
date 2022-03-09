@@ -4,17 +4,20 @@
  * @desc 回调定义<br/>
  * vjs名称：vjs.framework.extension.platform.interface.event
  */
-let Callback = function (type, handler) {
-  this.type = type
-  this.handler = handler
-}
+class Callback {
+  type: string
+  handler: (...args: any[]) => void
 
-Callback.prototype = {
-  getType: function () {
+  constructor(type: string, handler: (...args: any[]) => void) {
+    this.type = type
+    this.handler = handler
+  }
+
+  getType() {
     return this.type
-  },
+  }
 
-  getHandler: function () {
+  getHandler() {
     return this.handler
   }
 }

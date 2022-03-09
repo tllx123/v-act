@@ -1,4 +1,11 @@
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+
+let sb
+
+const initModule = function (sandbox) {
+  sb = sandbox
+}
 
 const execute = function (params) {
   let functionName = params.functionName,
@@ -8,10 +15,14 @@ const execute = function (params) {
   if (!functionDef) {
     let exception = exceptionFactory.create({
       message:
-        '[FunctionEngine.execute]函数【' +
+        '函数【' +
         functionName +
         '】不存在，请检查是否已部署对应函数，并打包到functionLib模块中。',
-      type: exceptionFactory.TYPES.UnExpected
+      exceptionDatas: genExceptionData(
+        (context && context.args) || '',
+        functionName
+      ),
+      type: exceptionFactory.TYPES.System
     })
     throw exception
   }
@@ -24,28 +35,71 @@ const execute = function (params) {
     try {
       return mainFunc.apply(this, mainFuncArgs)
     } catch (e) {
-      let exception = exceptionFactory.create({
-        message:
-          '[FunctionEngine.execute]函数【' +
-          functionName +
-          '】执行失败，请检查内部逻辑。' +
-          e.message,
-        type: exceptionFactory.TYPES.UnExpected,
-        error: e
-      })
-      throw exception
+      if (exceptionFactory.isException(e)) {
+        //属于平台异常对象就直接抛出，如：函数调用后台报错
+        throw e
+      } else {
+        let exception = exceptionFactory.create({
+          message:
+            '函数【' + functionName + '】执行失败，错误原因：' + e.message,
+          type: exceptionFactory.getExceptionTypeByError(
+            e,
+            exceptionFactory.TYPES.System
+          ),
+          exceptionDatas: genExceptionData(
+            (context && context.args) || '',
+            functionName
+          ),
+          error: e
+        })
+        throw exception
+      }
     }
   } else {
     let exception = exceptionFactory.create({
       message:
-        '[FunctionEngine.execute]函数【' +
+        '函数【' +
         functionName +
         '】的实现不符合规范，没有实现主入口main方法，请检查内部逻辑。',
-      type: exceptionFactory.TYPES.UnExpected,
+      type: exceptionFactory.TYPES.System,
+      exceptionDatas: genExceptionData(
+        (context && context.args) || '',
+        functionName
+      ),
       error: e
     })
     throw exception
   }
 }
 
-export { execute }
+let genExceptionData = function (args, functionName) {
+  let scope = scopeManager.getScope()
+  let componentCode = scope.getComponentCode()
+  let windowCode = scopeManager.isWindowScope(scope.getInstanceId())
+    ? scope.getWindowCode()
+    : null
+  return [
+    {
+      name: '构件编码',
+      code: 'componentCode',
+      value: componentCode
+    },
+    {
+      name: '窗体编码',
+      code: 'windowCode',
+      value: windowCode
+    },
+    {
+      name: '函数编码',
+      code: 'functionCode',
+      value: functionName
+    },
+    {
+      name: '函数参数',
+      code: 'functionParams',
+      value: args
+    }
+  ]
+}
+
+export { initModule, execute }

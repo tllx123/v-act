@@ -5,8 +5,10 @@ import {
 } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import {
+  JsonUtil as jsonUtils,
+  log as logUtil
+} from '@v-act/vjs.framework.extension.util'
 
 let storage,
   token = 'V3_Platform_Services_Event_AOP',
@@ -16,8 +18,6 @@ let storage,
   V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN =
     'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN_THREE'
 crossDomainEventKey = 'Coross_Domain_Event_Key'
-
-export function initModule(sb) {}
 
 let _getStorage = function () {
   if (!storage) {
@@ -61,6 +61,36 @@ const fire = function (params) {
       handler.apply(this, args)
     }
   }
+}
+
+const parseCrossDomainParams = function (event) {
+  let params = {
+    isVPlatformCrossDomainParam: false,
+    params: null
+  }
+  try {
+    if (event && event.data) {
+      let _data = event.data
+      if (
+        (typeof _data == 'string' &&
+          _data == 'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN') ||
+        (typeof _data == 'object' &&
+          _data['TOONE_IDEN'] == 'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN')
+      ) {
+        params.isVPlatformCrossDomainParam = true
+      } else {
+        if (environmentUtils.isIE9()) {
+          _data = jsonUtils.json2obj(e.data)
+        }
+        if (_data['TOONE_IDEN'] == V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN) {
+          //平台标识
+          params.isVPlatformCrossDomainParam = true
+          params.params = _data['PARAMS']
+        }
+      }
+    }
+  } catch (e) {}
+  return params
 }
 
 const startCrossDomainListener = function () {
@@ -128,6 +158,7 @@ const startCrossDomainListener = function () {
                             var parentPM = fInfo.parentPM
                             var type = fInfo.type
                             var origin = fInfo.origin
+                            var iden = fInfo.iden
                             try {
                               if (eval(rInfo.condition)) {
                                 isExcute = true

@@ -1,12 +1,11 @@
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { log as logUtil } from '@v-act/vjs.framework.extension.util'
+import { Modal as modalUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { JsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util'
+import { Environment as environmentUtils } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import {
-  CreateModalByUrl as modalByUrlUtil,
-  Modal as modalUtil
-} from '@v-act/vjs.framework.extension.platform.services.view.modal'
-import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
-import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 let Open_Url_Mapping_Storage_Token = 'Open_Url_Mapping_Storage_Token',
   missAtt = [
@@ -23,7 +22,7 @@ let Open_Url_Mapping_Storage_Token = 'Open_Url_Mapping_Storage_Token',
   //是否兼容旧服务的模态
   CompatibleModal = false
 
-export function initModule(sb) {}
+const initModule = function (sb) {}
 
 let getStorage = function () {
   return storageManager.get(
@@ -108,7 +107,7 @@ let parseUrl = function (sourceUrl, targetResult) {
         if (urlArr.length != 1) {
         } else {
           result.isError = true
-          logUtil.warn('链接地址不正确，地址: ' + sourceUrl)
+          logUtil.log('已忽略解析的地址:' + sourceUrl)
         }
       } else {
         startIndex = search.indexOf('?operation=Form')
@@ -116,6 +115,8 @@ let parseUrl = function (sourceUrl, targetResult) {
           startIndex != -1 ||
           url.indexOf('/module-operation!executeOperation') != -1
         ) {
+          let contextPath = url.substring(0, url.lastIndexOf('/', firstIndex)) //web上下文
+          result.contextPath = contextPath ? contextPath : ''
           result.type = '3.x'
           //如果operation不是form标识是统一门户增强后的地址
           let isSaasPortal =
@@ -158,7 +159,7 @@ let parseUrl = function (sourceUrl, targetResult) {
           }
         } else {
           result.isError = true
-          logUtil.warn('链接地址不正确，地址: ' + sourceUrl)
+          logUtil.log('已忽略解析的地址: ' + sourceUrl)
         }
       }
     } else {
@@ -294,7 +295,9 @@ const handleScope = function (params) {
     },
     params: {
       Iden: nowPM,
-      newTitle: document.title
+      newTitle: document.title,
+      isInit: true,
+      _version: vdk.postMsg.getVersion && vdk.postMsg.getVersion() //传递版本
     }
   })
   //		var url = params.url;
@@ -351,6 +354,7 @@ let initNewPageCrossDomainEvent = function (params) {
   //当前页面的vdk标识
   let pmIden = params.pmIden
   let key = params.key
+  let closeCallBack = params.closeCallBack
   let win = params.win
   let setChildFunc = params.setChildFunc
     ? params.setChildFunc
@@ -364,6 +368,12 @@ let initNewPageCrossDomainEvent = function (params) {
           var tmpCPM = params.tmpCPM
           var newTitle = params.newTitle
           var domInfo = stroage.get(_key)
+          var _sourceTitle = getTitle(_key)
+          if (_sourceTitle) {
+            /* 先打开设置标题的（模态标题），再打开不设置标题的（还原窗体标题），最后打开设置标题的（模态标题） */
+            newTitle = _sourceTitle
+          }
+          /* _fixTitle处理模态方式打开窗口后，标题被还原的问题Task20210908057，后续支持动态修改标题时，注意验证此场景 */
           if (
             newTitle &&
             '' != newTitle &&
@@ -428,18 +438,38 @@ let initNewPageCrossDomainEvent = function (params) {
           var domInfo = stroage.get(_key)
           var domIds = domInfo.domIds
           var renderParams = domInfo.renderParams
-          for (var key in domIds) {
-            if (domIds[key] == pmIden) {
-              renderParams.hideFunc(renderParams.modalCode)
-              break
+          if (!renderParams.isHide) {
+            //模态已经主动关闭，不需要内部通信关闭
+            for (var key in domIds) {
+              if (domIds[key] == pmIden) {
+                renderParams.isHide = true
+                renderParams.hideFunc(renderParams.modalCode)
+                break
+              }
+            }
+            var closeParams = {
+              isClickConfirm: params.isClickConfirm,
+              outputs: params.outputs
+            }
+            if (typeof renderParams.closeCallback == 'function') {
+              //优先执行，因为会动态更新
+              renderParams.closeCallback(closeParams)
+            } else if (typeof closeCallBack == 'function') {
+              closeCallBack(closeParams)
+            } else {
+              //此方式应该废弃
+              eventManager.fireCrossDomainEvent({
+                eventName: eventManager.CrossDomainEvents.CustomEvent,
+                eventInfo: {
+                  type: 'CloseSuccess'
+                },
+                params: {
+                  isClickConfirm: params.isClickConfirm,
+                  outputs: params.outputs
+                }
+              })
             }
           }
-          eventManager.fireCrossDomainEvent({
-            eventName: eventManager.CrossDomainEvents.CustomEvent,
-            eventInfo: {
-              type: 'CloseSuccess'
-            }
-          })
         }
       })(key)
   eventManager.onCrossDomainEvent({
@@ -456,11 +486,34 @@ let initNewPageCrossDomainEvent = function (params) {
       eventInfo: {
         condition: "type=='SetTitle'&&parentPM=='" + pmIden + "'"
       },
-      handler: function (params) {
-        if (params.title) setModalTitle(params.title)
-      }
+      handler: (function (titleFunc, _key) {
+        return function (params) {
+          let title = params.title
+          let _sourceTitle = getTitle(_key)
+          if (_sourceTitle) {
+            /* 先打开设置标题的（模态标题），再打开不设置标题的（还原窗体标题），最后打开设置标题的（模态标题） */
+            title = _sourceTitle
+          }
+          if (title && typeof titleFunc == 'function') {
+            titleFunc(title)
+          }
+        }
+      })(setModalTitle, key)
     })
   }
+}
+/**
+ * 获取标题
+ * */
+let getTitle = function (key) {
+  let storage = getStorage()
+  if (storage && storage.containsKey(key) && storage.get(key)) {
+    let renderParams = storage.get(key).renderParams
+    if (renderParams && renderParams.title) {
+      return renderParams.title
+    }
+  }
+  return null
 }
 /**
  * 平台组件容器逻辑
@@ -625,7 +678,8 @@ let excuteContainerLogic = function (urlObj, params) {
     let winKeyInfos = {}
     winKeyInfos[winKey] = {
       iframeId: iframeId,
-      win: win
+      win: win,
+      close: closedFunc
     }
     mappingInfos[urlKey] = {
       domId: domId,
@@ -688,6 +742,10 @@ let excuteModalLogic = function (urlObj, params) {
     let domId = dom.attr('id')
     if (renderParams) {
       $('#' + domId).css('overflow', 'hidden')
+      //更新关闭后回调：vds提供的dialog接口，关闭回调每次都不一样，所以不能服用
+      if (renderParams.closeCallback != modalCloseCallBack) {
+        renderParams.closeCallback = modalCloseCallBack
+      }
     }
     let iframeId
     let pmIden = vdk.postMsg.getPMIden() //当前页面vdk标识
@@ -716,8 +774,10 @@ let excuteModalLogic = function (urlObj, params) {
       initNewPageCrossDomainEvent({
         pmIden: pmIden,
         win: win,
+        closeCallBack: modalCloseCallBack,
         setModalTitle: setTitleFunc,
-        key: domIdKey
+        key: domIdKey,
+        title: renderParams.title
       })
       //注册跨域事件：获取子消息
       eventManager.onCrossDomainEvent({
@@ -784,6 +844,7 @@ let excuteModalLogic = function (urlObj, params) {
                   OldLogicOrgin.push(_k)
                 }
                 if (info && typeof info.closeModalFunc == 'function') {
+                  if (info.renderParams) info.renderParams.isHide = true //处理打开立即关闭后，执行多次回调的问题
                   info.closeModalFunc()
                 }
                 if (typeof cf == 'function') {
@@ -797,7 +858,13 @@ let excuteModalLogic = function (urlObj, params) {
       let iter = function () {
         if (!win || win.closed) {
           if (typeof modalCloseCallBack == 'function') {
-            modalCloseCallBack()
+            //打开后立即关闭会多次执行
+            if (
+              !mappingInfos ||
+              !mappingInfos.renderParams ||
+              !mappingInfos.renderParams.isHide
+            )
+              modalCloseCallBack()
           }
         } else {
           timeoutIndex = setTimeout(iter, 100)
@@ -809,8 +876,11 @@ let excuteModalLogic = function (urlObj, params) {
       let mappingInfos = stroage.get(domIdKey)
       //关闭后再次打开需要显示
       let renderParams = mappingInfos.renderParams
-      if (renderParams && typeof renderParams.showFunc == 'function') {
-        renderParams.showFunc(renderParams.modalCode, modalParams)
+      if (renderParams) {
+        delete renderParams['isHide']
+        if (typeof renderParams.showFunc == 'function') {
+          renderParams.showFunc(renderParams.modalCode, modalParams)
+        }
       }
       let urlParams = urlObj.params
       let openParams = {}
@@ -837,6 +907,17 @@ let excuteModalLogic = function (urlObj, params) {
   }
   if (exist) {
     //如果之前已经创建过iframe
+    /* 重置标题 先打开一个有标题的，再打开一个无标题的 */
+    if (mappingInfos.renderParams) {
+      let newTitle = modalParams.title
+      let _setTitleFunc = mappingInfos.setTitleFunc
+      if (newTitle && typeof _setTitleFunc == 'function') {
+        _setTitleFunc(
+          newTitle
+        ) /* 模态显示前先更新标题，解决窗体标题切换的问题 */
+      }
+      mappingInfos.renderParams.title = modalParams.title
+    }
     callback(
       mappingInfos.domId,
       mappingInfos.closeModalFunc,
@@ -855,10 +936,10 @@ let excuteModalLogic = function (urlObj, params) {
           return function (params) {
             let global_cb = vdk.postMsg._MODALCLOSECF
             if (typeof global_cb == 'function') {
-              global_cb()
+              global_cb(params)
               vdk.postMsg._MODALCLOSECF = null
             } else {
-              callFun()
+              callFun(params)
             }
           }
         })(modalCloseCallBack)
@@ -886,6 +967,7 @@ let excuteModalLogic = function (urlObj, params) {
             OldLogicOrgin.push(_k)
           }
           if (info && typeof info.closeModalFunc == 'function') {
+            if (info.renderParams) info.renderParams.isHide = true //处理打开立即关闭后，执行多次回调的问题
             info.closeModalFunc()
           }
           if (typeof cf == 'function') {
@@ -897,6 +979,21 @@ let excuteModalLogic = function (urlObj, params) {
             type: 'modal',
             closeAll: true //设置退出所有
           })
+          //关闭所有时，直接隐藏弹框，不需要里面通信，避免出错不执行或者执行多次关闭
+          let domIds = info.domIds
+          let renderParams = info.renderParams
+          let pmIden = vdk.postMsg.getPMIden() //当前页面vdk标识
+          for (let key in domIds) {
+            renderParams.isHide = true
+            renderParams.hideFunc(renderParams.modalCode)
+            break
+          }
+          if (typeof renderParams.closeCallback == 'function') {
+            //会更新，优先使用
+            renderParams.closeCallback()
+          } else if (typeof cf == 'function') {
+            cf()
+          }
         }
       }
     })(url, modalCloseCallBack, domIdKey)
@@ -929,7 +1026,11 @@ const mounted = function (params) {
   }
   let urlObj = parseUrl(params.url)
   let tmpDom = params.dom
-  if (!isPaltformUrl(urlObj) || urlObj.isError) {
+  if (
+    !isPaltformUrl(urlObj) ||
+    urlObj.isError ||
+    (environmentUtils.isOptimizeLink && !environmentUtils.isOptimizeLink())
+  ) {
     //非平台的url，直接创建新的iframe或者没成功解析的地址
     oldLogic(params)
     return
@@ -1231,7 +1332,7 @@ const active = function (params) {
       win: domInfo.iframeObj
     })
   } else {
-    logUtil.warn('获取不到链接地址的打开信息, 已忽略处理, 地址: ' + url)
+    logUtil.warn('获取不到链接地址的打开信息, 已忽略处理, 地址: ' + params.url)
   }
 }
 
@@ -1296,18 +1397,19 @@ const close = function (params) {
       win: domInfo.iframeObj
     })
   } else {
-    logUtil.warn('获取不到链接地址的打开信息, 已忽略处理, 地址: ' + url)
+    logUtil.warn('获取不到链接地址的打开信息, 已忽略处理, 地址: ' + params.url)
   }
 }
 
 export {
-  active,
-  close,
-  getKey,
-  handleScope,
-  handleUrl,
-  isIframeContainerIndex,
+  initModule,
+  parseUrl,
   isVPlatformUrl,
+  getKey,
+  isIframeContainerIndex,
+  handleUrl,
+  handleScope,
   mounted,
-  parseUrl
+  active,
+  close
 }

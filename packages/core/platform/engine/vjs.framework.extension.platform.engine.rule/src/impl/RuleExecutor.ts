@@ -1,12 +1,10 @@
-import {
-  ExpressionContext as ExpContext,
-  ExpressionEngine as expEngine
-} from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import * as ruleFactory from './impl/RuleFactory'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
-
-import * as ruleFactory from '../impl/RuleFactory'
+import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { ExpressionContext as ExpContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
 
 let RuleExecutor = function (ruleContext) {
   this.ruleContext = ruleContext
@@ -74,15 +72,9 @@ RuleExecutor.prototype = {
           this.ruleContext.fireRouteCallback()
         }
       } catch (e) {
-        let ruleCfg = this.getRuleContext().getRuleCfg()
-        throw factory.create({
-          error: e,
-          type: factory.TYPES.UnExpected,
-          message:
-            '[RuleExecutor.execute]规则【' +
-            ruleCfg.ruleCode +
-            '】执行失败，请检查内部逻辑。' +
-            e.message
+        throw ruleFactory.createRuleException({
+          ruleContext: this.getRuleContext(),
+          exception: e
         })
       }
     } else {
@@ -110,17 +102,17 @@ RuleExecutor.prototype = {
         })
       }
     } catch (re) {
-      let ruleCfg = this.getRuleContext().getRuleCfg()
-      throw factory.create({
-        error: re,
-        type: factory.TYPES.UnExpected,
+      throw ruleFactory.createRuleException({
+        ruleContext: this.getRuleContext(),
+        exception: re,
         message:
-          '[RuleExecutor.execute]规则【' +
+          '规则【' +
           ruleCfg.ruleCode +
           '】执行条件【' +
           expression +
-          '】异常，请检查设置是否正确。' +
-          re.message
+          '】异常，请检查配置是否正确。' +
+          re.message,
+        exceptionType: factory.getExceptionTypeByError(re, factory.TYPES.System)
       })
     }
     return condition
@@ -149,4 +141,10 @@ RuleExecutor.prototype = {
 
 return RuleExecutor
 
-export { execute, executeRouteRule, executeWithRouteCallback }
+export {
+  initModule,
+  execute,
+  executeRouteRule,
+  executeWithRouteCallback,
+  createRuleException
+}

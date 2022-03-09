@@ -76,10 +76,10 @@ let getParamFromStorage = function (componentCode, domain, code) {
   if (value) {
     return value
   }
-  throw Error(
-    '[ComponentParam.getParamFromStorage]查找构件配置信息(变量、常量等)失败！构件编号:' +
+  throw new Error(
+    '查找构件配置信息(变量、常量等)失败！构件编号:' +
       componentCode +
-      '变量编号:' +
+      '，变量编号:' +
       code
   )
 }
