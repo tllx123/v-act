@@ -1,8 +1,7 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 let sandbox
 
 let DevException = function (message, e, errInfo, json) {
@@ -33,25 +32,4 @@ DevException.prototype = {
     return i18n.get('环境异常', '环境异常弹框的顶部描述信息')
   }
 }
-return DevException
-
-export {
-  plupload,
-  initModule,
-  create,
-  isException,
-  isAcceptType,
-  genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
-  getExceptionHtml,
-  initModule,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  initModule,
-  initModule,
-  initModule
-}
+export default DevException

@@ -629,7 +629,7 @@ let getPaperName = function (paperSize) {
     '66': 'A2',
     '70': 'A5'
   }
-  let paperSize = paperNames[paperSize]
+  paperSize = paperNames[paperSize]
   return paperSize
 }
 

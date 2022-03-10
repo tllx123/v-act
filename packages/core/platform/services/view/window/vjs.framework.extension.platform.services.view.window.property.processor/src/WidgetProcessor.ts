@@ -197,9 +197,10 @@ var _handleWindowDesignData = function (windowScope) {
       var allow = false
       if (filter && jsonUtils.obj2json(filter) != '{}') {
         if (condition) {
-          with (filter) {
+          /*with (filter) {
             allow = eval('(' + condition + ')')
-          }
+          }*/
+          throw Error('TODO:未处理异常！')
         }
       } else if (!condition) {
         allow = true

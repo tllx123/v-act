@@ -6,4 +6,4 @@ let keys = {
   Left: 37,
   Right: 39
 }
-return keys
+export default keys

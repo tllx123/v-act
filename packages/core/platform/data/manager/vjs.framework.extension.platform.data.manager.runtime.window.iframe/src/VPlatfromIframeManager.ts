@@ -1,11 +1,13 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-import { Modal as modalUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-import { JsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util'
 import { Environment as environmentUtils } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import {
+  CreateModalByUrl as modalByUrlUtil,
+  Modal as modalUtil
+} from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 let Open_Url_Mapping_Storage_Token = 'Open_Url_Mapping_Storage_Token',
   missAtt = [
@@ -734,7 +736,7 @@ let excuteModalLogic = function (urlObj, params) {
     mappingInfos = {}
   }
   let callback = function (dom, closeModalFunc, setTitleFunc, renderParams) {
-    let dom = getDomObj(dom)
+    dom = getDomObj(dom)
     if (dom.length < 1) {
       logUtil.warn('打开url失败. 原因：无法在指定位置添加元素.')
       return
@@ -1402,14 +1404,14 @@ const close = function (params) {
 }
 
 export {
-  initModule,
-  parseUrl,
-  isVPlatformUrl,
-  getKey,
-  isIframeContainerIndex,
-  handleUrl,
-  handleScope,
-  mounted,
   active,
-  close
+  close,
+  getKey,
+  handleScope,
+  handleUrl,
+  initModule,
+  isIframeContainerIndex,
+  isVPlatformUrl,
+  mounted,
+  parseUrl
 }

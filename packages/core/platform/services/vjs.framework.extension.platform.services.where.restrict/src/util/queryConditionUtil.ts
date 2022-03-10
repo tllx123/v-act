@@ -6,8 +6,6 @@ import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.arra
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as strUtil } from '@v-act/vjs.framework.extension.util.string'
 
-export function initModule(sb) {}
-
 /**
  * 是否不需要参数化的操作符，例如is,is not
  * @param operation 操作符

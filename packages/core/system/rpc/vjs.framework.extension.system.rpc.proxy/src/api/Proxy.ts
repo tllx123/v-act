@@ -47,4 +47,4 @@ Proxy.prototype = {
   }
 }
 
-return Proxy
+export default Proxy

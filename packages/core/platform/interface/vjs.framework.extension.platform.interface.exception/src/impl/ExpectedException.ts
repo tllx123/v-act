@@ -1,10 +1,9 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as Exception from './impl/Exception'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
+import { JsonUtil as jsonUtil, log } from '@v-act/vjs.framework.extension.util'
+
+import * as Exception from './impl/Exception'
 import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 
 let ExpectedException = function (message, e, errInfo, json) {
   Exception.apply(this, arguments, errInfo, json)
@@ -161,27 +160,4 @@ ExpectedException.prototype = {
   }
 }
 
-return ExpectedException
-
-export {
-  plupload,
-  initModule,
-  create,
-  isException,
-  isAcceptType,
-  genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
-  getExceptionHtml,
-  initModule,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule
-}
+export default ExpectedException

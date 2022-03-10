@@ -1,10 +1,7 @@
 import * as Exception from '../impl/Exception'
 
 let handlers = {}
-
-export function initModule() {
-  Exception.prototype._putManager(exports)
-}
+Exception.prototype._putManager(exports)
 
 const onBeforeHandler = function (params) {
   let handler = params.handler
@@ -20,11 +17,11 @@ const _getHandler = function (type) {
 }
 
 export {
+  _getHandler,
   create,
-  isException,
-  handle,
   getExceptionHtml,
+  handle,
+  isException,
   onBeforeHandler,
-  onHandleFunction,
-  _getHandler
+  onHandleFunction
 }

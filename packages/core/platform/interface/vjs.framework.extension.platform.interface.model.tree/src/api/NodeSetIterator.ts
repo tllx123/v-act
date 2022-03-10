@@ -45,4 +45,4 @@ NodeSetIterator.prototype = {
   }
 }
 
-return NodeSetIterator
+export default NodeSetIterator

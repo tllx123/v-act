@@ -5,10 +5,8 @@ import {
 } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import {
-  JsonUtil as jsonUtils,
-  log as logUtil
-} from '@v-act/vjs.framework.extension.util'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 let storage,
   token = 'V3_Platform_Services_Event_AOP',
@@ -154,11 +152,6 @@ const startCrossDomainListener = function () {
                             null != rInfo.condition &&
                             '' != rInfo.condition
                           ) {
-                            var nowPM = fInfo.nowPM
-                            var parentPM = fInfo.parentPM
-                            var type = fInfo.type
-                            var origin = fInfo.origin
-                            var iden = fInfo.iden
                             try {
                               if (eval(rInfo.condition)) {
                                 isExcute = true

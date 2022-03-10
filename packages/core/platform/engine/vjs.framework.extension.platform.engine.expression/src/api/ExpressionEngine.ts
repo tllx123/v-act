@@ -2,9 +2,8 @@ import * as formulaEngine from 'module'
 
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as ExpressionContext from './api/ExpressionContext'
 
-export function initModule(sb) {}
+import * as ExpressionContext from './ExpressionContext'
 
 const execute = function (params) {
   let context = params.context,
@@ -92,4 +91,4 @@ let genExceptionData = function (exp) {
     }
   ]
 }
-export { initModule, execute, parseVars }
+export { execute, parseVars }

@@ -1,8 +1,7 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 let sandbox
 
 let ConfigException = function (message, e, errInfo, json) {
@@ -34,24 +33,4 @@ ConfigException.prototype = {
     return i18n.get('配置异常', '配置弹框的顶部描述信息')
   }
 }
-return ConfigException
-
-export {
-  plupload,
-  initModule,
-  create,
-  isException,
-  isAcceptType,
-  genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
-  getExceptionHtml,
-  initModule,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  initModule,
-  initModule
-}
+export default ConfigException

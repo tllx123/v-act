@@ -1,19 +1,21 @@
-import * as RuleExecutor from './impl/RuleExecutor'
-import * as ruleFactory from './impl/RuleFactory'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { RuleContext as RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RouteContext as RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { aop } from '@v-act/vjs.framework.extension.platform.aop'
 import { WindowRoute as windowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
-import { manager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction'
-import { aop as aop } from '@v-act/vjs.framework.extension.platform'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { callbackFactory as callbackFactory } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util'
-const initModule = function (sb) {}
+import {
+  RouteContext,
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
+
+import * as RuleExecutor from '../impl/RuleExecutor'
+import * as ruleFactory from '../impl/RuleFactory'
 
 let _isBusinessRule = function (ruleInstance) {
   return ruleInstance.hasOwnProperty('transactionType')
@@ -187,7 +189,7 @@ const executeRouteRule = function (params) {
   let rr = new RouteContext(routeCfg)
   rr.isVirtual = true //TODO 标记为虚拟路由，用于前端执行耗时展示
   rr.setScopeId(scopeId)
-  let args = Array.prototype.slice.call(args, 0)
+  args = Array.prototype.slice.call(args, 0)
   _putArgsToRouteContext(rr, args)
   let mapping = params.argMapping
   let argIndex = params.argIndex
@@ -385,9 +387,9 @@ const createRuleException = function (params) {
 }
 
 export {
-  initModule,
+  createRuleException,
   execute,
   executeRouteRule,
   executeWithRouteCallback,
-  createRuleException
+  initModule
 }
