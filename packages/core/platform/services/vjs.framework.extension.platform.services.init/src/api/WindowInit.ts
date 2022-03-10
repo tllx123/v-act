@@ -1,16 +1,15 @@
 import { WindowRuntimeInit as windowInit } from '@v-act/vjs.framework.extension.platform.init.view'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-export function initModule(sb) {
-  exports.Events['OnBindRule'] = windowInit.Events.onBindRule
-  exports.Events['BeforeDataLoad'] = windowInit.Events.beforeDataLoad
-  exports.Events['AfterDataLoad'] = windowInit.Events.afterDataLoad
-  exports.Events['OnMultiRequest'] = windowInit.Events.onMultiRequest
-  exports.Events['OnDataLoad'] = windowInit.Events.onDataLoad
-  exports.Events['OnDataInitLoad'] = windowInit.Events.dataInitLoad
-  exports.Events['WindowLoaded'] = windowInit.Events.windowLoaded
-  exports.Events['WindowInited'] = windowInit.Events.windowInited
-}
+const Events = {}
+Events['OnBindRule'] = windowInit.Events.onBindRule
+Events['BeforeDataLoad'] = windowInit.Events.beforeDataLoad
+Events['AfterDataLoad'] = windowInit.Events.afterDataLoad
+Events['OnMultiRequest'] = windowInit.Events.onMultiRequest
+Events['OnDataLoad'] = windowInit.Events.onDataLoad
+Events['OnDataInitLoad'] = windowInit.Events.dataInitLoad
+Events['WindowLoaded'] = windowInit.Events.windowLoaded
+Events['WindowInited'] = windowInit.Events.windowInited
 
 const registerHandler = function (params) {
   let scope = scopeManager.getScope()
@@ -38,6 +37,5 @@ const registerWindowOperation = function (params) {
  * @property {String} OnMultiRequest  批量请求
  * @property {String} WindowInited  窗体初始化完成
  */
-exports.Events = {}
 
-export { initComponent, registerHandler, registerWindowOperation }
+export { Events, initComponent, registerHandler, registerWindowOperation }

@@ -33,17 +33,21 @@ import Where from './Where'
  * 枚举项
  *
  * */
-exports.enums = {
+const enums = {
   IdField: true
 }
+
+export { enums }
 /**
  * 条件类型
  * @enum
  * */
-exports.WhereType = {
+const WhereType = {
   Query: 'Query',
   Table: 'Table'
 }
+
+export { WhereType }
 
 /**
  * 查找数据源
@@ -194,8 +198,8 @@ export function _genResultSet(resultset) {
  * */
 export function copy(sourceEntity, destEntity, fieldMappings, params) {
   if (
-    !exports.isDatasource(sourceEntity) ||
-    !exports.isDatasource(destEntity) ||
+    !isDatasource(sourceEntity) ||
+    !isDatasource(destEntity) ||
     !(fieldMappings instanceof Array) ||
     fieldMappings.length < 1
   ) {
@@ -310,7 +314,7 @@ export function createCriteria() {
 /**
  * 合并类型
  * */
-exports.MergeType = {
+const MergeType = {
   /**
    * 加载
    * */
@@ -324,6 +328,8 @@ exports.MergeType = {
    * */
   InsertOrUpdate: 'insertOrUpdateBySameId'
 }
+
+export { MergeType }
 
 /**
  *
@@ -552,5 +558,3 @@ var _getValueByMapping = function (
 export function _genMetadata(metadata) {
   return new Metadata(metadata)
 }
-
-module.exports = exports

@@ -173,7 +173,7 @@ const createJsonFromConfig = function (config) {
 }
 
 const createDatasourceFromConfig = function (config) {
-  let ds = exports.unSerialize(exports.createJsonFromConfig(config))
+  let ds = unSerialize(createJsonFromConfig(config))
   return ds
 }
 

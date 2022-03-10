@@ -50,7 +50,7 @@ export function getDefaultDesignProps(params) {
     typeof metadataService.isNewDevelopMode == 'function' &&
     metadataService.isNewDevelopMode()
   ) {
-    metadataPropertys = exports.convert(metadataPropertys) //二次开发格式转换成控件所需的格式
+    metadataPropertys = convert(metadataPropertys) //二次开发格式转换成控件所需的格式
   }
   var propertyCode = params.propertyCode
   if (propertyCode) {
@@ -86,7 +86,7 @@ export function toRuntimeDataByDesign(params) {
   if (propertys) {
     var defaultDesignProp = params.defaultProps
       ? params.defaultProps
-      : exports.getDefaultDesignProps({
+      : getDefaultDesignProps({
           series: params.series,
           type: widgetPropertys.WidgetType
         })
@@ -146,7 +146,7 @@ var arrSort = function (source, target, key, sortCfg) {
     var code = targetVal[key]
     var sourceVal = sourceDataMaps[code]
     if (sourceVal) {
-      exports.cloneProps(sourceVal, targetVal, sortCfg)
+      cloneProps(sourceVal, targetVal, sortCfg)
     }
   }
 }
@@ -172,7 +172,7 @@ export function cloneProps(obj, newObj, sortCfg) {
         if (val.constructor === Array && sortCfg[key]) {
           arrSort(val, newObj[i], sortCfg[key], sortCfg)
         } else {
-          exports.cloneProps(val, newObj[i], sortCfg)
+          cloneProps(val, newObj[i], sortCfg)
         }
       } else {
         newObj[i] = val
@@ -190,7 +190,7 @@ export function cloneProps(obj, newObj, sortCfg) {
         if (obj[key].constructor === Array && sortCfg[key]) {
           arrSort(obj[key], newObj[key], sortCfg[key], sortCfg)
         } else {
-          exports.cloneProps(obj[key], newObj[key], sortCfg)
+          cloneProps(obj[key], newObj[key], sortCfg)
         }
       } else {
         newObj[key] = obj[key]
@@ -270,7 +270,7 @@ export function genParentFormats(propertys, assignParentCode) {
     }
     var code = property.code || property.WidgetCode
     var windowScope = scopeManager.getWindowScope()
-    var iden = exports.genIden(code)
+    var iden = genIden(code)
     if (property) {
       property['_$iden'] = iden
       if (property.WidgetCode.indexOf(iden) == -1) {
@@ -290,7 +290,7 @@ export function genParentFormats(propertys, assignParentCode) {
     } else {
       var parent = widgetRelation.getParent(code)
       if (parent) {
-        data.parent = exports.genIden(parent)
+        data.parent = genIden(parent)
       }
     }
   }
@@ -358,7 +358,7 @@ var genDefine = function (defines) {
       continue
     }
     exist.push(code)
-    var propertys = exports.convert(define.properties)
+    var propertys = convert(define.properties)
     datas.push(propertys)
   }
   return datas

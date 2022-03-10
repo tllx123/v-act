@@ -240,7 +240,7 @@ const refreshVariant = function (params) {
     for (let i = 0, l = results.length; i < l; i++) {
       let result = results[i]
       //schemaComponentParam.getVariantDefine(componentCode, result.name).setInitValue(result.value);
-      exports.setVariant({
+      setVariant({
         code: result.name,
         value: result.value,
         synToServer: false

@@ -112,7 +112,7 @@ const log = function (params) {
     if (isWindowScope) {
       params.windowCode = scope.getWindowCode()
     }
-    exports.invokeOperation(params)
+    invokeOperation(params)
   } catch (e) {
     log.error(e.message)
   }

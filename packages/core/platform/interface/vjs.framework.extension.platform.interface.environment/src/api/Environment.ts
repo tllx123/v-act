@@ -31,7 +31,7 @@ const initModule = function (sb) {
 
 const init = function (params) {
   if (params) {
-    exports.setDomain(params.domain)
+    setDomain(params.domain)
     setOptimizeLink(params.optimizeLink)
     storage.put(ENCRYPT_TOKEN_KEY, params.isEncryptToken ? true : false)
     storage.put(EXCEPTION_INSTANCE_IDEN_KEY, params.ExceptionInstanceIden)
@@ -113,7 +113,7 @@ const getLoginInfo = function () {
 
 let _getHostUrl = function () {
   let l = window.location
-  return l.protocol + '//' + l.host + exports.getContextPath()
+  return l.protocol + '//' + l.host + getContextPath()
 }
 
 const getLoginUrl = function () {

@@ -17,7 +17,7 @@ const subscribe = function (serviceName, listener, epImpInfo) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   if (epImpInfo) {
     let storage = getStorage()
-    let epImpKey = exports.getServiceName(
+    let epImpKey = getServiceName(
       epImpInfo.componentCode,
       epImpInfo.windowCode,
       epImpInfo.ruleSetCode,

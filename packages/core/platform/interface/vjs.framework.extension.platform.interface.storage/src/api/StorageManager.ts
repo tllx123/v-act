@@ -3,12 +3,12 @@ import TreeStorage from '../impl/TreeStorage'
 
 const _storagePool: { [type: string]: { [token: string]: any } } = {}
 
-for (let type in exports.TYPES) {
-  _storagePool[exports.TYPES[type]] = {}
+for (let type in TYPES) {
+  _storagePool[TYPES[type]] = {}
 }
 
 const get = function (type: TYPES, token: string) {
-  if (exports.exists(type, token)) {
+  if (exists(type, token)) {
     let pool = _storagePool[type]
     return pool[token]
   } else {
@@ -21,7 +21,7 @@ const get = function (type: TYPES, token: string) {
 }
 
 const destory = function (type: TYPES, token: string) {
-  if (exports.contains(type, token)) {
+  if (contains(type, token)) {
     const pool = _storagePool[type]
     try {
       delete pool[token]

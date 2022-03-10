@@ -346,5 +346,4 @@ var _generateDiaLog = function (id) {
   return result
 }
 
-exports.confirmDialog = confirmDialog
-exports.propmtDialog = propmtDialog
+export { confirmDialog, propmtDialog }

@@ -72,7 +72,7 @@ const create = function (params: {
     let type
     if (params.exceptionType == 'LoginException') {
       /* 服务端未登录异常转前台未登录类型 */
-      type = exports.TYPES.Unlogin
+      type = TYPES.Unlogin
     } else if (
       params.data &&
       params.data.errorDetail &&
@@ -85,7 +85,7 @@ const create = function (params: {
       type = params.type || params.exceptionType
     }
     //            var type = params.data && params.data.errorDetail && params.data.errorDetail.errorCategory ? params.data.errorDetail.errorCategory : (params.type || params.exceptionType);
-    if (!exports.isAcceptType(type)) {
+    if (!isAcceptType(type)) {
       //未识别异常统一处理成系统异常Task20210201012
       type = 'SystemException'
     }
@@ -137,11 +137,11 @@ const isException = function (e) {
 const isAcceptType = function (type) {
   if (
     type &&
-    (type == exports.TYPES.Business ||
-      type == exports.TYPES.Unlogin ||
-      type == exports.TYPES.Config ||
-      type == exports.TYPES.Dev ||
-      type == exports.TYPES.System)
+    (type == TYPES.Business ||
+      type == TYPES.Unlogin ||
+      type == TYPES.Config ||
+      type == TYPES.Dev ||
+      type == TYPES.System)
   ) {
     return true
   }

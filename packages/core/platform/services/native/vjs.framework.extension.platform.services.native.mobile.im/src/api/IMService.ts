@@ -4,7 +4,7 @@ const putInstance = function (ins) {
   instance = ins
 }
 
-exports.IMTYPE = {
+const IMTYPE = {
   EASEMOB: 'easemob' //环信
 }
 
@@ -20,4 +20,4 @@ const customerChat = function (paranms, type) {
   instance.customerChat(paranms, type)
 }
 
-export { putInstance, login, logout, customerChat }
+export { IMTYPE, putInstance, login, logout, customerChat }

@@ -57,7 +57,7 @@ export function lookup(treeCode, treeStruct) {
   if (!treeCode || !treeStruct) {
     return null
   }
-  treeStruct = exports._toTreeStruct(treeCode, treeStruct)
+  treeStruct = _toTreeStruct(treeCode, treeStruct)
   var tree = treeManager.lookup({
     datasourceName: treeCode,
     treeStruct: treeStruct
@@ -118,7 +118,7 @@ export function getAll(treeCode) {
       var treeStruct = tree.getTreeStruct()
       trees[i] = new Tree(
         tree,
-        exports._toTreeStruct(tree._getDatasourceName(), treeStruct)
+        _toTreeStruct(tree._getDatasourceName(), treeStruct)
       )
     }
     return trees
@@ -126,4 +126,3 @@ export function getAll(treeCode) {
     return []
   }
 }
-module.exports = exports

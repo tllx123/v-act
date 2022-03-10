@@ -512,7 +512,7 @@ export function getDesignerHeight(params: {
     params.windowCode,
     'Height',
     -1,
-    exports.calHeight
+    calHeight
   )
 }
 /**

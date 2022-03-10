@@ -177,7 +177,7 @@ const initInputs = function (inputParam) {
             }
           }
         }
-        exports.setInput(name, val)
+        setInput(name, val)
       }
     }
   }

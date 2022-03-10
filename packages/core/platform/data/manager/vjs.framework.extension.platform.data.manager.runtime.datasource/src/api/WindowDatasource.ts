@@ -12,8 +12,6 @@ import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework
 
 let token = 'WINDOW_INSTANCE_DATASOURCE'
 
-exports.initModule = function (sb: any) {}
-
 let _getJsonFromCfg = function (dsName: string, cfg: object) {
   let defaultValues = cfg.defaultValues
   for (let i = 0; i < defaultValues.length; i++) {
@@ -48,7 +46,7 @@ const init = function () {
       let json = _getJsonFromCfg(ds, cfg)
       let datasource = datasourceFactory.unSerialize(json)
       _initDefaultValueGenerator(datasource)
-      exports.register({ datasourceName: ds, datasource: datasource })
+      register({ datasourceName: ds, datasource: datasource })
     }
   }
 }

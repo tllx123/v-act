@@ -49,7 +49,7 @@ const getInputs = function () {
     for (let i = 0, len = defines.length; i < len; i++) {
       let define = defines[i]
       let code = define.getCode()
-      let val = exports.getInput({ code: code })
+      let val = getInput({ code: code })
       result[code] = val
     }
   }
@@ -144,7 +144,7 @@ const getOutputs = function () {
     for (let i = 0, len = defines.length; i < len; i++) {
       let define = defines[i]
       let code = define.getCode()
-      let val = exports.getOutput({ code: code })
+      let val = getOutput({ code: code })
       result[code] = val
     }
   }

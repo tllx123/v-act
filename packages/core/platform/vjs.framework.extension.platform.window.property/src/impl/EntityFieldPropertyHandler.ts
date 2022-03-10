@@ -60,7 +60,7 @@ export function process(params) {
     renderDatas &&
     widgets
   ) {
-    return exports.processNew({
+    return processNew({
       componentCode: componentCode,
       windowCode: windowCode,
       datas: renderDatas
