@@ -3,9 +3,7 @@ import {
   Request
 } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-
-export function initModule(sb) {}
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 
 /**
  * 常量枚举

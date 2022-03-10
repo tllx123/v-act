@@ -109,4 +109,4 @@ Observer.prototype = {
   }
 }
 
-return Observer
+export default Observer

@@ -1,4 +1,4 @@
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let primaryKey = 'id',
   each
@@ -533,4 +533,4 @@ Datasource._putSnapshotManager = function (manager) {
   Datasource.prototype._snapshotManager = manager
 }
 
-return Datasource
+export default Datasource

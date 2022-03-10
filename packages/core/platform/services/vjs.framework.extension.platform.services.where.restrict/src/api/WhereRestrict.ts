@@ -1,4 +1,4 @@
-import * as queryConditionUtil from './util/queryConditionUtil'
+import * as queryConditionUtil from '../util/queryConditionUtil'
 
 export function initModule() {}
 

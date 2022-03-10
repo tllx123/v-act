@@ -68,4 +68,4 @@ Operator.prototype = {
   }
 }
 
-return Criteria
+export default Criteria

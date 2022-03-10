@@ -491,4 +491,4 @@ Node.prototype.addBrothers = function (params) {
   return false
 }
 
-return Node
+export default Node

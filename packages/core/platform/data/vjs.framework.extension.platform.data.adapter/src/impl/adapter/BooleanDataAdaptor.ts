@@ -1,4 +1,4 @@
-import { logUtil as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 let sandbox
 

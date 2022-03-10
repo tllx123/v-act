@@ -13,4 +13,4 @@ ObserverData.prototype = {
   }
 }
 
-return ObserverData
+export default ObserverData

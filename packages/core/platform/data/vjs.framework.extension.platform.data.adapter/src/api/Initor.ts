@@ -1,5 +1,5 @@
-import * as adapter from './api/Adapter'
-import * as datasourceInitor from './impl/initor/DatasourceInitor'
+import * as datasourceInitor from '../impl/initor/DatasourceInitor'
+import * as adapter from './Adapter'
 
 export function initModule() {}
 

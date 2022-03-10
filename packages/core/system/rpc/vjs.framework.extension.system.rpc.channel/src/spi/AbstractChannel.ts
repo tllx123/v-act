@@ -55,6 +55,4 @@ Channel.prototype = {
   log: function (params) {}
 }
 
-return Channel
-
-export { getCurrentChannelService, injectCurrentChannel }
+export default Channel

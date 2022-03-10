@@ -1,13 +1,13 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+
+import * as ExpectedException from './impl/ExpectedException'
+import * as callCommandService from './util/CallCommand'
+
 let sb
 let storage
 
@@ -136,29 +136,4 @@ UnLoginException.prototype = {
   }
 }
 
-return UnLoginException
-
-export {
-  plupload,
-  initModule,
-  create,
-  isException,
-  isAcceptType,
-  genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
-  getExceptionHtml,
-  initModule,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule
-}
+export default UnLoginException

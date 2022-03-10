@@ -1,12 +1,12 @@
 import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-import BusinessException from './impl/BusinessException'
-import ConfigException from './impl/ConfigException'
-import DevException from './impl/DevException'
-import ExpectedException from './impl/ExpectedException'
-import SystemException from './impl/SystemException'
-import UnLoginException from './impl/UnLoginException'
+import BusinessException from '../impl/BusinessException'
+import ConfigException from '../impl/ConfigException'
+import DevException from '../impl/DevException'
+import ExpectedException from '../impl/ExpectedException'
+import SystemException from '../impl/SystemException'
+import UnLoginException from '../impl/UnLoginException'
 
 let constructors = {
   BusinessException,

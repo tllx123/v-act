@@ -1,6 +1,7 @@
-import * as exceptionFactory from './api/ExceptionFactory'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
+import * as exceptionFactory from '../api/ExceptionFactory'
+
 let sandbox
 
 const initModule = function (sb) {
@@ -69,15 +70,13 @@ const getExceptionHtml = function (
 }
 
 export {
-  plupload,
-  initModule,
   create,
-  isException,
-  isAcceptType,
   genError,
+  getExceptionHtml,
   getExceptionTypeByError,
-  unSerialize,
-  initModule,
   handle,
-  getExceptionHtml
+  isAcceptType,
+  isException,
+  plupload,
+  unSerialize
 }

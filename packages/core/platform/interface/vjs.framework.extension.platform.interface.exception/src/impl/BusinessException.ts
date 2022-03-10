@@ -1,8 +1,7 @@
 import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 import * as ExpectedException from './impl/ExpectedException'
-import { log as log } from '@v-act/vjs.framework.extension.util'
-import * as callCommandService from './util/CallCommand'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+
 let sandbox
 
 let BusinessException = function (message, e, errInfo, json) {
@@ -34,23 +33,4 @@ BusinessException.prototype = {
     return i18n.get('业务异常', '业务异常弹框的顶部描述信息')
   }
 }
-return BusinessException
-
-export {
-  plupload,
-  initModule,
-  create,
-  isException,
-  isAcceptType,
-  genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
-  getExceptionHtml,
-  initModule,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  initModule
-}
+export default BusinessException
