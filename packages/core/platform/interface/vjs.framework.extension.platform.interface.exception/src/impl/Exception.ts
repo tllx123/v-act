@@ -335,7 +335,7 @@ class Exception extends Error {
    * 生成异常html
    * @return String
    */
-  getDetailHtml() {
+  getDetailHtml(info: any) {
     let htmls = ['<div class=err-details><div class=err-abnormal>']
     let detailMsg = this.getDetailMessage()
     for (let i = 0, len = detailMsg.length; i < len; i++) {

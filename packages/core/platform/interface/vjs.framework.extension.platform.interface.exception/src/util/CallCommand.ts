@@ -1,4 +1,5 @@
 import { FrontEndAlerter as alerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
+import { RemoteOperation as remote } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
@@ -52,9 +53,6 @@ const showDialog = function (params, exceptionType) {
 }
 
 const callCommand = function (value, callback, params) {
-  let remote = sandbox.getService(
-    'vjs.framework.extension.platform.services.domain.operation.RemoteOperation'
-  )
   if (!remote) return
   let json = jsonUtil.obj2json(value)
   //测试数据，需删除
