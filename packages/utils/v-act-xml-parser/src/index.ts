@@ -1,4 +1,4 @@
-import { xml2js, Element } from 'xml-js'
+import { Element, xml2js } from 'xml-js'
 
 type XMLElementObj = {
   tagName: string
@@ -11,7 +11,7 @@ const _parseElement = function (element: Element): XMLElementObj {
   const children: Array<string | number | boolean | undefined | XMLElementObj> =
     []
   if (elements && elements.length > 0) {
-    elements.forEach((ele) => {
+    elements.forEach((ele: Element) => {
       children.push(_parse(ele))
     })
   }
