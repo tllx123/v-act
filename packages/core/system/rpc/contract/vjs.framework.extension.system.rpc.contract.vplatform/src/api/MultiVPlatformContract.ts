@@ -1,33 +1,18 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Manager as manager } from '@v-act/vjs.framework.extension.system.rpc.contract'
 
-let jsonUtil
+import Contract from './Contract'
 
-let MultiContract = function () {
-  this.headers = {}
-}
-
-MultiContract.prototype = {
-  initModule: function (sb) {
-    var manager = sb.getService(
-      'vjs.framework.extension.system.rpc.contract.Manager'
-    )
-    manager.injectCurrentContract(MultiContract, 'multiVPlatform')
-    var Contract = require('vjs/framework/extension/system/rpc/contract/vplatform/api/Contract')
-    var objectUtil = sb.util.object
-    var initFunc = Contract.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    var prototype = Object.create(Contract.prototype)
-    prototype.constructor = MultiContract
-    objectUtil.extend(prototype, MultiContract.prototype)
-    MultiContract.prototype = prototype
-  },
+class MultiContract extends Contract {
+  constructor() {
+    super()
+    this.headers = {}
+  }
   /**
    *生成请求数据
    * @param {Request} request
    */
-  generate: function (request) {
+  generate(request) {
     this.setHeader('ajaxRequest', true)
     this.setHeader('scopeId', scopeManager.getCurrentScopeId())
     let operations = request.getOperations()
@@ -92,6 +77,8 @@ MultiContract.prototype = {
   }
 }
 
+manager.injectCurrentContract(MultiContract, 'multiVPlatform')
+
 let _notBlank = function (str) {
   return str != null && str != undefined
 }
@@ -106,4 +93,4 @@ let _keySize = function (obj) {
   return s
 }
 
-return MultiContract
+export default MultiContract
