@@ -1,4 +1,9 @@
-var Node, NodeSet, TreeStruct, DataAccessObject, dataAdapter
+import { DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.access'
+import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+
+import Node from './Node'
+import NodeSet from './NodeSet'
+import TreeStruct from './TreeStruct'
 
 /**
  * 数据源定义
@@ -12,17 +17,6 @@ var Tree = function (tree, treeStruct) {
 }
 
 Tree.prototype = {
-  initModule: function (sBox) {
-    Node = require('vjs/framework/extension/platform/services/integration/vds/tree/Node')
-    NodeSet = require('vjs/framework/extension/platform/services/integration/vds/tree/NodeSet')
-    TreeStruct = require('vjs/framework/extension/platform/services/integration/vds/tree/TreeStruct')
-    dataAdapter = sBox.getService(
-      'vjs.framework.extension.platform.services.viewmodel.dataadapter.DataAdapter'
-    )
-    DataAccessObject = sBox.getService(
-      'vjs.framework.extension.platform.services.repository.data.object'
-    )
-  },
   /**
    * 获取平台内部数据源实例
    * */
@@ -293,4 +287,4 @@ Tree.prototype = {
     return vds.ds._genMetadata(matadata)
   }
 }
-return Tree
+export default Tree

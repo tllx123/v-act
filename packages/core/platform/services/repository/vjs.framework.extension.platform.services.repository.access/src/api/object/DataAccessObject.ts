@@ -70,4 +70,4 @@ DataAccessObject.prototype.getCommand = function () {
   return this.command
 }
 
-return DataAccessObject
+export default DataAccessObject
