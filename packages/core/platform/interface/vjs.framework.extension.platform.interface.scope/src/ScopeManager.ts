@@ -251,7 +251,7 @@ let _fire = function (eventName: string, scope: Scope, ...args1: any[]) {
   }
 }
 
-const getChildrenScopes = function (scopeId: string) {
+const getChildrenScopes = function (scopeId?: string) {
   if (scopeId) {
     while (true) {
       let scope = getScope(scopeId)
@@ -484,7 +484,7 @@ const checkEntity = function (params: {
   return result
 }
 
-const getChildWindowScope = function (scopeId: string) {
+const getChildWindowScope = function (scopeId?: string) {
   let scope = scopeId ? getScope(scopeId) : getWindowScope()
   if (scope) {
     try {
