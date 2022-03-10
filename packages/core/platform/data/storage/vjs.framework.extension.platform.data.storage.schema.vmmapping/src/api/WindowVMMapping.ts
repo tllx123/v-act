@@ -1,7 +1,8 @@
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+
 /**
  *	vmmapping格式
  * 	{
@@ -152,7 +153,7 @@ let _getDatasourceFromWindowProperty = function () {
 
 const getVMMapping = function (componentCode, windowCode) {
   let windowScope = scopeManager.getWindowScope()
-  let windowCode = windowScope.getWindowCode()
+  windowCode = windowScope.getWindowCode()
   let version = widgetContext.get(windowCode, 'version')
   let wStorage = getWindowStorage(componentCode, windowCode, false)
   if (!wStorage || !wStorage.get(token_window_vm)) {
@@ -374,15 +375,14 @@ const removeVMapping = function (
 }
 
 export {
-  initModule,
   addVMMapping,
+  getDatasourceNameByWidgetCode,
+  getFieldCodeByPropertyCode,
+  getFieldCodesByWidgetCode,
+  getPropertyCodeByFieldCode,
   getVMMapping,
   getWidgetCodesByDatasourceName,
   getWidgetCodesByField,
-  getDatasourceNameByWidgetCode,
-  getFieldCodesByWidgetCode,
-  getFieldCodeByPropertyCode,
-  getPropertyCodeByFieldCode,
-  resetToDefault,
-  removeVMapping
+  removeVMapping,
+  resetToDefault
 }

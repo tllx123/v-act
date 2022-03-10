@@ -1,21 +1,16 @@
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-import * as ExpectedException from './impl/ExpectedException'
-import * as callCommandService from './util/CallCommand'
-
-let sb
-let storage
+import * as callCommandService from '../util/CallCommand'
+import * as ExpectedException from './ExpectedException'
 
 let UnLoginException = function (message, e, errInfo, json) {
   ExpectedException.apply(this, arguments)
 }
-
-export function initModule(sandbox) {}
 
 let _getStorage = function () {
   if (!storage) {

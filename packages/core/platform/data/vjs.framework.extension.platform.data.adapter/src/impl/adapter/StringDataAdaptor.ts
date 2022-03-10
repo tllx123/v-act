@@ -54,4 +54,4 @@ let subString = function (str, start, length) {
   return substr
 }
 
-export { adapt, init, init, adapt, adapt, adapt }
+export { adapt }

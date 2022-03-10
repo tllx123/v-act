@@ -1,9 +1,10 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { JsonUtil as jsonUtil, log } from '@v-act/vjs.framework.extension.util'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-import * as Exception from './impl/Exception'
-import * as callCommandService from './util/CallCommand'
+import * as callCommandService from '../util/CallCommand'
+import * as Exception from './Exception'
 
 let ExpectedException = function (message, e, errInfo, json) {
   Exception.apply(this, arguments, errInfo, json)

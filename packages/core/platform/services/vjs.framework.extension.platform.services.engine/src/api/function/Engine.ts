@@ -11,4 +11,4 @@ const execute = function (params) {
   return FunctionEngine.execute(params)
 }
 
-export { execute, excuteRouteExp, parseVars, execute }
+export { excuteRouteExp, execute, parseVars }

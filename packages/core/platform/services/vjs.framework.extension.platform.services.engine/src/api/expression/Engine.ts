@@ -1,4 +1,5 @@
-import * as Context from './api/expression/Context'
+import * as Context from './Context'
+
 let sandBox
 
 export function initModule(sb) {
@@ -38,4 +39,4 @@ const parseVars = function (params) {
   return expressionEngine.parseVars(p)
 }
 
-export { execute, excuteRouteExp, parseVars }
+export { excuteRouteExp, execute, parseVars }

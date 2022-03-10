@@ -1,5 +1,5 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 import * as DebugInfoManager from './DebugInfoManager'

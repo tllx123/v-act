@@ -141,6 +141,4 @@ Transaction.prototype = {
   }
 }
 
-module.exports = Transaction
-
-export { add }
+export default Transaction

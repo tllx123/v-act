@@ -419,4 +419,4 @@ BaseMock.prototype = {
   }
 }
 
-return BaseMock
+export default BaseMock

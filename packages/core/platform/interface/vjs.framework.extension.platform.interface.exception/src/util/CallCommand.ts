@@ -1,12 +1,6 @@
 import { FrontEndAlerter as alerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
-let sandbox
-
-const initModule = function (sb) {
-  sandbox = sb
-}
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 const showDialog = function (params, exceptionType) {
   /* 由弹框内部处理是否重复弹框 */
@@ -77,29 +71,19 @@ const callCommand = function (value, callback, params) {
 }
 
 export {
-  plupload,
-  initModule,
+  _getHandler,
+  callCommand,
   create,
-  isException,
-  isAcceptType,
   genError,
-  getExceptionTypeByError,
-  unSerialize,
-  initModule,
-  handle,
   getExceptionHtml,
+  getExceptionTypeByError,
+  handle,
   initModule,
+  isAcceptType,
+  isException,
   onBeforeHandler,
   onHandleFunction,
-  _getHandler,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
-  initModule,
+  plupload,
   showDialog,
-  callCommand
+  unSerialize
 }

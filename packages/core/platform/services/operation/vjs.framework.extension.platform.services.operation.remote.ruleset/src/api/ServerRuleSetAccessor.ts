@@ -1,5 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 

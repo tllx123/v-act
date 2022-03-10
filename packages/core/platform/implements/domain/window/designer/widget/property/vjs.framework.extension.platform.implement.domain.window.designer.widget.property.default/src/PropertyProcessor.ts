@@ -1,11 +1,11 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ProcessorUtils as processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+import * as childrenEditor from './editors/children'
 import * as entityEditor from './editors/entity'
 import * as expressionEditor from './editors/expression'
-import * as rulesetEditor from './editors/ruleset'
 import * as resourceEditor from './editors/resource'
-import * as childrenEditor from './editors/children'
-
+import * as rulesetEditor from './editors/ruleset'
 import * as addToComponentContainerHandler from './handlers/addToComponentContainer'
 import * as browsercreateDialogHandler from './handlers/browser.createDialog'
 import * as browserredirectHandler from './handlers/browser.redirect'
@@ -15,7 +15,6 @@ import * as componentRenderHandler from './handlers/componentRender'
 import * as containerParentHandler from './handlers/containerParent'
 import * as createDatasourceFromJsonHandler from './handlers/createDatasourceFromJson'
 import * as DropdownSourceObserverHandler from './handlers/DropdownSourceObserver'
-import * as getDropDownDataHandler from './handlers/getDropDownData'
 import * as entityHandler from './handlers/entity'
 import * as eventCallerHandler from './handlers/eventCaller'
 import * as eventHandlerHandler from './handlers/eventHandler'
@@ -23,6 +22,7 @@ import * as executeWindowRouteHandler from './handlers/executeWindowRoute'
 import * as expressionHandler from './handlers/expression'
 import * as fieldValueHandler from './handlers/fieldValue'
 import * as getCurrencyFieldHandler from './handlers/getCurrencyField'
+import * as getDropDownDataHandler from './handlers/getDropDownData'
 import * as getFieldPropertyFormVMHandler from './handlers/getFieldPropertyFormVM'
 import * as getParentWidgetHandler from './handlers/getParentWidget'
 import * as getTableNameFormVMHandler from './handlers/getTableNameFormVM'
@@ -40,7 +40,6 @@ import * as remoteOperationHandler from './handlers/remoteOperation'
 import * as renderWindowsHandler from './handlers/renderWindows'
 import * as serverExpressionHandler from './handlers/serverExpression'
 import * as treeHandlerHandler from './handlers/treeHandler'
-import * as vPlatformVueHandler from './handlers/vPlatformVue'
 import * as webDesignclonePropsHandler from './handlers/webDesign.cloneProps'
 import * as widgetActionHandler from './handlers/widgetAction'
 import * as widgetChildrenHandler from './handlers/widgetChildren'
@@ -126,7 +125,6 @@ var _initHandlers = function () {
     renderWindowsHandler,
     serverExpressionHandler,
     treeHandlerHandler,
-    vPlatformVueHandler,
     webDesignclonePropsHandler,
     widgetActionHandler,
     widgetChildrenHandler,
