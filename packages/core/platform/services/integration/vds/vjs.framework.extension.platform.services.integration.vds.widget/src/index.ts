@@ -22,7 +22,11 @@ var windowVMManager,
   scopeManager,
   windowRelation
 
-export function initModule(sBox) {
+interface sBox {
+  getService: (url: string) => void
+}
+
+export function initModule(sBox: sBox) {
   windowVMManager = sBox.getService(
     'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
   )
@@ -88,7 +92,7 @@ exports.StoreType = {
  * @example
  * vds.widget.getWidgetCodes("user");
  */
-export function getWidgetCodes(datasource, fieldCode) {
+export function getWidgetCodes(datasource: string, fieldCode?: string) {
   //    	if(_isComponentScope()){
   //    		return [];
   //    	}
@@ -133,7 +137,11 @@ export function getStoreType(code) {
  * @example
  * vds.widget.setProperty("JGTextBox1", "ReadOnly", true);
  */
-export function setProperty(widgetCode, propertyCode, propertyValue) {
+export function setProperty(
+  widgetCode: String,
+  propertyCode: String,
+  propertyValue: any
+) {
   //    	if(_isComponentScope()){
   //    		return;
   //    	}
@@ -149,7 +157,7 @@ export function setProperty(widgetCode, propertyCode, propertyValue) {
  * @example
  * vds.widget.getType("JGTextBox1");//JGTextBox
  */
-export function getType(widgetCode) {
+export function getType(widgetCode: String) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -165,7 +173,7 @@ export function getType(widgetCode) {
  * @example
  * vds.widget.getProperty("JGTextBox1", "ReadOnly");//false
  */
-export function getProperty(widgetCode, propertyCode) {
+export function getProperty(widgetCode: String, propertyCode: String) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -183,7 +191,7 @@ export function getProperty(widgetCode, propertyCode) {
  * @example
  * vds.widget.exists("JGTextBox1");//true
  */
-export function exists(widgetCode) {
+export function exists(widgetCode: String) {
   //    	if(_isComponentScope()){
   //    		return false;
   //    	}
@@ -197,7 +205,7 @@ export function exists(widgetCode) {
  * @example
  * vds.widget.getDatasourceCodes("JGTextBox1");
  */
-export function getDatasourceCodes(widgetCode) {
+export function getDatasourceCodes(widgetCode: String) {
   //    	if(_isComponentScope()){
   //    		return [];
   //    	}
@@ -215,7 +223,7 @@ export function getDatasourceCodes(widgetCode) {
  * @example
  * vds.widget.getFieldCodes("entityCode1","JGTextBox1");
  * */
-export function getFieldCodes(datasourceCode, widgetCode) {
+export function getFieldCodes(datasourceCode: String, widgetCode: String) {
   //    	if(_isComponentScope()){
   //    		return [];
   //    	}
@@ -235,7 +243,7 @@ export function getFieldCodes(datasourceCode, widgetCode) {
  * @example
  * vds.widget.execute("JGTextBox1","setVisible",[false]);
  * */
-export function execute(widgetCode, funCode, params) {
+export function execute(widgetCode?: any, funCode?: any, params?: any) {
   //    	if(_isComponentScope()){
   //    		return;
   //    	}
@@ -290,7 +298,7 @@ var hasScroll = function (element) {
  * @example
  * vds.widget.scrollTo("JGDataGrid");
  * */
-export function scrollTo(widgetCode) {
+export function scrollTo(widgetCode: string) {
   var widget = widgetContext.get(widgetCode, 'widgetObj')
   if (widget) {
     var scopeId = widget.getScopeId()

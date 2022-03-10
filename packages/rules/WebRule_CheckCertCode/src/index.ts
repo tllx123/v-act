@@ -1,7 +1,7 @@
 ﻿/**
  * 校验验证码
  * */
-function getCookie(name) {
+function getCookie(name: string) {
   var arr,
     reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
   if ((arr = document.cookie.match(reg))) return unescape(arr[2])
@@ -25,6 +25,11 @@ const vds = {
   string,
   widget,
   window
+}
+
+interface datas {
+  success: boolean
+  msg: string
 }
 
 // 规则主入口(必须有)
@@ -82,7 +87,7 @@ const main = function (ruleContext: RuleContext) {
             var iden = vds.string.uuid()
             document.cookie = 'v_platform_make_code_iden=' + iden
             if ('fileID' == buildTargetType) {
-              var success = function (datas) {
+              var success = function (datas: datas) {
                 switch (fileIDReceiveTargetType) {
                   case 'ruleSetInput':
                     ruleContext.getMethodContext().setInput(valueTarget, iden)
@@ -101,7 +106,7 @@ const main = function (ruleContext: RuleContext) {
               vds.rpc.callCommandSync('FileCertImage', [], {
                 isAsync: false,
                 CertPicCode: iden,
-                success: function (datas) {
+                success: function (datas: datas) {
                   if (datas && datas.success) {
                     success()
                     setBusinessRuleResult(ruleContext, outFlag, resolve)
@@ -164,7 +169,7 @@ const main = function (ruleContext: RuleContext) {
        * @ruleContext 规则上下文
        * @error_msg 提示信息
        * */
-      function HandleException(error_msg) {
+      function HandleException(error_msg: string) {
         var exception = vds.exception.newBusinessException(error_msg)
         vds.exception.handle(exception)
         throw exception
@@ -172,7 +177,11 @@ const main = function (ruleContext: RuleContext) {
 
       /** 设置规则返回结果
        */
-      function setBusinessRuleResult(ruleContext, result, resolve) {
+      function setBusinessRuleResult(
+        ruleContext: RuleContext,
+        result,
+        resolve
+      ) {
         if (ruleContext.setResult) {
           ruleContext.setResult('isValidateOK', result)
         }

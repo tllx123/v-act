@@ -272,7 +272,7 @@ export function dialogWindow(componentCode, windowCode, params) {
  * vds.import("vds.browser.*");
  * vds.browser.newTab("http://www.yindangu.com");
  */
-export function newTab(url, params) {
+export function newTab(url: string, params?: any) {
   if (!url) {
     return
   }

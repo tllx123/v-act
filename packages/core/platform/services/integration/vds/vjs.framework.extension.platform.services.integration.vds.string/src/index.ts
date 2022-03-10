@@ -228,7 +228,7 @@ export function toMD5(val) {
  * @example
  * vds.string.uuid();
  */
-export function uuid(val) {
+export function uuid() {
   return uuid.generate()
 }
 
