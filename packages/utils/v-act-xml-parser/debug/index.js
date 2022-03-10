@@ -27,4 +27,5 @@ const xml = `<root>
 </foreach>
 <evaluateRule code="BR_ShowMessage5"/><root>`
 const dom = parser.parse(xml)
-console.log(JSON.stringify(dom, null, '\t'))
+
+parser.run(dom[0].children)
