@@ -1,3 +1,9 @@
+import { EncryptUtil as newEncryptUtil } from '@v-act/vjs.framework.extension.platform.interface.domain.encrypt'
+import { EncryptUtil as encryptUtil } from '@v-act/vjs.framework.extension.platform.services.domain.encryption'
+import { DesUtil as desUtil } from '@v-act/vjs.framework.extension.util.des'
+import { EasyTemplateUtil as easyTemplateUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 /**
  * 字符串工具方法
  * @desc 提供与字符串相关的一系列接口，使用前请先import：vds.import("vds.string.*")
@@ -8,31 +14,8 @@
  * vds.import("vds.string.*");
  * vds.string.concat("a","b","c");
  */
-window.vds = window.vds || {}
-window.vds.string = window.vds.string || {}
-
-var string = window.vds.string
-
-exports = string
-
-var strUtil, encryptUtil, desUtil, uuid, easyTemplateUtil, encryptUtil, mathUtil
-
-export function initModule(sBox) {
-  strUtil = sBox.getService('vjs.framework.extension.util.StringUtil')
-  encryptUtil = sBox.getService(
-    'vjs.framework.extension.platform.services.domain.encrypt.EncryptUtil'
-  )
-  newEncryptUtil = sBox.getService(
-    'vjs.framework.extension.platform.interface.domain.encrypt'
-  )
-  desUtil = sBox.getService('vjs.framework.extension.util.DesUtil')
-  uuid = sBox.getService('vjs.framework.extension.util.UUID')
-  mathUtil = sBox.getService('vjs.framework.extension.util.Math')
-  easyTemplateUtil = sBox.getService(
-    'vjs.framework.extension.util.EasyTemplateUtil'
-  )
-  jsonUtil = sBox.getService('vjs.framework.extension.util.JsonUtil')
-}
+import { StringUtil as strUtil } from '@v-act/vjs.framework.extension.util.string'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 /**
  * 拼接字符串
@@ -229,7 +212,7 @@ export function toMD5(val) {
  * vds.string.uuid();
  */
 export function uuid(val) {
-  return uuid.generate()
+  return uuidUtil.generate()
 }
 
 /**
@@ -343,4 +326,3 @@ export function decryptAES(value, secretKey) {
 export function numberAdd(numStr, num) {
   return mathUtil.numberCodeAdd(numStr, num)
 }
-return exports

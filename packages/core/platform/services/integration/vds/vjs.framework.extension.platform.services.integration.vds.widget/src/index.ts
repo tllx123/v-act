@@ -351,4 +351,3 @@ export function scrollTo(widgetCode) {
     }
   }
 }
-return exports

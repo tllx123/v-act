@@ -575,4 +575,3 @@ var _getInfo = function () {
   }
   return info
 }
-return exports

@@ -37,13 +37,6 @@ let inDebug = function () {
 }
 
 /**
- * 获取开发系统调试标识id
- * */
-let getDevId = function () {
-  return environment.getDevId()
-}
-
-/**
  * 获取开发系统注入逻辑
  */
 let getDevHook = function () {

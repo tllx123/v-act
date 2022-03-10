@@ -9,18 +9,17 @@
  * vds.app.getVersion();
  */
 
-import CameraService from 'vjs.framework.extension.platform.services.native.mobile.camera'
-import FileTransferService from 'vjs.framework.extension.platform.services.native.mobile.filefransfer'
-import geolocationService from 'vjs.framework.extension.platform.services.native.mobile.geolocation'
-import hardwareOperationService from 'vjs.framework.extension.platform.services.native.mobile.hardwareoperation'
-import payService from 'vjs.framework.extension.platform.services.native.mobile.pay'
-import saveImageToGalleryService from 'vjs.framework.extension.platform.services.native.mobile.saveimagetogallery'
-
-import exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import str from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import versionService from '@v-act/vjs.framework.extension.platform.services.native.mobile.appversion'
-import ImagePickerService from '@v-act/vjs.framework.extension.platform.services.native.mobile.imagepicker'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as str from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import { VersionService as versionService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.appversion'
+import { Camera as CameraService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.camera'
+import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer'
+import { Geolocation as geolocationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.geolocation'
+import { HardwareOperation as hardwareOperationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.hardwareoperation'
+import { ImagePicker as ImagePickerService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.imagepicker'
+import { Pay as payService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.pay'
+import { SaveImageToGallery as saveImageToGalleryService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.saveimagetogallery'
 
 /**
  * 获取app版本
