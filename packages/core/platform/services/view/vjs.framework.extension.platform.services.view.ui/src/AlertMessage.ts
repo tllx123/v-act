@@ -2,8 +2,8 @@ import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interf
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
 
-import backMask from './BackMask'
-import zindex from './ZIndex'
+import * as backMask from './BackMask'
+import * as zindex from './ZIndex'
 
 var dialogs = [],
   alertDiv,

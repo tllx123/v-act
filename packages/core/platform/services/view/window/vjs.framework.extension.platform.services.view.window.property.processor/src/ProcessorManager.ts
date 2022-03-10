@@ -1,3 +1,10 @@
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { ConfigDataUtil as configDataUtil } from '@v-act/vjs.framework.extension.platform.util.config.data'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.JsonUtil'
+
+import DefaultProcessor from './DefaultProcessor'
+
 /**
  * @namespace ProcessorManager
  * @module ProcessorManager
@@ -6,30 +13,7 @@
  * vjs服务名称：vjs.framework.extension.platform.services.view.window.property.ProcessorManager<br/>
  * @author xiedh
  */
-var sandbox,
-  token = 'PROTOTYPE_METADATA_DATA',
-  DefaultProcessor,
-  configDataUtil,
-  jsonUtils,
-  scopeManager,
-  StorageManager
-
-export function initModule(sb) {
-  if (sb) {
-    sandbox = sb
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    configDataUtil = sb.getService(
-      'vjs.framework.extension.platform.util.configDataUtil'
-    )
-    jsonUtils = sb.getService('vjs.framework.extension.util.JsonUtil')
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    DefaultProcessor = require('vjs/framework/extension/platform/services/view/window/property/processor/DefaultProcessor')
-  }
-}
+var token = 'PROTOTYPE_METADATA_DATA'
 
 /**
  * 获取原型元信息仓库
