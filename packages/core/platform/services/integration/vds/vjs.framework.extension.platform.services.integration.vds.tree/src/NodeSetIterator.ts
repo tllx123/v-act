@@ -1,32 +1,29 @@
-var Node
+import Node from './Node'
+
 /**
  * 树数据源节点迭代器定义
  * @constructor
  * @alias NodeSetIterator
  * @catalog 数据源/树数据源定义
  */
-var NodeSetIterator = function (nodeSetIterator) {
-  this.nodeSetIterator = nodeSetIterator
-}
-
-NodeSetIterator.prototype = {
-  initModule: function () {
-    Node = require('vjs/framework/extension/platform/services/integration/vds/tree/Node')
-  },
+class NodeSetIterator {
+  constructor(nodeSetIterator) {
+    this.nodeSetIterator = nodeSetIterator
+  }
 
   /**
    *  是否含有下一条记录
    * @return Boolean
    */
-  hasNext: function () {
+  hasNext() {
     return this.nodeSetIterator.hasNext()
-  },
+  }
 
   /**
    *获取下一条记录
    * @return {@link Node}
    */
-  next: function () {
+  next() {
     var node = this.nodeSetIterator.next()
     if (node) {
       return new Node(node)
@@ -35,4 +32,4 @@ NodeSetIterator.prototype = {
   }
 }
 
-return NodeSetIterator
+export default NodeSetIterator

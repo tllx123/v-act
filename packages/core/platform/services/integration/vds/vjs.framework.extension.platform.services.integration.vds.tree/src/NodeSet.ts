@@ -1,4 +1,4 @@
-var Node, NodeSetIterator
+import NodeSetIterator from './NodeSetIterator'
 
 /**
  * 树数据源结果集
@@ -6,19 +6,13 @@ var Node, NodeSetIterator
  * @alias NodeSet
  * @catalog 数据源/树数据源定义
  */
-function NodeSet(resultset) {
-  this.resultset = resultset
-}
-
-NodeSet.prototype = {
-  initModule: function () {
-    Node = require('vjs/framework/extension/platform/services/integration/vds/tree/Node')
-    NodeSetIterator = require('vjs/framework/extension/platform/services/integration/vds/tree/NodeSetIterator')
-  },
-
-  _to: function (node) {
+class NodeSet {
+  constructor(resultset) {
+    this.resultset = resultset
+  }
+  _to(node) {
     return !node ? null : new Node(node)
-  },
+  }
   /**
    * 获取结果集迭代器
    * @returns {@link NodeSetIterator}
@@ -27,9 +21,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var iterator = resultSet.interator();
    */
-  iterator: function () {
+  iterator() {
     return new NodeSetIterator(this.resultset.iterator())
-  },
+  }
   /**
    * 结果集是否为空
    * @returns Boolean
@@ -38,9 +32,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var empty = resultSet.isEmpty();
    */
-  isEmpty: function () {
+  isEmpty() {
     return this.resultset.isEmpty()
-  },
+  }
   /**
    * 结果集记录数
    * @returns Boolean
@@ -49,9 +43,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var size = resultSet.size();
    */
-  size: function () {
+  size() {
     return this.resultset.size()
-  },
+  }
   /**
    * 将结果集转换成原生数组
    * 注意：当记录数多时，此方法会存在性能隐患
@@ -61,14 +55,14 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var list = resultSet.toArray();
    */
-  toArray: function () {
+  toArray() {
     var list = this.resultset.toArray()
     var rs = []
     for (var i = 0, l = list.length; i < l; i++) {
       rs.push(this._to(list[i]))
     }
     return rs
-  },
+  }
   /**
    * 获取指定下标的节点
    * @param {Integer} i 记录下标
@@ -78,9 +72,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var node = resultSet.index(1);
    */
-  index: function (i) {
+  index(i) {
     return this._to(this.resultset.index(i))
-  },
+  }
 
   /**
    * 获取第一条节点
@@ -90,9 +84,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var node = resultSet.first();
    */
-  first: function () {
+  first() {
     return this._to(this.resulset.first())
-  },
+  }
 
   /**
    * 获取最后一条节点
@@ -102,9 +96,9 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var node = resultSet.last();
    */
-  last: function () {
+  last() {
     return this._to(this.resulset.last())
-  },
+  }
 
   /**
    * 遍历结果集
@@ -116,14 +110,14 @@ NodeSet.prototype = {
    * 		var val = node.get("fieldCode1");
    * });
    */
-  iterate: function (fn) {
+  iterate(fn) {
     var func = (function (f, _t) {
       return function (node, index) {
         return f(_t._to(node), index)
       }
     })(fn, this)
     return this.resultset.iterate(func)
-  },
+  }
   /**
    * 结果集克隆
    * @returns {@link NodeSet}
@@ -132,10 +126,10 @@ NodeSet.prototype = {
    * var resultSet = tree.getAllRecords();
    * var rs = resultSet.clone();
    */
-  clone: function () {
+  clone() {
     var newRes = this.resultset.clone()
     return new NodeSet(newRes)
   }
 }
 
-module.exports = NodeSet
+export default NodeSet
