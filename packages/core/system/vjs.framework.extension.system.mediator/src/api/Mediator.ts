@@ -1,6 +1,9 @@
-import spiMappingUtils from '@v-act/vjs.framework.extension.platform.data.spi.mapings'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { EventEmitterManager as eventExtension } from '@v-act/vjs.framework.extension.system.event'
+import { EventExtension as eventExtension } from '@v-act/vjs.framework.extension.system.event'
+
+/*import spiMappingUtils
+  from '@v-act/vjs.framework.extension.platform.data.spi.mapings'*/
+const spiMappingUtils = null
 
 let SERVICE_MAPPING_DATAS = 'Service_Mapping_Datas'
 let MEDIATOR_SERVICE = 'mediator'
