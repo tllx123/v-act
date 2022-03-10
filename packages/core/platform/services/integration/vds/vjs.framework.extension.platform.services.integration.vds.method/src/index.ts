@@ -8,44 +8,19 @@
  * vds.import("vds.method.*");
  * vds.method.get("funcode");
  */
-window.vds = window.vds || {}
-window.vds.method = window.vds.method || {}
 
-var method = window.vds.method
+import {
+  ComponentRoute as componentRoute,
+  WindowRoute as windowRoute
+} from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.engine.route'
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { ApplicationParam as appData } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
 
-exports = method
+import Method from './Method'
 
-var windowRoute,
-  componentRoute,
-  Method,
-  mediator,
-  routeEngine,
-  appData,
-  RouteContext,
-  componentInit
-
-export function initModule(sandbox) {
-  componentInit = sandbox.getService(
-    'vjs.framework.extension.platform.services.init.ComponentInit'
-  )
-  windowRoute = sandbox.getService(
-    'vjs.framework.extension.platform.data.storage.schema.route.WindowRoute'
-  )
-  componentRoute = sandbox.getService(
-    'vjs.framework.extension.platform.data.storage.schema.route.ComponentRoute'
-  )
-  Method = require('vjs/framework/extension/platform/services/integration/vds/method/Method')
-  mediator = sandbox.getService('vjs.framework.extension.system.mediator')
-  routeEngine = sandbox.getService(
-    'vjs.framework.extension.platform.engine.route.RouteEngine'
-  )
-  appData = sandbox.getService(
-    'vjs.framework.extension.platform.services.param.manager.ApplicationParam'
-  )
-  RouteContext = sandbox.getService(
-    'vjs.framework.extension.platform.interface.route.RouteContext'
-  )
-}
 /**
  * 获取方法对象
  * @param {String} methodCode 方法编码

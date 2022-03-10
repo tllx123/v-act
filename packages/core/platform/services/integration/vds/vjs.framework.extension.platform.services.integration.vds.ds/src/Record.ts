@@ -102,4 +102,4 @@ Record.prototype = {
   }
 }
 
-module.exports = Record
+export default Record

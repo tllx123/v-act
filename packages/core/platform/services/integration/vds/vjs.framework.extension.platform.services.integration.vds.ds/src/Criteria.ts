@@ -30,4 +30,4 @@ Criteria.prototype = {
   }
 }
 
-module.exports = Criteria
+export default Criteria

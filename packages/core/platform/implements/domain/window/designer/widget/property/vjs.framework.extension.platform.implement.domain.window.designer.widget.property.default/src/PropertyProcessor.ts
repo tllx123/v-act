@@ -1,6 +1,7 @@
 import { ProcessorUtils as processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
+import * as DropDownSource from './compatible/DropDownSource'
 import * as childrenEditor from './editors/children'
 import * as entityEditor from './editors/entity'
 import * as expressionEditor from './editors/expression'
@@ -80,9 +81,7 @@ var _initEditorHandlers = function () {
 }
 
 var _initCompatibleHandlers = function () {
-  var handlers = [
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/compatible/DropDownSource')
-  ]
+  var handlers = [DropDownSource]
   for (var i = 0, l = handlers.length; i < l; i++) {
     var handler = handlers[i]
     _compatibleHandlers[handler.getType()] = handler.getHandler()
