@@ -4,15 +4,81 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as callCommandService from '../util/CallCommand'
-import * as Exception from './Exception'
+import Exception, { ExceptionJsonArg } from './Exception'
 
-let ExpectedException = function (message, e, errInfo, json) {
-  Exception.apply(this, arguments, errInfo, json)
+class ExpectedException extends Exception {
+  constructor(
+    message: string,
+    e: Error,
+    errInfo: { [key: string]: any },
+    json: ExceptionJsonArg
+  ) {
+    super(message, e, errInfo, json)
+  }
+
+  /**
+   * 异常标题
+   * */
+  getTitle() {
+    return i18n.get('错误', '前端异常弹框的标题')
+  }
+  /**
+   * 异常弹框顶部信息
+   * */
+  getMsgHeader() {
+    return i18n.get('前端框架异常', '前端异常弹框的顶部描述信息')
+  }
+  /**
+   * 异常弹框标题
+   * */
+  getMsg() {
+    return this.message
+  }
+  /**
+   * 获取详细描述信息, 数组是为了顺序
+   * */
+  getDetailInfo() {
+    let config = []
+    let errInfo = this.errInfo
+    if (errInfo && errInfo.exceptionDatas instanceof Array) {
+      config = errInfo.exceptionDatas
+    }
+    return config
+  }
+
+  handling() {
+    if (this.isInApp()) {
+      alert(this.message)
+      log.error(this.getClassName() + ':' + this.message)
+      log.error(this.getStackTrace())
+    } else {
+      clearDetailObj(this) //清除异常详情的对象，避免序列化时报错
+      let params = {
+        title: this.getTitle(),
+        msgHeader: this.getMsgHeader(),
+        msg: this.getMsg(),
+        // 'detail':this.getStackTrace()
+        detail: this.getDetailHtml(this.errInfo),
+        exceptionData: this.getExceptionData(),
+        exceptionMap: this.serialize(),
+        viewonly: this.isViewonly(),
+        network: this.isNetwork(),
+        hideFeeback: this.getHideFeeback(),
+        containerId: this.getContainerId()
+      }
+      if (typeof this.getModalClosedHandler == 'function') {
+        params.callback = this.getModalClosedHandler()
+      }
+      callCommandService.showDialog(params, this.getClassName())
+      if (this.isSubmit())
+        //服务端异常不需要提交，服务端异常在创建异常对象时会标记为服务端异常
+        callCommandService.callCommand(params)
+      throw this
+    }
+  }
 }
 
-const initModule = function (sandbox) {}
-
-let _toStr = function (obj) {
+let _toStr = function (obj: any) {
   let isError = false
   try {
     //能用接口转就直接转
@@ -89,74 +155,6 @@ let clearDetailObj = function (exception) {
           map.value = _toStr(val)
         }
       }
-    }
-  }
-}
-
-ExpectedException.prototype = {
-  initModule: function (sandbox) {
-    var Extend = require('vjs/framework/extension/platform/interface/exception/util/Extend')
-    Extend.extend(ExpectedException, Exception, sandbox)
-  },
-
-  /**
-   * 异常标题
-   * */
-  getTitle: function () {
-    return i18n.get('错误', '前端异常弹框的标题')
-  },
-  /**
-   * 异常弹框顶部信息
-   * */
-  getMsgHeader: function () {
-    return i18n.get('前端框架异常', '前端异常弹框的顶部描述信息')
-  },
-  /**
-   * 异常弹框标题
-   * */
-  getMsg: function () {
-    return this.message
-  },
-  /**
-   * 获取详细描述信息, 数组是为了顺序
-   * */
-  getDetailInfo: function () {
-    let config = []
-    let errInfo = this.errInfo
-    if (errInfo && errInfo.exceptionDatas instanceof Array) {
-      config = errInfo.exceptionDatas
-    }
-    return config
-  },
-
-  handling: function () {
-    if (this.isInApp()) {
-      alert(this.message)
-      log.error(this.getClassName() + ':' + this.message)
-      log.error(this.getStackTrace())
-    } else {
-      clearDetailObj(this) //清除异常详情的对象，避免序列化时报错
-      let params = {
-        title: this.getTitle(),
-        msgHeader: this.getMsgHeader(),
-        msg: this.getMsg(),
-        // 'detail':this.getStackTrace()
-        detail: this.getDetailHtml(this.errInfo),
-        exceptionData: this.getExceptionData(),
-        exceptionMap: this.serialize(),
-        viewonly: this.isViewonly(),
-        network: this.isNetwork(),
-        hideFeeback: this.getHideFeeback(),
-        containerId: this.getContainerId()
-      }
-      if (typeof this.getModalClosedHandler == 'function') {
-        params.callback = this.getModalClosedHandler()
-      }
-      callCommandService.showDialog(params, this.getClassName())
-      if (this.isSubmit())
-        //服务端异常不需要提交，服务端异常在创建异常对象时会标记为服务端异常
-        callCommandService.callCommand(params)
-      throw this
     }
   }
 }

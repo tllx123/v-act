@@ -5,6 +5,19 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import * as exceptionFactory from '../api/ExceptionFactory'
 import * as exceptionManager from '../api/ExceptionManager'
 
+type ExceptionJsonArg = {
+  errInfo: { [key: string]: any }
+  modalClosed: null | ((...args: any[]) => void)
+  submit: boolean
+  feeback: boolean
+  containerId: string
+  errorNo: string
+  serviceException: boolean
+  errorMsg?: string
+  isTiped: boolean
+  stacks: string[]
+}
+
 /**
  * @namespace Exception
  * @class Exception
@@ -44,18 +57,7 @@ class Exception extends Error {
     message: string,
     e: Error,
     errInfo: { [key: string]: any },
-    json: {
-      errInfo: { [key: string]: any }
-      modalClosed: null | ((...args: any[]) => void)
-      submit: boolean
-      feeback: boolean
-      containerId: string
-      errorNo: string
-      serviceException: boolean
-      errorMsg?: string
-      isTiped: boolean
-      stacks: string[]
-    }
+    json: ExceptionJsonArg
   ) {
     super()
     if (Error.captureStackTrace) {
@@ -476,7 +478,7 @@ class Exception extends Error {
   getMessage() {
     return this.message
   }
-  getDetailInfo() {
+  getDetailInfo(): any {
     return null
   }
   /**
@@ -586,3 +588,5 @@ Error.prepareStackTrace = function (error, stack) {
 }
 
 export default Exception
+
+export { Exception, type ExceptionJsonArg }
