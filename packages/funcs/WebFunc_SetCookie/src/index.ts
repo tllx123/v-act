@@ -7,13 +7,13 @@ import * as cookie from '@v-act/vjs.framework.extension.platform.services.integr
 const vds = { object, exception, cookie }
 
 const main = function (
-  CookieName,
-  CookieValue,
-  Expires,
-  Path,
-  Domain,
-  Secure,
-  HttpOnly
+  CookieName:any,
+  CookieValue:any,
+  Expires:any,
+  Path:any,
+  Domain:any,
+  Secure:any,
+  HttpOnly:any
 ) {
   CookieName = vds.object.isUndefOrNull(CookieName) ? null : CookieName // 必需。cookie名称。
   CookieValue = vds.object.isUndefOrNull(CookieValue) ? null : CookieValue // 必需。cookie值。
@@ -29,20 +29,20 @@ const main = function (
     throw vds.exception.newConfigException('cookie值为空，请检查')
 
   try {
-    var options = {}
+    var options = {CookieName,CookieValue,Expires,Path,Domain,Secure,HttpOnly}
 
     // 兼容处理IE日期转换报错
     if (Expires) Expires = Expires.replace(new RegExp(/-/gm), '/')
 
-    options.expires = new Date(Expires) //cookie有效期。
+    options.Expires = new Date(Expires) //cookie有效期。
 
     // 可选。cookie服务器路径
     if (Path != null) {
-      options.path = Path
+      options.Path = Path
     }
     // 可选。cookie域名。
     if (Domain != null) {
-      options.domain = Domain
+      options.Domain = Domain
     }
     // 可选。是否通过安全的 HTTPS
     if (typeof Secure == 'string')
@@ -51,7 +51,7 @@ const main = function (
     if (typeof Secure == 'number') Secure = Secure == 1
 
     if (Secure != null) {
-      options.secure = Secure
+      options.Secure = Secure
     }
     // 可选。指定Cookie是否可以通过客户端脚本访问
     if (typeof HttpOnly == 'string')

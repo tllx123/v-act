@@ -5,9 +5,10 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-const vds = { ds, exception, expression }
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+const vds = { ds, exception, expression,log }
 
-const main = function (dsName, columnName) {
+const main = function (dsName:string, columnName:string) {
   //...
   //根据参数实现函数处理逻辑
   //todo:

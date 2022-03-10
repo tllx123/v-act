@@ -1,11 +1,16 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-export function initModule(sb) {}
 
-const main = function (param) {
-  let args = param.getArgs()
-  let loginParams = {}
+
+const main = function (param:any) {
+  let args = param.getArgs(),
+  type:string='',
+  componentCode:string='',
+  windowCode:string='',
+  url:string=''
+
+  let loginParams = {type,componentCode,windowCode,url}
   if (args.length < 1) {
     let windowScope = scopeManager.getWindowScope()
     loginParams.type = 'platform'

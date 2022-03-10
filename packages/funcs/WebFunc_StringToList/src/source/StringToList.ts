@@ -1,14 +1,14 @@
-import * as stringUtil from 'module'
-import * as viewModel from 'module'
+import * as stringUtil from '@v-act/vjs.framework.extension.util.string'
+import * as viewModel from '@v-act/vjs.framework.extension.platform.services.viewModel'
 
 export function initModule() {}
 
 //主入口(必须有)
-const main = function (str, separator, tableName, columnName) {
+const main = function (str:string, separator:string, tableName:string, columnName:string) {
   if (stringUtil.isEmpty(str)) {
     throw new Error('字串不允许为空，请检查')
   }
-  if (stringUtil.isEmpty(str)) {
+  if (stringUtil.isEmpty(separator)) {
     throw new Error('分隔符不允许为空，请检查')
   }
   if (stringUtil.isEmpty(tableName)) {

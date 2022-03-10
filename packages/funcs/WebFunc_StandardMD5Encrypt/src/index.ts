@@ -13,7 +13,7 @@
 var hexcase = 0,
   chrsz = 8
 
-const main = function (encryptValue, unit, upperType) {
+const main = function (encryptValue:string, unit:string, upperType:string) {
   if (encryptValue == null || encryptValue == '') return ''
 
   if (vds.object.isUndefOrNull(unit)) {
@@ -35,7 +35,7 @@ const main = function (encryptValue, unit, upperType) {
 }
 
 //传入中文时，要先转码
-var utf16to8 = function (str) {
+var utf16to8 = function (str:string) {
   var out, i, len, c
   out = ''
   len = str.length
@@ -56,14 +56,14 @@ var utf16to8 = function (str) {
 }
 
 //标准MD5加密
-var hex_md5 = function (s) {
+var hex_md5 = function (s:string) {
   return binl2hex(core_md5(str2binl(s), s.length * chrsz))
 }
 
 /*
  * Convert an array of little-endian words to a hex string.
  */
-var binl2hex = function (binarray) {
+var binl2hex = function (binarray:any) {
   var hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
   var str = ''
   for (var i = 0; i < binarray.length * 4; i++) {
@@ -77,7 +77,7 @@ var binl2hex = function (binarray) {
 /*
  * Calculate the MD5 of an array of little-endian words, and a bit length
  */
-var core_md5 = function (x, len) {
+var core_md5 = function (x:any, len:number) {
   /* append padding */
   x[len >> 5] |= 0x80 << len % 32
   x[(((len + 64) >>> 9) << 4) + 14] = len
@@ -169,27 +169,27 @@ var core_md5 = function (x, len) {
   return Array(a, b, c, d)
 }
 
-var md5_cmn = function (q, a, b, x, s, t) {
+var md5_cmn = function (q:number, a:number, b:number, x:number, s:number, t:number) {
   return safe_add(bit_rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b)
 }
 
-var md5_ff = function (a, b, c, d, x, s, t) {
+var md5_ff = function (a:number, b:number, c:number, d:number, x:number, s:number, t:number) {
   return md5_cmn((b & c) | (~b & d), a, b, x, s, t)
 }
 
-var md5_gg = function (a, b, c, d, x, s, t) {
+var md5_gg = function (a:number, b:number, c:number, d:number, x:number, s:number, t:number) {
   return md5_cmn((b & d) | (c & ~d), a, b, x, s, t)
 }
 
-var md5_hh = function (a, b, c, d, x, s, t) {
+var md5_hh = function (a:number, b:number, c:number, d:number, x:number, s:number, t:number) {
   return md5_cmn(b ^ c ^ d, a, b, x, s, t)
 }
 
-var md5_ii = function (a, b, c, d, x, s, t) {
+var md5_ii = function (a:number, b:number, c:number, d:number, x:number, s:number, t:number) {
   return md5_cmn(c ^ (b | ~d), a, b, x, s, t)
 }
 
-var safe_add = function (x, y) {
+var safe_add = function (x:number, y:number) {
   var lsw = (x & 0xffff) + (y & 0xffff)
   var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
   return (msw << 16) | (lsw & 0xffff)
@@ -198,7 +198,7 @@ var safe_add = function (x, y) {
 /*
  * Bitwise rotate a 32-bit number to the left.
  */
-var bit_rol = function (num, cnt) {
+var bit_rol = function (num:number, cnt:number) {
   return (num << cnt) | (num >>> (32 - cnt))
 }
 
@@ -206,7 +206,7 @@ var bit_rol = function (num, cnt) {
  * Convert a string to an array of little-endian words
  * If chrsz is ASCII, characters >255 have their hi-byte silently ignored.
  */
-var str2binl = function (str) {
+var str2binl = function (str:string) {
   var bin = Array()
   var mask = (1 << chrsz) - 1
   for (var i = 0; i < str.length * chrsz; i += chrsz)

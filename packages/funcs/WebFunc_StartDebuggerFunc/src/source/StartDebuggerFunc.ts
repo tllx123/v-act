@@ -4,9 +4,9 @@ import * as viewOperation from 'module'
 
 // 加载
 
-export function initModule() {}
+
 //主入口(必须有)
-const main = function (ip, port) {
+const main = function (ip:string, port:string) {
   try {
     let expression = 'StartDebuggerFunc("' + ip + '","' + port + '")'
     let findParam = {
