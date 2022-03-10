@@ -1,7 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { ConfigDataUtil as configDataUtil } from '@v-act/vjs.framework.extension.platform.util.config.data'
-import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.JsonUtil'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 import DefaultProcessor from './DefaultProcessor'
 

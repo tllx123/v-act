@@ -12,10 +12,8 @@ import { ConfigDataUtil as configDataUtil } from '@v-act/vjs.framework.extension
 import {
   PropertyHandle as propertyHandle,
   WebDesignPropertyHandle as webDesignPropertyHandle
-} from '@v-act/vjs.framework.extension.platform.window.property.handle'
+} from '@v-act/vjs.framework.extension.platform.window.property'
 import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
-
-import * as processorManager from './ProcessorManager'
 
 /**
  * 窗体属性处理器

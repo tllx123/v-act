@@ -21,7 +21,7 @@ let constructors = {
  * 异常类型
  * @enum {String}
  */
-exports.TYPES = {
+const TYPES = {
   Business: 'BusinessException',
   Unlogin: 'UnloginException',
   Expected: 'Expected',
@@ -179,5 +179,6 @@ export {
   getExceptionTypeByError,
   isAcceptType,
   isException,
+  TYPES,
   unSerialize
 }

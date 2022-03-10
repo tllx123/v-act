@@ -13,7 +13,7 @@ function Metadata(dataSourceName, fields) {
   this.uppToOrigFldMap = null
 }
 
-_getUpperToOriginalFieldMap = function (metadata) {
+const _getUpperToOriginalFieldMap = function (metadata) {
   let rs = null
   if (metadata.uppToOrigFldMap) {
     rs = metadata.uppToOrigFldMap

@@ -124,8 +124,6 @@ const crossDomainRequest = function (params) {
   return invoke(params, 'common', 'crossDomain')
 }
 
-//TODO
-window.RPC = exports
 export {
   crossDomainRequest,
   invokeExtensibleOperation,

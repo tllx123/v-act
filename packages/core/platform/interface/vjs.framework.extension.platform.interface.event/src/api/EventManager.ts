@@ -15,7 +15,7 @@ let storage,
   isStartListener = false,
   V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN =
     'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN_THREE'
-crossDomainEventKey = 'Coross_Domain_Event_Key'
+const crossDomainEventKey = 'Coross_Domain_Event_Key'
 
 let _getStorage = function () {
   if (!storage) {

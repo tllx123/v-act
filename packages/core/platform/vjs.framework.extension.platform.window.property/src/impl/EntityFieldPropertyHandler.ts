@@ -3,13 +3,9 @@
  * */
 
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-import { widgetModule as widgetModule } from '@v-act/vjs.framework.extension.widget.manager'
-
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-
+import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-import { jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 var componentDisplayFormat = {}
 

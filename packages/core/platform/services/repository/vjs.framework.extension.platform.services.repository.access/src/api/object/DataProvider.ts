@@ -109,4 +109,4 @@ DataProvider.prototype.getRecordStart = function () {
   return this.recordStart
 }
 
-return DataProvider
+export default DataProvider
