@@ -399,8 +399,7 @@ Tree.prototype.removeNodeByIds = function (params) {
     })
 
     this.removeRecordByIds({ ids: toRemoveIds })
-    let parentNodes = [],
-      tree = this
+    let parentNodes = []
     collectionUtil.each(parentIds, function (id) {
       let node = tree.getNodeById(id)
       if (node) {
@@ -475,4 +474,4 @@ Tree.prototype.getAllNodes = function (params) {
 //       	}
 //    }
 
-return Tree
+export default Tree

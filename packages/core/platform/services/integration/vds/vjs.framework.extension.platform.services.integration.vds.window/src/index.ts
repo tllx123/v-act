@@ -8,44 +8,14 @@
  * vds.import("vds.window.*");
  * vds.window.getInput("var1");
  */
-window.vds = window.vds || {}
-window.vds.window = window.vds.window || {}
 
-var win = window.vds.window
-
-exports = win
-
-var windowParam,
-  dispose,
-  scopeManager,
-  datasourceFactory,
-  windowContainerManager,
-  Modal,
-  widgetContext
-
-export function initModule(sandbox) {
-  windowParam = sandbox.getService(
-    'vjs.framework.extension.platform.services.param.manager.WindowParam'
-  )
-  dispose = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.window.dispose.Mode'
-  )
-  scopeManager = sandbox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  datasourceFactory = sandbox.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-  )
-  windowContainerManager = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-  )
-  Modal = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.modal.Modal'
-  )
-  widgetContext = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-  )
-}
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { Modal } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { Mode as disposeUtil } from '@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.default'
 
 var gelEl = function () {
   var windowScope = scopeManager.getWindowScope()
@@ -176,7 +146,7 @@ export function dispose(ruleContext) {
   scopeManager.createScopeHandler({
     scopeId: scopeId,
     handler: function (context) {
-      dispose.dispose(context)
+      disposeUtil.dispose(context)
     }
   })(ruleContext.ruleCtx)
 }
@@ -356,5 +326,3 @@ export function isMobile() {
   }
   return false
 }
-
-return exports

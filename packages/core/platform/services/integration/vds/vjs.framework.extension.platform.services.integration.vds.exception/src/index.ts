@@ -122,5 +122,3 @@ export function handle(exception) {
 //    	exception.markServiceException();
 //    	return exception;
 //    }
-
-return exports

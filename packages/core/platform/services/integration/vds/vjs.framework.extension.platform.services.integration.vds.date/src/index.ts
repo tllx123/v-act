@@ -115,5 +115,3 @@ export function format(date, format) {
 export function valueOf(dateStr) {
   return mathUtil.toDate(dateStr)
 }
-
-return exports

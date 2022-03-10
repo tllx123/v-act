@@ -9,13 +9,12 @@
  * vds.expression.execute("@var1");
  */
 
-import { engine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { EngineContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { DatasourceFactory as dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import {
-  Datasource,
-  _genDatasourceByDs
-} from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+  ExpressionContext as EngineContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { _genDatasourceByDs } from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 
 /**

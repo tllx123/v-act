@@ -1331,7 +1331,16 @@
       "@v-act/webrule_savefile": ["packages/rules/WebRule_SaveFile/src"],
       "@v-act/webrule_vucredirector": ["packages/rules/WebRule_VucRedirector/src"],
       "@v-act/tokenizer": ["packages/utils/v-act-tokenizer/src"],
-      "@v-act/xml-parser": ["packages/utils/v-act-xml-parser/src"]
+      "@v-act/xml-parser": ["packages/utils/v-act-xml-parser/src"],
+      "@v-act/vjs.framework.extension.platform.interface.domain.encrypt": [
+        "packages/core/platform/interface/domain/vjs.framework.extension.platform.interface.domain.encrypt/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.default": [
+        "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.default/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.utils": [
+        "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.utils/src"
+      ]
     }
   }
 }
