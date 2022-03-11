@@ -1,12 +1,7 @@
-let sandbox
 //皮肤变量数据
-let SkinVariableDatas = {}
+let SkinVariableDatas: Record<string, any> = {}
 
-export function initModule(sBox) {
-  sandbox = sBox
-}
-
-const put = function (params) {
+const put = function (params: Record<string, any>) {
   if (params && params.id && params.vars) {
     let id = params.id
     let vars = params.vars
@@ -34,7 +29,7 @@ const put = function (params) {
   }
 }
 
-const getVarScript = function (params) {
+const getVarScript = function (params: Record<string, any>) {
   if (params && params.id) {
     let id = params.id
     let datas = SkinVariableDatas[id]
@@ -59,7 +54,7 @@ const getVarScript = function (params) {
   return ''
 }
 
-const getVarValue = function (params) {
+const getVarValue = function (params: Record<string, any>) {
   let id = params.id
   let code = params.code
   let value = params.defaultValue
@@ -76,4 +71,4 @@ const getVarValue = function (params) {
   return value
 }
 
-export { put, getVarScript, getVarValue }
+export { getVarScript, getVarValue, put }

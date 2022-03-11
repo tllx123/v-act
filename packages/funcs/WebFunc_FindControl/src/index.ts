@@ -1,3 +1,5 @@
+import * as widgetContext from 'vjs.framework.extension.platform.services.view.widget.common.context.widgetContext'
+
 /**
     函数FindControl(EntityName，FieldName, ControlType，Index）获取控件编码
     参数1：字符串，必填，实体名
@@ -14,12 +16,21 @@
     FindControl("UserInfo","UserCode") --等效FindControl("UserInfo","UserCode") 
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+//vds.import('vds.widget.*')
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
+console.log(widget)
+
 const vds = { exception }
 
-vds.import('vds.widget.*')
-const main = function (entityName, fieldName, controlType, indexNum) {
+const main = function (
+  entityName: string,
+  fieldName: string,
+  controlType?: string,
+  indexNum?: number
+) {
   if (entityName == undefined || entityName === '') {
-    var exception = vds.exception.newConfigException('实体名不能为空！')
+    let exception = vds.exception.newConfigException('实体名不能为空！')
     throw exception
   }
 
@@ -35,15 +46,15 @@ const main = function (entityName, fieldName, controlType, indexNum) {
     indexNum = -1
   }
 
-  indexNum = parseInt(indexNum, 10)
+  indexNum = parseInt(indexNum.toString(), 10)
   if (isNaN(indexNum)) {
     indexNum = -1
   }
 
-  var widgetCodes = []
-  var controlList = []
-  var ControlCode = ''
-  var widget
+  let widgetCodes = []
+  let controlList = []
+  let ControlCode = ''
+  let widget
 
   //		if(fieldName.length == 0) {
   //			widgetCodes = widgetMapping.getWidgetCodesByDatasourceName({
@@ -68,7 +79,7 @@ const main = function (entityName, fieldName, controlType, indexNum) {
   if (controlType === '') {
     controlList = widgetCodes
   } else if (widgetCodes.length > 0) {
-    for (var i = 0; i < widgetCodes.length; i++) {
+    for (let i = 0; i < widgetCodes.length; i++) {
       ControlCode = widgetCodes[i]
       widget = widgetContext.get(ControlCode, 'widgetObj')
 

@@ -3,10 +3,20 @@
  *
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-const vds = { ds }
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 
-const main = function (dsName, recordVals, fileCode, separator, type) {
-  ERRORNAME = '函数[实体记录多选]'
+const vds = { ds, object, log, exception }
+
+const main = function (
+  dsName: string,
+  recordVals: any,
+  fileCode: string,
+  separator: string,
+  type: string
+) {
+  const ERRORNAME = '函数[实体记录多选]'
   //获取参数
   if (!separator) {
     //获取函数第四个参数
@@ -64,7 +74,7 @@ const main = function (dsName, recordVals, fileCode, separator, type) {
             }
           }
         }
-        var resultParam = {}
+        var resultParam: Record<string, any> = {}
         resultParam['records'] = needRecords
         resultParam['isSelect'] = type == 'select'
         datasource.selectRecords(resultParam)

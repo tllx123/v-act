@@ -1,10 +1,4 @@
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-let sandbox
-
-export function initModule(sb) {
-  sandbox = sb
-}
-
+//import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 /**
  *  关闭窗口页实现
  *  仅支持谷歌浏览器和IE浏览器

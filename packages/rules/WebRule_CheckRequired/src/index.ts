@@ -17,31 +17,31 @@ const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       // 处理规则配置值
-      var inParamsObjs = ruleContext.getVplatformInput()
-      var validatorItems = inParamsObjs['fieldList']
-      var messageType = inParamsObjs['type']
+      let inParamsObjs = ruleContext.getVplatformInput()
+      let validatorItems = inParamsObjs['fieldList']
+      let messageType = inParamsObjs['type']
       // 根据key获取规则配置参数值
-      var checkMsgs = []
+      let checkMsgs = []
 
-      var tableFieldsMap = {}
+      let tableFieldsMap: Record<string, any> = {}
       /* 问题实体 */
-      var errorQuired = []
+      let errorQuired = []
       if (validatorItems != null && validatorItems.length > 0) {
-        for (var index = 0; index < validatorItems.length; index++) {
-          var columns = validatorItems[index]
-          var columnName = columns['field']
-          var array = columnName.split('.')
-          var dsName = columnName.substring(0, columnName.indexOf('.'))
-          var filedName = array[1]
-          var key = dsName.toLowerCase()
-          var fields = tableFieldsMap[key]
+        for (let index = 0; index < validatorItems.length; index++) {
+          let columns = validatorItems[index]
+          let columnName = columns['field']
+          let array = columnName.split('.')
+          let dsName = columnName.substring(0, columnName.indexOf('.'))
+          let filedName = array[1]
+          let key = dsName.toLowerCase()
+          let fields = tableFieldsMap[key]
           if (fields == null) {
             fields = vds.ds.lookup(dsName).getMetadata().getFields()
             tableFieldsMap[key] = fields
           }
 
-          var fieldNameCN = ''
-          for (var i = 0; i < fields.length; i++) {
+          let fieldNameCN = ''
+          for (let i = 0; i < fields.length; i++) {
             if (filedName.toLowerCase() == fields[i].getCode().toLowerCase()) {
               fieldNameCN = fields[i].getName()
               if (null == fieldNameCN || '' == fieldNameCN) {
@@ -52,11 +52,11 @@ const main = function (ruleContext: RuleContext) {
           }
 
           columnName = columnName.substring(columnName.indexOf('.') + 1)
-          var records = vds.ds.lookup(dsName).getAllRecords().toArray()
+          let records = vds.ds.lookup(dsName).getAllRecords().toArray()
           if (records != null && records.length > 0) {
-            for (var tmp = 0; tmp < records.length; tmp++) {
-              var record = records[tmp]
-              var value = record.get(columnName)
+            for (let tmp = 0; tmp < records.length; tmp++) {
+              let record = records[tmp]
+              let value = record.get(columnName)
               if (
                 (!value && value != 0) ||
                 vds.string.trim(String(value)) == ''
@@ -66,7 +66,7 @@ const main = function (ruleContext: RuleContext) {
                 }
                 // 如果只有一行数据，不必提示第*行，来源孟要锋BUG，2013-5-28
                 if (records.length == 1) {
-                  var tmpl = vds.i18n.get(
+                  let tmpl = vds.i18n.get(
                     '【${a}】必填！',
                     '必填规则的提示信息'
                   )
@@ -77,11 +77,12 @@ const main = function (ruleContext: RuleContext) {
                     .toString()
                   checkMsgs.push(tmpl)
                 } else {
-                  var tree = vds.tree.getAll(dsName)
-                  var tmpl = vds.i18n.get(
+                  let tree = vds.tree.getAll(dsName)
+                  let strTmpl = vds.i18n.get(
                     '第${a}行【${b}】必填！',
                     '必填规则的提示信息'
                   )
+                  let tmpl
                   if (tree.length > 0) {
                     //树
                     if (tree.length > 1) {
@@ -92,14 +93,14 @@ const main = function (ruleContext: RuleContext) {
                           '绑定了多个树形实例，无法进行必填项检查。'
                       )
                     }
-                    var id = record.getSysId()
-                    var treeIndex = tree[0].getIndexById(id)
-                    tmpl = vds.string.template(tmpl, {
+                    let id = record.getSysId()
+                    let treeIndex = tree[0].getIndexById(id)
+                    tmpl = vds.string.template(strTmpl, {
                       a: treeIndex,
                       b: fieldNameCN
                     })
                   } else {
-                    tmpl = vds.string.template(tmpl, {
+                    tmpl = vds.string.template(strTmpl, {
                       a: tmp + 1,
                       b: fieldNameCN
                     })
@@ -114,8 +115,8 @@ const main = function (ruleContext: RuleContext) {
           }
         }
       }
-      var userConfirm = true
-      var callback = function (val) {
+      let userConfirm = true
+      let callback = function (val: any) {
         userConfirm = typeof val == 'boolean' ? val : userConfirm
         setBusinessRuleResult(ruleContext, checkMsgs.length == 0, userConfirm)
         resolve()
@@ -125,19 +126,19 @@ const main = function (ruleContext: RuleContext) {
         validateVui(errorQuired)
         if (messageType == 0) {
           //提示，继续执行
-          var promise = vds.message.info(checkMsgs.join('\n'))
+          let promise = vds.message.info(checkMsgs.join('\n'), { time: 0 })
           promise.then(callback).catch(reject)
         } else if (messageType == 1) {
           //警告，继续执行
-          var promise = vds.message.warn(checkMsgs.join('\n'))
+          let promise = vds.message.warn(checkMsgs.join('\n'))
           promise.then(callback).catch(reject)
         } else if (messageType == 2) {
           //错误，不能继续
-          var promise = vds.message.error(checkMsgs.join('\n'))
+          let promise = vds.message.error(checkMsgs.join('\n'))
           promise.then(callback).catch(reject)
         } else if (messageType == 3) {
           //询问（确定/取消），根据用户选择继续或终止
-          var promise = vds.message.confirm(checkMsgs.join('\n'))
+          let promise = vds.message.confirm(checkMsgs.join('\n'))
           promise.then(callback).catch(reject)
         } else if (messageType == 4) {
           //不提示
@@ -157,9 +158,9 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-var validateVui = function (entityCodes) {
-  var codes = vds.widget.getWidgetCodesByType('JGDiv')
-  for (var code in codes) {
+let validateVui = function (entityCodes: any) {
+  let codes = vds.widget.getWidgetCodesByType('JGDiv')
+  for (let code in codes) {
     vds.widget.execute(code, 'validate', [entityCodes])
   }
 }
@@ -167,7 +168,11 @@ var validateVui = function (entityCodes) {
 /**
  * 设置业务返回结果
  */
-function setBusinessRuleResult(ruleContext, result, userConfirm) {
+function setBusinessRuleResult(
+  ruleContext: RuleContext,
+  result: any,
+  userConfirm: any
+) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isCheckRequiredOK', result)
     ruleContext.setResult('confirm', userConfirm)

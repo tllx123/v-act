@@ -1,3 +1,7 @@
+/* import {
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule' */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 import {
   ExpressionContext,
   ExpressionEngine as engine
@@ -5,9 +9,7 @@ import {
 import { Share as service } from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sBox) {}
-
-function main(ruleContext) {
+function main(ruleContext: RuleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   let inParamsObj = jsonUtil.json2obj(inParams)
@@ -47,11 +49,11 @@ function main(ruleContext) {
       }
     }
   }
-  let success = function (rs) {
+  let success = function (rs: any) {
     setBusinessRuleResult(ruleContext, true)
     ruleContext.fireRouteCallback()
   }
-  let error = function (rs) {
+  let error = function (rs: any) {
     setBusinessRuleResult(ruleContext, false)
     ruleContext.fireRouteCallback()
   }
@@ -59,7 +61,7 @@ function main(ruleContext) {
   service.share(content, title, contentURL, imgURL, platArr, success, error)
   ruleContext.markRouteExecuteUnAuto()
 }
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: boolean) {
   if (ruleContext.setBusinessRuleResult) {
     ruleContext.setBusinessRuleResult({
       isShareSuccess: result

@@ -1,42 +1,44 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { LessUtil as lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor.less'
 
 import * as skinVariable from './SkinVariable'
 
-let sandbox
+//let sandbox: any
 
-let Skin = function (params) {
-  this.lessScripts = params.lessScripts
-  this.varScript = params.varScript
-  this.interfaceName = params.interfaceName
-  this.deps = params.deps
-  this.css = params.css && params.css != '_$NotParseCss' ? params.css : ''
-  this.render()
-}
+export default class Skin {
+  lessScripts
+  varScript
+  interfaceName
+  deps
+  css
 
-Skin.prototype = {
-  initModule: function (sb) {
-    sandbox = sb
-  },
+  constructor(params: Record<string, any>) {
+    this.lessScripts = params.lessScripts
+    this.varScript = params.varScript
+    this.interfaceName = params.interfaceName
+    this.deps = params.deps
+    this.css = params.css && params.css != '_$NotParseCss' ? params.css : ''
+    this.render()
+  }
 
-  _getLessService: function (vjsName) {
-    return sandbox.getService(vjsName + '.lessTemplate')
-  },
+  _getLessService(vjsName: string) {
+    throw '暂时未开放此功能'
+    //return sandbox.getService(vjsName + '.lessTemplate')
+  }
 
-  _appendVarScript: function (buffer, vjsName) {
+  _appendVarScript(buffer: Array<any>, vjsName: string) {
     let varScript = skinVariable.getVarScript({
       id: vjsName
     })
     if (varScript) {
       buffer.push(varScript)
     }
-  },
+  }
 
-  _getSelfDeps: function () {
+  _getSelfDeps() {
     return this.deps
-  },
+  }
 
-  render: function () {
+  render() {
     //			var css = [];
     //			for(var j = 0; j < this.lessScripts.length; j++){
     //				var lessObj = this.lessScripts[j];
@@ -60,21 +62,20 @@ Skin.prototype = {
     if (this.css) {
       environment.parseCssStr(this.css)
     }
-  },
+  }
 
-  getTemplate: function () {
+  getTemplate() {
     let rs = {}
     let selfDeps = this._getSelfDeps()
     for (let i = 0; i < selfDeps.length; i++) {
       let dep = selfDeps[i]
       let service = this._getLessService(dep)
-      if (service) {
+      /*  if (service) {
         let cfg = service.getTemplate()
         sandbox.util.object.extend(rs, cfg)
-      }
+      } */
+      throw '暂时未开放此功能'
     }
     return rs
   }
 }
-
-module.exports = Skin
