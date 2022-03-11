@@ -9,7 +9,7 @@ export function initModule() {}
  * @param treeStructMap 树结构配置信息
  * @param loadLevel 动态加载层次
  */
-const main = function (variableName, variableValue) {
+const main = function (variableName: string, variableValue: string) {
   if (null == variableName || '' == variableName) {
     log.error('[GetSystemVariableValue.main]变量名称为空，请检查配置')
     return null
