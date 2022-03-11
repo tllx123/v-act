@@ -1,55 +1,54 @@
-export function initModule(sb) {
+export function initModule(sb:any) {
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'
   )
-  dependency.putInstance(exports)
+  dependency.putInstance(this)
 }
 
 let resourcePackagePool = {}
 
 let resourceWindowPool = {}
 
-let getValidLanguage = function (componentCode, resourceCode) {
+let getValidLanguage = function (componentCode:string, resourceCode:string) {
   return resourceCode
 }
 
 let setWindowCurrentResourceCode = function (
-  resourceCode,
-  scopeId,
-  componentCode
+  resourceCode:string,
+  scopeId:string,
+  componentCode:string
 ) {}
 
-let getWindowCurrentResourceCode = function (scopeId) {
+let getWindowCurrentResourceCode = function (scopeId:string) {
   return ''
 }
 
 let curResourcePackageCode
 
-let getResourceItem = function (resourceCode, resourceType) {
+let getResourceItem = function (resourceCode:string, resourceType:string) {
   return ''
 }
 
-let getResourceItems = function (componentCode, resourceType) {
+let getResourceItems = function (componentCode:string, resourceType:string) {
   return ''
 }
 
-let getLanguageItem = function (resourceCode) {
+let getLanguageItem = function (resourceCode:string) {
   return ''
 }
 
-let getLanguageItems = function (componentCode) {
+let getLanguageItems = function (componentCode:string) {
   return ''
 }
 
-let getResItem = function (resourceCode) {
+let getResItem = function (resourceCode:string) {
   return ''
 }
 
-let setResourcePool = function (pool, type) {}
+let setResourcePool = function (pool:any, type:any) {}
 
 export {
   getResItem,
-  getLanguageItem,
   setResourcePool,
   getLanguageItem,
   getLanguageItems,
