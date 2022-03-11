@@ -56,7 +56,7 @@ class RuleContext {
   ruleCallback: null | ((ctx: RouteContext) => void) = null
   //规则路由回调
   routeCallback: Array<(...args: any[]) => void> = []
-  _SnapshotManager: null | snapshotManager = null
+  _SnapshotManager: null | snapshotManager = snapshotManager
   /**
    * 事件名称枚举
    * @enum {String}
@@ -404,10 +404,6 @@ class RuleContext {
       }
     }
     return count
-  }
-
-  setSnapshotManager(manager: snapshotManager) {
-    this._SnapshotManager = manager
   }
 }
 

@@ -1,5 +1,5 @@
 // 父类实例
-let _super = null
+let _super: object
 
 /**
  * 设置父类实例(内置方法)
@@ -7,7 +7,8 @@ let _super = null
  * @param {Object}
  *            _super 父类实例
  */
-let __setSuper__ = function (_super) {
+let __setSuper__ = function (_super: object) {
+  // @ts-ignore
   this._super = _super
 }
 
@@ -19,11 +20,13 @@ let __setSuper__ = function (_super) {
  * @param {Object}
  *            _super 父类实例
  */
-let extend = function (exp, _super) {
+let extend = function (exp: any, _super: any) {
   if (_super) {
-    let subs = _super._suber || []
+    let subs: [] = _super._suber || []
+    // @ts-ignore
     subs.push(exp)
     _super._suber = subs
+    // @ts-ignore
     exp._super = _super
     for (let attr in _super) {
       if (attr == 'initModule' || attr == '_suber' || attr == '_super') {
@@ -37,7 +40,7 @@ let extend = function (exp, _super) {
   }
 }
 
-let _iterateChildren = function (_super, attr, val) {
+let _iterateChildren = function (_super: any, attr: any, val: any) {
   let m = _super._suber
   if (m) {
     for (let i = 0, child; (child = m[i]); i++) {
@@ -49,11 +52,14 @@ let _iterateChildren = function (_super, attr, val) {
   }
 }
 
-let _isSuper = function (_super) {
+let _isSuper = function (_super: any): any {
+  // @ts-ignore
   if (this._super) {
+    // @ts-ignore
     if (this._super == _super) {
       return true
     } else {
+      // @ts-ignore
       return _isSuper.call(this._super, _super)
     }
   } else {

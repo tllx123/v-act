@@ -1,3 +1,4 @@
+import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let primaryKey = 'id',
@@ -31,8 +32,8 @@ Datasource.prototype = {
   _genSnapshotHandler: function () {
     let _this = this
     return function () {
-      if (_this._snapshotManager) {
-        let snapshot = _this._snapshotManager.getCurrentSnapshot()
+      if (snapshotManager) {
+        let snapshot = snapshotManager.getCurrentSnapshot()
         if (snapshot) {
           return snapshot.getDatasourceSnapshot(_this.instanceId)
         }
@@ -527,10 +528,5 @@ Datasource.prototype = {
 Datasource.Events = Datasource.prototype.Events
 
 Datasource.Position = Datasource.prototype.Position
-
-Datasource._putSnapshotManager = function (manager) {
-  //TODO
-  Datasource.prototype._snapshotManager = manager
-}
 
 export default Datasource

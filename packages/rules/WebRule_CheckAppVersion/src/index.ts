@@ -12,19 +12,23 @@ const vds = { app }
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var callback = function (version) {
+      var callback = function (version: string) {
         setBusinessRuleResult(ruleContext, version)
         resolve()
       }
-      var promise = vds.app.getVersion(callback)
-      promise.then(callback).catch(reject)
+      var promise = vds.app.getVersion()
+      promise
+        .then(() => {
+          callback
+        })
+        .catch(reject)
     } catch (ex) {
       reject(ex)
     }
   })
 }
 
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: string) {
   if (ruleContext.setResult) {
     // 最新的App版本号
     ruleContext.setResult('version', result)
