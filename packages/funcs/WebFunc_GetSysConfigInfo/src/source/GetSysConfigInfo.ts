@@ -6,12 +6,12 @@ import * as viewOperation from 'module'
 
 //加载jsonUtil模块
 
-export function initModule() {}
+// export function initModule() {}
 
 /**
  * 主入口
  */
-const main = function (key) {
+const main = function (key: string) {
   // 构造参数
   let expression = 'GetSysConfigInfoFunc("' + key + '")'
 
