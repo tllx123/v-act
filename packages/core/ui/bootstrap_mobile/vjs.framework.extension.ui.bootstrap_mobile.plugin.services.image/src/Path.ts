@@ -1,11 +1,11 @@
 let sandbox
 let formulaUtil
 let viewModel
-export function initModule(sb) {
+export function initModule(sb:any) {
   sandbox = sb
 }
 
-const getPath = function (src) {
+const getPath = function (src:string) {
   if (!src || src == '') {
     console.trace()
     console.info('控件的图片src为空!!')
@@ -31,8 +31,10 @@ const getPath = function (src) {
 /**
  * 在手机APP中图片路径另外处理
  */
-let _handleImageValueRel = function (imageValueRel) {
+let _handleImageValueRel = function (imageValueRel:string) {
+  //@ts-ignore
   if (window.GlobalVariables) {
+    //@ts-ignore
     imageValueRel = GlobalVariables.getServerUrl() + '/' + imageValueRel
   }
   return imageValueRel
