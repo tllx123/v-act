@@ -1,4 +1,4 @@
-import * as PlayVideoService from '@v-act/vjs.framework.extension.platform.services.native.mobile.PlayVideo'
+import { PlayVideo as PlayVideoService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.playvideo'
 
 export function initModule(sb: any) {
   PlayVideoService.putInstance(exports)

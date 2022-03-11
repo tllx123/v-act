@@ -1,5 +1,5 @@
 import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation'
-import * as FileTransferService from '@v-act/vjs.framework.extension.platform.services.native.mobile.FileTransfer'
+import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'

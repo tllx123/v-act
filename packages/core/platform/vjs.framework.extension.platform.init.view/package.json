@@ -32,7 +32,6 @@
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.storage": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.interface.watermark": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.platform.services.init": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.operation.remote.base": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.param.manager": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.runtime.manager": "1.0.0-alpha.1",

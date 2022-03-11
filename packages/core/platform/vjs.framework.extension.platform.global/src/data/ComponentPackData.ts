@@ -1,16 +1,9 @@
-let StorageManager
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+
 let token = 'Platform_Component_Pack_Data'
 let sandbox
 let loadedIconCodes = []
 
-export function initModule(sb) {
-  if (sb) {
-    sandbox = sb
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-  }
-}
 let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
@@ -49,26 +42,26 @@ const getMapping = function (params) {
 }
 
 export {
+  addComponentOptionDefines,
+  addComponentRouteInfo,
+  addComponentVariantDefines,
   addRuleSetInputs,
-  getRuleSetInputs,
+  componentIsInited,
+  componentIsLoaded,
+  destroy,
+  existMapping,
   exists,
+  getComponentOptionDefine,
+  getComponentType,
+  getComponentVariantDefine,
+  getMapping,
+  getRouteConfig,
   getRuleSetInput,
+  getRuleSetInputs,
+  init,
   isAppConfigInfoLoaded,
   markAppConfigInfoLoaded,
-  addComponentRouteInfo,
-  getRouteConfig,
-  addComponentVariantDefines,
-  getComponentVariantDefine,
-  addComponentOptionDefines,
-  getComponentOptionDefine,
-  destroy,
-  componentIsLoaded,
-  markForComponentLoaded,
-  componentIsInited,
   markForComponentInited,
-  setComponentType,
-  getComponentType,
-  init,
-  existMapping,
-  getMapping
+  markForComponentLoaded,
+  setComponentType
 }

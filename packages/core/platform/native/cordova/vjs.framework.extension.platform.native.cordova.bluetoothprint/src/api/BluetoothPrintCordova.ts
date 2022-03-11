@@ -1,4 +1,4 @@
-import * as BluetoothPrintService from '@v-act/vjs.framework.extension.platform.services.native.mobile.BluetoothPrint'
+import { BluetoothPrint as BluetoothPrintService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.bluetoothprint'
 
 export function initModule(sb: any) {
   BluetoothPrintService.putInstance(exports)

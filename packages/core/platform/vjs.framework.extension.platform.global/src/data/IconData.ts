@@ -1,16 +1,8 @@
-let StorageManager
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+
 let token = 'Platform_Icon_Data'
-let sandbox
 let loadedIconCodes = []
 
-export function initModule(sb) {
-  if (sb) {
-    sandbox = sb
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-  }
-}
 let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }

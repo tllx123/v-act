@@ -1,4 +1,4 @@
-import * as GeolocationService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Geolocation'
+import { Geolocation as GeolocationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.geolocation'
 
 export function initModule(sb: any) {
   GeolocationService.putInstance(exports)

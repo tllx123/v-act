@@ -1,4 +1,4 @@
-import * as UmengShareService from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.Share'
+import { Share as UmengShareService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.share'
 
 export function initModule(sb: any) {
   UmengShareService.putInstance(exports)

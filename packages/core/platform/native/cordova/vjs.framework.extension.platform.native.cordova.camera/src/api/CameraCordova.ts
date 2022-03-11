@@ -1,4 +1,4 @@
-import * as CameraService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Camera'
+import { Camera as CameraService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.camera'
 
 export function initModule(sb: any) {
   CameraService.putInstance(exports)

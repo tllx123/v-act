@@ -1,4 +1,4 @@
-import { designerProcessor } from '@v-act/vjs.framework.extension.platform.application.window.web.designer'
+import { Processor as designerProcessor } from '@v-act/vjs.framework.extension.platform.application.window.web.designer'
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
 import { ComponentResourceManager as componentResourceManager } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { WindowVMMapping as windowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
@@ -6,24 +6,24 @@ import {
   ComponentData as componetData,
   ComponentPackData as componentPackData
 } from '@v-act/vjs.framework.extension.platform.global'
-import { frontendAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
+import { FrontEndAlerter as frontendAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { windowI18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as windowI18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { elementManager } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
+import { BrowserUtil as elementManager } from '@v-act/vjs.framework.extension.platform.services.browser'
+import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { WidgetAction as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 import { WidgetProcessor as widgetProcessor } from '@v-act/vjs.framework.extension.platform.services.view.window.property.processor'
-import { windowRenderer } from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
+import { WindowRenderer as windowRenderer } from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
 import {
   Resource,
-  windowResource
+  WindowResource as windowResource
 } from '@v-act/vjs.framework.extension.platform.services.view.window.resources'
-import { mediator } from '@v-act/vjs.framework.extension.system.mediator'
-import { widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
+import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
+import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
 
 /**
  * 窗体模板初始化

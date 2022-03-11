@@ -1,6 +1,7 @@
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+
 this._$v3platform_runtime_env = true
-let storage,
-  token = 'ENVIRONMENT_V3_INFO',
+const token = 'ENVIRONMENT_V3_INFO',
   RUNNING_MODE = 'RUNNING_MODE',
   DEBUG_KEY = 'DEBUG_KEY',
   CTX_PATH = 'CTX_PATH',
@@ -22,12 +23,7 @@ let storage,
   COMPATIBLE_MODE_KEY = 'COMPATIBLE_MODE_KEY',
   DOMAIN_KEY = 'DOMAIN_KEY'
 
-const initModule = function (sb) {
-  let storageManager = sb.getService(
-    'vjs.framework.extension.platform.interface.storage.StorageManager'
-  )
-  storage = storageManager.get(storageManager.TYPES.MAP, token)
-}
+const storage = storageManager.get(storageManager.TYPES.MAP, token)
 
 const init = function (params) {
   if (params) {
@@ -174,22 +170,24 @@ const getDevId = function () {
   return storage.get(DEV_ID)
 }
 
+let domainId: null | string = null
+
 const getDomain = function () {
-  let vjsContext = VMetrix.getVjsContext()
-  if (vjsContext) {
-    return vjsContext['domain']
-  }
-  //		return storage.get(DOMAIN_KEY);
+  // let vjsContext = VMetrix.getVjsContext()
+  // if (vjsContext) {
+  //   return vjsContext['domain']
+  // }
+  return domainId
 }
 
-const setDomain = function (domain) {
+const setDomain = function (domain: null | string) {
   if (!domain || null == domain) {
     domain = null
   }
-  VMetrix.putAllVjsContext({
+  domainId = domain
+  /*VMetrix.putAllVjsContext({
     domain: domain
-  })
-  //		return storage.put(DOMAIN_KEY, domain);
+  })*/
 }
 
 /**
@@ -373,7 +371,6 @@ export {
   getPlatformType,
   getRunningMode,
   init,
-  initModule,
   isAsync,
   isChrome,
   isDebug,

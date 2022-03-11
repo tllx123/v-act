@@ -1,4 +1,4 @@
-import { ProgressBarUtil as StatusBarService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.StatusBar'
+import { StatusBar as StatusBarService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.statusbar'
 
 export function initModule(sb: any) {
   StatusBarService.putInstance(exports)

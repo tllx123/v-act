@@ -1,4 +1,4 @@
-import * as MediacaptureService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Mediacapture'
+import { Mediacapture as MediacaptureService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.mediacapture'
 
 export function initModule(sb: any) {
   MediacaptureService.putInstance(exports)

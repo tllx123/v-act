@@ -1,4 +1,4 @@
-import * as SaveImageToGalleryService from '@v-act/vjs.framework.extension.platform.services.native.mobile.SaveImageToGallery'
+import { SaveImageToGallery as SaveImageToGalleryService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.saveimagetogallery'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
 export function initModule(sb: any) {

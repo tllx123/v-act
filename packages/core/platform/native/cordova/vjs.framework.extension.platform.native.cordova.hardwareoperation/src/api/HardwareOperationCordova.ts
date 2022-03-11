@@ -1,4 +1,4 @@
-import * as HardwareOperationService from '@v-act/vjs.framework.extension.platform.services.native.mobile.HardwareOperation'
+import { HardwareOperation as HardwareOperationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.hardwareoperation'
 
 export function initModule(sb: any) {
   HardwareOperationService.putInstance(exports)

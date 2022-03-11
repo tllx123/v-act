@@ -1,30 +1,246 @@
+import { ApplicationParam as AppData } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { RouteEngine as RouteManager } from '@v-act/vjs.framework.extension.platform.services.engine'
 import { EventExtension as eventExtension } from '@v-act/vjs.framework.extension.system.event'
 
-/*import spiMappingUtils
-  from '@v-act/vjs.framework.extension.platform.data.spi.mapings'*/
-const spiMappingUtils:any = null
+const SERVICE_MAPPING_DATAS = 'Service_Mapping_Datas'
+const MEDIATOR_SERVICE = 'mediator'
+const CurrentWindowInstanceKey = 'currentWindowInstanceIds' //当前窗体实例id
 
-let SERVICE_MAPPING_DATAS = 'Service_Mapping_Datas'
-let MEDIATOR_SERVICE = 'mediator'
-
-
-let getStorage = function () {
+const getStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, SERVICE_MAPPING_DATAS)
 }
 
-const subscribe = function (serviceName:string, listener:any, epImpInfo:any) {
-  let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
+type FuncType = (...args: any[]) => any
+
+type EPImpInfoType = { componentCode: string; windowCode?: string }
+
+const _exe = function (
+  serviceName: string,
+  targetConfig: { componentCode: string; windowCode: string },
+  inputParam: any,
+  config: {
+    callback?: FuncType
+    currentRouteContext: RouteContext
+    parentRouteContext: RouteContext
+  },
+  epconditionParams: {
+    [key: string]: any
+  },
+  cbk: FuncType
+) {
+  const cb = (function (cb, tc) {
+    return function (resultFromExeRuleSet: any) {
+      //@ts-ignore
+      if (typeof cb == 'function') cb.apply(this, [resultFromExeRuleSet, tc])
+    }
+  })(config.callback, targetConfig)
+  const cfg: {
+    callback: FuncType
+    currentRouteContext: RouteContext
+    parentRouteContext: RouteContext
+    instanceRefs: string[]
+  } = {
+    callback: cb,
+    currentRouteContext: config.currentRouteContext,
+    parentRouteContext: config.parentRouteContext,
+    instanceRefs: []
+  }
+  let windosInstansIds
+  //优先取当前ep实现的窗体实例id，避免实现里面加载新窗体时导致新窗体的实现也执行的问题
+  if (
+    epconditionParams[CurrentWindowInstanceKey] &&
+    epconditionParams[CurrentWindowInstanceKey][
+      targetConfig.componentCode + '$_$' + targetConfig.windowCode
+    ]
+  ) {
+    windosInstansIds =
+      epconditionParams[CurrentWindowInstanceKey][
+        targetConfig.componentCode + '$_$' + targetConfig.windowCode
+      ]
+  } else {
+    windosInstansIds = scopeManager._getInstanceIds(
+      targetConfig.componentCode,
+      targetConfig.windowCode
+    )
+  }
+  if (windosInstansIds) {
+    const invokeScopes = epconditionParams['#invokeScope#']
+    if (invokeScopes) {
+      const appointScopeIds: string[] = []
+      for (let i = 0, len = invokeScopes.length; i < len; i++) {
+        const info = invokeScopes[i]
+        const scopeId = info.scopeId
+        if (windosInstansIds.indexOf(scopeId) != -1)
+          appointScopeIds.push(scopeId)
+      }
+      cfg.instanceRefs = appointScopeIds
+    } else cfg.instanceRefs = windosInstansIds
+    //列表切换事件（当前窗体的容器）和列的链接事件（打开到首页）打开框架窗体可能会引发ep实现执行异常
+    const tmpIds = cfg.instanceRefs
+    const ids: string[] = []
+    for (let i = 0, len = tmpIds.length; i < len; i++) {
+      const tId = tmpIds[i]
+      if (!scopeManager.isWindowScope(tId)) {
+        continue
+      }
+      const scope = scopeManager.getScope(tId)
+      if (!scope.isRendered || scope.isRendered()) {
+        ids.push(tId)
+      }
+    }
+    cfg.instanceRefs = ids
+  }
+  const current = arguments.callee.caller
+  const callback = (function () {
+    return function () {
+      emitNext(
+        serviceName,
+        //@ts-ignore
+        current,
+        [inputParam, config, epconditionParams],
+        cbk,
+        arguments
+      )
+    }
+  })()
+  RouteManager.execute({
+    targetConfig: targetConfig,
+    inputParam: inputParam,
+    config: cfg,
+    callback: callback
+  })
+}
+/**
+ * 初始化数据
+ * */
+export function init() {
+  //TODO 暂未实现
+  /*const services = sandbox.getAllServices(
+    'vjs.framework.extension.platform.init.view.schema.ApplicationData'
+  )
+  if (null != services) {
+    const windowMappings = []
+    for (const i = 0, len = services.length; i < len; i++) {
+      const service = services[i]
+      const datas = service.getEpDatas()
+      addServiceMapping(datas)
+      const tmpWindowMappings = service.getWindowMappings()
+      if (tmpWindowMappings) {
+        windowMappings = windowMappings.concat(tmpWindowMappings)
+      }
+    }
+    AppData.initWindowMapping(windowMappings)
+  }*/
+}
+
+export function addServiceMapping(
+  epDatas: {
+    [ke: string]: {
+      componentCode: string
+      windowCode: string
+      metaCode: string
+      metaType: string
+      impls: Array<{
+        metaType: string
+        metaCode: string
+        componentCode: string
+        windowCode?: string
+      }>
+    }
+  } | null
+) {
+  if (null != epDatas) {
+    for (const key in epDatas) {
+      const epData = epDatas[key]
+      const serviceName = getServiceName(
+        epData.componentCode,
+        epData.windowCode,
+        epData.metaCode,
+        epData.metaType
+      )
+      const epImplDatas = epData.impls
+      if (null != epImplDatas) {
+        for (let j = 0, _l = epImplDatas.length; j < _l; j++) {
+          const epImplData = epImplDatas[j]
+          const targetConfig = {
+            sourceType: epImplData.metaType,
+            ruleSetCode: epImplData.metaCode,
+            componentCode: epImplData.componentCode,
+            invokeType: 'local',
+            windowCode: epImplData.windowCode ? epImplData.windowCode : ''
+          }
+          const listence = (function (_targetConfig, _serviceName) {
+            return function (
+              inputParam: any,
+              config: {
+                callback?: FuncType
+                currentRouteContext: RouteContext
+                parentRouteContext: RouteContext
+              },
+              epconditionParams: {
+                [key: string]: any
+              },
+              callback: FuncType
+            ) {
+              _exe(
+                _serviceName,
+                _targetConfig,
+                inputParam,
+                config,
+                epconditionParams,
+                callback
+              )
+            }
+          })(targetConfig, serviceName)
+          subscribe(serviceName, listence, {
+            ruleSetCode: epImplData.metaCode,
+            componentCode: epImplData.componentCode,
+            windowCode: epImplData.windowCode ? epImplData.windowCode : '',
+            metaType: epImplData.metaType
+          })
+        }
+      }
+    }
+  }
+}
+
+/**
+ * 添加服务映射
+ * */
+export function subscribe(
+  serviceName: string,
+  listener: FuncType,
+  epImpInfo: {
+    componentCode: string
+    windowCode: string
+    ruleSetCode: string
+    metaType: string
+  }
+) {
+  const eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   if (epImpInfo) {
-    let storage = getStorage()
-    let epImpKey = getServiceName(
+    const storage = getStorage()
+    const epImpKey = getServiceName(
       epImpInfo.componentCode,
       epImpInfo.windowCode,
       epImpInfo.ruleSetCode,
       epImpInfo.metaType
     )
     if (!storage.containsKey(serviceName)) {
-      let info:{[code:string]:any} = {}
+      const info: {
+        [key: string]: {
+          func: FuncType
+          epImpInfo: {
+            componentCode: string
+            windowCode: string
+            ruleSetCode: string
+            metaType: string
+          }
+        }
+      } = {}
       info[epImpKey] = {
         func: listener,
         epImpInfo: epImpInfo
@@ -40,7 +256,7 @@ const subscribe = function (serviceName:string, listener:any, epImpInfo:any) {
   return eventService.on.apply(eventService, arguments)
 }
 
-const publish = function (serviceName:string, arg:any, callback:any) {
+export function publish(serviceName: string, arg: any, callback: any) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   //拼装eventEmitter触发事件函数的参数列表
   let param = []
@@ -63,66 +279,148 @@ const publish = function (serviceName:string, arg:any, callback:any) {
 /**
  * 获取事件列表
  * */
-let getListeners = function (serviceName:string, epConditionParams:any) {
-  let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
-  let listeners = eventService.listeners(serviceName)
+const getListeners = function (
+  serviceName: string,
+  epConditionParams: {
+    [key: string]: Array<{ componentCode: string; windowCode?: string }>
+  }
+) {
+  const eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
+  const listeners = eventService.listeners(serviceName)
   if (listeners && listeners.length > 0) {
-    let storage = getStorage()
-    let info = storage.get(serviceName)
+    const storage = getStorage()
+    const info = storage.get(serviceName)
     if (null != info) {
-      let mappings = spiMappingUtils
+      /*const mappings = spiMappingUtils   //TODO 暂未实现
         ? spiMappingUtils.getMappings(serviceName, epConditionParams)
-        : null
-      let invokeScopeKeys = getInvokeScopeKey(
+        : null*/
+      const mappings = null
+      const invokeScopeKeys = getInvokeScopeKey(
         epConditionParams['#invokeScope#']
       )
-      let newListeners:{[code:string]:any} = []
+      const newListeners: Array<FuncType> = []
       if (null != mappings) {
-        for (let i = 0, len = mappings.length; i < len; i++) {
-          let epImpKey = mappings[i]
+        /*for (let i = 0, len = mappings.length; i < len; i++) {
+          const epImpKey = mappings[i]
           appendListener(info[epImpKey], invokeScopeKeys, newListeners)
         }
-        return newListeners
+        return removeExtendEPImp(newListeners, info)*/
       } else if (invokeScopeKeys) {
-        for (let key in info) {
+        for (const key in info) {
           appendListener(info[key], invokeScopeKeys, newListeners)
         }
-        let resultListeners = []
+        const resultListeners = []
         for (let i = 0, len = listeners.length; i < len; i++) {
           //确保顺序
-          let listener = listeners[i]
+          const listener = listeners[i]
           if (newListeners.indexOf(listener) != -1) {
             resultListeners.push(listener)
           }
         }
-        return resultListeners
+        return removeExtendEPImp(resultListeners, info)
       }
+      return removeExtendEPImp(listeners, info)
     }
   }
   return listeners
 }
-let getInvokeScopeKey = function (invokeScopes:any) {
-  let invokeScopeKeys = null
-  if (invokeScopes) {
-    invokeScopeKeys = []
-    for (let i = 0, len = invokeScopes.length; i < len; i++) {
-      let info = invokeScopes[i]
-      let windowCode = info.windowCode ? info.windowCode : ''
-      invokeScopeKeys.push(info.componentCode + '$_$' + windowCode)
+/**
+ * 如果子级和父级同时存在同一个扩展点的实现，则父级扩展点忽略
+ * */
+const removeExtendEPImp = function (
+  listeners: Array<FuncType> | null,
+  infos: { [key: string]: { epImpInfo: EPImpInfoType; func: FuncType } }
+) {
+  let newListeners: Array<FuncType> = []
+  if (listeners && listeners.length > 0) {
+    const keys = [] //所有实现key
+    const waitInfo: { [key: string]: Array<FuncType> } = {} //存在子窗体的实现，等遍历完再放进去
+    for (const key in infos) {
+      if (!infos.hasOwnProperty(key)) {
+        continue
+      }
+      const info = infos[key]
+      const epImpInfo = info.epImpInfo
+      if (!epImpInfo.windowCode) {
+        //构件实现可以直接添加
+        newListeners.push(info.func)
+        continue
+      }
+      const iKey = getImpInfoKey(epImpInfo)
+      keys.push(iKey)
+      const winMap = AppData.getWindowMapping({
+        //如果能取到子窗体，则需要判断当前实现是否存在子窗体实现
+        componentCode: epImpInfo.componentCode,
+        windowCode: epImpInfo.windowCode
+      })
+      if (null == winMap) {
+        //不存在窗体实现，则可以直接添加
+        if (waitInfo[iKey]) {
+          //父级可能先添加
+          try {
+            delete waitInfo[iKey]
+          } catch (e) {}
+        }
+        newListeners.push(info.func)
+      } else {
+        const childIKey = getImpInfoKey({
+          componentCode: winMap.componentCode,
+          windowCode: winMap.windowCode
+        })
+        if (keys.indexOf(childIKey) != -1) {
+          //已经找到子实现，则忽略父级实现
+          continue
+        }
+        if (!waitInfo[childIKey]) {
+          waitInfo[childIKey] = [info.func]
+        } else {
+          waitInfo[childIKey].push(info.func)
+        }
+      }
+    }
+    for (const key in waitInfo) {
+      if (waitInfo.hasOwnProperty(key)) {
+        newListeners = newListeners.concat(waitInfo[key])
+      }
     }
   }
-  return invokeScopeKeys
+  return newListeners
+}
+const getImpInfoKey = function (epImpInfo: EPImpInfoType) {
+  const arr = [epImpInfo.componentCode, epImpInfo.windowCode]
+  return arr.join('$_$')
+}
+const getInvokeScopeKey = function (
+  invokeScopes?: Array<{ componentCode: string; windowCode?: string }>
+) {
+  if (invokeScopes) {
+    const invokeScopeKeys: Array<string> = []
+    for (let i = 0, len = invokeScopes.length; i < len; i++) {
+      const info = invokeScopes[i]
+      const windowCode = info.windowCode ? info.windowCode : ''
+      invokeScopeKeys.push(info.componentCode + '$_$' + windowCode)
+    }
+    return invokeScopeKeys
+  }
+  return null
 }
 /**
  * 追加事件
  * */
-let appendListener = function (data:any, invokeScopeKeys:any, newListeners:any) {
+const appendListener = function (
+  data: {
+    epImpInfo: { componentCode: string; windowCode: string }
+    func: FuncType
+  },
+  invokeScopeKeys: Array<string> | null,
+  newListeners: Array<FuncType>
+) {
   if (!data) {
     return
   }
   if (invokeScopeKeys) {
-    let epImpInfo = data.epImpInfo
-    let windowCode = epImpInfo.windowCode
+    const epImpInfo = data.epImpInfo
+    const windowCode = epImpInfo.windowCode
     if (
       !windowCode ||
       invokeScopeKeys.indexOf(epImpInfo.componentCode + '$_$' + windowCode) !=
@@ -135,16 +433,36 @@ let appendListener = function (data:any, invokeScopeKeys:any, newListeners:any) 
   }
 }
 
-const publishSerializable = function (serviceName:string, arg:any, callback:any) {
-  let epConditionParams = arg ? arg[2] : null
-  let listeners = getListeners(serviceName, epConditionParams)
+/**
+ * 串行执行(发布)服务：如果没有对应的服务返回false
+ * 1，serviceName支持通配符,例如:发布服务 service.* 则会触发 service.A
+ * 2，serviceName分隔符默认使用"."
+ * 3，serviceName可以是字符串或数组
+ *
+ * @param serviceName<String>  服务名称,必须有
+ * @param arg<Array> 服务对应的listener的参数,非必选
+ * @param arg<Function> 回调函数,非必须
+ * //TODO 回调暂未实现
+ */
+export function publishSerializable(
+  serviceName: string,
+  arg?: any[],
+  callback?: FuncType
+) {
+  const epConditionParams = arg ? arg[2] : null
+  const listeners = getListeners(serviceName, epConditionParams)
   if (listeners && listeners.length > 0) {
-    let listener = listeners[0]
-    let args:{[code:string]:any} = []
+    const listener = listeners[0]
+    let args: any[] = []
     if (arg) {
       args = args.concat(arg)
     }
     args.push(callback)
+    if (arg && arg[2]) {
+      //保存当前ep实现的窗体实例id，避免实现里面加载新窗体时导致新窗体的实现也执行的问题
+      arg[2][CurrentWindowInstanceKey] =
+        getEpImpWindowInstanceIdByServiceName(serviceName)
+    }
     listener.apply(listener, args)
   } else {
     if (typeof callback == 'function') {
@@ -153,10 +471,45 @@ const publishSerializable = function (serviceName:string, arg:any, callback:any)
   }
 }
 
-const emitNext = function (serviceName:string, current:any, arg:any, callback:any, callbckArgs:any) {
+/**
+ * 获取当前ep实现的窗体实例id
+ * */
+const getEpImpWindowInstanceIdByServiceName = function (serviceName: string) {
+  const datas: { [id: string]: any } = {}
+  const storage = getStorage()
+  const infos = storage.get(serviceName)
+  if (infos) {
+    for (const key in infos) {
+      const epInfo = infos[key].epImpInfo
+      if (epInfo && epInfo.componentCode && epInfo.windowCode) {
+        const componentCode = epInfo.componentCode
+        const windowCode = epInfo.windowCode
+        const iden = componentCode + '$_$' + windowCode
+        if (datas[iden]) {
+          //已经取过的跳过
+          continue
+        }
+        const windosInstansIds = scopeManager._getInstanceIds(
+          componentCode,
+          windowCode
+        )
+        datas[iden] = windosInstansIds ? windosInstansIds : []
+      }
+    }
+  }
+  return datas
+}
+
+export function emitNext(
+  serviceName: string,
+  current: FuncType,
+  arg: any,
+  callback?: FuncType,
+  callbckArgs?: any[]
+) {
   let next
-  let epConditionParams = arg ? arg[2] : null
-  let listeners = getListeners(serviceName, epConditionParams)
+  const epConditionParams = arg ? arg[2] : null
+  const listeners = getListeners(serviceName, epConditionParams)
   if (listeners && listeners.length > 0) {
     for (let i = 0, l = listeners.length; i < l; i++) {
       if (current == listeners[i]) {
@@ -170,27 +523,37 @@ const emitNext = function (serviceName:string, current:any, arg:any, callback:an
     }
   }
   if (next) {
-    let args:{[code:string]:any} = []
+    let args: any[] = []
     if (arg) args = args.concat(arg)
     args.push(callback)
     next.apply(next, args)
   } else {
     if (typeof callback == 'function') {
-      callback.apply(callback, callbckArgs)
+      callback.apply(callback, callbckArgs ? callbckArgs : [])
     }
   }
 }
 
-const getAllService = function () {
-  let eventEmitterService = eventExtension.getInstance(MEDIATOR_SERVICE)
+/**
+ * 返回当前服务中介注册的所有服务
+ */
+export function getAllService() {
+  const eventEmitterService = eventExtension.getInstance(MEDIATOR_SERVICE)
   return eventEmitterService.listenerTree
 }
 
-const getServiceName = function (
-  componentCode:string,
-  windowCode:string,
-  ruleSetCode:string,
-  metaType:string
+/**
+ * 根据规范返回服务名称。规范：下划线链接
+ * @param componentCode 构件code
+ * @param windowCode    窗体code
+ * @param ruleSetCode   活动集code
+ * @param metaType      元信息类型
+ */
+export function getServiceName(
+  componentCode: string,
+  windowCode: string,
+  ruleSetCode: string,
+  metaType: string
 ) {
   if (!windowCode) {
     windowCode = ''
@@ -198,9 +561,13 @@ const getServiceName = function (
   return componentCode + '_' + windowCode + '_' + ruleSetCode + '_' + metaType
 }
 
-const isExistService = function (serviceName:string) {
-  let eventEmitterService = eventExtension.getInstance(MEDIATOR_SERVICE)
-  let listeners = eventEmitterService.listeners(serviceName)
+/**
+ * 判断此服务是否存在
+ * @param 服务名称
+ */
+export function isExistService(serviceName: string) {
+  const eventEmitterService = eventExtension.getInstance(MEDIATOR_SERVICE)
+  const listeners = eventEmitterService.listeners(serviceName)
   if (listeners && listeners.length > 0) {
     return true
   }
@@ -211,15 +578,6 @@ const isExistService = function (serviceName:string) {
  * 判断是否为数组
  * TODO暂时引不到jsTool
  */
-let isArray = function (object:any) {
-  return Object.prototype.toString.call(object) === '[object Array]'
-}
-export {
-  emitNext,
-  getAllService,
-  getServiceName,
-  isExistService,
-  publish,
-  publishSerializable,
-  subscribe
+const isArray = function (object: any) {
+  return Array.isArray(object)
 }
