@@ -38,7 +38,8 @@ const main = function (ruleContext: RuleContext) {
       var params = {
         rowValues: [],
         condition: '',
-        parameters: {}
+        parameters: {},
+        checkTable:''
       }
       // 构建查询条件
       var wrParam = {
@@ -72,13 +73,13 @@ const main = function (ruleContext: RuleContext) {
         setResult(ruleContext, false)
         resolve()
       } else {
-        var callback = function (responseObj) {
+        var callback = function (responseObj:{Success:boolean}) {
           var result = responseObj.Success
           setResult(ruleContext, result)
           resolve()
           return true
         }
-        var errorCallback = function (responseObj) {
+        var errorCallback = function (responseObj:{Success:boolean}) {
           var result = responseObj.Success
           reject(
             vds.exception.newSystemException('记录引用检查执行异常！' + result)
@@ -115,7 +116,7 @@ const main = function (ruleContext: RuleContext) {
     }
   })
 }
-var getSelectedAndCurrentRecords = function (dsName) {
+var getSelectedAndCurrentRecords = function (dsName:string) {
   var datasource = vds.ds.lookup(dsName)
   if (!datasource) {
     throw vds.exception.newConfigException(
@@ -142,7 +143,7 @@ var getSelectedAndCurrentRecords = function (dsName) {
  * @param {RuleContext} ruleContext 规则上下文
  * @param {Any} value 值
  */
-var setResult = function (ruleContext, value) {
+var setResult = function (ruleContext:RuleContext, value:any) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isReferenced', value)
   }

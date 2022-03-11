@@ -14,7 +14,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, ds, widget }
 
-const main = function (widgetCode, entityCode, fieldName) {
+const main = function (widgetCode:string, entityCode:string, fieldName:string) {
   if (!widgetCode)
     exceptionHandler('函数 SelectedDateFromEntity 第一个参数,控件Code不能为空!')
 
@@ -45,12 +45,12 @@ const main = function (widgetCode, entityCode, fieldName) {
   return true
 }
 
-var exceptionHandler = function (message) {
+var exceptionHandler = function (message:string) {
   var exception = vds.exception.newConfigException(message)
   throw exception
 }
 
-var _getDataSource = function (dsName) {
+var _getDataSource = function (dsName:string) {
   // 仅支持前台实体
   var datasource = vds.ds.lookup(dsName)
   return datasource

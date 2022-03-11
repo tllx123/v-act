@@ -23,7 +23,7 @@ const main = function (ruleContext: RuleContext) {
       }
       var isSuccess = true // 用于记录保存是否成功
       var treeStructMapArray = paramsJson['treeStruct']
-      var treeMap = {}
+      var treeMap:{[code:string]:any} = {}
       if (treeStructMapArray instanceof Array) {
         for (var i = 0, len = treeStructMapArray.length; i < len; i++) {
           var treeStruct = treeStructMapArray[i]
@@ -92,7 +92,8 @@ const main = function (ruleContext: RuleContext) {
               fieldMappings: newFieldMappings,
               autoFieldMapping:
                 dataSourceMapping.isFieldAutoMapping === true ? true : false,
-              saveAll: isSaveAll
+              saveAll: isSaveAll,
+              treeStruct
             }
             if (treeMap[tableCode]) {
               config['treeStruct'] = treeMap[tableCode]
@@ -127,7 +128,7 @@ const main = function (ruleContext: RuleContext) {
  * @param {@link RuleContext} ruleContext 规则上下文
  * @return {@link Datasource}
  */
-function getDatasouce(entityName, entityType, ruleContext) {
+function getDatasouce(entityName:string, entityType:string, ruleContext:RuleContext) {
   var dbName = entityName
   var type = ''
   if (entityType == 'ruleSetOutput') {

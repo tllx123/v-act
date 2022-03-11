@@ -9,7 +9,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 const vds = { object, math }
 
-const main = function (arg) {
+const main = function (arg:number) {
   if (vds.object.isUndefOrNull(arg))
     throw new Error('数字的平方根函数参数为空，请检查')
   if (!vds.object.isNumber(arg))

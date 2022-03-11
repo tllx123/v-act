@@ -3,19 +3,15 @@
  * @param Object inputParamValue 使用者输入的类型
  * @param String type 应有的类型
  */
-let dataValidate = function (inputParamValue, type) {
-  if (type == checkType(inputParamValue, type)) {
-    return true
-  }
-  return false
-}
+let dataValidate = (inputParamValue: unknown, type: string): boolean =>
+  type == checkType(inputParamValue, type)
 /**
  *检查数组中是否包含指定值
  * @param String inputParamValue 使用者输入的类型
  *
  */
-let checkType = function (inputParamValue, desType) {
-  let type = typeof inputParamValue
+let checkType = function (inputParamValue: any, desType: string): string {
+  let type: string = typeof inputParamValue
   let retType
   if (type == 'boolean') {
     retType = 'boolean'

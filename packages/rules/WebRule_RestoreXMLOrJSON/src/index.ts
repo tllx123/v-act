@@ -59,8 +59,8 @@ const main = function (ruleContext: RuleContext) {
       }
 
       //元素名到字段名的映射Map
-      var elementNameToFieldNameMap = {}
-      var elementNames = []
+      var elementNameToFieldNameMap:{[code:string]:any} = {}
+      var elementNames:any = []
 
       for (var index = 0; index < restoreDataDetail.length; index++) {
         var restoreDataElement = restoreDataDetail[index]
@@ -105,16 +105,17 @@ const main = function (ruleContext: RuleContext) {
       )
 
       // 调用完活动集之后的回调方法
-      var callback = function (responseObj) {
+      var callback = function (responseObj:any) {
         //var outputResult = responseObj.data.result;
         var outputResult = responseObj.OutputMessage
         var jsonData = vds.object.stringify(outputResult)
-        var elementNameToValueMap = {}
+        var elementNameToValueMap:{[code:string]:any} = {}
 
         for (var index = 0; index < elementNames.length; index++) {
-          var elementName = elementNames[index]
+          let elementName:any
+          elementName = elementNames[index]
           var elementValue = jsonData[elementName]
-          var elementValueArr = []
+          var elementValueArr:any = []
           if (vds.object.isArray(elementValue)) {
             for (var subIndex = 0; subIndex < elementValue.length; subIndex++) {
               var elementCellValue = elementValue[subIndex]
@@ -126,13 +127,14 @@ const main = function (ruleContext: RuleContext) {
           elementNameToValueMap[elementName] = elementValueArr
         }
 
-        var tableToFieldArr = {}
+        var tableToFieldArr:{[code:string]:any} = {}
         for (var elementName in elementNameToFieldNameMap) {
           var fieldName = elementNameToFieldNameMap[elementName]
           if (!elementNameToValueMap[elementName]) {
             continue
           }
-          var table = fieldName.substring(0, fieldName.indexOf('.'))
+          let tabel:any
+          table = fieldName.substring(0, fieldName.indexOf('.'))
           var field = fieldName.substring(fieldName.indexOf('.') + 1)
           if (!vds.object.isArray(tableToFieldArr[table])) {
             tableToFieldArr[table] = []
@@ -145,7 +147,7 @@ const main = function (ruleContext: RuleContext) {
 
         for (var table in tableToFieldArr) {
           var fieldObjArr = tableToFieldArr[table]
-          fieldObjArr.sort(function (a, b) {
+          fieldObjArr.sort(function (a:any, b:any) {
             var aField = a.field
             var aElement = a.element
 
@@ -207,7 +209,7 @@ const main = function (ruleContext: RuleContext) {
             }
           }
 
-          var elementValue = elementValueArr[subIndex]
+          //var elementValue = elementValueArr[subIndex]
           var datasource = vds.ds.lookup(table)
           datasource.insertRecords(emptyRecords)
         }
@@ -244,11 +246,11 @@ const main = function (ruleContext: RuleContext) {
  * @param {Object} elementNames
  */
 var _generateRequestData = function (
-  restoreDataType,
-  restoreDataValue,
-  elementNames
+  restoreDataType:{},
+  restoreDataValue:{},
+  elementNames:{}
 ) {
-  var reqData = {}
+  var reqData = {restoreDataType,restoreDataValue,elementNames}
   reqData.restoreDataType = restoreDataType
   reqData.restoreDataValue = restoreDataValue
   reqData.elementNames = elementNames

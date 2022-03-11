@@ -2,7 +2,13 @@
 //key：加密用的密钥
 //message：需要加密的字符串
 //encrypt：加密还是解密，1为加密，0，解密
-function des(key, message, encrypt, mode, iv) {
+function des(
+  key: string,
+  message: string,
+  encrypt: number,
+  mode?: number,
+  iv?: string
+): string {
   //declaring this locally speeds things up a bit
   let spfunction1 = new Array(
     0x1010400,
@@ -542,10 +548,10 @@ function des(key, message, encrypt, mode, iv) {
     temp2,
     right1,
     right2,
-    left,
+    left: any,
     right,
     looping
-  let cbcleft, cbcleft2, cbcright, cbcright2
+  let cbcleft: any, cbcleft2: any, cbcright: any, cbcright2: any
   let endloop, loopinc
   let len = message.length
   let chunk = 0
@@ -561,10 +567,10 @@ function des(key, message, encrypt, mode, iv) {
 
   message += '\0\0\0\0\0\0\0\0' //pad the message out with null bytes
   //store the result here
-  result = ''
-  tempresult = ''
+  let result: string = ''
+  let tempresult: string = ''
 
-  if (mode == 1) {
+  if (mode == 1 && iv) {
     //CBC mode
     cbcleft =
       (iv.charCodeAt(m++) << 24) |
@@ -732,9 +738,9 @@ function des(key, message, encrypt, mode, iv) {
 //des_createKeys
 //this takes as input a 64 bit key(even though only 56 bits are used)
 //as an array of 2 integers,and returns 16 48 bit keys
-function des_createKeys(key) {
+function des_createKeys(key: string): any[] {
   //declaring this locally speeds things up a bit
-  pc2bytes0 = new Array(
+  const pc2bytes0 = new Array(
     0,
     0x4,
     0x20000000,
@@ -752,7 +758,7 @@ function des_createKeys(key) {
     0x20010200,
     0x20010204
   )
-  pc2bytes1 = new Array(
+  const pc2bytes1 = new Array(
     0,
     0x1,
     0x100000,
@@ -770,7 +776,7 @@ function des_createKeys(key) {
     0x4100100,
     0x4100101
   )
-  pc2bytes2 = new Array(
+  const pc2bytes2 = new Array(
     0,
     0x8,
     0x800,
@@ -788,7 +794,7 @@ function des_createKeys(key) {
     0x1000800,
     0x1000808
   )
-  pc2bytes3 = new Array(
+  const pc2bytes3 = new Array(
     0,
     0x200000,
     0x8000000,
@@ -806,7 +812,7 @@ function des_createKeys(key) {
     0x8022000,
     0x8222000
   )
-  pc2bytes4 = new Array(
+  const pc2bytes4 = new Array(
     0,
     0x40000,
     0x10,
@@ -824,7 +830,7 @@ function des_createKeys(key) {
     0x1010,
     0x41010
   )
-  pc2bytes5 = new Array(
+  const pc2bytes5 = new Array(
     0,
     0x400,
     0x20,
@@ -842,7 +848,7 @@ function des_createKeys(key) {
     0x2000020,
     0x2000420
   )
-  pc2bytes6 = new Array(
+  const pc2bytes6 = new Array(
     0,
     0x10000000,
     0x80000,
@@ -860,7 +866,7 @@ function des_createKeys(key) {
     0x80002,
     0x10080002
   )
-  pc2bytes7 = new Array(
+  const pc2bytes7 = new Array(
     0,
     0x10000,
     0x800,
@@ -878,7 +884,7 @@ function des_createKeys(key) {
     0x20020800,
     0x20030800
   )
-  pc2bytes8 = new Array(
+  const pc2bytes8 = new Array(
     0,
     0x40000,
     0,
@@ -896,7 +902,7 @@ function des_createKeys(key) {
     0x2000002,
     0x2040002
   )
-  pc2bytes9 = new Array(
+  const pc2bytes9 = new Array(
     0,
     0x10000000,
     0x8,
@@ -914,7 +920,7 @@ function des_createKeys(key) {
     0x408,
     0x10000408
   )
-  pc2bytes10 = new Array(
+  const pc2bytes10 = new Array(
     0,
     0x20,
     0,
@@ -932,7 +938,7 @@ function des_createKeys(key) {
     0x102000,
     0x102020
   )
-  pc2bytes11 = new Array(
+  const pc2bytes11 = new Array(
     0,
     0x1000000,
     0x200,
@@ -950,7 +956,7 @@ function des_createKeys(key) {
     0x4200200,
     0x5200200
   )
-  pc2bytes12 = new Array(
+  const pc2bytes12 = new Array(
     0,
     0x1000,
     0x8000000,
@@ -968,7 +974,7 @@ function des_createKeys(key) {
     0x8080010,
     0x8081010
   )
-  pc2bytes13 = new Array(
+  const pc2bytes13 = new Array(
     0,
     0x4,
     0x100,
@@ -1002,12 +1008,12 @@ function des_createKeys(key) {
 
   for (let j = 0; j < iterations; j++) {
     //either 1 or 3 iterations
-    left =
+    let left =
       (key.charCodeAt(m++) << 24) |
       (key.charCodeAt(m++) << 16) |
       (key.charCodeAt(m++) << 8) |
       key.charCodeAt(m++)
-    right =
+    let right =
       (key.charCodeAt(m++) << 24) |
       (key.charCodeAt(m++) << 16) |
       (key.charCodeAt(m++) << 8) |
@@ -1093,7 +1099,7 @@ function des_createKeys(key) {
   return keys
 } //end of des_createKeys
 
-function stringToHex(s) {
+function stringToHex(s: string) {
   let r = ''
 
   for (let i = 0; i < s.length; i++) {
@@ -1104,7 +1110,7 @@ function stringToHex(s) {
   return r
 }
 
-function charToHex(ch) {
+function charToHex(ch: number): any {
   let hexes = new Array(
     '0',
     '1',
@@ -1130,7 +1136,7 @@ function charToHex(ch) {
   }
 }
 
-function isHexString(s) {
+function isHexString(s: string): boolean {
   if (s == null || s == '') return false
   let hexstr = '0123456789abcdef'
 
@@ -1142,7 +1148,7 @@ function isHexString(s) {
   return true
 }
 
-function hexToString(s) {
+function hexToString(s: string): string {
   let r = ''
   if (s == null || s == '' || s.length % 16 != 0 || !isHexString(s))
     throw new Error('invalid des encrypted value!')
@@ -1154,12 +1160,12 @@ function hexToString(s) {
   return r
 }
 
-function encrypt(keyStr, str) {
+function encrypt(keyStr: string, str: string): string {
   let encryptStr = des(keyStr, str, 1, 0)
   return stringToHex(encryptStr)
 }
 
-function decrypt(keyStr, str) {
+function decrypt(keyStr: string, str: string): string {
   let encryptStr = hexToString(str)
   return des(keyStr, encryptStr, 0, 0)
 }

@@ -1,4 +1,10 @@
-export function initModule(sBox) {
+type Box = {
+  util: {
+    collections: object
+  }
+}
+
+export function initModule(sBox: Box): void {
   if (sBox) {
     let utils = sBox.util.collections
     module.exports = utils

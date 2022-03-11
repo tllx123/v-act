@@ -1,9 +1,7 @@
 import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
 
-export function initModule(sb) {}
-
-const main = function (arg1, arg2) {
+const main = function (arg1:string, arg2:number,arg3:number) {
   if (mathUtil.isEmpty(arg1)) {
     throw new Error('字符串为空，请检查')
   }

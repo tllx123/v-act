@@ -2,10 +2,11 @@
  *	保存图片到相册
  */
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 import * as app from '@v-act/vjs.framework.extension.platform.services.integration.vds.app'
-const vds = { expression, exception, rpc, app }
+const vds = { expression, exception, rpc, app,object }
 
 /**
  * 规则入口
@@ -29,7 +30,8 @@ const main = function (ruleContext: RuleContext) {
       var value = experssFunc(inParamsObj.sourceValue, ruleContext)
       if (type == 'url') {
         var fileUrl = value
-        var fileName = getFileName(fileUrl)
+        let fileName:any
+        fileName = vds.object.isUndefOrNull(fileName) ? '' : getFileName(fileUrl)
         fileName = fileName.replace(/\s+/g, '')
         if (window.device.platform == 'iOS') {
           fileName = new Date().getTime() + '.' + getFileNameLast(fileName)
@@ -37,13 +39,13 @@ const main = function (ruleContext: RuleContext) {
         saveFile(fileUrl, fileName, resolve, reject)
       } else {
         var fileId = value
-        var getFileInfoCB = function (fileName) {
+        var getFileInfoCB = function (fileName:string) {
           fileName = fileName.replace(/\s+/g, '')
           if (window.device.platform == 'iOS') {
             fileName = new Date().getTime() + '.' + getFileNameLast(fileName)
           }
           var getFileUrlByFileIdExp = 'GetFileUrlByFileId("' + fileId + '")'
-          var getFileUrlCB = function (url) {
+          var getFileUrlCB = function (url:string) {
             saveFile(url, fileName, resolve, resolve)
           }
           executeExpression(getFileUrlByFileIdExp, getFileUrlCB, reject)
@@ -57,8 +59,8 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-var saveFile = function (fileUrl, fileName, resolve, reject) {
-  var failCB = function (error) {
+var saveFile = function (fileUrl:string, fileName:string, resolve:any, reject:any) {
+  var failCB = function (error:{message:string}) {
     reject(vds.exception.newConfigException('保存失败；' + error.message))
   }
   var promise = vds.app.saveImage(fileUrl, fileName)
@@ -68,7 +70,7 @@ var saveFile = function (fileUrl, fileName, resolve, reject) {
 /**
  * 执行后台函数（根据文件ID获取文件信息）
  */
-var executeExpression = function (expression, callback, reject) {
+var executeExpression = function (expression:string, callback:any, reject:any) {
   var paramData = {
     expression: expression
   }
@@ -80,7 +82,7 @@ var executeExpression = function (expression, callback, reject) {
     isRuleSetCode: false
   })
   promise
-    .then(function (rs) {
+    .then(function (rs:any) {
       result = rs.data.result
       callback(result)
     })
@@ -92,7 +94,7 @@ var executeExpression = function (expression, callback, reject) {
  * experss 表达式
  * routeContext 路由上下文
  */
-var experssFunc = function (experss, ruleContext) {
+var experssFunc = function (experss:string, ruleContext:RuleContext) {
   if (experss == null || experss == '') {
     return null
   }
@@ -106,14 +108,14 @@ var experssFunc = function (experss, ruleContext) {
 /**
  * 获取URL后缀
  */
-function getFileName(fileName) {
+function getFileName(fileName:string) {
   return fileName.split('/').pop()
 }
 
 /**
  * 获取文件名后缀
  */
-function getFileNameLast(fileName) {
+function getFileNameLast(fileName:string) {
   return fileName.split('.').pop()
 }
 

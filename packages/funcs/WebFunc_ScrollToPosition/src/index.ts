@@ -5,14 +5,16 @@
     无返回值
  *
  */
+import $ from 'jquery'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-const vds = { exception, widget }
+const vds = { exception, widget,object }
 
-const main = function (widgetCode) {
+const main = function (widgetCode:string) {
   //获取函数传入的参数
   if (vds.object.isUndefOrNull(widgetCode)) {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       'ScrollToPosition函数，控件编码不能为空！'
     )
     throw exception
@@ -20,19 +22,19 @@ const main = function (widgetCode) {
 
   var widget = vds.widget.getProperty(widgetCode, 'widgetObj')
   if (widget) {
-    var scopeId = widget.getScopeId()
-    var containerId = vds.widget.scrollTo(scopeId)
-    var positionDom = widget.getClipHandle()
+    const scopeId = widget.getScopeId()
+    const containerId = vds.widget.scrollTo(scopeId)
+    const positionDom = widget.getClipHandle()
     //var topX = widget.getOffsetTop();
     //var leftY = widget.getOffsetLeft();
-    var topX = $(positionDom).offset().top
-    var leftY = $(positionDom).offset().left
-    if (containerId) {
+    let topX = $(positionDom).offset().top
+    let leftY = $(positionDom).offset().left
+    if (vds.object.isUndefOrNull(containerId)) {
       var container = vds.widget.scrollTo(containerId)
       if (container.ele) {
-        var scrollEle = container.ele
-        var containerTop = $('#' + scrollEle).offset().top
-        var containerLeft = $('#' + scrollEle).offset().left
+        const scrollEle = container.ele
+        const containerTop = $('#' + scrollEle).offset().top
+        const containerLeft = $('#' + scrollEle).offset().left
         topX = topX - containerTop
         leftY = leftY - containerLeft
         $('#' + scrollEle).animate(
