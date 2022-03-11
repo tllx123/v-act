@@ -1,9 +1,7 @@
-import { Baidutrace as BaiduTrace } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-
-export function initModule(sb) {}
+import { Baidutrace as BaiduTrace } from '@v-act/vjs.framework.extension.platform.services.native.mobile.baidutrace'
 
 //主入口(必须有)
-const main = function (param) {
+const main = function () {
   let result = BaiduTrace.getGatherState()
   return result
 }
