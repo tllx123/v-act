@@ -9,72 +9,45 @@
  * var ds = vds.ds.lookup("ds1");
  * var record = ds.createRecord();
  */
-window.vds = window.vds || {}
-window.vds.ds = window.vds.ds || {}
 
-var ds = window.vds.ds
-
-exports = ds
-
-var dsManager,
-  Datasource,
-  dsFactory,
-  Where,
-  dbUtil,
-  uuid,
-  Record,
-  ResultSet,
-  WhereRestrict,
+import {
   Criteria,
-  NewCriteria
-var engine, ExpressionContext, Metadata
+  DatasourceFactory as dsFactory
+} from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { DatasourcePusher as dbUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-export function initModule(sBox) {
-  dsManager = sBox.getService(
-    'vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
-  )
-  dsFactory = sBox.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-  )
-  dbUtil = sBox.getService(
-    'vjs.framework.extension.platform.services.domain.datasource.DatasourcePusher'
-  )
-  uuid = sBox.getService('vjs.framework.extension.util.UUID')
-  Datasource = require('vjs/framework/extension/platform/services/integration/vds/ds/Datasource')
-  Record = require('vjs/framework/extension/platform/services/integration/vds/ds/Record')
-  Metadata = require('vjs/framework/extension/platform/services/integration/vds/ds/Metadata')
-  ResultSet = require('vjs/framework/extension/platform/services/integration/vds/ds/ResultSet')
-  Criteria = sBox.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.Criteria'
-  )
-  Where = require('vjs/framework/extension/platform/services/integration/vds/ds/Where')
-  NewCriteria = require('vjs/framework/extension/platform/services/integration/vds/ds/Criteria')
-  WhereRestrict = sBox.getService(
-    'vjs.framework.extension.platform.services.where.restrict.WhereRestrict'
-  )
-  engine = sBox.getService(
-    'vjs.framework.extension.platform.services.engine.expression.ExpressionEngine'
-  )
-  ExpressionContext = sBox.getService(
-    'vjs.framework.extension.platform.services.engine.expression.ExpressionContext'
-  )
-}
+import Datasource from './Datasource'
+import Metadata from './Metadata'
+import Record from './Record'
+import ResultSet from './ResultSet'
+import Where from './Where'
 
 /**
  * 枚举项
  *
  * */
-exports.enums = {
+const enums = {
   IdField: true
 }
+
+export { enums }
 /**
  * 条件类型
  * @enum
  * */
-exports.WhereType = {
+const WhereType = {
   Query: 'Query',
   Table: 'Table'
 }
+
+export { WhereType }
 
 /**
  * 查找数据源
@@ -225,8 +198,8 @@ export function _genResultSet(resultset) {
  * */
 export function copy(sourceEntity, destEntity, fieldMappings, params) {
   if (
-    !exports.isDatasource(sourceEntity) ||
-    !exports.isDatasource(destEntity) ||
+    !isDatasource(sourceEntity) ||
+    !isDatasource(destEntity) ||
     !(fieldMappings instanceof Array) ||
     fieldMappings.length < 1
   ) {
@@ -341,7 +314,7 @@ export function createCriteria() {
 /**
  * 合并类型
  * */
-exports.MergeType = {
+const MergeType = {
   /**
    * 加载
    * */
@@ -355,6 +328,8 @@ exports.MergeType = {
    * */
   InsertOrUpdate: 'insertOrUpdateBySameId'
 }
+
+export { MergeType }
 
 /**
  *
@@ -583,5 +558,3 @@ var _getValueByMapping = function (
 export function _genMetadata(metadata) {
   return new Metadata(metadata)
 }
-
-module.exports = exports

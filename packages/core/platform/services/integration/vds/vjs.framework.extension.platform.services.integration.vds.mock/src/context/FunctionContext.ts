@@ -2,24 +2,21 @@
  * 二次开发的函数上下文
  * */
 
-import { dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import VObject from './context/VObject'
-import { baseFunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-var Extend = require('vjs/framework/extension/platform/services/integration/vds/mock/util/Extend')
-Extend.extend(FunctionContext, baseFunctionContext, sBox)
-var VObject, dsFactory, baseFunctionContext
+import { FunctionContext as BaseFunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { DatasourceFactory as dsFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-var FunctionContext = function (args, mock) {
-  this._args = args
-  this._cacheDatas = {}
-  this._vObject = new VObject(mock)
-  this.routeContext = mock
-}
+import VObject from './VObject'
 
-FunctionContext.prototype = {
-  initModule: function (sBox) {},
+class FunctionContext extends BaseFunctionContext {
+  constructor(args, mock) {
+    super()
+    this._args = args
+    this._cacheDatas = {}
+    this._vObject = new VObject(mock)
+    this.routeContext = mock
+  }
 
-  getInput: function (code) {
+  getInput(code) {
     if (this._cacheDatas.hasOwnProperty(code)) {
       return this._cacheDatas[code]
     }
@@ -30,18 +27,17 @@ FunctionContext.prototype = {
     }
     this._cacheDatas[code] = value
     return value
-  },
+  }
 
-  getVObject: function () {
+  getVObject() {
     return this._vObject
-  },
-
-  getInputSize: function () {
+  }
+  getInputSize() {
     var mock = this._vObject.mock
     return mock.inpus ? mock.inpus.length : 0
-  },
+  }
 
-  getArgs: function () {
+  getArgs() {
     return this._args
   }
 }

@@ -1,4 +1,4 @@
-import { Log as log } from '@v-act/vjs.framework.extension.util.log'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 let instance
 let VJSNAME = 'VJS[APPConfig]：'

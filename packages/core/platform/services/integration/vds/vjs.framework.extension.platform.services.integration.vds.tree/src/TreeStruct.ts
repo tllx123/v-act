@@ -4,29 +4,22 @@
  * @alias TreeStruct
  * @catalog 数据源/树数据源定义
  */
-var TreeStruct = function (
-  treeCode,
-  pId,
-  orderNo,
-  innerCode,
-  isLeafCode,
-  filterCode
-) {
-  this.treeStruct = {
-    type: '1',
-    tableName: treeCode,
-    pidField: pId,
-    orderField: orderNo,
-    treeCodeField: innerCode,
-    isLeafField: isLeafCode,
-    busiFilterField: filterCode
+class TreeStruct {
+  constructor(treeCode, pId, orderNo, innerCode, isLeafCode, filterCode) {
+    this.treeStruct = {
+      type: '1',
+      tableName: treeCode,
+      pidField: pId,
+      orderField: orderNo,
+      treeCodeField: innerCode,
+      isLeafField: isLeafCode,
+      busiFilterField: filterCode
+    }
   }
-}
-TreeStruct.prototype = {
   //    	/**
   //    	 * 转成原生Map对象
   //    	 * */
-  //    	toMap:function(){
+  //    	toMap(){
   //    		return {
   //    			"type":"1",
   //    			"tableName":this.treeCode,
@@ -36,45 +29,45 @@ TreeStruct.prototype = {
   //    			"isLeafField": this.isLeaf,
   //    			"busiFilterField":this.filterCode
   //    		}
-  //    	},
-  _get: function () {
+  //    	}
+  _get() {
     return this.treeStruct
-  },
+  }
   /**
    * 获取父节点字段编码
    * @returns {String}
    * */
-  getPId: function () {
+  getPId() {
     return this.treeStruct.pidField
-  },
+  }
   /**
    * 获取排序号字段编码
    * @returns {String}
    * */
-  getOrderNo: function () {
+  getOrderNo() {
     return this.treeStruct.orderField
-  },
+  }
   /**
    * 获取层级码字段编码
    * @returns {String}
    * */
-  getInnerCode: function () {
+  getInnerCode() {
     return this.treeStruct.treeCodeField
-  },
+  }
   /**
    * 获取是否叶子节点字段编码
    * @returns {String}
    * */
-  getIsLeafCode: function () {
+  getIsLeafCode() {
     return this.treeStruct.isLeafField
-  },
+  }
   /**
    * 获取过滤字段编码
    * @returns {String}
    * */
-  getFilterCode: function () {
+  getFilterCode() {
     return this.treeStruct.busiFilterField
   }
 }
 
-module.exports = TreeStruct
+export default TreeStruct

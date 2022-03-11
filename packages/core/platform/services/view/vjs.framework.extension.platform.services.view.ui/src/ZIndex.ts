@@ -1,31 +1,33 @@
-var zIndex = 800000
+let zIndex = 800000
 
-var _update = function () {
+const _update = function () {
+  //@ts-ignore
   if (window.isc && isc.Canvas) {
     //TODO
-    var canvasIndex = isc.Canvas._BIG_Z_INDEX
+    //@ts-ignore
+    const canvasIndex = isc.Canvas._BIG_Z_INDEX
     if (canvasIndex > zIndex) {
       zIndex = canvasIndex
     }
   }
 }
 
-var getZIndex = function () {
+const getZIndex = function () {
   _update()
   return zIndex
 }
 
-var getFrontZIndex = function () {
+const getFrontZIndex = function () {
   _update()
   zIndex = zIndex + 100
   return zIndex
 }
 
-var setZIndex = function (_zIndex) {
+const setZIndex = function (_zIndex: number) {
   _update()
   if (_zIndex > zIndex) {
     zIndex = _zIndex
   }
 }
 
-export { getZIndex, getFrontZIndex, setZIndex }
+export { getFrontZIndex, getZIndex, setZIndex }

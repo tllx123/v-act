@@ -1,25 +1,10 @@
 /**
  * 属性处理器，模板统一调用，避免模板重新生成
  * */
-var scopeManager,
-  sandbox,
-  widgetModule,
-  formDesignPropertyHandler,
-  entityFieldPropertyHandler,
-  defaultPropertyHandler
 
-export function initModule(sb) {
-  sandbox = sb
-  scopeManager = sb.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  widgetModule = sb.getService(
-    'vjs.framework.extension.widget.manager.widgetModule'
-  )
-  formDesignPropertyHandler = require('vjs/framework/extension/platform/window/property/handle/impl/FormDesignPropertyHandler')
-  defaultPropertyHandler = require('vjs/framework/extension/platform/window/property/handle/impl/DefaultPropertyHandler')
-  entityFieldPropertyHandler = require('vjs/framework/extension/platform/window/property/handle/impl/EntityFieldPropertyHandler')
-}
+import * as defaultPropertyHandler from './impl/DefaultPropertyHandler'
+import * as entityFieldPropertyHandler from './impl/EntityFieldPropertyHandler'
+import * as formDesignPropertyHandler from './impl/FormDesignPropertyHandler'
 
 /**
  * 模板统一调用修改属性，避免模板重新生成，后面有时间再改造成接口与实现的方式

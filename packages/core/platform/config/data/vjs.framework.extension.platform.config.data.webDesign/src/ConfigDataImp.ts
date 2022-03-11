@@ -51,7 +51,7 @@ export function handleData(datas, condition, missPermData) {
   if (configDatas) {
     for (var i = 0, len = configDatas.length; i < len; i++) {
       var configData = configDatas[i]
-      configDataUtil.put(exports.getCode(), configData, condition)
+      configDataUtil.put(getCode(), configData, condition)
     }
   }
 }

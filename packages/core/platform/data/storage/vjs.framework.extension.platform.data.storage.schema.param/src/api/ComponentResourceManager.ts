@@ -50,7 +50,7 @@ const getComponentResourcePaths = function (params) {
   if (params && typeof params == 'object' && params.length > 0) {
     for (let i = 0, len = params.length; i < len; i++) {
       let param = params[i]
-      let path = exports.getComponentResourcePath(param)
+      let path = getComponentResourcePath(param)
       if (path) paths.push(path)
     }
   }

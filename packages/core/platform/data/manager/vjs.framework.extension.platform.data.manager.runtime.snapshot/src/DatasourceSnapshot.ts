@@ -97,4 +97,4 @@ Snapshot.prototype = {
   }
 }
 
-return Snapshot
+export default Snapshot

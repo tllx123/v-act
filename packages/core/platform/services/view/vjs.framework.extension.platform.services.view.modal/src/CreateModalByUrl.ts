@@ -74,7 +74,7 @@ const create = function (params) {
   if (null != vplatformIframeManager) {
     createNew(params)
   } else {
-    exports.createOld(params)
+    createOld(params)
   }
 }
 

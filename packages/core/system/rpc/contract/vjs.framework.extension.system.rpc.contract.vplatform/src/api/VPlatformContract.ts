@@ -1,58 +1,41 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Manager as manager } from '@v-act/vjs.framework.extension.system.rpc.contract'
 
 /**
  * @class VPlatformContract
  * @desc v平台前后端请求协议
  */
-let VPlatformContract = function () {
-  this.componentCode = null
-  this.windowCode = null
-  this.scopeId = null
-  this.headers = {}
-}
-
-VPlatformContract.prototype = {
-  initModule: function (sandbox) {
-    var manager = sandbox.getService(
-      'vjs.framework.extension.system.rpc.contract.Manager'
-    )
-    manager.injectCurrentContract(VPlatformContract, 'vPlatform')
-    var Contract = require('vjs/framework/extension/system/rpc/contract/vplatform/api/Contract')
-    var objectUtil = sandbox.util.object
-    var initFunc = Contract.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sandbox)
-    }
-    var prototype = Object.create(Contract.prototype)
-    prototype.constructor = VPlatformContract
-    objectUtil.extend(prototype, VPlatformContract.prototype)
-    VPlatformContract.prototype = prototype
-  },
-
+class VPlatformContract {
+  constructor() {
+    this.componentCode = null
+    this.windowCode = null
+    this.scopeId = null
+    this.headers = {}
+  }
   /**
    * 设置构件编号
    */
-  setComponentCode: function (componentCode) {
+  setComponentCode(componentCode) {
     this.componentCode = componentCode
-  },
+  }
 
   /**
    * 设置窗体编号
    */
-  setWindowCode: function (windowCode) {
+  setWindowCode(windowCode) {
     this.windowCode = windowCode
-  },
+  }
   /**
    * 设置域id
    */
-  setScopeId: function (scopeId) {
+  setScopeId(scopeId) {
     this.scopeId = scopeId
-  },
+  }
   /**
    *生成请求数据
    * @param {Object} operation
    */
-  generate: function (request) {
+  generate(request) {
     let operation = request.getOperations()[0]
     this.setHeader('ajaxRequest', true)
     this.setHeader('operation', operation.getOperation())
@@ -78,4 +61,6 @@ VPlatformContract.prototype = {
   }
 }
 
-return VPlatformContract
+manager.injectCurrentContract(VPlatformContract, 'vPlatform')
+
+export default VPlatformContract

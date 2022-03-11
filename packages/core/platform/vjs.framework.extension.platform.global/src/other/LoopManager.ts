@@ -42,7 +42,7 @@ var SPEEDTYPE = {
   NORMAL: 'normal', //正常 200ms
   SLOW: 'slow' //慢 500ms
 }
-exports.SPEEDTYPE = SPEEDTYPE
+export { SPEEDTYPE }
 
 /**
  * 添加循环

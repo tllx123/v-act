@@ -15,7 +15,7 @@ let storage,
   isStartListener = false,
   V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN =
     'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN_THREE'
-crossDomainEventKey = 'Coross_Domain_Event_Key'
+const crossDomainEventKey = 'Coross_Domain_Event_Key'
 
 let _getStorage = function () {
   if (!storage) {
@@ -107,7 +107,7 @@ const startCrossDomainListener = function () {
                 'TOONE_COM_CN_V3_PLATFORM_POST_MESSAGE_IDEN')
           ) {
             let cds = _getCrossDomainStorage()
-            let events = cds.get(exports.CrossDomainEvents.ModalWindowClose)
+            let events = cds.get(CrossDomainEvents.ModalWindowClose)
             if (events && events.length > 0) {
               let event = events[0]
               if (typeof event == 'object') {
@@ -124,12 +124,10 @@ const startCrossDomainListener = function () {
             }
             if (_data['TOONE_IDEN'] == V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN) {
               //平台标识
-              let type = _data.TYPE
-                ? _data.TYPE
-                : exports.CrossDomainMessageType.EVENT
+              let type = _data.TYPE ? _data.TYPE : CrossDomainMessageType.EVENT
               let cds = _getCrossDomainStorage()
               switch (type) {
-                case exports.CrossDomainMessageType.EVENT:
+                case CrossDomainMessageType.EVENT:
                   var eventName = _data['EVENTNAME']
                   var fInfo = _data['EVENTINFO'] //触发的值
                   var params = _data['PARAMS']
@@ -175,11 +173,11 @@ const startCrossDomainListener = function () {
                     }
                   }
                   break
-                case exports.CrossDomainMessageType.MESSAGE:
+                case CrossDomainMessageType.MESSAGE:
                   var msgParams = _data.PARAMS
                   if (msgParams && msgParams.msg == 'UnLogin') {
                     var newParams = msgParams.params
-                    newParams.TYPE = exports.CrossDomainMessageType.EVENT
+                    newParams.TYPE = CrossDomainMessageType.EVENT
                     newParams.TOONE_IDEN = V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN //平台跨域事件标识
                     var childs = window.frames
                     if (childs && childs.length > 0) {
@@ -212,7 +210,7 @@ const startCrossDomainListener = function () {
   }
 }
 
-exports.CrossDomainEvents = {
+const CrossDomainEvents = {
   //模态窗体关闭
   ModalWindowClose: 'ModalWindowClose',
   //关闭组件容器里面的窗体
@@ -231,13 +229,17 @@ exports.CrossDomainEvents = {
   CustomEvent: 'CustomEvent'
 }
 
+export { CrossDomainEvents }
+
 /**
  * 消息类型
  * */
-exports.CrossDomainMessageType = {
+const CrossDomainMessageType = {
   EVENT: 'Event',
   MESSAGE: 'Message'
 }
+
+export { CrossDomainMessageType }
 
 const onCrossDomainEvent = function (params) {
   let eventName = params.eventName
@@ -287,7 +289,7 @@ const fireCrossDomainEvent = function (params) {
     return false
   }
   //跨域消息类型
-  let type = params.type ? params.type : exports.CrossDomainMessageType.EVENT
+  let type = params.type ? params.type : CrossDomainMessageType.EVENT
   //		console.log("["+window._$index+"]fireCrossDomainEvent: "+JSON.stringify(params));
   let newParams = {
     PARAMS: params.params,
@@ -295,7 +297,7 @@ const fireCrossDomainEvent = function (params) {
     TYPE: type,
     TOONE_IDEN: V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN //平台跨域事件标识
   }
-  if (type == exports.CrossDomainMessageType.EVENT) {
+  if (type == CrossDomainMessageType.EVENT) {
     let eventName = params.eventName
     if (!eventName) {
       logUtil.warn('跨域处理的事件名称不能为空.')
@@ -316,7 +318,7 @@ const fireCrossDomainEvent = function (params) {
   } catch (e) {}
 }
 
-exports.Events = {
+const Events = {
   //规则执行前
   BeforeRuleExe: 'BeforeRuleExe',
   //规则执行后
@@ -352,6 +354,7 @@ exports.Events = {
 }
 
 export {
+  Events,
   create,
   fire,
   fireCrossDomainEvent,

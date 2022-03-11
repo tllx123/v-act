@@ -1,4 +1,5 @@
 import { AlertMessage as alertMessage } from '@v-act/vjs.framework.extension.platform.services.view.ui'
+
 let sandbox
 
 export function initModule(sb) {
@@ -84,27 +85,6 @@ const infoDialog = function (message, callback) {
   }
 }
 
-const infoDialog = function (message, callback) {
-  let CB = function () {
-    if (isFunction(callback)) {
-      CB = callback()
-    }
-  }
-  if (window.VJSBridge) {
-    //移动端
-    window.VJSBridge.plugins.vplatform.Dialogs.alert(
-      message + '',
-      CB,
-      '提示',
-      '确认'
-    )
-  } else {
-    //PC端
-    alert(message)
-    CB()
-  }
-}
-
 const warnDialog = function (message, callback) {
   let CB = function () {
     if (isFunction(callback)) {
@@ -147,11 +127,4 @@ const errorDialog = function (message, callback) {
   }
 }
 
-export {
-  confirmDialog,
-  propmtDialog,
-  infoDialog,
-  infoDialog,
-  warnDialog,
-  errorDialog
-}
+export { confirmDialog, errorDialog, infoDialog, propmtDialog, warnDialog }

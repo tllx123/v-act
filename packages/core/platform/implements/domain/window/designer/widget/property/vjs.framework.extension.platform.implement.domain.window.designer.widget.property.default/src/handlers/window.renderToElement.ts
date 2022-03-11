@@ -1,14 +1,10 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-
-import { windowMapping } from './handleWindowMapping'
-import { dependency } from '@v-act/vjs.framework.extension.ui.adapter.dependency'
 import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-
+import { Dependency as dependency } from '@v-act/vjs.framework.extension.ui.adapter.dependency'
+import { ResourcePackage as resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
 import { ContainerRelation as containerRelation } from '@v-act/vjs.framework.extension.ui.common.plugin.services.container'
 
-import { resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
+import * as windowMapping from './handleWindowMapping'
 
 export function getHandlerName() {
   return 'window.renderToElement'

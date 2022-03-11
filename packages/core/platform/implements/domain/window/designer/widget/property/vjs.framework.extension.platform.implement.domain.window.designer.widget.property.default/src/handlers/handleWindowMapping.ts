@@ -16,7 +16,7 @@ var handleWindowMapping = function (componentCode, windowCode) {
   return null
 }
 
-exports.handleWindowMapping = handleWindowMapping
+export { handleWindowMapping }
 
 export function getHandlerName() {
   return 'handleWindowMapping'

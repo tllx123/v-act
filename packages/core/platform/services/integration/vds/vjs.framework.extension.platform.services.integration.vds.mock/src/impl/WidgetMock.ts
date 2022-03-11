@@ -1,5 +1,3 @@
-var functionEngine, FunctionContext, BaseMock, jsonUtils, scopeManager
-
 /**
  * 控件本地测试定义，继承自{@link BaseMock}
  * @constructor
@@ -14,67 +12,59 @@ var functionEngine, FunctionContext, BaseMock, jsonUtils, scopeManager
  * 	});
  * });
  */
-var WidgetMock = function (metadata, scopeId, code) {
-  BaseMock.call(this, metadata, scopeId, code, '控件')
-}
 
-WidgetMock.prototype = {
-  initModule: function (sb) {
-    BaseMock = require('vjs/framework/extension/platform/services/integration/vds/mock/impl/BaseMock')
-    var Extend = require('vjs/framework/extension/platform/services/integration/vds/mock/util/Extend')
-    Extend.extend(WidgetMock, BaseMock, sb)
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    jsonUtils = sb.getService('vjs.framework.extension.util.JsonUtil')
-  },
+import BaseMock from './BaseMock'
 
+class WidgetMock extends BaseMock {
+  constructor(metadata, scopeId, code) {
+    super(metadata, scopeId, code, '控件')
+  }
   /*
    * 获取所有前端函数编号
    * @return Array
    */
-  _getWidgetCodes: function () {
+  _getWidgetCodes() {
     var codes = this._getFrontendPluginCodes('function')
     return codes
-  },
+  }
 
-  _getPluginInputCfg: function (code) {
+  _getPluginInputCfg(code) {
     var plugin = this._getPluginCfg()
     var inputs = plugin.inputs
     if (inputs) {
       return inputs[code]
     }
     return null
-  },
+  }
 
-  _getWidgetInputCfg: function (code) {
+  _getWidgetInputCfg(code) {
     return this._getPluginInputCfg(code)
-  },
+  }
 
-  mockInputs: function () {
+  mockInputs() {
     for (var i = 0, l = arguments.length; i < l; i++) {
       this.inputs[i] = arguments[i]
     }
-  },
+  }
 
   /**
    * mock控件属性
    * @param {String} code 属性编号
    * @param {Any} value 属性值
    */
-  mockProperty: function (code, value) {
+  mockProperty(code, value) {
     this.mockInput(code, value)
-  },
+  }
 
   /**
    * 获取属性值
    * @param {String} code 属性编号
    * @returns Any
    */
-  getProperty: function (code) {
+  getProperty(code) {
     return this._getInput(code)
-  },
-  _getPluginInputCfg: function (code) {
+  }
+  _getPluginInputCfg(code) {
     var pluginCfg = this._getPluginCfg()
     var properties = pluginCfg.properties
     var props = {}
@@ -87,7 +77,7 @@ WidgetMock.prototype = {
       }
     }
     return null
-  },
+  }
   /**
    * 创建控件，如果callback没有传递，则将控件渲染到body下，否则执行callback，callback入参为控件属性
    * @param {Function=} callback
@@ -102,7 +92,7 @@ WidgetMock.prototype = {
    * 	});
    * });
    */
-  exec: function (callback) {
+  exec(callback) {
     var code = this.code
     var pluginCfg = this._getPluginCfg()
     var properties = pluginCfg.properties
@@ -125,4 +115,4 @@ WidgetMock.prototype = {
 }
 
 //	module.exports = FunctionMock;
-return WidgetMock
+export default WidgetMock

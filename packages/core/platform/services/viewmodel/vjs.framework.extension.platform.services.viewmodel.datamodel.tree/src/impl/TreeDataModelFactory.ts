@@ -1,6 +1,6 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-export function initModule(sb) {}
+import * as TreeDataModel from './TreeDataModel'
 
 /**
  * 移动的状态ss
@@ -57,7 +57,7 @@ let getInstance = function (dataSourceName, treeStruct) {
   if (!instance) {
     let treeViewModel
     if (treeType == '1' || treeType == '2') {
-      treeViewModel = require('vjs/framework/extension/platform/services/viewmodel/datamodel/tree/impl/TreeDataModel')
+      treeViewModel = TreeDataModel
     } else if (treeType == '3') {
       //treeViewModel = require("system/view/bizCodeTreeViewModel");
     }

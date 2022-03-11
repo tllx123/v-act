@@ -5,17 +5,15 @@ import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extensi
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { localdb as localDB } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { LocalDB as localDB } from '@v-act/vjs.framework.extension.platform.services.native.mobile.localdb'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import {
-  query as dataQuery,
-  save as dataSave
-} from '@v-act/vjs.framework.extension.platform.services.repository'
+  DataQuery as dataQuery,
+  DataSave as dataSave
+} from '@v-act/vjs.framework.extension.platform.services.repository.remote.base'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
-
-export function initModule(sb) {}
 
 const queryData = function (params) {
   let config = params.config,

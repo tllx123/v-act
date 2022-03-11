@@ -1,4 +1,4 @@
-import { Sysconfig as APPConfig } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { APPConfig } from '@v-act/vjs.framework.extension.platform.services.native.mobile.sysconfig'
 
 export function initModule(sb) {
   APPConfig.putInstance(exports)

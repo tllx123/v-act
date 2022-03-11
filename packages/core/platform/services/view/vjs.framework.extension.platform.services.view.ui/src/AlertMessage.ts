@@ -1,40 +1,33 @@
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
+
+import * as backMask from './BackMask'
+import * as zindex from './ZIndex'
+
 var dialogs = [],
-  backMask,
   alertDiv,
   _dialogIntervalIndex = null,
   defaultViewTime = 3,
-  currentDialogInfo = null,
-  zindex,
-  log,
-  stringUtils,
-  i18n
+  currentDialogInfo = null
 
-export function initModule(sb) {
-  backMask = require('vjs/framework/extension/platform/services/view/ui/BackMask')
-  zindex = require('vjs/framework/extension/platform/services/view/ui/ZIndex')
-  log = sb.getService('vjs.framework.extension.util.log')
-  stringUtils = sb.getService('vjs.framework.extension.util.StringUtil')
-  i18n = sb.getService(
-    'vjs.framework.extension.platform.interface.i18n.platform'
-  )
-  var divId = '___alertMessageDiv'
-  //插入DOM到页面
+var divId = '___alertMessageDiv'
+//插入DOM到页面
+alertDiv = $('#' + divId)
+if (alertDiv && alertDiv.size() == 0) {
+  //初始化提示框div
+  var dialogDOM = _generateDiaLog(divId)
+  $('body').append(dialogDOM)
   alertDiv = $('#' + divId)
-  if (alertDiv && alertDiv.size() == 0) {
-    //初始化提示框div
-    var dialogDOM = _generateDiaLog(divId)
-    $('body').append(dialogDOM)
-    alertDiv = $('#' + divId)
-    alertDiv.find('#dialogConfirm').click(function () {
-      confirmHandler()
-    })
-    alertDiv.find('#dialogCancel').click(function () {
-      cancelHandler()
-    })
-    alertDiv.find('#dialogIKnow').click(function () {
-      iKnowHandler()
-    })
-  }
+  alertDiv.find('#dialogConfirm').click(function () {
+    confirmHandler()
+  })
+  alertDiv.find('#dialogCancel').click(function () {
+    cancelHandler()
+  })
+  alertDiv.find('#dialogIKnow').click(function () {
+    iKnowHandler()
+  })
 }
 
 var confirmDialog = function (title, content, onCallback, isEsCapeHtml) {
@@ -353,5 +346,4 @@ var _generateDiaLog = function (id) {
   return result
 }
 
-exports.confirmDialog = confirmDialog
-exports.propmtDialog = propmtDialog
+export { confirmDialog, propmtDialog }

@@ -1,27 +1,14 @@
-var ScopeManager, environment, componentUtil, sandbox, progressbar
-var uuidUtil
-var windowRelation, WindowContainer, exceptionHandler
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  WindowContainer,
+  WindowContainerManager as windowRelation
+} from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { ResourcePackage as resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
+import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-export function initModule(sbox) {
-  ScopeManager = sbox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  environment = sbox.getService(
-    'vjs.framework.extension.platform.interface.environment.Environment'
-  )
-  componentUtil = require('vjs/framework/extension/ui/adapter/init/smartclient/web/api/SmartClientUtil')
-  WindowContainer = sbox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainer'
-  )
-  windowRelation = sbox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-  )
-  uuidUtil = sbox.getService('vjs.framework.extension.util.UUID')
-  exceptionHandler = sbox.getService(
-    'vjs.framework.extension.platform.interface.exception.ExceptionHandler'
-  )
-  sandbox = sbox
-}
+import * as componentUtil from './SmartClientUtil'
 
 /**
  * 渲染组件
@@ -82,9 +69,6 @@ var execute = function (
   isc.Log.setLogPriority(isc.Log.getClassName(), 5)
   var _this = this
   if (languageCode) {
-    var resourcePackage = sandbox.getService(
-      'vjs.framework.extension.ui.adapter.resourcepackage'
-    )
     resourcePackage.setWindowCurrentResourceCode(
       scopeId,
       null,
@@ -179,16 +163,10 @@ var execute = function (
     },
     refComponents,
     function (exception) {
-      var progressbar = sandbox.getService(
-        'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'
-      )
       progressbar.hideProgress()
       exceptionHandler.handle(exception)
     },
     true
-  )
-  var progressbar = sandbox.getService(
-    'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'
   )
   progressbar.hideProgress()
 }
@@ -266,5 +244,4 @@ var callBackFunc = function (showChromePlugin) {
 			contents:"<div style=\"background:#FEFBC6;border:#C8CD7B solid 1px;text-align:center;padding:6px 0;color:#000;font-size:14px;z-index:999999;margin:0px 0;\">您当前的IE浏览器版本低于9.0，为取得最佳效果，建议您安装Chrome Frame，点击<a href=\"module-operation!executeOperation?operation=ChromeFrameGetter\" style=\"color:#00F;\">此处下载</a>！</div>"
 		});
 	}*/
-
-exports.execute = execute
+export { execute }

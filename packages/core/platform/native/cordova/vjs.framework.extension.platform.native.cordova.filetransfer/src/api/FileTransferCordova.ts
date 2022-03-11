@@ -1,4 +1,4 @@
-import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation'
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
@@ -200,7 +200,7 @@ const filetransferDownload = function (
   }
 }
 
-exports.supportOnProgress = window.VJSBridge
+const supportOnProgress = window.VJSBridge
   ? window.VJSBridge.plugins.vplatform.FileTransfer.supportOnProgress
   : null
 
@@ -210,4 +210,4 @@ function isFunction(arg) {
   }
   return false
 }
-export { filetransferDownload, filetransferUpload }
+export { supportOnProgress, filetransferDownload, filetransferUpload }

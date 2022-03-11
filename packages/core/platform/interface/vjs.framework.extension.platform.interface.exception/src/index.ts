@@ -1,4 +1,4 @@
-import * as $ from 'jquery'
+//import * as $ from 'jquery' 引发void 0不是function
 
 export * as ExceptionFactory from './api/ExceptionFactory'
 export * as ExceptionHandler from './api/ExceptionHandler'

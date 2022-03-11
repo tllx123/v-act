@@ -296,10 +296,10 @@ const initWindowRuntime = function (params) {
 
 const init = function (params) {
   let winCb = function () {
-    exports.initWindowRuntime(params)
+    initWindowRuntime(params)
   }
   let compCb = function () {
-    exports.initWindowSchema({
+    initWindowSchema({
       componentCode: params.componentCode,
       windowCode: params.windowCode,
       success: winCb,
@@ -307,7 +307,7 @@ const init = function (params) {
     })
   }
   let appCb = function () {
-    exports.initComponentSchema({
+    initComponentSchema({
       componentCode: params.componentCode,
       windowCode: params.windowCode,
       success: compCb,
@@ -315,7 +315,7 @@ const init = function (params) {
     })
   }
   //appCb();
-  exports.initAppSchema({ success: appCb, error: params.error })
+  initAppSchema({ success: appCb, error: params.error })
 }
 
 export {

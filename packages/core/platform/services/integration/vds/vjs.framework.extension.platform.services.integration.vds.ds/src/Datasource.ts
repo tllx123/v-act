@@ -1,4 +1,8 @@
-var Record, arrayUtil, Metadata, ResultSet
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+
+import Metadata from './Metadata'
+import Record from './Record'
+import ResultSet from './ResultSet'
 
 /**
  * 数据源定义
@@ -11,13 +15,6 @@ var Datasource = function (ds) {
 }
 
 Datasource.prototype = {
-  initModule: function (sb) {
-    Record = require('vjs/framework/extension/platform/services/integration/vds/ds/Record')
-    Metadata = require('vjs/framework/extension/platform/services/integration/vds/ds/Metadata')
-    ResultSet = require('vjs/framework/extension/platform/services/integration/vds/ds/ResultSet')
-    arrayUtil = sb.getService('vjs.framework.extension.util.ArrayUtil')
-  },
-
   _toRe: function (record) {
     if (arrayUtil.isArray(record)) {
       var res = []
@@ -385,4 +382,4 @@ Datasource.prototype = {
   }
 }
 
-return Datasource
+export default Datasource

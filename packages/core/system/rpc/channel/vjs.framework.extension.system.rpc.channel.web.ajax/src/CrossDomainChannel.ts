@@ -1,5 +1,4 @@
-import { AbstractChannel as AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
 
 let objectUtil, cUtils
 

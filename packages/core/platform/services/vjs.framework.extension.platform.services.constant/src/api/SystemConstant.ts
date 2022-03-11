@@ -9,10 +9,12 @@ import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extensi
  * 常量枚举
  * @enum {String}
  */
-exports.TYPES = {
+const TYPES = {
   /**当前时间*/
   CurrentTime: 'systemCurrentTime'
 }
+
+export { TYPES }
 
 const get = function (params) {
   let type = params.type

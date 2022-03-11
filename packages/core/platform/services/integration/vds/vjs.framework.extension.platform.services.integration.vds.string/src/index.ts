@@ -252,7 +252,7 @@ export function toJson(obj) {
  * 加密类型
  * @enum
  * */
-exports.EncryptType = {
+const EncryptType = {
   /**
    * 基于RFC 1321。安全性一般，性能高，不可逆，返回32位16进制。主要用于一致性验证、数字签名等
    * */
@@ -278,6 +278,8 @@ exports.EncryptType = {
    * */
   'AES': 'AES'
 }
+
+export { EncryptType }
 /**
  * 字符串加密
  * @param {String} value 需要加密的字符串
@@ -291,7 +293,7 @@ exports.EncryptType = {
 export function encrypt(value, type, secretKey) {
   var result
   switch (type) {
-    case exports.EncryptType.AES:
+    case EncryptType.AES:
       result = newEncryptUtil.encryptWithKey(value, type, secretKey)
       break
     default:

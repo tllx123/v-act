@@ -1,14 +1,10 @@
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 
 let TRANSACTION_OPERATION = 'Transaction'
 // 事务ACTION类型常量
 let TRANSACTION_BEGIN = 'transaction_begin'
 let TRANSACTION_COMMIT = 'transaction_commit'
 let TRANSACTION_ROLLBACK = 'transaction_rollback'
-
-export function initModule(sb) {}
-
-const undefined
 
 const commit = function (params) {
   params.transactionType = TRANSACTION_COMMIT

@@ -1,44 +1,22 @@
 import { Environment as envir } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import {
+  MapStorage,
+  StorageManager as storageManager
+} from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-import * as ExpectedException from './impl/ExpectedException'
-import * as callCommandService from './util/CallCommand'
+import * as callCommandService from '../util/CallCommand'
+import ExpectedException from './ExpectedException'
 
-let sb
-let storage
-
-let UnLoginException = function (message, e, errInfo, json) {
-  ExpectedException.apply(this, arguments)
-}
-
-export function initModule(sandbox) {}
-
-let _getStorage = function () {
-  if (!storage) {
-    storage = storageManager.get(
-      storageManager.TYPES.MAP,
-      'UNLOGIN_EXCEPTION_CROSSDOMAIN_IDEN'
-    )
-  }
-  return storage
-}
-
-UnLoginException.prototype = {
-  initModule: function (sandbox) {
-    sb = sandbox
-    var Extend = require('vjs/framework/extension/platform/interface/exception/util/Extend')
-    Extend.extend(UnLoginException, ExpectedException, sb)
-  },
-
-  getClassName: function () {
+class UnLoginException extends ExpectedException {
+  getClassName() {
     return 'UnloginException'
-  },
+  }
 
-  handling: function () {
+  handling() {
     if (this.isInApp()) {
       let result = confirm(
         i18n.get('当前页面已过期，需要重新登录', '未登录异常弹框的提示信息')
@@ -134,6 +112,18 @@ UnLoginException.prototype = {
       }
     }
   }
+}
+
+let storage: MapStorage
+
+const _getStorage = function () {
+  if (!storage) {
+    storage = storageManager.get(
+      storageManager.TYPES.MAP,
+      'UNLOGIN_EXCEPTION_CROSSDOMAIN_IDEN'
+    )
+  }
+  return storage
 }
 
 export default UnLoginException

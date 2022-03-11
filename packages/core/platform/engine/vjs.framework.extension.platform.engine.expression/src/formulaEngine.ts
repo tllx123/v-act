@@ -12272,5 +12272,6 @@ org.antlr.lang.augmentObject(
     }
   }
 )
-exports.Formula = com.toone.itop.formula.Formula
-exports.Map = com.toone.itop.formula.Map
+const Formula = com.toone.itop.formula.Formula
+const Map = com.toone.itop.formula.Map
+export { Formula, Map }

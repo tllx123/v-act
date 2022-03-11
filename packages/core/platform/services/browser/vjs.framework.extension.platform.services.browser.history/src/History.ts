@@ -79,9 +79,9 @@ Unit.prototype = {
           } else {
             if (tmpThis.isVirtual) {
               History.back()
-              exports.removeHistory(tmpThis.getId())
+              removeHistory(tmpThis.getId())
             } else {
-              exports.removeHistory(tmpThis.getId())
+              removeHistory(tmpThis.getId())
               if (tmpThis.callback) {
                 tmpThis.callback.apply(tmpThis, [tmpThis.args])
               }

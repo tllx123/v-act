@@ -80,9 +80,7 @@ RollbackRequest.prototype = {
 
   isAbandoned: function () {
     return this.status != 0
-  },
-
-  initModule: function (sb) {}
+  }
 }
 
-return RollbackRequest
+export default RollbackRequest

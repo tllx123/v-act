@@ -1,4 +1,4 @@
-import { Inappbrowser as BrowserService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { BrowserService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.inappbrowser'
 
 export function initModule(sb) {
   BrowserService.putInstance(exports)

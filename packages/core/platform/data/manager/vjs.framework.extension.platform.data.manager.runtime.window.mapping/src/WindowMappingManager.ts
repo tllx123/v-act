@@ -44,13 +44,15 @@ let _getOutputsStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, Outputs_Token)
 }
 
-exports.TYPE = {
+const TYPE = {
   DATASOURCE: 'datasource', //实体信息
   RULESET: 'ruleset', //规则链信息
   CONTROLS: 'controls', //控件属性
   INPUTS: 'inputs', //窗体输入变量
   OUTPUTS: 'outputs' //窗体输出变量
 }
+
+export { TYPE }
 
 const existMapping = function (params) {
   let scope = scopeManager.getWindowScope()
@@ -63,19 +65,19 @@ const existMapping = function (params) {
   let storage
   let type = params.type
   switch (type) {
-    case exports.TYPE.DATASOURCE:
+    case TYPE.DATASOURCE:
       storage = _getDatasourceStorage()
       break
-    case exports.TYPE.RULESET:
+    case TYPE.RULESET:
       storage = _getRulesetStorage()
       break
-    case exports.TYPE.CONTROLS:
+    case TYPE.CONTROLS:
       storage = _getControlsStorage()
       break
-    case exports.TYPE.INPUTS:
+    case TYPE.INPUTS:
       storage = _getInputsStorage()
       break
-    case exports.TYPE.OUTPUTS:
+    case TYPE.OUTPUTS:
       storage = _getOutputsStorage()
       break
   }
@@ -118,13 +120,13 @@ let _get = function (type, params) {
   let result
   let storage
   switch (type) {
-    case exports.TYPE.RULESET:
+    case TYPE.RULESET:
       storage = _getRulesetStorage()
       break
-    case exports.TYPE.INPUTS:
+    case TYPE.INPUTS:
       storage = _getInputsStorage()
       break
-    case exports.TYPE.OUTPUTS:
+    case TYPE.OUTPUTS:
       storage = _getOutputsStorage()
       break
   }
@@ -141,7 +143,7 @@ let _get = function (type, params) {
 
 const getRuleset = function (params) {
   params.code = params.ruleSetCode
-  return _get(exports.TYPE.RULESET, params)
+  return _get(TYPE.RULESET, params)
   //		var key = getKey(params);
   //		var storage = _getRulesetStorage();
   //		if(storage.containsKey(key)){
@@ -154,7 +156,7 @@ const getRuleset = function (params) {
 
 const getInput = function (params) {
   params.code = params.inputCode
-  return _get(exports.TYPE.INPUTS, params)
+  return _get(TYPE.INPUTS, params)
   //		var key = getKey(params);
   //		var storage = _getInputsStorage();
   //		if(storage.containsKey(key)){
@@ -167,7 +169,7 @@ const getInput = function (params) {
 
 const getOutput = function (params) {
   params.code = params.outputCode
-  return _get(exports.TYPE.OUTPUTS, params)
+  return _get(TYPE.OUTPUTS, params)
   //		var key = getKey(params);
   //		var storage = _getOutputsStorage();
   //		if(storage.containsKey(key)){
@@ -220,7 +222,7 @@ const getDataSource = function (datasourceName) {
         return scopeManager.createScopeHandler({
           scopeId: extendId,
           handler: function (name) {
-            return exports.getDataSource(name)
+            return getDataSource(name)
           }
         })(newDsName)
       }
@@ -251,7 +253,7 @@ const getScopeId = function (datasourceName) {
         return scopeManager.createScopeHandler({
           scopeId: extendId,
           handler: function (name) {
-            return exports.getScopeId(name)
+            return getScopeId(name)
           }
         })(newDsName)
       }

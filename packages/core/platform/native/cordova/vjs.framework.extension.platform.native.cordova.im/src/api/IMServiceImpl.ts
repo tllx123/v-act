@@ -1,4 +1,4 @@
-import { IM as IMService } from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { IM as IMService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.im'
 
 export function initModule(sb) {
   IMService.putInstance(exports)

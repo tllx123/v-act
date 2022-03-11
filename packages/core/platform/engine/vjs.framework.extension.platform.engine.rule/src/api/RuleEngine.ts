@@ -251,7 +251,7 @@ const executeRouteRule = function (params) {
       instance.inParams = jsonUtil.obj2json(inParam)
     }
   }
-  exports.execute({
+  execute({
     ruleCode: ruleCode,
     routeContext: rr,
     routeCallback: function () {
@@ -305,7 +305,7 @@ let _putArgsToRouteContext = function (routeRuntime, args) {
 
 const executeWithRouteCallback = function (params, callback) {
   params.routeCallback = callback
-  exports.execute(params)
+  execute(params)
 }
 
 let _dealTransaction = function (routeRuntime, ruleInstance) {

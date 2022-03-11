@@ -1,9 +1,7 @@
-import { ParamConfigFactory as ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { JsonUtil as jsonUtil } from '@v-act/vjs.framework.extension.util'
-import { log as logUtil } from '@v-act/vjs.framework.extension.util'
 import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 const token = 'ApplicationParam_Token_Key'
 const WindowMappingKey = 'ApplicationParam_Token_Window_Mapping'
@@ -63,7 +61,7 @@ const getRuleSetInput = function (
   metaCode: string,
   paramCode: string
 ) {
-  let inputs = exports.getRuleSetInputs(componentCode, windowCode, metaCode)
+  let inputs = getRuleSetInputs(componentCode, windowCode, metaCode)
   if (inputs) {
     for (let i = 0; i < inputs.length; i++) {
       let input = inputs[i]
@@ -182,7 +180,7 @@ const getWindowMappingSync = function (sourceWindowInfo) {
       let datas = func(infos)
       _d.resolve(datas)
     }
-  })(sourceWindowInfo, exports.getWindowMapping, dtd)
+  })(sourceWindowInfo, getWindowMapping, dtd)
   if (sourceWindowInfo.componentCode) {
     componentInit.initComponent({
       componentCode: sourceWindowInfo.componentCode,
@@ -413,14 +411,14 @@ function parseTree(sMaps) {
   }
 }
 export {
-  initModule,
   addRuleSetInputs,
-  getRuleSetInputs,
-  exists,
-  getRuleSetInput,
-  initWindowMapping,
   addWindowMapping,
+  exists,
+  existWindowMapping,
+  getRuleSetInput,
+  getRuleSetInputs,
   getWindowMapping,
   getWindowMappingSync,
-  existWindowMapping
+  initModule,
+  initWindowMapping
 }

@@ -50,4 +50,4 @@ VObject.prototype = {
   }
 }
 
-return VObject
+export default VObject

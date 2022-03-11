@@ -194,6 +194,4 @@ Request.prototype = {
   }
 }
 
-return Request
-
-export { _putAop, clear, getHook, init, isDebugger, isInited, update }
+export default Request

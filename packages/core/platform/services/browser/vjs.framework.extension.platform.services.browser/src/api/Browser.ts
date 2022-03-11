@@ -6,7 +6,7 @@ import { EventManager as eventManager } from '@v-act/vjs.framework.extension.pla
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Config as consoleConfigService } from '@v-act/vjs.framework.extension.platform.services.mobile.console'
+import { ConsoleConfig as consoleConfigService } from '@v-act/vjs.framework.extension.platform.services.mobile.console.config'
 import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { CreateModalByUrl as modalUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
 import {

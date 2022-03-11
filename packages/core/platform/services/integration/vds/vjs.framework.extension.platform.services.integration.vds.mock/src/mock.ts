@@ -11,10 +11,11 @@
  * });
  */
 
-import BaseMock from './impl/BaseMock'
+import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import Path from './util/Path'
-import { environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+
+import BaseMock from './impl/BaseMock'
+import * as Path from './util/Path'
 
 var showNotSupportHtml = function () {
   var style = document.createElement('style')

@@ -23,7 +23,7 @@ let _genParamFromDefine = function (componentCode, defines, fn) {
       let param = { code: code }
       if (componentCode != null) param['componentCode'] = componentCode
       let value = fn(param)
-      let value = df.getType() == 'entity' ? value.serialize() : value
+      value = df.getType() == 'entity' ? value.serialize() : value
       rs[code] = { config: df.serialize(), value: value }
     }
   }

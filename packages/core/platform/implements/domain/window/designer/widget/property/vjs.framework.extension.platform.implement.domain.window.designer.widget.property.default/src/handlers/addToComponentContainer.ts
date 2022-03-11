@@ -1,29 +1,25 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { componentPack } from './handleComponentPackInfo'
-import { windowMapping } from './handleWindowMapping'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-
-import { WindowContainer } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-
-import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
-
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-
-import { ScopeTask } from '@v-act/vjs.framework.extension.platform.global'
-
-import { TaskManager } from '@v-act/vjs.framework.extension.platform.global'
-
-import { resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
-
+import {
+  ScopeTask,
+  TaskManager
+} from '@v-act/vjs.framework.extension.platform.global'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-
-import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import {
+  WindowContainer,
+  WindowContainerManager as windowRelation
+} from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import {
+  WidgetAction as widgetAction,
+  WidgetRenderer as widgetRenderer
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { ResourcePackage as resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
 import { ContainerRelation as containerRelation } from '@v-act/vjs.framework.extension.ui.common.plugin.services.container'
+
+import * as componentPack from './handleComponentPackInfo'
+import * as windowMapping from './handleWindowMapping'
 
 // 设置语言
 var _setCurLanguage = function (newScopeId, preScopeId, componentCode) {

@@ -1,4 +1,4 @@
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 
 let _URI = 'module-operation!'
 

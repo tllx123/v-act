@@ -33,14 +33,6 @@ const setResourcePool = function (pool, type) {
   }
 }
 
-const getLanguageItem = function (resourceCode, componentCode) {
-  if (hasInstance()) {
-    return instance.getLanguageItem(resourceCode, componentCode)
-  } else {
-    return ''
-  }
-}
-
 const getLanguageItems = function (componentCode) {
   if (hasInstance()) {
     return instance.getLanguageItems(componentCode)
@@ -84,13 +76,12 @@ const getValidLanguage = function (componentCode, resourceCode) {
 }
 
 export {
-  putInstance,
-  getResItem,
-  getLanguageItem,
-  setResourcePool,
   getLanguageItem,
   getLanguageItems,
-  setWindowCurrentResourceCode,
+  getResItem,
+  getValidLanguage,
   getWindowCurrentResourceCode,
-  getValidLanguage
+  putInstance,
+  setResourcePool,
+  setWindowCurrentResourceCode
 }

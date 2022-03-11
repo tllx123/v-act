@@ -208,7 +208,7 @@ export function getOutputType(code) {
 //    /**
 //     * 渲染类型
 //     * */
-exports.RenderType = {
+const RenderType = {
   current: 'currentWindow',
   dialog: 'dialogWindow',
   container: 'windowContainer',
@@ -218,6 +218,9 @@ exports.RenderType = {
   browser: 'currentWindowRedirection',
   homeTab: 'iemsHomeTab'
 }
+
+export { RenderType }
+
 //    /**
 //     * 渲染窗体
 //     * */
@@ -251,7 +254,7 @@ export function setTitle(title) {
  * 窗体状态
  * @enum
  * */
-exports.State = {
+const State = {
   /**
    * 最大化
    * */
@@ -261,6 +264,9 @@ exports.State = {
    * */
   Normal: 'Normal'
 }
+
+export { State }
+
 /**
  * 设置当前窗体状态,仅支持模态方式打开的窗体
  * @param {@link State} 窗体状态
@@ -269,8 +275,8 @@ exports.State = {
  * */
 export function setState(state) {
   switch (state) {
-    case exports.State.Maximized:
-    case exports.State.Normal:
+    case State.Maximized:
+    case State.Normal:
       var el = gelEl()
       Modal.setModalWindowState(state, el)
       break

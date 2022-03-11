@@ -1,11 +1,12 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ProcessorUtils as processorUtils } from '@v-act/vjs.framework.extension.platform.application.window.web.designer.utils'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+import * as DropDownSource from './compatible/DropDownSource'
+import * as childrenEditor from './editors/children'
 import * as entityEditor from './editors/entity'
 import * as expressionEditor from './editors/expression'
-import * as rulesetEditor from './editors/ruleset'
 import * as resourceEditor from './editors/resource'
-import * as childrenEditor from './editors/children'
-
+import * as rulesetEditor from './editors/ruleset'
 import * as addToComponentContainerHandler from './handlers/addToComponentContainer'
 import * as browsercreateDialogHandler from './handlers/browser.createDialog'
 import * as browserredirectHandler from './handlers/browser.redirect'
@@ -15,7 +16,6 @@ import * as componentRenderHandler from './handlers/componentRender'
 import * as containerParentHandler from './handlers/containerParent'
 import * as createDatasourceFromJsonHandler from './handlers/createDatasourceFromJson'
 import * as DropdownSourceObserverHandler from './handlers/DropdownSourceObserver'
-import * as getDropDownDataHandler from './handlers/getDropDownData'
 import * as entityHandler from './handlers/entity'
 import * as eventCallerHandler from './handlers/eventCaller'
 import * as eventHandlerHandler from './handlers/eventHandler'
@@ -23,6 +23,7 @@ import * as executeWindowRouteHandler from './handlers/executeWindowRoute'
 import * as expressionHandler from './handlers/expression'
 import * as fieldValueHandler from './handlers/fieldValue'
 import * as getCurrencyFieldHandler from './handlers/getCurrencyField'
+import * as getDropDownDataHandler from './handlers/getDropDownData'
 import * as getFieldPropertyFormVMHandler from './handlers/getFieldPropertyFormVM'
 import * as getParentWidgetHandler from './handlers/getParentWidget'
 import * as getTableNameFormVMHandler from './handlers/getTableNameFormVM'
@@ -40,7 +41,6 @@ import * as remoteOperationHandler from './handlers/remoteOperation'
 import * as renderWindowsHandler from './handlers/renderWindows'
 import * as serverExpressionHandler from './handlers/serverExpression'
 import * as treeHandlerHandler from './handlers/treeHandler'
-import * as vPlatformVueHandler from './handlers/vPlatformVue'
 import * as webDesignclonePropsHandler from './handlers/webDesign.cloneProps'
 import * as widgetActionHandler from './handlers/widgetAction'
 import * as widgetChildrenHandler from './handlers/widgetChildren'
@@ -81,9 +81,7 @@ var _initEditorHandlers = function () {
 }
 
 var _initCompatibleHandlers = function () {
-  var handlers = [
-    require('vjs/framework/extension/platform/implement/domain/window/designer/widget/property/default/compatible/DropDownSource')
-  ]
+  var handlers = [DropDownSource]
   for (var i = 0, l = handlers.length; i < l; i++) {
     var handler = handlers[i]
     _compatibleHandlers[handler.getType()] = handler.getHandler()
@@ -126,7 +124,6 @@ var _initHandlers = function () {
     renderWindowsHandler,
     serverExpressionHandler,
     treeHandlerHandler,
-    vPlatformVueHandler,
     webDesignclonePropsHandler,
     widgetActionHandler,
     widgetChildrenHandler,
@@ -304,7 +301,7 @@ export function toDesignerWidgetProps(propertys, series) {
   ) {
     metadataPropertys = processorUtils.convert(metadataPropertys) // 二次开发格式转换成控件所需的格式
   }
-  metadataPropertys = exports.resortMetadataProperty(metadataPropertys)
+  metadataPropertys = resortMetadataProperty(metadataPropertys)
   for (var key in metadataPropertys) {
     if (
       !metadataPropertys.hasOwnProperty(key) ||
@@ -390,7 +387,7 @@ export function toRuntimeWidgetProps(params) {
           continue
         }
       }
-      exports.toRuntimeWidgetProps({
+      toRuntimeWidgetProps({
         propertys: widget,
         propObj: propObj,
         mappingDatas: params.mappingDatas,
@@ -424,7 +421,7 @@ export function cloneProps(source, target, sortCfg) {
 }
 
 export function genDesignerWidgetProps(property, series) {
-  var props = exports.toDesignerWidgetProps(property, series)
+  var props = toDesignerWidgetProps(property, series)
   if (props) {
     var datas = processorUtils.genParentFormats(props)
     return datas

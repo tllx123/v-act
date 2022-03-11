@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build: widgets": "node scripts/index.js build -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
+    "build:vjs": "node scripts/index.js build -s @v-act/jg* -s @v-act/vjs* --cp ./apps/runtime",
     "create": "node scripts/index.js create ",
     "dev: jgdatetimepicker": "node scripts/index.js build -w -s @v-act/jgdatetimepicker --cp ./apps/runtime",
     "dev: jgperiodrange": "node scripts/index.js build -w -s @v-act/jgperiodrange --cp ./apps/runtime",

@@ -246,7 +246,7 @@ var getViewlibData = function (params) {
   return datas
 }
 
-exports.getViewlibData = getViewlibData
+export { getViewlibData }
 
 /**
  * 深度拷贝
