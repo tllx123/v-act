@@ -1,8 +1,6 @@
 import { SystemConstant as sysConstant } from '@v-act/vjs.framework.extension.platform.services.constant'
 
-export function initModule(sb) {}
-
-const main = function (param) {
+const main = function (param: { getArgs: () => string }) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
     fromatStr = argsLen >= 1 ? args[0] : null

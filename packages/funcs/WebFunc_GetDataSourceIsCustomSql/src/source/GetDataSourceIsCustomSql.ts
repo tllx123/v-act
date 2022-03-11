@@ -7,13 +7,15 @@ export function initModule() {}
  * 主入口
  * @param dataSourceName 数据源名称
  */
-const main = function (dataSourceName) {
+const main = function (dataSourceName: string) {
   if (!dataSourceName || '' == dataSourceName) {
     throw new Error('[GetDataSourceIsCustomSql.main]数据源名称为空，请检查配置')
   }
 
   let expression = 'GetDataSourceIsCustomSql("' + dataSourceName + '")'
+  //@ts-ignore
   let result = operationLib.executeFormulaExpression(
+    //@ts-ignore
     viewContext.getModuleId(),
     expression
   )

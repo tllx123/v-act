@@ -1,15 +1,15 @@
-let pool = {},
-  objectUtils
+let pool:{[code:string]:any} = {},
+  objectUtils:any
 
-export function initModule(sb) {
+export function initModule(sb:any) {
   objectUtils = sb.util.object
 }
 
-const injectCurrentContract = function (py, pros) {
+const injectCurrentContract = function (py:any, pros:any) {
   pool[pros] = py
 }
 
-const getCurrentContractService = function (pros) {
+const getCurrentContractService = function (pros:any) {
   let type = typeof pros
   if (type == 'string' || pros === null) {
     return pool[pros]
