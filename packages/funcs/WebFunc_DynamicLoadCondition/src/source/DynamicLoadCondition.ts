@@ -1,8 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 
-export function initModule(sb) {}
-
 /**
  * 主入口
  * @param dataSourceName 数据源名称
@@ -10,7 +8,7 @@ export function initModule(sb) {}
  * @param loadLevel 动态加载层次
  * @param whereObjJson where条件对象json
  */
-const main = function (param) {
+const main = function (param: Record<string, any>) {
   let args = param.getArgs()
   let dataSourceName = args[0]
   let loadLevel = args[1]
@@ -38,10 +36,11 @@ const main = function (param) {
     '")'
 
   let scope = scopeManager.getWindowScope()
-  let result = operation.evalExpression({
-    windowCode: scope.getWindowCode(),
-    expression: expression
-  })
+  let result: Record<string, any> =
+    operation.evalExpression({
+      windowCode: scope.getWindowCode(),
+      expression: expression
+    }) || {}
   if (result && result.success == true) {
     return result.data.result.condition
   } else {

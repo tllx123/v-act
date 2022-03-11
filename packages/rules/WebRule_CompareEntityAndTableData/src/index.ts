@@ -31,28 +31,28 @@ const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       // 当任何一条匹配数据不满足比较条件时，返回false，否则返回true(包括两种情况：不存在匹配数据或所有匹配数据都满足比较条件)；
-      var bussinessReturnValue = true
+      let bussinessReturnValue = true
 
-      var params = ruleContext.getVplatformInput()
-      var srcDataSource = params['srcDataSource']
-      var srcFilterCondition = params['srcFilterCondition']
-      var destDataSource = params['destDataSource']
-      var destIsQuery = params['destIsQuery']
-      var destFilterCondition = params['destFilterCondition']
-      var destQueryParams = params['destQueryParams']
+      let params = ruleContext.getVplatformInput()
+      let srcDataSource = params['srcDataSource']
+      let srcFilterCondition = params['srcFilterCondition']
+      let destDataSource = params['destDataSource']
+      let destIsQuery = params['destIsQuery']
+      let destFilterCondition = params['destFilterCondition']
+      let destQueryParams = params['destQueryParams']
 
-      var matchFields = params['matchFields']
+      let matchFields = params['matchFields']
 
-      var compareCondition = params['compareCondition']
+      let compareCondition = params['compareCondition']
 
       if (compareCondition == null) {
         throw new Error('比较条件配置不能为空，请检查配置！')
       }
 
-      var srcCompareField = compareCondition['srcField']
-      var destCompareField = compareCondition['destField']
-      var isMergeRepeatData = compareCondition['isMergeRepeatData']
-      var operator = compareCondition['compareOperator']
+      let srcCompareField = compareCondition['srcField']
+      let destCompareField = compareCondition['destField']
+      let isMergeRepeatData = compareCondition['isMergeRepeatData']
+      let operator = compareCondition['compareOperator']
 
       if (operator == null || operator == '') {
         throw new Error('比较操作符不能为空，请检查配置！')
@@ -65,8 +65,8 @@ const main = function (ruleContext: RuleContext) {
       }
 
       // 源实体比较字段类型必须与目标实体比较字段类型兼容
-      var numberTypeArray = ['integer', 'number']
-      var srcCompareFieldType = getFieldByDataSource(
+      let numberTypeArray = ['integer', 'number']
+      let srcCompareFieldType = getFieldByDataSource(
         srcDataSource,
         srcCompareField
       ).getType()
@@ -75,11 +75,11 @@ const main = function (ruleContext: RuleContext) {
         throw new Error('源实体比较字段必须为整数或数字类型，请检查配置！')
       }
 
-      var result = params['result']
-      var isSave = result['isSave']
-      var isClearSaveData = result['isClearSaveData']
-      var saveDataSource = result['saveDataSource']
-      var mappings = result['mappings']
+      let result = params['result']
+      let isSave = result['isSave']
+      let isClearSaveData = result['isClearSaveData']
+      let saveDataSource = result['saveDataSource']
+      let mappings = result['mappings']
 
       if (
         vds.string.isEmpty(srcDataSource) ||
@@ -89,12 +89,12 @@ const main = function (ruleContext: RuleContext) {
       }
 
       if (srcDataSource != destDataSource) {
-        var errorMsg = null
+        let errorMsg = null
         if (matchFields == null || matchFields.length == 0) {
           errorMsg = '匹配字段不能为空，请检查配置！'
         }
-        for (var i = 0; i < matchFields.length; i++) {
-          var obj = matchFields[i]
+        for (let i = 0; i < matchFields.length; i++) {
+          let obj = matchFields[i]
           if (obj == null) {
             errorMsg = '匹配字段不能为空，请检查配置！'
             break
@@ -127,7 +127,7 @@ const main = function (ruleContext: RuleContext) {
         }
       }
 
-      var srcRecords = getFilterRecords(
+      let srcRecords = getFilterRecords(
         srcDataSource,
         srcFilterCondition,
         ruleContext
@@ -135,71 +135,71 @@ const main = function (ruleContext: RuleContext) {
       if (srcRecords == null || srcRecords.length == 0) {
         setBusinessRuleResult(ruleContext, true)
         if (isSave && isClearSaveData) {
-          var ds = vds.ds.lookup(saveDataSource)
+          let ds = vds.ds.lookup(saveDataSource)
           ds.clear()
         }
         resolve()
         return true
       }
 
-      var destQueryCond = {}
+      let destQueryCond: Record<string, any> = {}
       destQueryCond.srcDataSource = srcDataSource
       destQueryCond.destDataSource = destDataSource
       destQueryCond.destIsQuery = destIsQuery
 
-      var fetchMode = destIsQuery
+      let fetchMode = destIsQuery
         ? vds.ds.WhereType.Query
         : vds.ds.WhereType.Table
-      var wrParam = {
+      let wrParam = {
         type: fetchMode,
         methodContext: ruleContext.getMethodContext()
       }
-      var w = vds.ds.createWhere(wrParam)
+      let w = vds.ds.createWhere(wrParam)
 
       // 组装设置的加载条件
       if (destFilterCondition && destFilterCondition.length > 0) {
         w.addCondition(destFilterCondition)
       }
       if (destQueryParams != null && destQueryParams.length > 0) {
-        var tmpparams = genCustomParams(destQueryParams, ruleContext)
+        let tmpparams = genCustomParams(destQueryParams, ruleContext)
         w.addParameters(tmpparams)
       }
-      var condition = w.toWhere()
-      var valueParamMap = w.toParameters()
+      let condition = w.toWhere()
+      let valueParamMap = w.toParameters()
       destQueryCond.destWhere = condition
       destQueryCond.destQueryParams = valueParamMap
 
       destQueryCond.srcValues = srcRecords
       destQueryCond.matchFields = matchFields
 
-      var cloneCompareCondition = cloneObj(compareCondition)
-      var srcField = getFieldByDataSource(srcDataSource, srcCompareField)
+      let cloneCompareCondition = cloneObj(compareCondition)
+      let srcField = getFieldByDataSource(srcDataSource, srcCompareField)
       cloneCompareCondition.srcColumnTypeName = srcField.getType()
       destQueryCond.compareCondition = cloneCompareCondition
 
-      var callback = function (responseObj) {
-        var success = responseObj.IsSuccess
+      let callback = function (responseObj: Record<string, any>) {
+        let success = responseObj.IsSuccess
         if (!success) {
           vds.log.error('错误信息：' + result.msg)
-          var exception = new Error('数据比较执行异常！')
+          let exception = new Error('数据比较执行异常！')
           reject(exception)
         } else {
-          var finalResultsValue = responseObj.CompareResults
-          var finalResults = vds.object.stringify(finalResultsValue)
+          let finalResultsValue = responseObj.CompareResults
+          let finalResults = vds.object.stringify(finalResultsValue)
           if (isSave) {
             if (isClearSaveData) {
-              var ds = vds.ds.lookup(saveDataSource)
+              let ds = vds.ds.lookup(saveDataSource)
               ds.clear()
             }
 
             // 获取构造的存储实体数据
             if (finalResults != null && finalResults.length > 0) {
-              var newSaveRecords = getCopyRecordsByMapping(
+              let newSaveRecords = getCopyRecordsByMapping(
                 saveDataSource,
                 finalResults,
                 mappings
               )
-              var datasource = vds.ds.lookup(saveDataSource)
+              let datasource = vds.ds.lookup(saveDataSource)
               datasource.insertRecords(newSaveRecords)
             }
           }
@@ -212,7 +212,7 @@ const main = function (ruleContext: RuleContext) {
         }
       }
 
-      var sConfig = {
+      let sConfig = {
         command: 'CommonRule_CompareEntityAndTableData',
         datas: [
           {
@@ -224,7 +224,7 @@ const main = function (ruleContext: RuleContext) {
         params: { isAsyn: true, ruleContext: ruleContext }
       }
       //  调用后台活动集
-      var promise = vds.rpc.callCommand(
+      let promise = vds.rpc.callCommand(
         sConfig.command,
         sConfig.datas,
         sConfig.params
@@ -236,18 +236,21 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: any) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isMatchCompare', result)
   }
 }
 
-var validSaveMapping = function (isSave, mappings) {
+let validSaveMapping = function (
+  isSave: boolean,
+  mappings: Array<Record<string, any>>
+) {
   if (!isSave) return
   if (mappings == null || mappings.length == 0) {
     throw new Error('比较结果存储映射不能为空')
   }
-  for (var i = 0; i < mappings.length; i++) {
+  for (let i = 0; i < mappings.length; i++) {
     if (mappings[i].saveField == null || mappings[i].saveField == '') {
       throw new Error('比较结果存储字段不能为空')
     }
@@ -257,34 +260,38 @@ var validSaveMapping = function (isSave, mappings) {
   }
 }
 
-var cloneObj = function (obj) {
-  var clone = {}
-  for (var prop in obj) {
+let cloneObj = function (obj: Record<string, any>) {
+  let clone: Record<string, any> = {}
+  for (let prop in obj) {
     clone[prop] = obj[prop]
   }
   return clone
 }
 
-var getFieldName = function (fieldName) {
+let getFieldName = function (fieldName: string) {
   if (fieldName != null && fieldName.indexOf('.') > 0)
     return fieldName.split('.')[1]
   return fieldName
 }
 
-var getCopyRecordsByMapping = function (dataSource, records, mappingFields) {
-  var datasource = vds.ds.lookup(dataSource)
-  var emptyRecord = datasource.createRecord()
+let getCopyRecordsByMapping = function (
+  dataSource: Record<string, any>,
+  records: Array<Record<string, any>>,
+  mappingFields: Array<Record<string, any>>
+) {
+  let datasource = vds.ds.lookup(dataSource)
+  let emptyRecord = datasource.createRecord()
 
-  var copyRecords = []
-  for (var i = 0; i < records.length; i++) {
-    var tempRecord = emptyRecord.clone()
+  let copyRecords = []
+  for (let i = 0; i < records.length; i++) {
+    let tempRecord = emptyRecord.clone()
     if (datasource.getMetadata().contains('id')) {
-      tempRecord.set('id', vds.string.uuid())
+      tempRecord.set('id', vds.string.uuid(undefined))
     }
-    var obj = tempRecord
+    let obj = tempRecord
 
-    for (var j = 0; j < mappingFields.length; j++) {
-      var resultFieldVal = records[i][mappingFields[j].resultField]
+    for (let j = 0; j < mappingFields.length; j++) {
+      let resultFieldVal = records[i][mappingFields[j].resultField]
       if (resultFieldVal == null) {
         resultFieldVal = records[i][getFieldName(mappingFields[j].resultField)]
       }
@@ -295,16 +302,19 @@ var getCopyRecordsByMapping = function (dataSource, records, mappingFields) {
   return copyRecords
 }
 
-var getFieldByDataSource = function (dataSource, fieldName) {
-  var datasource = vds.ds.lookup(dataSource)
-  var metadata = datasource.getMetadata()
-  var fields = metadata.getFields()
+let getFieldByDataSource = function (
+  dataSource: Record<string, any>,
+  fieldName: string
+) {
+  let datasource = vds.ds.lookup(dataSource)
+  let metadata = datasource.getMetadata()
+  let fields = metadata.getFields()
 
-  var field = null
+  let field = null
   if (fields != null) {
-    for (var i = 0; i < fields.length; i++) {
-      var metaFieldName = fields[i].getCode()
-      var b = fieldName.split('.')
+    for (let i = 0; i < fields.length; i++) {
+      let metaFieldName = fields[i].getCode()
+      let b = fieldName.split('.')
       if (metaFieldName == fieldName) {
         field = fields[i]
       }
@@ -321,16 +331,20 @@ var getFieldByDataSource = function (dataSource, fieldName) {
  *  @param	dataSource	源实体名称
  *  @param	condition		    源实体条件
  */
-var getFilterRecords = function (dataSource, condition, ruleContext) {
-  var outputRecords = []
-  var datasource = vds.ds.lookup(dataSource)
-  var records = datasource.getAllRecords().toArray()
+let getFilterRecords = function (
+  dataSource: Record<string, any>,
+  condition: string,
+  ruleContext: RuleContext
+) {
+  let outputRecords = []
+  let datasource = vds.ds.lookup(dataSource)
+  let records = datasource.getAllRecords().toArray()
 
   if (condition == null || condition == '') {
-    var resultData = []
+    let resultData = []
     if (records && records.length > 0) {
-      for (var i = 0; i < records.length; i++) {
-        var record = records[i]
+      for (let i = 0; i < records.length; i++) {
+        let record = records[i]
         resultData.push(record.toMap())
       }
     }
@@ -338,9 +352,9 @@ var getFilterRecords = function (dataSource, condition, ruleContext) {
   }
 
   if (records && records.length > 0) {
-    for (var index = 0; index < records.length; index++) {
-      var record = records[index]
-      var ret = vds.expression.execute(condition, {
+    for (let index = 0; index < records.length; index++) {
+      let record = records[index]
+      let ret = vds.expression.execute(condition, {
         ruleContext: ruleContext,
         records: [record]
       })
@@ -358,22 +372,25 @@ var getFilterRecords = function (dataSource, condition, ruleContext) {
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+let genCustomParams = function (
+  paramDefines: Array<Record<string, any>>,
+  ruleContext: RuleContext
+) {
+  let rs: Record<string, any> = {}
   if (paramDefines && paramDefines.length > 0) {
-    for (var i = 0; i < paramDefines.length; i++) {
-      var define = paramDefines[i]
-      var key = define['queryfield']
+    for (let i = 0; i < paramDefines.length; i++) {
+      let define = paramDefines[i]
+      let key = define['queryfield']
       if (!key) {
         key = define['Queryfield']
       }
-      var valueDefine = define['queryfieldValue']
+      let valueDefine = define['queryfieldValue']
       if (!valueDefine) {
         valueDefine = define['QueryfieldValue']
       }
-      var type = define['type']
-      var componentControlID = define['componentControlID']
-      var value = getCustomParamValue(
+      let type = define['type']
+      let componentControlID = define['componentControlID']
+      let value = getCustomParamValue(
         valueDefine,
         type,
         componentControlID,
@@ -390,23 +407,23 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param type 参数类源类型(参数值类型1表字段，2系统变量，3组件变量，4固定值，5自定义，6面板参数，8控件的值, 9表达式)
  * @param componentControlId 参数来源控件
  */
-var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+let getCustomParamValue = function (
+  queryfieldValue: string,
+  type: string,
+  componentControlId: string,
+  ruleContext: RuleContext
 ) {
-  var returnValue = ''
-
+  let returnValue: string | null | boolean = ''
+  let record, ds
   switch (vds.string.trim(type + '')) {
     case '1':
       if (queryfieldValue.indexOf('.') == -1) {
         vds.log.warn(queryfieldValue + ' 格式必须为表名.字段名')
         break
       }
-      var ds = queryfieldValue.split('.')[0]
-      var fieldName = queryfieldValue.split('.')[1]
-      var record = getCurrentRecord(ds)
+      ds = queryfieldValue.split('.')[0]
+      let fieldName = queryfieldValue.split('.')[1]
+      record = getCurrentRecord(ds)
       returnValue = record.get(fieldName)
       break
     case '2':
@@ -437,17 +454,17 @@ var getCustomParamValue = function (
       returnValue = queryfieldValue
       break
     case '6':
-      var valueQueryControlID = componentControlId
-      var value = queryfieldValue
-      var storeType = vds.widget.getStoreType(valueQueryControlID)
-      var storeTypes = vds.widget.StoreType
+      let valueQueryControlID = componentControlId
+      let value = queryfieldValue
+      let storeType = vds.widget.getStoreType(valueQueryControlID)
+      let storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
-      var record = getCurrentRecord(ds)
+      ds = getDsName(valueQueryControlID)
+      record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
         if (record) {
-          var field = value.split('_')[1]
+          let field = value.split('_')[1]
           returnValue = record.get(field)
         } else {
           vds.log.error(
@@ -456,22 +473,22 @@ var getCustomParamValue = function (
         }
       } else if (storeTypes.SingleRecordMultiValue == storeType) {
         // 单记录多值控件，按照控件属性名字取得关联的标识，再进行取值
-        //var propertyCode = value.split("_")[1];
-        var propertyCode = ''
+        //let propertyCode = value.split("_")[1];
+        let propertyCode = ''
         // 目前认为使用-分隔，也可以使用_分隔
         if (value.indexOf('-') != -1) {
           propertyCode = value.split('-')[1]
         } else {
           propertyCode = value.split('_')[1]
         }
-        var fieldCode = vds.widget.getProperty(
+        let fieldCode = vds.widget.getProperty(
           valueQueryControlID,
           propertyCode
         )
         returnValue = record.get(fieldCode)
       } else if (storeTypes.SingleRecord == storeType) {
         // 单值控件，直接取值
-        var fieldCode = vds.widget.getFieldCodes(ds, valueQueryControlID)[0]
+        let fieldCode = vds.widget.getFieldCodes(ds, valueQueryControlID)[0]
         returnValue = record.get(fieldCode)
         if (null == returnValue || undefined == returnValue) {
           returnValue = ''
@@ -503,13 +520,13 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
-  var datasource = vds.ds.lookup(ds)
+let getCurrentRecord = function (ds: ds) {
+  let datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
-  var dsNames = vds.widget.getDatasourceCodes(widgetCode)
+let getDsName = function (widgetCode: string) {
+  let dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
 

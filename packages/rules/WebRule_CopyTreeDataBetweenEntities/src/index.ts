@@ -6,49 +6,49 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 
 const vds = { ds, exception, expression, tree }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       //#region 解析规则参数
-      var inParams = ruleContext.getVplatformInput()
+      let inParams = ruleContext.getVplatformInput()
       //来源实体名称
-      var srcName = inParams.sourceTable
+      let srcName = inParams.sourceTable
       //复制类型：选中行/所有行
-      var sourceDataType = inParams.sourceDataType
+      let sourceDataType = inParams.sourceDataType
       //目标实体名称
-      var destName = inParams.destTable
+      let destName = inParams.destTable
       //字段映射关系
-      var mappingItems = inParams.mappingItems
+      let mappingItems = inParams.mappingItems
       //树形结构集合
-      var treeStruct = inParams.treeStruct
+      let treeStruct = inParams.treeStruct
       //是否插入到当前节点下面
-      var isCurrNode = inParams.isCurrNode
+      let isCurrNode = inParams.isCurrNode
       //是否重置当前行
-      var resetCurrent = inParams.resetCurrent
+      let resetCurrent = inParams.resetCurrent
       //#endregion
 
       //#region 获取目标实体及目标树信息
-      var destDatasource = vds.ds.lookup(destName)
-      var destCurrentRecord = destDatasource.getCurrentRecord()
+      let destDatasource = vds.ds.lookup(destName)
+      let destCurrentRecord = destDatasource.getCurrentRecord()
       //如果当前节点为空并且是选中了插入当前节点，抛出异常信息
       if (destCurrentRecord == null && isCurrNode) {
         throw vds.exception.newBusinessException(
           '目标实体中没有当前节点，请检查目标实体数据是否为空！'
         )
       }
-      var destTreeStruct = getTreeStructByDataSource(destName, treeStruct)
-      var destTree = vds.tree.lookup(destName, destTreeStruct)
-      var destCurrentNode = destTree.getCurrentNode()
+      let destTreeStruct = getTreeStructByDataSource(destName, treeStruct)
+      let destTree = vds.tree.lookup(destName, destTreeStruct)
+      let destCurrentNode = destTree.getCurrentNode()
       //#endregion
 
       //#region 获取来源实体记录
-      var srcRecords = null
-      var srcDatasource = vds.ds.lookup(srcName)
+      let srcRecords = null
+      let srcDatasource = vds.ds.lookup(srcName)
       if (sourceDataType == 'all') {
         srcRecords = srcDatasource.getAllRecords()
       } else {
@@ -59,35 +59,38 @@ const main = function (ruleContext: RuleContext) {
       }
       //#endregion
 
-      var srcTreeStruct = getTreeStructByDataSource(srcName, treeStruct)
+      let srcTreeStruct = getTreeStructByDataSource(srcName, treeStruct)
       if (srcTreeStruct != null) {
         //来源实体为树形结构
         //#region 来源实体记录排序
-        var orderNoRefField = srcTreeStruct.orderField
+        let orderNoRefField = srcTreeStruct.orderField
         if (orderNoRefField) {
-          srcRecords.sort(function compare(a, b) {
+          srcRecords.sort(function compare(
+            a: Record<string, any>,
+            b: Record<string, any>
+          ) {
             return a.get(orderNoRefField) - b.get(orderNoRefField)
           })
         }
         //#endregion
 
         //#region 来源实体记录生成树形结构
-        var srcPidField = srcTreeStruct.pidField
-        var roots = []
-        var idMap = {}
-        var idChildren = {}
-        for (var i = 0; i < srcRecords.length; i++) {
-          var srcRecord = srcRecords[i]
+        let srcPidField = srcTreeStruct.pidField
+        let roots = []
+        let idMap: Record<string, any> = {}
+        let idChildren: Record<string, any> = {}
+        for (let i = 0; i < srcRecords.length; i++) {
+          let srcRecord = srcRecords[i]
           idMap[srcRecord.getSysId()] = srcRecord
         }
-        for (var id in idMap) {
-          var srcRecord = idMap[id]
-          var srcParentId = srcRecord.get(srcPidField)
+        for (let id in idMap) {
+          let srcRecord = idMap[id]
+          let srcParentId = srcRecord.get(srcPidField)
           if (!idMap[srcParentId]) {
             //没有找到父节点
             roots.push(srcRecord)
           } else {
-            var children = idChildren[srcParentId]
+            let children = idChildren[srcParentId]
             if (!children) {
               children = []
               idChildren[srcParentId] = children
@@ -98,7 +101,7 @@ const main = function (ruleContext: RuleContext) {
         //#endregion
 
         //#region 目标树插入节点
-        var parentNode = null
+        let parentNode: Array<Record<string, any>> = []
         if (isCurrNode) {
           parentNode = [destCurrentNode]
         }
@@ -115,17 +118,17 @@ const main = function (ruleContext: RuleContext) {
       } else {
         //#region 目标树插入节点
 
-        for (var i = 0; i < srcRecords.length; i++) {
-          var srcRecord = srcRecords[i]
-          var defaultValue = _getDefaultValue(
+        for (let i = 0; i < srcRecords.length; i++) {
+          let srcRecord = srcRecords[i]
+          let defaultValue = _getDefaultValue(
             srcRecord,
             mappingItems,
             ruleContext
           )
-          var node = destTree.createNode()
+          let node = destTree.createNode()
 
-          for (var j = 0, len = defaultValue.length; j < len; j++) {
-            var tmpTreeValue = defaultValue[j]
+          for (let j = 0, len = defaultValue.length; j < len; j++) {
+            let tmpTreeValue = defaultValue[j]
             node.set(tmpTreeValue.fieldName, tmpTreeValue.value, null)
           }
           if (isCurrNode) {
@@ -146,31 +149,36 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 插入一颗树或树枝， 也可能树枝是不连续的
  */
-var insertTree = function (
-  tree,
-  parentNode,
-  roots,
-  idChildren,
-  mappingItems,
-  ruleContext,
-  resetCurrent
+let insertTree = function (
+  tree: Record<string, any>,
+  parentNode: Array<Record<string, any>>,
+  roots: Array<Record<string, any>>,
+  idChildren: Record<string, any>,
+  mappingItems: Array<Record<string, any>>,
+  ruleContext: RuleContext,
+  resetCurrent: any
 ) {
-  for (var i = 0; i < roots.length; i++) {
-    var root = roots[i]
+  for (let i = 0; i < roots.length; i++) {
+    let root = roots[i]
     insertSubTree(parentNode, root, ruleContext, resetCurrent)
   }
 
   /**
    * 插入一颗子树
    */
-  function insertSubTree(parentNode, srcRecord, ruleContext, resetCurrent) {
-    var children = idChildren[srcRecord.getSysId()]
-    var insertRecord
-    var defaultValue = _getDefaultValue(srcRecord, mappingItems, ruleContext)
-    var node = tree.createNode()
+  function insertSubTree(
+    parentNode: Array<Record<string, any>>,
+    srcRecord: Record<string, any>,
+    ruleContext: RuleContext,
+    resetCurrent: any
+  ) {
+    let children = idChildren[srcRecord.getSysId()]
+    let insertRecord
+    let defaultValue = _getDefaultValue(srcRecord, mappingItems, ruleContext)
+    let node = tree.createNode()
 
-    for (var i = 0, len = defaultValue.length; i < len; i++) {
-      var tmpTreeValue = defaultValue[i]
+    for (let i = 0, len = defaultValue.length; i < len; i++) {
+      let tmpTreeValue = defaultValue[i]
       node.set(tmpTreeValue.fieldName, tmpTreeValue.value, null)
     }
     if (parentNode && parentNode[0]) {
@@ -180,7 +188,7 @@ var insertTree = function (
       insertRecord = tree.addRootNodes([node], resetCurrent)
     }
     if (children) {
-      for (var i = 0; i < children.length; i++) {
+      for (let i = 0; i < children.length; i++) {
         insertSubTree(insertRecord, children[i], ruleContext, resetCurrent)
       }
     }
@@ -195,27 +203,33 @@ var insertTree = function (
  * @return 结构为json格式：
  * 如：[{"fieldName": tablename.fieldName1, "value":value2}]
  */
-var _getDefaultValue = function (srcRecord, mappingItems, ruleContext) {
-  var returnValue = []
+let _getDefaultValue = function (
+  srcRecord: Record<string, any>,
+  mappingItems: Array<Record<string, any>>,
+  ruleContext: RuleContext
+) {
+  let returnValue: Array<Record<string, any>> = []
   if (!mappingItems || mappingItems.length <= 0) {
     return returnValue
   } else {
-    for (var i = 0; i < mappingItems.length; i++) {
-      var fieldValue = {}
-      var destField = mappingItems[i].destField
-      fieldValue['fieldName'] = destField
-      var value = getMappingValue(srcRecord, mappingItems[i], ruleContext)
-      fieldValue['value'] = value
-      returnValue.push(fieldValue)
+    for (let i = 0; i < mappingItems.length; i++) {
+      let destField = mappingItems[i].destField
+      let value = getMappingValue(srcRecord, mappingItems[i], ruleContext)
+
+      returnValue.push({ fieldName: destField, value: value })
     }
   }
   return returnValue
 }
 
-var getMappingValue = function (srcRecord, mappingItem, ruleContext) {
-  var sourceField = mappingItem.sourceField
-  var sourceType = mappingItem.operType
-  var value = null
+let getMappingValue = function (
+  srcRecord: Record<string, any>,
+  mappingItem: Record<string, any>,
+  ruleContext: RuleContext
+) {
+  let sourceField = mappingItem.sourceField
+  let sourceType = mappingItem.operType
+  let value = null
   switch ('' + sourceType) {
     case 'entityField':
       // 来源实体
@@ -242,9 +256,12 @@ var getMappingValue = function (srcRecord, mappingItem, ruleContext) {
  * @param treeStruct 树形实体结构集合
  * @return
  */
-var getTreeStructByDataSource = function (dsName, treeStruct) {
-  var result = null
-  for (var i = 0; i < treeStruct.length; i++) {
+let getTreeStructByDataSource = function (
+  dsName: string,
+  treeStruct: Array<Record<string, any>>
+) {
+  let result = null
+  for (let i = 0; i < treeStruct.length; i++) {
     if (treeStruct[i]['tableName'] == dsName) {
       result = treeStruct[i]
       break
@@ -252,7 +269,4 @@ var getTreeStructByDataSource = function (dsName, treeStruct) {
   }
   return result
 }
-
-exports.main = main
-
 export { main }

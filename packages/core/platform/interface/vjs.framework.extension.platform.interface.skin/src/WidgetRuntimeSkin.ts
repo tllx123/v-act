@@ -1,37 +1,36 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { ArrayUtil as arrayUtils } from '@v-act/vjs.framework.extension.util.array'
 import { LessUtil as lessUtil } from '@v-act/vjs.framework.extension.util.style.preprocessor.less'
 
 import * as skinVariable from './SkinVariable'
 
-let sandbox
+//let sandbox: any
 
-let Skin = function (params) {
-  this.lessScript = params.lessScript
-  this.deps = params.deps
-  this.currentSkin = ''
-}
+export default class Skin {
+  lessScript
+  deps
+  currentSkin: number
+  constructor(params: Record<string, any>) {
+    this.lessScript = params.lessScript
+    this.deps = params.deps
+    this.currentSkin = 0
+  }
 
-Skin.prototype = {
-  initModule: function (sb) {
-    sandbox = sb
-  },
+  _getLessService(vjsName: string) {
+    throw '此功能暂未开放'
+    //return sandbox.getService(vjsName + '.lessTemplate')
+  }
 
-  _getLessService: function (vjsName) {
-    return sandbox.getService(vjsName + '.lessTemplate')
-  },
-
-  _appendVarScript: function (buffer, vjsName) {
+  _appendVarScript(buffer: Array<any>, vjsName: string) {
     let varScript = skinVariable.getVarScript({
       id: vjsName
     })
     if (varScript) {
       buffer.push(varScript)
     }
-  },
+  }
 
-  getTemplate: function () {
-    let rs = {}
+  getTemplate() {
+    /* let rs = {}
     let selfDeps = this._getSelfDeps()
     for (let i = 0; i < selfDeps.length; i++) {
       let dep = selfDeps[i]
@@ -41,14 +40,16 @@ Skin.prototype = {
         sandbox.util.object.extend(rs, cfg)
       }
     }
-    return rs
-  },
-  _getSelfDeps: function () {
-    return this.deps
-  },
+    return rs 解开注释*/
+    throw '此功能暂未开放'
+  }
 
-  getDeps: function () {
-    let deps = this._getSelfDeps()
+  _getSelfDeps() {
+    return this.deps
+  }
+
+  getDeps() {
+    /* let deps = this._getSelfDeps()
     let rs = [],
       depArray = []
     for (let i = 0; i < deps.length; i++) {
@@ -60,10 +61,11 @@ Skin.prototype = {
         depArray = arrayUtils.union(depList, depArray)
       }
     }
-    return arrayUtils.union(depArray, rs)
-  },
+    return arrayUtils.union(depArray, rs) 解开注释*/
+    throw '此功能暂未开放'
+  }
 
-  _hashcode: function (str) {
+  _hashcode(str: string) {
     let hash = 0,
       i,
       chr,
@@ -75,8 +77,9 @@ Skin.prototype = {
       hash |= 0 // Convert to 32bit integer
     }
     return hash
-  },
-  render: function (vars) {
+  }
+
+  render(vars: Record<string, any>) {
     let less = []
     let varScript
     if (vars) {
@@ -100,7 +103,7 @@ Skin.prototype = {
       this.currentSkin = hashCode
       less.push(this.lessScript)
       less.push(varScript)
-      let res = lessUtil.render({
+      let res: Record<string, any> = lessUtil.render({
         less: less.join(''),
         templates: this.getTemplate()
       })
@@ -108,7 +111,3 @@ Skin.prototype = {
     }
   }
 }
-
-return Skin
-
-export { getVarScript, getVarValue, put }

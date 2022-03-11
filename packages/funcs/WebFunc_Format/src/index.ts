@@ -6,22 +6,23 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
 const vds = { object, string }
 
 const main = function () {
-  var args = arguments,
+  let args = arguments,
     argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null
 
   if (vds.object.isUndefOrNull(str)) throw new Error('字符串为空，请检查!')
 
-  var jionArgLength = args.length - 1 // 下标个数 = 参数数量-原串数量
+  let jionArgLength = args.length - 1 // 下标个数 = 参数数量-原串数量
   str = str + ''
-  for (var index = 0; index < jionArgLength; index++) {
+  for (let index = 0; index < jionArgLength; index++) {
     if (vds.string.indexOf(str, '{' + index + '}') == -1)
       throw new Error('模式串的空位与拼接串个数不符，请检查!')
 
-    var replaceString = args[index + 1] == null ? '' : args[index + 1] + ''
+    let replaceString = args[index + 1] == null ? '' : args[index + 1] + ''
     str = vds.string.replace(str, eval('/\\{' + index + '\\}/g'), replaceString)
   }
   if (str.search(/{\d+}/) >= 0)

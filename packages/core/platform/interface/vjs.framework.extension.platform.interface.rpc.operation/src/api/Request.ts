@@ -7,112 +7,125 @@ import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.exten
  * vjs名称：vjs.framework.extension.platform.interface.rpc.operation<br/>
  * vjs服务名称：vjs.framework.extension.platform.interface.rpc.operation.Request<br/>
  */
-let Request = function (isAsync, operations, success, error, host, timeout) {
-  this.async = isAsync
-  this.operations = operations
-  this.success = success
-  this.error = error
-  this.host = host
-  this.timeout = timeout
-}
+export default class Request {
+  async
+  operations
+  success
+  error
+  host
+  timeout
 
-Request.prototype = {
-  initModule: function (sb) {},
+  constructor(
+    isAsync: boolean,
+    operations: Record<string, any>,
+    success: Function,
+    error: Function,
+    host: string,
+    timeout: number
+  ) {
+    this.async = isAsync
+    this.operations = operations
+    this.success = success
+    this.error = error
+    this.host = host
+    this.timeout = timeout
+  }
 
   /**
    *  设置请求操作
    * @param {Array<@link Operation>} operations 请求动作
    */
-  setOperations: function (operations) {
+  setOperations(operations: Record<string, any>) {
     this.operations = operations
-  },
+  }
 
   /**
    * 获取请求动作
    * @return Array<{@link Operation}>
    */
-  getOperations: function () {
+  getOperations() {
     return this.operations
-  },
+  }
 
   /**
    *  设置请求成功回调
    * @param {Function} fn 回调
    */
-  setSuccessCallback: function (fn) {
+  setSuccessCallback(fn: Function) {
     this.success = fn
-  },
+  }
 
   /**
    * 调用请求成功回调
    */
-  callSuccessCallback: function () {
+  callSuccessCallback() {
     if (typeof this.success == 'function') {
       this.success.apply(this, arguments)
     }
-  },
+  }
 
   /**
    *  设置请求失败回调
    * @param {Function} fn 回调
    */
-  setErrorCallback: function (fn) {
+  setErrorCallback(fn: Function) {
     this.error = fn
-  },
+  }
 
   /**
    * 调用请求失败回调
    */
-  callErrorCallback: function () {
+  callErrorCallback(e: any, handler: Function) {
     if (typeof this.error == 'function') {
       this.error.apply(this, arguments)
     } else {
-      exceptionHandler.handle.apply(this, arguments)
+      //exceptionHandler.handle.apply(this, arguments)
+      exceptionHandler.handle.apply(this, [e, handler])
     }
-  },
+  }
 
   /**
    *  设置是否异步请求
    * @param {Boolean} isAsync 是否异步
    */
-  setAsync: function (isAsync) {
+  setAsync(isAsync: boolean) {
     this.async = isAsync
-  },
+  }
 
   /**
    * 是否异步请求
    * @return Boolean
    */
-  isAsync: function () {
+  isAsync() {
     return this.async
-  },
+  }
 
   /**
    *  设置站点地址
    * @param {String} host 站点地址
    */
-  setHost: function (host) {
+  setHost(host: string) {
     this.host = host
-  },
+  }
 
   /**
    * 获取站点地址
    * @return String
    */
-  getHost: function () {
+  getHost() {
     return this.host
-  },
+  }
+
   /**
    * 设置超时时间
    */
-  setTimeout: function (timeout) {
+  setTimeout(timeout: number) {
     this.timeout = timeout
-  },
+  }
   /**
    * 获取超时时间
    */
-  getTimeout: function (timeout) {
+  getTimeout() {
     return this.timeout
   }
 }
-export default Request

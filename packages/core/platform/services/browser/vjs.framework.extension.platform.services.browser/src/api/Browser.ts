@@ -16,8 +16,6 @@ import {
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-export function initModule(sb) {}
-
 /**
  * 关闭模态窗体
  *
@@ -27,10 +25,10 @@ export function initModule(sb) {}
  *   "collectOutput" : 是否收集outputValue
  * }
  */
-let closeModalWindow = function (params) {
+const closeModalWindow = function (params: Record<string, any>) {
   let selectConfirm = params.selectConfirm
   let collectOutput = params.collectOutput
-  let outputValue = {}
+  let outputValue: Record<string, any> = {}
   outputValue['config'] = {}
   outputValue['config']['isSelectionConfirm'] = selectConfirm == true
   if (collectOutput == true && selectConfirm == true) {
@@ -46,7 +44,7 @@ let closeModalWindow = function (params) {
   if (window['opener']) {
     try {
       window.opener.ReturnValue = retVal
-    } catch (e) {
+    } catch (e: any) {
       log.error(
         '[viewOperation.closeOpenedWindowEx]模态窗体设置值失败!原因:' +
           e.message
@@ -58,7 +56,10 @@ let closeModalWindow = function (params) {
 /**
  * 替换构件包信息
  * */
-let replaceComponentPackInfo = function (componentCode, windowCode) {
+const replaceComponentPackInfo = function (
+  componentCode: string,
+  windowCode: string
+) {
   let result = null
   let info = {
     componentCode: componentCode,
@@ -84,9 +85,10 @@ let replaceComponentPackInfo = function (componentCode, windowCode) {
  *            	params : {}              //参数
  *         }>
  */
-var redirectModule = function (paramsObj) {
-  var componentCode = paramsObj.componentCode
-  var windowCode = paramsObj.windowCode
+
+let redirectModule = function (paramsObj: Record<string, any>) {
+  let componentCode = paramsObj.componentCode
+  let windowCode = paramsObj.windowCode
   //替换构件包映射信息
   var newInfo = replaceComponentPackInfo(componentCode, windowCode)
   if (newInfo) {
@@ -166,7 +168,7 @@ var redirectModule = function (paramsObj) {
  *
  *  @return 返回map格式{"数据源名称1" : [数据集合数组], ..., "数据源名称i" : [数据集合数组]..., "数据源名称n" : [数据集合数组]}
  */
-let callBrowserWindow = function (paramsObj) {
+let callBrowserWindow = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let moduleId = paramsObj.windowCode
   //替换构件包映射信息
@@ -273,10 +275,10 @@ let callBrowserWindow = function (paramsObj) {
   return result
 }
 
-let inputParam2Obj = function (inputParam) {
+const inputParam2Obj = function (inputParam: Record<string, any>) {
   if (inputParam && inputParam.variable) {
     let variable = inputParam.variable
-    let obj = {}
+    let obj: Record<string, any> = {}
     for (let attr in variable) {
       let val = variable[attr]
       obj[attr] = datasourceFactory.isDatasource(val) ? val.serialize() : val
@@ -298,7 +300,7 @@ let inputParam2Obj = function (inputParam) {
  * 		 callBack : <function>     回调函数 var callBack = function(data) data为弹出窗口的输出参数
  * }>
  */
-let callBrowserModalWindow = function (paramsObj) {
+const callBrowserModalWindow = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let windowCode = paramsObj.windowCode
   let title = paramsObj.title
@@ -319,7 +321,7 @@ let callBrowserModalWindow = function (paramsObj) {
       }
       scopeManager.closeScope()
     }
-    return showModalModule(
+    return showModalModule({
       componentCode,
       windowCode,
       title,
@@ -327,7 +329,7 @@ let callBrowserModalWindow = function (paramsObj) {
       height,
       inputParam,
       callBackFunc
-    )
+    })
   } else {
     let params = {
       componentCode: componentCode,
@@ -360,7 +362,7 @@ let callBrowserModalWindow = function (paramsObj) {
  * 		"winName": {String}  当目标窗体为不阻塞时使用的窗口标识
  * }
  */
-let showModalDialogEx = function (params) {
+let showModalDialogEx = function (params: Record<string, any>) {
   let id = params.id,
     url = params.url,
     title = params.title,
@@ -370,12 +372,12 @@ let showModalDialogEx = function (params) {
     isBlock = params.isBlock,
     winName = params.winName
   window['inputJson'] = undefined
-
+  let retVal = null
   // 需要阻塞
   if (isBlock == true) {
     // 遮罩
     mask()
-    let retVal = null
+
     try {
       retVal = window.showModalDialog(
         url,
@@ -431,7 +433,7 @@ let showModalDialogEx = function (params) {
  * 		feature  : {String} 窗体属性配置
  * }
  */
-let showModelessDialogEx = function (params) {
+let showModelessDialogEx = function (params: Record<string, any>) {
   let winName = params.winName,
     url = params.url,
     title = params.title,
@@ -491,8 +493,9 @@ let showModelessDialogEx = function (params) {
  * 		feature  : {String} 窗体属性配置
  * }
  */
-var showModelessDialogExNewTab = function (params) {
-  var url = params.url,
+
+const showModelessDialogExNewTab = function (params: Record<string, any>) {
+  let url = params.url,
     param = params.param
   window['inputJson'] = param
   var closed = params.closed
@@ -558,7 +561,7 @@ var showModelessDialogExNewTab = function (params) {
     type: 'POST',
     url: 'itop/common/rule/temp.json',
     async: false,
-    success: function (data) {
+    success: function (data: any) {
       if (win) win.location
       else
         AlertUtils.error({
@@ -586,8 +589,8 @@ var showModelessDialogExNewTab = function (params) {
  * 		"closeCallback" : {Function} 关闭回调
  * }
  */
-var showModalModule = function (params) {
-  var componentCode = params.componentCode,
+const showModalModule = function (params: Record<string, any>) {
+  let componentCode = params.componentCode,
     windowCode = params.windowCode,
     title = params.title,
     width = params.width,
@@ -636,7 +639,7 @@ let getUrlPrefix = function () {
   return urlPath.indexOf('/') != 0 ? '/' : ''
 }
 
-const setWindowTitle = function (params) {
+const setWindowTitle = function (params: Record<string, any>) {
   let title = params.title,
     isTop = !!params.isTop
   let scanFun = (function (flag) {
@@ -674,7 +677,8 @@ const setWindowTitle = function (params) {
  * 		"winName":{String}
  * }
  */
-const callModuleEx = function (params) {
+
+const callModuleEx = function (params: Record<string, any>) {
   let componentCode = params.componentCode,
     moduleId = params.windowCode,
     operation = params.operation,
@@ -773,7 +777,7 @@ const callModuleEx = function (params) {
   return result
 }
 
-const getWindowUrl = function (params) {
+const getWindowUrl = function (params: Record<string, any>) {
   let moduleId = params.windowCode
   let operation = params.operation,
     inParam = params.inputParams
@@ -786,7 +790,7 @@ const getWindowUrl = function (params) {
     operation
 
   // 将inParam补充进paramData。另外inParam会作为wooui的调用参数，直接传递到打开窗体中
-  let paramData = {}
+  let paramData: Record<string, any> = {}
   paramData['inputParam'] = inParam
   // token内容进行encodeURIComponent编码,防止%无法传递的问题
   let token = encodeURIComponent(
@@ -800,7 +804,7 @@ const getWindowUrl = function (params) {
   return url
 }
 
-let getServerUrl = function (urlPath) {
+const getServerUrl = function (urlPath: string) {
   let index = urlPath.indexOf('module-operation')
   let url
   if (index != -1) {
@@ -811,7 +815,7 @@ let getServerUrl = function (urlPath) {
   return url
 }
 
-const redirectLocation = function (paramsObj) {
+const redirectLocation = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let moduleId = paramsObj.windowCode
   //替换构件包映射信息
@@ -902,11 +906,11 @@ const redirectLocation = function (paramsObj) {
  *  "closeBack": function(){} //窗体关闭的回调
  * }
  * */
-let openWindowToDiv = function (params) {
+const openWindowToDiv = function (params: any) {
   actionHandler.executeComponentAction('loadWindowToDiv', params)
 }
 
-let isRoot = function (parentInfo) {
+const isRoot = function (parentInfo: Record<string, any>) {
   /* 父级信息不存在，则表示为根元素 */
   if (!parentInfo) return true
   if (!parentInfo || parentInfo.scopeId != '__Container_Scope__') {
@@ -915,7 +919,7 @@ let isRoot = function (parentInfo) {
   return true
 }
 
-let currentPageOpen = function (params) {
+const currentPageOpen = function (params: Record<string, any>) {
   let url = params.url
   let info = widgetRenderer.executeComponentRenderAction(
     'getParentContainerInfo'
@@ -950,7 +954,7 @@ let currentPageOpen = function (params) {
     }
     let setTitle = scope.get('SetModalWinTitleFunc')
     let closeModal = scope.get('ModalCloseFunc')
-    scopeManager.destroy(scopeId)
+    scopeManager.destroy(scopeId as string)
     try {
       // 约定dom上此属性存在的话，不执行原来执行的关闭事件，直接执行模态本身的关闭事件
       $('#' + info.containerCode).attr('data-is-link-jump', true)
@@ -1059,8 +1063,8 @@ export {
   openWindowToDiv,
   redirectLocation,
   redirectModule,
-  showByHomeTab,
   setWindowTitle,
+  showByHomeTab,
   showModalDialogEx,
   showModalModule,
   showModelessDialogEx,

@@ -6,16 +6,18 @@
  *
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as math from '@v-act/vjs.framework.extension.util.math'
+
 const vds = { exception }
 
-const main = function (decryptValue, type, secretkey) {
-  var result = ''
+const main = function (decryptValue: string, type: string, secretkey: string) {
+  let result = ''
   if (decryptValue == null || decryptValue == undefined) {
-    var exception = vds.exception.newConfigException('加密的值不能为空!')
+    let exception = vds.exception.newConfigException('加密的值不能为空!')
     throw exception
   }
   if (type == null || type == undefined) {
-    var exception = vds.exception.newConfigException('加密的类型不能为空!')
+    let exception = vds.exception.newConfigException('加密的类型不能为空!')
     throw exception
   }
   if (secretkey) {
