@@ -1,15 +1,16 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 /**
  *	根据id获取实体行号,1,2,3,4,5,6,7......
  *	参数  实体名称，id
  *  返回  行号
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+
 const vds = { object, expression, ds, exception }
 
-const main = function (dsName, id) {
+const main = function (dsName: string, id: string) {
   if (vds.object.isUndefOrNull(dsName)) {
     throw vds.exception.newConfigException('参数1-实体编码不能为空')
   }
