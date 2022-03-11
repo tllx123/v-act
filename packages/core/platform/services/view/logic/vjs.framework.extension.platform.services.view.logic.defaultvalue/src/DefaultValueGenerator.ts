@@ -91,4 +91,4 @@ DefaultValueGenerator.prototype.generate = function () {
   //		}
 }
 
-module.exports = DefaultValueGenerator
+export default DefaultValueGenerator

@@ -1,40 +1,17 @@
 import {
-  Adapter as dataAdapter,
-  ParamInitor as paramInitor
-} from '@v-act/vjs.framework.extension.platform.data.adapter'
-import {
   AppInfo as appInfo,
   ComponentInfo as componentInfo,
   WindowInfo as windowInfo
 } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import {
   ScopeTask,
   TaskManager as taskManager
 } from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ParamConfig as paramConfig } from '@v-act/vjs.framework.extension.platform.interface.model.config'
-import {
-  Datasource,
-  Record as record
-} from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 import * as windowRuntime from './WindowRuntimeInit'
-
-let sandbox,
-  token = 'VIEW_INIT_WINDOW_RUNTIME_HANDLER',
-  eventToken = 'VIEW_INIT_WINDOW_RUNTIME_EVENT'
-let storage
-
-storage = storageManager.get(storageManager.TYPES.MAP, token)
-record.putDataAdapter(dataAdapter)
-paramConfig.putInitor(paramInitor)
-
-Datasource._putSnapshotManager(snapshotManager)
 
 let taskPool = {}
 
@@ -88,24 +65,32 @@ let _fireCallbackwithAsyn = function (params) {
   }, 1)
 }
 
-let _createScopeTask = function (scopeId, isAutoExe, handler) {
-  let scopeTask = new ScopeTask(scopeId, isAutoExe, handler)
+var _createScopeTask = function (scopeId, isAutoExe, handler) {
+  var scopeTask = new ScopeTask(scopeId, isAutoExe, handler)
   return taskManager.addTask(scopeTask)
 }
 
+/**
+ * 应用信息初始化
+ * @param {Object} params 参数信息
+ * {
+ * 		"success" : {Function} 初始化成功回调,
+ * 		"error" ： {Function} 初始化失败回调
+ * }
+ */
 const initAppSchema = function (params) {
-  let parentScopeId = params.scopeId || scopeManager.getCurrentScopeId()
-  let scopeId = scopeManager.createScope(parentScopeId)
+  var parentScopeId = params.scopeId || scopeManager.getCurrentScopeId()
+  var scopeId = scopeManager.createScope(parentScopeId)
   scopeManager.openScope(scopeId)
-  let scopeTaskId = _createScopeTask(scopeId, false, params.success)
+  var scopeTaskId = _createScopeTask(scopeId, false, params.success)
   scopeManager.closeScope()
   params.scopeTaskId = scopeTaskId
   if (appInfo.isAppSchemaInited()) {
     _fireCallbackwithAsyn(params)
   } else {
-    let vjsName =
-      'vjs.framework.extension.platform.init.view.schema.Application'
-    _initSchema(vjsName, params.error, scopeTaskId)
+    //			var vjsName = "vjs.framework.extension.platform.init.view.schema.Application";
+    //			_initSchema(vjsName, params.error, scopeTaskId);
+    taskManager.execTaskById(scopeTaskId)
   }
 }
 
@@ -195,7 +180,7 @@ const initComponentSchema = function (params) {
       }
     })(scopeTaskId, params, comCode)
     cbs.push(cb)
-    let extendId = currentScope.getExtendId()
+    var extendId = currentScope ? currentScope.getExtendId() : null
     if (extendId != null) {
       currentScope = scopeManager.getScope(extendId)
       componentCode = null
@@ -205,7 +190,38 @@ const initComponentSchema = function (params) {
   }
   cbs[cbs.length - 1]()
 }
-
+//	/**
+//     * 获取来源窗体信息，递归查找
+//     * @param {String} comCode 构件编码
+//     * @param {String} winCode 窗体编码
+//     * @param {String} comCode 来源窗体信息列表
+//     * recurssion
+//     * */
+//	function getSource(comCode, winCode, infos){
+//		infos.push({
+//    		componentCode: comCode,
+//    		windowCode: winCode
+//    	});
+//		var windowMappingInfo = ApplicationParam.getWindowMapping({
+//            componentCode: comCode,
+//            windowCode: winCode,
+//            isTarget : true
+//        });
+//        if (windowMappingInfo != null) {
+//        	infos = getSource(windowMappingInfo.componentCode, windowMappingInfo.windowCode, infos);
+//        }
+//        return infos;
+//	}
+/**
+ * 初始化窗体schema信息
+ * @param {Object} params 参数信息
+ * {
+ * 		"componentCode" : {String} 构件编号
+ * 		"windowCode" : {String} 窗体编号
+ * 		"success" : {Function} 初始化成功回调,
+ * 		"error" ： {Function} 初始化失败回调
+ * }
+ */
 const initWindowSchema = function (params) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode
