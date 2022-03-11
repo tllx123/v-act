@@ -1,12 +1,12 @@
 import * as operationLib from 'module'
 import * as viewContext from 'module'
 
-export function initModule() {}
+// export function initModule() {}
 /**
  * 主入口
  * @param serverUrl 远程服务器地址
  */
-const main = function (serverUrl) {
+const main = function (serverUrl: string | null) {
   if (serverUrl == null || serverUrl == '') {
     throw new Error('服务器地址不能为空，请检查')
   }
