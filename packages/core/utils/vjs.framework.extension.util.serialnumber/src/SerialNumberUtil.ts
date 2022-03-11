@@ -1,8 +1,27 @@
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 
-export function initModule(sb) {}
+interface resultInterface {
+  data: {
+    result: unknown
+  }
+}
 
-const getSerialNumber = function (params) {
+interface paramsInterface {
+  moduleId: string
+  TableName: string
+  TableColumn: string
+  prefix: string
+  Length: number
+  CoverLetter: string
+  likeValStr: string
+  subLength: number
+  isLeftSubFlag: boolean
+  isReuseSerialNumber: boolean
+  isAsync: boolean
+  success: (arg: unknown) => void
+}
+
+const getSerialNumber = function (params: paramsInterface): void {
   let moduleId = params.moduleId
   let TableName = params.TableName
   let TableColumn = params.TableColumn
@@ -40,13 +59,13 @@ const getSerialNumber = function (params) {
     operation: 'WebExecuteFormulaExpression',
     isAsync: isAsync,
     params: paramData,
-    success: function (rs) {
-      let result = rs.data.result
+    success: function (rs: resultInterface) {
+      let result: unknown = rs.data.result
       if (typeof params.success == 'function') {
         params.success(result)
       }
     },
-    error: function (e) {
+    error: function (e: string) {
       throw e
     }
   })
