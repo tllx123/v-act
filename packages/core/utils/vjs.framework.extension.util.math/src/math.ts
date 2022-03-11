@@ -2,11 +2,17 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 ;(function () {
   var y = (function () {
       function h() {
+        // @ts-ignore
         this.form = this.digits = 0
+        // @ts-ignore
         this.lostDigits = !1
+        // @ts-ignore
         this.roundingMode = 0
+        // @ts-ignore
         var v = this.DEFAULT_FORM,
+          // @ts-ignore
           r = this.DEFAULT_LOSTDIGITS,
+          // @ts-ignore
           f = this.DEFAULT_ROUNDINGMODE
         if (4 == h.arguments.length)
           (v = h.arguments[1]), (r = h.arguments[2]), (f = h.arguments[3])
@@ -20,17 +26,26 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             ' arguments given; expected 1 to 4'
           )
         var t = h.arguments[0]
+        // @ts-ignore
         if (t != this.DEFAULT_DIGITS) {
+          // @ts-ignore
           if (t < this.MIN_DIGITS) throw 'MathContext(): Digits too small: ' + t
+          // @ts-ignore
           if (t > this.MAX_DIGITS) throw 'MathContext(): Digits too large: ' + t
         }
+        // @ts-ignore
         if (v != this.SCIENTIFIC && v != this.ENGINEERING && v != this.PLAIN)
           throw 'MathContext() Bad form value: ' + v
+        // @ts-ignore
         if (!this.isValidRound(f))
           throw 'MathContext(): Bad roundingMode value: ' + f
+        // @ts-ignore
         this.digits = t
+        // @ts-ignore
         this.form = v
+        // @ts-ignore
         this.lostDigits = r
+        // @ts-ignore
         this.roundingMode = f
       }
       h.prototype.getDigits = function () {
