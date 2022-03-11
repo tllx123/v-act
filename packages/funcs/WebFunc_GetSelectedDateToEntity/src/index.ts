@@ -1,3 +1,4 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 /**
  *  获取日历控件选中日期并新增到对应实体
  *  代码示例:
@@ -11,10 +12,14 @@
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+
 const vds = { exception, widget, ds }
 
-var insertDateToEntity = function (datasource, fieldName, dates) {
+var insertDateToEntity = function (
+  datasource: any,
+  fieldName: string,
+  dates: []
+) {
   if (!datasource || !dates || dates.length === 0 || !fieldName) return
 
   var insertRecords = []
@@ -30,13 +35,17 @@ var insertDateToEntity = function (datasource, fieldName, dates) {
   return insertRecords
 }
 
-var _getDataSource = function (dsName) {
+var _getDataSource = function (dsName: string) {
   // 仅支持前台实体
   var datasource = vds.ds.lookup(dsName)
   return datasource
 }
 
-const main = function (widgetCode, entityCode, fieldName) {
+const main = function (
+  widgetCode: string,
+  entityCode: string,
+  fieldName: string
+) {
   if (!widgetCode)
     throw vds.exception.newConfigException(
       '函数 GetSelectedDateToEntity 第一个参数,控件Code不能为空!'

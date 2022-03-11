@@ -110,7 +110,7 @@ class RuleContext {
    * @param {Function} 回调函数
    * @return {Function}
    * */
-  genAsynCallback(func: () => void) {
+  genAsynCallback(func: (param: any) => void) {
     if (typeof func != 'function') {
       return func
     }

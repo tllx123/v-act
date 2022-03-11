@@ -4,15 +4,10 @@
  */
 
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-
-const vds = { object, exception, expression, message, log, ds, widget }
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
@@ -30,14 +25,14 @@ const main = function (ruleContext: RuleContext) {
       //获取计算公式的值
       var value = exeExpression(calFormula, ruleContext)
       //根据数据源名称获取绑定的控件编号集合
-      var refWidgetIds = vds.widget.getWidgetCodes(dsName)
+      var refWidgetIds = widget.getWidgetCodes(dsName)
       var flag = true
       for (var index = 0; index < refWidgetIds.length; index++) {
         var retWidgetId = refWidgetIds[index]
-        var storeType = vds.widget.getStoreType(retWidgetId)
-        if (storeType == vds.widget.StoreType.Set) {
-          var dsNames = vds.widget.getDatasourceCodes(retWidgetId)
-          var datasource = vds.ds.lookup(dsNames[0])
+        var storeType = widget.getStoreType(retWidgetId)
+        if (storeType == widget.StoreType.Set) {
+          var dsNames = widget.getDatasourceCodes(retWidgetId)
+          var datasource = ds.lookup(dsNames[0])
           var record = datasource.getCurrentRecord()
           if (!record) {
             resolve()
@@ -47,10 +42,10 @@ const main = function (ruleContext: RuleContext) {
           calculateValueForSet(datasource, record, destFieldName, value)
           break
         } else if (
-          storeType == vds.widget.StoreType.SingleRecord ||
-          storeType == vds.widget.StoreType.SingleRecordMultiValue
+          storeType == widget.StoreType.SingleRecord ||
+          storeType == widget.StoreType.SingleRecordMultiValue
         ) {
-          var fields = vds.widget.getFieldCodes(dsName, retWidgetId)
+          var fields = widget.getFieldCodes(dsName, retWidgetId)
           if (fields && fields.length > 0) {
             for (var i = 0; i < fields.length; i++) {
               var field = fields[i]
@@ -81,14 +76,15 @@ const main = function (ruleContext: RuleContext) {
  * @param ruleContext
  *            规则上下文
  */
-var exeExpression = function (calFormula, ruleContext) {
+
+var exeExpression = function (calFormula: string, ruleContext: RuleContext) {
   try {
     //执行表达式
-    var value = vds.expression.execute(calFormula, { ruleContext: ruleContext })
+    var value = expression.execute(calFormula, { ruleContext: ruleContext })
     return value
-  } catch (e) {
+  } catch (e: any) {
     var msg = '执行字段计算表达式【' + calFormula + '】失败，原因' + e.message
-    vds.log.log(msg)
+    log.log(msg)
   }
 }
 
@@ -102,8 +98,12 @@ var exeExpression = function (calFormula, ruleContext) {
  * @param value
  *            值
  */
-var calculateValueForSingleValue = function (dsName, destFieldName, value) {
-  var datasource = vds.ds.lookup(dsName)
+var calculateValueForSingleValue = function (
+  dsName: string,
+  destFieldName: string,
+  value: unknown
+) {
+  var datasource = ds.lookup(dsName)
   var record = datasource.getCurrentRecord()
   if (!record) {
     record = datasource.createRecord()
@@ -127,7 +127,16 @@ var calculateValueForSingleValue = function (dsName, destFieldName, value) {
  * @param value
  *            值
  */
-var calculateValueForSet = function (datasource, record, destFieldName, value) {
+interface record {
+  [key: string]: any
+}
+
+var calculateValueForSet = function (
+  datasource: any,
+  record: record,
+  destFieldName: string,
+  value: unknown
+) {
   record.set(destFieldName, value)
   datasource.updateRecords([record])
 }

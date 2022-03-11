@@ -1,7 +1,10 @@
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-const vds = { object }
 
-const main = function (key, isDeCode) {
+const vds = { object }
+interface getTs {
+  [key: string]: any
+}
+const main = function (key: string, isDeCode: boolean) {
   //是否解码,默认解码
   if (vds.object.isUndefOrNull(isDeCode)) {
     isDeCode = false
@@ -9,7 +12,7 @@ const main = function (key, isDeCode) {
   var retStr = ''
   var url = window.document.location.href.toString()
   var u = url.split('?')
-  var get = {}
+  var get: getTs = {}
   if (typeof u[1] == 'string') {
     u = u[1].split('&')
     for (var i = 0; i < u.length; i++) {

@@ -1,17 +1,16 @@
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-/**
- *	新增数据库中的记录
- */
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-/**
- * 规则入口
- */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 
-const vds = { rpc, log, exception, expression, string }
+interface currData {
+  [key: string]: any
+}
+interface params {
+  [key: string]: any
+}
+
+interface obj {
+  [key: string]: any
+}
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
@@ -32,7 +31,7 @@ const main = function (ruleContext: RuleContext) {
           var dataSourceMapping = dataSourcesMapping[i]
           var dataSourceName = dataSourceMapping['dataSource']
 
-          var currData = {}
+          var currData: currData = {}
           currData['dataSource'] = dataSourceName
           currData['values'] = []
           var dataMap = dataSourceMapping['dataMap']
@@ -41,7 +40,7 @@ const main = function (ruleContext: RuleContext) {
             var colValue = currMap['colValue']
             var valueType = currMap['valueType']
             var value
-            var currValueObject = {}
+            var currValueObject: currData = {}
             //现在的来源类型只能为expression
             if (valueType == 'expression') {
               value = vds.expression.execute(colValue, {
@@ -61,7 +60,7 @@ const main = function (ruleContext: RuleContext) {
 
         //如果没有需要保存的数据则不调用后台规则
         if (parsedDatas.length > 0) {
-          var params = {}
+          var params: params = {}
           params.condParams = parsedDatas
           params.dataSourcesMapping = dataSourcesMapping
 
@@ -104,14 +103,14 @@ const main = function (ruleContext: RuleContext) {
             {
               isAsyn: true,
               ruleContext: ruleContext,
-              timeout: vds.rpc.Timeout.Short
+              timeout: rpc.Timeout.Short
             }
           )
           promise
             .then(function () {
               resolve()
             })
-            .catch(function (responseObj) {
+            .catch(function (responseObj: obj) {
               if (responseObj) {
                 vds.log.error(responseObj.message)
                 reject(vds.exception.newSystemException(responseObj.message))
