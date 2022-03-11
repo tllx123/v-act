@@ -15,17 +15,17 @@ let SimpleRequestURI = _URI + 'executeOperation'
 
 let MultiRequestURI = _URI + 'executeMultiOperation'
 
-export function initModule(sb) {}
+
 
 /**
  * result  后台返回结果 result
  * isAsync 是否异步  异步true  同步false
  */
-let exHandler = function (result, isAsync) {
+let exHandler = function (result:any, isAsync:boolean) {
   throw result
 }
 
-let rq = function (request, contractType, channelType, config) {
+let rq = function (request:any, contractType:any, channelType:any, config:any) {
   let Contract = contractManager.getCurrentContractService(contractType)
   let contract = Contract ? new Contract() : null
   let Channel = channelManager.getCurrentChannelService(channelType)
@@ -39,7 +39,7 @@ let rq = function (request, contractType, channelType, config) {
   return proxy.request(request)
 }
 
-let invoke = function (config, contractType, channelType) {
+let invoke = function (config:any, contractType:any, channelType:any) {
   let opt = new Operation()
   let request = new Request()
   opt.setOperation(config.operationName)
@@ -77,30 +77,30 @@ let invoke = function (config, contractType, channelType) {
   return rq(request, contractType, channelType, config)
 }
 
-const invokeOperation = function (config) {
+const invokeOperation = function (config:any) {
   let type = 'vPlatform'
   return invoke(config, type, type)
 }
 
-const invokeExtensibleOperation = function (config) {
+const invokeExtensibleOperation = function (config:any) {
   return invoke(config, 'extensionVPlatform', 'vPlatform')
 }
 
-const request = function (request) {
+const request = function (request:any) {
   let type = 'multiVPlatform'
   return rq(request, type, type)
 }
 
-const orginalRequest = function (config) {
+const orginalRequest = function (config:any) {
   return invoke(config, 'common', 'common')
 }
 
-const log = function (params) {
+const log = function (params:any) {
   try {
     let scopeId = params.contract.headers.scopeId
     let scope = scopeManager.getScope(scopeId)
     let isWindowScope = scopeManager.isWindowScope(scopeId)
-    let params = {
+    let params1:{[code:string]:any} = {
       isWindowScope: isWindowScope,
       operation: 'AjaxLog',
       componentCode: scope.getComponentCode(),
@@ -110,21 +110,23 @@ const log = function (params) {
       responseStatus: params.responseStatus
     }
     if (isWindowScope) {
-      params.windowCode = scope.getWindowCode()
+      params1.windowCode = scope.getWindowCode()
     }
+    //@ts-ignore
     exports.invokeOperation(params)
   } catch (e) {
     log.error(e.message)
   }
 }
 
-const crossDomainRequest = function (params) {
+const crossDomainRequest = function (params:any) {
   if (!params.param) params.param = {}
   params.param._$v3CrossDomainRequest$_ = true
   return invoke(params, 'common', 'crossDomain')
 }
 
 //TODO
+//@ts-ignore
 window.RPC = exports
 export {
   crossDomainRequest,

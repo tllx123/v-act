@@ -1,7 +1,7 @@
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-import * as DataAccessObject from './api/object/DataAccessObject'
-import * as DataProvider from './api/object/DataProvider'
+import * as DataAccessObject from '../object/DataAccessObject'
+import * as DataProvider from '../object/DataProvider'
 
 export function initModule(sBox) {}
 

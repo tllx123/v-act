@@ -4,7 +4,7 @@
 
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-import { paramRandom } from '../ParamRandom'
+import * as paramRandom from '../ParamRandom'
 import * as Path from '../util/Path'
 import FunctionMock from './FunctionMock'
 import RuleMock from './RuleMock'

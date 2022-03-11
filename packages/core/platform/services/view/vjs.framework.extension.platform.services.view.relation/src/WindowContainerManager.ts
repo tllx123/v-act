@@ -139,7 +139,7 @@ const existWindowInfo = function (params) {
 }
 
 const fireResize = function (windowContainerId) {
-  let container = exports.get(windowContainerId)
+  let container = get(windowContainerId)
   if (container) {
     let resizeFunc = container.getResizeFunc()
     if (typeof resizeFunc == 'function') {
@@ -152,7 +152,8 @@ const fireResize = function (windowContainerId) {
  * 容器里面窗体的打开方式
  * @enum {String}
  */
-exports.OPENTYPE = {
+
+const OPENTYPE = {
   //组件容器
   CONTAINER: 'ComponentContainer', //旧配置~
   //模态
@@ -161,18 +162,17 @@ exports.OPENTYPE = {
   DEFAULT: 'default'
 }
 
+export { OPENTYPE }
+
 const getOpenType = function (scopeId: string) {
   let container = _getContainerByScopeId(scopeId)
   if (null != container) {
     let openType = container.getWindowType()
-    if (
-      openType == exports.OPENTYPE.CONTAINER ||
-      openType == exports.OPENTYPE.MOADL
-    ) {
+    if (openType == OPENTYPE.CONTAINER || openType == OPENTYPE.MOADL) {
       return openType
     }
   }
-  return exports.OPENTYPE.DEFAULT
+  return OPENTYPE.DEFAULT
 }
 
 export {

@@ -5,9 +5,10 @@
  *  返回值为小数
  */
 import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
+
 const vds = { math }
 
-const main = function (param) {
+const main = function (param: any) {
   return vds.math.e()
 }
 export { main }

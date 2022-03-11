@@ -5,14 +5,14 @@
  * 输出：解密后的值
  *
  */
-const main = function (decryptValue, type, secretkey) {
-  var result = ''
+const main = function (decryptValue: any, type: string, secretkey: string) {
+  let result = ''
   if (decryptValue == null || decryptValue == undefined) {
-    var exception = vds.exception.newConfigException('解密的值不能为空!')
+    let exception = vds.exception.newConfigException('解密的值不能为空!')
     throw exception
   }
   if (type == null || type == undefined) {
-    var exception = vds.exception.newConfigException('解密的类型不能为空!')
+    let exception = vds.exception.newConfigException('解密的类型不能为空!')
     throw exception
   }
   if (secretkey) {

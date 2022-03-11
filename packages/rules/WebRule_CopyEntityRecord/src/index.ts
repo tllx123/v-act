@@ -2,7 +2,6 @@
  * 实体间复制记录
  *
  */
-
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
@@ -16,34 +15,34 @@ const vds = { ds, exception, expression, log, string, window }
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var inParams = ruleContext.getVplatformInput()
+      let inParams = ruleContext.getVplatformInput()
 
       // 复制数据来源实体
-      var sourceName = inParams.sourceName
+      let sourceName = inParams.sourceName
       // 复制类型：选中行/所有行
-      var copyType = inParams.copyType
+      let copyType = inParams.copyType
       // 源实体过滤条件
-      var condition = inParams.condition
+      let condition = inParams.condition
 
       // 字段赋值对应关系
-      var fieldMapping = inParams.items
+      let fieldMapping = inParams.items
       if (!fieldMapping || fieldMapping.length == 0) {
         throw new Error('配置有误！实体间复制记录，必须配置字段映射关系！')
       }
 
       // 要复制到的目标实体
-      var destName = inParams.destName
+      let destName = inParams.destName
       // 源和目标记录重复时的操作类型
-      var operatorType = inParams.type
+      let operatorType = inParams.type
       // 源和目标重复判定字段
-      var checkItems = inParams.checkitems
+      let checkItems = inParams.checkitems
       // 源和目标合并时，需要合并的字段，必须是数值类型
-      var mergeItems = inParams.mageitems
+      let mergeItems = inParams.mageitems
 
       // 检测：id如果在字段映射关系中有设置，那么id就必须唯一用于重复判断字段，
       // 否则，多次操作必然导致id重复
-      for (var i = 0; i < fieldMapping.length; i++) {
-        var destField = fieldMapping[i].destName
+      for (let i = 0; i < fieldMapping.length; i++) {
+        let destField = fieldMapping[i].destName
         if (getFieldName(destField).toLowerCase() == 'id') {
           if (
             checkItems == null ||
@@ -62,7 +61,7 @@ const main = function (ruleContext: RuleContext) {
       }
 
       // 1.0版本json结构处理逻辑
-      var jsonVersion = inParams.jsonVersion
+      let jsonVersion = inParams.jsonVersion
       if (!vds.string.isEmpty(jsonVersion) && jsonVersion == '1.0') {
         inParams.mergeItems = inParams.mageitems
         delete inParams.mageitems
@@ -79,7 +78,7 @@ const main = function (ruleContext: RuleContext) {
       }
 
       // 选择符合条件的来源记录
-      var sourceRecords = _getSourceEntityRecords(
+      let sourceRecords = _getSourceEntityRecords(
         sourceName,
         copyType,
         condition,
@@ -90,16 +89,16 @@ const main = function (ruleContext: RuleContext) {
         return
       }
       // 根据字段映射关系转换后的来源记录
-      var mappingRecords = _mappingRecords(
+      let mappingRecords = _mappingRecords(
         sourceRecords,
         fieldMapping,
         ruleContext
       )
 
-      var changedRecords = null
+      let changedRecords = null
 
       //是否重新设置当前行
-      var resetCurrent = getResetCurrent(inParams)
+      let resetCurrent = getResetCurrent(inParams)
 
       // 如果操作类型为追加，则不需要进行重复判定，简单insert即可。
       if (operatorType == OPERATOR_TYPE.APPEND) {
@@ -125,7 +124,7 @@ const main = function (ruleContext: RuleContext) {
 
       // 如果复制到目标实体记录不为空，默认选中第一条
       if (changedRecords != null && changedRecords.length > 0 && resetCurrent) {
-        var datasource = vds.ds.lookup(destName)
+        let datasource = vds.ds.lookup(destName)
         datasource.setCurrentRecord(changedRecords[0])
       }
       resolve()
@@ -145,33 +144,33 @@ const main = function (ruleContext: RuleContext) {
  * @param condition
  *            源实体的数据过滤条件
  */
-var _getSourceEntityRecords = function (
-  sourceName,
-  copyType,
-  condition,
-  ruleContext
+let _getSourceEntityRecords = function (
+  sourceName: string,
+  copyType: string,
+  condition: string,
+  ruleContext: RuleContext
 ) {
   if (!vds.ds.exists(sourceName)) {
     throw new Error('来源实体不存在！sourceName=' + sourceName)
   }
 
   // 源记录集合
-  var records = []
-  var datasource = vds.ds.lookup(sourceName)
+  let records = []
+  let datasource = vds.ds.lookup(sourceName)
   if (copyType == COPY_TYPE.ALLRECORDS) {
     records = datasource.getAllRecords().toArray()
   } else if ((copyType = COPY_TYPE.SELECTEDROWS)) {
     records = datasource.getSelectedRecords().toArray()
   } else if (copyType == COPY_TYPE.SELECTEDROWS_CURRENTROW) {
     records = datasource.getSelectedRecords().toArray() //勾选的数据
-    var currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
+    let currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
     if (currentSelected) {
       if (null == records) records = []
 
-      var exist = false
+      let exist = false
       //去重（勾选和高亮可能重复）
-      for (var i = 0; i < records.length; i++) {
-        var record = records[i]
+      for (let i = 0; i < records.length; i++) {
+        let record = records[i]
         if (record.getSysId() == currentSelected.getSysId()) {
           exist = true
           break
@@ -180,7 +179,7 @@ var _getSourceEntityRecords = function (
       if (!exist) records.push(currentSelected)
     }
   } else if (copyType == COPY_TYPE.CURRENTROW) {
-    var currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
+    let currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
     if (currentSelected) records.push(currentSelected)
   }
 
@@ -199,13 +198,13 @@ var _getSourceEntityRecords = function (
   }
 
   // 过滤后的记录集合
-  var result = []
+  let result = []
 
   // 按条件对源记录集合进行过滤
-  for (var i = 0; i < records.length; i++) {
-    var record = records[i]
+  for (let i = 0; i < records.length; i++) {
+    let record = records[i]
     try {
-      var ret = vds.expression.execute(condition, {
+      let ret = vds.expression.execute(condition, {
         ruleContext: ruleContext,
         records: [record]
       })
@@ -215,8 +214,8 @@ var _getSourceEntityRecords = function (
       if (ret == true) {
         result.push(record)
       }
-    } catch (e) {
-      var message =
+    } catch (e: any) {
+      let message =
         '表达式执行错误！condition=' + condition + '错误信息：' + e.message
       vds.log.error(message)
       throw new Error('实体过滤条件不正确！' + message)
@@ -237,21 +236,25 @@ var _getSourceEntityRecords = function (
  * @param fieldMapping
  *            字段映射关系
  */
-var _mappingRecords = function (sourceRecords, fieldMapping, ruleContext) {
+let _mappingRecords = function (
+  sourceRecords: Array<Record<string, any>>,
+  fieldMapping: Array<Record<string, any>>,
+  ruleContext: RuleContext
+) {
   try {
-    var result = []
-    var cache = {
+    let result = []
+    let cache = {
       variable: {},
       systemVariable: {}
     }
-    for (var i = 0; i < sourceRecords.length; i++) {
+    for (let i = 0; i < sourceRecords.length; i++) {
       result.push(
         _mappingRecord(sourceRecords[i], fieldMapping, cache, ruleContext)
       )
     }
     return result
-  } catch (e) {
-    var message =
+  } catch (e: any) {
+    let message =
       '按照字段映射关系取值失败！错误信息：' +
       e.message +
       ',映射关系：' +
@@ -270,15 +273,18 @@ var _mappingRecords = function (sourceRecords, fieldMapping, ruleContext) {
  * @param fieldMapping
  *            字段映射关系
  */
-var _mappingRecord = function (sourceRecord, fieldMapping, cache, ruleContext) {
-  var result = {}
-  var variable = cache.variable
-  var systemVariable = cache.systemVariable
-  for (var i = 0; i < fieldMapping.length; i++) {
-    var destField = fieldMapping[i].destName
-    var sourceField = fieldMapping[i].sourceName
-    var sourceType = fieldMapping[i].type
-    var value = null
+let _mappingRecord = function (
+  sourceRecord: Record<string, any>,
+  fieldMapping: Array<Record<string, any>>,
+  cache: Record<string, any>,
+  ruleContext: RuleContext
+) {
+  let result: Record<string, any> = {}
+  for (let i = 0; i < fieldMapping.length; i++) {
+    let destField = fieldMapping[i].destName
+    let sourceField = fieldMapping[i].sourceName
+    let sourceType = fieldMapping[i].type
+    let value = null
     switch ('' + sourceType) {
       case 'entityField':
         // 来源
@@ -313,10 +319,14 @@ var _mappingRecord = function (sourceRecord, fieldMapping, cache, ruleContext) {
  * @param fieldMapping
  *            字段映射信息：决定需要复制哪些字段
  */
-var _setRecordValue = function (record, mappingRecord, fieldMapping) {
-  for (var i = 0; i < fieldMapping.length; i++) {
-    var destField = fieldMapping[i].destName
-    var value = mappingRecord[destField]
+let _setRecordValue = function (
+  record: Record<string, any>,
+  mappingRecord: Record<string, any>,
+  fieldMapping: Array<Record<string, any>>
+) {
+  for (let i = 0; i < fieldMapping.length; i++) {
+    let destField = fieldMapping[i].destName
+    let value = mappingRecord[destField]
     // id字段也可赋值
     // 注意这儿不检测value是否符合字段要求类型，而是由record.set内在进行适配
     record.set(destField, value)
@@ -327,28 +337,28 @@ var _setRecordValue = function (record, mappingRecord, fieldMapping) {
 /**
  * 用于重复记录操作方式为：追加
  */
-var _appendToDest = function (
-  destName,
-  mappingRecords,
-  fieldMapping,
-  resetCurrent
+let _appendToDest = function (
+  destName: string,
+  mappingRecords: Array<Record<string, any>>,
+  fieldMapping: Array<Record<string, any>>,
+  resetCurrent: any
 ) {
   if (!vds.ds.exists(destName)) {
     throw new Error('目标实体不存在！destName=' + destName)
   }
 
-  var datasource = vds.ds.lookup(destName)
-  var insertRecords = []
+  let datasource = vds.ds.lookup(destName)
+  let insertRecords = []
   if (mappingRecords.length > 0) {
-    var emptyRecord = datasource.createRecord()
+    let emptyRecord = datasource.createRecord()
 
-    for (var i = 0, mappingRecord; (mappingRecord = mappingRecords[i]); i++) {
+    for (let i = 0, mappingRecord; (mappingRecord = mappingRecords[i]); i++) {
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
-      var tempRecord = emptyRecord.clone()
+      let tempRecord = emptyRecord.clone()
       if (datasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid())
+        tempRecord.set('id', vds.string.uuid(undefined))
       }
-      var record = tempRecord
+      let record = tempRecord
 
       record = _setRecordValue(record, mappingRecords[i], fieldMapping)
       insertRecords.push(record)
@@ -380,37 +390,38 @@ var _appendToDest = function (
  * @param resetCurrent
  * 			  是否重置当前行
  */
-var _copyToDest = function (
-  destName,
-  mappingRecords,
-  fieldMapping,
-  operatorType,
-  checkItems,
-  mergeItems,
-  resetCurrent
+let _copyToDest = function (
+  destName: string,
+  mappingRecords: Array<Record<string, any>>,
+  fieldMapping: Array<Record<string, any>>,
+  operatorType: string,
+  checkItems: Array<string>,
+  mergeItems: Array<string>,
+  resetCurrent: any
 ) {
   if (!vds.ds.exists(destName)) {
     throw new Error('目标实体不存在！destName=' + destName)
   }
 
   // 为避免多次触发事件，在操作完成后一次性将变动的记录插入、或者修改到目标实体
-  var insertRecords = []
-  var updateRecords = []
+  let insertRecords = []
+  let updateRecords = []
   // 目标实体的已有记录（用来做重复比较）
-  var datasource = vds.ds.lookup(destName)
-  var destRecords = datasource.getAllRecords().toArray()
+  let datasource = vds.ds.lookup(destName)
+  let destRecords = datasource.getAllRecords().toArray()
+  let destRecord
 
-  var emptyRecord
-  for (var i = 0; i < mappingRecords.length; i++) {
-    var mappingRecord = mappingRecords[i]
+  let emptyRecord
+  for (let i = 0; i < mappingRecords.length; i++) {
+    let mappingRecord = mappingRecords[i]
     // 根据检查条件，在目标记录集合中查找
-    var indexOfDest = _indexOfDestRecord(destRecords, mappingRecord, checkItems)
-    var indexOfInsert = _indexOfDestRecord(
+    let indexOfDest = _indexOfDestRecord(destRecords, mappingRecord, checkItems)
+    let indexOfInsert = _indexOfDestRecord(
       insertRecords,
       mappingRecord,
       checkItems
     )
-    var indexOfUpdate = _indexOfDestRecord(
+    let indexOfUpdate = _indexOfDestRecord(
       updateRecords,
       mappingRecord,
       checkItems
@@ -418,14 +429,14 @@ var _copyToDest = function (
     if (indexOfDest == -1 && indexOfInsert == -1 && indexOfUpdate == -1) {
       // 如果依然没有重复，那么就追加
       if (!emptyRecord) {
-        var emptyRecord = datasource.createRecord()
+        emptyRecord = datasource.createRecord()
       }
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
-      var tempRecord = emptyRecord.clone()
+      let tempRecord = emptyRecord.clone()
       if (datasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid())
+        tempRecord.set('id', vds.string.uuid(undefined))
       }
-      var record = tempRecord
+      let record = tempRecord
       record = _setRecordValue(record, mappingRecords[i], fieldMapping)
       insertRecords.push(record)
       continue
@@ -439,11 +450,11 @@ var _copyToDest = function (
 
     // 对于替换和合并，找到目标记录
     if (indexOfInsert != -1) {
-      var destRecord = insertRecords[indexOfInsert]
+      destRecord = insertRecords[indexOfInsert]
     } else if (indexOfUpdate != -1) {
-      var destRecord = updateRecords[indexOfUpdate]
+      destRecord = updateRecords[indexOfUpdate]
     } else {
-      var destRecord = destRecords[indexOfDest]
+      destRecord = destRecords[indexOfDest]
       updateRecords.push(destRecord)
       destRecords.splice(indexOfDest, 1)
     }
@@ -455,7 +466,8 @@ var _copyToDest = function (
         destRecord,
         mappingRecord,
         fieldMapping,
-        checkItems
+        checkItems,
+        []
       )
     } else if (operatorType == OPERATOR_TYPE.MERGE) {
       // 复制源记录信息到目标记录，不包含比较字段，合并需要合并字段
@@ -483,17 +495,17 @@ var _copyToDest = function (
 /**
  * 复制源记录信息到目标记录，不包含比较字段
  */
-var _copyRecord = function (
-  destDataSource,
-  destRecord,
-  mappingRecord,
-  fieldMapping,
-  checkItems,
-  mergeItems
+let _copyRecord = function (
+  destDataSource: Record<string, any>,
+  destRecord: Record<string, any>,
+  mappingRecord: Record<string, any>,
+  fieldMapping: Array<Record<string, any>>,
+  checkItems: Array<string>,
+  mergeItems: Array<string>
 ) {
-  for (var i = 0; i < fieldMapping.length; i++) {
-    var destField = fieldMapping[i].destName
-    var value = mappingRecord[destField]
+  for (let i = 0; i < fieldMapping.length; i++) {
+    let destField = fieldMapping[i].destName
+    let value = mappingRecord[destField]
     if (checkItems.indexOf(destField) != -1) {
       continue
     }
@@ -503,8 +515,8 @@ var _copyRecord = function (
     }
 
     if (mergeItems != null && mergeItems.indexOf(destField) != -1) {
-      var metaData = destDataSource.getMetadata()
-      var field = metaData.getField(getFieldName(destField))
+      let metaData = destDataSource.getMetadata()
+      let field = metaData.getField(getFieldName(destField))
       if (field == null) {
         throw new Error(
           '配置错误！要合并的字段在目标实体不存在！destEntity=' +
@@ -514,7 +526,7 @@ var _copyRecord = function (
         )
       }
 
-      var fieldType = String(field.getType()).toLowerCase()
+      let fieldType = String(field.getType()).toLowerCase()
       if (['char', 'text', 'number', 'integer'].indexOf(fieldType) == -1) {
         throw new Error(
           '配置错误！合并字段只支持char/text/number/integer，不支持字段类型：' +
@@ -527,7 +539,7 @@ var _copyRecord = function (
         continue
       }
 
-      var oldValue = destRecord.get(destField)
+      let oldValue = destRecord.get(destField)
       if (oldValue == null) {
         // 注意这儿不检测value是否符合字段要求类型，而是由record.set内在进行适配
         destRecord.set(destField, value)
@@ -538,7 +550,7 @@ var _copyRecord = function (
         destRecord.set(destField, oldValue + String(value))
       } else {
         // 数值类型：number / integer
-        var avalue = parseFloat(value)
+        let avalue = parseFloat(value)
         if (avalue == null || isNaN(avalue)) {
           vds.log.warn(
             '要合并的值不是合法的数值类型！已忽略。合并字段=' +
@@ -569,7 +581,11 @@ var _copyRecord = function (
  *            记录匹配的判定条件
  * @return 查找到的记录索引， 如果未找到匹配记录，返回-1
  */
-var _indexOfDestRecord = function (destRecords, mappingRecord, checkItems) {
+let _indexOfDestRecord = function (
+  destRecords: Array<Record<string, any>>,
+  mappingRecord: Record<string, any>,
+  checkItems: Array<string>
+) {
   if (!checkItems || checkItems.length == 0) {
     throw new Error(
       '配置错误！当操作类型为忽略、替换、合并时，重复检查字段必须提供！checkItems=' +
@@ -577,16 +593,16 @@ var _indexOfDestRecord = function (destRecords, mappingRecord, checkItems) {
     )
   }
   try {
-    for (var i = 0; i < destRecords.length; i++) {
-      var destRecord = destRecords[i]
-      var isMatch = true
-      for (var j = 0; j < checkItems.length; j++) {
-        var checkItem = checkItems[j]
-        var destValue = destRecord.get(checkItem)
-        //					var fileItems = checkItem.split(".");
-        //					var destValue = destRecord[fileItems[fileItems.length-1]];
+    for (let i = 0; i < destRecords.length; i++) {
+      let destRecord = destRecords[i]
+      let isMatch = true
+      for (let j = 0; j < checkItems.length; j++) {
+        let checkItem = checkItems[j]
+        let destValue = destRecord.get(checkItem)
+        //					let fileItems = checkItem.split(".");
+        //					let destValue = destRecord[fileItems[fileItems.length-1]];
 
-        var mappingValue = mappingRecord[checkItem]
+        let mappingValue = mappingRecord[checkItem]
         if (mappingValue === undefined) {
           throw new Error(
             '配置错误！重复检查字段必须包括在字段映射关系中！checkItem=' +
@@ -605,14 +621,14 @@ var _indexOfDestRecord = function (destRecords, mappingRecord, checkItems) {
       }
     }
     return -1
-  } catch (e) {
+  } catch (e: any) {
     vds.log.error('查找匹配记录错误！' + e.message)
     throw e
   }
 }
 
-var getFieldName = function (fieldName) {
-  var retvalue = fieldName
+let getFieldName = function (fieldName: string) {
+  let retvalue = fieldName
   if (fieldName.indexOf('.') != -1) {
     retvalue = fieldName.split('.')[1]
   }
@@ -622,7 +638,7 @@ var getFieldName = function (fieldName) {
 //#region EntityVarOperation 服务提供的方法
 
 // 复制类型
-var COPY_TYPE = {
+let COPY_TYPE = {
   SELECTEDROWS: '1', // 选中行
   ALLRECORDS: '2', // 所有行
   SELECTEDROWS_CURRENTROW: '3', //当前行和选中行
@@ -630,7 +646,7 @@ var COPY_TYPE = {
 }
 
 // 字段映射关系中的源数据来源类型
-var SOURCE_TYPE = {
+let SOURCE_TYPE = {
   ENTITY: '1', // 实体字段
   SYSTEMVAR: '2', // 系统变量
   COMPONENTVAR: '3', // 组件变量
@@ -638,14 +654,14 @@ var SOURCE_TYPE = {
 }
 
 // 源和目标记录重复时的操作类型
-var OPERATOR_TYPE = {
+let OPERATOR_TYPE = {
   APPEND: '1', // 追加
   IGNORE: '2', // 忽略
   REPLACE: '3', // 替换
   MERGE: '4' // 合并
 }
 
-var ENTITY_TYPE = {
+let ENTITY_TYPE = {
   ENTITY: 'window', //界面实体
   WINDOWINPUT: 'windowInput', //窗体输入实体变量
   WINDOWOUTPUT: 'windowOutput', //窗体输出实体变量
@@ -655,7 +671,7 @@ var ENTITY_TYPE = {
   EXPRESSION: 'expression' //表达式
 }
 
-var VALUE_SOURCE_TYPE = {
+let VALUE_SOURCE_TYPE = {
   //值来源类型
   EXPRESSION: 'expression', //表达式
   ENTITYFIELD: 'entityField' //实体字段
@@ -684,10 +700,13 @@ var VALUE_SOURCE_TYPE = {
  * }
  * @param	ruleContext	规则上下文可取
  * */
-var copyEntity = function (params, ruleContext) {
-  var sourceType = params.sourceType
-  var sourceName = params.sourceName
-  var sourceDatasource = _getEntityDS(sourceType, sourceName, ruleContext)
+let copyEntity = function (
+  params: Record<string, any>,
+  ruleContext: RuleContext
+) {
+  let sourceType = params.sourceType
+  let sourceName = params.sourceName
+  let sourceDatasource = _getEntityDS(sourceType, sourceName, ruleContext)
   params.sourceDs = sourceDatasource
   copyByEntity(params, ruleContext)
 }
@@ -697,7 +716,7 @@ var copyEntity = function (params, ruleContext) {
  * @param {Object} params
  * @returns
  */
-var getResetCurrent = function (params) {
+let getResetCurrent = function (params: Record<string, any>) {
   return typeof params.resetCurrent == 'boolean' ? params.resetCurrent : true
 }
 
@@ -723,16 +742,19 @@ var getResetCurrent = function (params) {
  * }
  * @param	ruleContext 规则上下文
  * */
-var copyByEntity = function (params, ruleContext) {
+let copyByEntity = function (
+  params: Record<string, any>,
+  ruleContext: RuleContext
+) {
   // 根据条件获取来源实体中的记录
-  var copyType = params.copyType
-  var condition = params.condition
-  var isAddRecord = params.isAddRecord //是否新增不存在的记录，仅在替换/合并的方式下起作用。
-  var sourceDatasource = params.sourceDs
+  let copyType = params.copyType
+  let condition = params.condition
+  let isAddRecord = params.isAddRecord //是否新增不存在的记录，仅在替换/合并的方式下起作用。
+  let sourceDatasource = params.sourceDs
   if (!sourceDatasource) {
     return
   }
-  var sourceRecords = _getEntityRecords(
+  let sourceRecords = _getEntityRecords(
     sourceDatasource,
     ruleContext,
     copyType,
@@ -743,26 +765,27 @@ var copyByEntity = function (params, ruleContext) {
     return
   }
   // 获取目录实体所有记录，不带任何条件
-  var destType = params.destType
-  var destName = params.destName
+  let destType = params.destType
+  let destName = params.destName
   // 如果目标对象不是db对象，则创建一个空的db对象
-  var destDatasource = _getEntityDS(destType, destName, ruleContext)
-  var destRecords = _getEntityRecords(
+  let destDatasource = _getEntityDS(destType, destName, ruleContext)
+  let destRecords = _getEntityRecords(
     destDatasource,
     ruleContext,
-    COPY_TYPE.ALLRECORDS
+    COPY_TYPE.ALLRECORDS,
+    ''
   )
   // 获取映射转换后的记录
-  var fieldMapping = params.items
-  var sourceMappingRecords = _mappingRecords(
+  let fieldMapping = params.items
+  let sourceMappingRecords = _mappingRecords(
     sourceRecords,
     fieldMapping,
     ruleContext
   )
   // 操作类型：追加、忽略、替换、合并
-  var operType = params.operationType
+  let operType = params.operationType
   //是否重置当前行
-  var resetCurrent = getResetCurrent(params)
+  let resetCurrent = getResetCurrent(params)
   if (operType == OPERATOR_TYPE.APPEND) {
     _append2Dest(
       destDatasource,
@@ -771,8 +794,8 @@ var copyByEntity = function (params, ruleContext) {
       resetCurrent
     )
   } else {
-    var checkItems = params.checkItems
-    var mergeItems = params.mergeItems
+    let checkItems = params.checkItems
+    let mergeItems = params.mergeItems
     _copy2Dest(
       destDatasource,
       sourceMappingRecords,
@@ -790,19 +813,19 @@ var copyByEntity = function (params, ruleContext) {
 /**
  * 复制源记录信息到目标记录，不包含比较字段(一个列表)
  */
-var _copyRecordList = function (
-  destDataSource,
-  destRecordList,
-  mappingRecord,
-  fieldMapping,
-  checkItems,
-  mergeItems
+let _copyRecordList = function (
+  destDataSource: Record<string, any>,
+  destRecordList: Array<Record<string, any>>,
+  mappingRecord: Record<string, any>,
+  fieldMapping: Array<Record<string, any>>,
+  checkItems: Array<string>,
+  mergeItems: Array<string>
 ) {
-  for (var _i = 0; _i < destRecordList.length; _i++) {
-    var destRecord = destRecordList[_i]
-    for (var i = 0; i < fieldMapping.length; i++) {
-      var destField = fieldMapping[i].destName
-      var value = mappingRecord[destField]
+  for (let _i = 0; _i < destRecordList.length; _i++) {
+    let destRecord = destRecordList[_i]
+    for (let i = 0; i < fieldMapping.length; i++) {
+      let destField = fieldMapping[i].destName
+      let value = mappingRecord[destField]
       if (checkItems.indexOf(destField) != -1) {
         continue
       }
@@ -810,15 +833,15 @@ var _copyRecordList = function (
       if (getFieldName(destField).toLowerCase() == 'id') {
         throw new Error(
           '替换或合并情况下，不允许对主键标识字段进行更新！',
-          undefined,
-          undefined,
+          /* undefined,
+          undefined, */
           exceptionFactory.TYPES.Config
         )
       }
 
       if (mergeItems != null && mergeItems.indexOf(destField) != -1) {
-        var metaData = destDataSource.getMetadata()
-        var field = metaData.getField(getFieldName(destField))
+        let metaData = destDataSource.getMetadata()
+        let field = metaData.getField(getFieldName(destField))
         if (field == null) {
           throw new Error(
             '配置错误！要合并的字段在目标实体不存在！destEntity=' +
@@ -828,7 +851,7 @@ var _copyRecordList = function (
           )
         }
 
-        var fieldType = String(field.getType()).toLowerCase()
+        let fieldType = String(field.getType()).toLowerCase()
         if (['char', 'text', 'number', 'integer'].indexOf(fieldType) == -1) {
           throw new Error(
             '配置错误！合并字段只支持char/text/number/integer，不支持字段类型：' +
@@ -841,7 +864,7 @@ var _copyRecordList = function (
           continue
         }
 
-        var oldValue = destRecord.get(destField)
+        let oldValue = destRecord.get(destField)
         if (oldValue == null) {
           // 注意这儿不检测value是否符合字段要求类型，而是由record.set内在进行适配
           destRecord.set(destField, value)
@@ -852,7 +875,7 @@ var _copyRecordList = function (
           destRecord.set(destField, oldValue + String(value))
         } else {
           // 数值类型：number / integer
-          var avalue = parseFloat(value)
+          let avalue = parseFloat(value)
           if (avalue == null || isNaN(avalue)) {
             vds.log.warn(
               '要合并的值不是合法的数值类型！已忽略。合并字段=' +
@@ -884,13 +907,13 @@ var _copyRecordList = function (
  *            记录匹配的判定条件
  * @return 查找到的记录索引列表， 如果未找到匹配记录，返回[-1]
  */
-var _indexOfDestRecord_List = function (
-  destRecords,
-  mappingRecord,
-  checkItems
+let _indexOfDestRecord_List = function (
+  destRecords: Array<Record<string, any>>,
+  mappingRecord: Record<string, any>,
+  checkItems: Array<string>
 ) {
   //保存全部重复的记录
-  var result_list = []
+  let result_list = []
   if (!checkItems || checkItems.length == 0) {
     throw new Error(
       '配置错误！当操作类型为忽略、替换、合并时，重复检查字段必须提供！checkItems=' +
@@ -898,14 +921,14 @@ var _indexOfDestRecord_List = function (
     )
   }
   try {
-    for (var i = 0; i < destRecords.length; i++) {
-      var destRecord = destRecords[i]
-      var isMatch = true
-      for (var j = 0; j < checkItems.length; j++) {
-        var checkItem = checkItems[j]
-        var destValue = destRecord.get(checkItem)
+    for (let i = 0; i < destRecords.length; i++) {
+      let destRecord = destRecords[i]
+      let isMatch = true
+      for (let j = 0; j < checkItems.length; j++) {
+        let checkItem = checkItems[j]
+        let destValue = destRecord.get(checkItem)
 
-        var mappingValue = mappingRecord[checkItem]
+        let mappingValue = mappingRecord[checkItem]
         if (mappingValue === undefined) {
           throw new Error(
             '配置错误！重复检查字段必须包括在字段映射关系中！checkItem=' +
@@ -927,7 +950,7 @@ var _indexOfDestRecord_List = function (
       result_list.push(-1)
     }
     return result_list
-  } catch (e) {
+  } catch (e: any) {
     vds.log.error('查找匹配记录错误！' + e.message)
     throw e
   }
@@ -939,11 +962,15 @@ var _indexOfDestRecord_List = function (
  * @param	entityName		{String}	实体编码
  * @param	ruleContext	    {Object}	规则上下文
  * */
-var _getEntityDS = function (entityType, entityName, ruleContext) {
-  var ds
-  var errMsg = ''
+let _getEntityDS = function (
+  entityType: string,
+  entityName: string,
+  ruleContext: RuleContext
+) {
+  let ds
+  let errMsg = ''
   if (entityType == ENTITY_TYPE.ENTITY) {
-    var ds = vds.ds.lookup(entityName)
+    ds = vds.ds.lookup(entityName)
   } else if (entityType == ENTITY_TYPE.WINDOWINPUT) {
     ds = vds.window.getInput(entityName)
     errMsg = '窗体输入'
@@ -968,26 +995,27 @@ var _getEntityDS = function (entityType, entityName, ruleContext) {
 }
 
 // 获取实体中的记录
-var _getEntityRecords = function (
-  datasource,
-  ruleContext,
-  copyType,
-  condition
+let _getEntityRecords = function (
+  datasource: Record<string, any>,
+  ruleContext: RuleContext,
+  copyType: string,
+  condition: string
 ) {
-  var records = []
+  let records: Array<Record<string, any>> = []
+  let currentSelected
   switch (copyType) {
     case COPY_TYPE.SELECTEDROWS:
       records = datasource.getSelectedRecords().toArray()
       break
     case COPY_TYPE.SELECTEDROWS_CURRENTROW:
       records = datasource.getSelectedRecords().toArray() //勾选的数据
-      var currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
+      currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
       if (currentSelected) {
         if (null == records) records = []
-        var exist = false
+        let exist = false
         //去重（勾选和高亮可能重复）
-        for (var i = 0; i < records.length; i++) {
-          var record = records[i]
+        for (let i = 0; i < records.length; i++) {
+          let record = records[i]
           if (record.getSysId() == currentSelected.getSysId()) {
             exist = true
             break
@@ -997,7 +1025,7 @@ var _getEntityRecords = function (
       }
       break
     case COPY_TYPE.CURRENTROW:
-      var currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
+      currentSelected = datasource.getCurrentRecord() //当前选中数据（高亮）
       if (currentSelected) records.push(currentSelected)
       break
     default:
@@ -1010,12 +1038,16 @@ var _getEntityRecords = function (
 }
 
 // 过滤不符合条件的记录
-var _filterRecords = function (records, condition, ruleContext) {
+let _filterRecords = function (
+  records: Array<Record<string, any>>,
+  condition: string,
+  ruleContext: RuleContext
+) {
   if (vds.string.isEmpty(condition)) return records
-  var result = []
-  for (var i = 0; i < records.length; i++) {
-    var record = records[i]
-    var flag = vds.expression.execute(condition, {
+  let result: Array<Record<string, any>> = []
+  for (let i = 0; i < records.length; i++) {
+    let record = records[i]
+    let flag = vds.expression.execute(condition, {
       ruleContext: ruleContext,
       records: [record]
     })
@@ -1025,21 +1057,21 @@ var _filterRecords = function (records, condition, ruleContext) {
 }
 
 // 追加：直接把记录insert到目标数据源中
-var _append2Dest = function (
-  destDatasource,
-  sourceMappingRecords,
-  fieldMapping,
-  resetCurrent
+let _append2Dest = function (
+  destDatasource: Record<string, any>,
+  sourceMappingRecords: Array<Record<string, any>>,
+  fieldMapping: Array<Record<string, any>>,
+  resetCurrent: any
 ) {
-  var insertRecords = []
+  let insertRecords = []
   if (sourceMappingRecords.length > 0) {
     for (
-      var i = 0, mappingRecord;
+      let i = 0, mappingRecord;
       (mappingRecord = sourceMappingRecords[i]);
       i++
     ) {
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
-      var record = destDatasource.createRecord()
+      let record = destDatasource.createRecord()
       record = _setRecordValue(record, sourceMappingRecords[i], fieldMapping)
       insertRecords.push(record)
     }
@@ -1051,36 +1083,36 @@ var _append2Dest = function (
 }
 
 // 忽略、替换、合并：重复判断、合并处理
-var _copy2Dest = function (
-  destDatasource,
-  sourceMappingRecords,
-  fieldMapping,
-  operatorType,
-  checkItems,
-  mergeItems,
-  isAddRecord,
-  destRecords,
-  resetCurrent
+let _copy2Dest = function (
+  destDatasource: Record<string, any>,
+  sourceMappingRecords: Array<Record<string, any>>,
+  fieldMapping: Array<Record<string, any>>,
+  operatorType: string,
+  checkItems: Array<string>,
+  mergeItems: Array<string>,
+  isAddRecord: boolean,
+  destRecords: Array<Record<string, any>>,
+  resetCurrent: any
 ) {
   // 为避免多次触发事件，在操作完成后一次性将变动的记录插入、或者修改到目标实体
-  var insertRecords = []
-  var updateRecords = []
+  let insertRecords = []
+  let updateRecords = []
   // 目标实体的已有记录（用来做重复比较）
-  var emptyRecord
-  for (var i = 0; i < sourceMappingRecords.length; i++) {
-    var mappingRecord = sourceMappingRecords[i]
+  let emptyRecord
+  for (let i = 0; i < sourceMappingRecords.length; i++) {
+    let mappingRecord = sourceMappingRecords[i]
     // 根据检查条件，在目标记录集合中查找
-    var indexOfDest = _indexOfDestRecord_List(
+    let indexOfDest = _indexOfDestRecord_List(
       destRecords,
       mappingRecord,
       checkItems
     )
-    var indexOfInsert = _indexOfDestRecord_List(
+    let indexOfInsert = _indexOfDestRecord_List(
       insertRecords,
       mappingRecord,
       checkItems
     )
-    var indexOfUpdate = _indexOfDestRecord_List(
+    let indexOfUpdate = _indexOfDestRecord_List(
       updateRecords,
       mappingRecord,
       checkItems
@@ -1103,14 +1135,14 @@ var _copy2Dest = function (
       }
       // 如果依然没有重复，那么就追加
       if (!emptyRecord) {
-        var emptyRecord = destDatasource.createRecord(true)
+        emptyRecord = destDatasource.createRecord(true)
       }
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
-      var tempRecord = emptyRecord.clone()
+      let tempRecord = emptyRecord.clone()
       if (destDatasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid())
+        tempRecord.set('id', vds.string.uuid(undefined))
       }
-      var record = tempRecord
+      let record = tempRecord
       record = _setRecordValue(record, sourceMappingRecords[i], fieldMapping)
       insertRecords.push(record)
       continue
@@ -1123,18 +1155,18 @@ var _copy2Dest = function (
     }
 
     // 对于替换和合并，找到目标记录
-    var destRecordList = []
+    let destRecordList = []
     if (indexOfInsert.length > 0 && indexOfInsert[0] != -1) {
-      for (var j = 0; j < indexOfInsert.length; j++) {
+      for (let j = 0; j < indexOfInsert.length; j++) {
         destRecordList.push(insertRecords[indexOfInsert[j]])
       }
     } else if (indexOfUpdate.length > 0 && indexOfUpdate[0] != -1) {
-      for (var j = 0; j < indexOfUpdate.length; j++) {
+      for (let j = 0; j < indexOfUpdate.length; j++) {
         destRecordList.push(updateRecords[indexOfUpdate[j]])
       }
     } else {
       if (indexOfDest.length > 0 && indexOfDest[0] != -1) {
-        for (var _i = 0; _i < indexOfDest.length; _i++) {
+        for (let _i = 0; _i < indexOfDest.length; _i++) {
           destRecordList.push(destRecords[indexOfDest[_i]])
           updateRecords.push(destRecords[indexOfDest[_i]])
         }
@@ -1148,7 +1180,8 @@ var _copy2Dest = function (
         destRecordList,
         mappingRecord,
         fieldMapping,
-        checkItems
+        checkItems,
+        []
       )
     } else if (operatorType == OPERATOR_TYPE.MERGE) {
       // 复制源记录信息到目标记录，不包含比较字段，合并需要合并字段

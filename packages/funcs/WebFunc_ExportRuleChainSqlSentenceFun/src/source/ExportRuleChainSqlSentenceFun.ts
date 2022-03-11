@@ -3,14 +3,13 @@ import { DatasourcePuller as datasourcePuller } from '@v-act/vjs.framework.exten
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sb) {}
 // 主入口(必须有)
 /**
  *
  * @param {Object}
  *            entityName 实体名称
  */
-const main = function (param) {
+const main = function (param: Record<string, any>) {
   let args = param.getArgs()
   let entityName = args.length > 0 ? args[0] : null
   if (!entityName) {
@@ -48,11 +47,11 @@ const main = function (param) {
     ruleSetCodes.push(ruleSetCode)
     componentCodes.push(componentCode)
   }
-  let _respCallBack = function (result) {}
-  let paramData = {}
+  let _respCallBack = function (result: any) {}
+  let paramData: Record<string, any> = {}
   paramData['ruleSetCodes'] = ruleSetCodes.join(';')
   paramData['componentCodes'] = componentCodes.join(';')
-  let param = jsonUtil.obj2json(paramData)
+  param = jsonUtil.obj2json(paramData)
   let token = '{"data":' + param + '}'
 
   let scope = scopeManager.getScope()
@@ -69,7 +68,7 @@ const main = function (param) {
   createIFrame('file_down_iframe', url)
 }
 
-function createIFrame(iframeId, url) {
+function createIFrame(iframeId: string, url: string) {
   let iframeObj = document.getElementById(iframeId)
   if (iframeObj == null) {
     iframeObj = document.createElement('iframe')

@@ -16,8 +16,6 @@ import {
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-export function initModule(sb) {}
-
 /**
  * 关闭模态窗体
  *
@@ -27,10 +25,10 @@ export function initModule(sb) {}
  *   "collectOutput" : 是否收集outputValue
  * }
  */
-let closeModalWindow = function (params) {
+const closeModalWindow = function (params: Record<string, any>) {
   let selectConfirm = params.selectConfirm
   let collectOutput = params.collectOutput
-  let outputValue = {}
+  let outputValue: Record<string, any> = {}
   outputValue['config'] = {}
   outputValue['config']['isSelectionConfirm'] = selectConfirm == true
   if (collectOutput == true && selectConfirm == true) {
@@ -46,7 +44,7 @@ let closeModalWindow = function (params) {
   if (window['opener']) {
     try {
       window.opener.ReturnValue = retVal
-    } catch (e) {
+    } catch (e: any) {
       log.error(
         '[viewOperation.closeOpenedWindowEx]模态窗体设置值失败!原因:' +
           e.message
@@ -58,7 +56,10 @@ let closeModalWindow = function (params) {
 /**
  * 替换构件包信息
  * */
-let replaceComponentPackInfo = function (componentCode, windowCode) {
+const replaceComponentPackInfo = function (
+  componentCode: string,
+  windowCode: string
+) {
   let result = null
   let info = {
     componentCode: componentCode,
@@ -84,18 +85,19 @@ let replaceComponentPackInfo = function (componentCode, windowCode) {
  *            	params : {}              //参数
  *         }>
  */
-let redirectModule = function (paramsObj) {
+
+let redirectModule = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let windowCode = paramsObj.windowCode
   //替换构件包映射信息
-  let newInfo = replaceComponentPackInfo(componentCode, windowCode)
+  var newInfo = replaceComponentPackInfo(componentCode, windowCode)
   if (newInfo) {
     componentCode = newInfo.componentCode
     windowCode = newInfo.windowCode
   }
   if (AppData && typeof AppData.getWindowMapping == 'function') {
     /* 获取窗体映射信息 */
-    let windowMappingInfo = AppData.getWindowMapping({
+    var windowMappingInfo = AppData.getWindowMapping({
       componentCode: componentCode,
       windowCode: windowCode
     })
@@ -105,8 +107,8 @@ let redirectModule = function (paramsObj) {
       windowCode = windowMappingInfo.windowCode
     }
   }
-  let params = paramsObj.params
-  let inputParam = params ? (params.inputParam ? params.inputParam : {}) : {}
+  var params = paramsObj.params
+  var inputParam = params ? (params.inputParam ? params.inputParam : {}) : {}
   //预加载主页（目前仅支持iOS）
   if (
     consoleConfigService &&
@@ -114,27 +116,39 @@ let redirectModule = function (paramsObj) {
   ) {
     consoleConfigService.showMainPage()
   } else {
-    let scopeId = scopeManager.getCurrentScopeId()
-    let scope = scopeManager.getChildWindowScope()
-    let RemoveModalFunc = scope.get('RemoveModalFunc')
+    var scopeId = scopeManager.getCurrentScopeId()
+    var scope = scopeManager.getChildWindowScope()
+    var RemoveModalFunc = scope.get('RemoveModalFunc')
     if (typeof RemoveModalFunc == 'function') {
       scope.un(scopeManager.EVENTS.DESTROY, RemoveModalFunc)
     }
-    let info = widgetRenderer.executeComponentRenderAction(
+    var info = widgetRenderer.executeComponentRenderAction(
       'getParentContainerInfo'
     )
     if (info && info.containerCode) {
       $('#' + info.containerCode).attr('data-is-link-jump', true)
     }
+    var extraParams = {
+      inited: paramsObj.inited,
+      vjsContext: paramsObj.vjsContext
+    }
+    var extraPms = paramsObj.extraParams
+    if (extraPms) {
+      for (var key in extraPms) {
+        if (extraPms.hasOwnProperty(key)) {
+          extraParams[key] = extraPms[key]
+        }
+      }
+    }
     return actionHandler.executeComponentAction(
       'loadComponent',
       componentCode,
       windowCode,
-      inputParam
+      inputParam,
+      extraParams
     )
   }
 }
-
 /**
  *  用浏览器打开窗体（弹出窗口）
  *  @param paramsObj<{
@@ -154,7 +168,7 @@ let redirectModule = function (paramsObj) {
  *
  *  @return 返回map格式{"数据源名称1" : [数据集合数组], ..., "数据源名称i" : [数据集合数组]..., "数据源名称n" : [数据集合数组]}
  */
-let callBrowserWindow = function (paramsObj) {
+let callBrowserWindow = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let moduleId = paramsObj.windowCode
   //替换构件包映射信息
@@ -261,10 +275,10 @@ let callBrowserWindow = function (paramsObj) {
   return result
 }
 
-let inputParam2Obj = function (inputParam) {
+const inputParam2Obj = function (inputParam: Record<string, any>) {
   if (inputParam && inputParam.variable) {
     let variable = inputParam.variable
-    let obj = {}
+    let obj: Record<string, any> = {}
     for (let attr in variable) {
       let val = variable[attr]
       obj[attr] = datasourceFactory.isDatasource(val) ? val.serialize() : val
@@ -286,7 +300,7 @@ let inputParam2Obj = function (inputParam) {
  * 		 callBack : <function>     回调函数 var callBack = function(data) data为弹出窗口的输出参数
  * }>
  */
-let callBrowserModalWindow = function (paramsObj) {
+const callBrowserModalWindow = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let windowCode = paramsObj.windowCode
   let title = paramsObj.title
@@ -307,7 +321,7 @@ let callBrowserModalWindow = function (paramsObj) {
       }
       scopeManager.closeScope()
     }
-    return showModalModule(
+    return showModalModule({
       componentCode,
       windowCode,
       title,
@@ -315,7 +329,7 @@ let callBrowserModalWindow = function (paramsObj) {
       height,
       inputParam,
       callBackFunc
-    )
+    })
   } else {
     let params = {
       componentCode: componentCode,
@@ -348,7 +362,7 @@ let callBrowserModalWindow = function (paramsObj) {
  * 		"winName": {String}  当目标窗体为不阻塞时使用的窗口标识
  * }
  */
-let showModalDialogEx = function (params) {
+let showModalDialogEx = function (params: Record<string, any>) {
   let id = params.id,
     url = params.url,
     title = params.title,
@@ -358,12 +372,12 @@ let showModalDialogEx = function (params) {
     isBlock = params.isBlock,
     winName = params.winName
   window['inputJson'] = undefined
-
+  let retVal = null
   // 需要阻塞
   if (isBlock == true) {
     // 遮罩
     mask()
-    let retVal = null
+
     try {
       retVal = window.showModalDialog(
         url,
@@ -419,7 +433,7 @@ let showModalDialogEx = function (params) {
  * 		feature  : {String} 窗体属性配置
  * }
  */
-let showModelessDialogEx = function (params) {
+let showModelessDialogEx = function (params: Record<string, any>) {
   let winName = params.winName,
     url = params.url,
     title = params.title,
@@ -479,16 +493,75 @@ let showModelessDialogEx = function (params) {
  * 		feature  : {String} 窗体属性配置
  * }
  */
-let showModelessDialogExNewTab = function (params) {
+
+const showModelessDialogExNewTab = function (params: Record<string, any>) {
   let url = params.url,
     param = params.param
   window['inputJson'] = param
-  let win = window.open(url, '_blank')
+  var closed = params.closed
+  var winName = params.winName ? params.winName : '_blank'
+  var win = window.open(url, winName)
+  //win.OpenIden = winName;跨域会引发异常
+  //监听窗体设计器窗体关闭
+  setTimeout(
+    (function (_win, name) {
+      return function () {
+        try {
+          //此处为监听窗体设计器的保存事件，窗体设计器是同域的，但是打开链接地址规则可能是不同域的，跨域操作会报错，此功能非窗体设计器场景不需要使用，故异常不外抛不处理。
+          win.addEventListener(
+            'message',
+            function (params) {
+              var info = eventManager.parseCrossDomainParams(params)
+              if (info.isVPlatformCrossDomainParam) {
+                var param = info.params
+                if (
+                  param &&
+                  param.type == 'CloseDesignerWindow' &&
+                  param.iden == name
+                ) {
+                  _win.close()
+                }
+              }
+            },
+            false
+          )
+          //打开的标识，用于判断哪个关闭，在窗体设计器中会使用到
+          win.OpenIden = winName
+        } catch (e) {}
+      }
+    })(win, winName),
+    10
+  ) //延时是因为刚打开时无法执行win.addEventListener，时间可以适当调整
+  if (typeof closed == 'function') {
+    var loopId = loopManager.add({
+      handler: (function (_win, cb) {
+        return function () {
+          //console.debug("【"+loopId+"】轮询中...");
+          if (_win.closed) {
+            //如果窗体已关闭，则移除轮询，并执行回调
+            //console.debug("窗体已关闭，移除轮询【"+loopId+"】，并执行回调");
+            loopManager.remove(loopId)
+            cb()
+          }
+        }
+      })(win, closed)
+    })
+    //console.debug("添加轮询【"+loopId+"】");
+  }
+  //		win.onbeforeunload = (function(parentWindow, name){
+  //			return function(params){
+  ////				var context = new ExpressionContext();
+  ////				var retValue = engine.execute({
+  ////					"expression":"SetCookie(\"\",)",
+  ////					"context":context
+  ////				});
+  //			}
+  //		})(window, winName)
   $.ajax({
     type: 'POST',
     url: 'itop/common/rule/temp.json',
     async: false,
-    success: function (data) {
+    success: function (data: any) {
       if (win) win.location
       else
         AlertUtils.error({
@@ -516,7 +589,7 @@ let showModelessDialogExNewTab = function (params) {
  * 		"closeCallback" : {Function} 关闭回调
  * }
  */
-let showModalModule = function (params) {
+const showModalModule = function (params: Record<string, any>) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     title = params.title,
@@ -524,10 +597,22 @@ let showModalModule = function (params) {
     height = params.height,
     inputParam = params.inputParam,
     closeCallback = params.closeCallback
-  let callBackCfg = { destroyed: closeCallback }
-  let extraParams = {
-    loaded: params.loaded
+  var callBackCfg = { destroyed: closeCallback }
+  var extraParams = {
+    loaded: params.loaded,
+    vjsContext: params.vjsContext //全部来源参数
   } //额外参数
+  if (params.hasOwnProperty('max')) {
+    extraParams.isDefaultMaximize = params.max === true ? true : false
+  }
+  var inputExtraParams = params.extraParams
+  if (inputExtraParams) {
+    for (var key in inputExtraParams) {
+      if (inputExtraParams.hasOwnProperty(key)) {
+        extraParams[key] = inputExtraParams[key]
+      }
+    }
+  }
   return actionHandler.executeComponentAction(
     'showModalModule',
     componentCode,
@@ -540,7 +625,6 @@ let showModalModule = function (params) {
     extraParams
   )
 }
-
 /**
  *	取消mask遮罩
  */
@@ -555,7 +639,7 @@ let getUrlPrefix = function () {
   return urlPath.indexOf('/') != 0 ? '/' : ''
 }
 
-const setWindowTitle = function (params) {
+const setWindowTitle = function (params: Record<string, any>) {
   let title = params.title,
     isTop = !!params.isTop
   let scanFun = (function (flag) {
@@ -577,7 +661,24 @@ const setWindowTitle = function (params) {
   window.scanInterval = window.setInterval(scanFun, 200)
 }
 
-const callModuleEx = function (params) {
+/**
+ * 打开模态窗体
+ * @param {Object} params  参数信息
+ * {
+ * 		"componentCode": {String}  构件编号
+ * 		"windowCode" : {String}  窗体编号
+ * 		"operation" : {String}
+ *  	"paramDataJson" : {Object}
+ * 		"title" : {String}
+ * 		"inparamJson" : {Object}
+ * 		"width" : {Integer}
+ * 		"height" : {Integer}
+ * 		"isBlock": {Boolean}
+ * 		"winName":{String}
+ * }
+ */
+
+const callModuleEx = function (params: Record<string, any>) {
   let componentCode = params.componentCode,
     moduleId = params.windowCode,
     operation = params.operation,
@@ -676,7 +777,7 @@ const callModuleEx = function (params) {
   return result
 }
 
-const getWindowUrl = function (params) {
+const getWindowUrl = function (params: Record<string, any>) {
   let moduleId = params.windowCode
   let operation = params.operation,
     inParam = params.inputParams
@@ -689,7 +790,7 @@ const getWindowUrl = function (params) {
     operation
 
   // 将inParam补充进paramData。另外inParam会作为wooui的调用参数，直接传递到打开窗体中
-  let paramData = {}
+  let paramData: Record<string, any> = {}
   paramData['inputParam'] = inParam
   // token内容进行encodeURIComponent编码,防止%无法传递的问题
   let token = encodeURIComponent(
@@ -703,7 +804,7 @@ const getWindowUrl = function (params) {
   return url
 }
 
-let getServerUrl = function (urlPath) {
+const getServerUrl = function (urlPath: string) {
   let index = urlPath.indexOf('module-operation')
   let url
   if (index != -1) {
@@ -714,7 +815,7 @@ let getServerUrl = function (urlPath) {
   return url
 }
 
-const redirectLocation = function (paramsObj) {
+const redirectLocation = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let moduleId = paramsObj.windowCode
   //替换构件包映射信息
@@ -805,11 +906,11 @@ const redirectLocation = function (paramsObj) {
  *  "closeBack": function(){} //窗体关闭的回调
  * }
  * */
-let openWindowToDiv = function (params) {
+const openWindowToDiv = function (params: any) {
   actionHandler.executeComponentAction('loadWindowToDiv', params)
 }
 
-let isRoot = function (parentInfo) {
+const isRoot = function (parentInfo: Record<string, any>) {
   /* 父级信息不存在，则表示为根元素 */
   if (!parentInfo) return true
   if (!parentInfo || parentInfo.scopeId != '__Container_Scope__') {
@@ -818,7 +919,7 @@ let isRoot = function (parentInfo) {
   return true
 }
 
-let currentPageOpen = function (params) {
+const currentPageOpen = function (params: Record<string, any>) {
   let url = params.url
   let info = widgetRenderer.executeComponentRenderAction(
     'getParentContainerInfo'
@@ -853,7 +954,7 @@ let currentPageOpen = function (params) {
     }
     let setTitle = scope.get('SetModalWinTitleFunc')
     let closeModal = scope.get('ModalCloseFunc')
-    scopeManager.destroy(scopeId)
+    scopeManager.destroy(scopeId as string)
     try {
       // 约定dom上此属性存在的话，不执行原来执行的关闭事件，直接执行模态本身的关闭事件
       $('#' + info.containerCode).attr('data-is-link-jump', true)
@@ -867,6 +968,91 @@ let currentPageOpen = function (params) {
   }
   //获取当前窗体所在容器信息
 }
+/**
+ * 中转窗体
+ * */
+var transferWindow = function (url) {
+  var result = {
+    transfer: false
+  }
+  if (url) {
+    var urlObj = vPlatfromIframeManager.parseUrl(url)
+    if (
+      urlObj &&
+      !urlObj.isError && //非平台地址解析会报错
+      !urlObj.isSaasPortal &&
+      urlObj.params &&
+      urlObj.params.componentCode &&
+      urlObj.params.windowCode
+    ) {
+      //统一认证加强后的地址不可以直接打开目标窗体，因为统一认证有其他逻辑需要执行
+      //符合规则
+      var nowUrlObj = vPlatfromIframeManager.parseUrl(window.location.href)
+      if (nowUrlObj && !nowUrlObj.isError) {
+        if (
+          nowUrlObj.origin + environment.getContextPath() ==
+          urlObj.origin + urlObj.contextPath
+        ) {
+          result.transfer = true
+          var param = urlObj.params
+          result.componentCode = param.componentCode
+          result.windowCode = param.windowCode
+          var inputParams = {}
+          result.inputParams = {
+            variable:
+              param.token && param.token.variable ? param.token.variable : {}
+          }
+        }
+      }
+    }
+  }
+  return result
+}
+/**
+ * 打开窗体到首页页签
+ * @param	{Object}	params
+ * {
+ * 	url	链接地址,
+ * 	ruleContext 规则上下文
+ * 	callback	打开后回调,
+ * }
+ * */
+var showByHomeTab = function (params) {
+  var url = params.url
+  var _callbackLabel = params.callback
+
+  if (!url) {
+    _callbackLabel()
+  }
+  var result = transferWindow(url)
+  var renderParam = result.transfer
+    ? {
+        title: params.title,
+        componentCode: result.componentCode,
+        windowCode: result.windowCode,
+        ruleContext: params.ruleContext,
+        closeTab: _callbackLabel,
+        inputs: result.inputParams
+      }
+    : params
+  var renderer = sandbox.getService(
+    'vjs.framework.extension.platform.services.view.window.render.mode',
+    {
+      type: 'iemsHomeTab'
+    }
+  )
+  if (renderer) {
+    renderer.render(renderParam)
+  } else {
+    frontEndAlerterUtil.error({
+      title: '错误信息',
+      msgHeader: '页面打开失败！',
+      msg: '无法获取首页vjs服务',
+      detail:
+        '无法获取首页vjs服务：vjs.framework.extension.platform.services.view.window.render.mode.iemsHomeTab'
+    })
+  }
+}
 export {
   callBrowserModalWindow,
   callBrowserWindow,
@@ -878,6 +1064,7 @@ export {
   redirectLocation,
   redirectModule,
   setWindowTitle,
+  showByHomeTab,
   showModalDialogEx,
   showModalModule,
   showModelessDialogEx,

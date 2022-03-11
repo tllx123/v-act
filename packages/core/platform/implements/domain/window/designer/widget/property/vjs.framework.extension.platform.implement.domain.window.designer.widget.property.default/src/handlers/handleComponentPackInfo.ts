@@ -23,7 +23,7 @@ var handleComponentPackInfo = function (componentCode, windowCode) {
   return result
 }
 
-exports.handleComponentPackInfo = handleComponentPackInfo
+export { handleComponentPackInfo }
 
 export function getHandlerName() {
   return 'handleComponentPackInfo'

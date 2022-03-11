@@ -200,7 +200,7 @@ const filetransferDownload = function (
   }
 }
 
-exports.supportOnProgress = window.VJSBridge
+const supportOnProgress = window.VJSBridge
   ? window.VJSBridge.plugins.vplatform.FileTransfer.supportOnProgress
   : null
 
@@ -210,4 +210,4 @@ function isFunction(arg) {
   }
   return false
 }
-export { filetransferDownload, filetransferUpload }
+export { supportOnProgress, filetransferDownload, filetransferUpload }

@@ -9,12 +9,6 @@ var randomText = function (len) {
   return charList.join('')
 }
 
-function getRandom(min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
-
 function toFix(num) {
   return num < 10 ? '0' + num : num
 }
@@ -45,7 +39,7 @@ var getRandom = function (min, max) {
   return Math.floor(Math.random() * (min - max + 1)) + max
 }
 
-exports.random = {
+const random = {
   char: function (editor) {
     var len = parseInt(Math.abs(Math.random() * 20)) + 1
     return randomText(len)
@@ -129,3 +123,5 @@ exports.random = {
     return num.toFixed(des) - 0
   }
 }
+
+export { random }

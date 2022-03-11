@@ -5,12 +5,13 @@
  * Copyright (c) 2013 hij1nx
  * Licensed under the MIT license.
  */
-!(function (undefined) {
+!(function (undefined:any) {
   var isArray = Array.isArray
     ? Array.isArray
-    : function _isArray(obj) {
+    : function _isArray(obj:any) {
         return Object.prototype.toString.call(obj) === '[object Array]'
       }
+  
   var defaultMaxListeners = 10
 
   function init() {
@@ -601,5 +602,5 @@
     // Browser global.
     window.EventEmitter2 = EventEmitter
   }
-})()
+})
 export { getInstance }

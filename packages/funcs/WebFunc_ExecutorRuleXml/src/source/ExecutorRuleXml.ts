@@ -1,6 +1,5 @@
 import * as viewModel from 'module'
 
-export function initModule() {}
 /**
  * 主入口
  * @param type 类型(USER,ROLE,METHOD)
@@ -8,7 +7,12 @@ export function initModule() {}
  * @param tableName 业务表名称
  * @param columnName 业务表字段名
  */
-const main = function (type, ruleChainId, tableName, columnName) {
+const main = function (
+  type: string,
+  ruleChainId: string,
+  tableName: string,
+  columnName: string
+) {
   //alert('cccccccccc')
   //从DB中取值业务表中的ID
   let records = viewModel.getDataModule().getAllRecordsByDS(tableName)

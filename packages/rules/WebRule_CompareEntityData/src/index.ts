@@ -14,22 +14,22 @@ const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       //当任何一条匹配数据不满足比较条件时，返回false，否则返回true(包括两种情况：不存在匹配数据或所有匹配数据都满足比较条件)；
-      var bussinessReturnValue = true
-      var params = ruleContext.getVplatformInput()
-      var srcDataSource = params['srcDataSource']
-      var destDataSource = params['destDataSource']
-      var srcFilterCondition = params['srcFilterCondition']
-      var matchFields = params['matchFields']
-      var compareCondition = params['compareCondition']
+      let bussinessReturnValue = true
+      let params = ruleContext.getVplatformInput()
+      let srcDataSource = params['srcDataSource']
+      let destDataSource = params['destDataSource']
+      let srcFilterCondition = params['srcFilterCondition']
+      let matchFields = params['matchFields']
+      let compareCondition = params['compareCondition']
 
       if (compareCondition == null) {
         throw new Error('比较条件配置不能为空，请检查配置！')
       }
 
-      var srcCompareField = compareCondition['srcField']
-      var destCompareField = compareCondition['destField']
-      var isMergeRepeatData = compareCondition['isMergeRepeatData']
-      var operator = compareCondition['compareOperator']
+      let srcCompareField = compareCondition['srcField']
+      let destCompareField = compareCondition['destField']
+      let isMergeRepeatData = compareCondition['isMergeRepeatData']
+      let operator = compareCondition['compareOperator']
 
       srcCompareField = getFieldName(srcCompareField)
       destCompareField = getFieldName(destCompareField)
@@ -45,18 +45,18 @@ const main = function (ruleContext: RuleContext) {
       }
 
       //源实体比较字段类型必须与目标实体比较字段类型兼容
-      var stringTypeArray = ['char', 'text', 'longDate']
-      var numberTypeArray = ['integer', 'number']
-      var srcCompareFieldType = getFieldTypeByDataSource(
+      let stringTypeArray = ['char', 'text', 'longDate']
+      let numberTypeArray = ['integer', 'number']
+      let srcCompareFieldType = getFieldTypeByDataSource(
         srcDataSource,
         srcCompareField
       )
-      var destCompareFieldType = getFieldTypeByDataSource(
+      let destCompareFieldType = getFieldTypeByDataSource(
         destDataSource,
         destCompareField
       )
-      var isCompareAllow = true
-      var isCompareBothNumber = false
+      let isCompareAllow = true
+      let isCompareBothNumber = false
       if (srcCompareFieldType != destCompareFieldType) {
         isCompareAllow = false
         if (
@@ -89,11 +89,11 @@ const main = function (ruleContext: RuleContext) {
         )
       }
 
-      var result = params['result']
-      var isSave = result['isSave']
-      var isClearSaveData = result['isClearSaveData']
-      var saveDataSource = result['saveDataSource']
-      var mappings = result['mappings']
+      let result = params['result']
+      let isSave = result['isSave']
+      let isClearSaveData = result['isClearSaveData']
+      let saveDataSource = result['saveDataSource']
+      let mappings = result['mappings']
 
       if (
         vds.string.isEmpty(srcDataSource) ||
@@ -103,12 +103,12 @@ const main = function (ruleContext: RuleContext) {
       }
 
       if (srcDataSource != destDataSource) {
-        var errorMsg = null
+        let errorMsg = null
         if (matchFields == null || matchFields.length == 0) {
           errorMsg = '匹配字段不能为空，请检查配置！'
         }
-        for (var i = 0; i < matchFields.length; i++) {
-          var obj = matchFields[i]
+        for (let i = 0; i < matchFields.length; i++) {
+          let obj = matchFields[i]
           if (obj == null) {
             errorMsg = '匹配字段不能为空，请检查配置！'
             break
@@ -147,12 +147,12 @@ const main = function (ruleContext: RuleContext) {
       ) {
         throw new Error('源实体与目标实体相同时比较字段不能相同，请检查配置！')
       }
-      var srcRecords = getFilterRecords(
+      let srcRecords = getFilterRecords(
         srcDataSource,
         srcFilterCondition,
         ruleContext
       )
-      var destRecords = getFilterRecords(destDataSource, null, ruleContext)
+      let destRecords = getFilterRecords(destDataSource, '', ruleContext)
       if (
         srcRecords == null ||
         srcRecords.length == 0 ||
@@ -160,7 +160,7 @@ const main = function (ruleContext: RuleContext) {
         destRecords.length == 0
       ) {
         if (isSave && isClearSaveData) {
-          var ds = vds.ds.lookup(saveDataSource)
+          let ds = vds.ds.lookup(saveDataSource)
           ds.clear()
         }
         setBusinessRuleResult(ruleContext, true)
@@ -168,14 +168,14 @@ const main = function (ruleContext: RuleContext) {
         return true
       }
 
-      var finalResults = []
+      let finalResults = []
 
       //源实体和目标实体相同时
       if (srcDataSource == destDataSource) {
-        for (var i = 0; srcRecords != null && i < srcRecords.length; i++) {
-          var srcCompareFieldVal = srcRecords[i][srcCompareField]
-          var destCompareFieldVal = srcRecords[i][destCompareField]
-          var compareRst = exeCompare(
+        for (let i = 0; srcRecords != null && i < srcRecords.length; i++) {
+          let srcCompareFieldVal = srcRecords[i][srcCompareField]
+          let destCompareFieldVal = srcRecords[i][destCompareField]
+          let compareRst = exeCompare(
             isCompareBothNumber,
             srcCompareFieldVal,
             operator,
@@ -186,28 +186,29 @@ const main = function (ruleContext: RuleContext) {
           }
         }
       } else {
-        var isAllMatchData = true //存在的匹配数据全部都对比通过
-        var isExistMatchData = false //是否存在匹配数据
-        var srcMatchFields = []
-        var destMatchFields = []
-        for (var i = 0; i < matchFields.length; i++) {
+        let isAllMatchData = true //存在的匹配数据全部都对比通过
+        let isExistMatchData = false //是否存在匹配数据
+        let srcMatchFields = []
+        let destMatchFields = []
+        for (let i = 0; i < matchFields.length; i++) {
           srcMatchFields.push(matchFields[i].srcField)
           destMatchFields.push(matchFields[i].destField)
         }
-        var srcRecordsMap = getRecordsMapByGroupFields(
+        let srcRecordsMap = getRecordsMapByGroupFields(
           srcRecords,
-          srcMatchFields
+          srcMatchFields,
+          false
         )
         try {
-          var destRecordsMap = getRecordsMapByGroupFields(
+          let destRecordsMap = getRecordsMapByGroupFields(
             destRecords,
             destMatchFields,
             true
           )
-          for (var srcGroupKey in srcRecordsMap) {
-            var srcValues = srcRecordsMap[srcGroupKey]
-            var destGroupKey = getDestGroupKeyStr(srcGroupKey, matchFields)
-            var destValues = destRecordsMap[destGroupKey]
+          for (let srcGroupKey in srcRecordsMap) {
+            let srcValues = srcRecordsMap[srcGroupKey]
+            let destGroupKey = getDestGroupKeyStr(srcGroupKey, matchFields)
+            let destValues = destRecordsMap[destGroupKey]
 
             if (
               srcValues == null ||
@@ -219,9 +220,9 @@ const main = function (ruleContext: RuleContext) {
             } else {
               isExistMatchData = true
             }
-            var destCompareFieldVal = destValues[0][destCompareField]
-            for (var j = 0; j < srcValues.length; j++) {
-              var srcCompareFieldVal = srcValues[j][srcCompareField]
+            let destCompareFieldVal = destValues[0][destCompareField]
+            for (let j = 0; j < srcValues.length; j++) {
+              let srcCompareFieldVal = srcValues[j][srcCompareField]
               if (srcValues.length > 1 && isMergeRepeatData) {
                 if (
                   !vds.string.isInArray(srcCompareFieldType, numberTypeArray)
@@ -230,16 +231,16 @@ const main = function (ruleContext: RuleContext) {
                     '源实体匹配记录有重复，比较字段不是整数或浮点类型，不能执行合并操作，请检查配置！'
                   )
                 }
-                srcCompareFieldVal = getSumValue(srcValues, [srcCompareField])
+                srcCompareFieldVal = getSumValue(srcValues, srcCompareField)
               }
-              var compareRst = exeCompare(
+              let compareRst = exeCompare(
                 isCompareBothNumber,
                 srcCompareFieldVal,
                 operator,
                 destCompareFieldVal
               )
               if (compareRst) {
-                var combineRecord = combineTwoRecord(
+                let combineRecord = combineTwoRecord(
                   srcDataSource,
                   srcValues[j],
                   destDataSource,
@@ -258,17 +259,17 @@ const main = function (ruleContext: RuleContext) {
 
       if (isSave) {
         if (isClearSaveData) {
-          var ds = vds.ds.lookup(saveDataSource)
+          let ds = vds.ds.lookup(saveDataSource)
           ds.clear()
         }
         //获取构造的存储实体数据
         if (finalResults != null && finalResults.length > 0) {
-          var newSaveRecords = getCopyRecordsByMapping(
+          let newSaveRecords = getCopyRecordsByMapping(
             saveDataSource,
             finalResults,
             mappings
           )
-          var datasource = vds.ds.lookup(saveDataSource)
+          let datasource = vds.ds.lookup(saveDataSource)
           datasource.insertRecords(newSaveRecords)
         }
       }
@@ -287,15 +288,18 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: any) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isMatchCompare', result)
   }
 }
 
-var getDestGroupKeyStr = function (srcGroupKeyStr, matchFields) {
-  var destGrouKeyStr = srcGroupKeyStr
-  for (var i = 0; i < matchFields.length; i++) {
+let getDestGroupKeyStr = function (
+  srcGroupKeyStr: string,
+  matchFields: Array<Record<string, any>>
+) {
+  let destGrouKeyStr = srcGroupKeyStr
+  for (let i = 0; i < matchFields.length; i++) {
     destGrouKeyStr = destGrouKeyStr.replace(
       matchFields[i].srcField,
       matchFields[i].destField
@@ -304,22 +308,22 @@ var getDestGroupKeyStr = function (srcGroupKeyStr, matchFields) {
   return destGrouKeyStr
 }
 
-var combineTwoRecord = function (
-  srcDataSource,
-  srcRecord,
-  destDataSource,
-  destRecord
+let combineTwoRecord = function (
+  srcDataSource: string,
+  srcRecord: Record<string, any>,
+  destDataSource: string,
+  destRecord: Record<string, any>
 ) {
-  var newRecord = {}
-  var fields = ''
-  for (var field1 in srcRecord) {
-    var fieldName = field1
+  let newRecord: Record<string, any> = {}
+  let fields = ''
+  for (let field1 in srcRecord) {
+    let fieldName = field1
     if (field1.indexOf('.') < 0) fieldName = srcDataSource + '.' + field1
     newRecord[fieldName] = srcRecord[field1]
     fields += fieldName + ','
   }
-  for (var field2 in destRecord) {
-    var fieldName = field2
+  for (let field2 in destRecord) {
+    let fieldName = field2
     if (field2.indexOf('.') < 0) fieldName = destDataSource + '.' + field2
 
     if (fields.indexOf(fieldName) >= 0) continue
@@ -328,13 +332,17 @@ var combineTwoRecord = function (
   return newRecord
 }
 
-var getCopyRecordsByMapping = function (dataSource, records, mappingFields) {
-  var datasource = vds.ds.lookup(dataSource)
-  var copyRecords = []
-  for (var i = 0; i < records.length; i++) {
-    var obj = datasource.createRecord()
-    for (var j = 0; j < mappingFields.length; j++) {
-      var resultFieldVal = records[i][mappingFields[j].resultField]
+let getCopyRecordsByMapping = function (
+  dataSource: Record<string, any>,
+  records: Array<Record<string, any>>,
+  mappingFields: Array<Record<string, any>>
+) {
+  let datasource = vds.ds.lookup(dataSource)
+  let copyRecords = []
+  for (let i = 0; i < records.length; i++) {
+    let obj = datasource.createRecord()
+    for (let j = 0; j < mappingFields.length; j++) {
+      let resultFieldVal = records[i][mappingFields[j].resultField]
       if (resultFieldVal == null) {
         resultFieldVal = records[i][getFieldName(mappingFields[j].resultField)]
       }
@@ -345,14 +353,17 @@ var getCopyRecordsByMapping = function (dataSource, records, mappingFields) {
   return copyRecords
 }
 
-var getFieldTypeByDataSource = function (dataSource, fieldName) {
-  var datasource = vds.ds.lookup(dataSource)
-  var metadata = datasource.getMetadata()
-  var fields = metadata.getFields()
+let getFieldTypeByDataSource = function (
+  dataSource: Record<string, any>,
+  fieldName: string
+) {
+  let datasource = vds.ds.lookup(dataSource)
+  let metadata = datasource.getMetadata()
+  let fields = metadata.getFields()
   if (fields != null) {
-    for (var i = 0; i < fields.length; i++) {
-      var metaFieldName = fields[i].getCode()
-      var b = fieldName.split('.')
+    for (let i = 0; i < fields.length; i++) {
+      let metaFieldName = fields[i].getCode()
+      let b = fieldName.split('.')
       if (metaFieldName == fieldName) {
         return fields[i].getType()
       }
@@ -364,7 +375,12 @@ var getFieldTypeByDataSource = function (dataSource, fieldName) {
   return ''
 }
 
-var exeCompare = function (isCompareBothNumber, val1, operator, val2) {
+let exeCompare = function (
+  isCompareBothNumber: boolean,
+  val1: string | number,
+  operator: string,
+  val2: string | number
+) {
   if (isCompareBothNumber) {
     if (val1 == null) val1 = 0
     if (val2 == null) val2 = 0
@@ -381,30 +397,33 @@ var exeCompare = function (isCompareBothNumber, val1, operator, val2) {
   throw new Error('不支持的操作符' + operator)
 }
 
-var getSumValue = function (records, fieldName) {
-  var sum = 0
-  for (var i = 0; records != null && i < records.length; i++) {
-    var val = records[i][fieldName]
+let getSumValue = function (
+  records: Array<Record<string, any>>,
+  fieldName: string
+) {
+  let sum = 0
+  for (let i = 0; records != null && i < records.length; i++) {
+    let val = records[i][fieldName]
     if (val != null) sum += val
   }
   return sum
 }
 
-var getRecordsMapByGroupFields = function (
-  records,
-  groupFieldNames,
-  isCheckRepeat
+let getRecordsMapByGroupFields = function (
+  records: Array<Record<string, any>>,
+  groupFieldNames: Array<string>,
+  isCheckRepeat: boolean
 ) {
-  var map = {}
+  let map: Record<string, any> = {}
   if (
     records != null &&
     groupFieldNames != null &&
     groupFieldNames.length > 0
   ) {
-    for (var i = 0; i < records.length; i++) {
-      var key = getGroupValueStr(records[i], groupFieldNames)
+    for (let i = 0; i < records.length; i++) {
+      let key = getGroupValueStr(records[i], groupFieldNames)
       if (key == null || key == '') continue
-      var objs = map[key]
+      let objs = map[key]
       if (objs == null) {
         objs = new Array()
       } else if (isCheckRepeat) {
@@ -418,12 +437,15 @@ var getRecordsMapByGroupFields = function (
   return map
 }
 
-var getGroupValueStr = function (record, groupFieldNames) {
-  var groupVal = ''
+let getGroupValueStr = function (
+  record: Record<string, any>,
+  groupFieldNames: Array<string>
+) {
+  let groupVal = ''
   if (record != null && groupFieldNames != null && groupFieldNames.length > 0) {
-    for (var i = 0; i < groupFieldNames.length; i++) {
+    for (let i = 0; i < groupFieldNames.length; i++) {
       groupVal += groupVal.length > 0 ? ',' : ''
-      var fieldVal = record[getFieldName(groupFieldNames[i])]
+      let fieldVal = record[getFieldName(groupFieldNames[i])]
       groupVal += groupFieldNames[i] + '=' + fieldVal
     }
   }
@@ -436,16 +458,20 @@ var getGroupValueStr = function (record, groupFieldNames) {
  *  @param	dataSource	源实体名称
  *  @param	condition	源实体条件
  */
-var getFilterRecords = function (dataSource, condition, ruleContext) {
-  var outputRecords = []
-  var datasource = vds.ds.lookup(dataSource)
-  var records = datasource.getAllRecords()
+let getFilterRecords = function (
+  dataSource: Record<string, any>,
+  condition: string,
+  ruleContext: RuleContext
+) {
+  let outputRecords = []
+  let datasource = vds.ds.lookup(dataSource)
+  let records = datasource.getAllRecords()
   if (records) records = records.toArray()
   if (condition == null || condition == '') return _genDataMaps(records)
   if (records && records.length > 0) {
-    for (var index = 0; index < records.length; index++) {
-      var record = records[index]
-      var ret = vds.expression.execute(condition, {
+    for (let index = 0; index < records.length; index++) {
+      let record = records[index]
+      let ret = vds.expression.execute(condition, {
         ruleContext: ruleContext,
         records: [record]
       })
@@ -461,17 +487,17 @@ var getFilterRecords = function (dataSource, condition, ruleContext) {
   return outputRecords
 }
 
-var getFieldName = function (fieldName) {
+let getFieldName = function (fieldName: string) {
   if (fieldName != null && fieldName.indexOf('.') > 0)
     return fieldName.split('.')[1]
   return fieldName
 }
 
-var _genDataMaps = function (records) {
+let _genDataMaps = function (records: Array<Record<string, any>>) {
   if (!records || records.length == 0) return null
 
-  var result = []
-  for (var i = 0, len = records.length; i < len; i++)
+  let result = []
+  for (let i = 0, len = records.length; i < len; i++)
     result.push(records[i].toMap())
 
   return result

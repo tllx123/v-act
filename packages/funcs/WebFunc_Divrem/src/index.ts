@@ -1,3 +1,4 @@
+import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 /**
  *	整数商
  *  代码示例:Divrem(54,8)返回值为6
@@ -6,10 +7,10 @@
  *  返回值为整数
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
+
 const vds = { object, math }
 
-const main = function (arg1, arg2) {
+const main = function (arg1: number, arg2: number) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('整数商函数参数为空，请检查')
   if (!vds.object.isNumber(arg1) || !vds.object.isNumber(arg2))

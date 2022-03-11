@@ -10,10 +10,12 @@ var sandbox,
  * 配置数据默认key
  * 用法：getConditionKeys 传入key使用此值
  * */
-exports.KEYS = {
+const KEYS = {
   COMPONENTCODE: 'componentCode', //对应构件编码
   WINDOWCODE: 'windowCode' //对应窗体编码
 }
+
+export { KEYS }
 
 export function initModule(sBox) {
   sandbox = sBox

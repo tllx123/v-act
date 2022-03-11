@@ -1,13 +1,14 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 /**
  *
  *
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+
 const vds = { exception, ds, expression }
 
-const main = function (tableName) {
+const main = function (tableName: string) {
   /*
    * 先根据参数获取数据眼
    * 再调用数据源的getSelectedRecords方法获取选中行
@@ -39,7 +40,7 @@ const main = function (tableName) {
  * 获取对应数据源
  * dsName 实体编码
  * */
-function GetDataSource(dsName) {
+function GetDataSource(dsName: string) {
   //获取数据源
   /*
    * 先根据名称直接判断是不是属于数据源对象
@@ -55,6 +56,7 @@ function GetDataSource(dsName) {
       datasource = vds.ds.lookup(dsName)
     } else {
       //是活动集实体
+      //@ts-ignore
       datasource = vds.expression.excute(dsName)
     }
   }

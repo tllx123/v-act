@@ -1,10 +1,6 @@
 import * as stringUtil from 'module'
 import * as viewModel from 'module'
 
-export function initModule(sb) {
-  if (sb) {
-  }
-}
 /**
  *
  * @param {Object} dataSourceName 数据源名称
@@ -13,10 +9,10 @@ export function initModule(sb) {
  * @param {Object} treeStructCfgStr
  */
 const main = function (
-  dataSourceName,
-  fieldName,
-  fieldValue,
-  treeStructCfgStr
+  dataSourceName:string,
+  fieldName:[],
+  fieldValue:[],
+  treeStructCfgStr:string
 ) {
   //示例：IsLeaf("datasourceName", "ID", "type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField")
   let treeStructCfgObj = parseCfgObj(treeStructCfgStr)
@@ -41,7 +37,7 @@ const main = function (
   //业务过滤字段
   let busiFilterField = getPropertyValue(treeStructCfgObj, 'busiFilterField')
 
-  let treeStruct = {}
+  let treeStruct: { [code: string]: any } = {}
   if ('1' == type) {
     if (stringUtil.isEmpty(pidField))
       throw new Error(
@@ -137,7 +133,7 @@ const main = function (
   }
 }
 
-let getPropertyValue = function (obj, propertyName) {
+let getPropertyValue = function (obj:{ [code: string]: any }, propertyName:string) {
   if (obj == null || propertyName == null || propertyName == '') return null
   for (let propName in obj) {
     if (propName.toLocaleLowerCase() == propertyName.toLocaleLowerCase())
@@ -146,7 +142,7 @@ let getPropertyValue = function (obj, propertyName) {
   return null
 }
 
-let parseCfgObj = function (cfgStr) {
+let parseCfgObj = function (cfgStr:string) {
   //"type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField"
   if (stringUtil.isEmpty(cfgStr) || stringUtil.isEmpty(stringUtil.trim(cfgStr)))
     throw new Error('GetSubTreeNodes函数(树配置信息)不能为空')
@@ -155,7 +151,7 @@ let parseCfgObj = function (cfgStr) {
   if (pairs == null || pairs.length == 0)
     throw new Error('GetSubTreeNodes函数(树配置信息)格式错误:' + cfgStr)
 
-  let cfgObj = {}
+  let cfgObj: { [code: string]: any } = {}
   for (let i = 0; i < pairs.length; i++) {
     let t = stringUtil.trim(pairs[i])
     if (stringUtil.isEmpty(t))

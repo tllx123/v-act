@@ -1,10 +1,10 @@
-let sb
+let sb:any
 
-export function initModule(sandbox) {
+export function initModule(sandbox:any) {
   sb = sandbox
 }
 
-let getDBServiceWithType = function (type) {
+let getDBServiceWithType = function (type:string) {
   let dbService = sb.getService(
     'vjs.framework.extension.platform.datasource.db',
     { type: type }
@@ -42,7 +42,7 @@ let getDBService = function () {
  * @param {String} dbType
  * @return DataSource
  */
-let unSerialize = function (input, dbType) {
+let unSerialize = function (input:any, dbType:any) {
   let widgetSeries = dbType ? dbType : _getSeries()
   if (typeof input == 'string') {
     input = eval('(' + input + ')')
@@ -51,7 +51,7 @@ let unSerialize = function (input, dbType) {
   return getDBServiceWithType(widgetSeries).unSerialize(input)
 }
 
-let isDB = function (db, dbType) {
+let isDB = function (db:any, dbType:any) {
   let widgetSeries = dbType ? dbType : _getSeries()
   return getDBServiceWithType(widgetSeries).isDB(db)
 }

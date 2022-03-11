@@ -1,4 +1,7 @@
-let consoleConfig = {
+interface consoleConfigTs {
+  [key: string]: any
+}
+let consoleConfig: consoleConfigTs = {
   guideComponentCode: '',
   guideWindowCode: '',
   mainComponentCode: '',
@@ -7,15 +10,15 @@ let consoleConfig = {
   isStartWithGuidePage: '' //本次访问APP是否开启引导页
 }
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-const setConfig = function (key, value) {
+const setConfig = function (key: string, value: string) {
   if (key) {
     consoleConfig[key] = value
   }
 }
 
-const getConfig = function (key) {
+const getConfig = function (key: string) {
   if (key) {
     return consoleConfig[key]
   }
@@ -27,7 +30,7 @@ const showMainPage = function () {
   consoleConfig.isStartWithGuidePage = false
 }
 
-const needShowMainPage = function (componentCode, windowCode) {
+const needShowMainPage = function (componentCode: string, windowCode: string) {
   if (
     componentCode == consoleConfig.mainComponentCode &&
     windowCode == consoleConfig.mainWindowCode
@@ -35,8 +38,8 @@ const needShowMainPage = function (componentCode, windowCode) {
     if (
       consoleConfig.isStartWithGuidePage == true &&
       consoleConfig.preLoadMainPage &&
-      window.cordova &&
-      window.cordova.platformId == 'ios'
+      (window as any).cordova &&
+      (window as any).cordova.platformId == 'ios'
     ) {
       return true
     }
@@ -45,4 +48,4 @@ const needShowMainPage = function (componentCode, windowCode) {
   return false
 }
 
-export { setConfig, getConfig, showMainPage, needShowMainPage }
+export { getConfig, needShowMainPage, setConfig, showMainPage }

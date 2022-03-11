@@ -11,7 +11,7 @@ import * as widget from '@v-act/vjs.framework.extension.platform.services.integr
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 const vds = { exception, log, widget, object }
 
-const main = function (controls, propertyName, propertyValue) {
+const main = function (controls:string, propertyName:string, propertyValue:string) {
   if (vds.object.isUndefOrNull(controls)) {
     var exception = vds.exception.newConfigException('控件编码不能为空！')
     throw exception

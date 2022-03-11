@@ -13,7 +13,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, object, widget }
 
-const main = function (widgetCode, fieldStr, titleStr) {
+const main = function (widgetCode:string, fieldStr:string, titleStr:string) {
   //获取函数传入的参数
   if (vds.object.isUndefOrNull(widgetCode) || widgetCode === '') {
     var exception = vds.exception.newConfigException('列表控件名不能为空！')

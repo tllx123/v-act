@@ -1,34 +1,56 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-let sandbox
-
-export function initModule(sb) {
-  sandbox = sb
-}
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
 /**
  * 关闭窗口
  */
-let closeWindow = function () {
-  let windowUtil = _getWindowService()
+const closeWindow = function (params) {
+  //是否确定退出
+  var isConfirmExit = params && !!params.isConfirmExit
+  var returnValues = {}
+  try {
+    var values = wParamManager.getOutputs()
+    for (var key in values) {
+      if (!values.hasOwnProperty(key)) {
+        continue
+      }
+      var value = values[key]
+      if (datasourceFactory.isDatasource(value)) {
+        returnValues[key] = value.serialize()
+      } else {
+        returnValues[key] = value
+      }
+    }
+  } catch (e) {}
+  var windowUtil = _getWindowService()
   windowUtil.closeWindowTab()
   //模态方式打开链接地址监听这个
   eventManager.fireCrossDomainEvent({
     eventName: eventManager.CrossDomainEvents.ModalWindowClose,
     params: {
-      href: window.location.href
+      href: window.location.href,
+      datas: {
+        isConfirmExit: isConfirmExit,
+        returnValues: returnValues
+      }
     }
   })
-  //窗体容器打开链接地址时注册这个事件
+  //窗体容器打开链接地址或者打开链接地址到首页时注册这个事件
   eventManager.fireCrossDomainEvent({
     eventName: eventManager.CrossDomainEvents.ContainerWindowClose,
     params: {
-      href: window.location.href
+      href: window.location.href,
+      datas: {
+        isConfirmExit: isConfirmExit,
+        returnValues: returnValues
+      }
     }
   })
 }
 
-let _getWindowService = function () {
+var _getWindowService = function () {
   return _getService(
     'vjs.framework.extension.platform.services.domain.browser.Window'
   )
@@ -38,8 +60,8 @@ let _getWindowService = function () {
  * 根据体系获取对应服务
  * 未指定体系则获取未定义体系的vjs
  */
-let _getService = function (serviceName) {
-  let mobileSerType = 'bootstrap_mobile',
+var _getService = function (serviceName) {
+  var mobileSerType = 'bootstrap_mobile',
     widgetSeries = scopeManager.getProperty('type'),
     widgetSeriesType = {
       type: widgetSeries
@@ -48,7 +70,7 @@ let _getService = function (serviceName) {
   // bootstrap 和 smartclient 体系下的 vjs.framework.extension.platform.services.domain.browser.Window 未在pom文件指定体系
   if (widgetSeries !== mobileSerType) widgetSeriesType = ''
 
-  let service = sandbox.getService(serviceName, widgetSeriesType)
+  var service = sandbox.getService(serviceName, widgetSeriesType)
 
   if (service == null)
     throw Error(
@@ -61,20 +83,4 @@ let _getService = function (serviceName) {
   return service
 }
 
-export {
-  setWindowTitle,
-  callModuleEx,
-  getWindowUrl,
-  redirectLocation,
-  currentPageOpen,
-  closeModalWindow,
-  redirectModule,
-  callBrowserWindow,
-  callBrowserModalWindow,
-  showModalModule,
-  showModelessDialogEx,
-  showModelessDialogExNewTab,
-  showModalDialogEx,
-  openWindowToDiv,
-  closeWindow
-}
+export { closeWindow }

@@ -1,7 +1,6 @@
 import * as Exception from '../impl/Exception'
 
 let handlers = {}
-Exception.prototype._putManager(exports)
 
 const onBeforeHandler = function (params) {
   let handler = params.handler

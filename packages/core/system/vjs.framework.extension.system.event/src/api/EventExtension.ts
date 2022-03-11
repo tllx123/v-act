@@ -1,9 +1,9 @@
 import * as EE from '../impl/eventemitter2'
 
-let EEInstancePool = {}
+let EEInstancePool:{[code:string]:any} = {}
 export function initModule() {}
 
-const getInstance = function (name) {
+const getInstance = function (name:string) {
   if (!EEInstancePool[name]) {
     EEInstancePool[name] = new EE.EventEmitter2({
       //

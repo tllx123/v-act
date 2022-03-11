@@ -3,7 +3,7 @@
  *
  */
 vds.import('vds.object.*', 'vds.exception.*', 'vds.date.*', 'vds.rpc.*')
-const main = function (idcard) {
+const main = function (idcard: string) {
   var result = 0
   if (vds.object.isUndefOrNull(idcard)) {
     throw vds.exception.newConfigException('身份证号不能为空')
@@ -24,7 +24,7 @@ function getNowDate() {
  * 获取年龄
  * idCard 身份证号
  * */
-function getAge(idCard) {
+function getAge(idCard: string) {
   var birthYear = 0
   var birthMonth = 0
   var birthDay = 0
@@ -76,8 +76,8 @@ function getAge(idCard) {
 /**
  * 校验身份证号码（15位/18位）
  */
-function isIdCardNo(idCardNum) {
-  var aCity = {
+function isIdCardNo(idCardNum: string) {
+  var aCity: Record<string, string> = {
     11: '北京',
     12: '天津',
     13: '河北',
@@ -127,17 +127,17 @@ function isIdCardNo(idCardNum) {
   if (len == 15) {
     re = new RegExp(/^(\d{2})(\d{4})(\d{2})(\d{2})(\d{2})(\d{3})$/)
     var arrSplit = idCardNum.match(re)
-    if (aCity[parseInt(arrSplit[1])] == null) {
+    if (aCity[parseInt(arrSplit ? arrSplit[1] : '###')] == null) {
       throw vds.exception.newConfigException('身份证号码中存在非法地区，请检查')
     }
     //检查生日日期是否正确
     var dtmBirth = new Date(
-      '19' + arrSplit[3] + '/' + arrSplit[4] + '/' + arrSplit[5]
+      arrSplit ? `19${arrSplit[3]}/${arrSplit[4]}/${arrSplit[5]}` : '###'
     )
     var bGoodDay =
-      dtmBirth.getYear() == Number(arrSplit[3]) &&
-      dtmBirth.getMonth() + 1 == Number(arrSplit[4]) &&
-      dtmBirth.getDate() == Number(arrSplit[5])
+      dtmBirth.getYear() == Number(arrSplit ? arrSplit[3] : '###') &&
+      dtmBirth.getMonth() + 1 == Number(arrSplit ? arrSplit[4] : '###') &&
+      dtmBirth.getDate() == Number(arrSplit ? arrSplit[5] : '###')
     if (!bGoodDay) {
       throw vds.exception.newConfigException('身份证号码中存在非法生日，请检查')
     }
@@ -145,15 +145,17 @@ function isIdCardNo(idCardNum) {
   if (len == 18) {
     re = new RegExp(/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/)
     var arrSplit = idCardNum.match(re)
-    if (aCity[parseInt(arrSplit[1])] == null) {
+    if (aCity[parseInt(arrSplit ? arrSplit[1] : '###')] == null) {
       throw vds.exception.newConfigException('身份证号码中存在非法地区，请检查')
     }
     //检查生日日期是否正确
-    var dtmBirth = new Date(arrSplit[3] + '/' + arrSplit[4] + '/' + arrSplit[5])
+    var dtmBirth = new Date(
+      arrSplit ? `${arrSplit[3]}/${arrSplit[4]}/${arrSplit[5]}` : ''
+    )
     var bGoodDay =
-      dtmBirth.getFullYear() == Number(arrSplit[3]) &&
-      dtmBirth.getMonth() + 1 == Number(arrSplit[4]) &&
-      dtmBirth.getDate() == Number(arrSplit[5])
+      dtmBirth.getFullYear() == Number(arrSplit ? arrSplit[3] : '###') &&
+      dtmBirth.getMonth() + 1 == Number(arrSplit ? arrSplit[4] : '') &&
+      dtmBirth.getDate() == Number(arrSplit ? arrSplit[5] : '')
     if (!bGoodDay) {
       throw vds.exception.newConfigException('身份证号码中存在非法生日，请检查')
     } else {
@@ -195,7 +197,7 @@ function isIdCardNo(idCardNum) {
       var nTemp = 0,
         i
       for (i = 0; i < 17; i++) {
-        nTemp += idCardNum.substr(i, 1) * arrInt[i]
+        nTemp += Number(idCardNum.substr(i, 1)) * arrInt[i]
       }
       valnum = arrCh[nTemp % 11]
       if (valnum != idCardNum.substr(17, 1)) {

@@ -1,7 +1,7 @@
 /**
  * 根据id取图片
  */
-let getImageById = function (imageObjId) {
+const getImageById = (imageObjId: string): string => {
   return imageObjId == null || imageObjId == ''
     ? ''
     : 'module-operation!executeOperation?operation=FileDown&token={"data":{"dataId":"' +
@@ -12,7 +12,7 @@ let getImageById = function (imageObjId) {
 /**
  * 根据name取图片
  */
-let getImageByName = function (imageName) {
+let getImageByName = (imageName: string): string => {
   /*
     //找上下文路径
     var contextPath = document.location.pathname;

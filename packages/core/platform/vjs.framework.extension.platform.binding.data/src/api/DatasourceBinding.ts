@@ -1,7 +1,7 @@
-let sb
+let sb:any
 let scopeManager
 
-export function initModule(sandbox) {
+export function initModule(sandbox:any) {
   sb = sandbox
 }
 
@@ -20,7 +20,7 @@ const bind = function () {
   )
   let dsNames = vmManager.getWindowDataSources()
   let handler = scopeManager.createScopeHandler({
-    handler: function (params) {
+    handler: function (params:any) {
       observerManager.fire(params)
     }
   })
@@ -36,7 +36,7 @@ const bind = function () {
   }
 }
 
-const bindByDatasourceName = function (datasourceName) {
+const bindByDatasourceName = function (datasourceName:string) {
   let observerManager = sb.getService(
     'vjs.framework.extension.platform.data.manager.runtime.observer.DatasourceObserverManager'
   )
@@ -46,7 +46,7 @@ const bindByDatasourceName = function (datasourceName) {
   let datasourceManager = sb.getService(
     'vjs.framework.extension.platform.data.manager.runtime.datasource.WindowDatasource'
   )
-  let handler = function (params) {
+  let handler = function (params:any) {
     observerManager.fire(params)
   }
   let datasource = datasourceManager.lookup({

@@ -14,7 +14,9 @@ const getBottomWidget = function () {
   return result
 }
 
-exports.isChange = true
+const isChange = true
+
+export { isChange }
 /**
  * 当前窗体域下的直接子控件
  */

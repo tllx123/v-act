@@ -1,10 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let sb
-
-export function initModule(sandbox) {
-  sb = sandbox
-}
+//let sb = sandbox
 
 /**
  * 获取运行时对应体系的提示服务
@@ -13,9 +9,11 @@ let _getDialogService = function () {
   let serviceName =
     'vjs.framework.extension.platform.services.view.widget.common.dialog.impl.DialogUtil'
   let seriesType = scopeManager.getWindowScope().getSeries()
-  let service = sb.getService(serviceName, {
+  let service: any = null
+  /* service = sb.getService(serviceName, {
     type: seriesType
-  })
+  }) */
+
   if (service == null) {
     throw new Error(
       '[Services.getService]获取服务失败！原因：控件体系[' +
@@ -33,7 +31,11 @@ let _getDialogService = function () {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: Function,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   if (dialog) {
     let result = dialog.confirmDialog(
@@ -54,10 +56,10 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  * @secDistance 倒计时
  */
 let propmtDialog = function (
-  content,
-  responseCallBackFunc,
-  isUseDefault,
-  secDistance
+  content: string,
+  responseCallBackFunc: Function,
+  isUseDefault: boolean,
+  secDistance: any
 ) {
   let dialog = _getDialogService()
   if (dialog) {
@@ -79,7 +81,11 @@ let propmtDialog = function (
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: Function,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   if (dialog) {
     let dialog = _getDialogService()
@@ -95,7 +101,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: Function,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   if (dialog) {
     let dialog = _getDialogService()
@@ -111,7 +121,11 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: Function,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   if (dialog) {
     let dialog = _getDialogService()

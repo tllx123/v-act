@@ -25,7 +25,7 @@ exports = rpc
  * 超时类型
  * @enum {String}
  * */
-exports.Timeout = {
+const Timeout = {
   /**
    * 短暂的
    * */
@@ -43,11 +43,14 @@ exports.Timeout = {
    * */
   Infinite: 'INFINITE'
 }
+
+export { Timeout }
+
 /**
  * 查询类型
  * @enum {String}
  * */
-exports.QueryType = {
+const QueryType = {
   /**
    * 表
    * */
@@ -57,6 +60,8 @@ exports.QueryType = {
    * */
   Query: 'Query'
 }
+
+export { QueryType }
 
 var RPC,
   sysConstant,

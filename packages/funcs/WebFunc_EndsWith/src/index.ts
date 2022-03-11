@@ -6,15 +6,16 @@
  *  返回值为布尔类型
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { object }
 
-const main = function (str1, str2) {
+const main = function (str1: string, str2: string) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(str2)) str2 = ''
 
   str1 = String(str1)
   str2 = String(str2)
-  var str = str1.slice(str2.length * -1)
+  const str = str1.slice(str2.length * -1)
   return str == str2
 }
 export { main }

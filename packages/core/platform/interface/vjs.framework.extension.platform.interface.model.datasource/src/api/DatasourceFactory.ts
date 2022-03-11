@@ -173,11 +173,11 @@ const createJsonFromConfig = function (config) {
 }
 
 const createDatasourceFromConfig = function (config) {
-  let ds = exports.unSerialize(exports.createJsonFromConfig(config))
+  let ds = unSerialize(createJsonFromConfig(config))
   return ds
 }
 
-_getFieldFromValue = function (code, value) {
+const _getFieldFromValue = function (code, value) {
   let type = typeof value
   switch (type) {
     case 'string':

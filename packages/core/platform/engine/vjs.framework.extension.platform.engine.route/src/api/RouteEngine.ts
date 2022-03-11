@@ -85,7 +85,7 @@ const executeWindowRoute = function (params) {
     },
     callback: params.success
   }
-  exports.execute(ps)
+  execute(ps)
 }
 
 /**

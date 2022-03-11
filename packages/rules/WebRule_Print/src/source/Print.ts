@@ -3,9 +3,8 @@ import * as formulaUtil from 'module'
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sBox) {}
 // 规则主入口(必须有)
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 const main = function (ruleContext: RuleContext) {
   // 获取规则上下文中的规则配置值
   let ruleConfig = ruleContext.getRuleCfg()
@@ -39,11 +38,11 @@ const main = function (ruleContext: RuleContext) {
         { name: 'reportName', title: '报表名称', align: 'center' }
       ],
       data: rpts,
-      recordClick: function (record) {
-        let record = record.getSelection()
+      recordClick: function (record:any) {
+        let record1 = record.getSelection()
         let reportID = ''
-        if (record.length > 0) {
-          reportID = record[0]['reportID']
+        if (record1.length > 0) {
+          reportID = record1[0]['reportID']
           window.closeClick()
         }
 
