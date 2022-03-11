@@ -3,14 +3,14 @@ import * as viewContext from 'module'
 
 //加载
 
-export function initModule(sBox) {}
-
 //主入口(必须有)
-const main = function (fileID) {
+const main = function (fileID: string) {
   if (!fileID) return ''
   // 执行后台函数，调用后台函数
   let expression = 'GetFileContent("' + fileID + '")'
+  //@ts-ignore
   let expResult = operationLib.executeFormulaExpression(
+    //@ts-ignore
     viewContext.getModuleId(),
     expression
   )

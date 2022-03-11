@@ -3,9 +3,10 @@
  *
  */
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+
 const vds = { rpc }
 
-const main = function (fileid, FileInfoType) {
+const main = function (fileid: string, FileInfoType: string) {
   try {
     return executeExpression(fileid, FileInfoType)
   } catch (e) {
@@ -13,7 +14,7 @@ const main = function (fileid, FileInfoType) {
   }
 }
 
-var executeExpression = function (fileid, FileInfoType) {
+var executeExpression = function (fileid: string, FileInfoType: string) {
   var expression = 'GetFileInfo("' + fileid + '","' + FileInfoType + '")'
   var result = null
 
