@@ -3,11 +3,12 @@
  * 暂时只支持普通窗体面板和流布局
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { exception, widget, object }
 
-const main = function (widgetCode, valueCode) {
+const main = function (widgetCode: string, valueCode: string) {
   if (!widgetCode)
     throw vds.exception.newConfigException(
       '函数 GetWidgetSize 第一个参数，控件Code不能为空！'
@@ -23,6 +24,6 @@ const main = function (widgetCode, valueCode) {
 }
 export { main }
 
-var _genActionMethodName = function (codeName) {
+var _genActionMethodName = function (codeName: string) {
   return 'get' + codeName.substring(0, 1).toUpperCase() + codeName.substring(1)
 }
