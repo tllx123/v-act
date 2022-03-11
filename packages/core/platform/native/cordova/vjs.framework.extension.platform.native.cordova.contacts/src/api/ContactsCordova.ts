@@ -1,7 +1,6 @@
-export function initModule(sb) {
-  let ContactsService = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.Contacts'
-  )
+import * as ContactsService from '@v-vact/vjs.framework.extension.platform.services.native.mobile.Contacts'
+
+export function initModule(sb: any) {
   ContactsService.putInstance(exports)
 }
 
@@ -9,12 +8,14 @@ export function initModule(sb) {
  * 初始化cordova的通讯录插件，注为全局对象
  *
  */
+//@ts-ignore
 if (window.VJSBridge) {
+  //@ts-ignore
   window.VJSBridge.plugins.vplatform.Contacts = navigator.contacts
 }
 
-const getInfo = function (successCallback, errorCallback) {
-  function onSuccess(contacts) {
+const getInfo = function (successCallback: Function, errorCallback: Function) {
+  function onSuccess(contacts: any) {
     debugger
     console.log(contacts)
     if (typeof successCallback == 'function') {
@@ -22,7 +23,7 @@ const getInfo = function (successCallback, errorCallback) {
     }
   }
 
-  function onError(contactError) {
+  function onError(contactError: any) {
     if (typeof errorCallback == 'function') {
       errorCallback(contactError)
     }
@@ -31,7 +32,8 @@ const getInfo = function (successCallback, errorCallback) {
   let options = new ContactFindOptions()
   options.filter = ''
   options.multiple = true
-  filter = ['displayName', 'name']
+  let filter = ['displayName', 'name']
+  //@ts-ignore
   navigator.contacts.find(filter, onSuccess, onError, options)
 }
 
