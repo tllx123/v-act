@@ -30,7 +30,6 @@ const convert = function (
   render: WidgetRenderer
 ): JSX.Element {
   console.log('@@@@@@@@@@@@@@@:JGRadioGroup')
-  console.log(control)
   const pros = control.properties
   const props: JGRadioGroupProps = {
     top: toNumber(pros.top) + 'px',
