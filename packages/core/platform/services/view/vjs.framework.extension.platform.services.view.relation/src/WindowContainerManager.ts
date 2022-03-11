@@ -12,6 +12,9 @@ let _getWindowContainerStorage = function () {
   )
 }
 
+/**
+ * 根据窗体容器id获取窗体容器对象
+ * */
 const get = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   if (storage.containsKey(containerId)) {
@@ -20,6 +23,9 @@ const get = function (containerId: string) {
   return null
 }
 
+/**
+ * 根据窗体容器id获取关联的窗体域id
+ * */
 const getScopeId = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   if (storage.containsKey(containerId)) {
@@ -29,6 +35,10 @@ const getScopeId = function (containerId: string) {
   return null
 }
 
+/**
+ * 更新窗体容器id关联的数据(没有对应的容器id会自动创建)
+ * @params WindowContainer container 窗体容器实例
+ * */
 const put = function (container: any) {
   let id = container.getId()
   let storage = _getWindowContainerStorage()
@@ -36,6 +46,11 @@ const put = function (container: any) {
   return id
 }
 
+/**
+ * 根据窗体域id获取窗体容器实例id
+ * @params String scopeId 窗体域id
+ * @return  窗体容器实例id
+ */
 const getByScopeId = function (scopeId: string) {
   let storage = _getWindowContainerStorage()
   let containerId
@@ -47,7 +62,29 @@ const getByScopeId = function (scopeId: string) {
   })
   return containerId
 }
-
+/**
+ * 根据条件获取窗体容器实例
+ * */
+exports.getByConditions = function (conditions) {
+  var storage = _getWindowContainerStorage()
+  var targetContainer
+  storage.iterate(function (id, container) {
+    if (targetContainer) {
+      return false
+    }
+    targetContainer = container
+    for (var key in conditions) {
+      if (conditions[key] != container[key]) {
+        targetContainer = null
+        break
+      }
+    }
+    if (targetContainer) {
+      return targetContainer
+    }
+  })
+  return targetContainer
+}
 /**
  * 根据窗体域id获取窗体容器实例
  * @params String scopeId 窗体域id
@@ -89,6 +126,11 @@ const updateTitleByScopeId = function (scopeId: string, newTitle: string) {
   return false
 }
 
+/**
+ * 根据窗体域id获取窗体容器实例id
+ * @params String scopeId 窗体域id
+ * @return  窗体容器实例id
+ */
 const getScopeIdByContainerId = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   let sId
@@ -96,25 +138,60 @@ const getScopeIdByContainerId = function (containerId: string) {
   return container.getScopeId()
 }
 
+/**
+ * 销毁窗体容器id
+ * */
 const destroy = function (containerId: string) {
   let storage = _getWindowContainerStorage()
+  var container = storage.get(containerId)
+  if (container) {
+    var events = container.getEvent(exports.EVENTS.DESTROY)
+    if (events) {
+      for (var i = 0, len = events.length; i < len; i++) {
+        var event = events[i]
+        if (typeof event == 'function') {
+          event()
+        }
+      }
+    }
+  }
   return storage.remove(containerId)
 }
 
+/**
+ * 更新窗体容器打开的窗体信息，如果参数包含标题，就会调用更新标题函数
+ * @param	{String}	containerId	窗体容器id或者容器对象
+ * @params params
+ * {
+ * 	'componentCode' : 'newComponentCode',
+ * 	'windowCode' : 'newWindowCode',
+ * 	'title' : 'newTitle',
+ * 	'scopeId' : 'newScopeId',
+ * 	'titleFunc' : {Function},
+ * 	'ele' : 'newEle',
+ * 	'resizeFunc' : {Function}
+ * 	'funParams' : {Object} 设置title的函数参数
+ * }
+ * */
 const updateWindowInfo = function (containerId: string, params) {
-  let storage = _getWindowContainerStorage()
-  if (params && storage.containsKey(containerId)) {
-    let container = storage.get(containerId)
-    for (let key in params) {
+  if (!params || !containerId) {
+    return
+  }
+  var container = containerId
+  if (typeof containerId == 'string') {
+    container = _getWindowContainerStorage().get(containerId)
+  }
+  if (container) {
+    for (var key in params) {
       if (params.hasOwnProperty(key)) {
         container[key] = params[key]
       }
     }
     if (params.title) {
-      let newTitle = params.title
-      let titleFunc = container.getTitleFunc()
+      var newTitle = params.title
+      var titleFunc = container.getTitleFunc()
       if (typeof titleFunc == 'function') {
-        titleFunc(newTitle)
+        titleFunc(newTitle, params.funParams)
       }
     }
   }
@@ -162,8 +239,6 @@ const OPENTYPE = {
   DEFAULT: 'default'
 }
 
-export { OPENTYPE }
-
 const getOpenType = function (scopeId: string) {
   let container = _getContainerByScopeId(scopeId)
   if (null != container) {
@@ -184,6 +259,7 @@ export {
   getOpenType,
   getScopeId,
   getScopeIdByContainerId,
+  OPENTYPE,
   put,
   updateTitleByScopeId,
   updateWindowInfo
