@@ -10,7 +10,7 @@ import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platfor
 import { EasyTemplateUtil as tmplUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-import $ from 'jquery'
+import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let sandBox,
   printer:any,
