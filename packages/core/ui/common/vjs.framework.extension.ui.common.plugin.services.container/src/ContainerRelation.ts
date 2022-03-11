@@ -1,12 +1,12 @@
 let sandBox
-let controlRelation = {}
-let parentRelation = {}
+let controlRelation:{[code:string]:any} = {}
+let parentRelation:{[code:string]:any} = {}
 
-export function initModule(sb) {
+export function initModule(sb:any) {
   sandBox = sb
 }
 
-let register = function (domID, child, property) {
+let register = function (domID:string, child:string, property:any) {
   //窗体与容器关系
   if (controlRelation[domID] == null) {
     controlRelation[domID] = {}
@@ -21,11 +21,11 @@ let register = function (domID, child, property) {
   parentRelation[child].parent = domID
 }
 
-let unregister = function (domID) {
+let unregister = function (domID:string) {
   delete controlRelation[domID]
 }
 
-let getParent = function (domID) {
+let getParent = function (domID:string) {
   for (let str in controlRelation) {
     let list = controlRelation[str].children
     for (let i = 0, num = list.length; i < num; i++) {
@@ -36,7 +36,7 @@ let getParent = function (domID) {
   }
 }
 
-let getChild = function (domID) {
+let getChild = function (domID:string) {
   let childrens = controlRelation[domID] && controlRelation[domID].children
   let list = []
   if (childrens) {
@@ -47,8 +47,8 @@ let getChild = function (domID) {
   return list
 }
 
-let getComponet = function (domID) {
-  let list = []
+let getComponet = function (domID:string) {
+  let list:{[code:string]:any} = []
   if (controlRelation[domID]) {
     let childrens = controlRelation[domID].children
     for (let i = 0, num = childrens.length; i < num; i++) {
@@ -62,7 +62,7 @@ let getComponet = function (domID) {
   return list
 }
 
-let getChildComponent = function (domID) {
+let getChildComponent = function (domID:string) {
   return getComponet(domID)
 }
 

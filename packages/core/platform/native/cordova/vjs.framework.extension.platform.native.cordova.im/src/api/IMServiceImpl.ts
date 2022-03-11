@@ -1,6 +1,6 @@
 import { IM as IMService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.im'
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   IMService.putInstance(exports)
 }
 
@@ -8,11 +8,13 @@ export function initModule(sb) {
  * 初始化IM插件，注为全局对象
  *
  */
+//@ts-ignore
 if (window.VJSBridge) {
+  //@ts-ignore
   window.VJSBridge.plugins.vplatform.Easemob = cordova.plugins.easemob
 }
 
-const login = function (params, type) {
+const login = function (params: Record<string, any>, type: string) {
   switch (type) {
     case IMService.IMTYPE.EASEMOB:
       loginWithEM(params)
@@ -23,7 +25,7 @@ const login = function (params, type) {
   }
 }
 
-const logout = function (params, type) {
+const logout = function (params: Record<string, any>, type: string) {
   switch (type) {
     case IMService.IMTYPE.EASEMOB:
       logoutWithEM(params)
@@ -34,7 +36,7 @@ const logout = function (params, type) {
   }
 }
 
-const customerChat = function (params, type) {
+const customerChat = function (params: Record<string, any>, type: string) {
   switch (type) {
     case IMService.IMTYPE.EASEMOB:
       customerChatWithEM(params)
@@ -52,11 +54,12 @@ const customerChat = function (params, type) {
  * @param {String}   username:用户名
  * @param {String}   password:密码
  */
-function loginWithEM(params) {
+function loginWithEM(params: Record<string, any>) {
   let username = params.username
   let password = params.password
   let successCallback = params.successCallback
   let errorCallback = params.errorCallback
+  //@ts-ignore
   cordova.plugins.easemob.login(successCallback, errorCallback, {
     username: username,
     password: password
@@ -68,9 +71,10 @@ function loginWithEM(params) {
  * @param {Function} successCallback 接收参数："success"
  * @param {Function} errorCallback   接收参数：登录错误信息（String）
  */
-function logoutWithEM(params) {
+function logoutWithEM(params: Record<string, any>) {
   let successCallback = params.successCallback
   let errorCallback = params.errorCallback
+  //@ts-ignore
   cordova.plugins.easemob.logout(successCallback, errorCallback)
 }
 
@@ -90,12 +94,13 @@ function logoutWithEM(params) {
  * 			email:""          //邮箱
  * 		 }
  */
-function customerChatWithEM(params) {
+function customerChatWithEM(params: Record<string, any>) {
   let customer_id = params.customer_id
   let customer_title = params.customer_title
   let successCallback = params.successCallback
   let errorCallback = params.errorCallback
   let user_info = params.user_info
+  //@ts-ignore
   cordova.plugins.easemob.showChatViewWithKefu(successCallback, errorCallback, {
     kefu_id: customer_id,
     kefu_title: customer_title,

@@ -1,13 +1,14 @@
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 /**
  *
  *
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = { object, exception, window }
 
-const main = function (scopeId) {
+const main = function (scopeId: string) {
   var FUNCNAME = '前台函数[IsExistWindowInstanceCode]-'
   //获取函数传入的参数
   var _result = false

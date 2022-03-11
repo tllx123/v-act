@@ -1,3 +1,4 @@
+import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 /**
  *	在指定字符串的指定位置插入另外一指定的模式串
  *  代码示例:Insert("asdfe",3,"df") 返回值为 asddffe
@@ -7,10 +8,10 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
+
 const vds = { object, string, number }
 
-const main = function (str1, index, str2) {
+const main = function (str1: string, index: number, str2: string) {
   if (vds.object.isUndefOrNull(str1)) str1 = ''
   if (vds.object.isUndefOrNull(str2)) str2 = ''
   if (!vds.object.isUndefOrNull(index)) {

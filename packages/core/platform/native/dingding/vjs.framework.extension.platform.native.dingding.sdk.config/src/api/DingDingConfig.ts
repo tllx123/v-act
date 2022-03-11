@@ -1,8 +1,12 @@
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 let configInited = false
 
-export function initModule(sb) {}
-
-const initConfig = function (successCB, errorCB, apiList) {
+const initConfig = function (
+  successCB: Function,
+  errorCB: Function,
+  apiList: Array<string>
+) {
   if (configInited) {
     successCB()
     return
@@ -10,13 +14,13 @@ const initConfig = function (successCB, errorCB, apiList) {
 
   let scriptLoaded = false,
     paramLoaded = false,
-    agentId,
-    corpId,
-    signature,
-    nonceStr,
+    agentId: string,
+    corpId: string,
+    signature: any,
+    nonceStr: string,
     url,
-    timestamp
-  let cb = function (res) {
+    timestamp: any
+  let cb = function (res: any) {
     paramLoaded = true
     let obj = $.parseJSON(res)
     agentId = obj.agentId
@@ -31,18 +35,27 @@ const initConfig = function (successCB, errorCB, apiList) {
     }
   }
 
-  let sendRequest = function (url, params, isAsync, callBack) {
-    jQuery.ajax({
+  let sendRequest = function (
+    url: string,
+    params: Record<string, any>,
+    isAsync: boolean,
+    callBack: Function
+  ) {
+    $.ajax({
       type: 'POST',
       url: url,
       async: isAsync,
       data: params,
-      error: function (xhr, textStatus, errorThrown) {
+      error: function (
+        xhr: XMLHttpRequest,
+        textStatus: string,
+        errorThrown: any
+      ) {
         if (errorCB) {
           errorCB('钉钉环境配置错误，请联系管理员。')
         } else alert('钉钉环境配置错误，请联系管理员。')
       },
-      success: function (xhr, status) {
+      success: function (xhr: XMLHttpRequest, status: string) {
         if (callBack) {
           callBack(xhr, status)
         }
@@ -58,7 +71,9 @@ const initConfig = function (successCB, errorCB, apiList) {
   }
   sendRequest(ajaxUrl, ajaxData, false, cb)
 
+  //@ts-ignore
   vdk.resource.add(
+    //@ts-ignore
     new vdk.resource({
       id: 'dingdingconfig',
       paths: [
@@ -66,6 +81,7 @@ const initConfig = function (successCB, errorCB, apiList) {
       ]
     })
   )
+  //@ts-ignore
   vdk.resource.load(function () {
     scriptLoaded = true
     console.log('钉钉配置文件加载成功')
@@ -76,7 +92,7 @@ const initConfig = function (successCB, errorCB, apiList) {
 
   function initDingDingConfig() {
     console.log('钉钉鉴权开始')
-    let ddConfig = {
+    let ddConfig: Record<string, any> = {
       agentId: agentId, // 必填，微应用ID
       corpId: corpId, //必填，企业ID
       timeStamp: timestamp, // 必填，生成签名的时间戳
@@ -114,15 +130,18 @@ const initConfig = function (successCB, errorCB, apiList) {
     } else {
       ddConfig.jsApiList = innerApiList
     }
+    //@ts-ignore
     dd.config(ddConfig)
 
+    //@ts-ignore
     dd.ready(function () {
       console.log('钉钉鉴权成功')
       configInited = true
       successCB()
     })
 
-    dd.error(function (err) {
+    //@ts-ignore
+    dd.error(function (err: any) {
       alert('钉钉鉴权失败。dd error: ' + JSON.stringify(err))
       errorCB(err)
     })

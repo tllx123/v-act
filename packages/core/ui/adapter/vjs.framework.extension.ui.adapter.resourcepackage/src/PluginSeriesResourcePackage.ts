@@ -1,6 +1,6 @@
-let instance
+let instance:any
 
-const putInstance = function (ie) {
+const putInstance = function (ie:any) {
   instance = ie
 }
 
@@ -11,7 +11,7 @@ let hasInstance = function () {
   return false
 }
 
-const getResItem = function (resourceCode) {
+const getResItem = function (resourceCode:string) {
   if (hasInstance()) {
     return instance.getResItem(resourceCode)
   } else {
@@ -19,7 +19,7 @@ const getResItem = function (resourceCode) {
   }
 }
 
-const getLanguageItem = function (resourceCode) {
+const getLanguageItem = function (resourceCode:string) {
   if (hasInstance()) {
     return instance.getLanguageItem(resourceCode)
   } else {
@@ -27,13 +27,13 @@ const getLanguageItem = function (resourceCode) {
   }
 }
 
-const setResourcePool = function (pool, type) {
+const setResourcePool = function (pool:any, type:any) {
   if (hasInstance()) {
     instance.setResourcePool(pool, type)
   }
 }
 
-const getLanguageItems = function (componentCode) {
+const getLanguageItems = function (componentCode:string) {
   if (hasInstance()) {
     return instance.getLanguageItems(componentCode)
   } else {
@@ -42,10 +42,10 @@ const getLanguageItems = function (componentCode) {
 }
 
 const setWindowCurrentResourceCode = function (
-  newScopeId,
-  preScopeId,
-  componentCode,
-  languageCode
+  newScopeId:string,
+  preScopeId:string,
+  componentCode:string,
+  languageCode:string
 ) {
   if (hasInstance()) {
     instance.setWindowCurrentResourceCode(
@@ -59,7 +59,7 @@ const setWindowCurrentResourceCode = function (
   }
 }
 
-const getWindowCurrentResourceCode = function (scopeId) {
+const getWindowCurrentResourceCode = function (scopeId:string) {
   if (hasInstance()) {
     return instance.getWindowCurrentResourceCode(scopeId)
   } else {
@@ -67,7 +67,7 @@ const getWindowCurrentResourceCode = function (scopeId) {
   }
 }
 
-const getValidLanguage = function (componentCode, resourceCode) {
+const getValidLanguage = function (componentCode:string, resourceCode:string) {
   if (hasInstance()) {
     return instance.getValidLanguage(componentCode, resourceCode)
   } else {
