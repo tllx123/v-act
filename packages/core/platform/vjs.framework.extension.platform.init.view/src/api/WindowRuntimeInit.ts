@@ -26,12 +26,9 @@ import { EventExtension as eventManager } from '@v-act/vjs.framework.extension.s
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let token = 'WINDOW_VIEW_INIT_EVENT',
-  storage
+const token = 'WINDOW_VIEW_INIT_EVENT'
+const storage = storageManager.get(storageManager.TYPES.MAP, token)
 
-export function initModule(sb) {
-  storage = storageManager.get(storageManager.TYPES.MAP, token)
-}
 let _fire = function (componentCode, windowCode, eventName, args) {
   _fireSchemaHandler(componentCode, windowCode, eventName, args)
   _fireInstanceHandler(componentCode, windowCode, eventName, args)

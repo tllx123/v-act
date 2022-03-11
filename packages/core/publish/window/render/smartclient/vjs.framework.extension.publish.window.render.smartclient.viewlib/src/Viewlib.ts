@@ -24,6 +24,11 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.view.window.resources'
 import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
 import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import {
+  AppInfo,
+  ComponentInfo
+} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
 
 /**
  * 窗体模板初始化
@@ -37,7 +42,9 @@ export function init(params) {
     languageCode = params.languageCode,
     vjsInitFunc = params.vjsInitFunc,
     paramCfg = params.paramCfg
-
+  //TODO 标记appinfo已初始化
+  AppInfo.markAppSchemaInited()
+  ComponentInfo.markComponentSchemaInited(componentCode)
   //设置领域信息
   //		Environment.setDomain(domain);
   //初始化环境变量信息
@@ -48,7 +55,9 @@ export function init(params) {
   //初始化构件包数据
   componentPackData.init(componentPackMappingDatas)
   //切面函数
-  vjsInitFunc(sandbox)
+  if (vjsInitFunc) {
+    vjsInitFunc(sandbox)
+  }
   //渲染窗体
 
   let rootID = $('body').attr('id')
@@ -79,8 +88,8 @@ export function init(params) {
     //				"scopeId" : scopeId
     //			},
     aops: {
-      rendered: function (component, scopeId) {
-        let setTitle = function (newTitle) {
+      rendered: function (scopeId) {
+        /*let setTitle = function (newTitle) {
           if (newTitle) {
             document.title = newTitle
           }
@@ -157,7 +166,7 @@ export function init(params) {
               }
             }
           })
-        }
+        }*/
       }
     },
     sc_languageCode: languageCode,

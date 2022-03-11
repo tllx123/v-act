@@ -65,7 +65,7 @@ const getByScopeId = function (scopeId: string) {
 /**
  * 根据条件获取窗体容器实例
  * */
-exports.getByConditions = function (conditions) {
+const getByConditions = function (conditions) {
   var storage = _getWindowContainerStorage()
   var targetContainer
   storage.iterate(function (id, container) {
@@ -256,6 +256,7 @@ export {
   fireResize,
   get,
   getByScopeId,
+  getByConditions,
   getOpenType,
   getScopeId,
   getScopeIdByContainerId,

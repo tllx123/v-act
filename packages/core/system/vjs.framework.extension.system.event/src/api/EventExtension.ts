@@ -1,11 +1,10 @@
-import * as EE from '../impl/eventemitter2'
+import EventEmitter2 from '../impl/eventemitter2'
 
-let EEInstancePool:{[code:string]:any} = {}
-export function initModule() {}
+let EEInstancePool: { [code: string]: any } = {}
 
-const getInstance = function (name:string) {
+const getInstance = function (name: string) {
   if (!EEInstancePool[name]) {
-    EEInstancePool[name] = new EE.EventEmitter2({
+    EEInstancePool[name] = new EventEmitter2({
       //
       // use wildcards.
       //

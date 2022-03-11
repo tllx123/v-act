@@ -1,6 +1,6 @@
 import * as TaskManager from './TaskManager'
 
-let ScopeManager
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let ScopeTask = function (scopeId, isAutoExe, handler, props) {
   this.scopeId = scopeId
@@ -17,14 +17,6 @@ let ScopeTask = function (scopeId, isAutoExe, handler, props) {
 }
 
 ScopeTask.prototype = {
-  initModule: function (sb) {
-    if (sb) {
-      ScopeManager = sb.getService(
-        'vjs.framework.extension.platform.interface.scope.ScopeManager'
-      )
-    }
-  },
-
   _registedHandler: false,
   /**
    *执行任务

@@ -268,7 +268,7 @@ const handleUrl = function (params) {
 }
 
 const handleScope = function (params) {
-  let windowScope = params.scope
+  /*let windowScope = params.scope
   let nowPM = vdk.postMsg.getPMIden()
   //注册跨域事件：设置窗体域由模态链接打开
   eventManager.onCrossDomainEvent({
@@ -301,34 +301,7 @@ const handleScope = function (params) {
       isInit: true,
       _version: vdk.postMsg.getVersion && vdk.postMsg.getVersion() //传递版本
     }
-  })
-  //		var url = params.url;
-  //		var scope = params.scope;
-  //		var urlObj = parseUrl(url);
-  //		if(urlObj && urlObj.params){
-  //			var up = urlObj.params;
-  //			var parentPM = up.vplatform_container_iden;
-  //			var tmpCPM = up.vplatform_cpm;
-  //			if(null != parentPM && "" != parentPM){//由平台iframe管理器打开的首页
-  //				scope.setOpenMode(scopeManager.OpenMode.ModalContaniner);
-  //				vdk.postMsg.setParentPMIden(parentPM);
-  //				if(null != tmpCPM && "" != tmpCPM){
-  //					var nowPM = vdk.postMsg.getPMIden();
-  //					eventManager.fireCrossDomainEvent({
-  //						eventName: eventManager.CrossDomainEvents.CustomEvent,
-  //						eventInfo : {
-  //							type : "SetChildPM",
-  //							parentPM : parentPM
-  //						},
-  //			            params: {
-  //			            	Iden : nowPM,
-  //			            	newTitle : document.title,
-  //			            	tmpCPM : tmpCPM
-  //			            }
-  //					})
-  //				}
-  //			}
-  //		}
+  })*/
 }
 
 /**
