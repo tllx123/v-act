@@ -47,7 +47,8 @@ let getContainerWindowCode = function (tabContentCode:string) {
  */
 let setParentContainerInfo = function (windowCode:string, obj:any) {
   if (windowCode == null || windowCode == undefined) {
-    windowCode = viewContext.getModuleId()
+    //windowCode = viewContext.getModuleId()
+    throw new Error('未识别异常，请联系系统管理员处理')
   }
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
@@ -61,7 +62,8 @@ let setParentContainerInfo = function (windowCode:string, obj:any) {
  */
 let getParentContainerInfo = function (windowCode:string) {
   if (windowCode == null || windowCode == undefined) {
-    windowCode = viewContext.getModuleId()
+    //windowCode = viewContext.getModuleId()
+    throw new Error('未识别异常，请联系系统管理员处理')
   }
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
