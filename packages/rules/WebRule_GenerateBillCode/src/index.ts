@@ -19,15 +19,35 @@ import * as component from '@v-act/vjs.framework.extension.platform.services.int
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-const vds = { component, ds, expression, rpc, window }
-
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
+const vds = { component, ds, expression, rpc, window }
+interface keyIsString {
+  [key: string]: any
+}
+interface getSerialNumberParams {
+  moduleId: string
+  TableName: string
+  TableColumn: any
+  prefix: any
+  Length: string | number
+  CoverLetter: any
+  likeValStr: string
+  subLength: string | number
+  isLeftSubFlag: boolean
+  isReuseSerialNumber: boolean
+  isAsync: boolean
+  success: Function
+  [key: string]: any
+}
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       var sepcialStrArr = ['/', '%', '_', '[', ']'] //特殊字符
-      var params = ruleContext.getVplatformInput()
+      var params: getSerialNumberParams = ruleContext.getVplatformInput()
 
       var dataSourceName = params['dataSource']
       var dsColumn = params['dsColumn']
@@ -43,7 +63,7 @@ const main = function (ruleContext: RuleContext) {
       var relationTable = params['relationTable']
       var relationTableColumn = params['relationTableColumn']
       if (undefined != content && null != content) {
-        var sortItem = [] //待组装数组
+        var sortItem: keyIsString = [] //待组装数组
         var codeSortNum = -1 //流水号对应编号的下标
         var codeSortNums = [] //流水号对应编号的下标
         var frontTotalCount = 0 //流水号前面的所有项数量
@@ -56,7 +76,7 @@ const main = function (ruleContext: RuleContext) {
         var leftLength = 0 // 从左边截取的字串长度
         var rightLength = 0 // 从右边解决的字串长度
         // 根据order进行排序
-        content.sort(function (x, y) {
+        content.sort(function (x: any, y: any) {
           return x['order'] - y['order']
         })
         var totalLength = content.length
@@ -217,7 +237,7 @@ const main = function (ruleContext: RuleContext) {
           likeValStr = likeValStr + '_'
         likeValStr = likeValStr + suffixStr
 
-        var ids = []
+        var ids: string[] = []
         switch (range) {
           case '0': //选中行
             // 临时方案：没有选中行数据，取当前行数据
@@ -258,7 +278,7 @@ const main = function (ruleContext: RuleContext) {
             break
         }
 
-        var values = []
+        var values: any = []
         var ds = vds.ds.lookup(dataSourceName)
         var dtds = []
         //标记规则为异步
@@ -290,7 +310,7 @@ const main = function (ruleContext: RuleContext) {
                     ) {
                       sourceColumn = relationTableColumn
                     }
-                    var params = {
+                    var params: getSerialNumberParams = {
                       moduleId: windowCode,
                       TableName: sourceName,
                       TableColumn: sourceColumn,
@@ -303,7 +323,7 @@ const main = function (ruleContext: RuleContext) {
                       isReuseSerialNumber: isReuseSerialNumber,
                       isAsync: true,
                       success: (function (dd) {
-                        return function (result) {
+                        return function (result: any) {
                           sortItem[curCodeSortNum] = result
                           dd.resolve()
                         }
@@ -311,7 +331,7 @@ const main = function (ruleContext: RuleContext) {
                     }
                     getSerialNumber(params, reject)
                   } else {
-                    var params = {
+                    var params: getSerialNumberParams = {
                       moduleId: windowCode,
                       TableName: dataSourceName,
                       TableColumn: dsColumn,
@@ -324,7 +344,7 @@ const main = function (ruleContext: RuleContext) {
                       isReuseSerialNumber: isReuseSerialNumber,
                       isAsync: true,
                       success: (function (dd) {
-                        return function (result) {
+                        return function (result: any) {
                           sortItem[curCodeSortNum] = result
                           dd.resolve()
                         }
@@ -375,7 +395,7 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-var getSerialNumber = function (params, reject) {
+var getSerialNumber = function (params: getSerialNumberParams, reject: any) {
   var moduleId = params.moduleId
   var TableName = params.TableName
   var TableColumn = params.TableColumn
@@ -415,7 +435,7 @@ var getSerialNumber = function (params, reject) {
     isRuleSetCode: false
   })
   promise
-    .then(function (rs) {
+    .then(function (rs: any) {
       var result = rs.data.result
       if (typeof params.success == 'function') {
         params.success(result)
