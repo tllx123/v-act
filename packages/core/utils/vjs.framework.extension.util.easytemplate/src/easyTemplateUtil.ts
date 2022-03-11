@@ -1,7 +1,7 @@
-let template
-let aStatement
+let template: any
+let aStatement: [string | undefined, string]
 
-let easyTemplate = function (s, d) {
+let easyTemplate = function (s: string, d: any) {
   if (!s) {
     return ''
   }
@@ -10,23 +10,32 @@ let easyTemplate = function (s, d) {
     aStatement = parsing(separate(s))
   }
   let aST = aStatement
-  let process = function (d2) {
+  let process = function (d2: any) {
     if (d2) {
       d = d2
     }
     return arguments.callee
   }
   process.toString = function () {
-    return new Function(aST[0], aST[1])(d)
+    return new Function(<string>aST[0], aST[1])(d)
   }
   return process
 }
 
-let separate = function (s) {
+let separate = function (s: string): string {
   let r = /\\'/g
   let sRet = s.replace(
     /(<(\/?)#(.*?(?:\(.*?\))*)>)|(')|([\r\n\t])|(\$\{([^\}]*?)\})/g,
-    function (a, b, c, d, e, f, g, h) {
+    function (
+      a: string,
+      b: string,
+      c: string,
+      d: string,
+      e: string,
+      f: string,
+      g: string,
+      h: string
+    ): any {
       if (b) {
         // 处理if标签中的表达式：
         // 处理前：<#if (${sys_user[0]} != null)>
@@ -59,17 +68,16 @@ let separate = function (s) {
   return sRet
 }
 
-let parsing = function (s) {
-  let mName,
-    vName,
-    sTmp,
-    aTmp,
-    sFL,
-    sEl,
-    aList,
-    aStm = ['var aRet = [];']
+let parsing = function (s: string): [string | undefined, string] {
+  let mName: string = '',
+    vName: string | undefined,
+    sTmp: string | undefined,
+    aTmp: string[],
+    sFL: string,
+    aList: string[],
+    aStm: string[] = ['var aRet = [];']
   aList = s.split(/\{\|\}/)
-  let r = /\s/
+  let r: RegExp = /\s/
   while (aList.length) {
     sTmp = aList.shift()
     if (!sTmp) {

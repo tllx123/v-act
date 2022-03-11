@@ -7,7 +7,9 @@ import Radio from '@mui/material/Radio'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
+  getEntityDatas,
   getFieldValue,
+  setFieldValue,
   toHeight,
   toLabelWidth,
   toWidth
@@ -190,6 +192,11 @@ interface JGRadioGroupProps extends BoxProps {
           text: string
           selected: boolean
         }>
+        SourceID: string
+        SourceName: string
+        SourceType: string
+        SaveColumn: string
+        ShowColumn: string
       }
     }
   }
@@ -237,12 +244,12 @@ interface JGRadioGroupProps extends BoxProps {
 }
 
 const JGRadioGroup = function (props: JGRadioGroupProps) {
+  console.log('JGRadioGroup')
+
   /* 如果单选框组不可见，直接返回null */
   if (!props.visible) {
     return null
   }
-
-  console.log('JGRadioGroup')
 
   const context = useContext()
   const width = toWidth(props.multiWidth, context, '235px')
@@ -251,14 +258,33 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   /* 处理值，用于绑定到value属性上 */
   let value: FieldValue = ''
   if (props.tableName && props.idColumnName) {
-    value = getFieldValue(props.tableName, props.idColumnName, context)
+    value = getFieldValue(props.tableName, props.idColumnName, context) || ''
   }
-  console.log(value)
-  console.log(props.dropDownSource)
 
   const constData =
     props?.dropDownSource?.DataSourceSetting?.DataConfig?.ConstData || []
-
+  const {
+    SourceID: sourceID,
+    SourceName: sourceName,
+    SourceType: sourceType,
+    SaveColumn: saveColumn,
+    ShowColumn: showColumn
+  } = props?.dropDownSource?.DataSourceSetting?.DataConfig || {
+    SourceID: '',
+    SourceName: '',
+    SourceType: '',
+    SaveColumn: '',
+    ShowColumn: ''
+  }
+  const entries = getEntityDatas(sourceID, context) || []
+  entries.forEach(function (item) {
+    constData.push({
+      id: item[saveColumn] as string,
+      text: item[showColumn] as string,
+      selected: false
+    })
+  })
+  console.log('实体数据是：===========', entries)
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
     width: width,
@@ -304,16 +330,20 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
   const [selectedValue, setSelectedValue] = React.useState(value)
 
   /* change事件 */
-  const handleChange = (event: any) => {
+  const handleChange = (event: any, item: any) => {
     setSelectedValue(event.target.value)
-  }
-
-  const radioData = []
-  for (let i = 0; i < 16; i++) {
-    radioData.push({
-      id: i + 1,
-      name: `苹果${i + 1}`
-    })
+    setFieldValue(
+      props.tableName as string,
+      props.columnName as string,
+      context,
+      item.text
+    )
+    setFieldValue(
+      props.tableName as string,
+      props.idColumnName as string,
+      context,
+      item.id
+    )
   }
 
   return (
@@ -351,25 +381,27 @@ const JGRadioGroup = function (props: JGRadioGroupProps) {
       >
         {constData.map((item) => {
           return (
-            <div style={{ display: 'inline-block' }}>
+            <div key={item.id} style={{ display: 'inline-block' }}>
               <Radio
-                key={item.id}
                 checked={selectedValue === item.id.toString()}
-                onChange={props.readOnly ? () => {} : handleChange}
+                onChange={
+                  props.readOnly
+                    ? () => {}
+                    : (e) => {
+                        handleChange(e, item)
+                      }
+                }
                 value={item.id}
                 name="radio-buttons"
                 disabled={!props.enabled}
                 style={radioStyles}
-                inputProps={{
-                  readOnly: true
-                }}
                 size="small"
                 sx={{
                   '& .MuiSvgIcon-root': {
                     fontSize: 16
                   }
                 }}
-              />
+              ></Radio>
               <span
                 style={{
                   paddingRight: '5px',

@@ -24,18 +24,28 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 
-const vds = {
-  attachment,
-  browser,
-  component,
-  ds,
-  environment,
-  exception,
-  expression,
-  rpc,
-  string,
-  widget,
-  window
+interface waterParamSet {
+  [key: string]: any
+}
+
+interface controls {
+  [key: string]: any
+}
+
+interface params {
+  [key: string]: any
+}
+
+interface result {
+  [key: string]: any
+}
+
+interface data {
+  [key: string]: unknown
+}
+
+interface obj {
+  [key: string]: any
 }
 
 // 操作类型：上传、下载、删除、预览
@@ -68,20 +78,20 @@ const main = function (ruleContext: RuleContext) {
       // 文件类型
       var fileType = inParamObj.fileType
       // 构件编码
-      var componentCode = vds.component.getCode()
+      var componentCode = component.getCode()
       // 操作类型
       var operation = inParamObj['function']
       // 预览类型 pdfjs,yozodcs 其他 操作为""
       var reviewScheme = inParamObj['reviewScheme']
       //水印设置的参数
       var watermarkEnable = inParamObj.watermarkEnable
-      var waterParamSet = {}
+      var waterParamSet: waterParamSet = {}
       if (watermarkEnable) {
         waterParamSet.watermarkSet = inParamObj.watermarkSet
         waterParamSet.picWatermarkStyle = inParamObj.picWatermarkStyle
         waterParamSet.docProtectSet = inParamObj.docProtectSet //增加文档保护设置
       }
-      var moduleId = vds.window.getCode()
+      var moduleId = window.getCode()
       try {
         switch (operation) {
           case OP_UPLOAD:
@@ -121,6 +131,7 @@ const main = function (ruleContext: RuleContext) {
         }
       } catch (e) {
         // 处理IE下console的兼容问题
+        //@ts-ignore
         if (window.console && console.log) console.log(e.message)
         return
       }
@@ -133,17 +144,22 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 上传操作
  */
-function doUpload(controls, ruleContext, resolve, reject) {
+function doUpload(
+  controls: controls,
+  ruleContext: RuleContext,
+  resolve: (value: void | PromiseLike<void>) => void,
+  reject: (reason?: any) => void
+) {
   if (!controls || controls.length == 0) {
     throw new Error('配置有误：未指定上传控件！')
   }
 
-  var callback = function (fileObj, resultObj) {
+  var callback = function () {
     resolve()
   }
 
-  var errorCB = function (errorMessage) {
-    if (vds.exception.isException(errorMessage)) {
+  var errorCB = function (errorMessage: string) {
+    if (exception.isException(errorMessage)) {
       reject(errorMessage)
     } else {
       //应该从源头封装好异常对象
@@ -154,13 +170,13 @@ function doUpload(controls, ruleContext, resolve, reject) {
   for (var i = 0; i < controls.length; i++) {
     /* 控件编码 */
     var widgetId = controls[i].componentControlCode
-    var fileUploaded = vds.widget.execute(widgetId, 'getFileUploaded')
+    var fileUploaded = widget.execute(widgetId, 'getFileUploaded')
     if (!fileUploaded) {
       fileUploaded = function () {}
     }
     /* 单个文件上传后执行的方法 */
     var singleFileUploadedFunc = ruleContext.genAsynCallback(fileUploaded)
-    vds.widget.execute(widgetId, 'upload', [
+    widget.execute(widgetId, 'upload', [
       callback,
       { singleFileUploaded: singleFileUploadedFunc, errorCB: errorCB }
     ])
@@ -170,7 +186,7 @@ function doUpload(controls, ruleContext, resolve, reject) {
 /**
  * 根据字段描述获取dataSourceName
  */
-function getDataSourceName(fileIdField) {
+function getDataSourceName(fileIdField: string) {
   if (!fileIdField) throw new Error('配置有误：文件标识字段未指定！')
   var parts = fileIdField.split('.')
   if (parts.length == 0)
@@ -183,9 +199,9 @@ function getDataSourceName(fileIdField) {
 /**
  * 获取第一个选中记录的文件Id
  */
-function getFirstSelectedFileId(fileIdField) {
+function getFirstSelectedFileId(fileIdField: string) {
   var dataSourceName = getDataSourceName(fileIdField)
-  var datasource = vds.ds.lookup(dataSourceName)
+  var datasource = ds.lookup(dataSourceName)
   var rs = datasource.getSelectedRecords()
   var rows = rs.toArray()
   if (!rows || rows.length == 0) {
@@ -199,27 +215,27 @@ function getFirstSelectedFileId(fileIdField) {
 /**
  * 获取选中的所有文件Id
  */
-function getSelectedFileIds(fileIdField) {
+function getSelectedFileIds(fileIdField: string) {
   var dataSourceName = getDataSourceName(fileIdField)
-  var widgetCodes = vds.widget.getWidgetCodes(dataSourceName)
+  var widgetCodes = widget.getWidgetCodes(dataSourceName)
   var chooseMode = 0
   if (widgetCodes && widgetCodes.length > 0) {
     for (var j = 0, len = widgetCodes.length; j < len; j++) {
-      var widget = vds.widget.getProperty(widgetCodes[j], 'widgetObj')
-      if (widget && widget.type == 'JGDataGrid') {
-        chooseMode = widget.ChooseMode
+      var widgetTemp = widget.getProperty(widgetCodes[j], 'widgetObj')
+      if (widgetTemp && widgetTemp.type == 'JGDataGrid') {
+        chooseMode = widgetTemp.ChooseMode
       }
     }
   }
   var rows = []
   if (chooseMode == 0) {
-    var datasource = vds.ds.lookup(dataSourceName)
+    var datasource = ds.lookup(dataSourceName)
     var record = datasource.getCurrentRecord()
     if (record) {
       rows.push(record)
     }
   } else {
-    var datasource = vds.ds.lookup(dataSourceName)
+    var datasource = ds.lookup(dataSourceName)
     var rs = datasource.getSelectedRecords()
     rows = rs.toArray()
   }
@@ -239,9 +255,9 @@ function getSelectedFileIds(fileIdField) {
 /**
  * 获取选中行
  */
-function getSelectedRecords(fileIdField) {
+function getSelectedRecords(fileIdField: string) {
   var dataSourceName = getDataSourceName(fileIdField)
-  var datasource = vds.ds.lookup(dataSourceName)
+  var datasource = ds.lookup(dataSourceName)
   var rs = datasource.getSelectedRecords()
   var rows = rs.toArray()
   if (!rows || rows.length == 0) {
@@ -250,7 +266,7 @@ function getSelectedRecords(fileIdField) {
   return rows
 }
 
-var getFieldName = function (fieldName) {
+var getFieldName = function (fieldName: string) {
   if (fieldName != null && fieldName.indexOf('.') > 0)
     return fieldName.split('.')[1]
   return fieldName
@@ -260,27 +276,27 @@ var getFieldName = function (fieldName) {
  * 执行下载操作(下载选中的文件,分为static/dynamic两种类型)
  */
 function doDownload(
-  fileType,
-  fileIdField,
-  oldFileName,
-  moduleId,
-  componentCode,
-  ruleContext,
-  waterParamSet,
-  resolve
+  fileType: string,
+  fileIdField: string,
+  oldFileName: string,
+  moduleId: string,
+  componentCode: string,
+  ruleContext: RuleContext,
+  waterParamSet: waterParamSet,
+  resolve: () => void
 ) {
   var download_url =
     'module-operation!executeOperation?moduleId=' +
     moduleId +
     '&operation=FileDown'
-  var token = {}
+  var token: obj = {}
   var fileName = ''
   if (fileType == 'expression') {
-    var fileid = vds.expression.execute(fileIdField, {
+    var fileid = expression.execute(fileIdField, {
       ruleContext: ruleContext
     })
     if (oldFileName != null && oldFileName != '') {
-      fileName = vds.expression.execute(oldFileName, {
+      fileName = expression.execute(oldFileName, {
         ruleContext: ruleContext
       })
     }
@@ -305,7 +321,7 @@ function doDownload(
       throw new Error('文件不存在！')
     }
     if (oldFileName != null && oldFileName != '') {
-      fileName = vds.expression.execute(oldFileName, {
+      fileName = expression.execute(oldFileName, {
         ruleContext: ruleContext
       })
     }
@@ -370,7 +386,7 @@ function doDownload(
     if (waterParamSet.docProtectSet) {
       docPassWord = waterParamSet.docProtectSet[0].docPassWord
       if (docPassWord != '') {
-        docPassWord = vds.expression.execute(docPassWord, {
+        docPassWord = expression.execute(docPassWord, {
           ruleContext: ruleContext
         })
       }
@@ -393,20 +409,20 @@ function doDownload(
   }
   var prefix = download_url.indexOf('?') == -1 ? '?' : '&'
   var url =
-    download_url +
-    prefix +
-    'token=' +
-    encodeURIComponent(vds.string.toJson(token))
+    download_url + prefix + 'token=' + encodeURIComponent(string.toJson(token))
 
   var mIsApp = isApp()
   var mIsIOS = isIOS()
   var mIsAndroid = isAndroid()
   if (mIsApp) {
+    //@ts-ignore
     url = VPlatformPatch.getServiceAddr() + '/' + url
     if (mIsIOS) {
       alert('文件下载不支持iOS系统')
     } else if (mIsAndroid) {
+      //@ts-ignore
       if (cordova.plugins.system.config.systemDownload) {
+        //@ts-ignore
         cordova.plugins.system.config.systemDownload(url)
       } else {
         alert('当前客户端不支持文件下载，请升级客户端。')
@@ -424,7 +440,7 @@ function doDownload(
 
 function isAndroid() {
   var ua = navigator.userAgent
-  if (ua.match(/Android/i) == 'Android') {
+  if (ua.match(/Android/i)?.toString() == 'Android') {
     return true
   } else {
     return false
@@ -436,10 +452,10 @@ function isIOS() {
 }
 
 function isApp() {
-  return navigator.userAgent.match(/ydgApp/i) == 'ydgApp'
+  return navigator.userAgent.match(/ydgApp/i)?.toString() == 'ydgApp'
 }
 
-function createIFrame(iframeId, url) {
+function createIFrame(iframeId: string, url: string) {
   var iframeObj = document.getElementById(iframeId)
   if (iframeObj == null) {
     iframeObj = document.createElement('iframe')
@@ -453,22 +469,25 @@ function createIFrame(iframeId, url) {
 /**
  * 执行删除操作(删除所有选中的文件)
  */
-function doDelete(fileIdField, resolve) {
+function doDelete(
+  fileIdField: string,
+  resolve: (value: void | PromiseLike<void>) => void
+) {
   var delRecords = getSelectedRecords(fileIdField)
   if (delRecords == null || delRecords.length == 0) return
   for (var i = 0; i < delRecords.length; i++) {
     delRecords[i].set(getFieldName(fileIdField), null)
   }
   var dsName = getDataSourceName(fileIdField)
-  var ds = vds.ds.lookup(dsName)
-  ds.updateRecords(delRecords)
+  var dsTemp = ds.lookup(dsName)
+  dsTemp.updateRecords(delRecords)
   resolve()
 }
 
 /**
  * 预览操作(选中的第一个文件)
  */
-function doPreview(params) {
+function doPreview(params: params) {
   var fileIdField = params.fileIdField,
     moduleId = params.moduleId,
     fileType = params.fileType,
@@ -482,7 +501,7 @@ function doPreview(params) {
     reject = params.reject
   var fileId = null
   if (fileType == 'expression') {
-    fileId = vds.expression.execute(fileIdField, { ruleContext: ruleContext })
+    fileId = expression.execute(fileIdField, { ruleContext: ruleContext })
   } else {
     fileId = getFirstSelectedFileId(fileIdField)
   }
@@ -530,22 +549,23 @@ function doPreview(params) {
  * 新页签方式打开窗体
  * @param {String} fileUrl 文件id
  * */
-function newTabPage(fileUrl) {
-  vds.browser.newTab(fileUrl)
+function newTabPage(fileUrl: string) {
+  browser.newTab(fileUrl)
 }
 
 /**
  * 当前页面打开窗体
  * @param {String} fileUrl 文件id
  * */
-function currentPage(fileUrl) {
+function currentPage(fileUrl: string) {
+  //@ts-ignore
   window.location.href = fileUrl
 }
 
 /**
  * 新窗体打开
  * */
-function newWindow(params) {
+function newWindow(params: params) {
   var isPreviewInModalWindow = params.isPreviewInModalWindow
   var fileUrl = params.fileUrl
   if (isPreviewInModalWindow) {
@@ -555,9 +575,9 @@ function newWindow(params) {
     if (windowState && windowState == 'Maximized') {
       isMaximize = true
     }
-    vds.browser.dialog(fileUrl, { title: '附件预览', maximize: isMaximize })
+    browser.dialog(fileUrl, { title: '附件预览', maximize: isMaximize })
   } else {
-    vds.browser.newTab(fileUrl, { title: '附件预览' })
+    browser.newTab(fileUrl, { title: '附件预览' })
   }
 }
 
@@ -565,7 +585,7 @@ function newWindow(params) {
  * 调用永中文档转换服务
  *
  * */
-function callYozodcs(params) {
+function callYozodcs(params: params) {
   var ruleContext = params.ruleContext,
     isPreviewInModalWindow = params.isPreviewInModalWindow,
     previewTargetType = params.previewTargetType,
@@ -574,17 +594,21 @@ function callYozodcs(params) {
     resolve = params.resolve,
     reject = params.reject
 
-  if (vds.environment.isMobileWindow()) {
-    var successCB = function (data) {
+  if (environment.isMobileWindow()) {
+    var successCB = function (data: obj) {
       resolve()
     }
-    var errorCB = function (errorMsg) {
+    var errorCB = function (errorMsg: string) {
       HandleException(errorMsg, reject)
     }
-    var promise = vds.attachment.preview(fileId)
-    promise.then(successCB).catch(errorCB)
+    var promise = attachment.preview(fileId)
+    promise
+      .then(() => {
+        successCB
+      })
+      .catch(errorCB)
   } else {
-    var successCB = function (data) {
+    var successCB = function (data: obj) {
       var fileUrl = data.preViewfileUrl
       switch (previewTargetType) {
         case 'newTabPage':
@@ -604,11 +628,15 @@ function callYozodcs(params) {
       }
       resolve()
     }
-    var errorCB = function (errorMsg) {
+    var errorCB = function (errorMsg: string) {
       HandleException(errorMsg, reject)
     }
-    var promise = vds.attachment.convert(fileId)
-    promise.then(successCB).catch(errorCB)
+    var promise = attachment.convert(fileId)
+    promise
+      .then(() => {
+        successCB
+      })
+      .catch(errorCB)
   }
 }
 
@@ -616,7 +644,8 @@ function callYozodcs(params) {
  * 调用pdfjs预览
  *
  * */
-function callPdfjs(params) {
+
+function callPdfjs(params: params) {
   var ruleContext = params.ruleContext,
     previewTargetType = params.previewTargetType,
     previewWindowSize = params.previewWindowSize,
@@ -626,7 +655,7 @@ function callPdfjs(params) {
     resolve = params.resolve,
     reject = params.reject
   /*执行成功回调*/
-  var callBackFunc = function (result) {
+  var callBackFunc = function (result: result) {
     if (
       result != undefined &&
       result.data != undefined &&
@@ -689,11 +718,12 @@ function callPdfjs(params) {
     if (waterParamSet.picWatermarkStyle) {
       watermarkSrcFile =
         'itop/resources/' +
-        componentCode +
+        // componentCode +
         '_' +
         waterParamSet.picWatermarkStyle[0].watermarkFile
       watermarkZoom = waterParamSet.picWatermarkStyle[0].watermarkZoom
       watermarkLocation = waterParamSet.picWatermarkStyle[0].watermarkLocation
+      throw 'componentCode is undefined'
     }
     if (watermarkSrcFile) {
       sConfig.datas.push({
@@ -741,19 +771,20 @@ function callPdfjs(params) {
     })
   }
 
-  var promise = vds.rpc.callCommand(
-    sConfig.command,
-    sConfig.datas,
-    sConfig.params
-  )
-  promise.then(callBackFunc).catch(reject)
+  var promise = rpc.callCommand(sConfig.command, sConfig.datas, sConfig.params)
+  promise
+    .then(() => {
+      callBackFunc
+    })
+    .catch(reject)
 }
 
 /**
  * desc 获取地址
  * @path 文件路径
  * */
-function getHost(path, webContext) {
+function getHost(path: string, webContext: any) {
+  //@ts-ignore
   var _host = window.location.protocol + '//' + window.location.host
   _host =
     _host +
@@ -768,10 +799,12 @@ function getHost(path, webContext) {
  * @ruleContext 规则上下文
  * @error_msg 提示信息
  * */
-function HandleException(error_msg, reject) {
+function HandleException(error_msg: string, reject: (reason?: any) => void) {
   error_msg = ERRORNAME + error_msg
-  var exception = new vds.exception.newSystemException(error_msg)
-  reject(exception)
+  var exceptionTemp = exception.newSystemException(error_msg)
+  reject(exceptionTemp)
 }
 
 export { main }
+
+new Promise((resolve, reject) => {})

@@ -39,7 +39,7 @@ const main = function (ruleContext: RuleContext) {
  * desc 非回调中抛异常
  * @error_msg 提示信息
  * */
-function HandleException(error_msg) {
+function HandleException(error_msg: any) {
   var exception = vds.exception.newBusinessException(error_msg)
   throw exception
 }

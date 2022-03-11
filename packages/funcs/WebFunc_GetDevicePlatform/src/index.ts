@@ -2,7 +2,7 @@
  *
  *
  */
-const main = function (param) {
+const main = function () {
   //        var type=deviceUtil.getDevicePlatform();
 
   var ua = navigator.userAgent.toLowerCase()

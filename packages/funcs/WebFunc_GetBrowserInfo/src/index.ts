@@ -6,7 +6,12 @@
  * 参数3：字符串，选填，仅适用于参数1=“Match”时，选填)，关键字2，主要用于判断App平台或手机品牌等，不区分大小写
  * 参数4：字符串，选填，仅适用于参数1=“Match”时，选填，默认“and”)，关系操作符 枚举值：and/or ，不区分大小写
  */
-const main = function (Operation, KeyWord1, KeyWord2, Symbol) {
+const main = function (
+  Operation: string,
+  KeyWord1?: string,
+  KeyWord2?: string,
+  Symbol?: string
+) {
   // 容错处理，默认获取name
   if (Operation == null || Operation == undefined) {
     Operation = 'name'
@@ -28,13 +33,13 @@ const main = function (Operation, KeyWord1, KeyWord2, Symbol) {
 
   switch (Operation) {
     case 'name': // 浏览器内核
-      return uaMatch().browser
+      return uaMatch()?.browser
       break
     case 'version': // 浏览器版本
-      return uaMatch().version
+      return uaMatch()?.version
       break
     case 'ver': // 浏览器版本
-      return uaMatch().version
+      return uaMatch()?.version
       break
     case 'ismobile': // 是否移动端
       return isMobile()
@@ -99,8 +104,8 @@ const main = function (Operation, KeyWord1, KeyWord2, Symbol) {
   }
 }
 // 关键词匹配
-function MatchKeyword(KeyWord1, KeyWord2, Symbol) {
-  var userAgent = navigator.userAgent.toLowerCase()
+function MatchKeyword(KeyWord1: string, KeyWord2: string, Symbol: string) {
+  let userAgent = navigator.userAgent.toLowerCase()
 
   // 按关键字匹配
   if (KeyWord2 == '') {
@@ -154,11 +159,11 @@ function GetNetType() {
     // '4g'
     // 'slow-2'
   } catch (err) {
-    var userAgent = navigator.userAgent.toLowerCase()
+    let userAgent = navigator.userAgent.toLowerCase()
 
     if (userAgent.indexOf('nettype/wifi') > -1) return 'wifi'
 
-    for (var i = 6; i >= 6; i--) {
+    for (let i = 6; i >= 6; i--) {
       if (userAgent.indexOf('nettype/' + i + 'g+') > -1) return '' + i + 'g+'
 
       if (userAgent.indexOf('nettype/' + i + 'g') > -1) return '' + i + 'g'
@@ -170,9 +175,9 @@ function GetNetType() {
 
 // 获取设备品牌
 function GetDeviceBrand() {
-  var userAgent = navigator.userAgent.toLowerCase()
+  let userAgent = navigator.userAgent.toLowerCase()
 
-  var Brands = [
+  let Brands = [
     'HUAWEI',
     'HONOR',
     'XiaoMi',
@@ -231,8 +236,8 @@ function GetDeviceBrand() {
     'Philips'
   ]
 
-  for (var i = 0; i < Brands.length; i++) {
-    var BrandName = Brands[i].toLowerCase()
+  for (let i = 0; i < Brands.length; i++) {
+    let BrandName = Brands[i].toLowerCase()
     if (userAgent.indexOf(BrandName) > -1) return BrandName
   }
 }
@@ -252,7 +257,7 @@ function isMobile() {
 
 // 获取app平台
 function GetAppPlatform() {
-  var userAgent = navigator.userAgent.toLowerCase()
+  let userAgent = navigator.userAgent.toLowerCase()
 
   // 腾讯-企业微信
   if (userAgent.indexOf('wxwork') > -1) return 'WeChat Work'
@@ -298,12 +303,12 @@ function GetAppPlatform() {
 
 // 获取操作系统
 function GetOS() {
-  var userAgent = navigator.userAgent
+  let userAgent = navigator.userAgent
 
   // 苹果iPhone
   if (userAgent.indexOf('iPhone') > -1) {
-    for (var i = 4; i < 20; i++) {
-      for (var j = 0; j <= 9; j++) {
+    for (let i = 4; i < 20; i++) {
+      for (let j = 0; j <= 9; j++) {
         if (
           userAgent.indexOf(' OS ' + i + '.' + j) > -1 ||
           userAgent.indexOf(' OS ' + i + '_' + j) > -1
@@ -317,8 +322,8 @@ function GetOS() {
 
   // 苹果iPad
   if (userAgent.indexOf('iPad') > -1) {
-    for (var i = 4; i <= 20; i++) {
-      for (var j = 0; j <= 9; j++) {
+    for (let i = 4; i <= 20; i++) {
+      for (let j = 0; j <= 9; j++) {
         if (
           userAgent.indexOf(' OS ' + i + '.' + j) > -1 ||
           userAgent.indexOf(' OS ' + i + '_' + j) > -1
@@ -332,8 +337,8 @@ function GetOS() {
 
   // 苹果iPod
   if (userAgent.indexOf('iPod') > -1) {
-    for (var i = 4; i < 20; i++) {
-      for (var j = 0; j <= 9; j++) {
+    for (let i = 4; i < 20; i++) {
+      for (let j = 0; j <= 9; j++) {
         if (
           userAgent.indexOf(' OS ' + i + '.' + j) > -1 ||
           userAgent.indexOf(' OS ' + i + '_' + j) > -1
@@ -356,8 +361,8 @@ function GetOS() {
 
   // 谷歌安卓Android
   if (userAgent.indexOf('Android') > -1 || userAgent.indexOf('Adr') > -1) {
-    for (var i = 4; i < 20; i++) {
-      for (var j = 0; j <= 9; j++) {
+    for (let i = 4; i < 20; i++) {
+      for (let j = 0; j <= 9; j++) {
         if (userAgent.indexOf('Android ' + i + '.' + j) > -1)
           return 'Android ' + i + '.' + j
       }
@@ -367,18 +372,18 @@ function GetOS() {
   }
 
   // 微软Windows
-  var isWin = navigator.platform == 'Win32' || navigator.platform == 'Windows'
+  let isWin = navigator.platform == 'Win32' || navigator.platform == 'Windows'
 
   // 苹果Mac
-  var isMac =
+  let isMac =
     navigator.platform == 'Mac68K' ||
     navigator.platform == 'MacPPC' ||
     navigator.platform == 'Macintosh' ||
     navigator.platform == 'MacIntel' ||
     userAgent.indexOf('Mac OS') > -1
   if (isMac) {
-    for (var i = 9; i < 20; i++) {
-      for (var j = 0; j <= 20; j++) {
+    for (let i = 9; i < 20; i++) {
+      for (let j = 0; j <= 20; j++) {
         if (
           userAgent.indexOf('Mac OS X ' + i + '.' + j) > -1 ||
           userAgent.indexOf('Mac OS X ' + i + '_' + j) > -1
@@ -482,52 +487,52 @@ function GetOS() {
 
 /* 检测浏览器类型 */
 function uaMatch() {
-  var userAgent = navigator.userAgent
-  var ua = userAgent.toLowerCase()
+  let userAgent = navigator.userAgent
+  let ua = userAgent.toLowerCase()
 
-  var rEdge = /(edge)\/([\w.]+)/
-  var rMsie = /(msie\s|trident.*rv:)([\w.]+)/
-  var rFirefox = /(firefox)\/([\w.]+)/
-  var rOpera = /(opera).+version\/([\w.]+)/
-  var rChrome = /(chrome)\/([\w.]+)/
-  var rSafari = /version\/([\w.]+).*(safari)/
+  let rEdge = /(edge)\/([\w.]+)/
+  let rMsie = /(msie\s|trident.*rv:)([\w.]+)/
+  let rFirefox = /(firefox)\/([\w.]+)/
+  let rOpera = /(opera).+version\/([\w.]+)/
+  let rChrome = /(chrome)\/([\w.]+)/
+  let rSafari = /version\/([\w.]+).*(safari)/
 
-  var match = rEdge.exec(ua)
+  let match = rEdge.exec(ua)
   if (match != null) {
     return {
       browser: 'EDGE',
       version: match[2] || '0'
     }
   }
-  var match = rMsie.exec(ua)
+  match = rMsie.exec(ua)
   if (match != null) {
     return {
       browser: 'IE',
       version: match[2] || '0'
     }
   }
-  var match = rFirefox.exec(ua)
+  match = rFirefox.exec(ua)
   if (match != null) {
     return {
       browser: match[1] || '',
       version: match[2] || '0'
     }
   }
-  var match = rOpera.exec(ua)
+  match = rOpera.exec(ua)
   if (match != null) {
     return {
       browser: match[1] || '',
       version: match[2] || '0'
     }
   }
-  var match = rChrome.exec(ua)
+  match = rChrome.exec(ua)
   if (match != null) {
     return {
       browser: match[1] || '',
       version: match[2] || '0'
     }
   }
-  var match = rSafari.exec(ua)
+  match = rSafari.exec(ua)
   if (match != null) {
     return {
       browser: match[2] || '',

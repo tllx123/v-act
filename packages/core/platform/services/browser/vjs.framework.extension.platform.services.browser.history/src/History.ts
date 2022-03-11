@@ -1,9 +1,9 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let historyStack = []
+let historyStack: Array<Record<string, any>> = []
 
-export function initModule(sb) {
+export function initModule() {
   History.Adapter.bind(window, 'popstate', function () {
     let index = historyStack.length
     --index
@@ -18,7 +18,7 @@ export function initModule(sb) {
   })
 }
 
-let Unit = function (params, isVirtual) {
+let Unit = function (params: Record<string, any>, isVirtual: boolean) {
   this.async = true
   this.title = params.title ? params.title : document.title
   this.isVirtual = isVirtual
@@ -116,7 +116,7 @@ Unit.prototype = {
   }
 }
 
-_addBrowserHistory = function (id, title) {
+_addBrowserHistory = function (id: string, title: string) {
   let fiexdName = '_V3HistoryRandom'
   let data = { id: id }
   //		History.pushState(data, title, "?random="+uuid.generate());
@@ -142,7 +142,7 @@ _pushHistory = function () {
   window.history.pushState(state, 'title', '#')
 }
 
-const addHistory = function (params) {
+const addHistory = function (params: Record<string, any>) {
   let unit = new Unit(params, false)
   let id = unit.getId()
   historyStack.push(unit)
@@ -153,7 +153,7 @@ const addHistory = function (params) {
   return id
 }
 
-const replaceHistory = function (params) {
+const replaceHistory = function (params: Record<string, any>) {
   /* 从历史记录堆栈中获取最后一条记录，并执行回调 */
   if (historyStack && historyStack.length > 0) {
     /* pop 移除最后一条数据，并返回移除的数据 */
@@ -173,7 +173,7 @@ const replaceHistory = function (params) {
   return id
 }
 
-const removeHistory = function (id) {
+const removeHistory = function (id: string) {
   let index = -1
   for (let i = 0, l = historyStack.length; i < l; i++) {
     let unit = historyStack[i]

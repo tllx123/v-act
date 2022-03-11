@@ -1,7 +1,5 @@
 import * as viewModel from 'module'
 
-export function initModule() {}
-
 /**
  * 主入口
  * @param type 类型(USER,ROLE,METHOD)
@@ -9,7 +7,13 @@ export function initModule() {}
  * @param tableName 业务表名称
  * @param columnName 业务表字段名
  */
-const main = function (type, ruleChainId, tableName, columnName, ruleName) {
+const main = function (
+  type: string,
+  ruleChainId: string,
+  tableName: string,
+  columnName: string,
+  ruleName: string
+) {
   if (typeof type == 'undefined' || type === '' || type === null) {
     throw new Error('[ExecutorRuleGeneralXml.main]入参type不允许为空')
   }

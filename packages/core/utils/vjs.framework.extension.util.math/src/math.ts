@@ -1,4 +1,4 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 ;(function () {
   var y = (function () {
       function h() {

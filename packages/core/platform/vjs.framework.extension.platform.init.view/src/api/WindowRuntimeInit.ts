@@ -194,7 +194,51 @@ let addWaterMarkOperation = function (scopeId, componentCode, windowCode) {
   //		});
   //
 }
-
+/**
+ *
+ * */
+//	var getWindowInputParam = function(inputParam){
+//		var url = window.location.href;
+//		var index = url.indexOf("#");
+//		if(index != -1 && url.length > (index + 1)){
+//			var hash = decodeURIComponent(url.substring(index + 1));
+//			if(hash.startsWith("{") || hash.startsWith("[")){
+//				var json = jsonUtils.json2obj(hash);
+//				if(json && json.variable){
+//					var variable = json.variable;
+//					if(inputParam){
+//						var nowVariable = inputParam.variable;
+//						if(nowVariable){
+//							for(var code in variable){
+//								nowVariable[code] = variable[code];
+//							}
+//						}else{
+//							inputParam.variable = variable;
+//						}
+//					}else{
+//						inputParam = {
+//							"variable" : variable
+//						}
+//					}
+//				}
+//			}
+//		}
+//		return inputParam;
+//	}
+/**
+ * 初始化
+ * @param {Object} params 参数信息
+ * {
+ * 		"componentCode" : {String} 构件编号
+ * 		"windowCode" : {String} 窗体编号
+ * 		"inputParam" : {Object} 窗体入參
+ * 		"beforeFormLoad" : {Function} 窗体加载事件前回调
+ * 		"success" : {Function} 窗体初始化完成回调
+ * 		"error"	: {Function} 窗体初始化失败回调
+ * 		"scopeId" : {String} 域id
+ * 		"initView" : {Boolean} 是否初始化视图 默认true
+ * }
+ */
 const init = function (params) {
   //TODO
   //注册log
@@ -230,6 +274,10 @@ const init = function (params) {
     )
     //实例化数据源
     _fireSourceWindowEvent(scopeId, windowDatasource.init, windowDatasource)
+    scopeManager.fireEvent(
+      scopeManager.EVENTS.RENDERED,
+      scopeManager.getScope(scopeId)
+    )
     //			windowDatasource.init();
     //数据绑定
     _fireSourceWindowEvent(scopeId, datasourceBind.bind, datasourceBind)
@@ -275,6 +323,14 @@ const init = function (params) {
     if (isInitView) _fire(componentCode, windowCode, Events.initWidgetEvent)
     if (isInitView)
       _fire(componentCode, windowCode, Events.bindWidgetDatasource)
+    //Task20210113137 注册窗体关闭后事件  因为在schema里，调用控件的initEvent比添加事件处理器要早，控件initEvent里无法判断是否存在事件，考虑不能重新发布，暂不调整顺序
+    if (eventManagerService.existEvent(windowCode, 'FormClosingAction')) {
+      var tmpBeforeFormClosing = eventManagerService.fireEvent(
+        windowCode,
+        'FormClosingAction'
+      )
+      scopeManager.getWindowScope().onBeforeClose(tmpBeforeFormClosing)
+    }
     //			_fireSourceWindowEvent(params.scopeId,function(currentScope){
     //				_fire(currentScope.getComponentCode(),currentScope.getWindowCode(),exports.Events.bindWidgetDatasource);
     //			});
@@ -283,95 +339,127 @@ const init = function (params) {
     addWaterMarkOperation(scopeId, componentCode, windowCode)
     _fire(componentCode, windowCode, Events.onMultiRequest)
     componentParam.initVariant()
-    applyMultRequest(
-      (function () {
-        return function () {
-          //TODO后续逻辑作为applyMultRequest成功回掉
-          _fire(componentCode, windowCode, Events.dataInitLoad)
-          _fire(componentCode, windowCode, Events.beforeDataLoad)
-          //初始化默认数据
-          _fireSourceWindowEvent(
-            params.scopeId,
-            windowDatasource.initDefaultDatas,
-            windowDatasource
-          )
-          _fire(componentCode, windowCode, Events.onDataLoad)
-          runtimeManager.cleanWindowInfo(componentCode, windowCode)
-          //窗体加载事件前,先触发成功回调
-          _callFunction(params.beforeFormLoad, [])
-          //把成功回调注册进windowInit
-          var successCB = params.success
-          // 窗体加载事件(加入窗体加载完成后事件)
-          windowInit.registerHandler({
-            eventName: windowInit.Events.WindowInited,
-            handler: (function (cb) {
-              return function () {
-                if (typeof cb == 'function') {
-                  cb()
-                }
-              }
-            })(successCB)
-          })
-          var task = new ScopeTask(
-            params.scopeId,
-            true,
-            function () {
-              //1、將子窗体的逻辑包装成回调cb1
-              //2、将cb1回调注册到父窗体的WindowInited切面中
-              //3、触发父窗体的逻辑
-              var sId = params.scopeId
-                ? params.scopeId
-                : scopeManager.getCurrentScopeId()
-              //初始化默认数据
-              var initDefaultDatasFun = function (scopeId, handler) {
-                var _scope = scopeManager.getScope(scopeId)
-                var _extendId = _scope.getExtendId()
-                var func = scopeManager.createScopeHandler({
-                  scopeId: scopeId,
-                  handler: handler
-                })
-                if (_extendId) {
-                  initDefaultDatasFun(_extendId, function (scope) {
-                    windowInit.registerHandler({
-                      eventName: windowInit.Events.WindowInited,
-                      handler: func
-                    })
-                    var cCode = scope.getComponentCode()
-                    var wCode = scope.getWindowCode()
-                    _fire(cCode, wCode, Events.afterDataLoad)
-                    // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
-                    _fire(cCode, wCode, Events.windowLoaded)
-                  })
-                } else {
-                  func(_scope)
-                }
-              }
 
-              var cb1 = function () {
-                var scope = scopeManager.getScope()
-                var cCode = scope.getComponentCode()
-                var wCode = scope.getWindowCode()
-                _fire(cCode, wCode, Events.afterDataLoad)
-                // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
-                _fire(cCode, wCode, Events.windowLoaded)
-                //							_fire(cCode,wCode,exports.Events.windowInited);
+    var successCB = (function () {
+      return function () {
+        //TODO后续逻辑作为applyMultRequest成功回掉
+        _fire(componentCode, windowCode, Events.dataInitLoad)
+        _fire(componentCode, windowCode, Events.beforeDataLoad)
+        //初始化默认数据
+        _fireSourceWindowEvent(
+          params.scopeId,
+          windowDatasource.initDefaultDatas,
+          windowDatasource
+        )
+        _fire(componentCode, windowCode, Events.onDataLoad)
+        runtimeManager.cleanWindowInfo(componentCode, windowCode)
+        //窗体加载事件前,先触发成功回调
+        _callFunction(params.beforeFormLoad, [])
+        //把成功回调注册进windowInit
+        var successCB = params.success
+        // 窗体加载事件(加入窗体加载完成后事件)
+        windowInit.registerHandler({
+          eventName: windowInit.Events.WindowInited,
+          handler: (function (cb) {
+            return function () {
+              if (typeof cb == 'function') {
+                cb()
               }
-              initDefaultDatasFun(sId, cb1)
-            },
-            { componentCode: componentCode, windowCode: windowCode }
-          )
-          taskManager.addTask(task)
-        }
-      })(),
-      function (e) {
-        _callFunction(params.error || exceptionHandler.handle, [e])
+            }
+          })(successCB)
+        })
+        var task = new ScopeTask(
+          params.scopeId,
+          true,
+          function () {
+            //1、將子窗体的逻辑包装成回调cb1
+            //2、将cb1回调注册到父窗体的WindowInited切面中
+            //3、触发父窗体的逻辑
+            var sId = params.scopeId
+              ? params.scopeId
+              : scopeManager.getCurrentScopeId()
+            //初始化默认数据
+            var initDefaultDatasFun = function (scopeId, handler) {
+              var _scope = scopeManager.getScope(scopeId)
+              var _extendId = _scope.getExtendId()
+              var func = scopeManager.createScopeHandler({
+                scopeId: scopeId,
+                handler: handler
+              })
+              if (_extendId) {
+                initDefaultDatasFun(_extendId, function (scope) {
+                  windowInit.registerHandler({
+                    eventName: windowInit.Events.WindowInited,
+                    handler: func
+                  })
+                  var cCode = scope.getComponentCode()
+                  var wCode = scope.getWindowCode()
+                  _fire(cCode, wCode, Events.afterDataLoad)
+                  //标志窗体渲染完成
+                  scope.markRendered && scope.markRendered()
+                  // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
+                  //									if(!scope.isViewonly()){//由eventManager统一屏蔽
+                  _fire(cCode, wCode, Events.windowLoaded)
+                  //									}
+                })
+              } else {
+                func(_scope)
+              }
+            }
+
+            var cb1 = function () {
+              var scope = scopeManager.getScope()
+              var cCode = scope.getComponentCode()
+              var wCode = scope.getWindowCode()
+              _fire(cCode, wCode, Events.afterDataLoad)
+              //标志窗体渲染完成
+              scope.markRendered && scope.markRendered()
+              // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
+              //							if(!scope.isViewonly()){//由eventManager统一屏蔽
+              _fire(cCode, wCode, Events.windowLoaded)
+              //							}
+              //							_fire(cCode,wCode,exports.Events.windowInited);
+            }
+            initDefaultDatasFun(sId, cb1)
+          },
+          { componentCode: componentCode, windowCode: windowCode }
+        )
+        taskManager.addTask(task)
       }
-    )
+    })()
+
+    var failCB = function (e) {
+      _callFunction(params.error || exceptionHandler.handle, [e])
+    }
+    var operations = scopeManager.createScopeHandler({
+      scopeId: scopeId,
+      handler: pageRequestUtils.getSchemaRequire
+    })()
+    var type = environment.getPlatformType()
+    if (type == 'DesignSchema' || !operations || operations.length == 0) {
+      try {
+        successCB()
+      } catch (e) {
+        failCB(e)
+      }
+    } else {
+      //组装成Request实例对象,注入success,error回掉
+      var request = new vrequest(true, operations, successCB, failCB)
+      //调用批量请求后台接口
+      remoteOperation.request({ request: request })
+    }
   } catch (e) {
-    let ee = exceptionFactory.create({
-      error: e
-    })
-    _callFunction(params.error || exceptionHandler.handle, [ee])
+    if (params.error) {
+      _callFunction(params.error, [e])
+    } else if (exceptionFactory.isException(e)) {
+      e.handle()
+    } else {
+      throw e
+    }
+    //			var ee = exceptionFactory.create({
+    //	            "error": e
+    //	        });
+    //			_callFunction(params.error||exceptionHandler.handle,[ee]);
   } finally {
     scopeManager.closeScope()
   }
@@ -409,8 +497,6 @@ const Events = {
   bindWidgetEvent: 'bindWidgetEvent', //initWidgetContext后
   bindWidgetDatasource: 'bindWidgetDatasource' //onBindData后
 }
-
-export { Events }
 
 let getSchemaStorage = function (depth, isCreate) {
   let rs,
@@ -523,6 +609,7 @@ const hasPermission = function (params) {
 
 export {
   applyMultRequest,
+  Events,
   fireEventFunc,
   hasPermission,
   init,

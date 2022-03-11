@@ -3,11 +3,12 @@
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+
 const vds = { ds, exception, log, expression }
 
-const main = function (dsName, fieldName) {
+const main = function (dsName: string, fieldName: String) {
   var datasource = null
   if (dsName == null)
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')

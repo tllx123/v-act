@@ -1,23 +1,24 @@
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import {
+  RouteContext,
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.interface.route'
+import {
   ExpressionContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+//规则主入口(必须有)
+/* import {
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule' */
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import * as ContactsService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Contacts'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-import * as ContactsService from './'
-
-export function initModule(sBox) {
-  sandbox = sBox
-}
-
-//规则主入口(必须有)
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   debugger
   // 获取规则链路由上下文,终止执行后续规则
-  routeContext = ruleContext.getRouteContext()
+  let routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值
   let ruleCfgValue = ruleContext.getRuleCfg()
   // 获取开发系统配置的参数
@@ -29,10 +30,14 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 获取通讯录的id，姓名，手机号码
  */
-let getContactsInfo = function (inParamObj, routeContext, ruleContext) {
+let getContactsInfo = function (
+  inParamObj: Record<string, any>,
+  routeContext: RouteContext,
+  ruleContext: RuleContext
+) {
   ruleContext.markRouteExecuteUnAuto()
   debugger
-  let successCB = function (contactsInfo) {
+  let successCB = function (contactsInfo: Array<Record<string, any>>) {
     let datas = []
     if (contactsInfo) {
       for (let i = 0; i < contactsInfo.length; i++) {
@@ -54,13 +59,18 @@ let getContactsInfo = function (inParamObj, routeContext, ruleContext) {
     setValue2Entity(datas, inParamObj, routeContext, ruleContext)
   }
 
-  let errorCB = function (errorMsg) {
+  let errorCB = function (errorMsg: string) {
     alert(errorMsg)
   }
   ContactsService.getInfo(successCB, errorCB)
 }
 
-let setValue2Entity = function (datas, inParamObj, routeContext, ruleContext) {
+let setValue2Entity = function (
+  datas: Array<Record<string, any>>,
+  inParamObj: Record<string, any>,
+  routeContext: RouteContext,
+  ruleContext: RuleContext
+) {
   let entityCode = inParamObj.entityCode //实体编码
   let fieldName = inParamObj.fieldName //字段编码(姓名)
   let fieldId = inParamObj.fieldId //字段编码（唯一标识）
@@ -90,7 +100,7 @@ let setValue2Entity = function (datas, inParamObj, routeContext, ruleContext) {
 }
 
 //获取实体对象
-function getDataSource(entityCode, routeContext) {
+function getDataSource(entityCode: string, routeContext: RouteContext) {
   let dsName = entityCode
   let datasource = null
   if (DBFactory.isDatasource(dsName)) {

@@ -6,19 +6,15 @@ import * as widgetAttribute from 'module'
 
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-// 加载viewModel模块
+interface obj {
+  [key: string]: any
+}
 
-// 加载jsonUtil模块
+interface retValue {
+  [key: string]: string
+}
 
-// 加载formulaUtil模块
-
-// 加载widgetAttribute模块
-
-// 加载viewContext模块
-
-//加载log模块
-
-export function initModule(sBox) {}
+export function initModule() {}
 
 let FORMULATYPE_SUM = '0' // 求和
 let FORMULATYPE_AVG = '1' // 平均值
@@ -46,7 +42,7 @@ const main = function (ruleContext: RuleContext) {
     .getMetaModule()
     .getWidgetIdsByDataSource(destTableName)
   // 根据字段的fieldName与公式类型进行相关公式操作计算出对应的值
-  let retValue = calValue(srcFieldName, calFormulaType, condition)
+  let retValue: number = calValue(srcFieldName, calFormulaType, condition)
   let flag = true
   for (let index = 0; index < refWidgetIds.length; index++) {
     let retWidgetId = refWidgetIds[index]
@@ -114,12 +110,12 @@ const main = function (ruleContext: RuleContext) {
  *  @param  destFieldName   赋值字段的fieldname, 主表字段
  */
 let setValueForSingleMultiValue = function (
-  retValue,
-  destTableName,
-  destFieldName
+  retValue: retValue,
+  destTableName: string,
+  destFieldName: string
 ) {
   // 对应字段赋值
-  let obj = {}
+  let obj: obj = {}
   obj[destFieldName] = retValue
   viewModel.getDataModule().setSingleRecordMultiValueByDS(destTableName, obj)
 }
@@ -130,11 +126,19 @@ let setValueForSingleMultiValue = function (
  *	@param  destFieldName   赋值字段的fieldname, 主表字段
  *  @param  destTableName   赋值字段的dsname, 主表表名
  */
-let setValueForSingleValue = function (retValue, destFieldName, destTableName) {
+let setValueForSingleValue = function (
+  retValue: number,
+  destFieldName: string,
+  destTableName: string
+) {
   // 对应字段赋值
   viewModel
     .getDataModule()
     .setSingleValueByDS(destTableName, destFieldName, retValue)
+}
+
+interface record {
+  [key: string]: any
 }
 
 /**
@@ -144,7 +148,12 @@ let setValueForSingleValue = function (retValue, destFieldName, destTableName) {
  *  @param  destFieldName   赋值字段的fieldname, 主表字段
  *  @param  record          集合控件操作行的数据
  */
-let setValueForSet = function (retValue, destTableName, destFieldName, record) {
+let setValueForSet = function (
+  retValue: number,
+  destTableName: string,
+  destFieldName: string,
+  record: record
+) {
   record.set(destFieldName, retValue)
   // 对应字段赋值
   viewModel.getDataModule().setRecordValueByDS(destTableName, record)
@@ -155,7 +164,11 @@ let setValueForSet = function (retValue, destTableName, destFieldName, record) {
  *  @param	fieldName  字段的fieldName 如：JC_XMYL.OrderNo
  *  @param  calFormulaType 计算公式的类型（求和："sum"、平均值："avg"、 最大值："max"、 最小值："min"）
  */
-let calValue = function (fieldName, calFormulaType, condition) {
+let calValue = function (
+  fieldName: string,
+  calFormulaType: string,
+  condition: string
+) {
   let retValue = 0
   if (fieldName.indexOf('.') == -1) {
     throw new Error('根据fieldName的值获取表名失败,格式必须为"表名.字段名"')
@@ -201,7 +214,7 @@ let calValue = function (fieldName, calFormulaType, condition) {
  *  @param	tableName    	实体名称
  *  @param	condition		筛选条件
  */
-let getFilterRows = function (tableName, condition) {
+let getFilterRows = function (tableName: string, condition: string) {
   let records = viewModel.getDataModule().getAllRecordsByDS(tableName)
   if (undefined != records && null != records && records.length > 0) {
     if (undefined != condition && null != condition && condition.length > 0) {

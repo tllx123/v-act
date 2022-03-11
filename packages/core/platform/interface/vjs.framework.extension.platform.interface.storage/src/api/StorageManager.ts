@@ -2,6 +2,16 @@ import MapStorage from '../impl/MapStorage'
 import TreeStorage from '../impl/TreeStorage'
 
 const _storagePool: { [type: string]: { [token: string]: any } } = {}
+/**
+ * 数据仓库类型枚举
+ * @enum {String}
+ */
+enum TYPES {
+  /**树形仓库*/
+  TREE = 'tree',
+  /**Map型仓库*/
+  MAP = 'map'
+}
 
 for (let type in TYPES) {
   _storagePool[TYPES[type]] = {}
@@ -43,17 +53,6 @@ const exists = function (type: TYPES, token: string) {
 const newInstance = function (type: TYPES) {
   const constructor = type == TYPES.MAP ? MapStorage : TreeStorage
   return new constructor()
-}
-
-/**
- * 数据仓库类型枚举
- * @enum {String}
- */
-enum TYPES {
-  /**树形仓库*/
-  TREE = 'tree',
-  /**Map型仓库*/
-  MAP = 'map'
 }
 
 export { destory, exists, get, newInstance, TYPES }
