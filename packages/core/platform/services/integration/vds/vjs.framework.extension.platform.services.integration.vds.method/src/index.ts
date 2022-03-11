@@ -136,9 +136,9 @@ export function execute(methodCode, params) {
         callback: success
       }
       var sourceType =
-        params.methodType == exports.MethodType.Server
-          ? exports.MethodType.Server
-          : exports.MethodType.Client
+        params.methodType == MethodType.Server
+          ? MethodType.Server
+          : MethodType.Client
       var serviceName = mediator.getServiceName(
         componentCode,
         windowCode,
@@ -162,8 +162,8 @@ export function execute(methodCode, params) {
         sourceType: sourceType
       }
       switch (params.invokeType) {
-        case exports.InvokeType.Spi:
-        case exports.InvokeType.Local:
+        case InvokeType.Spi:
+        case InvokeType.Local:
           invokeTarget['invokeType'] = params.invokeType
           config['error'] = reject
           routeEngine.execute({
@@ -172,8 +172,8 @@ export function execute(methodCode, params) {
             config: config
           })
           break
-        case exports.InvokeType.Api:
-          if (sourceType == exports.MethodType.Server) {
+        case InvokeType.Api:
+          if (sourceType == MethodType.Server) {
             //服务端方法直接执行
             invokeTarget['invokeType'] = params.invokeType
             config['error'] = reject
@@ -212,7 +212,7 @@ export function execute(methodCode, params) {
             })
           }
           break
-        case exports.InvokeType.ExtensionPoint:
+        case InvokeType.ExtensionPoint:
           var epConditionParams = params.epParams
           var isExistService = mediator.isExistService(serviceName)
           if (isExistService) {
@@ -261,7 +261,7 @@ var handleParam = function (
   //如果调用活动集时，设置了入参，则将此入参的值覆盖到活动集原始配置参数中。
   var mockParam = {}
   //获取活动集配置
-  var ruleSetConfig = exports.get(methodCode, componentCode, windowCode)
+  var ruleSetConfig = get(methodCode, componentCode, windowCode)
   if (ruleSetConfig && ruleSetConfig.getInputs()) {
     var ruleSetcfg_inputs = ruleSetConfig.getInputs()
     for (var i = 0, l = ruleSetcfg_inputs.length; i < l; i++) {
@@ -479,7 +479,7 @@ var getSelfScope = function () {
  * 方法类型
  * @enum
  */
-exports.MethodType = {
+const MethodType = {
   /**
    * 客户端方法
    */
@@ -489,11 +489,14 @@ exports.MethodType = {
    */
   Server: 'server-ruleSet'
 }
+
+export { MethodType }
+
 /**
  * 调用的方法类型
  * @enum
  */
-exports.InvokeType = {
+const InvokeType = {
   /**
    * spi
    */
@@ -511,11 +514,14 @@ exports.InvokeType = {
    */
   ExtensionPoint: 'extensionPoint'
 }
+
+export { InvokeType }
+
 /**
  * ep执行范围
  * @enum
  */
-exports.EpScope = {
+const EpScope = {
   /**
    * 全部
    */
@@ -533,6 +539,9 @@ exports.EpScope = {
    */
   SelfAndChildren: 'selfAndChildren'
 }
+
+export { EpScope }
+
 /**
  * 获取窗体信息
  * */

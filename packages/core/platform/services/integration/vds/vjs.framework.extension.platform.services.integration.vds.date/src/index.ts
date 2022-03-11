@@ -27,7 +27,7 @@ export function initModule(sb) {
  * 日期单位枚举
  * @enum {String}
  */
-exports.Units = {
+Units = {
   /**
    * 年
    */
@@ -53,6 +53,8 @@ exports.Units = {
    */
   Second: 's'
 }
+
+export { Units }
 
 /**
  * 在指定日期添加时间间隔

@@ -4,9 +4,10 @@
  * 返回值 "yyyyMM"
  */
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { widget }
 
-const main = function (expressionSrc) {
+const main = function (expressionSrc: string) {
   var widget = vds.widget.getProperty(expressionSrc, 'widgetObj')
   if (widget) return widget.getCurrentMonth()
   return null

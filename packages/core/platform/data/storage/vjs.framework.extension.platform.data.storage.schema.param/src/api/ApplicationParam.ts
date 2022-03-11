@@ -61,7 +61,7 @@ const getRuleSetInput = function (
   metaCode: string,
   paramCode: string
 ) {
-  let inputs = exports.getRuleSetInputs(componentCode, windowCode, metaCode)
+  let inputs = getRuleSetInputs(componentCode, windowCode, metaCode)
   if (inputs) {
     for (let i = 0; i < inputs.length; i++) {
       let input = inputs[i]
@@ -180,7 +180,7 @@ const getWindowMappingSync = function (sourceWindowInfo) {
       let datas = func(infos)
       _d.resolve(datas)
     }
-  })(sourceWindowInfo, exports.getWindowMapping, dtd)
+  })(sourceWindowInfo, getWindowMapping, dtd)
   if (sourceWindowInfo.componentCode) {
     componentInit.initComponent({
       componentCode: sourceWindowInfo.componentCode,

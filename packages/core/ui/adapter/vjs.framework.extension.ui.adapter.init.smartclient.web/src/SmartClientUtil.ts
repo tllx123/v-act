@@ -1063,10 +1063,12 @@ export function preLoad(params) {
   })
 }
 
-exports.getComponentByCode = getComponentByCode
-exports.renderComponentById = renderComponentById
-exports.renderAsElement = renderAsElement
-exports.renderComponent = renderComponent
-exports.prepareComponent = prepareComponent
-exports.setRunningMode = setRunningMode
-exports.renderWindows = renderWindows
+export {
+  getComponentByCode,
+  renderComponentById,
+  renderAsElement,
+  renderComponent,
+  prepareComponent,
+  setRunningMode,
+  renderWindows
+}

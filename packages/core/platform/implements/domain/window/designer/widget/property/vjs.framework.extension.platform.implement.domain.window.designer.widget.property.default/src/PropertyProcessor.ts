@@ -301,7 +301,7 @@ export function toDesignerWidgetProps(propertys, series) {
   ) {
     metadataPropertys = processorUtils.convert(metadataPropertys) // 二次开发格式转换成控件所需的格式
   }
-  metadataPropertys = exports.resortMetadataProperty(metadataPropertys)
+  metadataPropertys = resortMetadataProperty(metadataPropertys)
   for (var key in metadataPropertys) {
     if (
       !metadataPropertys.hasOwnProperty(key) ||
@@ -387,7 +387,7 @@ export function toRuntimeWidgetProps(params) {
           continue
         }
       }
-      exports.toRuntimeWidgetProps({
+      toRuntimeWidgetProps({
         propertys: widget,
         propObj: propObj,
         mappingDatas: params.mappingDatas,
@@ -421,7 +421,7 @@ export function cloneProps(source, target, sortCfg) {
 }
 
 export function genDesignerWidgetProps(property, series) {
-  var props = exports.toDesignerWidgetProps(property, series)
+  var props = toDesignerWidgetProps(property, series)
   if (props) {
     var datas = processorUtils.genParentFormats(props)
     return datas

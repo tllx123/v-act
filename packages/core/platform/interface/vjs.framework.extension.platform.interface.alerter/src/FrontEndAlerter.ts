@@ -13,13 +13,15 @@ let errorStack = []
 //当前容器的异常信息 key：容器标识 value 异常信息 用于反馈问题页面获取异常信息
 let currentErrorInfos = {}
 
-exports.TYPE = {
+const TYPE = {
   SYSTEM: 'SystemException', //系统异常弹框
   DEV: 'DevException', //环境异常弹框
   CONFIG: 'ConfigException', //配置异常弹框
   BUSINESS: 'BusinessException', //业务异常弹框
   LOGIN: 'LoginException' //登录异常
 }
+
+export { TYPE }
 
 const initModule = function (sb) {
   sandbox = sb
@@ -406,7 +408,7 @@ const error = function (params) {
     }
   })(func2, iden)
   if (!params.type) {
-    params.type = exports.TYPE.SYSTEM
+    params.type = TYPE.SYSTEM
   }
   errorStack.push(params)
   _removeRepeat()

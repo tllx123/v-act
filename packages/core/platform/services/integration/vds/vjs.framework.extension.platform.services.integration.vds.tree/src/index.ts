@@ -8,28 +8,12 @@
  * vds.import("vds.tree.*");
  * vds.tree.lookup("treeCode1",vds.tree.createTreeStruct("treeCode1","PID","OrderNo","InnerCode","IsLeafCode"));
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var tree = vds.tree
-if (!tree) {
-  tree = {}
-  vds.tree = tree
-}
-exports = tree
 
-var sandbox, treeManager, Tree, TreeStruct
+import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
 
-export function initModule(sBox) {
-  sandbox = sBox
-  treeManager = sBox.getService(
-    'vjs.framework.extension.platform.services.model.manager.tree.TreeManager'
-  )
-  Tree = require('vjs/framework/extension/platform/services/integration/vds/tree/Tree')
-  TreeStruct = require('vjs/framework/extension/platform/services/integration/vds/tree/TreeStruct')
-}
+import Tree from './Tree'
+import TreeStruct from './TreeStruct'
+
 /**
  * 二开规范的树型结构适配成控件所需的结构
  * @ignore
@@ -73,7 +57,7 @@ export function lookup(treeCode, treeStruct) {
   if (!treeCode || !treeStruct) {
     return null
   }
-  treeStruct = exports._toTreeStruct(treeCode, treeStruct)
+  treeStruct = _toTreeStruct(treeCode, treeStruct)
   var tree = treeManager.lookup({
     datasourceName: treeCode,
     treeStruct: treeStruct
@@ -134,7 +118,7 @@ export function getAll(treeCode) {
       var treeStruct = tree.getTreeStruct()
       trees[i] = new Tree(
         tree,
-        exports._toTreeStruct(tree._getDatasourceName(), treeStruct)
+        _toTreeStruct(tree._getDatasourceName(), treeStruct)
       )
     }
     return trees
@@ -142,4 +126,3 @@ export function getAll(treeCode) {
     return []
   }
 }
-module.exports = exports

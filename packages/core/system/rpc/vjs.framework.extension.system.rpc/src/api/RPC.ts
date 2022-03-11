@@ -112,7 +112,7 @@ const log = function (params) {
     if (isWindowScope) {
       params.windowCode = scope.getWindowCode()
     }
-    exports.invokeOperation(params)
+    invokeOperation(params)
   } catch (e) {
     log.error(e.message)
   }
@@ -124,8 +124,6 @@ const crossDomainRequest = function (params) {
   return invoke(params, 'common', 'crossDomain')
 }
 
-//TODO
-window.RPC = exports
 export {
   crossDomainRequest,
   invokeExtensibleOperation,

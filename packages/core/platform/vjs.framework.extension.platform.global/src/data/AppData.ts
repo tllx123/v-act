@@ -59,7 +59,7 @@ const getRuleSetInput = function (
   metaCode,
   paramCode
 ) {
-  let inputs = exports.getRuleSetInputs(componentCode, windowCode, metaCode)
+  let inputs = getRuleSetInputs(componentCode, windowCode, metaCode)
   if (inputs) {
     for (let i = 0; i < inputs.length; i++) {
       let input = inputs[i]

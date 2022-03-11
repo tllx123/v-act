@@ -1,10 +1,5 @@
-var sb,
-  windowZindex = [],
+var windowZindex = [],
   bodyOver = true
-
-export function initModule(sandbox) {
-  sb = sandbox
-}
 
 /**
  * @param Number tmpZIndex 层级，可不传
@@ -22,7 +17,7 @@ export function Show(tmpZIndex) {
       bodyOver = false
     }
   }
-  var zindex = require('vjs/framework/extension/platform/services/view/ui/ZIndex')
+
   var _zindex = tmpZIndex ? tmpZIndex : zindex.getFrontZIndex()
   windowZindex.push(_zindex)
   if ($('#windowBackMark').length == 0) {

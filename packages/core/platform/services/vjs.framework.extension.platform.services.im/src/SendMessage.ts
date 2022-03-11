@@ -7,14 +7,14 @@ const putInstance = function (ins) {
 /**
  * if is singlechat,that means this message will send to a person.if is chatroom,that means this message will send to a group or a chatroom.
  */
-exports.chatType = {
+const chatType = {
   SINGLECHAT: 'singleChat',
   CHATROOM: 'chatRoom'
 }
 /**
  * this object define a media type.
  */
-exports.mediaType = {
+const mediaType = {
   IMAGE: 'img',
   FILE: 'file',
   AUDIO: 'audio',
@@ -23,10 +23,12 @@ exports.mediaType = {
 /**
  * this object define a room type.
  */
-exports.roomType = {
+const roomType = {
   GROUP: false,
   ROOM: true
 }
+
+export { chatType, mediaType, roomType }
 
 const sendText = function (message, receiveId, chatType, successCB, failCB) {
   return instance.sendText(message, receiveId, chatType, successCB, failCB)

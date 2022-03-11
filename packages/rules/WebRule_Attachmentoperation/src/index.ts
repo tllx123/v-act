@@ -10,7 +10,8 @@
  * </code>
  */
 
-import * as attachment from '@v-act/vjs.framework.extension.platform.services.integration.vds.attachment'
+import * as attachment from 'packages/core/platform/interface/vjs.framework.extension.platform.interface.watermark/vjs.framework.extension.platform.services.integration.vds.attachment/src'
+
 import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
 import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'

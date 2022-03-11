@@ -65,7 +65,7 @@ const beforeRuleExecute = function (ruleSetCode, ruleCode, routeContext) {
       )
     ) {
       let hook = getDevHook(),
-        params = exports.getBusinessData()
+        params = getBusinessData()
       //该规则需要调试，进入调试
       hook.beforeRuleExecute(
         componentCode,
@@ -82,7 +82,7 @@ const beforeRuleExecute = function (ruleSetCode, ruleCode, routeContext) {
 }
 
 const getBusinessData = function () {
-  let routeContext = exports._getCurrentRouteContext()
+  let routeContext = _getCurrentRouteContext()
   return paramGener.genParams(routeContext)
 }
 
@@ -90,7 +90,7 @@ const ruleExecuted = function (ruleSetCode, ruleCode, routeContext) {
   if (inDebug()) {
     currentRouteContext = routeContext
     let hook = getDevHook(),
-      params = exports.getBusinessData()
+      params = getBusinessData()
     let componentCode = utils.getComponentCode()
     let windowCode = utils.isWindowScope() ? utils.getWindowCode() : null
 
@@ -140,13 +140,13 @@ const update = function (
   json
 ) {
   let data = jsonUtil.json2obj(json)
-  let routeContext = exports._getCurrentRouteContext()
+  let routeContext = _getCurrentRouteContext()
   updater.update(data, routeContext)
 }
 
 const exeExp = function (expression) {
   let expCtx = new expContext()
-  expCtx.setRouteContext(exports._getCurrentRouteContext())
+  expCtx.setRouteContext(_getCurrentRouteContext())
   return !!expEngine.execute({ expression: expression, context: expCtx })
 }
 
@@ -165,7 +165,7 @@ const setRemoteDebugHost = function (host, callback) {
 
 //TODO
 window.V3PlatformDebugger = {}
-V3PlatformDebugger.setRemoteDebugHost = exports.setRemoteDebugHost
+V3PlatformDebugger.setRemoteDebugHost = setRemoteDebugHost
 
 const isEnable = function () {
   return enable

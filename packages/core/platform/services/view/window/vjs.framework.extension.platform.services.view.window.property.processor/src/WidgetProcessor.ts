@@ -6,35 +6,15 @@
  * vjs服务名称：vjs.framework.extension.platform.services.view.window.property.WidgetProcessor<br/>
  * @author liangzc
  * */
-var sandbox,
-  scopeManager,
-  processorManager,
-  propertyHandle,
-  configDataUtil,
-  webDesignPropertyHandle,
-  jsonUtils,
-  prototypeProcessor
 
-export function initModule(sb) {
-  sandbox = sb
-  scopeManager = sb.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  configDataUtil = sb.getService(
-    'vjs.framework.extension.platform.util.configDataUtil'
-  )
-  jsonUtils = sb.getService('vjs.framework.extension.util.JsonUtil')
-  webDesignPropertyHandle = sb.getService(
-    'vjs.framework.extension.platform.window.property.handle.WebDesignPropertyHandle'
-  )
-  prototypeProcessor = sb.getService(
-    'vjs.framework.extension.platform.services.view.prototype.property.PrototypeProcessor'
-  )
-  processorManager = require('vjs/framework/extension/platform/services/view/window/property/processor/ProcessorManager')
-  propertyHandle = sb.getService(
-    'vjs.framework.extension.platform.window.property.handle.PropertyHandle'
-  )
-}
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ConfigDataUtil as configDataUtil } from '@v-act/vjs.framework.extension.platform.util.config.data'
+import {
+  PropertyHandle as propertyHandle,
+  WebDesignPropertyHandle as webDesignPropertyHandle
+} from '@v-act/vjs.framework.extension.platform.window.property'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
+
 /**
  * 窗体属性处理器
  * @param	{Object}	params
@@ -50,7 +30,7 @@ export function process(params) {
   var dtds = []
   //旧版vjs 表单标题自适应 权限
   var services = sandbox.getAllServices(
-    'vjs.framework.extension.platform.interface.view.window.widget.property.processor'
+    '@v-act/vjs.framework.extension.platform.interface.view.window.widget.property.processor'
   )
   if (!services) {
     services = []

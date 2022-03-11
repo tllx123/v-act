@@ -2,23 +2,15 @@
  * 二次开发的规则上下文
  * */
 
-var VObject, dsFactory
+import VObject from './VObject'
 
-var RuleContext = function (ruleCfg, mock) {
-  this._ruleCfg = ruleCfg
-  this._cacheDatas = {}
-  this._vObject = new VObject(mock)
-}
-
-RuleContext.prototype = {
-  initModule: function (sBox) {
-    dsFactory = sBox.getService(
-      'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-    )
-    VObject = require('vjs/framework/extension/platform/services/integration/vds/mock/context/VObject')
-  },
-
-  getInput: function (code) {
+class RuleContext {
+  constructor(ruleCfg, mock) {
+    this._ruleCfg = ruleCfg
+    this._cacheDatas = {}
+    this._vObject = new VObject(mock)
+  }
+  getInput(code) {
     if (this._cacheDatas.hasOwnProperty(code)) {
       return this._cacheDatas[code]
     }
@@ -33,37 +25,35 @@ RuleContext.prototype = {
     }
     this._cacheDatas[code] = value
     return value
-  },
+  }
 
-  setOutput: function (code, value) {
+  setOutput(code, value) {
     var mock = this._vObject.mock
     mock._putOutput(code, value)
-  },
+  }
 
-  getVObject: function () {
+  getVObject() {
     return this._vObject
-  },
+  }
 
-  getInputSize: function () {
+  getInputSize() {
     var mock = this._vObject.mock
     return mock.inpus ? mock.inpus.length : 0
-  },
+  }
 
-  _getRuleCfg: function () {
+  _getRuleCfg() {
     return this._ruleCfg
-  },
+  }
 
-  _isMock: function () {
+  _isMock() {
     return true
-  },
+  }
 
   /**
    * 获取规则上下文的数据容器
    * */
-  newOutput: function () {
+  newOutput() {
     return this._vObject.mock.container
   }
 }
-
-exports.RuleContext = RuleContext
-return RuleContext
+export default RuleContext

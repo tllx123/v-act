@@ -39,7 +39,7 @@ export function initModule(sb) {
   let windowInit = sb.getService(
     'vjs.framework.extension.platform.services.init.WindowInit'
   )
-  exports.registerOpenNotification(function (event) {
+  registerOpenNotification(function (event) {
     //edit by wangyue  2019.05.16
     //由于iOS的Xcode版本不能升级到最新，所以使用的是jpush的3.03旧版本，所以此处的传参event的数据结构会与安卓最新版本不同，在此做兼容处理
     let extras = event.extras

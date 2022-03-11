@@ -596,7 +596,7 @@
     })
   } else if (typeof exports === 'object') {
     // CommonJS
-    exports.EventEmitter2 = EventEmitter
+    EventEmitter2 = EventEmitter
   } else {
     // Browser global.
     window.EventEmitter2 = EventEmitter

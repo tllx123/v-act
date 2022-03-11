@@ -620,8 +620,7 @@ var hasDynamicFields = function (widgetId) {
   }
   return false
 }
-exports.addDynamicFields = addDynamicFields
-exports.getData = getData
+export { addDynamicFields, getData }
 
 export function bindEvent(element) {
   dataListHandlerBindEvent(element)
@@ -700,7 +699,7 @@ export function genLoadAction(widgetCode) {
 
     element._getSelectionUpdatedStated(false)
 
-    exports.addDynamicFields(widgetCode, params)
+    addDynamicFields(widgetCode, params)
     var isCover = !params.isAppend
     var tree = treeViewUtil.getTree(widgetCode)
     if (isCover) {

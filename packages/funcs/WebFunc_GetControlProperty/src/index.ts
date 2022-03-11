@@ -3,11 +3,12 @@
  * 参数1：字符串，必填，单个控件编码 参数2：字符串，必填，例如Visible、ReadOnly、Enable、Lable、Value==
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { exception, widget, log }
 
-const main = function (widgetCode, propertyName) {
+const main = function (widgetCode: string, propertyName: string) {
   if (widgetCode == undefined || widgetCode === '') {
     var exception = vds.exception.newConfigException('控件编码不能为空！')
     throw exception
@@ -26,7 +27,7 @@ const main = function (widgetCode, propertyName) {
 
   if (widget) {
     var widgetType = vds.widget.getType(widgetCode)
-
+    //@ts-ignore
     var PropertyValue = vds.widget.execute(widgetCode, 'get' + propertyName)
     if (PropertyValue == null) {
       var ErrorMsg =

@@ -1,6 +1,5 @@
 import React,{useEffect} from 'react';
 import { useRouter } from 'next/router';
-import {ViewLib as viewLib} from '@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib'
 import dynamic from 'next/dynamic';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
@@ -35,8 +34,10 @@ function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
-    useEffect(()=>{
+    useEffect(async ()=>{
       try{
+        debugger
+        const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).default
         viewLib.init({
           "paramCfg": {
             "skinType": "default",

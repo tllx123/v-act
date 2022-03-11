@@ -976,7 +976,7 @@ let excuteModalLogic = function (urlObj, params) {
             cf()
           }
         } else {
-          exports.close({
+          close({
             url: sourceUrl,
             type: 'modal',
             closeAll: true //设置退出所有
