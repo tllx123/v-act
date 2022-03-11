@@ -10,9 +10,13 @@
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+
 const vds = { exception, widget }
 
-const main = function (entityName, indexNum) {
+const main = function (
+  entityName: string,
+  indexNum: string | number | undefined
+) {
   if (entityName == undefined || entityName === '') {
     var exception = vds.exception.newConfigException('实体名不能为空！')
     throw exception
@@ -21,7 +25,7 @@ const main = function (entityName, indexNum) {
   if (indexNum == undefined) {
     indexNum = 0
   }
-  indexNum = parseInt(indexNum, 10)
+  indexNum = parseInt(indexNum as string, 10)
   if (isNaN(indexNum)) {
     indexNum = 0
   }
@@ -32,6 +36,7 @@ const main = function (entityName, indexNum) {
   var widgetCode = ''
   var widget
 
+  //@ts-ignore
   widgetCodes = vds.widget.getWidgetCodes(entityName)
 
   if (widgetCodes.length > 0) {
