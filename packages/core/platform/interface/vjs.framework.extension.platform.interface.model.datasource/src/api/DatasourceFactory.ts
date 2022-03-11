@@ -177,7 +177,7 @@ const createDatasourceFromConfig = function (config) {
   return ds
 }
 
-_getFieldFromValue = function (code, value) {
+const _getFieldFromValue = function (code, value) {
   let type = typeof value
   switch (type) {
     case 'string':
