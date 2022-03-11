@@ -1,23 +1,24 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { cookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
+import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let sandBox
-export function initModule(sb) {
+let sandBox:any
+export function initModule(sb:any) {
   sandBox = sb
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'
   )
-  dependency.putInstance(exports)
+  dependency.putInstance(this)
 }
 
 /**
  * <b>资源池</b>
  */
-let resourcePackagePool = {}
+let resourcePackagePool:{[code:string]:any} = {}
 
-let resourceWindowPool = {}
+let resourceWindowPool:{[code:string]:any} = {}
 
-let getLanguageCode = function (componentCode, languageCode, callFun) {
+let getLanguageCode = function (componentCode:string, languageCode:string, callFun:any) {
   let inputParams = {
     ruleSetCode: 'CommonRule_ResourceOperation',
     componentCode: componentCode,
@@ -43,13 +44,13 @@ let getLanguageCode = function (componentCode, languageCode, callFun) {
   serverRuleSetAccessor.invoke(inputParams)
 }
 
-let getValidLanguage = function (componentCode, resourceCode) {
+let getValidLanguage = function (componentCode:string, resourceCode:string) {
   let backLang = ''
   if (!resourceCode) {
     return resourceCode
   }
   let jsonUtil = sandBox.getService('vjs.framework.extension.util.JsonUtil')
-  getLanguageCode(componentCode, resourceCode, function (inputParams) {
+  getLanguageCode(componentCode, resourceCode, function (inputParams:any) {
     if (inputParams && inputParams.OutputJson) {
       let parsms = jsonUtil.json2obj(inputParams.OutputJson)
       if (parsms && parsms.language) {
@@ -64,10 +65,10 @@ let getValidLanguage = function (componentCode, resourceCode) {
  * 设置当前窗体使用的默认语言
  */
 let setWindowCurrentResourceCode = function (
-  newScopeId,
-  preScopeId,
-  componentCode,
-  languageCode
+  newScopeId:string,
+  preScopeId:string,
+  componentCode:string,
+  languageCode:string
 ) {
   if (!newScopeId) {
     newScopeId = scopeManager.getWindowScope().getInstanceId()
@@ -79,7 +80,7 @@ let setWindowCurrentResourceCode = function (
     let curLanguage = ''
     //获取cookie
     if (cookieUtil && cookieUtil.vcookie) {
-      let options = {}
+      let options:{[code:string]:any} = {}
       options.expires = new Date(2500, 0, 1)
       let value
       curLanguage = cookieUtil.vcookie({
@@ -106,7 +107,7 @@ let setWindowCurrentResourceCode = function (
 /**
  * 获取当前窗体使用的默认语言
  */
-let getWindowCurrentResourceCode = function (scopeId) {
+let getWindowCurrentResourceCode = function (scopeId:string) {
   if (!scopeId) {
     scopeId = scopeManager.getWindowScope().getInstanceId()
   }
@@ -123,7 +124,7 @@ let curResourcePackageCode
  * @key 资源标识
  * @return Object 资源值，如果找不到资源则返回null
  */
-let getResourceItem = function (resourceCode, componentCode, resourceType) {
+let getResourceItem = function (resourceCode:string, componentCode:string, resourceType:string) {
   let _windowPool =
     resourceWindowPool[scopeManager.getWindowScope().getInstanceId()]
   let _component = componentCode
@@ -150,7 +151,7 @@ let getResourceItem = function (resourceCode, componentCode, resourceType) {
  * @key 资源标识
  * @return Object 资源值，如果找不到资源则返回null
  */
-let getResourceItems = function (componentCode, resourceType) {
+let getResourceItems = function (componentCode:string, resourceType:string) {
   let _windowPool =
     resourceWindowPool[scopeManager.getWindowScope().getInstanceId()]
   if (
@@ -194,23 +195,23 @@ let getWindowCode = function () {
   return code
 }
 
-let getLanguageItem = function (resourceCode, componentCode) {
+let getLanguageItem = function (resourceCode:string, componentCode:string) {
   return getResourceItem(resourceCode, componentCode, 'language')
 }
 
-let getLanguageItems = function (componentCode) {
+let getLanguageItems = function (componentCode:string) {
   return getResourceItems(componentCode, 'language')
 }
 
-let getResItem = function (resourceCode) {
-  return getResourceItem('res', resourceCode)
+let getResItem = function (resourceCode:string) {
+  return getResourceItem('res', resourceCode,'')
 }
 /**
  * <b>获取资源</b>
  *
  * @pool 资源标识
  */
-let setResourcePool = function (pool, type) {
+let setResourcePool = function (pool:any, type:any) {
   //if (undefined == pool || undefined == pool.resources)
   //throw new Error("资源池格式错误请检查");
   resourcePackagePool = $.extend(true, {}, resourcePackagePool, pool)
@@ -218,7 +219,6 @@ let setResourcePool = function (pool, type) {
 
 export {
   getResItem,
-  getLanguageItem,
   setResourcePool,
   getLanguageItem,
   getLanguageItems,

@@ -1,18 +1,15 @@
 import { config as sdkConfigService } from '@v-act/vjs.framework.extension.platform.service.native.sdk'
 
-export function initModule(sb) {
-  console.log('GeolocationDingTalk 初始化')
-}
-
-const getCurrentPosition = function (successCB, errorCB) {
+const getCurrentPosition = function (successCB: Function, errorCB: Function) {
   sdkConfigService.initConfig(
     function () {
+      //@ts-ignore
       dd.device.geolocation.get({
         targetAccuracy: 200, //期望定位精度半径(单位米)，采用推荐值200m
         coordinate: 1, //1：获取高德坐标；0：获取标准坐标；
         withReGeocode: false, //是否需要带有逆地理编码信息
         useCache: false, //默认是true，如果需要频繁获取地理位置，请设置false
-        onSuccess: function (result) {
+        onSuccess: function (result: Record<string, any>) {
           /* 高德坐标 result 结构
                 {
                     longitude : Number,
@@ -44,19 +41,19 @@ const getCurrentPosition = function (successCB, errorCB) {
           }
           successCB(position)
         },
-        onFail: function (err) {
+        onFail: function (err: any) {
           alert(JSON.stringify(err))
           errorCB(err)
         }
       })
     },
-    function (error) {
+    function (error: any) {
       alert(JSON.stringify(error))
     }
   )
 }
 
-function isFunction(arg) {
+function isFunction(arg: any) {
   if (typeof arg == 'function') {
     return true
   }

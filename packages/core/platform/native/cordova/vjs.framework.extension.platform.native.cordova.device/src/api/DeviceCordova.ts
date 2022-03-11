@@ -1,7 +1,6 @@
-export function initModule(sb) {
-  let DeviceService = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.Device'
-  )
+import * as DeviceService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Device'
+
+export function initModule(sb: any) {
   DeviceService.putInstance(exports)
 }
 
@@ -34,9 +33,9 @@ const getDeviceManufacturer = function () {
 }
 
 export {
+  getDeviceManufacturer,
+  getDeviceModel,
   getDevicePlatform,
   getDevicePlatformVersion,
-  getDeviceModel,
-  getDeviceUUIDl,
-  getDeviceManufacturer
+  getDeviceUUIDl
 }
