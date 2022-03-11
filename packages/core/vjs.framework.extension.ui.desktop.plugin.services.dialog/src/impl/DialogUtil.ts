@@ -1,6 +1,6 @@
 let sandbox
 
-export function initModule(sb) {
+export function initModule(sb: any): void {
   sandbox = sb
 }
 
@@ -9,15 +9,19 @@ export function initModule(sb) {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: Function
+): any {
   let result
 
-  let callback = function (val) {
+  let callback = function (val: any) {
     if (typeof responseCallBackFunc == 'function') {
       val = !!val
       responseCallBackFunc(val)
     }
   }
+  //@ts-ignore
   result = isc.confirm(_toString(content), callback)
 
   return result
@@ -27,8 +31,12 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let propmtDialog = function (content, responseCallBackFunc, isUseDefault) {
+let propmtDialog = function (
+  content: string,
+  responseCallBackFunc: Function
+): void {
   //直接使用sc的
+  //@ts-ignore
   isc.say(_toString(content), responseCallBackFunc)
 }
 /**
@@ -36,7 +44,11 @@ let propmtDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: Function
+): void {
+  //@ts-ignore
   isc.warn(_toString(content), responseCallBackFunc)
 }
 /**
@@ -44,7 +56,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: Function
+): void {
+  //@ts-ignore
   isc.warn(_toString(content), responseCallBackFunc)
 }
 /**
@@ -52,10 +68,15 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: Function
+): void {
+  //@ts-ignore
   isc.say(_toString(content), responseCallBackFunc)
 }
-let _toString = function (content) {
+let _toString = function (content: string): string {
+  //@ts-ignore
   if (isc.isA.String(content)) {
     return content
   } else {
