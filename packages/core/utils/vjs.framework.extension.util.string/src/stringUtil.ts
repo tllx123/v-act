@@ -268,7 +268,7 @@ let trim = function (str: string) {
 /**
  * 判断参数是否为空
  */
-let isEmpty = function (str: string) {
+let isEmpty = function (str: string | number) {
   return undefined == str || null == str || String(str) == ''
 }
 

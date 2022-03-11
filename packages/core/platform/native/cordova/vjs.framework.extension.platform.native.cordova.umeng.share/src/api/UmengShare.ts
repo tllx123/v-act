@@ -1,7 +1,6 @@
-export function initModule(sb) {
-  let UmengShareService = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.umeng.Share'
-  )
+import * as UmengShareService from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.Share'
+
+export function initModule(sb: any) {
   UmengShareService.putInstance(exports)
 }
 
@@ -9,19 +8,22 @@ export function initModule(sb) {
  * 初始化cordova的拍照插件，注为全局对象
  *
  */
+//@ts-ignore
 if (window.VJSBridge) {
+  //@ts-ignore
   window.VJSBridge.plugins.vplatform.UmengShareService = navigator.UmengShare
 }
 
 const share = function (
-  text,
-  title,
-  url,
-  imgUrl,
-  platforms,
-  successCB,
-  errorCB
+  text: string,
+  title: string,
+  url: string,
+  imgUrl: string,
+  platforms: any,
+  successCB: Function,
+  errorCB: Function
 ) {
+  //@ts-ignore
   navigator.UmengShare.share(
     text,
     title,
@@ -33,16 +35,23 @@ const share = function (
   )
 }
 
-const auth = function (platformName, successCB, errorCB) {
+const auth = function (
+  platformName: string,
+  successCB: Function,
+  errorCB: Function
+) {
+  //@ts-ignore
   navigator.UmengShare.auth(platformName, successCB, errorCB)
 }
 
-const isInstall = function (platformName, callback) {
+const isInstall = function (platformName: Function, callback: Function) {
+  //@ts-ignore
   if (navigator.UmengShare.isInstall) {
+    //@ts-ignore
     navigator.UmengShare.isInstall(platformName, callback)
   } else {
     callback('true')
   }
 }
 
-export { share, auth, isInstall }
+export { auth, isInstall, share }

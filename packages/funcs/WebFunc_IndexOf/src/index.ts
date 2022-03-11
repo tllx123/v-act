@@ -1,3 +1,4 @@
+import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 /**
  *	返回某个指定的字符串值在字符串中首次出现的位置。
  *  代码示例:IndexOf('ab','b') 返回值为 1
@@ -7,10 +8,10 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
+
 const vds = { object, string, number }
 
-const main = function (arg1, arg2, arg3) {
+const main = function (arg1: string, arg2: string, arg3: string) {
   if (vds.object.isUndefOrNull(arg1)) {
     //throw new Error("字符串为空，请检查");
   }

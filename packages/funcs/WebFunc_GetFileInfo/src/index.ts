@@ -23,10 +23,10 @@ var executeExpression = function (fileid: string, FileInfoType: string) {
     operationParam: {
       expression: expression
     },
-    success: function (rs) {
+    success: function (rs: any) {
       result = rs.data.result
     },
-    fail: function (e) {
+    fail: function (e: any) {
       throw e
     }
   })
