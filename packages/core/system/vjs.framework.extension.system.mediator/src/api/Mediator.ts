@@ -3,17 +3,17 @@ import { EventExtension as eventExtension } from '@v-act/vjs.framework.extension
 
 /*import spiMappingUtils
   from '@v-act/vjs.framework.extension.platform.data.spi.mapings'*/
-const spiMappingUtils = null
+const spiMappingUtils:any = null
 
 let SERVICE_MAPPING_DATAS = 'Service_Mapping_Datas'
 let MEDIATOR_SERVICE = 'mediator'
-export function initModule(sBox) {}
+
 
 let getStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, SERVICE_MAPPING_DATAS)
 }
 
-const subscribe = function (serviceName, listener, epImpInfo) {
+const subscribe = function (serviceName:string, listener:any, epImpInfo:any) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   if (epImpInfo) {
     let storage = getStorage()
@@ -24,7 +24,7 @@ const subscribe = function (serviceName, listener, epImpInfo) {
       epImpInfo.metaType
     )
     if (!storage.containsKey(serviceName)) {
-      let info = {}
+      let info:{[code:string]:any} = {}
       info[epImpKey] = {
         func: listener,
         epImpInfo: epImpInfo
@@ -40,7 +40,7 @@ const subscribe = function (serviceName, listener, epImpInfo) {
   return eventService.on.apply(eventService, arguments)
 }
 
-const publish = function (serviceName, arg, callback) {
+const publish = function (serviceName:string, arg:any, callback:any) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   //拼装eventEmitter触发事件函数的参数列表
   let param = []
@@ -63,7 +63,7 @@ const publish = function (serviceName, arg, callback) {
 /**
  * 获取事件列表
  * */
-let getListeners = function (serviceName, epConditionParams) {
+let getListeners = function (serviceName:string, epConditionParams:any) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   let listeners = eventService.listeners(serviceName)
   if (listeners && listeners.length > 0) {
@@ -76,7 +76,7 @@ let getListeners = function (serviceName, epConditionParams) {
       let invokeScopeKeys = getInvokeScopeKey(
         epConditionParams['#invokeScope#']
       )
-      let newListeners = []
+      let newListeners:{[code:string]:any} = []
       if (null != mappings) {
         for (let i = 0, len = mappings.length; i < len; i++) {
           let epImpKey = mappings[i]
@@ -101,7 +101,7 @@ let getListeners = function (serviceName, epConditionParams) {
   }
   return listeners
 }
-let getInvokeScopeKey = function (invokeScopes) {
+let getInvokeScopeKey = function (invokeScopes:any) {
   let invokeScopeKeys = null
   if (invokeScopes) {
     invokeScopeKeys = []
@@ -116,7 +116,7 @@ let getInvokeScopeKey = function (invokeScopes) {
 /**
  * 追加事件
  * */
-let appendListener = function (data, invokeScopeKeys, newListeners) {
+let appendListener = function (data:any, invokeScopeKeys:any, newListeners:any) {
   if (!data) {
     return
   }
@@ -135,12 +135,12 @@ let appendListener = function (data, invokeScopeKeys, newListeners) {
   }
 }
 
-const publishSerializable = function (serviceName, arg, callback) {
+const publishSerializable = function (serviceName:string, arg:any, callback:any) {
   let epConditionParams = arg ? arg[2] : null
   let listeners = getListeners(serviceName, epConditionParams)
   if (listeners && listeners.length > 0) {
     let listener = listeners[0]
-    let args = []
+    let args:{[code:string]:any} = []
     if (arg) {
       args = args.concat(arg)
     }
@@ -153,7 +153,7 @@ const publishSerializable = function (serviceName, arg, callback) {
   }
 }
 
-const emitNext = function (serviceName, current, arg, callback, callbckArgs) {
+const emitNext = function (serviceName:string, current:any, arg:any, callback:any, callbckArgs:any) {
   let next
   let epConditionParams = arg ? arg[2] : null
   let listeners = getListeners(serviceName, epConditionParams)
@@ -170,7 +170,7 @@ const emitNext = function (serviceName, current, arg, callback, callbckArgs) {
     }
   }
   if (next) {
-    let args = []
+    let args:{[code:string]:any} = []
     if (arg) args = args.concat(arg)
     args.push(callback)
     next.apply(next, args)
@@ -187,10 +187,10 @@ const getAllService = function () {
 }
 
 const getServiceName = function (
-  componentCode,
-  windowCode,
-  ruleSetCode,
-  metaType
+  componentCode:string,
+  windowCode:string,
+  ruleSetCode:string,
+  metaType:string
 ) {
   if (!windowCode) {
     windowCode = ''
@@ -198,7 +198,7 @@ const getServiceName = function (
   return componentCode + '_' + windowCode + '_' + ruleSetCode + '_' + metaType
 }
 
-const isExistService = function (serviceName) {
+const isExistService = function (serviceName:string) {
   let eventEmitterService = eventExtension.getInstance(MEDIATOR_SERVICE)
   let listeners = eventEmitterService.listeners(serviceName)
   if (listeners && listeners.length > 0) {
@@ -211,7 +211,7 @@ const isExistService = function (serviceName) {
  * 判断是否为数组
  * TODO暂时引不到jsTool
  */
-let isArray = function (object) {
+let isArray = function (object:any) {
   return Object.prototype.toString.call(object) === '[object Array]'
 }
 export {
