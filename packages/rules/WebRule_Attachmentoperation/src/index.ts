@@ -40,7 +40,11 @@ interface result {
 }
 
 interface data {
-  [key: unknown]: unknown
+  [key: string]: unknown
+}
+
+interface obj {
+  [key: string]: any
 }
 
 // 操作类型：上传、下载、删除、预览
@@ -142,7 +146,7 @@ const main = function (ruleContext: RuleContext) {
 function doUpload(
   controls: controls,
   ruleContext: RuleContext,
-  resolve: (value: unknown) => void,
+  resolve: (value: void | PromiseLike<void>) => void,
   reject: (reason?: any) => void
 ) {
   if (!controls || controls.length == 0) {
@@ -150,7 +154,7 @@ function doUpload(
   }
 
   var callback = function () {
-    resolve('0')
+    resolve()
   }
 
   var errorCB = function (errorMessage: string) {
@@ -216,9 +220,9 @@ function getSelectedFileIds(fileIdField: string) {
   var chooseMode = 0
   if (widgetCodes && widgetCodes.length > 0) {
     for (var j = 0, len = widgetCodes.length; j < len; j++) {
-      var widget = widget.getProperty(widgetCodes[j], 'widgetObj')
-      if (widget && widget.type == 'JGDataGrid') {
-        chooseMode = widget.ChooseMode
+      var widgetTemp = widget.getProperty(widgetCodes[j], 'widgetObj')
+      if (widgetTemp && widgetTemp.type == 'JGDataGrid') {
+        chooseMode = widgetTemp.ChooseMode
       }
     }
   }
@@ -284,7 +288,7 @@ function doDownload(
     'module-operation!executeOperation?moduleId=' +
     moduleId +
     '&operation=FileDown'
-  var token = {}
+  var token: obj = {}
   var fileName = ''
   if (fileType == 'expression') {
     var fileid = expression.execute(fileIdField, {
@@ -410,11 +414,14 @@ function doDownload(
   var mIsIOS = isIOS()
   var mIsAndroid = isAndroid()
   if (mIsApp) {
+    //@ts-ignore
     url = VPlatformPatch.getServiceAddr() + '/' + url
     if (mIsIOS) {
       alert('文件下载不支持iOS系统')
     } else if (mIsAndroid) {
+      //@ts-ignore
       if (cordova.plugins.system.config.systemDownload) {
+        //@ts-ignore
         cordova.plugins.system.config.systemDownload(url)
       } else {
         alert('当前客户端不支持文件下载，请升级客户端。')
@@ -461,16 +468,19 @@ function createIFrame(iframeId: string, url: string) {
 /**
  * 执行删除操作(删除所有选中的文件)
  */
-function doDelete(fileIdField: string, resolve: (value: unknown) => void) {
+function doDelete(
+  fileIdField: string,
+  resolve: (value: void | PromiseLike<void>) => void
+) {
   var delRecords = getSelectedRecords(fileIdField)
   if (delRecords == null || delRecords.length == 0) return
   for (var i = 0; i < delRecords.length; i++) {
     delRecords[i].set(getFieldName(fileIdField), null)
   }
   var dsName = getDataSourceName(fileIdField)
-  var ds = ds.lookup(dsName)
-  ds.updateRecords(delRecords)
-  resolve('')
+  var dsTemp = ds.lookup(dsName)
+  dsTemp.updateRecords(delRecords)
+  resolve()
 }
 
 /**
@@ -584,16 +594,20 @@ function callYozodcs(params: params) {
     reject = params.reject
 
   if (environment.isMobileWindow()) {
-    var successCB = function (data: unknown) {
+    var successCB = function (data: obj) {
       resolve()
     }
     var errorCB = function (errorMsg: string) {
       HandleException(errorMsg, reject)
     }
     var promise = attachment.preview(fileId)
-    promise.then(successCB).catch(errorCB)
+    promise
+      .then(() => {
+        successCB
+      })
+      .catch(errorCB)
   } else {
-    var successCB = function (data: any): any {
+    var successCB = function (data: obj) {
       var fileUrl = data.preViewfileUrl
       switch (previewTargetType) {
         case 'newTabPage':
@@ -617,7 +631,11 @@ function callYozodcs(params: params) {
       HandleException(errorMsg, reject)
     }
     var promise = attachment.convert(fileId)
-    promise.then(successCB).catch(errorCB)
+    promise
+      .then(() => {
+        successCB
+      })
+      .catch(errorCB)
   }
 }
 
@@ -699,11 +717,12 @@ function callPdfjs(params: params) {
     if (waterParamSet.picWatermarkStyle) {
       watermarkSrcFile =
         'itop/resources/' +
-        componentCode +
+        // componentCode +
         '_' +
         waterParamSet.picWatermarkStyle[0].watermarkFile
       watermarkZoom = waterParamSet.picWatermarkStyle[0].watermarkZoom
       watermarkLocation = waterParamSet.picWatermarkStyle[0].watermarkLocation
+      throw 'componentCode is undefined'
     }
     if (watermarkSrcFile) {
       sConfig.datas.push({
@@ -752,7 +771,11 @@ function callPdfjs(params: params) {
   }
 
   var promise = rpc.callCommand(sConfig.command, sConfig.datas, sConfig.params)
-  promise.then(callBackFunc).catch(reject)
+  promise
+    .then(() => {
+      callBackFunc
+    })
+    .catch(reject)
 }
 
 /**
@@ -777,8 +800,8 @@ function getHost(path: string, webContext: any) {
  * */
 function HandleException(error_msg: string, reject: (reason?: any) => void) {
   error_msg = ERRORNAME + error_msg
-  var exception = new exception.newSystemException(error_msg)
-  reject(exception)
+  var exceptionTemp = exception.newSystemException(error_msg)
+  reject(exceptionTemp)
 }
 
 export { main }

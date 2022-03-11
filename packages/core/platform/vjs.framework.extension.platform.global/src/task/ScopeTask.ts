@@ -1,4 +1,4 @@
-import * as TaskManager from './task/TaskManager'
+import * as TaskManager from './TaskManager'
 
 let ScopeManager
 
@@ -80,31 +80,4 @@ ScopeTask.prototype = {
   }
 }
 
-return ScopeTask
-
-export {
-  addRuleSetInputs,
-  getRuleSetInputs,
-  exists,
-  getRuleSetInput,
-  isAppConfigInfoLoaded,
-  markAppConfigInfoLoaded,
-  addComponentRouteInfo,
-  getRouteConfig,
-  addComponentVariantDefines,
-  getComponentVariantDefine,
-  addComponentOptionDefines,
-  getComponentOptionDefine,
-  destroy,
-  componentIsLoaded,
-  markForComponentLoaded,
-  componentIsInited,
-  markForComponentInited,
-  setComponentType,
-  getComponentType,
-  init,
-  existMapping,
-  getMapping,
-  init,
-  loadIcons
-}
+export default ScopeTask

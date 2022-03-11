@@ -184,22 +184,20 @@ const initInputs = function (inputParam) {
 }
 
 export {
-  initModule,
-  setVariant,
-  existsVariant,
-  getVariant,
-  getOption,
+  existsInput,
   existsOption,
-  markVariantInited,
-  isVariantInited,
-  initModule,
-  setInput,
+  existsOutput,
+  existsVariant,
   getInput,
   getInputs,
-  existsInput,
-  setOutput,
+  getOption,
   getOutput,
   getOutputs,
-  existsOutput,
-  initInputs
+  getVariant,
+  initInputs,
+  isVariantInited,
+  markVariantInited,
+  setInput,
+  setOutput,
+  setVariant
 }

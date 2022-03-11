@@ -23,13 +23,4 @@ Operation.prototype = {
   }
 }
 
-return Operation
-
-export {
-  _callAsyncObservers,
-  addObserver,
-  addOperation,
-  destroy,
-  fire,
-  getBindedDatasourceNames
-}
+export default Operation

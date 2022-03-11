@@ -1,4 +1,5 @@
-import { BaidutraceService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.Baidutrace'
+import { Baidutrace as BaidutraceService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.baidutrace'
+
 BaidutraceService.putInstance(exports)
 
 /**

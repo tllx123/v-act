@@ -1,6 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-import { TreeHandler as treeHandler } from '@v-act/vjs.framework.extension.ui.smartclient.plugin.services.TreeHandler'
+import { TreeHandler as treeHandler } from '@v-act/vjs.framework.extension.ui.smartclient.plugin.services.treehandler'
 
 export function getHandlerName() {
   return 'treeHandler'

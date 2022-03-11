@@ -5,7 +5,7 @@ import {
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import {
   AbstractChannel,
   Manager as channelManager

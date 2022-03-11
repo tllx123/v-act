@@ -1,7 +1,7 @@
 import { parse as p } from './ast/Parser'
 import Syntax from './ast/syntax/Syntax'
-import Printer from './Printer'
-import Visitor from './Visitor'
+import type Printer from './Printer'
+import type Visitor from './Visitor'
 
 const parse = function (exp: string): Syntax {
   return p(exp)

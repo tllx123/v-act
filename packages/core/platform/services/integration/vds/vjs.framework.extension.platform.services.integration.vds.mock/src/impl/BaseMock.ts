@@ -2,7 +2,13 @@
  * mock基础对象
  * */
 
-var RuleMock, FunctionMock, WidgetMock, scopeManager, paramRandom, Path
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+import { paramRandom } from '../ParamRandom'
+import * as Path from '../util/Path'
+import FunctionMock from './FunctionMock'
+import RuleMock from './RuleMock'
+import WidgetMock from './WidgetMock'
 
 /**
  * 基础mock定义
@@ -10,36 +16,25 @@ var RuleMock, FunctionMock, WidgetMock, scopeManager, paramRandom, Path
  * @alias BaseMock
  * @catalog 本地测试/基础定义
  */
-var BaseMock = function (metadata, scopeId, code, name, baseUrl) {
-  this.code = code
-  this.inputs = {} //输入参数
-  this.metadata = metadata
-  this.scopeId = scopeId
-  this._mockName = name || '插件'
-  this.baseUrl = '' || baseUrl
-  this.outputs = {} //输入参数
-}
+class BaseMock {
+  constructor(metadata, scopeId, code, name, baseUrl) {
+    this.code = code
+    this.inputs = {} //输入参数
+    this.metadata = metadata
+    this.scopeId = scopeId
+    this._mockName = name || '插件'
+    this.baseUrl = '' || baseUrl
+    this.outputs = {} //输入参数
+  }
 
-BaseMock.prototype = {
-  initModule: function (sb) {
-    RuleMock = require('vjs/framework/extension/platform/services/integration/vds/mock/impl/RuleMock')
-    WidgetMock = require('vjs/framework/extension/platform/services/integration/vds/mock/impl/WidgetMock')
-    FunctionMock = require('vjs/framework/extension/platform/services/integration/vds/mock/impl/FunctionMock')
-    paramRandom = require('vjs/framework/extension/platform/services/integration/vds/mock/ParamRandom')
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    Path = require('vjs/framework/extension/platform/services/integration/vds/mock/util/Path')
-  },
-
-  _toCallback: function (func, resolve, reject) {
+  _toCallback(func, resolve, reject) {
     var _this = this
     return function (res, rej) {
       func.call(_this, res, rej)
     }
-  },
+  }
 
-  _fixCode: function (code) {
+  _fixCode(code) {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var plugins = this.metadata.plugins
@@ -68,12 +63,12 @@ BaseMock.prototype = {
         resolve()
       })
     )
-  },
+  }
   /**
    * 根据编号获取插件定义
    * @ignore
    */
-  _getPlugin: function (code) {
+  _getPlugin(code) {
     if (this.metadata && this.metadata.plugins) {
       var plugins = this.metadata.plugins
       for (var i = 0, l = plugins.length; i < l; i++) {
@@ -84,12 +79,12 @@ BaseMock.prototype = {
       }
     }
     return null
-  },
+  }
   /**
    * 加载插件定义脚本
    * @ignore
    */
-  _loadDefineScript: function () {
+  _loadDefineScript() {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var plugin = this._getPlugin(this.code)
@@ -117,12 +112,12 @@ BaseMock.prototype = {
         }
       })
     )
-  },
+  }
   /**
    * 模拟插件
    * @ignore
    */
-  _mockPlugin: function () {
+  _mockPlugin() {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var plugin = this._getPlugin(this.code)
@@ -140,9 +135,9 @@ BaseMock.prototype = {
         }
       })
     )
-  },
+  }
 
-  _ruleMock: function () {
+  _ruleMock() {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var cb = this._toCallback(function () {
@@ -164,9 +159,9 @@ BaseMock.prototype = {
           })
       })
     )
-  },
+  }
 
-  _functionMock: function () {
+  _functionMock() {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var cb = this._toCallback(function () {
@@ -188,9 +183,9 @@ BaseMock.prototype = {
           })
       })
     )
-  },
+  }
 
-  _widgetMock: function () {
+  _widgetMock() {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         var sandBox = VMetrix.sandbox.create()
@@ -222,14 +217,14 @@ BaseMock.prototype = {
         )
       })
     )
-  },
+  }
 
   /**
    * 根据插件编码获取插件对象
    * @param	{String}	code 当manifest中只有一个插件时，可以不传，如果存在多个插件，则需要传入插件编码
    * @return	{Promise}
    * */
-  get: function (code) {
+  get(code) {
     return new Promise(
       this._toCallback(function (resolve, reject) {
         this._fixCode(code)
@@ -255,23 +250,23 @@ BaseMock.prototype = {
           )
       })
     )
-  },
+  }
 
   /**
    * mock输入配置
    * @param {String} key 配置编号
    * @param {Any} value 配置值
    */
-  mockInput: function (key, value) {
+  mockInput(key, value) {
     this.inputs[key] = value
     return this
-  },
+  }
 
   /**
    * 批量mock输入配置
    * @param {Object} params 配置信息
    */
-  mockInputs: function (params) {
+  mockInputs(params) {
     if (params) {
       for (var key in params) {
         if (param.hasOwnerProperty(key)) {
@@ -280,24 +275,24 @@ BaseMock.prototype = {
       }
     }
     return this
-  },
+  }
 
   /**
    * 运行插件
    * @returns {Promise}
    */
-  exec: function () {
+  exec() {
     return new Promise(function (resolve, reject) {
       resolve()
       scopeManager.closeScope()
     })
-  },
+  }
 
   /*
    * 获取所有前端插件编号
    * @return Array
    */
-  _getFrontendPluginCodes: function (targetType) {
+  _getFrontendPluginCodes(targetType) {
     var codes = []
     var types = targetType ? [targetType] : ['rule', 'function']
     var plugins = this.metadata.plugins
@@ -309,9 +304,9 @@ BaseMock.prototype = {
       }
     }
     return codes
-  },
+  }
 
-  _getPluginCfg: function () {
+  _getPluginCfg() {
     var plugins = this.metadata.plugins
     for (var i = 0, l = plugins.length; i < l; i++) {
       var plugin = plugins[i]
@@ -320,17 +315,17 @@ BaseMock.prototype = {
       }
     }
     return null
-  },
+  }
 
-  _isEntityByInputCode: function (code) {
+  _isEntityByInputCode(code) {
     var input = this._getPluginInputCfg(code)
     if (input && input.editor.type == 'entity') {
       return true
     }
     return false
-  },
+  }
 
-  _getPluginInputCfg: function (code) {
+  _getPluginInputCfg(code) {
     var plugin = this._getPluginCfg()
     var inputs = plugin.inputs
     if (inputs) {
@@ -342,13 +337,13 @@ BaseMock.prototype = {
       }
     }
     return null
-  },
+  }
 
-  _existInput: function (code) {
+  _existInput(code) {
     return this.inputs.hasOwnProperty(code)
-  },
+  }
 
-  _genInput: function (code, inputCfg) {
+  _genInput(code, inputCfg) {
     var input = inputCfg || this._getPluginInputCfg(code)
     if (input) {
       /*if(input.hasOwnProperty("default")){
@@ -386,27 +381,27 @@ BaseMock.prototype = {
           code
       )
     }
-  },
+  }
 
-  _getInput: function (code, input) {
+  _getInput(code, input) {
     if (!this._existInput(code)) {
       this.inputs[code] = this._genInput(code, input)
     }
     return this.inputs[code]
-  },
+  }
 
   /**
    * 获取输入信息
    * @param {String|Integer} code 输入编号或参数下标
    */
-  getInput: function (code) {
+  getInput(code) {
     return this._getInput(code)
-  },
+  }
 
   /**
    * 获取所有入参信息
    */
-  getInputs: function () {
+  getInputs() {
     var pluginCfg = this._getPluginCfg()
     var inputs = pluginCfg.inputs
     var res = {}
@@ -419,4 +414,4 @@ BaseMock.prototype = {
   }
 }
 
-return BaseMock
+export default BaseMock

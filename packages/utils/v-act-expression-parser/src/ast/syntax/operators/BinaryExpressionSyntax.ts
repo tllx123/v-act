@@ -1,8 +1,7 @@
 import { parseToSyntax } from '../../Parser'
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import BlankToken from '../../tokenizer/punctuation/BlankToken'
-import Token from '../../tokenizer/Token'
+import { Token, BlankToken } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 
 const getLeftSyntax = function (index: number, tokens: Array<Token | Syntax>) {

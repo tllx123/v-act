@@ -4,7 +4,7 @@ import {
   Request
 } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 
 export function initModule(sb) {}
 

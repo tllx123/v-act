@@ -70,5 +70,3 @@ export function toFixed(num, precision) {
 export function toFloorFixed(num, precision) {
   return mathUtil.toDecimalExt(num, precision)
 }
-
-return exports

@@ -1,7 +1,6 @@
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
-import EqualToken from '../../../../tokenizer/operator/comparator/EqualToken'
-import GreateToken from '../../../../tokenizer/operator/comparator/GreateToken'
+import { EqualToken, GreateToken } from '@v-act/tokenizer'
 import Syntax from '../../../Syntax'
 import ComparatorSyntax from '../ComparatorSyntax'
 

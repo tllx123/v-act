@@ -1,18 +1,22 @@
-var scopeManager, ruleEngine, RuleContext, jsonUtils, BaseMock
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RuleEngine as ruleEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
+
+import RuleContext from '../context/RuleContext'
+import BaseMock from './BaseMock'
 
 /**
  * 数据容器
  **/
-var DataContainer = function () {
-  this.datas = {}
-}
-
-DataContainer.prototype = {
-  set: function (code, value) {
+class DataContainer {
+  constructor() {
+    this.datas = {}
+  }
+  set(code, value) {
     this.datas[code] = value
     return this
-  },
-  get: function (code) {
+  }
+  get(code) {
     if (!code) {
       return this.datas
     }
@@ -37,45 +41,31 @@ DataContainer.prototype = {
  * 	});
  * });
  */
-var RuleMock = function (metadata, scopeId, code) {
-  BaseMock.call(this, metadata, scopeId, code, '规则')
-  this.container = new DataContainer()
-}
 
-RuleMock.prototype = {
-  initModule: function (sb) {
-    RuleContext = require('vjs/framework/extension/platform/services/integration/vds/mock/context/RuleContext')
-    BaseMock = require('vjs/framework/extension/platform/services/integration/vds/mock/impl/BaseMock')
-    var Extend = require('vjs/framework/extension/platform/services/integration/vds/mock/util/Extend')
-    Extend.extend(RuleMock, BaseMock, sb)
-    scopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-    ruleEngine = sb.getService(
-      'vjs.framework.extension.platform.services.engine.rule.RuleEngine'
-    )
-    jsonUtils = sb.getService('vjs.framework.extension.util.JsonUtil')
-  },
-
+class RuleMock extends BaseMock {
+  constructor(metadata, scopeId, code) {
+    super(metadata, scopeId, code, '规则')
+    this.container = new DataContainer()
+  }
   /**
    * 获取所有前端规则编号
    * @ignore
    * @return Array
    */
-  _getRuleCodes: function () {
+  _getRuleCodes() {
     var codes = this._getFrontendPluginCodes('rule')
     return codes
-  },
+  }
 
-  _getRuleInputCfg: function (code) {
+  _getRuleInputCfg(code) {
     return this._getPluginInputCfg(code)
-  },
+  }
 
-  _checkCfg: function () {
+  _checkCfg() {
     //此处统一检查整份配置信息必填值的合法性，后续代码不需要额外的判断逻辑
     var config = this._getPluginCfg()
     //....
-  },
+  }
   /**
    * 执行规则
    * @returns Promise
@@ -95,7 +85,7 @@ RuleMock.prototype = {
    * 	});
    * });
    */
-  exec: function () {
+  exec() {
     var _this = this
     return new Promise(function (resolve, reject) {
       var code = this.code
@@ -170,16 +160,16 @@ RuleMock.prototype = {
           scopeManager.closeScope()
         })
     })
-  },
+  }
   /**
    * 获取规则输出
    * @param {String} code 规则输出编号
    * @returns Any
    */
-  getOutput: function (code) {
+  getOutput(code) {
     return this.container.get(code)
   }
 }
 
 //	module.exports = RuleMock;
-return RuleMock
+export default RuleMock

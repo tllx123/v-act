@@ -1,11 +1,5 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-
-let sb
-
-const initModule = function (s) {
-  sb = s
-}
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 const create = function (ruleCode) {
   let windowScope = scopeManager.getWindowScope()
@@ -46,12 +40,9 @@ const createRuleException = function (params) {
 }
 
 export {
-  initModule,
+  create,
+  createRuleException,
   execute,
   executeRouteRule,
-  executeWithRouteCallback,
-  createRuleException,
-  initModule,
-  create,
-  createRuleException
+  executeWithRouteCallback
 }

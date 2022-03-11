@@ -33,12 +33,9 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-//规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-
-const vds = { ds, expression, message, window, component, log, widget, object }
 
 var randomFuncNames = [
   'GenerateSequenceNumber',
@@ -58,8 +55,11 @@ var randomFuncNames = [
 // }
 
 class AddTableRecord {
-  constructor(public dataSourceName: string, public numCount: number) {
-    return this
+  public dataSourceName: string
+  public numCount: number
+  constructor(dataSourceName_: string, numCount_: number) {
+    this.dataSourceName = dataSourceName_
+    this.numCount = numCount_
   }
 
   /**
@@ -67,7 +67,7 @@ class AddTableRecord {
    * @param position 位置参数
    * "0","1", "2", "3" 分别代表选中行上方、下方、最前、最后
    */
-  getActionMode = function (position: string, datasource: any) {
+  public getActionMode(position: string, datasource: any) {
     var actionMode
     switch (position) {
       case '0':
@@ -86,7 +86,7 @@ class AddTableRecord {
         actionMode = null
         break
       default:
-        vds.log.warn(
+        log.warn(
           '[AddTableRecord.getActionMode]插入位置不正确,传入的actionMode:' +
             position +
             ',自动适配成插入到最后'
@@ -103,13 +103,13 @@ class AddTableRecord {
    * 如：[{"fieldName": tablename.fieldName1, "value":value2}]
    * @param position 插入记录的位置（相比选中行，具体的逻辑在对应控件的hanlder中处理）
    */
-  insertRecords = function (
+  public insertRecords(
     datasource: any,
     defaultValueCfg: any,
     position: string
   ) {
     var insertRecords = []
-    for (var i = 0; i < numCount; i++) {
+    for (var i = 0; i < this.numCount; i++) {
       var emptyRecord = datasource.createRecord()
       for (var j = 0; j < defaultValueCfg.length; j++) {
         var fieldName = getFieldName(defaultValueCfg[j]['fieldName'])
@@ -117,7 +117,7 @@ class AddTableRecord {
         var context = defaultValueCfg[j]['context']
         if (context) {
           //带随机函数的表达式每次都需要经过表达式引擎取结果
-          defaultValue = vds.expression.execute(defaultValue, context)
+          defaultValue = expression.execute(defaultValue, context)
         }
         emptyRecord.set(fieldName, defaultValue)
       }
@@ -156,16 +156,16 @@ var existRandomFunc = function (exp: string) {
  * @param dataSource 数据源名称
  * @return  widgetAttribute.storeType.SET | widgetAttribute.storeType.SINGLE_RECORD
  */
-var isSingleStoreTypeByDataSource = function (dataSource) {
+var isSingleStoreTypeByDataSource = function (dataSource: string) {
   var isSingle = true
-  var widgetIDs = vds.widget.getWidgetCodes(dataSource)
-  if (!widgetIDs || (vds.object.isArray(widgetIDs) && widgetIDs.length <= 0)) {
+  var widgetIDs = widget.getWidgetCodes(dataSource)
+  if (!widgetIDs || (Array.isArray(widgetIDs) && widgetIDs.length <= 0)) {
     isSingle = false
   } else {
     for (var i = 0; i < widgetIDs.length; i++) {
-      var storeType = vds.widget.getStoreType(widgetIDs[i])
+      var storeType = widget.getStoreType(widgetIDs[i])
       if (
-        storeType == vds.widget.StoreType.Set ||
+        storeType == widget.StoreType.Set ||
         storeType == 'menu' ||
         storeType == 'DataList'
       ) {
@@ -183,13 +183,25 @@ var isSingleStoreTypeByDataSource = function (dataSource) {
  * @return 结构为json格式：
  * 如：[{"fieldName": tablename.fieldName1, "value":value2}]
  */
-var _getDefaultValue = function (datasource, mappings, ruleContext) {
-  var returnValue = []
+
+interface fieldValue {
+  [key: string]: any
+}
+interface mappings {
+  [key: string]: any
+}
+
+var _getDefaultValue = function (
+  datasource: any,
+  mappings: mappings,
+  ruleContext: RuleContext
+) {
+  var returnValue: Array<string | fieldValue> = []
   if (!mappings || mappings.length <= 0) {
     return returnValue
   } else {
     for (var i = 0; i < mappings.length; i++) {
-      var fieldValue = {}
+      var fieldValue: fieldValue = {}
       var srcField = mappings[i]['srcField']
       var destField = mappings[i]['destField']
       var fieldType = mappings[i]['fieldtype']
@@ -206,10 +218,10 @@ var _getDefaultValue = function (datasource, mappings, ruleContext) {
         }
       } else if (fieldType === '2') {
         //如果是组件变量
-        fieldValue['value'] = vds.component.getVariant(srcField)
+        fieldValue['value'] = component.getVariant(srcField)
       } else if (fieldType === '3') {
         //如果是窗体变量
-        fieldValue['value'] = vds.window.getInput(srcField)
+        fieldValue['value'] = window.getInput(srcField)
       } else if (fieldType === '4' || fieldType === 'expression') {
         var context = {
           ruleContext: ruleContext
@@ -219,7 +231,7 @@ var _getDefaultValue = function (datasource, mappings, ruleContext) {
           fieldValue['value'] = srcField
         } else {
           //如果是表达式
-          fieldValue['value'] = vds.expression.execute(srcField, context)
+          fieldValue['value'] = expression.execute(srcField, context)
         }
       }
       returnValue.push(fieldValue)
@@ -245,12 +257,12 @@ const main = function (ruleContext: RuleContext) {
       position = '3'
     }
     var datasource = getDataSource(tableName, ruleContext, EntityType) //根据类型获取数据源
-    var numCount = vds.expression.execute(numCountFormula, {
+    var numCount = expression.execute(numCountFormula, {
       ruleContext: ruleContext
     })
 
     if (isNaN(numCount)) {
-      vds.message.error('表达式执行结果不合法，请检查表达式！')
+      message.error('表达式执行结果不合法，请检查表达式！')
       return resolve()
     }
     if (numCount <= 0) {
@@ -262,7 +274,7 @@ const main = function (ruleContext: RuleContext) {
       if (isSingle) {
         datasource.clear(false)
         if (numCount > 1) {
-          vds.message.error('单值控件不允许一次插入多条数据！')
+          message.error('单值控件不允许一次插入多条数据！')
           return resolve()
         }
       }
@@ -270,10 +282,10 @@ const main = function (ruleContext: RuleContext) {
 
     if (masterTable) {
       //如果主表不为空
-      var ds = vds.ds.lookup(masterTable)
-      var selectedData = ds.getCurrentRecord()
+      var dsTemp = ds.lookup(masterTable)
+      var selectedData = dsTemp.getCurrentRecord()
       if (!selectedData) {
-        vds.message.error('新增记录发生错误：关联父表没有选中记录！')
+        message.error('新增记录发生错误：关联父表没有选中记录！')
         return resolve()
       }
     }
@@ -289,11 +301,15 @@ const main = function (ruleContext: RuleContext) {
  * @param ruleContext 规则上下文
  * @param EntityType 实体类型
  */
-var getDataSource = function (ds, ruleContext, EntityType) {
-  var dsName = ds
+var getDataSource = function (
+  dsTemp: string,
+  ruleContext: RuleContext,
+  EntityType: string
+) {
+  var dsName = dsTemp
   var datasource = null
   if (undefined == EntityType || EntityType == 'window') {
-    datasource = vds.ds.lookup(dsName)
+    datasource = ds.lookup(dsName)
   } else {
     switch (EntityType) {
       case 'ruleSetInput':
@@ -306,7 +322,7 @@ var getDataSource = function (ds, ruleContext, EntityType) {
         dsName = 'BR_OUT_PARENT.' + dsName
         break
     }
-    datasource = vds.expression.execute(dsName, {
+    datasource = expression.execute(dsName, {
       ruleContext: ruleContext
     })
   }

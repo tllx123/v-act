@@ -1,11 +1,15 @@
-import { AbstractChannel as AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { Manager as channelManager } from '@v-act/vjs.framework.extension.system.rpc.channel'
-import { TaskManager as taskManager } from '@v-act/vjs.framework.extension.platform.global'
-import { ScopeTask as ScopeTask } from '@v-act/vjs.framework.extension.platform.global'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Environment as Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import {
+  ScopeTask,
+  TaskManager as taskManager
+} from '@v-act/vjs.framework.extension.platform.global'
+import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
+import {
+  AbstractChannel,
+  Manager as channelManager
+} from '@v-act/vjs.framework.extension.system.rpc.channel'
 
 let objectUtil
 

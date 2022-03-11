@@ -1,3 +1,10 @@
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowContainerManager as windowRelation } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import {
+  WidgetAction as widgetAction,
+  WidgetProperty as widgetProperty
+} from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 /**
  * 控件定义
  * @desc 提供与日志相关的一系列接口，使用前请先import：vds.import("vds.widget.*")
@@ -8,44 +15,7 @@
  * vds.import("vds.widget.*");
  * vds.widget.getStoreType("JGButton1");
  */
-window.vds = window.vds || {}
-window.vds.widget = window.vds.widget || {}
-
-var widget = window.vds.widget
-
-exports = widget
-
-var windowVMManager,
-  widgetContext,
-  widgetProperty,
-  widgetAction,
-  scopeManager,
-  windowRelation
-
-interface sBox {
-  getService: (url: string) => void
-}
-
-export function initModule(sBox: sBox) {
-  windowVMManager = sBox.getService(
-    'vjs.framework.extension.platform.services.vmmapping.manager.WindowVMMappingManager'
-  )
-  widgetContext = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.context.WidgetContext'
-  )
-  widgetProperty = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetProperty'
-  )
-  widgetAction = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  windowRelation = sBox.getService(
-    'vjs.framework.extension.platform.services.view.relation.WindowContainerManager'
-  )
-}
+import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 
 /**
  * 判断是否构件域
@@ -61,7 +31,7 @@ var _isComponentScope = function () {
  * 控件存储类型
  * @enum {String}
  */
-exports.StoreType = {
+const StoreType = {
   /**
    * 集合数据存储类型
    */
@@ -83,6 +53,8 @@ exports.StoreType = {
    */
   None: 'none'
 }
+
+export { StoreType }
 
 /**
  * 根据数据源名称获取绑定的控件编号
@@ -122,7 +94,7 @@ export function getWidgetCodes(datasource: string, fieldCode?: string) {
  * @example
  * vds.widget.getStoreType("JGTextBox1");
  */
-export function getStoreType(code) {
+export function getStoreType(code: string) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -250,7 +222,7 @@ export function execute(widgetCode?: any, funCode?: any, params?: any) {
   if (!widgetCode || !funCode) {
     return
   }
-  var array = [widgetCode, funCode]
+  var array: Array<string> = [widgetCode, funCode]
   if (params instanceof Array) {
     array = array.concat(params)
   }
@@ -263,7 +235,7 @@ export function execute(widgetCode?: any, funCode?: any, params?: any) {
  * @example
  * var codes = vds.widget.getWidgetCodesByType("code1");
  * */
-export function getWidgetCodesByType(widgetType) {
+export function getWidgetCodesByType(widgetType: string) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -286,7 +258,7 @@ export function getWidgetCodesByType(widgetType) {
 /**
  * 判断是否有纵向滚动条
  * */
-var hasScroll = function (element) {
+var hasScroll = function (element: HTMLElement) {
   if (!element) {
     return false
   }
@@ -359,4 +331,3 @@ export function scrollTo(widgetCode: string) {
     }
   }
 }
-return exports

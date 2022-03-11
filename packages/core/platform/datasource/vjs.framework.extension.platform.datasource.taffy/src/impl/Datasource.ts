@@ -1,8 +1,11 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util'
-import { Record as nRecord } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ResultSet as ResultSet } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { UUID as uuid } from '@v-act/vjs.framework.extension.util'
-import * as taffy from './impl/TaffyDB'
+import {
+  Record as nRecord,
+  ResultSet
+} from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+
+import * as taffy from './TaffyDB'
 
 let each, find, contains, objectUtil, arrays, remove
 
@@ -1115,4 +1118,4 @@ const getConstructor = function () {
   return Datasource
 }
 
-export { initModule, DB, unSerialize, isDB, getConstructor }
+export { DB, getConstructor, initModule, isDB, unSerialize }

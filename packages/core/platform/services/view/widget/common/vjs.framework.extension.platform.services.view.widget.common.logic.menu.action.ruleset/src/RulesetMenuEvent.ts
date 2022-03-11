@@ -1,6 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine.route'
-import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
 
 let sandbox
 

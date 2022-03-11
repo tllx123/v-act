@@ -1,4 +1,6 @@
-var Record, ResultSetIterator, Metadata
+import Metadata from './Metadata'
+import Record from './Record'
+import ResultSetIterator from './ResultSetIterator'
 
 /**
  * 数据源结果集
@@ -11,12 +13,6 @@ function ResultSet(resultset) {
 }
 
 ResultSet.prototype = {
-  initModule: function () {
-    Record = require('vjs/framework/extension/platform/services/integration/vds/ds/Record')
-    Metadata = require('vjs/framework/extension/platform/services/integration/vds/ds/Metadata')
-    ResultSetIterator = require('vjs/framework/extension/platform/services/integration/vds/ds/ResultSetIterator')
-  },
-
   _to: function (record) {
     return !record ? null : new Record(record)
   },
@@ -150,4 +146,4 @@ ResultSet.prototype = {
   }
 }
 
-module.exports = ResultSet
+export default ResultSet

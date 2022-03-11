@@ -124,4 +124,4 @@ Where.prototype = {
   }
 }
 
-module.exports = Where
+export default Where

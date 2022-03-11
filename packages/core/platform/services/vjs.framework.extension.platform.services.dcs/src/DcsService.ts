@@ -1,16 +1,12 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { History as history } from '@v-act/vjs.framework.extension.platform.services.browser.history'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
-import {
-  FileTransfer,
-  FileUtil as fileUtil,
-  PlayVideo as playVideoService
-} from '@v-act/vjs.framework.extension.platform.services.native.mobile'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation'
+import { FileTransfer } from '@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer'
+import { PlayVideo as playVideoService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.playvideo'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ProgressBarUtil } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-
-export function initModule(sBox) {}
 
 /**
  * 文档转换服务

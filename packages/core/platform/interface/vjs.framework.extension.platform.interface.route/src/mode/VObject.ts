@@ -1,6 +1,3 @@
-import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-
 let VObject = function () {
   this._cacheVObject = {} //缓存v对象，VObject取的输入值
   this._inputDatas = {} //前端缓存
@@ -23,4 +20,4 @@ VObject.prototype = {
   }
 }
 
-return VObject
+export default VObject

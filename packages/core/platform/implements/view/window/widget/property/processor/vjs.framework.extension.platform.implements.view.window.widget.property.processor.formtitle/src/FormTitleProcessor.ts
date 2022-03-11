@@ -8,7 +8,8 @@
  * */
 
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { widgetModule as widgetModule } from '@v-act/vjs.framework.extension.widget.manager'
+import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager'
+
 var maxTitleCount //最大标题字数@
 var titleCharWidth //单个字宽度
 var maxTitleWidth //最大标题宽度

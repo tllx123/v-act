@@ -1,10 +1,8 @@
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-
-export function initModule(sBox) {}
 
 const main = function (ruleContext: RuleContext) {
   let routeContext = ruleContext.getRouteContext()
@@ -28,9 +26,9 @@ const main = function (ruleContext: RuleContext) {
       )
       //从cookie中获取当前用户名，如果不存在则向后台获取
       let cookie_userid = getCookie('wx_userid')
-      let cb = function (res) {
+      let cb = function (res: { responseText: string }) {
         if (res.responseText) {
-          let userInfo = $.parseJSON(res.responseText)
+          let userInfo = jsonUtil.json2obj(res.responseText)
           if (userInfo.userid) {
             let userid = userInfo.userid
             let weixinid = userInfo.weixinid
@@ -90,6 +88,7 @@ const main = function (ruleContext: RuleContext) {
         let datas = getFieldMapping(
           fieldMappings,
           cookie_userid,
+          //@ts-ignore
           cookie_weixinid,
           cookie_name,
           cookie_avatar,
@@ -107,6 +106,7 @@ const main = function (ruleContext: RuleContext) {
 
 function isWeiXinFunc() {
   let ua = navigator.userAgent.toLowerCase()
+  //@ts-ignore
   if (ua.match(/MicroMessenger/i) == 'micromessenger') {
     return true
   } else {
@@ -127,17 +127,17 @@ let constant = {
  * 获取目标实体与来源数据的字段映射信息
  */
 let getFieldMapping = function (
-  mappings,
-  userid,
-  weixinid,
-  name,
-  avatar,
-  email,
-  mobile
+  mappings: Array<{ targetSaveFieldCode: string; sourceSaveFieldCode: string }>,
+  userid: string,
+  weixinid: string,
+  name: string,
+  avatar: string,
+  email: string,
+  mobile: string
 ) {
   let datas = []
   if (mappings && mappings.length > 0) {
-    let data = {}
+    let data: { [key: string]: any } = {}
     for (let i = 0; i < mappings.length; i++) {
       let mapping = mappings[i]
       let targetField = mapping.targetSaveFieldCode
@@ -173,7 +173,7 @@ let getFieldMapping = function (
 /**
  * 根据key获取cookie中的值
  */
-let getCookie = function (key) {
+let getCookie = function (key: string) {
   let cookies = document.cookie
   let arrCookie = cookies.split('; ')
   let value
@@ -190,7 +190,7 @@ let getCookie = function (key) {
 /**
  * 设置cookie
  */
-let setCookie = function (key, value) {
+let setCookie = function (key: string, value: any) {
   document.cookie = key + '=' + value
 }
 

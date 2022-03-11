@@ -1,9 +1,5 @@
-import {
-  RemoteMethodAccessor as remoteMethodAccessor,
-  RemoteOperation as remoteOperation
-} from '@v-act/vjs.framework.extension.platform.services.operation.remote'
-
-export function initModule(sb) {}
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
+import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
 
 let tenantAOPInstance
 

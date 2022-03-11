@@ -1,4 +1,4 @@
-var Field
+import Field from './Field'
 
 /**
  * 元数据定义
@@ -11,10 +11,6 @@ function Metadata(metadata) {
 }
 
 Metadata.prototype = {
-  initModule: function () {
-    Field = require('vjs/framework/extension/platform/services/integration/vds/ds/Field')
-  },
-
   /**
    * 获取数据源编码
    * @returns String
@@ -73,4 +69,4 @@ Metadata.prototype = {
   }
 }
 
-module.exports = Metadata
+export default Metadata

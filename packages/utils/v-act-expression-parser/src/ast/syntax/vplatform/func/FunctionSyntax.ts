@@ -1,10 +1,12 @@
 import { parseToSyntax } from '../../../Parser'
 import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import CommaToken from '../../../tokenizer/punctuation/CommaToken'
-import LeftParenToken from '../../../tokenizer/punctuation/LeftParenToken'
-import RightParenToken from '../../../tokenizer/punctuation/RightParenToken'
-import Token from '../../../tokenizer/Token'
+import {
+  Token,
+  RightParenToken,
+  LeftParenToken,
+  CommaToken
+} from '@v-act/tokenizer'
 import { isVarToken } from '../../../utils/TokenUtils'
 import Syntax from '../../Syntax'
 

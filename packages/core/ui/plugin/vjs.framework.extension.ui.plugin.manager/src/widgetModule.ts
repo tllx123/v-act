@@ -49,18 +49,17 @@ let getInit = function (type) {
 }
 
 export {
-  Show,
-  Hide,
-  fireEvent,
   addEventHandler,
   fireDynamicWidgetEvent,
-  removeAllEventHandler,
+  fireEvent,
   get,
+  getAction,
   getAll,
-  putAll,
-  put,
-  set,
-  get,
   getInit,
-  getAction
+  Hide,
+  put,
+  putAll,
+  removeAllEventHandler,
+  set,
+  Show
 }

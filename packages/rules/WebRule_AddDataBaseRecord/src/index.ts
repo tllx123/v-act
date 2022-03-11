@@ -8,6 +8,10 @@ interface params {
   [key: string]: any
 }
 
+interface obj {
+  [key: string]: any
+}
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -106,7 +110,7 @@ const main = function (ruleContext: RuleContext) {
             .then(function () {
               resolve()
             })
-            .catch(function (responseObj) {
+            .catch(function (responseObj: obj) {
               if (responseObj) {
                 vds.log.error(responseObj.message)
                 reject(vds.exception.newSystemException(responseObj.message))

@@ -18,13 +18,13 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { WaterMark as waterMark } from '@v-act/vjs.framework.extension.platform.interface.watermark'
 import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
 import { EventManager as eventManagerService } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { RPC as rpc } from '@v-act/vjs.framework.extension.system'
-import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
+import { EventExtension as eventManager } from '@v-act/vjs.framework.extension.system.event'
+import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let token = 'WINDOW_VIEW_INIT_EVENT',

@@ -1,9 +1,7 @@
 import { parseToSyntax } from '../../Parser'
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import LeftParenToken from '../../tokenizer/punctuation/LeftParenToken'
-import RightParenToken from '../../tokenizer/punctuation/RightParenToken'
-import Token from '../../tokenizer/Token'
+import { Token, LeftParenToken, RightParenToken } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 import UnknownSyntax from '../UnknownSyntax'
 

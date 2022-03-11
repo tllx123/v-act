@@ -9,16 +9,10 @@ import {
   Request
 } from '@v-act/vjs.framework.extension.platform.interface.rpc.operation'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { Permission as permission } from '@v-act/vjs.framework.extension.platform.services.view.permission'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-
-let sandbox
-
-export function initModule(sb) {
-  sandbox = sb
-}
 
 const addRequestOperation = function (params) {
   windowRuntime.registerVariableHandler(params)

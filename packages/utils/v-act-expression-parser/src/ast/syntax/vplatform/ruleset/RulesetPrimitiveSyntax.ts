@@ -1,9 +1,9 @@
 import Syntax from '../../Syntax'
 import Position from '../../../Position'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
+import { DotToken } from '@v-act/tokenizer'
 import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import Token from '../../../tokenizer/Token'
+import { Token } from '@v-act/tokenizer'
 
 abstract class RulesetPrimitiveSyntax extends Syntax {
   code: string

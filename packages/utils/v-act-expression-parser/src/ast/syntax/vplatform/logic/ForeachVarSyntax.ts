@@ -1,7 +1,6 @@
 import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import DotToken from '../../../tokenizer/punctuation/DotToken'
-import Token from '../../../tokenizer/Token'
+import { DotToken, Token } from '@v-act/tokenizer'
 import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import Syntax from '../../Syntax'
 

@@ -44,8 +44,8 @@ let createModal = function (params) {
   let bodyCode = 'modalbody_' + new Date().getTime()
   let tmp_borderWidth =
     formBorderStyle && formBorderStyle == 'None' ? 0 : borderWidth
-  let width = width ? parseInt(width) + tmp_borderWidth : 1000 //2个像素的边框
-  let height = height ? parseInt(height) + 0 : 700 //2个像素的边框
+  width = width ? parseInt(width) + tmp_borderWidth : 1000 //2个像素的边框
+  height = height ? parseInt(height) + 0 : 700 //2个像素的边框
   backMask.Show(tmpZIndex)
   let html = genModalWindowHtml({
     title: title,
@@ -322,8 +322,8 @@ let genModalWindowHtml = function (params) {
   if (undefined == formBorderStyle || formBorderStyle == 'FixedSingle')
     height = height + headerH
   let rect = _dealRect(width, height)
-  let width = rect[0]
-  let height = rect[1]
+  width = rect[0]
+  height = rect[1]
 
   let maxIcon = 'icon-maximization'
   let restore = 'icon-restore'

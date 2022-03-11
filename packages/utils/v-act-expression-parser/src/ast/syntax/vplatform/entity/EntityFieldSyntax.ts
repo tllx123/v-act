@@ -1,8 +1,6 @@
 import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import LeftBracketToken from '../../../tokenizer/punctuation/LeftBracketToken'
-import RightBracketToken from '../../../tokenizer/punctuation/RightBracketToken'
-import Token from '../../../tokenizer/Token'
+import { Token, RightBracketToken, LeftBracketToken } from '@v-act/tokenizer'
 import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import Syntax from '../../Syntax'
 

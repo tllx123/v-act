@@ -3,8 +3,6 @@ import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.arra
 let requestList = []
 let intervalIndex = null
 
-export function initModule(sb) {}
-
 const add = function (request) {
   requestList.push(request)
   request.start()

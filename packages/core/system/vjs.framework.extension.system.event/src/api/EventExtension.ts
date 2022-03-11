@@ -1,4 +1,4 @@
-import * as EE from './impl/eventemitter2'
+import * as EE from '../impl/eventemitter2'
 
 let EEInstancePool = {}
 export function initModule() {}

@@ -115,4 +115,4 @@ Request.prototype = {
     return this.timeout
   }
 }
-return Request
+export default Request

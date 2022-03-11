@@ -1,19 +1,19 @@
-const obj2json = function (obj, encodeFunc) {
+const obj2json = function (obj: any, encodeFunc?: boolean) {
   return encode(obj, encodeFunc)
 }
 
-const json2obj = function (json) {
+const json2obj = function (json: string) {
   return decode(json)
 }
 
-const clone = function (obj) {
+const clone = function (obj: any) {
   let json = encode(obj)
   return decode(json)
 }
-
+//@ts-ignore
 let useHasOwn = {}.hasOwnProperty ? true : false
 
-let pad = function (n) {
+let pad = function (n: number) {
   return n < 10 ? '0' + n : n
 }
 
@@ -40,12 +40,13 @@ let m = {
   '\\': '\\\\'
 }
 
-let encodeString = function (s) {
+let encodeString = function (s: string) {
   if (/["\\\x00-\x1f]/.test(s)) {
     return (
       '"' +
-      s.replace(/([\x00-\x1f\\"])/g, function (a, b) {
-        var c = m[b] || s[b]
+      s.replace(/([\x00-\x1f\\"])/g, function (a: any, b: any) {
+        //@ts-ignore
+        let c = m[b] || s[b]
         if (c) {
           return c
         }
@@ -58,7 +59,7 @@ let encodeString = function (s) {
   return '"' + s + '"'
 }
 
-let encodeArray = function (o, encodeFunc) {
+let encodeArray = function (o: any, encodeFunc?: boolean) {
   let a = ['['],
     b,
     i,
@@ -77,6 +78,7 @@ let encodeArray = function (o, encodeFunc) {
           b = true
         }
         break
+      //@ts-ignore
       case 'unknown':
         break
       default:
@@ -91,7 +93,7 @@ let encodeArray = function (o, encodeFunc) {
   return a.join('')
 }
 
-let encodeDate = function (o) {
+let encodeDate = function (o: Date) {
   return (
     '"' +
     o.getFullYear() +
@@ -109,7 +111,7 @@ let encodeDate = function (o) {
   )
 }
 
-let encode = function (o, encodeFunc) {
+let encode = function (o: any, encodeFunc?: boolean) {
   if (typeof o == 'undefined' || o === null) {
     return 'null'
   } else if (Object.prototype.toString.call(o) === '[object Array]') {
@@ -143,6 +145,7 @@ let encode = function (o, encodeFunc) {
               b = true
             }
             break
+          //@ts-ignore
           case 'unknown':
             break
           default:
@@ -163,7 +166,7 @@ let encode = function (o, encodeFunc) {
   }
 }
 
-let decode = function (json) {
+let decode = function (json: string | null) {
   if (json == null || json == '') {
     return json
   }
@@ -171,7 +174,8 @@ let decode = function (json) {
     return new Function(
       'return ' +
         json.replace(sReg, function (a, b) {
-          var val = s[b]
+          //@ts-ignore
+          let val = s[b]
           return val ? val : b
         }) +
         ';'
@@ -189,4 +193,4 @@ let decode = function (json) {
   }
 }
 
-export { obj2json, json2obj, clone }
+export { clone, json2obj, obj2json }

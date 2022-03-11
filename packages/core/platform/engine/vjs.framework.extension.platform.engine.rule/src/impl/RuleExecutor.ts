@@ -1,10 +1,12 @@
-import * as ruleFactory from './impl/RuleFactory'
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExpressionEngine as expEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ExpressionContext as ExpContext } from '@v-act/vjs.framework.extension.platform.engine.expression'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import {
+  ExpressionContext as ExpContext,
+  ExpressionEngine as expEngine
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
+
+import * as ruleFactory from './RuleFactory'
 
 let RuleExecutor = function (ruleContext) {
   this.ruleContext = ruleContext
@@ -139,12 +141,4 @@ RuleExecutor.prototype = {
   }
 }
 
-return RuleExecutor
-
-export {
-  initModule,
-  execute,
-  executeRouteRule,
-  executeWithRouteCallback,
-  createRuleException
-}
+export default RuleExecutor

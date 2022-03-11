@@ -1,29 +1,30 @@
 import {
+  Adapter as dataAdapter,
+  ParamInitor as paramInitor
+} from '@v-act/vjs.framework.extension.platform.data.adapter'
+import {
   AppInfo as appInfo,
   ComponentInfo as componentInfo,
   WindowInfo as windowInfo
 } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import {
   ScopeTask,
   TaskManager as taskManager
 } from '@v-act/vjs.framework.extension.platform.global'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { ParamConfig as paramConfig } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import {
+  Datasource,
+  Record as record
+} from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { EventEmitterManager as eventManager } from '@v-act/vjs.framework.extension.system.event'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-import * as windowRuntime from './api/WindowRuntimeInit'
+import * as windowRuntime from './WindowRuntimeInit'
 
-import { snapshotManager } from 'vjs.framework.extension.platform.data.manager.runtime.snapshot'
-import { Datasource } from 'vjs.framework.extension.platform.interface.model.datasource'
-import { StorageManager as storageManager } from 'vjs.framework.extension.platform.interface.storage'
-
-import { Adapter as dataAdapter } from 'vjs.framework.extension.platform.data.adapter'
-
-import { Record as record } from 'vjs.framework.extension.platform.interface.model.datasource'
-import { ParamConfig as paramConfig } from 'vjs.framework.extension.platform.interface.model.config'
-
-import { ParamInitor as paramInitor } from 'vjs.framework.extension.platform.data.adapter'
 let sandbox,
   token = 'VIEW_INIT_WINDOW_RUNTIME_HANDLER',
   eventToken = 'VIEW_INIT_WINDOW_RUNTIME_EVENT'

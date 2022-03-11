@@ -74,4 +74,4 @@ Field.prototype = {
   }
 }
 
-module.exports = Field
+export default Field

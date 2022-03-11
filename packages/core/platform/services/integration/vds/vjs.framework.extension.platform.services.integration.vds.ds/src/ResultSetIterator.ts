@@ -1,4 +1,4 @@
-var Record
+import Record from './Record'
 
 /**
  * 结果集迭代器
@@ -11,10 +11,6 @@ function ResultSetIterator(iterator) {
 }
 
 ResultSetIterator.prototype = {
-  initModule: function () {
-    Record = require('vjs/framework/extension/platform/services/integration/vds/ds/Record')
-  },
-
   /**
    * 当前游标后是否有记录
    * @returns Boolean
@@ -44,4 +40,4 @@ ResultSetIterator.prototype = {
   }
 }
 
-module.exports = ResultSetIterator
+export default ResultSetIterator

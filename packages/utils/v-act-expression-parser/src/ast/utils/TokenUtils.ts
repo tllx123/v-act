@@ -1,7 +1,9 @@
-import WordToken from '../tokenizer/literal/WordToken'
-import NumberToken from '../tokenizer/literal/NumberToken'
-import UnderScoreToken from '../tokenizer/punctuation/UnderScoreToken'
-import Token from '../tokenizer/Token'
+import {
+  WordToken,
+  NumberToken,
+  UnderScoreToken,
+  Token
+} from '@v-act/tokenizer'
 
 const isVarToken = function (token: Token) {
   return isWordToken(token) || isNumberToken(token) || isUnderScoreToken(token)

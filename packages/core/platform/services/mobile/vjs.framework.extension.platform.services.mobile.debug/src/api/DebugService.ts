@@ -1,5 +1,5 @@
-import { aop as debugService } from '@v-act/vjs.framework.extension.platform'
-import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote'
+import { aop as debugService } from '@v-act/vjs.framework.extension.platform.aop'
+import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
 export function initModule(sb) {}

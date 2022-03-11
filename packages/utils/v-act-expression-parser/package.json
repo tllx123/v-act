@@ -16,6 +16,7 @@
     "dist"
   ],
   "scripts": {
+    "build": "tsc -p tsconfig.json",
     "debug": "node debug/index.js"
   },
   "dependencies": {},

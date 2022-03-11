@@ -1,7 +1,7 @@
-import { platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { UUID as uuidUtil } from '@v-act/vjs.framework.extension.util'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ProgressBarUtil as progressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
+import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 let sandbox,
   modalCode = 'error_modal_div',

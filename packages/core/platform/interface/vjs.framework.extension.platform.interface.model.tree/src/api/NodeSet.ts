@@ -108,4 +108,4 @@ NodeSet.prototype = {
   }
 }
 
-return NodeSet
+export default NodeSet

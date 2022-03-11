@@ -4,32 +4,26 @@
 
 import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-const vds = {
-  component,
-  ds,
-  exception,
-  expression,
-  object,
-  rpc,
-  widget,
-  window
+
+interface obj {
+  [key: string]: any
 }
 
 // 规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { promises } from 'fs-extra'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       // 获取开发系统配置的参数
       var params = ruleContext.getVplatformInput()
       var webAPISite = params['webAPISite']
-      webAPISite = vds.expression.execute(webAPISite, {
+      webAPISite = expression.execute(webAPISite, {
         ruleContext: ruleContext
       })
       var timeOut = Number(params['timeOut']) * 1000
@@ -43,10 +37,10 @@ const main = function (ruleContext: RuleContext) {
       var respondTargetType = params['respondTargetType']
       var respondTarget = params['respondTarget']
 
-      var returnInputParams = getInputParams(inputParams, ruleContext)
+      var returnInputParams: obj = getInputParams(inputParams, ruleContext)
       if (tenantCode != '') {
         //租户信息放到参数内
-        tenantCode = vds.expression.execute(tenantCode, {
+        tenantCode = expression.execute(tenantCode, {
           ruleContext: ruleContext
         })
         if (tenantCode != '') {
@@ -75,18 +69,18 @@ const main = function (ruleContext: RuleContext) {
 }
 
 var requestApi = function (
-  webAPISite,
-  returnInputParams,
-  timeOut,
-  serviceProvider,
-  returnMapping,
-  invokeTargetType,
-  invokeTarget,
-  respondTargetType,
-  respondTarget,
-  ruleContext,
-  resolve,
-  reject
+  webAPISite: string,
+  returnInputParams: obj,
+  timeOut: number,
+  serviceProvider: string,
+  returnMapping: obj,
+  invokeTargetType: string,
+  invokeTarget: string,
+  respondTargetType: string,
+  respondTarget: string,
+  ruleContext: RuleContext,
+  resolve: (value: void | PromiseLike<void>) => void,
+  reject: (reason?: any) => void
 ) {
   if (webAPISite == '') {
     throw new Error('CallWebApi规则:[WebAPI地址]不能为空！')
@@ -138,18 +132,21 @@ var requestApi = function (
 }
 
 var invokeOtherApi = function (
-  webAPISite,
-  returnInputParams,
-  timeOut,
-  invokeTargetType,
-  invokeTarget,
-  respondTargetType,
-  respondTarget,
-  ruleContext,
-  resolve,
-  reject
+  webAPISite: string,
+  returnInputParams: obj,
+  timeOut: number,
+  invokeTargetType: string | boolean,
+  invokeTarget: string,
+  respondTargetType: string,
+  respondTarget: string,
+  ruleContext: RuleContext,
+  resolve: (value: void | PromiseLike<void>) => void,
+  reject: (reason?: any) => void
 ) {
-  var setReturn = function (invokeSourceValue, respondSourceValue) {
+  var setReturn = function (
+    invokeSourceValue: string | boolean,
+    respondSourceValue: string
+  ) {
     setVarValue(invokeTarget, invokeTargetType, invokeSourceValue, ruleContext)
     setVarValue(
       respondTarget,
@@ -166,11 +163,11 @@ var invokeOtherApi = function (
     timeout: timeOut,
     type: 'Get',
     dataType: 'jsonp',
-    success: function (param) {
+    success: function (param: string) {
       invokeSourceValue = true
       setReturn(invokeSourceValue, param)
     },
-    error: function (re) {
+    error: function (re: any) {
       invokeSourceValue = false
       if (re.statusText == 'timeout') {
         var exception = new Error('第三方Api访问超时')
@@ -185,36 +182,36 @@ var invokeOtherApi = function (
 }
 
 var invokeV3Webapi = function (
-  webAPISite,
-  returnInputParams,
-  timeOut,
-  returnMapping,
-  ruleContext,
-  resolve,
-  reject
+  webAPISite: string,
+  returnInputParams: obj,
+  timeOut: number,
+  returnMapping: obj,
+  ruleContext: RuleContext,
+  resolve: (value: void | PromiseLike<void>) => void,
+  reject: (reason?: any) => void
 ) {
-  var success = ruleContext.genAsynCallback(function (param) {
+  var success = ruleContext.genAsynCallback((param) => {
     handleReturnValues(ruleContext, param, returnMapping)
     resolve()
   })
 
-  var error = ruleContext.genAsynCallback(function (param) {
+  var error = ruleContext.genAsynCallback((param) => {
     var exception = param
-    if (!vds.exception.isException(param)) {
+    if (!exception.isException(param)) {
       /* 非异常对象，才需要创建异常 */
-      exception = vds.exception.newSystemException(param.msg)
+      exception = exception.newSystemException(param.msg)
     }
     reject(exception)
   })
 
   var params = { param: returnInputParams, timeout: timeOut }
-  var promise = vds.rpc.callWebapi(webAPISite, params)
+  var promise = rpc.callWebapi(webAPISite, params)
   promise.then(success).catch(error)
 }
 
-var getInputParams = function (inputParams, ruleContext) {
+var getInputParams = function (inputParams: obj, ruleContext: RuleContext) {
   //入参处理
-  var returnInputParams = {}
+  var returnInputParams: obj = {}
   if (inputParams == null) return returnInputParams
   for (var i = 0; i < inputParams.length; i++) {
     var inP = inputParams[i]
@@ -225,23 +222,27 @@ var getInputParams = function (inputParams, ruleContext) {
     if (inPType != 'entity') {
       if (inSType == 'expression') {
         //目前只有表达式一种类型
-        var srcValue = vds.expression.execute(inS, { ruleContext: ruleContext })
+        var srcValue = expression.execute(inS, { ruleContext: ruleContext })
         returnInputParams[inPName] = srcValue
       }
     } else {
       //入参为实体
-      var entityDatas = []
+      var entityDatas: obj = []
       returnInputParams[inPName] = entityDatas
       var dsInfo = getDatasourceInfo(
         inS,
         inSType,
         ruleContext.getMethodContext()
       )
-      var entity = dsInfo.ds
+      var entity: obj = []
+      if (dsInfo.ds) {
+        entity = dsInfo.ds
+      }
+
       var dataFilterType = inP['dataFilterType']
       var paramFieldMapping = inP['paramFieldMapping']
-      var mapping = getMapping(paramFieldMapping)
-      var resultSet
+      var mapping: obj = getMapping(paramFieldMapping)
+      var resultSet: obj
       if (dataFilterType == 'all') {
         resultSet = entity.getAllRecords()
       } else {
@@ -249,7 +250,7 @@ var getInputParams = function (inputParams, ruleContext) {
       }
       var records = resultSet.toArray()
       for (var j = 0; j < records.length; j++) {
-        var datas = {}
+        var datas: obj = {}
         var record = records[j]
         var data = record.toMap()
         for (var key in mapping) {
@@ -257,7 +258,7 @@ var getInputParams = function (inputParams, ruleContext) {
           var fieldType = map['fieldType']
           var value = map[key]
           if (fieldType == 'expression') {
-            var exp = vds.expression.execute(value, {
+            var exp = expression.execute(value, {
               ruleContext: ruleContext
             })
             datas[key] = exp
@@ -273,14 +274,14 @@ var getInputParams = function (inputParams, ruleContext) {
   return returnInputParams
 }
 
-var getMapping = function (paramFieldMapping) {
-  var mapping = {}
+var getMapping = function (paramFieldMapping: obj) {
+  var mapping: obj = {}
   for (var j = 0; j < paramFieldMapping.length; j++) {
     var field = paramFieldMapping[j]
     var fieldName = field['paramEntityField']
     var fieldType = field['fieldValueType']
     var fieldValue = field['fieldValue']
-    var field = {}
+    var field: any = {}
     field['fieldType'] = fieldType
     if (fieldType != 'expression') {
       field[fieldName] = getFieldColumn(fieldValue)
@@ -292,7 +293,7 @@ var getMapping = function (paramFieldMapping) {
   return mapping
 }
 
-var getFieldColumn = function (field) {
+var getFieldColumn = function (field: string) {
   if (field.indexOf('.') > 0) {
     return field.split('.')[1]
   } else {
@@ -300,7 +301,11 @@ var getFieldColumn = function (field) {
   }
 }
 
-var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
+var handleReturnValues = function (
+  ruleContext: RuleContext,
+  ReturnValue: obj,
+  returnMappings: obj
+) {
   //返回值处理
   if (!returnMappings || returnMappings.length <= 0) {
     return
@@ -312,14 +317,14 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
   /**
    * 内部方法，获取赋值来源值
    */
-  var getSourceValue = function (source, sourceType) {
+  var getSourceValue = function (source: string, sourceType: string) {
     var sourceValue = null
     switch (sourceType) {
       case 'returnValue':
         sourceValue = ReturnValue[source]
         break
       case 'expression':
-        sourceValue = vds.expression.execute(source, {
+        sourceValue = expression.execute(source, {
           ruleContext: ruleContext
         })
         break
@@ -330,12 +335,12 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
   }
 
   var insertOrUpdateRecords2Entity = function (
-    dsInfo,
-    records,
-    mappings,
-    operType,
-    isClearDatas,
-    ruleContext
+    dsInfo: obj,
+    records: obj,
+    mappings: obj,
+    operType: string,
+    isClearDatas: boolean,
+    ruleContext: RuleContext
   ) {
     if (undefined == ruleContext || null == ruleContext)
       throw new Error('规则上下文获取失败，请传入正确的ruleContext')
@@ -355,9 +360,9 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
     // 如果来源记录为空，则不做任何动作
     if (
       !records ||
-      (vds.object.isArray(records) && records.length < 1) ||
+      (Array.isArray(records) && records.length < 1) ||
       !mappings ||
-      (vds.object.isArray(mappings) && mappings.length < 1)
+      (Array.isArray(mappings) && mappings.length < 1)
     ) {
       return
     }
@@ -371,7 +376,7 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
       var newRecord = null
 
       var hasId = false
-      var tmpObj = {}
+      var tmpObj: obj = {}
       for (var index = 0; index < mappings.length; index++) {
         // 来源值类型,returnValue:返回值，expression:表达式
         var srcValueType = mappings[index]['srcValueType']
@@ -402,7 +407,7 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
       // 为更新当前记录时只取第一个返回值
       if (operType == 'updateRecord') {
         // 操作类型为更新时，如果目标实体没有当前行，则取其第一行
-        oldRecords = []
+        var oldRecords: Array<any> = []
         oldRecords = destEntity.getSelectedRecords().toArray()
         if (oldRecords.length < 1)
           if (destEntity.getAllRecords().toArray().length > 0)
@@ -462,16 +467,16 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
   }
 
   var _getValueByMapping = function (
-    record,
-    srcColumnType,
-    srcColumn,
-    ruleContext
+    record: obj,
+    srcColumnType: string,
+    srcColumn: string,
+    ruleContext: RuleContext
   ) {
     // 来源字段类型,returnValue:返回值，expression:表达式
     var value = null
     // srcColumnType为空时应该是旧数据，兼容处理下
     if (srcColumnType == 'expression') {
-      value = vds.expression.execute(srcColumn, { ruleContext: ruleContext })
+      value = expression.execute(srcColumn, { ruleContext: ruleContext })
     } else {
       value = record[srcColumn]
     }
@@ -514,12 +519,17 @@ var handleReturnValues = function (ruleContext, ReturnValue, returnMappings) {
   }
 }
 
-var setVarValue = function (destName, destType, sourceValue, ruleContext) {
+var setVarValue = function (
+  destName: string,
+  destType: string | boolean,
+  sourceValue: string | boolean,
+  ruleContext: RuleContext
+) {
   switch (destType) {
     case 'control':
-      var dsName = vds.widget.getDatasourceCodes(destName)[0]
-      var fieldName = vds.widget.getFieldCodes(dsName, destName)[0]
-      var dataSource = vds.ds.lookup(dsName)
+      var dsName = widget.getDatasourceCodes(destName)[0]
+      var fieldName = widget.getFieldCodes(dsName, destName)[0]
+      var dataSource = ds.lookup(dsName)
       var record = dataSource.getCurrentRecord()
       if (!record) {
         record = dataSource.createRecord()
@@ -529,10 +539,10 @@ var setVarValue = function (destName, destType, sourceValue, ruleContext) {
       dataSource.updateRecords([record])
       break
     case 'windowVariant':
-      vds.window.setInput(destName, sourceValue)
+      window.setInput(destName, sourceValue)
       break
     case 'systemVariant':
-      vds.component.setVariant(destName, sourceValue)
+      component.setVariant(destName, sourceValue)
       break
     case 'ruleSetVariant':
       ruleContext.getMethodContext().setVariable(destName, sourceValue)
@@ -541,14 +551,18 @@ var setVarValue = function (destName, destType, sourceValue, ruleContext) {
       ruleContext.getMethodContext().setOutput(destName, sourceValue)
       break
     case 'windowOutput':
-      vds.window.setOutput(destName, sourceValue)
+      window.setOutput(destName, sourceValue)
       break
     default:
       break
   }
 }
 
-var getDatasourceInfo = function (entityName, entityType, methodContext) {
+var getDatasourceInfo = function (
+  entityName: string,
+  entityType: string,
+  methodContext: obj
+) {
   var info = {
     isEntity: false,
     ds: null
@@ -556,22 +570,22 @@ var getDatasourceInfo = function (entityName, entityType, methodContext) {
   // 界面实体：开发系统中，有的规则用entity有的规则用window，此处做兼容
   if (entityType == 'entity' || entityType == 'window') {
     info.isEntity = true
-    info.ds = vds.ds.lookup(entityName)
+    info.ds = ds.lookup(entityName)
   }
   // 窗体输入变量：开发系统中，有的规则用windowVariant有的规则用windowInput，此处做兼容
   else if (entityType == 'windowVariant' || entityType == 'windowInput') {
-    var input = vds.window.getInputType(entityName)
+    var input = window.getInputType(entityName)
     if (input == 'entity') {
       info.isEntity = true
-      info.ds = vds.window.getInput(entityName)
+      info.ds = window.getInput(entityName)
     }
   }
   // 窗体输出变量
   else if (entityType == 'windowOutput') {
-    var output = vds.window.getOutputType(entityName)
+    var output = window.getOutputType(entityName)
     if (output == 'entity') {
       info.isEntity = true
-      info.ds = vds.window.getOutput(entityName)
+      info.ds = window.getOutput(entityName)
     }
   }
   // 方法输入变量
@@ -602,3 +616,5 @@ var getDatasourceInfo = function (entityName, entityType, methodContext) {
 }
 
 export { main }
+
+new Promise((resolve, reject) => {})

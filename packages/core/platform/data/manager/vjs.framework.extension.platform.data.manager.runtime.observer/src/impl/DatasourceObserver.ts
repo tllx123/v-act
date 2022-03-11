@@ -59,12 +59,4 @@ DatasourceObserver.prototype = {
   }
 }
 
-return DatasourceObserver
-export {
-  addObserver,
-  fire,
-  _callAsyncObservers,
-  getBindedDatasourceNames,
-  destroy,
-  addOperation
-}
+export default DatasourceObserver
