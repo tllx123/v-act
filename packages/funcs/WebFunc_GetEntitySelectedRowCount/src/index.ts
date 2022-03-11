@@ -3,9 +3,10 @@
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+
 const vds = { ds, exception }
 
-const main = function (dsName) {
+const main = function (dsName: string | null) {
   if (dsName == null)
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')
   var datasource = vds.ds.lookup(dsName)

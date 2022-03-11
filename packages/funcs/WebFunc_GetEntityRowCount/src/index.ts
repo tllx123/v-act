@@ -1,14 +1,15 @@
-/**
- * 从指定的界面实体获取记录数 参数数量:1 参数1 表名 (字符串类型) 返回值为整数类型
- */
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+/**
+ * 从指定的界面实体获取记录数 参数数量:1 参数1 表名 (字符串类型) 返回值为整数类型
+ */
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { object, ds, exception, expression, log }
 
-const main = function (dsName, condition) {
+const main = function (dsName: string, condition: string) {
   if (dsName == null) {
     throw vds.exception.newConfigException('实体编码不允许为空，请检查配置')
   }
@@ -27,7 +28,7 @@ const main = function (dsName, condition) {
       '无法获取实体【' + dsName + '】, 请检查实体是否存在'
     )
   var allRecords = datasource.getAllRecords().toArray()
-
+  //@ts-ignore
   if (vds.object.isUndefOrNull(condition) || typeof condition == 'undefined') {
     return allRecords.length
   }
@@ -44,7 +45,7 @@ const main = function (dsName, condition) {
 
       // 条件满足
       if (ret == true) results.push(record)
-    } catch (e) {
+    } catch (e: any) {
       var message =
         '表达式执行错误！condition=' + condition + '错误信息：' + e.message
       vds.log.error(message)
