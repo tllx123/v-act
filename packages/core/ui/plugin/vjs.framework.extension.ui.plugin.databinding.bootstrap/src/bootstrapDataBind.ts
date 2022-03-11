@@ -1,6 +1,6 @@
 let viewContext = require('system/view/viewContext')
 let viewModel = require('system/view/viewModel')
-let logUtil = require('system/util/logUtil')
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 let sandBox
 export function initModule(sBox) {
   sandBox = sBox

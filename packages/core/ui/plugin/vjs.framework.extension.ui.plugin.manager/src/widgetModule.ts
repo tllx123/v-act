@@ -1,7 +1,7 @@
-let sb
-let seriesService
+let sb:any
+let seriesService:any
 
-export function initModule(sandbox) {
+export function initModule(sandbox:any) {
   sb = sandbox
   if (sandbox) {
     seriesService = sb.getService(
@@ -11,14 +11,14 @@ export function initModule(sandbox) {
 }
 
 // var widgetLib = {};
-let set = function (type, widget) {
+let set = function (type:string, widget:any) {
   // widgetLib[type] = widget;
 }
 
 /**
  * 获取控件的渲染服务
  */
-let get = function (type) {
+let get = function (type:string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.render.' + type
@@ -30,7 +30,7 @@ let get = function (type) {
 /**
  * 获取控件的action服务
  */
-let getAction = function (type) {
+let getAction = function (type:string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.action.' + type + 'Action'
@@ -39,7 +39,7 @@ let getAction = function (type) {
   })
 }
 
-let getInit = function (type) {
+let getInit = function (type:string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.init.' + type + 'Init'
@@ -49,17 +49,17 @@ let getInit = function (type) {
 }
 
 export {
-  addEventHandler,
-  fireDynamicWidgetEvent,
-  fireEvent,
+  //addEventHandler,
+  //fireDynamicWidgetEvent,
+  //fireEvent,
   get,
   getAction,
-  getAll,
+  //getAll,
   getInit,
-  Hide,
-  put,
-  putAll,
-  removeAllEventHandler,
+  //Hide,
+ // put,
+  //putAll,
+  //removeAllEventHandler,
   set,
-  Show
+ // Show
 }
