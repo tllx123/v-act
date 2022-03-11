@@ -6,7 +6,7 @@ export function initModule() {}
  * 主入口
  * @param serverUrl 远程服务器地址
  */
-const main = function (serverUrl) {
+const main = function (serverUrl: string) {
   if (serverUrl == null || serverUrl == '') {
     throw new Error('服务器地址不能为空，请检查')
   }

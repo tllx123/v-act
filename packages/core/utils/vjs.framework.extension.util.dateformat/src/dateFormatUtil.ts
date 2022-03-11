@@ -1,7 +1,8 @@
 /**
  * constructor
  */
-let DateFormat = function (pattern) {
+let DateFormat = function (pattern: string) {
+  // @ts-ignore
   this.pattern = pattern
 }
 

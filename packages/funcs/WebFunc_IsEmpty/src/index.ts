@@ -6,9 +6,10 @@
  *  返回值为布尔类型
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { object }
 
-const main = function (param) {
+const main = function (param: any) {
   var args = param.getArgs(),
     argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null

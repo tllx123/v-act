@@ -1,6 +1,6 @@
 export function initModule() {}
 
-const main = function (json) {
+const main = function (json: any) {
   if (!json) {
     return null
   }
@@ -13,7 +13,7 @@ const main = function (json) {
  * 1. 去掉空格
  * 2. 判断值是否以“｛” 或者 "[" 开头
  */
-let doValue = function (value) {
+let doValue = function (value: any) {
   if (value) {
     if (isString(value)) {
       value = value.replace(/(^\s*)|(\s*$)/g, '')
@@ -27,13 +27,17 @@ let doValue = function (value) {
   return value
 }
 
-let isString = function (value) {
+let isString = function (value: any) {
   return typeof value == 'string' || value.constructor == String
 }
 
-let jsonFormatter = function (json) {
+let jsonFormatter = function (json: any) {
   //写对象
-  let __writeObj = function (obj, level, isInArray) {
+  let __writeObj = function (
+    obj: any,
+    level: number,
+    isInArray?: boolean
+  ): any {
     //此对象是否在一个集合内
     //如果为空，直接输出null
     if (obj == null) {
@@ -107,13 +111,13 @@ let jsonFormatter = function (json) {
     )
     //封闭对象
   }
-  let __isArray = function (obj) {
+  let __isArray = function (obj: any) {
     if (obj) {
       return obj.constructor == Array
     }
     return false
   }
-  let __repeatStr = function (str, times) {
+  let __repeatStr = function (str: string, times: any) {
     let newStr = []
     if (times > 0) {
       for (let i = 0; i < times; i++) {

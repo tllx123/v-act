@@ -13,9 +13,14 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { ds, exception, object }
 
-const main = function (entityCode, fieldCode, fieldValue) {
+const main = function (
+  entityCode: string,
+  fieldCode: string,
+  fieldValue: string
+) {
   if (vds.object.isUndefOrNull(entityCode)) {
     var exception =
       vds.exception.newConfigException('函数第一个参数,实体编码不能为空!')
