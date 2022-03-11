@@ -5,7 +5,7 @@
     无返回值
  *
  */
-import $ from 'jquery'
+import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
