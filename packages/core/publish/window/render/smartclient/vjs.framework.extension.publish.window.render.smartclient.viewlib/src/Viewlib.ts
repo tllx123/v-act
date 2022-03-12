@@ -29,6 +29,64 @@ import {
   AppInfo,
   ComponentInfo
 } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import { WindowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
+
+const _initWindowInfoFromJson = function (params) {
+  //TODO 标记appinfo已初始化
+  AppInfo.markAppSchemaInited()
+  ComponentInfo.markComponentSchemaInited(params.componentCode)
+  _initVMInfo(params)
+}
+
+const _initVMInfo = function (params) {
+  const vmInfo = {}
+  const entitys = params.winDatas.entitys
+  if (entitys && entitys.entity) {
+    let entityList = entitys.entity
+    const dataSources = {}
+    entityList = Array.isArray(entityList) ? entityList : [entityList]
+    entityList.forEach((entity) => {
+      const code = entity.$.code
+      const initMetaFields = []
+      if (entity.entityFields && entity.entityFields.entityField) {
+        let entityFieldList = entity.entityFields.entityField
+        entityFieldList = Array.isArray(entityFieldList)
+          ? entityFieldList
+          : [entityFieldList]
+        entityFieldList.forEach((entityField) => {
+          let length = entityField.$.length
+          length = parseInt(length)
+          length = isNaN(length) ? 255 : length
+          let precision = entityField.$.precision
+          precision = parseInt(precision)
+          precision = isNaN(precision) ? 0 : precision
+          initMetaFields.push({
+            code: entityField.$.code,
+            name: entityField.$.name,
+            expression: entityField.expression,
+            length: length,
+            precision,
+            type: entityField.$.type
+          })
+        })
+      }
+      dataSources[code] = {
+        chineseName: '',
+        defaultValues: [],
+        fetchMode: 'dataSet',
+        id: code,
+        initDefaultData: [],
+        initMetaFields: initMetaFields,
+        isVirtual: true,
+        persistence: false,
+        tables: code,
+        whereClause: ''
+      }
+    })
+    vmInfo.dataSources = dataSources
+  }
+  WindowVMMapping.addVMMapping(params.componentCode, params.windowCode, vmInfo)
+}
 
 /**
  * 窗体模板初始化
@@ -42,9 +100,7 @@ export function init(params) {
     languageCode = params.languageCode,
     vjsInitFunc = params.vjsInitFunc,
     paramCfg = params.paramCfg
-  //TODO 标记appinfo已初始化
-  AppInfo.markAppSchemaInited()
-  ComponentInfo.markComponentSchemaInited(componentCode)
+  _initWindowInfoFromJson(params)
   //设置领域信息
   //		Environment.setDomain(domain);
   //初始化环境变量信息

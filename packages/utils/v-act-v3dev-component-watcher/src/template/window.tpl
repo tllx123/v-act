@@ -65,7 +65,8 @@ function Index(){
               "componentCode": "{{@ componentCode}}",
               "workspaceKey": "",
             }
-          }
+          },
+          winDatas:windowObjs
         });
       }catch(e){
         console.error(e);
