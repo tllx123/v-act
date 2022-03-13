@@ -24,7 +24,7 @@ import { EventManager as eventManagerService } from '@v-act/vjs.framework.extens
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { EventExtension as eventManager } from '@v-act/vjs.framework.extension.system.event'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
-import { pageRequestUtils } from '@v-act/vjs.framework.extension.platform.services.domain.rpc.channel.require'
+//import { pageRequestUtils } from '@v-act/vjs.framework.extension.platform.services.domain.rpc.channel.require'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 const token = 'WINDOW_VIEW_INIT_EVENT'
@@ -271,8 +271,8 @@ const init = function (params) {
     //				_fire(currentScope.getComponentCode(),currentScope.getWindowCode(),exports.Events.bindWidgetDatasource);
     //			});
     _fire(componentCode, windowCode, Events.onBindRule)
-    //添加水印操作
-    addWaterMarkOperation(scopeId, componentCode, windowCode)
+    //TODO 添加水印操作
+    //addWaterMarkOperation(scopeId, componentCode, windowCode)
     _fire(componentCode, windowCode, Events.onMultiRequest)
     componentParam.initVariant()
 
@@ -367,10 +367,11 @@ const init = function (params) {
     var failCB = function (e) {
       _callFunction(params.error || exceptionHandler.handle, [e])
     }
-    var operations = scopeManager.createScopeHandler({
+    /*var operations = scopeManager.createScopeHandler({ TODO 暂不处理
       scopeId: scopeId,
       handler: pageRequestUtils.getSchemaRequire
-    })()
+    })()*/
+    var operations = []
     var type = environment.getPlatformType()
     if (type == 'DesignSchema' || !operations || operations.length == 0) {
       try {
@@ -379,10 +380,11 @@ const init = function (params) {
         failCB(e)
       }
     } else {
-      //组装成Request实例对象,注入success,error回掉
-      var request = new vrequest(true, operations, successCB, failCB)
-      //调用批量请求后台接口
-      remoteOperation.request({ request: request })
+      //TODO 组装成Request实例对象,注入success,error回掉
+      //var request = new vrequest(true, operations, successCB, failCB)
+      //TODO 调用批量请求后台接口
+      //remoteOperation.request({ request: request })
+      successCB()
     }
   } catch (e) {
     if (params.error) {

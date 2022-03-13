@@ -29,6 +29,8 @@ import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.in
 
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 const viewLibMapping = {}
 
 const viewLibMappingError = {}
