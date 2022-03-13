@@ -537,7 +537,10 @@ const getAllWindowScopes = function () {
   return result
 }
 
+const fireEvent = _fire
+
 export {
+  _fire,
   _getInstanceIds,
   checkEntity,
   CloseMode,
@@ -548,6 +551,7 @@ export {
   createWindowScope,
   destroy,
   EVENTS,
+  fireEvent,
   getAllWindowScopes,
   getChildrenScopes,
   getChildWindowScope,
