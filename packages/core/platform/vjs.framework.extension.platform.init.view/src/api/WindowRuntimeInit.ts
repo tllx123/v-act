@@ -24,6 +24,7 @@ import { EventManager as eventManagerService } from '@v-act/vjs.framework.extens
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { EventExtension as eventManager } from '@v-act/vjs.framework.extension.system.event'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
+import { pageRequestUtils } from '@v-act/vjs.framework.extension.platform.services.domain.rpc.channel.require'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 const token = 'WINDOW_VIEW_INIT_EVENT'
