@@ -1,6 +1,7 @@
-import * as jsonUtil from 'module'
 import * as viewContext from 'module'
 import * as viewOperation from 'module'
+
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 //加载viewContext模块
 
