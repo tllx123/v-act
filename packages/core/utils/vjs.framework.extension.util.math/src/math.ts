@@ -126,28 +126,37 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
         'ROUND_HALF_UP ROUND_UNNECESSARY ROUND_CEILING ROUND_DOWN ROUND_FLOOR ROUND_HALF_DOWN ROUND_HALF_EVEN ROUND_UP'.split(
           ' '
         )
+      // @ts-ignore
       h.prototype.DEFAULT = new h(
+        // @ts-ignore
         h.prototype.DEFAULT_DIGITS,
+        // @ts-ignore
         h.prototype.DEFAULT_FORM,
+        // @ts-ignore
         h.prototype.DEFAULT_LOSTDIGITS,
+        // @ts-ignore
         h.prototype.DEFAULT_ROUNDINGMODE
       )
       return h
     })(),
     L = (function (h) {
-      function v(a, b) {
+      function v(a: number, b: number) {
         return (a - (a % b)) / b
       }
-      function r(a) {
+      function r(a: number) {
         var b = Array(a),
           c
         for (c = 0; c < a; ++c) b[c] = 0
         return b
       }
       function f() {
+        // @ts-ignore
         this.ind = 0
+        // @ts-ignore
         this.form = h.prototype.PLAIN
+        // @ts-ignore
         this.mant = null
+        // @ts-ignore
         this.exp = 0
         if (0 != f.arguments.length) {
           var a, b, c
@@ -166,14 +175,19 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           var q = (m = m = l = 0),
             p = 0
           g = 0
+          // @ts-ignore
           0 >= c && this.bad('BigDecimal(): ', a)
+          // @ts-ignore
           this.ind = this.ispos
           '-' == a[0]
             ? (c--,
+              // @ts-ignore
               0 == c && this.bad('BigDecimal(): ', a),
+              // @ts-ignore
               (this.ind = this.isneg),
               b++)
-            : '+' == a[0] && (c--, 0 == c && this.bad('BigDecimal(): ', a), b++)
+            : // @ts-ignore
+              '+' == a[0] && (c--, 0 == c && this.bad('BigDecimal(): ', a), b++)
           e = d = !1
           n = 0
           k = g = -1
@@ -181,86 +195,117 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           l = b
           a: for (; 0 < q; q--, l++) {
             m = a[l]
+            // @ts-ignore
             if ('0' <= m && '9' >= m) {
               k = l
               n++
               continue a
             }
+            // @ts-ignore
             if ('.' == m) {
+              // @ts-ignore
               0 <= g && this.bad('BigDecimal(): ', a)
               g = l - b
               continue a
             }
+            // @ts-ignore
             if ('e' != m && 'E' != m) {
+              // @ts-ignore
               ;('0' > m || '9' < m) && this.bad('BigDecimal(): ', a)
               d = !0
               k = l
               n++
               continue a
             }
+            // @ts-ignore
             l - b > c - 2 && this.bad('BigDecimal(): ', a)
             e = !1
             '-' == a[l + 1]
               ? ((e = !0), (l += 2))
               : (l = '+' == a[l + 1] ? l + 2 : l + 1)
             m = c - (l - b)
+            // @ts-ignore
             ;(0 == m || 9 < m) && this.bad('BigDecimal(): ', a)
             c = m
             m = l
             for (; 0 < c; c--, m++)
               (q = a[m]),
+                // @ts-ignore
                 '0' > q && this.bad('BigDecimal(): ', a),
+                // @ts-ignore
                 '9' < q ? this.bad('BigDecimal(): ', a) : (p = q - 0),
+                // @ts-ignore
                 (this.exp = 10 * this.exp + p)
+            // @ts-ignore
             e && (this.exp = -this.exp)
             e = !0
             break a
           }
+          // @ts-ignore
           0 == n && this.bad('BigDecimal(): ', a)
+          // @ts-ignore
           0 <= g && (this.exp = this.exp + g - n)
           p = k - 1
           l = b
           a: for (; l <= p; l++)
+            // @ts-ignore
             if (((m = a[l]), '0' == m)) b++, g--, n--
+            // @ts-ignore
             else if ('.' == m) b++, g--
             else break a
+          // @ts-ignore
           this.mant = Array(n)
           m = b
           if (d)
             for (b = n, l = 0; 0 < b; b--, l++)
               l == g && m++,
                 (q = a[m]),
+                // @ts-ignore
                 '9' >= q
-                  ? (this.mant[l] = q - 0)
-                  : this.bad('BigDecimal(): ', a),
+                  ? // @ts-ignore
+                    (this.mant[l] = q - 0)
+                  : // @ts-ignore
+                    this.bad('BigDecimal(): ', a),
                 m++
           else
             for (b = n, l = 0; 0 < b; b--, l++)
+              // @ts-ignore
               l == g && m++, (this.mant[l] = a[m] - 0), m++
+          // @ts-ignore
           0 == this.mant[0]
-            ? ((this.ind = this.iszero),
+            ? // @ts-ignore
+              ((this.ind = this.iszero),
+              // @ts-ignore
               0 < this.exp && (this.exp = 0),
+              // @ts-ignore
               e && ((this.mant = this.ZERO.mant), (this.exp = 0)))
             : e &&
+              // @ts-ignore
               ((this.form = h.prototype.SCIENTIFIC),
+              // @ts-ignore
               (g = this.exp + this.mant.length - 1),
+              // @ts-ignore
               (g < this.MinExp || g > this.MaxExp) &&
+                // @ts-ignore
                 this.bad('BigDecimal(): ', a))
         }
       }
       function t() {
         var a
         if (1 == t.arguments.length) a = t.arguments[0]
+        // @ts-ignore
         else if (0 == t.arguments.length) a = this.plainMC
         else
           throw (
             'abs(): ' + t.arguments.length + ' arguments given; expected 0 or 1'
           )
+        // @ts-ignore
         return this.ind == this.isneg ? this.negate(a) : this.plus(a)
       }
       function z() {
         var a
         if (2 == z.arguments.length) a = z.arguments[1]
+        // @ts-ignore
         else if (1 == z.arguments.length) a = this.plainMC
         else
           throw (
@@ -276,20 +321,25 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           l,
           m = 0
         d = m = 0
-        var m = null,
+        var m: number,
           q = (m = 0),
           p = 0,
           r = 0,
           t = 0,
           s = 0
+        // @ts-ignore
         a.lostDigits && this.checkdigits(b, a.digits)
+        // @ts-ignore
         c = this
         if (0 == c.ind && a.form != h.prototype.PLAIN) return b.plus(a)
         if (0 == b.ind && a.form != h.prototype.PLAIN) return c.plus(a)
         d = a.digits
         0 < d &&
+          // @ts-ignore
           (c.mant.length > d && (c = this.clone(c).round(a)),
+          // @ts-ignore
           b.mant.length > d && (b = this.clone(b).round(a)))
+        // @ts-ignore
         e = new f()
         n = c.mant
         g = c.mant.length
@@ -303,6 +353,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
               (e.mant = n),
               (e.exp = c.exp),
               (e.ind = c.ind),
+              // @ts-ignore
               g < d && ((e.mant = this.extend(c.mant, d)), (e.exp -= d - g)),
               e.finish(a, !1)
             )
@@ -318,6 +369,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
               (e.mant = k),
               (e.exp = b.exp),
               (e.ind = b.ind),
+              // @ts-ignore
               l < d && ((e.mant = this.extend(b.mant, d)), (e.exp -= d - l)),
               e.finish(a, !1)
             )
@@ -327,15 +379,19 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             ((m = m - d - 1), (g -= m), (e.exp += m), (m = d + 1))
           m > l && (l = m)
         }
+        // @ts-ignore
         e.ind = c.ind == this.iszero ? this.ispos : c.ind
+        // @ts-ignore
         if ((c.ind == this.isneg ? 1 : 0) == (b.ind == this.isneg ? 1 : 0))
           d = 1
         else {
           do {
             d = -1
             do
+              // @ts-ignore
               if (b.ind != this.iszero)
                 if (g < l || c.ind == this.iszero)
+                  // @ts-ignore
                   (m = n),
                     (n = k),
                     (k = m),
@@ -348,6 +404,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
                     if (m <= p) t = n[m]
                     else {
                       if (q > r) {
+                        // @ts-ignore
                         if (a.form != h.prototype.PLAIN) return this.ZERO
                         break c
                       }
@@ -371,12 +428,14 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             while (0)
           } while (0)
         }
+        // @ts-ignore
         e.mant = this.byteaddsub(n, g, k, l, d, !1)
         return e.finish(a, !1)
       }
       function A() {
         var a
         if (2 == A.arguments.length) a = A.arguments[1]
+        // @ts-ignore
         else if (1 == A.arguments.length) a = this.plainMC
         else
           throw (
@@ -387,26 +446,37 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
         var b = A.arguments[0],
           c = 0,
           c = 0
+        // @ts-ignore
         a.lostDigits && this.checkdigits(b, a.digits)
+        // @ts-ignore
         if (this.ind == b.ind && this.exp == b.exp) {
+          // @ts-ignore
           c = this.mant.length
+          // @ts-ignore
           if (c < b.mant.length) return -this.ind
+          // @ts-ignore
           if (c > b.mant.length) return this.ind
           if (c <= a.digits || 0 == a.digits) {
             a = c
             c = 0
             for (; 0 < a; a--, c++) {
+              // @ts-ignore
               if (this.mant[c] < b.mant[c]) return -this.ind
+              // @ts-ignore
               if (this.mant[c] > b.mant[c]) return this.ind
             }
             return 0
           }
         } else {
+          // @ts-ignore
           if (this.ind < b.ind) return -1
+          // @ts-ignore
           if (this.ind > b.ind) return 1
         }
+        // @ts-ignore
         b = this.clone(b)
         b.ind = -b.ind
+        // @ts-ignore
         return this.add(b, a).ind
       }
       function u() {
@@ -415,12 +485,15 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
         if (2 == u.arguments.length)
           a =
             'number' == typeof u.arguments[1]
-              ? new h(0, h.prototype.PLAIN, !1, u.arguments[1])
+              ? // @ts-ignore
+                new h(0, h.prototype.PLAIN, !1, u.arguments[1])
               : u.arguments[1]
         else if (3 == u.arguments.length) {
           b = u.arguments[1]
           if (0 > b) throw 'divide(): Negative scale: ' + b
+          // @ts-ignore
           a = new h(0, h.prototype.PLAIN, !1, u.arguments[2])
+          // @ts-ignore
         } else if (1 == u.arguments.length) a = this.plainMC
         else
           throw (
@@ -428,11 +501,13 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             u.arguments.length +
             ' arguments given; expected between 1 and 3'
           )
+        // @ts-ignore
         return this.dodivide('D', u.arguments[0], a, b)
       }
       function B() {
         var a
         if (2 == B.arguments.length) a = B.arguments[1]
+        // @ts-ignore
         else if (1 == B.arguments.length) a = this.plainMC
         else
           throw (
@@ -440,33 +515,39 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             B.arguments.length +
             ' arguments given; expected 1 or 2'
           )
+        // @ts-ignore
         return this.dodivide('I', B.arguments[0], a, 0)
       }
       function C() {
         var a
         if (2 == C.arguments.length) a = C.arguments[1]
+        // @ts-ignore
         else if (1 == C.arguments.length) a = this.plainMC
         else
           throw (
             'max(): ' + C.arguments.length + ' arguments given; expected 1 or 2'
           )
         var b = C.arguments[0]
+        // @ts-ignore
         return 0 <= this.compareTo(b, a) ? this.plus(a) : b.plus(a)
       }
       function D() {
         var a
         if (2 == D.arguments.length) a = D.arguments[1]
+        // @ts-ignore
         else if (1 == D.arguments.length) a = this.plainMC
         else
           throw (
             'min(): ' + D.arguments.length + ' arguments given; expected 1 or 2'
           )
         var b = D.arguments[0]
+        // @ts-ignore
         return 0 >= this.compareTo(b, a) ? this.plus(a) : b.plus(a)
       }
       function E() {
         var a
         if (2 == E.arguments.length) a = E.arguments[1]
+        // @ts-ignore
         else if (1 == E.arguments.length) a = this.plainMC
         else
           throw (
@@ -484,35 +565,46 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           l,
           m = 0,
           q = 0
+        // @ts-ignore
         a.lostDigits && this.checkdigits(b, a.digits)
+        // @ts-ignore
         c = this
         d = 0
         e = a.digits
         0 < e
-          ? (c.mant.length > e && (c = this.clone(c).round(a)),
+          ? // @ts-ignore
+            (c.mant.length > e && (c = this.clone(c).round(a)),
+            // @ts-ignore
             b.mant.length > e && (b = this.clone(b).round(a)))
           : (0 < c.exp && (d += c.exp), 0 < b.exp && (d += b.exp))
         c.mant.length < b.mant.length
           ? ((e = c.mant), (h = b.mant))
           : ((e = b.mant), (h = c.mant))
+        // @ts-ignore
         g = e.length + h.length - 1
+        // @ts-ignore
         k = 9 < e[0] * h[0] ? g + 1 : g
+        // @ts-ignore
         l = new f()
+        // @ts-ignore
         var k = this.createArrayWithZeros(k),
           p = e.length,
           m = 0
         for (; 0 < p; p--, m++)
           (q = e[m]),
+            // @ts-ignore
             0 != q && (k = this.byteaddsub(k, k.length, h, g, q, !0)),
             g--
         l.ind = c.ind * b.ind
         l.exp = c.exp + b.exp - d
+        // @ts-ignore
         l.mant = 0 == d ? k : this.extend(k, k.length + d)
         return l.finish(a, !1)
       }
       function J() {
         var a
         if (1 == J.arguments.length) a = J.arguments[0]
+        // @ts-ignore
         else if (0 == J.arguments.length) a = this.plainMC
         else
           throw (
@@ -521,7 +613,9 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             ' arguments given; expected 0 or 1'
           )
         var b
+        // @ts-ignore
         a.lostDigits && this.checkdigits(null, a.digits)
+        // @ts-ignore
         b = this.clone(this)
         b.ind = -b.ind
         return b.finish(a, !1)
@@ -529,6 +623,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
       function K() {
         var a
         if (1 == K.arguments.length) a = K.arguments[0]
+        // @ts-ignore
         else if (0 == K.arguments.length) a = this.plainMC
         else
           throw (
@@ -536,16 +631,22 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             K.arguments.length +
             ' arguments given; expected 0 or 1'
           )
+        // @ts-ignore
         a.lostDigits && this.checkdigits(null, a.digits)
         return a.form == h.prototype.PLAIN &&
+          // @ts-ignore
           this.form == h.prototype.PLAIN &&
+          // @ts-ignore
           (this.mant.length <= a.digits || 0 == a.digits)
-          ? this
-          : this.clone(this).finish(a, !1)
+          ? // @ts-ignore
+            this
+          : // @ts-ignore
+            this.clone(this).finish(a, !1)
       }
       function F() {
         var a
         if (2 == F.arguments.length) a = F.arguments[1]
+        // @ts-ignore
         else if (1 == F.arguments.length) a = this.plainMC
         else
           throw (
@@ -558,21 +659,27 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           f = (e = 0),
           g,
           k = 0
+        // @ts-ignore
         a.lostDigits && this.checkdigits(b, a.digits)
+        // @ts-ignore
         c = b.intcheck(this.MinArg, this.MaxArg)
+        // @ts-ignore
         d = this
         e = a.digits
         if (0 == e) {
+          // @ts-ignore
           if (b.ind == this.isneg)
             throw 'pow(): Negative power: ' + b.toString()
           e = 0
         } else {
           if (b.mant.length + b.exp > e)
             throw 'pow(): Too many digits: ' + b.toString()
+          // @ts-ignore
           d.mant.length > e && (d = this.clone(d).round(a))
           f = b.mant.length + b.exp
           e = e + f + 1
         }
+        // @ts-ignore
         e = new h(e, a.form, !1, a.roundingMode)
         f = this.ONE
         if (0 == c) return f
@@ -581,17 +688,22 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
         k = 1
         a: for (; ; k++) {
           c <<= 1
+          // @ts-ignore
           0 > c && ((g = !0), (f = f.multiply(d, e)))
           if (31 == k) break a
           if (!g) continue a
+          // @ts-ignore
           f = f.multiply(f, e)
         }
+        // @ts-ignore
         0 > b.ind && (f = this.ONE.divide(f, e))
+        // @ts-ignore
         return f.finish(a, !0)
       }
       function G() {
         var a
         if (2 == G.arguments.length) a = G.arguments[1]
+        // @ts-ignore
         else if (1 == G.arguments.length) a = this.plainMC
         else
           throw (
@@ -599,11 +711,13 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             G.arguments.length +
             ' arguments given; expected 1 or 2'
           )
+        // @ts-ignore
         return this.dodivide('R', G.arguments[0], a, -1)
       }
       function H() {
         var a
         if (2 == H.arguments.length) a = H.arguments[1]
+        // @ts-ignore
         else if (1 == H.arguments.length) a = this.plainMC
         else
           throw (
@@ -612,9 +726,12 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             ' arguments given; expected 1 or 2'
           )
         var b = H.arguments[0]
+        // @ts-ignore
         a.lostDigits && this.checkdigits(b, a.digits)
+        // @ts-ignore
         b = this.clone(b)
         b.ind = -b.ind
+        // @ts-ignore
         return this.add(b, a)
       }
       function w() {
@@ -625,6 +742,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             (c = w.arguments[4]),
             (d = w.arguments[5])
         else if (2 == w.arguments.length)
+          // @ts-ignore
           (b = a = -1), (c = h.prototype.SCIENTIFIC), (d = this.ROUND_HALF_UP)
         else
           throw (
@@ -640,14 +758,20 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
           l = null,
           m = (l = k = 0)
         g = 0
+        // @ts-ignore
         k = null
         m = l = 0
+        // @ts-ignore
         ;(-1 > e || 0 == e) && this.badarg('format', 1, e)
+        // @ts-ignore
         ;-1 > f && this.badarg('format', 2, f)
+        // @ts-ignore
         ;(-1 > a || 0 == a) && this.badarg('format', 3, a)
+        // @ts-ignore
         ;-1 > b && this.badarg('format', 4, b)
         c != h.prototype.SCIENTIFIC &&
           c != h.prototype.ENGINEERING &&
+          // @ts-ignore
           (-1 == c ? (c = h.prototype.SCIENTIFIC) : this.badarg('format', 5, c))
         if (d != this.ROUND_HALF_UP)
           try {

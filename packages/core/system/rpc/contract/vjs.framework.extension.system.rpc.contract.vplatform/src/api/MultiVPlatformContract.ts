@@ -4,27 +4,28 @@ import { Manager as manager } from '@v-act/vjs.framework.extension.system.rpc.co
 import Contract from './Contract'
 
 class MultiContract extends Contract {
+  headers:{[code:string]:any} = {}
   constructor() {
     super()
-    this.headers = {}
+   
   }
   /**
    *生成请求数据
    * @param {Request} request
    */
-  generate(request) {
+  generate(request:any) {
     this.setHeader('ajaxRequest', true)
     this.setHeader('scopeId', scopeManager.getCurrentScopeId())
     let operations = request.getOperations()
     let operation = operations[0]
     this.setHeader('componentCode', operation.getComponentCode())
     let tokenData = []
-    let infos = {}
+    let infos:{[code:string]:any} = {}
     for (let i = 0, l = operations.length; i < l; i++) {
       let o = operations[i]
       let wCode = o.getWindowCode()
       let cCode = o.getComponentCode()
-      let operationData = {
+      let operationData:{[code:string]:any} = {
         operation: o.getOperation(),
         componentCode: cCode,
         windowCode: wCode,
@@ -66,7 +67,7 @@ class MultiContract extends Contract {
         this.setHeader('windowCode', code)
       }
     }
-    let data = {}
+    let data:{[code:string]:any} = {}
     for (let attr in this.headers) {
       if (this.headers.hasOwnProperty(attr)) {
         data[attr] = this.headers[attr]
@@ -79,11 +80,11 @@ class MultiContract extends Contract {
 
 manager.injectCurrentContract(MultiContract, 'multiVPlatform')
 
-let _notBlank = function (str) {
+let _notBlank = function (str:string) {
   return str != null && str != undefined
 }
 
-let _keySize = function (obj) {
+let _keySize = function (obj:any) {
   let s = 0
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {

@@ -11,12 +11,36 @@ const render = template.compile(
   ).toString()
 )
 
+const parser = require('../../../v-act-xml-parser/dist/index')
+
+const forInObj = (obj) => {
+  for (let key in obj) {
+    let target = obj[key]
+    if (
+      key === '_' &&
+      target.indexOf('<') !== -1 &&
+      target.indexOf('/>') !== -1
+    ) {
+      const dom = parser.parse(`<root>${target}</root>`)
+      obj[key] = dom[0].children
+    }
+
+    if (Object.prototype.toString.call(target).slice(8, -1) == 'Object')
+      forInObj(target)
+  }
+}
+
 class Window {
   constructor(componentCode, obj, vactWidgetMap) {
     this.componentCode = componentCode
     this.windowCode = obj.$.code
-    this.obj = obj
     this.vactWidgetMap = vactWidgetMap
+
+    // 处理xml脚本节点字符串问题
+    forInObj(obj)
+    this.obj = obj
+
+    console.log(JSON.stringify(this.obj, null, 2))
   }
 
   getCode() {

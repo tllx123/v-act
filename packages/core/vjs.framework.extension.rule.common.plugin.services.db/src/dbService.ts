@@ -6,7 +6,7 @@ import * as viewModel from 'module'
 
 let sandbox
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -44,13 +44,13 @@ export function initModule(sb) {
  *            规则上下文
  */
 let insertOrUpdateRecords2Entity = function (
-  entityName,
-  entityType,
-  records,
-  mappings,
-  operType,
-  isClearDatas,
-  ruleContext
+  entityName: string,
+  entityType: string,
+  records: any[],
+  mappings: string,
+  operType: string,
+  isClearDatas: boolean,
+  ruleContext: string
 ) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
@@ -70,8 +70,10 @@ let insertOrUpdateRecords2Entity = function (
   if (isClearDatas) {
     // 如果是界面实体，则调用前端框架提供的接口，这样会调用控件的刷新事件
     if (entityType == 'entity' || entityType == 'window') {
+      // @ts-ignore
       viewModel.getDataModule().resetDS(entityName)
       // TODO:目前resetDS存在清除后会因为setValue造成一条新记录，所以必须进行remove
+      // @ts-ignore
       let existRecords = viewModel.getDataModule().getAllRecordsByDS(entityName)
       if (existRecords && existRecords.length > 0) {
         let removeIds = []
@@ -79,6 +81,7 @@ let insertOrUpdateRecords2Entity = function (
           let existRecord = existRecords[ei]
           removeIds.push(existRecord.getSysId())
         }
+        // @ts-ignore
         viewModel.getDataModule().removeByDS(entityName, removeIds)
       }
     } else {
@@ -88,8 +91,10 @@ let insertOrUpdateRecords2Entity = function (
   // 如果来源记录为空，则不做任何动作
   if (
     !records ||
+    // @ts-ignore
     (jsTool.isArray(records) && records.length < 1) ||
     !mappings ||
+    // @ts-ignore
     (jsTool.isArray(mappings) && mappings.length < 1)
   )
     return
@@ -97,6 +102,7 @@ let insertOrUpdateRecords2Entity = function (
   let updateRecords = []
   let insertRecords = []
 
+  let oldRecords
   for (let i = 0; i < records.length; i++) {
     let record = records[i]
     let oldRecord = null
@@ -106,14 +112,18 @@ let insertOrUpdateRecords2Entity = function (
     let tmpObj = {}
     for (let index = 0; index < mappings.length; index++) {
       // 来源值类型,returnValue:返回值，expression:表达式
+      // @ts-ignore
       let srcValueType = mappings[index]['srcValueType']
+      // @ts-ignore
       let srcValue = mappings[index]['srcValue']
       // 前台目标实体字段
+      // @ts-ignore
       let destField = mappings[index]['destField']
       // srcField = jsTool.getFieldName(srcField);
       let value = _getValueByMapping(record, srcValueType, srcValue)
-
+      // @ts-ignore
       destField = jsTool.getFieldName(destField)
+      // @ts-ignore
       tmpObj[destField] = value
       if (destField.toLocaleLowerCase() == 'id') {
         hasId = true
@@ -136,7 +146,7 @@ let insertOrUpdateRecords2Entity = function (
       // 把新记录的值赋值到旧记录中，id不会赋值过去
       for (let j = 0; j < oldRecords.length; j++) {
         if (undefined == oldRecords[j] || null == oldRecords[j]) continue
-        for (proName in tmpObj) {
+        for (let proName in tmpObj) {
           if (proName.toLocaleLowerCase() != 'id')
             oldRecords[j].set(proName, tmpObj[proName])
         }
@@ -149,7 +159,7 @@ let insertOrUpdateRecords2Entity = function (
       }
       // 如果获取不到目标实体的记录，则新增
       if (oldRecord == null) newRecord = destEntity.getEmptyRecord(true)
-      for (proName in tmpObj) {
+      for (let proName in tmpObj) {
         if (oldRecord == null) newRecord.set(proName, tmpObj[proName])
         else if (proName.toLocaleLowerCase() != 'id')
           oldRecord.set(proName, tmpObj[proName])
@@ -165,7 +175,7 @@ let insertOrUpdateRecords2Entity = function (
   if (updateRecords != null && updateRecords.length > 0) {
     // 如果是界面实体，则调用前端框架提供的接口，这样会调用控件的刷新事件
     if (entityType == 'entity' || entityType == 'window')
-      viewModel
+      viewModel // @ts-ignore
         .getDataModule()
         .setBaseValueByDS(entityName, updateRecords, true)
     else destEntity.updateRecords(updateRecords, true)
@@ -175,11 +185,11 @@ let insertOrUpdateRecords2Entity = function (
     // 如果是界面实体，则调用前端框架提供的接口，这样会调用控件的刷新事件
     if (entityType == 'entity' || entityType == 'window') {
       if (operType == 'loadRecord') {
-        viewModel
+        viewModel // @ts-ignore
           .getDataModule()
           .loadDataRecords(entityName, insertRecords, true, null, true)
       } else {
-        viewModel
+        viewModel // @ts-ignore
           .getDataModule()
           .insertByDS(entityName, insertRecords, null, false)
       }
@@ -189,11 +199,16 @@ let insertOrUpdateRecords2Entity = function (
   }
 }
 
-let _getValueByMapping = function (record, srcColumnType, srcColumn) {
+let _getValueByMapping = function (
+  record: any,
+  srcColumnType: string,
+  srcColumn: string | number
+): null | number | string {
   // 来源字段类型,returnValue:返回值，expression:表达式
   let value = null
   // srcColumnType为空时应该是旧数据，兼容处理下
   if (srcColumnType == 'expression') {
+    // @ts-ignore
     value = formulaUtil.evalExpressionByRecords(srcColumn, [record])
   } else {
     value = record.get(srcColumn)
@@ -215,7 +230,11 @@ let _getValueByMapping = function (record, srcColumnType, srcColumn) {
  *            规则上下文
  * @return boolean 变量是否实体对象
  */
-let isEntity = function (entityName, entityType, ruleContext) {
+let isEntity = function (
+  entityName: string,
+  entityType: string,
+  ruleContext: any
+) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
 
@@ -228,12 +247,14 @@ let isEntity = function (entityName, entityType, ruleContext) {
 
   // 窗体输入变量：开发系统中，有的规则用windowVariant有的规则用windowInput，此处做兼容
   else if (entityType == 'windowVariant' || entityType == 'windowInput') {
+    // @ts-ignore
     let varType = viewContext.getWindowVariantType(entityName)
     isEntity = varType == 'entity' ? true : false
   }
 
   // 窗体输出变量
   else if (entityType == 'windowOutput') {
+    // @ts-ignore
     let varType = viewContext.getWindowOutputType(entityName)
     isEntity = varType == 'entity' ? true : false
   }
@@ -274,16 +295,23 @@ let isEntity = function (entityName, entityType, ruleContext) {
  *            规则上下文
  * @return db 实体对象
  */
-let getEntity = function (entityName, entityType, ruleContext) {
+let getEntity = function (
+  entityName: string,
+  entityType: string,
+  ruleContext: any
+) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
 
   let entity
   if (entityType == 'entity' || entityType == 'window') {
+    // @ts-ignore
     entity = dbManager.getDB(entityName)
   } else if (entityType == 'windowVariant' || entityType == 'windowInput') {
+    // @ts-ignore
     entity = viewContext.getWindowVariantType(entityName)
   } else if (entityType == 'windowOutput') {
+    // @ts-ignore
     entity = viewContext.getWindowOutputValue(entityName)
   } else if (entityType == 'ruleSetInput') {
     entity = ruleContext.getRouteContext().getInputParam(entityName)

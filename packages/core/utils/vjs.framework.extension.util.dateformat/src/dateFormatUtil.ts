@@ -1,11 +1,11 @@
 /**
  * constructor
  */
-let DateFormat = function (pattern: string) {
+let DateFormat = function (pattern: any) {
   // @ts-ignore
   this.pattern = pattern
 }
-
+// @ts-ignore
 DateFormat.zh_cn_month1 = [
   '1',
   '2',
@@ -20,6 +20,7 @@ DateFormat.zh_cn_month1 = [
   '11',
   '12'
 ]
+// @ts-ignore
 DateFormat.zh_cn_month2 = [
   '01',
   '02',
@@ -34,6 +35,7 @@ DateFormat.zh_cn_month2 = [
   '11',
   '12'
 ]
+// @ts-ignore
 DateFormat.zh_cn_month3 = [
   '\u4e00\u6708',
   '\u4e8c\u6708',
@@ -48,6 +50,7 @@ DateFormat.zh_cn_month3 = [
   '\u5341\u4e00\u6708',
   '\u5341\u4e8c\u6708'
 ]
+// @ts-ignore
 DateFormat.zh_cn_month4 = [
   '\u4e00\u6708',
   '\u4e8c\u6708',
@@ -62,6 +65,7 @@ DateFormat.zh_cn_month4 = [
   '\u5341\u4e00\u6708',
   '\u5341\u4e8c\u6708'
 ]
+// @ts-ignore
 DateFormat.us_en_month4 = [
   'Janu',
   'Febr',
@@ -76,6 +80,7 @@ DateFormat.us_en_month4 = [
   'Nove',
   'Dece'
 ]
+// @ts-ignore
 DateFormat.us_en_month3 = [
   'Jan',
   'Feb',
@@ -90,6 +95,7 @@ DateFormat.us_en_month3 = [
   'Nov',
   'Dec'
 ]
+// @ts-ignore
 DateFormat.us_en_month2 = [
   '01',
   '02',
@@ -104,6 +110,7 @@ DateFormat.us_en_month2 = [
   '11',
   '12'
 ]
+// @ts-ignore
 DateFormat.us_en_month1 = [
   '1',
   '2',
@@ -118,6 +125,7 @@ DateFormat.us_en_month1 = [
   '11',
   '12'
 ]
+// @ts-ignore
 DateFormat.zh_cn_week = [
   '\u661f\u671f\u65e5',
   '\u661f\u671f\u4e00',
@@ -127,8 +135,11 @@ DateFormat.zh_cn_week = [
   '\u661f\u671f\u4e94',
   '\u661f\u671f\u516d'
 ]
+// @ts-ignore
 DateFormat.zh_cn_am = '\u4e0b\u5348'
+// @ts-ignore
 DateFormat.zh_cn_pm = '\u4e0a\u5348'
+// @ts-ignore
 DateFormat.language = 'zh_cn'
 //(navigator.userLanguage == undefined ? navigator.language : navigator.userLanguage).replace("-", "_").toLowerCase();
 
@@ -137,7 +148,8 @@ DateFormat.language = 'zh_cn'
  * @param date 日期
  * @return String
  */
-DateFormat.prototype.format = function (date) {
+
+DateFormat.prototype.format = function (date: Date) {
   let year4 = date.getFullYear()
   let year2 = year4.toString().substring(2)
   let pattern = this.pattern
@@ -146,23 +158,27 @@ DateFormat.prototype.format = function (date) {
   let month = date.getMonth()
   pattern = pattern.replace(
     /MMMM/g,
+    // @ts-ignore
     DateFormat[DateFormat.language + '_month4'][month]
   )
   pattern = pattern.replace(
     /MMM/g,
+    // @ts-ignore
     DateFormat[DateFormat.language + '_month3'][month]
   )
   pattern = pattern.replace(
     /MM/g,
+    // @ts-ignore
     DateFormat[DateFormat.language + '_month2'][month]
   )
   pattern = pattern.replace(
     /M/g,
+    // @ts-ignore
     DateFormat[DateFormat.language + '_month1'][month]
   )
 
   let dayOfMonth = date.getDate()
-  let dayOfMonth2 = dayOfMonth
+  let dayOfMonth2: string | number = dayOfMonth
   let dayOfMonthLength = dayOfMonth.toString().length
   if (dayOfMonthLength == 1) {
     dayOfMonth2 = '0' + dayOfMonth
@@ -170,7 +186,7 @@ DateFormat.prototype.format = function (date) {
   pattern = pattern.replace(/dd/g, dayOfMonth2)
   pattern = pattern.replace(/d/g, dayOfMonth)
   let hours = date.getHours()
-  let hours2 = hours
+  let hours2: number | string = hours
   let hoursLength = hours.toString().length
   if (hoursLength == 1) {
     hours2 = '0' + hours
@@ -178,7 +194,7 @@ DateFormat.prototype.format = function (date) {
   pattern = pattern.replace(/HH/g, hours2)
   pattern = pattern.replace(/H/g, hours)
   let minutes = date.getMinutes()
-  let minutes2 = minutes
+  let minutes2: number | string = minutes
   let minutesLength = minutes.toString().length
   if (minutesLength == 1) {
     minutes2 = '0' + minutes
@@ -186,7 +202,7 @@ DateFormat.prototype.format = function (date) {
   pattern = pattern.replace(/mm/g, minutes2)
   pattern = pattern.replace(/m/g, minutes)
   let seconds = date.getSeconds()
-  let seconds2 = seconds
+  let seconds2: number | string = seconds
   let secondsLength = seconds.toString().length
   if (secondsLength == 1) {
     seconds2 = '0' + seconds
@@ -198,18 +214,21 @@ DateFormat.prototype.format = function (date) {
   let day = date.getDay()
   pattern = pattern.replace(
     /E+/g,
+    // @ts-ignore
     DateFormat[DateFormat.language + '_week'][day]
   )
   if (hours > 12) {
+    // @ts-ignore
     pattern = pattern.replace(/a+/g, DateFormat[DateFormat.language + '_am'])
   } else {
+    // @ts-ignore
     pattern = pattern.replace(/a+/g, DateFormat[DateFormat.language + '_pm'])
   }
   let kHours = hours
   if (kHours == 0) {
     kHours = 24
   }
-  let kHours2 = kHours
+  let kHours2: string | number = kHours
   let kHoursLength = kHours.toString().length
   if (kHoursLength == 1) {
     kHours2 = '0' + kHours
@@ -220,7 +239,7 @@ DateFormat.prototype.format = function (date) {
   if (hours > 11) {
     KHours = hours - 12
   }
-  let KHours2 = KHours
+  let KHours2: string | number = KHours
   let KHoursLength = KHours.toString().length
   if (KHoursLength == 1) {
     KHours2 = '0' + KHours
@@ -231,8 +250,8 @@ DateFormat.prototype.format = function (date) {
   if (hHours == 0) {
     hHours = 12
   }
-  let hHours2 = hHours
-  let hHoursLength = hHours.toString().length
+  let hHours2: string | number = hHours
+  // let hHoursLength = hHours.toString().length
   if (KHoursLength == 1) {
     hHours2 = '0' + hHours
   }
@@ -241,7 +260,8 @@ DateFormat.prototype.format = function (date) {
   return pattern
 }
 
-const newInstance = function (pattern) {
+const newInstance = function (pattern: any) {
+  // @ts-ignore
   return new DateFormat(pattern)
 }
 
