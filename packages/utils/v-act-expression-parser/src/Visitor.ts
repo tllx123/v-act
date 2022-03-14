@@ -16,7 +16,6 @@ import AndSyntax from './ast/syntax/operators/logic/impls/AndSyntax'
 import NotSyntax from './ast/syntax/operators/logic/impls/NotSyntax'
 import OrSyntax from './ast/syntax/operators/logic/impls/OrSyntax'
 import ParseResultSyntax from './ast/syntax/ParseResultSyntax'
-import Syntax from './ast/syntax/Syntax'
 import UnknownSyntax from './ast/syntax/UnknownSyntax'
 import EntityFieldSyntax from './ast/syntax/vplatform/entity/EntityFieldSyntax'
 import FunctionSyntax from './ast/syntax/vplatform/func/FunctionSyntax'
@@ -38,274 +37,188 @@ interface ExpressionVisitor {
   /**
    * 访问 引用函数
    */
-  visitFunctionSyntax?: (
-    syntax: FunctionSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitFunctionSyntax?: (syntax: FunctionSyntax) => void | boolean
 
   /**
    * 打印括号语法
    */
-  visitBacketSyntax?: (
-    syntax: BracketSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitBacketSyntax?: (syntax: BracketSyntax) => void | boolean
 
   /**
    * 打印布尔关键字语法
    */
   visitBooleanIdentifierSyntax?: (
-    syntax: BooleanIdentifierSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: BooleanIdentifierSyntax
+  ) => void | boolean
 
   /**
    * 打印构件变量语法
    */
-  visitComponentVarSyntax?: (
-    syntax: ComponentVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitComponentVarSyntax?: (syntax: ComponentVarSyntax) => void | boolean
 
   /**
    * 打印数值语法
    */
   visitNumberIdentifierSyntax?: (
-    syntax: NumberIdentifierSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: NumberIdentifierSyntax
+  ) => void | boolean
 
   /**
    * 打印字符串常量语法
    */
   visitStringIdentifierSyntax?: (
-    syntax: StringIdentifierSyntax,
-    visitor: (syntax: Syntax) => string | boolean
-  ) => boolean | string
+    syntax: StringIdentifierSyntax
+  ) => void | boolean
 
   /**
    * 打印加法运算符语法
    */
-  visitAddSyntax?: (
-    syntax: AddSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitAddSyntax?: (syntax: AddSyntax) => void | boolean
 
   /**
    * 打印除运算符语法
    */
-  visitDivideSyntax?: (
-    syntax: DivideSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitDivideSyntax?: (syntax: DivideSyntax) => void | boolean
 
   /**
    * 打印乘运算符语法
    */
-  visitMultiplySyntax?: (
-    syntax: MultiplySyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitMultiplySyntax?: (syntax: MultiplySyntax) => void | boolean
 
   /**
    * 打印减运算符语法
    */
-  visitSubtractSyntax?: (
-    syntax: SubtractSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitSubtractSyntax?: (syntax: SubtractSyntax) => void | boolean
 
   /**
    * 打印 Equal 语法
    */
-  visitEqualSyntax?: (
-    syntax: EqualSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitEqualSyntax?: (syntax: EqualSyntax) => void | boolean
 
   /**
    * 打印 GreaterOrEqual 语法
    */
-  visitGreaterOrEqualSyntax?: (
-    syntax: GreaterOrEqualSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitGreaterOrEqualSyntax?: (syntax: GreaterOrEqualSyntax) => void | boolean
 
   /**
    * 打印 GreaterThan 语法
    */
-  visitGreaterThanSyntax?: (
-    syntax: GreaterThanSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitGreaterThanSyntax?: (syntax: GreaterThanSyntax) => void | boolean
 
   /**
    * 打印 LessOrEqual 语法
    */
-  visitLessOrEqualSyntax?: (
-    syntax: LessOrEqualSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitLessOrEqualSyntax?: (syntax: LessOrEqualSyntax) => void | boolean
 
   /**
    * 打印 LessThan 语法
    */
-  visitLessThanSyntax?: (
-    syntax: LessThanSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitLessThanSyntax?: (syntax: LessThanSyntax) => void | boolean
 
   /**
    * 打印 NotEqual 语法
    */
-  visitNotEqualSyntax?: (
-    syntax: NotEqualSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitNotEqualSyntax?: (syntax: NotEqualSyntax) => void | boolean
 
   /**
    * 打印 And 语法
    */
-  visitAndSyntax?: (
-    syntax: AndSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitAndSyntax?: (syntax: AndSyntax) => void | boolean
 
   /**
    * 打印 Not 语法
    */
-  visitNotSyntax?: (
-    syntax: NotSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitNotSyntax?: (syntax: NotSyntax) => void | boolean
 
   /**
    * 打印 Or 语法
    */
-  visitOrSyntax?: (
-    syntax: OrSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitOrSyntax?: (syntax: OrSyntax) => void | boolean
 
   /**
    * 打印 EntityField 语法
    */
-  visitEntityFieldSyntax?: (
-    syntax: EntityFieldSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitEntityFieldSyntax?: (syntax: EntityFieldSyntax) => void | boolean
 
   /**
    * 打印 ForeachVar 语法
    */
-  visitForeachVarSyntax?: (
-    syntax: ForeachVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitForeachVarSyntax?: (syntax: ForeachVarSyntax) => void | boolean
 
   /**
    * 打印 RuleBusinessResult 语法
    */
   visitRuleBusinessResultSyntax?: (
-    syntax: RuleBusinessResultSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: RuleBusinessResultSyntax
+  ) => void | boolean
 
   /**
    * 打印 RulesetEntityFieldInput 语法
    */
   visitRulesetEntityFieldInputSyntax?: (
-    syntax: RulesetEntityFieldInputSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: RulesetEntityFieldInputSyntax
+  ) => void | boolean
 
   /**
    * 打印 RulesetEntityFieldOutput 语法
    */
   visitRulesetEntityFieldOutputSyntax?: (
-    syntax: RulesetEntityFieldOutputSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: RulesetEntityFieldOutputSyntax
+  ) => void | boolean
 
   /**
    * 打印 RulesetEntityFieldVar 语法
    */
   visitRulesetEntityFieldVarSyntax?: (
-    syntax: RulesetEntityFieldVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: RulesetEntityFieldVarSyntax
+  ) => void | boolean
 
   /**
    * 打印 RulesetInput 语法
    */
-  visitRulesetInputSyntax?: (
-    syntax: RulesetInputSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitRulesetInputSyntax?: (syntax: RulesetInputSyntax) => void | boolean
 
   /**
    * 打印 RulesetOutput 语法
    */
-  visitRulesetOutputSyntax?: (
-    syntax: RulesetOutputSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitRulesetOutputSyntax?: (syntax: RulesetOutputSyntax) => void | boolean
 
   /**
    * 打印 RulesetVar 语法
    */
-  visitRulesetVarSyntax?: (
-    syntax: RulesetVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitRulesetVarSyntax?: (syntax: RulesetVarSyntax) => void | boolean
 
   /**
    * 打印 WindowVar 语法
    */
-  visitWindowVarSyntax?: (
-    syntax: WindowVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitWindowVarSyntax?: (syntax: WindowVarSyntax) => void | boolean
 
   /**
    * 打印 BusinessWidgetProperty 语法
    */
   visitBusinessWidgetPropertySyntax?: (
-    syntax: BusinessWidgetPropertySyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+    syntax: BusinessWidgetPropertySyntax
+  ) => void | boolean
 
   /**
    * 打印 WidgetProperty 语法
    */
-  visitWidgetPropertySyntax?: (
-    syntax: WidgetPropertySyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitWidgetPropertySyntax?: (syntax: WidgetPropertySyntax) => void | boolean
 
   /**
    * 打印 WorkflowVar 语法
    */
-  visitWorkflowVarSyntax?: (
-    syntax: WorkflowVarSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitWorkflowVarSyntax?: (syntax: WorkflowVarSyntax) => void | boolean
 
   /**
    * 打印 ParseResult 语法
    */
-  visitParseResultSyntax?: (
-    syntax: ParseResultSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitParseResultSyntax?: (syntax: ParseResultSyntax) => void | boolean
 
   /**
    * 打印 Unknown 语法
    */
-  visitUnknownSyntax?: (
-    syntax: UnknownSyntax,
-    visitor: (syntax: Syntax) => boolean | string
-  ) => boolean | string
+  visitUnknownSyntax?: (syntax: UnknownSyntax) => void | boolean
 }
 
 export default ExpressionVisitor

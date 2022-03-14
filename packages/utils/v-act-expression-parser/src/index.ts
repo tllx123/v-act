@@ -1,5 +1,6 @@
 import { parse as p } from './ast/Parser'
 import Syntax from './ast/syntax/Syntax'
+import FunctionSyntax from './ast/syntax/vplatform/func/FunctionSyntax'
 import type Printer from './Printer'
 import type Visitor from './Visitor'
 
@@ -17,5 +18,22 @@ const visit = function (syntax: Syntax, visitor: Visitor): string | boolean {
   ctx.setVisitor(visitor)
   return syntax.visit()
 }
+/**
+ * 从表达式中解析出用到的函数
+ * @param exp
+ */
+const getFuncs = function (exp: string) {
+  const syntax = parse(exp)
+  const funcs: string[] = []
+  visit(syntax, {
+    visitFunctionSyntax: function (syntax: FunctionSyntax) {
+      const funcCode = syntax.getCode()
+      if (funcs.indexOf(funcCode) == -1) {
+        funcs.push(funcCode)
+      }
+    }
+  })
+  return funcs
+}
 
-export { parse, print, Printer, visit, Visitor }
+export { getFuncs, parse, print, Printer, visit, Visitor }

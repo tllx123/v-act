@@ -1,7 +1,6 @@
-import * as actionHandler from 'module'
-import * as viewModel from 'module'
-
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Modal as viewModel } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 //加载actionHandler模块
 //加载jsonUtil模块
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'

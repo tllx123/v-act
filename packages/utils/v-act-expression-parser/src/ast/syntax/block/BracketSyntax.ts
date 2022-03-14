@@ -1,7 +1,8 @@
+import { LeftParenToken, RightParenToken, Token } from '@v-act/tokenizer'
+
 import { parseToSyntax } from '../../Parser'
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import { Token, LeftParenToken, RightParenToken } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 import UnknownSyntax from '../UnknownSyntax'
 
@@ -139,9 +140,10 @@ class BracketSyntax extends Syntax {
     const visitor = ctx.getVisitor()
 
     if (visitor && visitor.visitBacketSyntax) {
-      return visitor.visitBacketSyntax(this, (syntax) => syntax.visit())
-    } else {
-      return `${this.getBody().visit()}`
+      const res = visitor.visitBacketSyntax(this)
+      if (res !== false) {
+        this.getBody().visit()
+      }
     }
   }
 }
