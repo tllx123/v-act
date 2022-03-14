@@ -1,29 +1,29 @@
-let _pool = {}
-let collectionUtil, objectUtil
+let _pool:{[code:string]:any} = {}
+let collectionUtil:any, objectUtil:any
 
-export function initModule(sb) {
+export function initModule(sb:any) {
   collectionUtil = sb.util.collections
   objectUtil = sb.util.object
 }
 
-const put = function (transactionId, instance) {
+const put = function (transactionId:string, instance:any) {
   _pool[transactionId] = instance
 }
 
-const get = function (transactionId) {
+const get = function (transactionId:string) {
   return _pool[transactionId]
 }
 
-const remove = function (transactionId) {
+const remove = function (transactionId:string) {
   _pool[transactionId] = null
   try {
     delete _pool[transactionId]
   } catch (e) {}
 }
 
-const getByScopeId = function (scopeId) {
-  let result = []
-  collectionUtil.each(_pool, function (instance) {
+const getByScopeId = function (scopeId:string) {
+  let result:any = []
+  collectionUtil.each(_pool, function (instance:any) {
     let sId = instance.getScopeId()
     if (scopeId == sId) {
       result.push(instance)
@@ -36,4 +36,4 @@ const getAll = function () {
   return objectUtil.values(_pool)
 }
 
-export { add, put, get, remove, getByScopeId, getAll }
+export {  put, get, remove, getByScopeId, getAll }
