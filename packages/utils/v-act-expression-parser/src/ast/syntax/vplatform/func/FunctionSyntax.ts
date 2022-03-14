@@ -1,12 +1,13 @@
+import {
+  CommaToken,
+  LeftParenToken,
+  RightParenToken,
+  Token
+} from '@v-act/tokenizer'
+
 import { parseToSyntax } from '../../../Parser'
 import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import {
-  Token,
-  RightParenToken,
-  LeftParenToken,
-  CommaToken
-} from '@v-act/tokenizer'
 import { isVarToken } from '../../../utils/TokenUtils'
 import Syntax from '../../Syntax'
 
@@ -193,25 +194,17 @@ class FunctionSyntax extends Syntax {
   visit() {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
-    const scripts: any[] = []
-
-    if (visitor && visitor.visitParseResultSyntax) {
-      return visitor.visitFunctionSyntax(
-        this,
-        (syntax) => <string>syntax.visit()
-      )
-    } else {
-      scripts.push(this.getCode())
-      let args = this.getArgs()
-      if (args && args.length > 0) {
-        args.forEach((arg) => {
-          let target = arg.visit()
-          target !== 'false' && scripts.push(target)
-        })
+    if (visitor && visitor.visitFunctionSyntax) {
+      const res = visitor.visitFunctionSyntax(this)
+      if (res !== false) {
+        let args = this.getArgs()
+        if (args && args.length > 0) {
+          args.forEach((arg) => {
+            arg.visit()
+          })
+        }
       }
     }
-
-    return scripts.join(',')
   }
 }
 

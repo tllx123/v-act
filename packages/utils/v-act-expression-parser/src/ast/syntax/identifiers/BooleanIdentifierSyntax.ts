@@ -1,6 +1,7 @@
+import { Token } from '@v-act/tokenizer'
+
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import { Token } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 
 /**
@@ -68,7 +69,11 @@ class BooleanIdentifierSyntax extends Syntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitBooleanIdentifierSyntax) {
+      visitor.visitBooleanIdentifierSyntax(this)
+    }
   }
 }
 
