@@ -1,6 +1,6 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-export function initModule(sb) {}
+
 
 let getSeries = function () {
   let series = ScopeManager.getProperty('type')

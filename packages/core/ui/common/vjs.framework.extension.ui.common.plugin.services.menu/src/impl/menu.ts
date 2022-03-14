@@ -82,7 +82,7 @@ let openWindowHandler = function (widget, item) {
     let title = item.name
     let compCode = item.compCode
     let winCode = item.winCode
-    let componentVariable = {}
+    let componentVariable:{[code:string]:any} = {}
     let params = item['params']
     if (params) {
       params = params.split('&')
