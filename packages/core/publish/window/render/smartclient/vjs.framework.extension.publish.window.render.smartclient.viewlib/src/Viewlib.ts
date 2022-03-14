@@ -30,11 +30,14 @@ import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.medi
 import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
+import * as initRuleSet from './initRuleSet'
+
 const _initWindowInfoFromJson = function (params) {
   //TODO 标记appinfo已初始化
   AppInfo.markAppSchemaInited()
   ComponentInfo.markComponentSchemaInited(params.componentCode)
   _initVMInfo(params)
+  initRuleSet.init(params)
 }
 
 const _initVMInfo = function (params) {
