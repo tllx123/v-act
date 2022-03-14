@@ -11,7 +11,10 @@ const execute = function (params) {
   let functionName = params.functionName,
     context = params.context,
     args = params.args
-  let functionDef = sb.getService(functionName)
+  //let functionDef = sb.getService(functionName)
+  const windowScope = scopeManager.getWindowScope()
+  const funcDefines = windowScope.get('funcDefines')
+  const functionDef = funcDefines[functionName]
   if (!functionDef) {
     let exception = exceptionFactory.create({
       message:

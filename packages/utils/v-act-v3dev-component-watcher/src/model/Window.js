@@ -11,7 +11,8 @@ const render = template.compile(
   ).toString()
 )
 
-const parser = require('../../../v-act-xml-parser/dist/index')
+const parser = require('@v-act/xml-parser')
+const expresion = require('@v-act/expression-parser')
 
 const forInObj = (obj) => {
   for (let key in obj) {
@@ -156,8 +157,14 @@ class Window {
   getWindowTsxScript() {
     return new Promise((resolve, reject) => {
       try {
+        const ruleInfo = this.getRuleImportAndDefines()
+        const funcInfo = this.getFuncImportAndDefines()
         const params = {
           componentCode: this.componentCode,
+          ruleDefines: ruleInfo.ruleDefines,
+          ruleImports: ruleInfo.ruleImports,
+          funcDefines: funcInfo.funcDefines,
+          funcImports: funcInfo.funcImports,
           windowCode: this.windowCode,
           windowJsonScript: JSON.stringify(this.obj),
           importScripts: this.toImportScripts(),
@@ -197,6 +204,103 @@ class Window {
           reject(err)
         })
     })
+  }
+
+  getRuleImportAndDefines() {
+    const ruleSet = this.getRuleSet()
+    const ruleImports = []
+    const ruleDefines = ['{']
+    if (ruleSet.length > 0) {
+      ruleSet.forEach((ruleCode) => {
+        ruleImports.push(
+          `const ${ruleCode} = (await import('@v-act/webrule_${ruleCode.toLowerCase()}'))`
+        )
+        ruleImports.push('\n')
+        ruleDefines.push(`"${ruleCode}":${ruleCode}`)
+        ruleDefines.push(',')
+      })
+      ruleImports.pop()
+      ruleDefines.pop()
+    }
+    ruleDefines.push('}')
+    return {
+      ruleDefines: ruleDefines.join(''),
+      ruleImports: ruleImports.join('')
+    }
+  }
+
+  getFuncImportAndDefines() {
+    const funcSet = this.getFuncSet()
+    const funcImports = []
+    const funcDefines = ['{']
+    if (funcSet.length > 0) {
+      funcSet.forEach((funcCode) => {
+        funcImports.push(
+          `const ${ruleCode} = (await import('@v-act/webfunc_${funcCode.toLowerCase()}'))`
+        )
+        funcImports.push('\n')
+        funcDefines.push(`"${ruleCode}":${ruleCode}`)
+        funcDefines.push(',')
+      })
+      funcImports.pop()
+      funcDefines.pop()
+    }
+    funcDefines.push('}')
+    return {
+      funcDefines: funcDefines.join(''),
+      funcImports: funcImports.join('')
+    }
+  }
+
+  getRuleSet() {
+    const ruleSet = []
+    if (this.obj.logics && this.obj.logics.logic) {
+      const logicList = this.obj.logics.logic
+      logicList = Array.isArray(logicList) ? logicList : [logicList]
+      logicList.forEach((logic) => {
+        const attrs = logic.$
+        if (attrs && attrs.type == 'client') {
+          if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
+            let ruleInstanceList = logic.ruleInstances.ruleInstance
+            ruleInstanceList = Array.isArray(ruleInstanceList)
+              ? ruleInstanceList
+              : [ruleInstanceList]
+            ruleInstanceList.forEach((ruleInstance) => {
+              const ruleCode = ruleInstance.$.ruleCode
+              if (ruleSet.indexOf(ruleCode) == -1) {
+                ruleSet.push(ruleCode)
+              }
+            })
+          }
+        }
+      })
+    }
+    return ruleSet
+  }
+
+  getFuncSet() {
+    const funcSet = []
+    if (this.obj.expressions && this.obj.expressions.expression) {
+      const expressionList = this.obj.expressions.expression
+      expressionList = Array.isArray(expressionList)
+        ? expressionList
+        : [expressionList]
+      expressionList.forEach((expression) => {
+        const attrs = expression.$
+        if (attrs && attrs.content && attrs.type == 'client') {
+          const exp = attrs.content
+          const funcs = expresion.getFuncs(exp)
+          if (funcs && funcs.length > 0) {
+            funcs.forEach((func) => {
+              if (funcSet.indexOf(func) == -1) {
+                funcSet.push(func)
+              }
+            })
+          }
+        }
+      })
+    }
+    return funcSet
   }
 }
 
