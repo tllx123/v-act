@@ -21,6 +21,10 @@ vds.import(
 interface keyIsString {
   [key: string]: any
 }
+interface fieldMapParams {
+  destName?: string
+  sourceName?: string
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -537,7 +541,7 @@ var getCurrentRecord = function (ds: any) {
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
@@ -547,10 +551,10 @@ var getDsName = function (widgetCode) {
  * @param {*} orderByCfg
  * @param {*} widgetOrderInfo
  */
-var getAllOrderInfo = function (orderByCfg, widgetOrderInfo) {
+var getAllOrderInfo = function (orderByCfg: unknown, widgetOrderInfo: any) {
   var orders = widgetOrderInfo.concat(orderByCfg)
   var res = new Map()
-  return orders.filter(function (item) {
+  return orders.filter(function (item: any) {
     return !res.has(item.field) && res.set(item.field, 1)
   })
 }
@@ -562,11 +566,11 @@ var getAllOrderInfo = function (orderByCfg, widgetOrderInfo) {
  * @param {*} itemConfig
  */
 var getWidgetOrderInfo = function (
-  ruleContext,
-  targetModelType,
-  entityName,
-  itemConfig,
-  isFieldAutoMapping
+  ruleContext: any,
+  targetModelType: unknown,
+  entityName: string,
+  itemConfig: any,
+  isFieldAutoMapping: boolean
 ) {
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
   var orderInfo = []
@@ -577,16 +581,16 @@ var getWidgetOrderInfo = function (
     }
     if (widget.type == 'JGDataGrid') {
       for (var j = 0; j < widget.fields.length; j++) {
-        var config = {}
+        var config: keyIsString = {}
         if (itemConfig.items) {
-          config = itemConfig.items.find(function (item) {
+          config = itemConfig.items.find(function (item: any) {
             return item.destName.split('.')[1] == widget.fields[j].name
           })
         } else if (isFieldAutoMapping) {
           var datasource = vds.ds.lookup(entityName)
           var fields = datasource.getMetadata().getFields()
           if (fields && fields.length > 0) {
-            config = fields.find(function (item) {
+            config = fields.find(function (item: any) {
               return item.code == widget.fields[j].name
             })
             if (config) {
@@ -596,7 +600,7 @@ var getWidgetOrderInfo = function (
         }
         if (config && widget.fields[j].sort) {
           var sort = widget.fields[j].sort
-          var index = orderInfo.findIndex(function (item) {
+          var index: number = orderInfo.findIndex(function (item) {
             return item.field == config.sourceName
           })
           if (index != -1) {
@@ -630,10 +634,10 @@ var getWidgetOrderInfo = function (
  * @param {*} targetModelType
  */
 var handlePagingLogic = function (
-  totalRecordSave,
-  ruleContext,
-  entityName,
-  targetModelType
+  totalRecordSave: any,
+  ruleContext: any,
+  entityName: string,
+  targetModelType: string
 ) {
   var totalRecordSaveObj = totalRecordSave[0]
   var isSaveTotalRecord = totalRecordSaveObj.isSaveTotalRecord
@@ -670,14 +674,14 @@ var handlePagingLogic = function (
  * @param {*} whereRestrict
  */
 var handleTreeStruct = function (
-  dynamicLoad,
-  mappings,
-  sourceName,
-  entityName,
-  treeStruct,
-  isFieldAutoMapping,
-  whereRestrict,
-  ruleContext
+  dynamicLoad: unknown,
+  mappings: any,
+  sourceName: string,
+  entityName: string,
+  treeStruct: unknown,
+  isFieldAutoMapping: boolean,
+  whereRestrict: any,
+  ruleContext: unknown
 ) {
   var treeStructMap
   if (dynamicLoad != null && dynamicLoad != '-1' && dynamicLoad != '0') {
@@ -721,7 +725,7 @@ var handleTreeStruct = function (
 /*
  * 判断当前规则是否为窗体规则、或者构建方法规则
  */
-var _isWindowRule = function (entityType) {
+var _isWindowRule = function (entityType: string) {
   var _isWinRule = true
   switch (entityType) {
     case 'ruleSetInput':
@@ -744,7 +748,7 @@ var _isWindowRule = function (entityType) {
   return _isWinRule
 }
 
-var handleWindowRule = function (entityName) {
+var handleWindowRule = function (entityName: string) {
   // 处理列表过滤条件重置
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
   // 处理窗体输入或者输出实体不支持绑定控件过滤条件
@@ -758,7 +762,7 @@ var handleWindowRule = function (entityName) {
 /*
  * 获取树结构信息
  */
-var _getTreeStruct = function (tableName, treeStructMaps) {
+var _getTreeStruct = function (tableName: string, treeStructMaps: any) {
   if (treeStructMaps == null) return null
   for (var i = 0; i < treeStructMaps.length; i++) {
     var treeStructMap = treeStructMaps[i]
@@ -772,18 +776,18 @@ var _getTreeStruct = function (tableName, treeStructMaps) {
 /**
  * 获得非数据集字段的映射值
  */
-var getMappings = function (fromMappings, ruleContext) {
-  var returnMappings = []
+var getMappings = function (fromMappings: [], ruleContext: unknown) {
+  var returnMappings: keyIsString = []
   if (!fromMappings || fromMappings.length <= 0) {
     return returnMappings
   } else {
     for (var index = 0; index < fromMappings.length; index++) {
       var fromMapping = fromMappings[index]
-      var type = fromMapping['type']
+      var type: any = fromMapping['type']
       type = type.toString()
       var destName = fromMapping['destName']
-      var sourceName = fromMapping['sourceName']
-      var returnMapping = {}
+      var sourceName: string = fromMapping['sourceName']
+      var returnMapping: keyIsString = {}
       returnMapping['type'] = type
       returnMapping['destName'] = destName
       switch (type) {
@@ -809,22 +813,26 @@ var getMappings = function (fromMappings, ruleContext) {
 }
 
 // 将实体的树结构转为表的树结构
-var dest2SourceTreeStruct = function (mappings, treeStructMap, params) {
+var dest2SourceTreeStruct = function (
+  mappings: [],
+  treeStructMap: any,
+  params: any
+) {
   // 获取字段映射关系
-  var mappingFields = []
+  var mappingFields: any = []
   for (var i = 0; i < mappings.length; i++) {
-    var item = mappings[i]
+    var item: any = mappings[i]
     var type = item['type']
     if (type == 'entityField') {
       var destName1 = item['destName'].split('.')[1]
       var sourceName1 = item['sourceName'].split('.')[1]
-      var fieldMap = new Object()
+      var fieldMap: fieldMapParams = new Object()
       fieldMap.destName = destName1
       fieldMap.sourceName = sourceName1
       mappingFields.push(fieldMap)
     }
   }
-  var newSourceTreeStructMap = new Object()
+  var newSourceTreeStructMap: keyIsString = new Object()
   var isFieldAutoMapping = params && params.isFieldAutoMapping
   // 转实体的表结构为表的树结构
   for (var p in treeStructMap) {
@@ -858,7 +866,7 @@ var dest2SourceTreeStruct = function (mappings, treeStructMap, params) {
 }
 
 // 判断树结构的映射字段是否存在
-var checkMappingExist = function (item, mappingFields) {
+var checkMappingExist = function (item: string, mappingFields: []) {
   for (var i = 0; i < mappingFields.length; i++) {
     if (item == mappingFields[i]['destName']) {
       return true
@@ -867,9 +875,9 @@ var checkMappingExist = function (item, mappingFields) {
   return false
 }
 
-var genCustomSqlQueryParams = function (params) {
+var genCustomSqlQueryParams = function (params: any) {
   // 构建实际查询时需要的参数对象
-  var queryParams = {}
+  var queryParams: keyIsString = {}
   if (params) {
     for (var key in params) {
       queryParams[key] = {}
@@ -881,7 +889,11 @@ var genCustomSqlQueryParams = function (params) {
 }
 
 // 获取实体数据源
-var _getEntityDS = function (ruleContext, entityType, entityName) {
+var _getEntityDS = function (
+  ruleContext: any,
+  entityType: string,
+  entityName: string
+) {
   var ds
 
   if (entityType == 'window') {

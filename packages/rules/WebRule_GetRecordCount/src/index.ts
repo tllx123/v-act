@@ -1,4 +1,9 @@
 /**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+/**
  * 获取数据库表中记录数
  */
 vds.import(
@@ -12,10 +17,10 @@ vds.import(
   'vds.widget.*',
   'vds.expression.*'
 )
-/**
- * 规则入口
- */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+interface keyIsString {
+  [key: string]: any
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -42,7 +47,7 @@ const main = function (ruleContext: RuleContext) {
       }
       inParamsObj['sql'] = sqlStr + w.toWhere()
       inParamsObj['parameters'] = w.toParameters()
-      var callback = function (responseObj) {
+      var callback = function (responseObj: any) {
         var resultCount = 0
         var success = responseObj.IsSuccess
         if (!success) {
@@ -58,7 +63,7 @@ const main = function (ruleContext: RuleContext) {
         return true
       }
 
-      var errorCallback = function (responseObj) {
+      var errorCallback = function (responseObj: any) {
         vds.log.error(responseObj.message)
         reject(responseObj)
       }
@@ -76,8 +81,8 @@ const main = function (ruleContext: RuleContext) {
     }
   })
 }
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (paramDefines: [], ruleContext: any) {
+  var rs: keyIsString = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -109,12 +114,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: string,
+  componentControlId: string,
+  ruleContext: any
 ) {
-  var returnValue = ''
+  var returnValue: any = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -160,7 +165,7 @@ var getCustomParamValue = function (
       var storeType = vds.widget.getStoreType(valueQueryControlID)
       var storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
+      var ds: string = getDsName(valueQueryControlID)
       var record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
@@ -221,12 +226,12 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
+var getCurrentRecord = function (ds: any) {
   var datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
