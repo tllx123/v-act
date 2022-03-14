@@ -17,7 +17,6 @@ import {
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { WaterMark as waterMark } from '@v-act/vjs.framework.extension.platform.interface.watermark'
-import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
@@ -25,14 +24,12 @@ import { EventManager as eventManagerService } from '@v-act/vjs.framework.extens
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { EventExtension as eventManager } from '@v-act/vjs.framework.extension.system.event'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
+//import { pageRequestUtils } from '@v-act/vjs.framework.extension.platform.services.domain.rpc.channel.require'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-let token = 'WINDOW_VIEW_INIT_EVENT',
-  storage
+const token = 'WINDOW_VIEW_INIT_EVENT'
+const storage = storageManager.get(storageManager.TYPES.MAP, token)
 
-export function initModule(sb) {
-  storage = storageManager.get(storageManager.TYPES.MAP, token)
-}
 let _fire = function (componentCode, windowCode, eventName, args) {
   _fireSchemaHandler(componentCode, windowCode, eventName, args)
   _fireInstanceHandler(componentCode, windowCode, eventName, args)
@@ -137,62 +134,6 @@ let addWaterMarkOperation = function (scopeId, componentCode, windowCode) {
     }
   })
   runtimeManager.addRequestOperation({ operation: operation })
-  //
-  //      //请求是否需要加水印
-  //		windowInit.registerHandler({
-  //			"eventName": exports.Events.onMultiRequest,
-  //			"handler": (function(comCode,winCode){
-  //				return function(){
-  //					//移动窗体不支持水印
-  //					if(scopeManager.getScope(scopeId).getSeries() == "bootstrap_mobile"){
-  //						return;
-  //					}
-  //					//如果当前窗体是在容器内，而且父窗体已经有水印，则不用加水印
-  //					if(windowContainerManager.getOpenType(scopeId) == windowContainerManager.OPENTYPE.CONTAINER){
-  //						var tmpScopeId = scopeId;
-  //						var isContinue = true;
-  //						while(isContinue){
-  //							var parentScopeId = scopeManager.getParentScopeId(tmpScopeId);
-  //							if(parentScopeId){
-  //								//如果父窗体是模态，则不继续往上找
-  //								if(windowContainerManager.getOpenType(parentScopeId) == windowContainerManager.OPENTYPE.MODAL){
-  //									isContinue = false;
-  //								}
-  //								var parentScope = scopeManager.getScope(parentScopeId);
-  //								if(parentScope.getWaterMark()){
-  //									return;
-  //								}else{
-  //									tmpScopeId = parentScopeId;
-  //								}
-  //							}else{
-  //								isContinue = false;
-  //							}
-  //						}
-  //					}
-  //					rpc.invokeOperation({
-  //						"componentCode":comCode,
-  //						"windowCode":winCode,
-  //						"operationName":"WaterMark",
-  //						"isAsync":false,
-  //						"afterResponse":function(datas){
-  //							if(datas.success && datas.data.hasWaterMark){
-  //								var nowScope = scopeManager.getScope(scopeId);
-  //								nowScope.setWaterMark(true);
-  //								var data = datas.data;
-  //								var title = data.title;
-  //								var content = data.content;
-  //								waterMark.draw({
-  //									scopeId : scopeId,
-  //									title : title,
-  //									content : content
-  //								});
-  //							}
-  //						}
-  //					});
-  //				}
-  //			})(componentCode,windowCode)
-  //		});
-  //
 }
 /**
  *
@@ -296,8 +237,8 @@ const init = function (params) {
       )
       // 窗体加载事件(加入窗体加载完成后事件)
       let _this = this
-      windowInit.registerHandler({
-        eventName: windowInit.Events.WindowLoaded,
+      registerHandler({
+        eventName: Events.windowLoaded,
         handler: eventManagerService.fireEvent(
           currentWindowCode,
           'FormLoadAction',
@@ -308,12 +249,7 @@ const init = function (params) {
               }
               var componentCode = winScope.getComponentCode()
               var windowScope = winScope.getWindowCode()
-              _fire(
-                componentCode,
-                windowScope,
-                windowInit.Events.WindowInited,
-                winScope
-              )
+              _fire(componentCode, windowScope, Events.windowInited, winScope)
             }
           })(formLoadedHandler, currentScope)
         )
@@ -335,8 +271,8 @@ const init = function (params) {
     //				_fire(currentScope.getComponentCode(),currentScope.getWindowCode(),exports.Events.bindWidgetDatasource);
     //			});
     _fire(componentCode, windowCode, Events.onBindRule)
-    //添加水印操作
-    addWaterMarkOperation(scopeId, componentCode, windowCode)
+    //TODO 添加水印操作
+    //addWaterMarkOperation(scopeId, componentCode, windowCode)
     _fire(componentCode, windowCode, Events.onMultiRequest)
     componentParam.initVariant()
 
@@ -358,8 +294,8 @@ const init = function (params) {
         //把成功回调注册进windowInit
         var successCB = params.success
         // 窗体加载事件(加入窗体加载完成后事件)
-        windowInit.registerHandler({
-          eventName: windowInit.Events.WindowInited,
+        registerHandler({
+          eventName: Events.windowInited,
           handler: (function (cb) {
             return function () {
               if (typeof cb == 'function') {
@@ -388,8 +324,8 @@ const init = function (params) {
               })
               if (_extendId) {
                 initDefaultDatasFun(_extendId, function (scope) {
-                  windowInit.registerHandler({
-                    eventName: windowInit.Events.WindowInited,
+                  registerHandler({
+                    eventName: Events.windowInited,
                     handler: func
                   })
                   var cCode = scope.getComponentCode()
@@ -431,10 +367,11 @@ const init = function (params) {
     var failCB = function (e) {
       _callFunction(params.error || exceptionHandler.handle, [e])
     }
-    var operations = scopeManager.createScopeHandler({
+    /*var operations = scopeManager.createScopeHandler({ TODO 暂不处理
       scopeId: scopeId,
       handler: pageRequestUtils.getSchemaRequire
-    })()
+    })()*/
+    var operations = []
     var type = environment.getPlatformType()
     if (type == 'DesignSchema' || !operations || operations.length == 0) {
       try {
@@ -443,10 +380,11 @@ const init = function (params) {
         failCB(e)
       }
     } else {
-      //组装成Request实例对象,注入success,error回掉
-      var request = new vrequest(true, operations, successCB, failCB)
-      //调用批量请求后台接口
-      remoteOperation.request({ request: request })
+      //TODO 组装成Request实例对象,注入success,error回掉
+      //var request = new vrequest(true, operations, successCB, failCB)
+      //TODO 调用批量请求后台接口
+      //remoteOperation.request({ request: request })
+      successCB()
     }
   } catch (e) {
     if (params.error) {

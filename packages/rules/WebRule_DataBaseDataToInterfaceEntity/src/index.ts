@@ -8,9 +8,11 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   component,
   ds,
@@ -23,7 +25,34 @@ const vds = {
   window
 }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+interface itemType {
+  Istype: string
+  dsWhere: string
+  entityName: string
+  entityType: string
+  itemqueryparam: string
+  items: {
+    find: Function
+  }
+  sourceName: string
+  dataLoad: string
+  isFieldAutoMapping: boolean
+  pager: undefined | null | any[]
+  orderBy: []
+}
+
+interface pageType {
+  totalRecordSave: string
+  isPaging: string
+  pageNo: string
+  pageSize: string
+}
+
+interface orderType {
+  field: string
+  type: any
+}
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -33,7 +62,7 @@ const main = function (ruleContext: RuleContext) {
       var itemConfigs = inParamsObj['itemsConfig']
       var treeStruct = inParamsObj['treeStruct']
 
-      var asyFun = function (itemConfig, isLast) {
+      var asyFun = function (itemConfig: itemType, isLast: boolean) {
         return new Promise<void>(
           (function (itemConfig, isLast) {
             return function (_resolve, _reject) {
@@ -92,7 +121,7 @@ const main = function (ruleContext: RuleContext) {
                 }
               })(_resolve)
 
-              var mappings = getMappings(items, ruleContext)
+              var mappings = getMappings(items as any, ruleContext)
               var treeStructMap = handleTreeStruct(
                 dynamicLoad,
                 mappings,
@@ -122,13 +151,14 @@ const main = function (ruleContext: RuleContext) {
               var isPaging
               var pageSize = -1
               var recordStart = -1
-              var totalRecordSave
+              var totalRecordSave: string | any[] | null | undefined
 
               //加载规则分页
               if (undefined != pagers && null != pagers && pagers.length > 0) {
-                var pager = pagers[0]
+                var pager: pageType = pagers[0]
                 var pageNo = -1
                 var size = -1
+
                 totalRecordSave = pager.totalRecordSave
                 isPaging = pager.isPaging
                 if (undefined != isPaging && null != isPaging && isPaging) {
@@ -203,7 +233,7 @@ const main = function (ruleContext: RuleContext) {
                 orderByCfg.length > 0
               ) {
                 for (var obIndex = 0; obIndex < orderByCfg.length; obIndex++) {
-                  var orderByItem = orderByCfg[obIndex]
+                  var orderByItem: orderType = orderByCfg[obIndex]
                   if (!orderByItem.field || orderByItem.field == '') {
                     continue
                   }
@@ -262,7 +292,11 @@ const main = function (ruleContext: RuleContext) {
         )
       }
 
-      var exeAsyFun = function (itemConfigs, reject, endFun) {
+      var exeAsyFun = function (
+        itemConfigs: [],
+        reject: any,
+        endFun: Function
+      ) {
         if (itemConfigs.length == 0) {
           endFun()
           return
@@ -315,7 +349,7 @@ const main = function (ruleContext: RuleContext) {
  * 场景1：配置实体时，添加了排序字段配置，然后切换到查询时，排序字段配置未清空，导致报错
  * @param {Object} config 规则配置信息
  */
-var filterConfig = function (config) {
+var filterConfig = function (config: any) {
   var itemsConfig = config.itemsConfig
   if (itemsConfig && itemsConfig.length > 0) {
     for (var i = 0, l = itemsConfig.length; i < l; i++) {
@@ -354,7 +388,14 @@ var filterConfig = function (config) {
  * @param {@link MethodContext} methodContext 方法上下文
  * @return {@link Datasource} 数据源实例
  */
-var getDatasource = function (dsCode, type, methodContext) {
+var getDatasource = function (
+  dsCode: string,
+  type: string,
+  methodContext: {
+    getVariable: (arg0: string) => string
+    getOutput: (arg0: string) => string
+  }
+) {
   var datasource
   switch (type) {
     case 'windowVariant': //窗体输入
@@ -379,7 +420,7 @@ var getDatasource = function (dsCode, type, methodContext) {
   return datasource
 }
 
-var getPagingInfoByDataSource = function (entityName) {
+var getPagingInfoByDataSource = function (entityName: string) {
   var types = ['JGDataGrid', 'JGPagination']
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
   var pageInfo
@@ -404,8 +445,11 @@ var getPagingInfoByDataSource = function (entityName) {
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (
+  paramDefines: string | any[],
+  ruleContext: RuleContext
+) {
+  var rs: any = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -437,12 +481,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: string,
+  componentControlId: string,
+  ruleContext: RuleContext
 ) {
-  var returnValue = ''
+  var returnValue: string | boolean | null = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -488,7 +532,7 @@ var getCustomParamValue = function (
       var storeType = vds.widget.getStoreType(valueQueryControlID)
       var storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
+      var ds: string = getDsName(valueQueryControlID)
       var record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
@@ -549,12 +593,12 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
+var getCurrentRecord = function (ds: string) {
   var datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
@@ -566,10 +610,13 @@ var getDsName = function (widgetCode) {
  * @param {*} orderByCfg
  * @param {*} widgetOrderInfo
  */
-var getAllOrderInfo = function (orderByCfg, widgetOrderInfo) {
-  var orders = widgetOrderInfo.concat(orderByCfg)
+var getAllOrderInfo = function (
+  orderByCfg: any,
+  widgetOrderInfo: string | any[]
+) {
+  var orders: any = widgetOrderInfo.concat(orderByCfg)
   var res = new Map()
-  return orders.filter(function (item) {
+  return orders.filter(function (item: { field: string }) {
     return !res.has(item.field) && res.set(item.field, 1)
   })
 }
@@ -581,14 +628,14 @@ var getAllOrderInfo = function (orderByCfg, widgetOrderInfo) {
  * @param {*} itemConfig
  */
 var getWidgetOrderInfo = function (
-  ruleContext,
-  targetModelType,
-  entityName,
-  itemConfig,
-  isFieldAutoMapping
+  ruleContext: any,
+  targetModelType: string,
+  entityName: string,
+  itemConfig: itemType,
+  isFieldAutoMapping: boolean
 ) {
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
-  var orderInfo = []
+  var orderInfo: { order: number; field: string; type: string }[] = []
 
   for (var i = 0; i < widgetCodes.length; i++) {
     var widget = vds.widget.getProperty(widgetCodes[i], 'widgetObj')
@@ -597,16 +644,16 @@ var getWidgetOrderInfo = function (
     }
     if (widget.type == 'JGDataGrid') {
       for (var j = 0; j < widget.fields.length; j++) {
-        var config = {}
+        var config: any = {}
         if (itemConfig.items) {
-          config = itemConfig.items.find(function (item) {
+          config = itemConfig.items.find(function (item: { destName: string }) {
             return item.destName.split('.')[1] == widget.fields[j].name
           })
         } else if (isFieldAutoMapping) {
           var datasource = vds.ds.lookup(entityName)
           var fields = datasource.getMetadata().getFields()
           if (fields && fields.length > 0) {
-            config = fields.find(function (item) {
+            config = fields.find(function (item: { code: any }) {
               return item.code == widget.fields[j].name
             })
             if (config) {
@@ -650,10 +697,10 @@ var getWidgetOrderInfo = function (
  * @param {*} targetModelType
  */
 var handlePagingLogic = function (
-  totalRecordSave,
-  ruleContext,
-  entityName,
-  targetModelType
+  totalRecordSave: string | any[],
+  ruleContext: RuleContext,
+  entityName: string,
+  targetModelType: string
 ) {
   var totalRecordSaveObj = totalRecordSave[0]
   var isSaveTotalRecord = totalRecordSaveObj.isSaveTotalRecord
@@ -688,14 +735,18 @@ var handlePagingLogic = function (
  * @param {*} whereRestrict
  */
 var handleTreeStruct = function (
-  dynamicLoad,
-  mappings,
-  sourceName,
-  entityName,
-  treeStruct,
-  isFieldAutoMapping,
-  whereRestrict,
-  ruleContext
+  dynamicLoad: string | null,
+  mappings: any[],
+  sourceName: string,
+  entityName: string,
+  treeStruct: any,
+  isFieldAutoMapping: boolean,
+  whereRestrict: {
+    toWhere: () => any
+    toParameters: () => any
+    andConditionString: (arg0: string) => void
+  },
+  ruleContext: RuleContext
 ) {
   var treeStructMap
   if (dynamicLoad != null && dynamicLoad != '-1' && dynamicLoad != '0') {
@@ -739,7 +790,7 @@ var handleTreeStruct = function (
 /*
  * 判断当前规则是否为窗体规则、或者构建方法规则
  */
-var _isWindowRule = function (entityType) {
+var _isWindowRule = function (entityType: string) {
   var _isWinRule = true
   switch (entityType) {
     case 'ruleSetInput':
@@ -762,7 +813,7 @@ var _isWindowRule = function (entityType) {
   return _isWinRule
 }
 
-var handleWindowRule = function (entityName) {
+var handleWindowRule = function (entityName: string) {
   // 处理列表过滤条件重置
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
   // 处理窗体输入或者输出实体不支持绑定控件过滤条件
@@ -776,7 +827,10 @@ var handleWindowRule = function (entityName) {
 /*
  * 获取树结构信息
  */
-var _getTreeStruct = function (tableName, treeStructMaps) {
+var _getTreeStruct = function (
+  tableName: string,
+  treeStructMaps: string | any[] | null
+) {
   if (treeStructMaps == null) return null
   for (var i = 0; i < treeStructMaps.length; i++) {
     var treeStructMap = treeStructMaps[i]
@@ -790,8 +844,11 @@ var _getTreeStruct = function (tableName, treeStructMaps) {
 /**
  * 获得非数据集字段的映射值
  */
-var getMappings = function (fromMappings, ruleContext) {
-  var returnMappings = []
+var getMappings = function (
+  fromMappings: string | any[],
+  ruleContext: RuleContext
+) {
+  var returnMappings: any[] = []
   if (!fromMappings || fromMappings.length <= 0) {
     return returnMappings
   } else {
@@ -801,7 +858,7 @@ var getMappings = function (fromMappings, ruleContext) {
       type = type.toString()
       var destName = fromMapping['destName']
       var sourceName = fromMapping['sourceName']
-      var returnMapping = {}
+      var returnMapping: Record<string, string> = {}
       returnMapping['type'] = type
       returnMapping['destName'] = destName
       switch (type) {
@@ -827,7 +884,11 @@ var getMappings = function (fromMappings, ruleContext) {
 }
 
 // 将实体的树结构转为表的树结构
-var dest2SourceTreeStruct = function (mappings, treeStructMap, params) {
+var dest2SourceTreeStruct = function (
+  mappings: string | any[],
+  treeStructMap: { [x: string]: any },
+  params: { isFieldAutoMapping: boolean }
+) {
   // 获取字段映射关系
   var mappingFields = []
   for (var i = 0; i < mappings.length; i++) {
@@ -836,13 +897,13 @@ var dest2SourceTreeStruct = function (mappings, treeStructMap, params) {
     if (type == 'entityField') {
       var destName1 = item['destName'].split('.')[1]
       var sourceName1 = item['sourceName'].split('.')[1]
-      var fieldMap = new Object()
+      var fieldMap: Record<string, string> = {}
       fieldMap.destName = destName1
       fieldMap.sourceName = sourceName1
       mappingFields.push(fieldMap)
     }
   }
-  var newSourceTreeStructMap = new Object()
+  var newSourceTreeStructMap: any = {}
   var isFieldAutoMapping = params && params.isFieldAutoMapping
   // 转实体的表结构为表的树结构
   for (var p in treeStructMap) {
@@ -876,7 +937,7 @@ var dest2SourceTreeStruct = function (mappings, treeStructMap, params) {
 }
 
 // 判断树结构的映射字段是否存在
-var checkMappingExist = function (item, mappingFields) {
+var checkMappingExist = function (item: any, mappingFields: string | any[]) {
   for (var i = 0; i < mappingFields.length; i++) {
     if (item == mappingFields[i]['destName']) {
       return true
@@ -885,9 +946,9 @@ var checkMappingExist = function (item, mappingFields) {
   return false
 }
 
-var genCustomSqlQueryParams = function (params) {
+var genCustomSqlQueryParams = function (params: { [x: string]: any }) {
   // 构建实际查询时需要的参数对象
-  var queryParams = {}
+  var queryParams: any = {}
   if (params) {
     for (var key in params) {
       queryParams[key] = {}
@@ -899,7 +960,11 @@ var genCustomSqlQueryParams = function (params) {
 }
 
 // 获取实体数据源
-var _getEntityDS = function (ruleContext, entityType, entityName) {
+var _getEntityDS = function (
+  ruleContext: RuleContext,
+  entityType: string,
+  entityName: string
+) {
   var ds
 
   if (entityType == 'window') {

@@ -1341,9 +1341,6 @@
       "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.utils": [
         "packages/core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.utils/src"
       ],
-      "@v-act/vjs.frameword.extension.vendor.jquery": [
-        "packages/core/vendor/vjs.frameword.extension.vendor.jquery/src"
-      ],
       "@v-act/vjs.framework.extension.vendor.jquery": ["packages/core/vendor/vjs.framework.extension.vendor.jquery/src"]
     }
   }

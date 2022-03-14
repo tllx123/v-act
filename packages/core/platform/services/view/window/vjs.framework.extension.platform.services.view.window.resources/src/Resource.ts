@@ -32,4 +32,4 @@ Resource.prototype = {
   }
 }
 
-return Resource
+export default Resource

@@ -1,4 +1,4 @@
-import * as PayService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Pay'
+import { Pay as PayService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.pay'
 
 export function initModule(sb: any) {
   PayService.putInstance(exports)

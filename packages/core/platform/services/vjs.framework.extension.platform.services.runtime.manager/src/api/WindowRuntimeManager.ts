@@ -29,7 +29,7 @@ let _createOperation = function (
   args,
   handler
 ) {
-  let operation = new Operation()
+  /*let operation = new Operation()
   operation.setComponentCode(componentCode)
   operation.setWindowCode(windowCode)
   operation.setOperation(operationName)
@@ -39,7 +39,8 @@ let _createOperation = function (
     }
   }
   operation.setAfterResponse(handler)
-  return operation
+  return operation*/
+  return null
 }
 
 let _winPermOperation = function (componentCode, windowCode) {
@@ -200,6 +201,7 @@ const initWindow = function (params) {
   let scope = scopeManager.getWindowScope()
   let openMode = scope.getOpenMode()
   if (
+    typeof vdk != 'undefined' &&
     vdk.postMsg &&
     openMode != scopeManager.OpenMode.ModalCommon &&
     openMode != scopeManager.OpenMode.ModalContaniner &&

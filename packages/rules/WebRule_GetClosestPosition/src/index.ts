@@ -5,9 +5,10 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 const vds = { ds, expression, message }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -69,7 +70,7 @@ const main = function (ruleContext: RuleContext) {
  * @param srcExpression 表达式
  * @return 返回计算后的值
  */
-var getExpressionValue = function (ruleContext, srcExpression) {
+var getExpressionValue = function (ruleContext: any, srcExpression: any) {
   if (srcExpression != null) {
     var value = vds.expression.execute(srcExpression, {
       ruleContext: ruleContext
@@ -82,7 +83,7 @@ var getExpressionValue = function (ruleContext, srcExpression) {
  * @param name 包含实体编码的实体字段名称(entityCode.fieldName)
  * @return 返回去掉实体编码的实体字段名称(fieldName)
  */
-var getFieldName = function (name) {
+var getFieldName = function (name: string) {
   var result = name
   var nameArr = name.split('.')
   if (nameArr.length > 1) {
@@ -97,7 +98,11 @@ var getFieldName = function (name) {
  * @param Lon 经度
  * @param Lat 纬度
  */
-function setBusinessRuleResult(ruleContext, lon, lat) {
+function setBusinessRuleResult(
+  ruleContext: any,
+  lon: number | null,
+  lat: number | null
+) {
   if (ruleContext.setResult) {
     var success = true
     if (lon == null || lat == null) success = false
@@ -117,11 +122,11 @@ var EARTH_RADIUS = 6371.0
  * @param degrees 角度
  * @return 弧度
  */
-var ConvertDegreesToRadians = function (degrees) {
+var ConvertDegreesToRadians = function (degrees: number) {
   return (degrees * Math.PI) / 180
 }
 
-var HaverSin = function (theta) {
+var HaverSin = function (theta: number) {
   var v = Math.sin(theta / 2)
   return v * v
 }
@@ -135,7 +140,12 @@ var HaverSin = function (theta) {
  * @param lat2 纬度2
  * @return 两点间的距离
  */
-var getDistance = function (lon1, lat1, lon2, lat2) {
+var getDistance = function (
+  lon1: number,
+  lat1: number,
+  lon2: number,
+  lat2: number
+) {
   // 经纬度转换成弧度
   lon1 = ConvertDegreesToRadians(lon1)
   lat1 = ConvertDegreesToRadians(lat1)

@@ -3,14 +3,14 @@
  */
 
 import * as app from '@v-act/vjs.framework.extension.platform.services.integration.vds.app'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 
 const vds = { app }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var success = function (result) {
+      var success = function (result: any) {
         if (ruleContext.setResult) {
           //纬度
           ruleContext.setResult('latitude', result.coords.latitude)
@@ -20,7 +20,7 @@ const main = function (ruleContext: RuleContext) {
         }
         resolve()
       }
-      var error = function (result) {
+      var error = function (result: any) {
         if (ruleContext.setResult) {
           ruleContext.setResult('isSuccess', false)
         }

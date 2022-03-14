@@ -1,4 +1,4 @@
-import * as DeviceService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Device'
+import { Device as DeviceService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.device'
 
 export function initModule(sb: any) {
   DeviceService.putInstance(exports)

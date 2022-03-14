@@ -1,4 +1,4 @@
-import * as ImagePickerService from 'vjs.framework.extension.platform.services.native.mobile.ImagePicker'
+import { ImagePicker as ImagePickerService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.imagepicker'
 
 export function initModule(sb: any) {
   ImagePickerService.putInstance(exports)

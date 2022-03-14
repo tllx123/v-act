@@ -134,6 +134,7 @@ class Window {
       try {
         const params = {
           componentCode: this.componentCode,
+          windowCode: this.windowCode,
           windowJsonScript: JSON.stringify(this.obj),
           importScripts: this.toImportScripts(),
           controlDefines: this.getControlDefineMapScript()

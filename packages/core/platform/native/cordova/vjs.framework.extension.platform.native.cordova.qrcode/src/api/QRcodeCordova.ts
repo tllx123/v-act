@@ -1,4 +1,4 @@
-import * as QrcodeService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Qrcode'
+import { Qrcode as QrcodeService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.qrcode'
 
 export function initModule(sb: any) {
   QrcodeService.putInstance(exports)

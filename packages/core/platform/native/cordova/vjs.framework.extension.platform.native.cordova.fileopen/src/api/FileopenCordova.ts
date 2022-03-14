@@ -1,5 +1,5 @@
-import * as FileopenService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Fileopen'
-import * as dialogUtil from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog.DialogUtil'
+import { Fileopen as FileopenService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.fileopen'
+import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 
 export function initModule(sb: any) {
   FileopenService.putInstance(exports)

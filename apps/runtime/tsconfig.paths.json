@@ -1,0 +1,912 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.info": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.info/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.observer": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.observer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.snapshot/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.window.iframe/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping": [
+        "../core/platform/data/manager/vjs.framework.extension.platform.data.manager.runtime.window.mapping/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.storage.runtime.param": [
+        "../core/platform/data/storage/vjs.framework.extension.platform.data.storage.runtime.param/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.storage.schema.param": [
+        "../core/platform/data/storage/vjs.framework.extension.platform.data.storage.schema.param/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.storage.schema.route": [
+        "../core/platform/data/storage/vjs.framework.extension.platform.data.storage.schema.route/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping": [
+        "../core/platform/data/storage/vjs.framework.extension.platform.data.storage.schema.vmmapping/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.data.adapter": [
+        "../core/platform/data/vjs.framework.extension.platform.data.adapter/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.datasource.smartclient": [
+        "../core/platform/datasource/vjs.framework.extension.platform.datasource.smartclient/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.datasource.taffy": [
+        "../core/platform/datasource/vjs.framework.extension.platform.datasource.taffy/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.AESImpl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.AESImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.BASE64Impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.BASE64Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.MD5Impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.MD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.SHA1Impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.SHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.StandardMD5Impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.StandardMD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.bcryptImpl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.bcryptImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.engine.expression": [
+        "../core/platform/engine/vjs.framework.extension.platform.engine.expression/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.engine.function": [
+        "../core/platform/engine/vjs.framework.extension.platform.engine.function/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.engine.route": [
+        "../core/platform/engine/vjs.framework.extension.platform.engine.route/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.engine.rule": [
+        "../core/platform/engine/vjs.framework.extension.platform.engine.rule/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.integration.render.webbrowser": [
+        "../core/platform/integration/render/vjs.framework.extension.platform.integration.render.webbrowser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.integration.render.webview": [
+        "../core/platform/integration/render/vjs.framework.extension.platform.integration.render.webview/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.integration.server.ruleset.mobile": [
+        "../core/platform/integration/server/vjs.framework.extension.platform.integration.server.ruleset.mobile/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.integration.server.ruleset.web": [
+        "../core/platform/integration/server/vjs.framework.extension.platform.integration.server.ruleset.web/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.alerter": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.alerter/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.async": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.async/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.enum": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.enum/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.environment": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.environment/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.event": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.event/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.exception": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.exception/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.function": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.function/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.i18n": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.i18n/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.mobile.viewport.adapter": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.mobile.viewport.adapter/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.model.config": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.model.config/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.model.datasource": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.model.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.model.metadata": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.model.metadata/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.model.tree": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.model.tree/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.observer": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.observer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.route": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.route/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.rpc.operation": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.rpc.operation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.scope": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.scope/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.skin": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.skin/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.storage": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.storage/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.view.widget.common.dialog": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.view.widget.common.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.watermark": [
+        "../core/platform/interface/vjs.framework.extension.platform.interface.watermark/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.appversion": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.appversion/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.baidutrace": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.baidutrace/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.bluetoothprint": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.bluetoothprint/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.camera": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.camera/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.contacts": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.contacts/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.device": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.device/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.dialogs": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.dialogs/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.fileopen": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.fileopen/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.filetransfer": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.filetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.geolocation": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.geolocation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.hardwareoperation": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.hardwareoperation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.im": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.im/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.imagepicker": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.imagepicker/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.imagetransfer": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.imagetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.inappbrowser": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.inappbrowser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.jpush": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.jpush/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.mediacapture": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.mediacapture/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.pay": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.pay/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.playvideo": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.playvideo/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.qrcode": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.qrcode/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.saveimagetogallery": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.saveimagetogallery/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.speech": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.speech/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.splashscreen": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.splashscreen/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.statusbar": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.statusbar/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.sysconfig": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.sysconfig/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.cordova.umeng.share": [
+        "../core/platform/native/cordova/vjs.framework.extension.platform.native.cordova.umeng.share/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.dingding.geolocation": [
+        "../core/platform/native/dingding/vjs.framework.extension.platform.native.dingding.geolocation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.dingding.sdk.config": [
+        "../core/platform/native/dingding/vjs.framework.extension.platform.native.dingding.sdk.config/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.h5.filetransfer": [
+        "../core/platform/native/h5/vjs.framework.extension.platform.native.h5.filetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.weixin.filetransfer": [
+        "../core/platform/native/weixin/vjs.framework.extension.platform.native.weixin.filetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.native.weixin.image": [
+        "../core/platform/native/weixin/vjs.framework.extension.platform.native.weixin.image/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.plugin.enhancer.vprofiles": [
+        "../core/platform/plugin/vjs.framework.extension.platform.plugin.enhancer.vprofiles/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.plugin.script.vue": [
+        "../core/platform/plugin/vjs.framework.extension.platform.plugin.script.vue/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.plugin.ui.vue.default": [
+        "../core/platform/plugin/vjs.framework.extension.platform.plugin.ui.vue.default/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.plugin.ui.vue.treeextra": [
+        "../core/platform/plugin/vjs.framework.extension.platform.plugin.ui.vue.treeextra/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.browser.history": [
+        "../core/platform/services/browser/vjs.framework.extension.platform.services.browser.history/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.browser": [
+        "../core/platform/services/browser/vjs.framework.extension.platform.services.browser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.browser.app": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.browser.app/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.browser.common": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.browser.common/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.cookie": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.cookie/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.datasource": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.dropdown": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.dropdown/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.encryption": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.encryption/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.exception.mobile.handler": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.exception.mobile.handler/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.operation": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.operation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.ruleset": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.ruleset/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.tree": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.tree/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.workflow": [
+        "../core/platform/services/domain/vjs.framework.extension.platform.services.domain.workflow/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.weixin.browser": [
+        "../core/platform/services/domain/weixin/vjs.framework.extension.platform.services.domain.weixin.browser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.weixin.sdk.config": [
+        "../core/platform/services/domain/weixin/vjs.framework.extension.platform.services.domain.weixin.sdk.config/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.weixin.share.cordova": [
+        "../core/platform/services/domain/weixin/vjs.framework.extension.platform.services.domain.weixin.share.cordova/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.domain.weixin.share": [
+        "../core/platform/services/domain/weixin/vjs.framework.extension.platform.services.domain.weixin.share/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.cellcopy": [
+        "../core/platform/services/event/handler/vjs.framework.extension.platform.services.event.handler.rightclick.cellcopy/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.exportData": [
+        "../core/platform/services/event/handler/vjs.framework.extension.platform.services.event.handler.rightclick.exportData/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.event.handler.rightclick.refresh": [
+        "../core/platform/services/event/handler/vjs.framework.extension.platform.services.event.handler.rightclick.refresh/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.app": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.app/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.attachment": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.attachment/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.browser": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.browser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.collection": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.collection/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.component": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.component/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.cookie": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.cookie/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.date": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.date/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.ds": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.ds/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.environment": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.environment/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.exception": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.exception/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.expression": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.expression/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.i18n": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.i18n/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.log": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.log/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.math": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.math/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.message": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.message/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.method": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.method/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.mock": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.mock/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.number": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.number/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.object": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.object/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.progress": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.progress/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.rpc": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.rpc/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.rule": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.rule/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.string": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.string/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.test": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.test/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.tree": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.tree/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.widget": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.widget/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.vds.window": [
+        "../core/platform/services/integration/vds/vjs.framework.extension.platform.services.integration.vds.window/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.render": [
+        "../core/platform/services/integration/vjs.framework.extension.platform.services.integration.render/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.integration.server.ruleset": [
+        "../core/platform/services/integration/vjs.framework.extension.platform.services.integration.server.ruleset/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.mobile.console.config": [
+        "../core/platform/services/mobile/vjs.framework.extension.platform.services.mobile.console.config/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.mobile.debug": [
+        "../core/platform/services/mobile/vjs.framework.extension.platform.services.mobile.debug/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.model.manager.datasource": [
+        "../core/platform/services/model/vjs.framework.extension.platform.services.model.manager.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.model.manager.tree": [
+        "../core/platform/services/model/vjs.framework.extension.platform.services.model.manager.tree/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.appversion": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.appversion/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.baidutrace": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.baidutrace/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.bluetoothprint": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.bluetoothprint/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.camera": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.camera/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.contacts": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.contacts/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.device": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.device/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.dialogs": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.dialogs/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.fileopen": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.fileopen/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.fileoperation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.filetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.geolocation": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.geolocation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.hardwareoperation": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.hardwareoperation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.im": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.im/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.image": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.image/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.imagepicker": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.imagepicker/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.imagetransfer": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.imagetransfer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.inappbrowser": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.inappbrowser/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.jpush": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.jpush/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.localdb": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.localdb/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.mediacapture": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.mediacapture/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.pay": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.pay/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.playvideo": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.playvideo/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.qrcode": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.qrcode/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.saveimagetogallery": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.saveimagetogallery/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.speech": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.speech/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.splashscreen": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.splashscreen/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.statusbar": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.statusbar/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.sysconfig": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.sysconfig/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.share": [
+        "../core/platform/services/native/vjs.framework.extension.platform.services.native.mobile.umeng.share/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.operation.local.net": [
+        "../core/platform/services/operation/vjs.framework.extension.platform.services.operation.local.net/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.operation.remote.base": [
+        "../core/platform/services/operation/vjs.framework.extension.platform.services.operation.remote.base/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset": [
+        "../core/platform/services/operation/vjs.framework.extension.platform.services.operation.remote.ruleset/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.repository.access": [
+        "../core/platform/services/repository/vjs.framework.extension.platform.services.repository.access/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.repository.remote.base": [
+        "../core/platform/services/repository/vjs.framework.extension.platform.services.repository.remote.base/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.logic.aop.exception.bootstrap_mobile": [
+        "../core/platform/services/view/logic/vjs.framework.extension.platform.services.view.logic.aop.exception.bootstrap_mobile/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.logic.datasource": [
+        "../core/platform/services/view/logic/vjs.framework.extension.platform.services.view.logic.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.logic.defaultvalue": [
+        "../core/platform/services/view/logic/vjs.framework.extension.platform.services.view.logic.defaultvalue/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.logic.expression": [
+        "../core/platform/services/view/logic/vjs.framework.extension.platform.services.view.logic.expression/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.event": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.event/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.modal": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.modal/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.permission": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.permission/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.relation": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.relation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.ui.bootstrap": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.ui.bootstrap/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.ui": [
+        "../core/platform/services/view/vjs.framework.extension.platform.services.view.ui/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.resources": [
+        "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.resources/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap.dialog": [
+        "../core/platform/services/view/widget/bootstrap/vjs.framework.extension.platform.services.view.widget.bootstrap.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.dialog": [
+        "../core/platform/services/view/widget/bootstrap_mobile/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.event.binding": [
+        "../core/platform/services/view/widget/bootstrap_mobile/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.event.binding/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.logic.datasource": [
+        "../core/platform/services/view/widget/bootstrap_mobile/vjs.framework.extension.platform.services.view.widget.bootstrap_mobile.logic.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.Fixed": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.Fixed/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.UI": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.UI/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.action/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.animationCss": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.animationCss/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.context": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.context/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.error": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.error/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.event.binding": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.event.binding/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.form": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.form/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.datasource": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.logic.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.eventhandler": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.logic.eventhandler/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.ruleset": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.ruleset/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.window": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.logic.menu.action.window/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.menu": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.logic.menu/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.module": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.module/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.position": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.position/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.progressbar/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.common.relation": [
+        "../core/platform/services/view/widget/common/vjs.framework.extension.platform.services.view.widget.common.relation/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.dialog": [
+        "../core/platform/services/view/widget/smartclient/vjs.framework.extension.platform.services.view.widget.smartclient.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.logic.definer": [
+        "../core/platform/services/view/widget/smartclient/vjs.framework.extension.platform.services.view.widget.smartclient.logic.definer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.widget.dynamiccolumn": [
+        "../core/platform/services/view/widget/vjs.framework.extension.platform.services.widget.dynamiccolumn/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.widget.pagination": [
+        "../core/platform/services/view/widget/vjs.framework.extension.platform.services.widget.pagination/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter": [
+        "../core/platform/services/viewmodel/vjs.framework.extension.platform.services.viewmodel.dataadapter/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.viewmodel.datamodel.tree": [
+        "../core/platform/services/viewmodel/vjs.framework.extension.platform.services.viewmodel.datamodel.tree/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.constant": [
+        "../core/platform/services/vjs.framework.extension.platform.services.constant/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.dcs": [
+        "../core/platform/services/vjs.framework.extension.platform.services.dcs/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.engine": [
+        "../core/platform/services/vjs.framework.extension.platform.services.engine/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.im": [
+        "../core/platform/services/vjs.framework.extension.platform.services.im/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.init": [
+        "../core/platform/services/vjs.framework.extension.platform.services.init/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.io.device.codescanner": [
+        "../core/platform/services/vjs.framework.extension.platform.services.io.device.codescanner/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.observer.manager": [
+        "../core/platform/services/vjs.framework.extension.platform.services.observer.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.param.manager": [
+        "../core/platform/services/vjs.framework.extension.platform.services.param.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.print": [
+        "../core/platform/services/vjs.framework.extension.platform.services.print/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.runtime.manager": [
+        "../core/platform/services/vjs.framework.extension.platform.services.runtime.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.ui.bootstrap.plugin.style": [
+        "../core/platform/services/vjs.framework.extension.platform.services.ui.bootstrap.plugin.style/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.url": [
+        "../core/platform/services/vjs.framework.extension.platform.services.url/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.vmmapping.manager": [
+        "../core/platform/services/vjs.framework.extension.platform.services.vmmapping.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.where.restrict": [
+        "../core/platform/services/vjs.framework.extension.platform.services.where.restrict/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.aop": ["../core/platform/vjs.framework.extension.platform.aop/src"],
+      "@v-act/vjs.framework.extension.platform.binding.data": [
+        "../core/platform/vjs.framework.extension.platform.binding.data/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.global": [
+        "../core/platform/vjs.framework.extension.platform.global/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.im.easemob": [
+        "../core/platform/vjs.framework.extension.platform.im.easemob/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.init.view": [
+        "../core/platform/vjs.framework.extension.platform.init.view/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.transaction.manager": [
+        "../core/platform/vjs.framework.extension.platform.transaction.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.channel.native.cordova": [
+        "../core/system/rpc/channel/vjs.framework.extension.system.rpc.channel.native.cordova/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.channel.web.ajax": [
+        "../core/system/rpc/channel/vjs.framework.extension.system.rpc.channel.web.ajax/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.contract.vplatform": [
+        "../core/system/rpc/contract/vjs.framework.extension.system.rpc.contract.vplatform/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.channel": [
+        "../core/system/rpc/vjs.framework.extension.system.rpc.channel/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.contract": [
+        "../core/system/rpc/vjs.framework.extension.system.rpc.contract/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc.proxy": [
+        "../core/system/rpc/vjs.framework.extension.system.rpc.proxy/src"
+      ],
+      "@v-act/vjs.framework.extension.system.rpc": ["../core/system/rpc/vjs.framework.extension.system.rpc/src"],
+      "@v-act/vjs.framework.extension.system.datasource": [
+        "../core/system/vjs.framework.extension.system.datasource/src"
+      ],
+      "@v-act/vjs.framework.extension.system.event": ["../core/system/vjs.framework.extension.system.event/src"],
+      "@v-act/vjs.framework.extension.system.mediator": ["../core/system/vjs.framework.extension.system.mediator/src"],
+      "@v-act/vjs.framework.extension.ui.adapter.dependency.desktop": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.dependency.desktop/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.dependency.web": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.dependency.web/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.dependency": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.dependency/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.init.bootstrap.web": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.init.bootstrap.web/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.resourcepackage.desktop": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.resourcepackage.desktop/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.resourcepackage.web": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.resourcepackage.web/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.resourcepackage": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.resourcepackage/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap.plugin.services.dialog": [
+        "../core/ui/bootstrap/vjs.framework.extension.ui.bootstrap.plugin.services.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap.plugin.services.style": [
+        "../core/ui/bootstrap/vjs.framework.extension.ui.bootstrap.plugin.services.style/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.action": [
+        "../core/ui/bootstrap_mobile/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.action/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.datasync": [
+        "../core/ui/bootstrap_mobile/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.datasync/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.dialog": [
+        "../core/ui/bootstrap_mobile/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.image": [
+        "../core/ui/bootstrap_mobile/vjs.framework.extension.ui.bootstrap_mobile.plugin.services.image/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.container": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.container/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.dialog": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.keydown": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.keydown/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.menu": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.menu/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.progressbar/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.renderer": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.renderer/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.scope": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.scope/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.series": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.series/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.common.plugin.services.widget": [
+        "../core/ui/common/vjs.framework.extension.ui.common.plugin.services.widget/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.plugin.databinding.bootstrap.mobile": [
+        "../core/ui/plugin/vjs.framework.extension.ui.plugin.databinding.bootstrap.mobile/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.plugin.databinding.bootstrap": [
+        "../core/ui/plugin/vjs.framework.extension.ui.plugin.databinding.bootstrap/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.plugin.databinding": [
+        "../core/ui/plugin/vjs.framework.extension.ui.plugin.databinding/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.plugin.manager": [
+        "../core/ui/plugin/vjs.framework.extension.ui.plugin.manager/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.plugin.services": [
+        "../core/ui/plugin/vjs.framework.extension.ui.plugin.services/src"
+      ],
+      "@v-act/vjs.framework.extension.util.array": ["../core/utils/vjs.framework.extension.util.array/src"],
+      "@v-act/vjs.framework.extension.util.collection": ["../core/utils/vjs.framework.extension.util.collection/src"],
+      "@v-act/vjs.framework.extension.util.datavalidate": [
+        "../core/utils/vjs.framework.extension.util.datavalidate/src"
+      ],
+      "@v-act/vjs.framework.extension.util.date": ["../core/utils/vjs.framework.extension.util.date/src"],
+      "@v-act/vjs.framework.extension.util.dateformat": ["../core/utils/vjs.framework.extension.util.dateformat/src"],
+      "@v-act/vjs.framework.extension.util.des": ["../core/utils/vjs.framework.extension.util.des/src"],
+      "@v-act/vjs.framework.extension.util.easytemplate": [
+        "../core/utils/vjs.framework.extension.util.easytemplate/src"
+      ],
+      "@v-act/vjs.framework.extension.util.extend": ["../core/utils/vjs.framework.extension.util.extend/src"],
+      "@v-act/vjs.framework.extension.util.file": ["../core/utils/vjs.framework.extension.util.file/src"],
+      "@v-act/vjs.framework.extension.util.json": ["../core/utils/vjs.framework.extension.util.json/src"],
+      "@v-act/vjs.framework.extension.util.log": ["../core/utils/vjs.framework.extension.util.log/src"],
+      "@v-act/vjs.framework.extension.util.map": ["../core/utils/vjs.framework.extension.util.map/src"],
+      "@v-act/vjs.framework.extension.util.math": ["../core/utils/vjs.framework.extension.util.math/src"],
+      "@v-act/vjs.framework.extension.util.object": ["../core/utils/vjs.framework.extension.util.object/src"],
+      "@v-act/vjs.framework.extension.util.serialnumber": [
+        "../core/utils/vjs.framework.extension.util.serialnumber/src"
+      ],
+      "@v-act/vjs.framework.extension.util.string": ["../core/utils/vjs.framework.extension.util.string/src"],
+      "@v-act/vjs.framework.extension.util.style.preprocessor.less": [
+        "../core/utils/vjs.framework.extension.util.style.preprocessor.less/src"
+      ],
+      "@v-act/vjs.framework.extension.util.uuid": ["../core/utils/vjs.framework.extension.util.uuid/src"],
+      "@v-act/vjs.framework.core": ["../core/vjs.framework.core/src"],
+      "@v-act/vjs.framework.extension.platform.skin.mobile.viewport.adapter": [
+        "../core/vjs.framework.extension.platform.skin.mobile.viewport.adapter/src"
+      ],
+      "@v-act/vjs.framework.extension.rule.common.plugin.services.db": [
+        "../core/vjs.framework.extension.rule.common.plugin.services.db/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.desktop.plugin.services.dialog": [
+        "../core/vjs.framework.extension.ui.desktop.plugin.services.dialog/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.renderer": [
+        "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.renderer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.application.window.web.designer.utils": [
+        "../core/platform/application/window/web/designer/vjs.framework.extension.platform.application.window.web.designer.utils/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.application.window.web.designer": [
+        "../core/platform/application/window/web/designer/vjs.framework.extension.platform.application.window.web.designer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.config.data.webDesign": [
+        "../core/platform/config/data/vjs.framework.extension.platform.config.data.webDesign/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.aesimpl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.AESImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.base64impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.BASE64Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.cryptosha1impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.CryptoSHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.md5impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.MD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.sha1impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.SHA1Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.standardmd5impl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.StandardMD5Impl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.encrypt.domain.bcryptimpl": [
+        "../core/platform/encrypt/vjs.framework.extension.platform.encrypt.domain.bcryptImpl/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implement.domain.window.designer.widget.property.default": [
+        "../core/platform/implements/domain/window/designer/widget/property/vjs.framework.extension.platform.implement.domain.window.designer.widget.property.default/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implements.view.window.widget.property.processor.formtitle": [
+        "../core/platform/implements/view/window/widget/property/processor/vjs.framework.extension.platform.implements.view.window.widget.property.processor.formtitle/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.implements.view.window.widget.property.processor.permission": [
+        "../core/platform/implements/view/window/widget/property/processor/vjs.framework.extension.platform.implements.view.window.widget.property.processor.permission/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.domain.window.designer.widget.property": [
+        "../core/platform/interface/domain/window/designer/widget/vjs.framework.extension.platform.interface.domain.window.designer.widget.property/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.view.window.widget.property.processor": [
+        "../core/platform/interface/view/window/widget/property/vjs.framework.extension.platform.interface.view.window.widget.property.processor/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.property.processor": [
+        "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.property.processor/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.window.property": [
+        "../core/platform/vjs.framework.extension.platform.window.property/src"
+      ],
+      "@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib": [
+        "../core/publish/window/render/smartclient/vjs.framework.extension.publish.window.render.smartclient.viewlib/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.adapter.init.smartclient.web": [
+        "../core/ui/adapter/vjs.framework.extension.ui.adapter.init.smartclient.web/src"
+      ],
+      "@v-act/vjs.framework.extension.ui.smartclient.plugin.services.treehandler": [
+        "../core/ui/smartclient/plguin/services/vjs.framework.extension.ui.smartclient.plugin.services.treehandler/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.util.config.data": [
+        "../core/utils/vjs.framework.extension.platform.util.config.data/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.interface.domain.encrypt": [
+        "../core/platform/interface/domain/vjs.framework.extension.platform.interface.domain.encrypt/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.default": [
+        "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.default/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.utils": [
+        "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.utils/src"
+      ],
+      "@v-act/vjs.framework.extension.vendor.jquery": ["../core/vendor/vjs.framework.extension.vendor.jquery/src"]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import * as ContactsService from '@v-vact/vjs.framework.extension.platform.services.native.mobile.Contacts'
+import { Contacts as ContactsService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.contacts'
 
 export function initModule(sb: any) {
   ContactsService.putInstance(exports)

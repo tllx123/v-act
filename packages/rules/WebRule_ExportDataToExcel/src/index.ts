@@ -12,21 +12,24 @@ import * as widget from '@v-act/vjs.framework.extension.platform.services.integr
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 
 const vds = { component, ds, expression, log, string, widget, window }
+interface keyIsString {
+  [key: string]: any
+}
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
       var config = ruleContext.getVplatformInput()
       config = MapTransform(config, ruleContext)
-      var gb_condSql = {}
-      var gb_title = {}
-      var gb_params = {}
-      var gb_condParams = {}
+      var gb_condSql: keyIsString = {}
+      var gb_title: keyIsString = {}
+      var gb_params: keyIsString = {}
+      var gb_condParams: keyIsString = {}
       var fileType = config['fileType']
       for (var _i = 0; _i < config['items'].length; _i++) {
         var cfg = config['items'][_i]
         var dataName = cfg.dataName
-        var iden_con = dataName + '_' + cfg.sheetName
+        var iden_con: string = dataName + '_' + cfg.sheetName
         // 处理查询条件
         var condCfgs = cfg.dsWhere
         var wrParam = {
@@ -97,8 +100,8 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-function MapTransform(cfg, ruleContext) {
-  var _result = {}
+function MapTransform(cfg: keyIsString, ruleContext: any) {
+  var _result: keyIsString = {}
   var _deColumnMap = []
   var _items = cfg['items']
   if (_items) {
@@ -106,7 +109,7 @@ function MapTransform(cfg, ruleContext) {
     _result['fileType'] = cfg['fileType']
     for (var i = 0; i < _items.length; i++) {
       var _itc = _items[i]
-      var _itp = {}
+      var _itp: keyIsString = {}
       _itp['title'] = cfg['defaultFileName']
       var isAllNoExport = true
       _itp['sheetName'] = vds.expression.execute(_itc['sheetName'], {
@@ -119,7 +122,7 @@ function MapTransform(cfg, ruleContext) {
       var _fi = []
       for (var j = 0; j < _itc['mapping'].length; j++) {
         var _itfc = _itc['mapping'][j]
-        var _fic = {}
+        var _fic: keyIsString = {}
         _fic['chineseName'] = _itfc['excelColName']
         _fic['fieldName'] = _itfc['fieldCode']
         _fic['needExport'] = _itfc['exportData']
@@ -141,7 +144,12 @@ function MapTransform(cfg, ruleContext) {
 /**
  * 梁朝辉 2015-02-09 创建一个from用post的方法提交数据，防止url超长的问题
  */
-function createForm(formId, iframeId, actionUrl, tokenId) {
+function createForm(
+  formId: string,
+  iframeId: string,
+  actionUrl: string,
+  tokenId: string
+) {
   var formObj = document.getElementById(formId)
   if (formObj == null) {
     formObj = document.createElement('form')
@@ -157,7 +165,7 @@ function createForm(formId, iframeId, actionUrl, tokenId) {
   return formObj
 }
 
-function createIFrame(iframeId, url) {
+function createIFrame(iframeId: string, url: string) {
   var iframeObj = document.getElementById(iframeId)
   if (iframeObj == null) {
     iframeObj = document.createElement('iframe')
@@ -170,8 +178,8 @@ function createIFrame(iframeId, url) {
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (paramDefines: any, ruleContext: any) {
+  var rs: any = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -203,12 +211,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: any,
+  type: any,
+  componentControlId: any,
+  ruleContext: any
 ) {
-  var returnValue = ''
+  var returnValue: unknown = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -320,7 +328,7 @@ var getCurrentRecord = function (ds) {
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }

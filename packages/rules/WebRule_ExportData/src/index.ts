@@ -40,13 +40,13 @@ import * as component from '@v-act/vjs.framework.extension.platform.services.int
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 
 const vds = { component, ds, expression, log, string, widget, window }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -117,7 +117,12 @@ const main = function (ruleContext: RuleContext) {
  * 梁朝辉 2015-02-09
  * 创建一个from用post的方法提交数据，防止url超长的问题
  */
-function createForm(formId, iframeId, actionUrl, tokenId) {
+function createForm(
+  formId: string,
+  iframeId: string,
+  actionUrl: string,
+  tokenId: string
+) {
   var formObj = document.getElementById(formId)
   if (formObj == null) {
     formObj = document.createElement('form')
@@ -133,7 +138,7 @@ function createForm(formId, iframeId, actionUrl, tokenId) {
   return formObj
 }
 
-function createIFrame(iframeId, url) {
+function createIFrame(iframeId: string, url: string) {
   var iframeObj = document.getElementById(iframeId)
   if (iframeObj == null) {
     iframeObj = document.createElement('iframe')
@@ -146,8 +151,8 @@ function createIFrame(iframeId, url) {
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (paramDefines: any, ruleContext: any) {
+  var rs: any = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -179,12 +184,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: any,
+  componentControlId: string,
+  ruleContext: any
 ) {
-  var returnValue = ''
+  var returnValue: any = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -230,7 +235,7 @@ var getCustomParamValue = function (
       var storeType = vds.widget.getStoreType(valueQueryControlID)
       var storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
+      var ds: any = getDsName(valueQueryControlID)
       var record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
@@ -291,12 +296,12 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
+var getCurrentRecord = function (ds: any) {
   var datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }

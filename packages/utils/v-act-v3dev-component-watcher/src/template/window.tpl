@@ -37,7 +37,7 @@ function Index(){
     useEffect(async ()=>{
       try{
         debugger
-        const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).default
+        const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).ViewLib
         viewLib.init({
           "paramCfg": {
             "skinType": "default",
@@ -65,7 +65,8 @@ function Index(){
               "componentCode": "{{@ componentCode}}",
               "workspaceKey": "",
             }
-          }
+          },
+          winDatas:windowObjs
         });
       }catch(e){
         console.error(e);

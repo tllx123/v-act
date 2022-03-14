@@ -5,8 +5,10 @@ import {
   WindowContainer,
   WindowContainerManager as windowRelation
 } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { SmartClientUtil } from '@v-act/vjs.framework.extension.ui.adapter.init.smartclient.web'
+import { ResourcePackage as resourcePackage } from '@v-act/vjs.framework.extension.ui.adapter.resourcepackage'
 
 const _renderWinsPool = {}
 
@@ -95,9 +97,10 @@ export function render(params) {
       //sc窗体模板调用
       compatibleScWindow(params)
     }
-    const services = sb.getAllServices(
+    /*const services = sb.getAllServices(
       'vjs.framework.extension.platform.services.view.window.render.preprocessor'
-    )
+    )*/
+    const services = null
     if (services && services.length > 0) {
       const task = []
       for (let i = 0, l = services.length; i < l; i++) {
@@ -166,9 +169,6 @@ const _render = function (params) {
     _$windowScope.set('isSpecialRoot', 'true')
   }
   if (params.sc_languageCode) {
-    const resourcePackage = sb.getService(
-      'vjs.framework.extension.ui.adapter.resourcepackage'
-    )
     resourcePackage.setWindowCurrentResourceCode(
       newScopeId,
       null,
@@ -176,79 +176,53 @@ const _render = function (params) {
       params.sc_languageCode
     )
   }
-  const sandbox = sb.create()
-  sandbox.use({ 'vjs.framework.extension.ui.adapter.dependency': null })
-  sandbox.active().done(function () {
-    const dependency = sb.getService(
-      'vjs.framework.extension.ui.adapter.dependency'
-    )
-    dependency.loadResources(
-      componentCode,
-      windowCode,
-      sandbox,
-      newScopeId,
-      function () {
-        scopeManager.openScope(newScopeId)
-        const type = scopeManager.getProperty('type')
-        const componentUtil = sb.getService(
-          'vjs.framework.extension.ui.adapter.init.' + type + '.web.util'
-        )
-        componentUtil.renderComponentById(
-          componentCode,
-          windowCode,
-          inputParams,
-          {
-            scopeId: newScopeId,
-            inited: params.aops ? params.aops.inited : null,
-            rendered: function (component, scopeId) {
-              const container = new WindowContainer({
-                scopeId: newScopeId,
-                componentCode: componentCode,
-                windowCode: windowCode,
-                ele: targetDomCode
-              })
-              const assginWindowTitle =
-                inputParams &&
-                inputParams.variable &&
-                (inputParams.variable.windowTitle ||
-                  inputParams.variable.windowName)
-              container.set('title', assginWindowTitle)
-              windowRelation.put(container)
-              widgetRenderer.executeComponentRenderAction(
-                'renderWindowToContainer',
-                component,
-                targetDomCode,
-                true
-              )
-              // 让新窗体记住自己所在的容器
-              widgetRenderer.executeComponentRenderAction(
-                'setParentContainerInfo',
-                windowCode,
-                {
-                  scopeId: parentScopeId,
-                  containerCode: targetDomCode
-                }
-              )
-              if (params.aops && params.aops.closed) {
-                scopeManager.openScope(scopeId)
-                const windowScope = scopeManager.getWindowScope()
-                //处理跳转后把首页页签关闭的问题
-                windowScope.set('RemoveModalFunc', params.aops.closed)
-                windowScope.on(scopeManager.EVENTS.DESTROY, params.aops.closed)
-                scopeManager.closeScope()
-              }
-              //_addRenderInfo(params);
-              if (params.aops && params.aops.rendered) {
-                params.aops.rendered(component, scopeId)
-              }
-            },
-            completed: params.aops ? params.aops.completed : null,
-            error: genExceptionHandle(params.fail, targetDomCode)
-          }
-        )
-      },
-      genExceptionHandle(params.fail, targetDomCode)
-    )
+  scopeManager.openScope(newScopeId)
+  SmartClientUtil.renderComponentById(componentCode, windowCode, inputParams, {
+    scopeId: newScopeId,
+    inited: params.aops ? params.aops.inited : null,
+    rendered: function (component, scopeId) {
+      const container = new WindowContainer({
+        scopeId: newScopeId,
+        componentCode: componentCode,
+        windowCode: windowCode,
+        ele: targetDomCode
+      })
+      const assginWindowTitle =
+        inputParams &&
+        inputParams.variable &&
+        (inputParams.variable.windowTitle || inputParams.variable.windowName)
+      container.set('title', assginWindowTitle)
+      windowRelation.put(container)
+      /*widgetRenderer.executeComponentRenderAction(
+        'renderWindowToContainer',
+        component,
+        targetDomCode,
+        true
+      )
+      // 让新窗体记住自己所在的容器
+      widgetRenderer.executeComponentRenderAction(
+        'setParentContainerInfo',
+        windowCode,
+        {
+          scopeId: parentScopeId,
+          containerCode: targetDomCode
+        }
+      )*/
+      if (params.aops && params.aops.closed) {
+        scopeManager.openScope(scopeId)
+        const windowScope = scopeManager.getWindowScope()
+        //处理跳转后把首页页签关闭的问题
+        windowScope.set('RemoveModalFunc', params.aops.closed)
+        windowScope.on(scopeManager.EVENTS.DESTROY, params.aops.closed)
+        scopeManager.closeScope()
+      }
+      //_addRenderInfo(params);
+      if (params.aops && params.aops.rendered) {
+        params.aops.rendered(component, scopeId)
+      }
+    },
+    completed: params.aops ? params.aops.completed : null,
+    error: genExceptionHandle(params.fail, targetDomCode)
   })
 }
 /**

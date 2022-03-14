@@ -1,14 +1,6 @@
-let uuid, arrayUtil, scopeManager
-
-export function initModule(sBox) {
-  if (sBox) {
-    uuid = sBox.getService('vjs.framework.extension.util.UUID')
-    arrayUtil = sBox.getService('vjs.framework.extension.util.ArrayUtil')
-    scopeManager = sBox.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-  }
-}
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let TaskManager = function () {
   //任务列表

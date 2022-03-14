@@ -110,7 +110,7 @@ const initVariant = function (params) {
   //构建operation对象
   //设置成功回掉：设置构建变量值
   //operation对象注入WindowuntimeInit.registerVariableHandler
-  let scope = scopeManager.getScope()
+  /*let scope = scopeManager.getScope() TODO 暂不处理
   let componentCode = scope.getComponentCode()
   let isInited = componentParam.isVariantInited(componentCode)
   if (!isInited) {
@@ -137,7 +137,7 @@ const initVariant = function (params) {
     windowRuntimeInit.registerVariableHandler({
       operation: opt
     })
-  }
+  }*/
 }
 
 const getVariant = function (params) {

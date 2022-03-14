@@ -192,14 +192,4 @@ const getConstructor = function () {
   return TaffyDB
 }
 
-export {
-  initModule,
-  DB,
-  unSerialize,
-  isDB,
-  getConstructor,
-  DB,
-  unSerialize,
-  isDB,
-  getConstructor
-}
+export { DB, unSerialize, isDB, getConstructor }

@@ -1,5 +1,5 @@
-import * as scopeManager from '@v-act/vjs.framework.extension.platform.interface.scope.ScopeManager'
-import * as JPushrService from '@v-act/vjs.framework.extension.platform.services.native.mobile.jpush'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { JPush as JPushrService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.jpush'
 
 let openNotificationListener: any
 let lastopenNotificationEvent: any

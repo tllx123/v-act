@@ -1,19 +1,8 @@
-let RouteConfigFactory, ParamConfigFactory, StorageManager, sandbox
-
-export function initModule(sb) {
-  if (sb) {
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    ParamConfigFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.config.ParamConfigFactory'
-    )
-    RouteConfigFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.config.RouteConfigFactory'
-    )
-    sandbox = sb
-  }
-}
+import {
+  ParamConfigFactory,
+  RouteConfigFactory
+} from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let tokenPrefix = 'ComponentData_'
 

@@ -1,4 +1,9 @@
 /**
+ * 规则入口
+ */
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+/**
  * 从数据库获取数据到界面实体
  */
 vds.import(
@@ -12,10 +17,10 @@ vds.import(
   'vds.component.*',
   'vds.exception.*'
 )
-/**
- * 规则入口
- */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+interface keyIsString {
+  [key: string]: any
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -30,10 +35,10 @@ const main = function (ruleContext: RuleContext) {
       var treeStruct = inParamsObj['treeStruct']
       var dtds = []
       var nowDtd = null
-      var asyFun = function (config, isLast) {
+      var asyFun = function (config: any, isLast: boolean) {
         return new Promise<void>(
           (function (itemConfig, _isLast) {
-            return function (_resolve, _reject) {
+            return function (_resolve: any, _reject: any) {
               var isType = itemConfig['Istype']
               // 查询：1，表：0
               var queryConds = itemConfig['dsWhere']
@@ -144,7 +149,7 @@ const main = function (ruleContext: RuleContext) {
               var isPaging
               var pageSize = -1
               var recordStart = -1
-              var totalRecordSave
+              var totalRecordSave: any
 
               //加载规则分页
               if (undefined != pagers && null != pagers && pagers.length > 0) {
@@ -203,8 +208,8 @@ const main = function (ruleContext: RuleContext) {
               } else {
                 queryParams = whereRestrict.toParameters()
               }
-              var widgetOrderInfo = []
-              var widgetOrderInfo = getWidgetOrderInfo(
+              // var widgetOrderInfo:keyIsString = []
+              var widgetOrderInfo: keyIsString = getWidgetOrderInfo(
                 ruleContext,
                 targetModelType,
                 entityName,
@@ -279,7 +284,7 @@ const main = function (ruleContext: RuleContext) {
           })(config, isLast)
         )
       }
-      var exeConfig = function (configs, reject, endFun) {
+      var exeConfig = function (configs: any, reject: any, endFun: Function) {
         if (configs.length == 0) {
           endFun()
           return
@@ -330,7 +335,11 @@ const main = function (ruleContext: RuleContext) {
  * @param {@link MethodContext} methodContext 方法上下文
  * @return {@link Datasource} 数据源实例
  */
-var getDatasource = function (dsCode, type, methodContext) {
+var getDatasource = function (
+  dsCode: string,
+  type: string,
+  methodContext: any
+) {
   var datasource
   switch (type) {
     case 'windowVariant': //窗体输入
@@ -354,7 +363,7 @@ var getDatasource = function (dsCode, type, methodContext) {
   return datasource
 }
 
-var getPagingInfoByDataSource = function (entityName) {
+var getPagingInfoByDataSource = function (entityName: string) {
   var types = ['JGDataGrid', 'JGPagination']
   var widgetCodes = vds.widget.getWidgetCodes(entityName)
   var pageInfo
@@ -378,8 +387,8 @@ var getPagingInfoByDataSource = function (entityName) {
   return pageInfo
 }
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (paramDefines: any, ruleContext: any) {
+  var rs: keyIsString = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -411,12 +420,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: string,
+  componentControlId: string,
+  ruleContext: any
 ) {
-  var returnValue = ''
+  var returnValue: any = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -424,7 +433,7 @@ var getCustomParamValue = function (
         vds.log.warn(queryfieldValue + ' 格式必须为表名.字段名')
         break
       }
-      var ds = queryfieldValue.split('.')[0]
+      var ds: any = queryfieldValue.split('.')[0]
       var fieldName = queryfieldValue.split('.')[1]
       var record = getCurrentRecord(ds)
       returnValue = record.get(fieldName)
@@ -523,7 +532,7 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
+var getCurrentRecord = function (ds: any) {
   var datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }

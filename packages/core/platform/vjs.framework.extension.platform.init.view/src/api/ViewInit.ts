@@ -24,31 +24,31 @@ let _initSchema = function (vjsName, errorFn, scopeTaskId) {
   }
   taskIds.push(scopeTaskId)
   if (taskIds.length < 2) {
-    sandbox.use([vjsName])
+    /*sandbox.use([vjsName])
     sandbox
       .active()
-      .done(function () {
-        try {
-          var service = sandbox.getService(vjsName)
-          service.init()
-          if (taskIds) {
-            for (var i = 0, len = taskIds.length; i < len; i++) {
-              var taskId = taskIds[i]
-              taskManager.execTaskById(taskId)
-            }
-          }
-          taskPool[vjsName] = null
-          try {
-            delete taskPool[vjsName]
-          } catch (e) {}
-        } catch (e) {
-          if (typeof errorFn == 'function') errorFn(e)
+      .done(function () {*/
+    try {
+      //var service = sandbox.getService(vjsName)
+      //service.init()
+      if (taskIds) {
+        for (var i = 0, len = taskIds.length; i < len; i++) {
+          var taskId = taskIds[i]
+          taskManager.execTaskById(taskId)
         }
-      })
+      }
+      taskPool[vjsName] = null
+      try {
+        delete taskPool[vjsName]
+      } catch (e) {}
+    } catch (e) {
+      if (typeof errorFn == 'function') errorFn(e)
+    }
+    /*})
       .fail(function (e) {
         taskPool[vjsName] = null
         if (typeof errorFn == 'function') errorFn(e)
-      })
+      })*/
   }
 }
 

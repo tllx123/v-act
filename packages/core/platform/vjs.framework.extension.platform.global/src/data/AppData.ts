@@ -1,4 +1,5 @@
-let StorageManager, ParamConfigFactory
+import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let keys = {
   WindowInputs: 'WindowInputs'
@@ -7,17 +8,6 @@ let keys = {
 let tokenPrefix = 'AppData_'
 
 let isAppConfigInfoLoadedFlag = false
-
-export function initModule(sb) {
-  if (sb) {
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-    ParamConfigFactory = sb.getService(
-      'vjs.framework.extension.platform.interface.model.config.ParamConfigFactory'
-    )
-  }
-}
 
 const addRuleSetInputs = function (
   componentCode,

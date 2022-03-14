@@ -1,8 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
-
-export function initModule(sb) {}
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let showGlobalProgress = function (msg) {
   let div = $('#_waitMsgTD')
