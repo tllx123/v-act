@@ -11,24 +11,27 @@ let STATUS_ROLLEDBACK = 'ROLLEDBACK'
 let STATUS_NO_TRANSACTION = 'NO_TRANSACTION'
 let STATUS_COMMITTED = 'COMMITTED'
 
-function Transaction(transactionId) {
+function Transaction(transactionId:string) {
+  //@ts-ignore
   this.componentCode
+  //@ts-ignore
   this.scopeId
   //事务实例id
+  //@ts-ignore
   this.transactionId = transactionId
   //事务实例状态
+  //@ts-ignore
   this.transactionStatus = STATUS_NO_TRANSACTION
 }
 
 Transaction.prototype = {
-  initModule: function (sb) {},
-  doBegin: function (args) {
+  doBegin: function (args:any) {
     //事务如果已开启,则无需重新开启
     if (this.transactionStatus != STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]开启事件失败！,transactionId:' +
               instance.transactionId +
@@ -43,13 +46,13 @@ Transaction.prototype = {
       utils.begin(params)
     }
   },
-  doCommit: function (args) {
+  doCommit: function (args:any) {
     //事务已开启情况下才需要提交事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]提交事件失败！,transactionId:' +
               instance.transactionId +
@@ -64,13 +67,13 @@ Transaction.prototype = {
       utils.commit(params)
     }
   },
-  doRollback: function (args) {
+  doRollback: function (args:any) {
     //事务已开启情况下才需要回滚事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]回滚事件失败！将尝试进行回滚！,transactionId:' +
               instance.transactionId +
@@ -91,7 +94,7 @@ Transaction.prototype = {
       utils.rollback(params)
     }
   },
-  _genParams: function (successStatus, args) {
+  _genParams: function (successStatus:any, args:any) {
     let scope = scopeManager.getWindowScope()
     let componentCode = scope.getComponentCode()
     let successFunc = args.success
@@ -127,13 +130,13 @@ Transaction.prototype = {
   getTransactionStatus: function () {
     return this.transactionStatus
   },
-  setScopeId: function (scopeId) {
+  setScopeId: function (scopeId:string) {
     this.scopeId = scopeId
   },
   getScopeId: function () {
     return this.scopeId
   },
-  setComponentCode: function (componentCode) {
+  setComponentCode: function (componentCode:string) {
     this.componentCode = componentCode
   },
   getComponentCode: function () {

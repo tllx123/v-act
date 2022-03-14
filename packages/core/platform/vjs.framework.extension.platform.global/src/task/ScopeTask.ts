@@ -2,7 +2,7 @@ import * as TaskManager from './TaskManager'
 
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let ScopeTask = function (scopeId:string, isAutoExe:boolean, handler:any, props:any) {
+let ScopeTask:any = function (scopeId:string, isAutoExe:boolean, handler:any, props:any) {
   //@ts-ignore
   this.scopeId = scopeId
   //@ts-ignore

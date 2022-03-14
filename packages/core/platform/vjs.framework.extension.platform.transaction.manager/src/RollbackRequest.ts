@@ -2,12 +2,18 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as utils from './Utils'
 
-let RollbackRequest = function (params) {
+let RollbackRequest = function (params:any) {
+  //@ts-ignore
   this.steps = params.steps
+  //@ts-ignore
   this.instance = params.instance
+  //@ts-ignore
   this.isAsync = !!params.isAsync
+  //@ts-ignore
   this.index = 0
+  //@ts-ignore
   this.status = 0 //1:回滚成功，2:废弃
+  //@ts-ignore
   this.intervalIndex = null
 }
 
@@ -34,7 +40,7 @@ RollbackRequest.prototype = {
 
   _genFailCallback: function () {
     let rq = this
-    return function (e) {
+    return function (e:any) {
       let msg =
         '[RollbackRequest.rollback]第' +
         rq.index +
