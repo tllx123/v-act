@@ -255,7 +255,7 @@ class Window {
   getRuleSet() {
     const ruleSet = []
     if (this.obj.logics && this.obj.logics.logic) {
-      const logicList = this.obj.logics.logic
+      let logicList = this.obj.logics.logic
       logicList = Array.isArray(logicList) ? logicList : [logicList]
       logicList.forEach((logic) => {
         const attrs = logic.$
@@ -281,7 +281,7 @@ class Window {
   getFuncSet() {
     const funcSet = []
     if (this.obj.expressions && this.obj.expressions.expression) {
-      const expressionList = this.obj.expressions.expression
+      let expressionList = this.obj.expressions.expression
       expressionList = Array.isArray(expressionList)
         ? expressionList
         : [expressionList]
