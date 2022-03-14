@@ -22,11 +22,15 @@ let handleKeyDown = function (widgetCode:string, eventName:string) {
       isPrimitive: false,
       KeyCode:''
     }
+    //@ts-ignore
     eventArgs.KeyCode = event.keyCode
     args.push(eventArgs)
+    //@ts-ignore
     if (event.keyCode == 13) {
+      //@ts-ignore
       syncFunc.call(this)
     }
+    //@ts-ignore
     handler.apply(this, args)
   }
 }
