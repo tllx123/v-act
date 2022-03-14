@@ -1,6 +1,7 @@
+import { EqualToken, GreateToken } from '@v-act/tokenizer'
+
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
-import { EqualToken, GreateToken } from '@v-act/tokenizer'
 import Syntax from '../../../Syntax'
 import ComparatorSyntax from '../ComparatorSyntax'
 
@@ -45,9 +46,13 @@ class LessThanSyntax extends ComparatorSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitLessThanSyntax
-      ? visitor.visitLessThanSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+    if (visitor && visitor.visitLessThanSyntax) {
+      const res = visitor.visitLessThanSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 
