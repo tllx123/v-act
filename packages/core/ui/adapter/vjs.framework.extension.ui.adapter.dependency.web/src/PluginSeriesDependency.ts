@@ -8,6 +8,7 @@ export function initModule(sb:any) {
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.dependency'
   )
+  //@ts-ignore
   dependency.putInstance(this)
 }
 
@@ -128,7 +129,8 @@ const loadDependencyLibs = function (wins:any, cb:any, ef:any) {
           type: dependencyLib.type,
           exceptionLib: dependencyLib.exceptionLib
         })
-        if (typeof errorFunc == 'function') errorFunc(exception)
+        //if (typeof errorFunc == 'function') errorFunc(exception)
+        throw new Error('未识别异常，请联系系统管理员处理')
       })
   }
   windowRuntimeManager.initWindow({

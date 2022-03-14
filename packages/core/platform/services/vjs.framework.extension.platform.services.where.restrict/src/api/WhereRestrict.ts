@@ -1,16 +1,16 @@
 import * as queryConditionUtil from '../util/queryConditionUtil'
-
-export function initModule() {}
+import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 
 /**
  * 继承、克隆使用工具，目前是直接使用jQuery中的继承
  */
 let _ObjectUtils = {
-  extend: function (target, source) {
+  extend: function (target:any, source:any) {
     $.extend(true, target, source)
   },
 
-  clone: function (source) {
+  clone: function (source:any) {
     return $.extend(true, {}, source)
   }
 }
@@ -37,7 +37,7 @@ function WhereRestrict() {
   /**
    * @param fetchMode()
    */
-  this.newInstance = function (fetchMode, isNullValueReplace, routeContext) {
+  this.newInstance = function (fetchMode:any, isNullValueReplace:any, routeContext:RouteContext) {
     this.__WR__ = {}
     this.__WR__['children'] = []
     this.routeContext = routeContext
@@ -70,7 +70,7 @@ function WhereRestrict() {
   /**
    * 设置当条件的值为空时，这个条件是否需要生成
    */
-  this.setIsNullValueReplace = function (isReplace) {
+  this.setIsNullValueReplace = function (isReplace:any) {
     if (typeof isReplace != 'boolean') {
       throw new Error('设置策略只能为布尔值')
     }
@@ -84,7 +84,7 @@ function WhereRestrict() {
     return this.__WR__['children']
   }
 
-  this.addChild = function (anything) {
+  this.addChild = function (anything:any) {
     this.__WR__['children'].push(anything)
     return anything
   }
@@ -105,10 +105,10 @@ function WhereRestrict() {
    * @param isBracketsBefore 是否将concat前部分条件使用括号包含
    */
   this.concat = function (
-    condition,
-    logicOutSide,
-    logicInSide,
-    isBracketsBefore
+    condition:any,
+    logicOutSide:any,
+    logicInSide:any,
+    isBracketsBefore:any
   ) {
     if (!logicOutSide || logicOutSide == '') {
       throw new Error('必须设置外部连接符')
@@ -166,7 +166,7 @@ function WhereRestrict() {
    * @param logicOutSide condition为列表时，连接的外围连接符
    * @param logicInSide condition为列表时，连接的内部连接符
    */
-  this.link = function (condition, logicOutSide, logicInSide) {
+  this.link = function (condition:any, logicOutSide:any, logicInSide:any) {
     this.concat(condition, logicOutSide, logicInSide, false)
   }
 
@@ -174,7 +174,7 @@ function WhereRestrict() {
    * and一个条件(或条件列表)
    * @param WhereNode节点、WhereNode列表或者WhereRestrict对象
    */
-  this.and = function (condition, isBracketsBefore) {
+  this.and = function (condition:any, isBracketsBefore:any) {
     if (isBracketsBefore == undefined || isBracketsBefore == null) {
       if (condition instanceof Array || condition.type == 'WhereRestrict') {
         isBracketsBefore = true
@@ -189,7 +189,7 @@ function WhereRestrict() {
    * or一个条件(或条件列表)
    * @param WhereNode节点、WhereNode列表或者WhereRestrict对象
    */
-  this.or = function (condition, isBracketsBefore) {
+  this.or = function (condition:any, isBracketsBefore:any) {
     if (isBracketsBefore == undefined || isBracketsBefore == null) {
       if (condition instanceof Array || condition.type == 'WhereRestrict') {
         isBracketsBefore = true
@@ -213,7 +213,7 @@ function WhereRestrict() {
     return whereStr
   }
 
-  this._toWhere = function (children) {
+  this._toWhere = function (children:any) {
     if (!children || children.length <= 0) {
       return ''
     }
@@ -246,10 +246,10 @@ function WhereRestrict() {
    * @param braceType
    * @param position
    */
-  let _getSeqBrace = function (charArray, braceType, position) {
+  let _getSeqBrace = function (charArray:any, braceType:any, position:number) {
     let count = 0
     let len = 0
-    let seqBrace = {}
+    let seqBrace:{[code:string]:any} = {}
     for (let i = position; i < charArray.length; i++) {
       let c = charArray[i]
       len++
@@ -277,7 +277,7 @@ function WhereRestrict() {
    * @param count 需要查找的字符数组中子串中括号的数量
    * @param type 需要查找的字符数组中子串中括号的类型
    */
-  let _getInvalid = function (inValid, charArray, len, position, count, type) {
+  let _getInvalid = function (inValid:any, charArray:any, len:number, position:number, count:number, type:string) {
     for (let i = position; i < position + len; i++) {
       if (count == 0) {
         break
@@ -296,7 +296,7 @@ function WhereRestrict() {
   let _deleteRedundanceBrace = function (str) {
     let charArray = new Array()
     charArray = str.split('')
-    let seqCount
+    let seqCount:any
     let leftStack = new Array()
     let inValid = new Array()
     for (let i = 0; i < charArray.length; i++) {
@@ -309,7 +309,7 @@ function WhereRestrict() {
         case '(':
           seqCount = _getSeqBrace(str, '(', i)
           i += seqCount['len'] - 1
-          var braceObj = {}
+          var braceObj:{[code:string]:any} = {}
           braceObj['count'] = seqCount['count']
           braceObj['position'] = seqCount['position']
           braceObj['len'] = seqCount['len']
@@ -408,7 +408,7 @@ function WhereRestrict() {
     return params
   }
 
-  this._toParameters = function (children, params) {
+  this._toParameters = function (children:any, params:any) {
     if (!children || children.length <= 0) {
       return
     }
@@ -425,7 +425,7 @@ function WhereRestrict() {
     }
   }
 
-  this.addExtraParameters = function (params) {
+  this.addExtraParameters = function (params:any) {
     if (!params) {
       return
     }
@@ -434,23 +434,23 @@ function WhereRestrict() {
     }
   }
 
-  this.addExtraParameter = function (key, value) {
+  this.addExtraParameter = function (key:any, value:any) {
     this.extraParameters[key] = value
   }
 
-  this.addOrderBy = function (orderByField) {
+  this.addOrderBy = function (orderByField:any) {
     this.__addOrderBy__(orderByField, 'ASC')
   }
 
-  this.addOrderByDesc = function (orderByField) {
+  this.addOrderByDesc = function (orderByField:any) {
     this.__addOrderBy__(orderByField, 'DESC')
   }
 
-  this.addWholeOrderBy = function (orderByFieldWithSequence) {
+  this.addWholeOrderBy = function (orderByFieldWithSequence:any) {
     this.__addOrderBy__(orderByFieldWithSequence, '')
   }
 
-  this.__addOrderBy__ = function (orderByField, sequence) {
+  this.__addOrderBy__ = function (orderByField:any, sequence:any) {
     if (this.__orderBy__ && this.__orderBy__ != '') {
       this.__orderBy__ += ', ' + orderByField + ' ' + sequence
     } else {
@@ -465,14 +465,14 @@ function WhereRestrict() {
   // 条件处理存放区，用于记录加载后的对条件处理的回调
   this.EVENT_AFTER_FIND = 'afterFind'
   this.eventProcessor = {}
-  this.addEvent = function (_name, _event) {
+  this.addEvent = function (_name:any, _event:any) {
     if (typeof this.eventProcessor[_name] == 'undefined') {
       this.eventProcessor[_name] = []
     }
     this.eventProcessor[_name].push(_event)
   }
 
-  this.fireEvent = function (_name) {
+  this.fireEvent = function (_name:any) {
     if (
       typeof this.eventProcessor[_name] != 'undefined' &&
       this.eventProcessor[_name].length > 0
@@ -493,7 +493,7 @@ function WhereRestrict() {
 
   // 注册WhereNode处理器类
   this.wnProcessor = {}
-  this.registryNodeProcessor = function (processor, routeContext) {
+  this.registryNodeProcessor = function (processor:any, routeContext:RouteContext) {
     let proc = new processor(routeContext)
     let procName = proc.processorType
 
@@ -538,7 +538,7 @@ function BaseWhereNode() {
 
   // 参数化区，是否需要参数化，由具体的实现类来做
   this.parameter = {}
-  this.genFieldKeyByUUID = function (field) {
+  this.genFieldKeyByUUID = function (field:any) {
     let S4 = function () {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
     }
@@ -546,7 +546,7 @@ function BaseWhereNode() {
     return field + '_' + (S4() + S4())
   }
 
-  this.genParameter = function (field, value) {
+  this.genParameter = function (field:any, value:any) {
     let fieldKey = this.genFieldKeyByUUID(field.replace(/\./g, '_'))
     this.parameter[fieldKey] = value
     return ':' + fieldKey
@@ -558,7 +558,7 @@ function BaseWhereNode() {
 
   // 连接符
   this.logic
-  this.setLogic = function (logic) {
+  this.setLogic = function (logic:any) {
     this.logic = logic
     return this
   }
@@ -577,7 +577,7 @@ function DefaultWhereNode() {
   this.field
   this.fieldKey
   this.value
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     // 2015-09-08 兼容处理[构件名].[表名].[字段]的情况，只取[字段]
     let _fieldItems = field.split('.')
     this.field = _fieldItems[_fieldItems.length - 1]
@@ -596,7 +596,7 @@ function DefaultWhereNode() {
 function EqTrueNode() {
   _ObjectUtils.extend(this, new BaseWhereNode())
   this.processorType = 'eqTrue'
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     this.value = '1 = 1'
   }
 
@@ -692,7 +692,7 @@ function NeNode() {
 function LikeNode() {
   _ObjectUtils.extend(this, new DefaultWhereNode())
   this.processorType = 'like'
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     this.field = field
     this.value = '%' + value + '%'
     this.fieldKey = this.genParameter(this.field, this.value)
@@ -709,7 +709,7 @@ function LikeNode() {
 function LeftLikeNode() {
   _ObjectUtils.extend(this, new DefaultWhereNode())
   this.processorType = 'leftLike'
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     this.field = field
     this.value = '%' + value
     this.fieldKey = this.genParameter(this.field, this.value)
@@ -726,7 +726,7 @@ function LeftLikeNode() {
 function RightLikeNode() {
   _ObjectUtils.extend(this, new DefaultWhereNode())
   this.processorType = 'rightLike'
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     this.field = field
     this.value = value + '%'
     this.fieldKey = this.genParameter(this.field, this.value)
@@ -743,7 +743,7 @@ function RightLikeNode() {
 function BaseLikeNode() {
   _ObjectUtils.extend(this, new DefaultWhereNode())
   this.processorType = 'baseLike'
-  this.newInstance = function (field, prefix, value, suffix) {
+  this.newInstance = function (field:any, prefix:any, value:any, suffix:any) {
     this.field = field
     this.value = (!prefix ? '' : prefix) + value + (!suffix ? '' : suffix)
     this.fieldKey = this.genParameter(this.field, this.value)
@@ -761,7 +761,7 @@ function BaseLikeNode() {
 function InValuesNode() {
   _ObjectUtils.extend(this, new DefaultWhereNode())
   this.processorType = 'inValues'
-  this.newInstance = function (field, value) {
+  this.newInstance = function (field:any, value:any) {
     this.field = field
     this.value = value
     this.fieldKey = this.genParameter(this.field, this.value)
