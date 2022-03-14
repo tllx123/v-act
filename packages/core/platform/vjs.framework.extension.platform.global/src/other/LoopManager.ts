@@ -7,16 +7,16 @@
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 //此处value用列表是因为可能循环同一个函数
 //循环列表 key 循环速度  value 循环id列表
-const loopList = {}
+const loopList:{[code:string]:any} = {}
 //循环标识 key 循环速度  value 循环标识
-const loopIden = {}
+const loopIden:{[code:string]:any} = {}
 //循环映射 key 循环id value 循环函数
-const loopMappings = {}
+const loopMappings:{[code:string]:any} = {}
 
 /**
  * 根据循环速度生成循环函数
  * */
-var createSpeedHandler = function (speed) {
+var createSpeedHandler = function (speed:any) {
   var hander = (function (_speed) {
     return function () {
       var loopIds = loopList[_speed]
@@ -52,7 +52,7 @@ export { SPEEDTYPE }
  * 	speed	{String}//循环速度，可忽略
  * }
  * */
-export function add(params) {
+export function add(params:any) {
   var handler = params.handler
   if (typeof handler == 'function') {
     var loopId = uuid.generate()
@@ -85,7 +85,7 @@ export function add(params) {
  * 移除循环
  * @param	{String}	loopId	循环id
  * */
-export function remove(loopId) {
+export function remove(loopId:string) {
   if (!loopMappings[loopId]) {
     return
   }

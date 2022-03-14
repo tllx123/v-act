@@ -1,7 +1,7 @@
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 //规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
@@ -9,9 +9,12 @@ import { ArrayUtil as util } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-export function initModule(sBox) {
-  sandbox = sBox
+interface keyIsString {
+  [kes: string]: any
 }
+// export function initModule(sBox) {
+//   sandbox = sBox
+// }
 
 const main = function (ruleContext: RuleContext) {
   let inParams = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
@@ -50,7 +53,7 @@ const main = function (ruleContext: RuleContext) {
   } else {
     if (CheckUrl(serviceDataValue)) {
       //解析对应的关系
-      let fieldObjArr = []
+      let fieldObjArr: keyIsString = []
       for (let index = 0; index < printDetail.length; index++) {
         let printDetailElement = printDetail[index]
         let targetFiled = printDetailElement['targetField']
@@ -63,13 +66,13 @@ const main = function (ruleContext: RuleContext) {
             context: context
           })
           let field = targetFiled.substring(targetFiled.indexOf('.') + 1)
-          let fieldObj = {}
+          let fieldObj: keyIsString = {}
           fieldObj.field = field
           fieldObj.element = elementValue
           fieldObjArr.push(fieldObj)
         } else {
           //如为服务端返回实体字段
-          let fieldObj = {}
+          let fieldObj: keyIsString = {}
           let field = targetFiled.substring(targetFiled.indexOf('.') + 1)
           fieldObj.field = field
           fieldObj.element = source
@@ -130,8 +133,8 @@ const main = function (ruleContext: RuleContext) {
   ruleContext.markRouteExecuteUnAuto()
 }
 
-function CheckUrl(str) {
-  let RegUrl = new RegExp()
+function CheckUrl(str: string) {
+  let RegUrl: any = new RegExp('[a-zA-z]+://[^s]*')
   RegUrl.compile('[a-zA-z]+://[^s]*')
   if (!RegUrl.test(str)) {
     return false

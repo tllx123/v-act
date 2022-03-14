@@ -6,7 +6,7 @@ import * as viewModel from 'module'
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sBox) {}
+// export function initModule(sBox) {}
 
 const main = function (ruleContext: RuleContext) {
   let ruleConfig = ruleContext.getRuleCfg()
@@ -56,7 +56,7 @@ const main = function (ruleContext: RuleContext) {
       InParams: paramData
     }
   }
-  let callback = function (responseObj) {
+  let callback = function (responseObj: any) {
     let outputResult = responseObj.data.result
     let success = outputResult.IsSuccess.value
     if (!success) {
@@ -134,17 +134,17 @@ const main = function (ruleContext: RuleContext) {
   // viewModel.getDataModule().insertByDS(dsName, newRecords);
 }
 
-let getFieldName = function (fieldName) {
+let getFieldName = function (fieldName: string) {
   if (fieldName != null && fieldName.indexOf('.') > 0)
     return fieldName.split('.')[1]
   return fieldName
 }
 
-function isEmpty(obj) {
+function isEmpty(obj: any) {
   return obj == null || obj == ''
 }
 
-function getSysVarValuesFrom(systemVariables) {
+function getSysVarValuesFrom(systemVariables: any) {
   let ret = []
   for (let i = 0; systemVariables != null && i < systemVariables.length; i++) {
     ret[systemVariables[i].name] = systemVariables[i].value

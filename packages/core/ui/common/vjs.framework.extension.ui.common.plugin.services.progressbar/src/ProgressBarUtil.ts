@@ -1,11 +1,11 @@
 import { ProgressBarUtil as util } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
 
-export function initModule(sb) {}
+
 
 /**
  * 显示进度条
  */
-let showProgress = function (msg) {
+let showProgress = function (msg:string) {
   util.showProgress(msg)
 }
 

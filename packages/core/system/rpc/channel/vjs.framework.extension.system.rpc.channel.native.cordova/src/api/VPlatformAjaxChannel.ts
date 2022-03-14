@@ -12,14 +12,16 @@ let VPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
   let contextPath = Environment.getContextPath()
   if (contextPath) {
+    //@ts-ignore
     this.url = contextPath + '/module-operation!executeOperation'
   } else {
+    //@ts-ignore
     this.url = 'module-operation!executeOperation'
   }
 }
 
 VPlatformAjaxChannel.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb:any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -36,7 +38,7 @@ VPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request, contract) {
+  buildRequest: function (request:any, contract:any) {
     let data = contract.generate(request)
     let operation = request.getOperations()[0]
     this.url += '?componentCode=' + operation.getComponentCode()
@@ -44,7 +46,9 @@ VPlatformAjaxChannel.prototype = {
     if (windowCode != null && typeof windowCode != 'undefined') {
       this.url += '&windowCode=' + windowCode
     }
+    //@ts-ignore
     if (window.GlobalVariables) {
+      //@ts-ignore
       this.url = GlobalVariables.getServerUrl() + '/' + this.url
     }
     let scopeId = scopeManager.getCurrentScopeId()
@@ -52,9 +56,10 @@ VPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, request, contract) {
-        return function (res, status) {
+        return function (res:any, status:any) {
           //更新sessionId
           if (res.JSESSIONID) {
+            //@ts-ignore
             GlobalVariables.setJSESSIONID(res.JSESSIONID)
           }
           //		              GlobalVariables.setJSESSIONID(res.JSESSIONID);
@@ -85,7 +90,7 @@ VPlatformAjaxChannel.prototype = {
       })(this, request, contract)
     )
     let taskId = taskManager.addTask(scopeTask)
-    let callback = function (res, status) {
+    let callback = function (res:any, status:any) {
       taskManager.execTaskById(taskId, [res, status])
     }
     let timeout = 60 * 60 * 24 //如果没设置超时
@@ -97,12 +102,13 @@ VPlatformAjaxChannel.prototype = {
       timeout: timeout,
       trustAll: true,
       isAsync: request.isAsync(),
+      //@ts-ignore
       JSESSIONID: GlobalVariables.getJSESSIONID()
     }
     return [this.url, this.type, data, config, callback]
   },
 
-  processResponse: function (res, status) {
+  processResponse: function (res:any, status:any) {
     if (status === 'success' || status === 'notmodified') {
       return eval('(' + res.responseText + ')')
     } else {
@@ -114,7 +120,7 @@ VPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request, contract) {
+  request: function (request:any, contract:any) {
     let operations = request.getOperations()
     let operation = operations[0] //单重请求，只有一个operation
     let func = operation.getBeforeRequest()
@@ -122,9 +128,10 @@ VPlatformAjaxChannel.prototype = {
       func.call(request)
     }
     let args = this.buildRequest(request, contract)
-    let func = window.VJSBridge.plugins.vplatform.RPC.httprequestplugin.execute
+    //@ts-ignore
+    func = window.VJSBridge.plugins.vplatform.RPC.httprequestplugin.execute
     func.apply(this, args)
   }
 }
 
-return VPlatformAjaxChannel
+export default VPlatformAjaxChannel

@@ -1,6 +1,7 @@
 import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
+
 let keys = {
   WindowInputs: 'WindowInputs'
 }
@@ -9,11 +10,13 @@ let tokenPrefix = 'AppData_'
 
 let isAppConfigInfoLoadedFlag = false
 
+
+
 const addRuleSetInputs = function (
-  componentCode,
-  windowCode,
-  metaCode,
-  inputs
+  componentCode:string,
+  windowCode:string,
+  metaCode:string,
+  inputs:any
 ) {
   let params = ParamConfigFactory.unSerialize(inputs)
   let token = generateToken(componentCode, windowCode, metaCode)
@@ -21,11 +24,11 @@ const addRuleSetInputs = function (
   storage.put(keys.WindowInputs, params)
 }
 
-let generateToken = function (componentCode, windowCode, metaCode) {
+let generateToken = function (componentCode:string, windowCode:string, metaCode:string) {
   return tokenPrefix + componentCode + '_' + windowCode + '_' + metaCode
 }
 
-const getRuleSetInputs = function (componentCode, windowCode, metaCode) {
+const getRuleSetInputs = function (componentCode:string, windowCode:string, metaCode:string) {
   let token = generateToken(componentCode, windowCode, metaCode)
   if (StorageManager.exists(StorageManager.TYPES.MAP, token)) {
     let storage = StorageManager.get(StorageManager.TYPES.MAP, token)
@@ -34,7 +37,7 @@ const getRuleSetInputs = function (componentCode, windowCode, metaCode) {
   return null
 }
 
-const exists = function (componentCode, windowCode, metaCode) {
+const exists = function (componentCode:string, windowCode:string, metaCode:string) {
   let token = generateToken(componentCode, windowCode, metaCode)
   if (StorageManager.exists(StorageManager.TYPES.MAP, token)) {
     let storage = StorageManager.get(StorageManager.TYPES.MAP, token)
@@ -44,10 +47,10 @@ const exists = function (componentCode, windowCode, metaCode) {
 }
 
 const getRuleSetInput = function (
-  componentCode,
-  windowCode,
-  metaCode,
-  paramCode
+  componentCode:string,
+  windowCode:string,
+  metaCode:string,
+  paramCode:string
 ) {
   let inputs = getRuleSetInputs(componentCode, windowCode, metaCode)
   if (inputs) {
