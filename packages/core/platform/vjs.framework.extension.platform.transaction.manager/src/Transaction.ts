@@ -1,7 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-import * as RollbackRequest from './RollbackRequest'
+import RollbackRequest from './RollbackRequest'
 import * as rollbackRequestManager from './RollbackRequestManager'
 import * as utils from './Utils'
 
@@ -11,24 +11,29 @@ let STATUS_ROLLEDBACK = 'ROLLEDBACK'
 let STATUS_NO_TRANSACTION = 'NO_TRANSACTION'
 let STATUS_COMMITTED = 'COMMITTED'
 
-function Transaction(transactionId) {
-  this.componentCode
-  this.scopeId
+class Transaction{
+  //@ts-ignore
+  componentCode
+  //@ts-ignore
+  scopeId
   //事务实例id
-  this.transactionId = transactionId
+  //@ts-ignore
+  transactionId = transactionId
   //事务实例状态
-  this.transactionStatus = STATUS_NO_TRANSACTION
-}
+  //@ts-ignore
+  transactionStatus = STATUS_NO_TRANSACTION
 
-Transaction.prototype = {
-  initModule: function (sb) {},
-  doBegin: function (args) {
+  constructor(transactionId:string){
+    this.transactionId = transactionId;
+  }
+
+  doBegin (args:any) {
     //事务如果已开启,则无需重新开启
     if (this.transactionStatus != STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]开启事件失败！,transactionId:' +
               instance.transactionId +
@@ -42,14 +47,15 @@ Transaction.prototype = {
       let params = this._genParams(STATUS_ACTIVE, args)
       utils.begin(params)
     }
-  },
-  doCommit: function (args) {
+  }
+
+  doCommit(args:any) {
     //事务已开启情况下才需要提交事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]提交事件失败！,transactionId:' +
               instance.transactionId +
@@ -63,14 +69,14 @@ Transaction.prototype = {
       let params = this._genParams(STATUS_COMMITTED, args)
       utils.commit(params)
     }
-  },
-  doRollback: function (args) {
+  }
+  doRollback (args:any) {
     //事务已开启情况下才需要回滚事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error) {
+        let errorCB = function (error:any) {
           log.error(
             '[Transaction._doTransAction]回滚事件失败！将尝试进行回滚！,transactionId:' +
               instance.transactionId +
@@ -90,8 +96,8 @@ Transaction.prototype = {
       let params = this._genParams(STATUS_ROLLEDBACK, args)
       utils.rollback(params)
     }
-  },
-  _genParams: function (successStatus, args) {
+  }
+  _genParams (successStatus:any, args:any) {
     let scope = scopeManager.getWindowScope()
     let componentCode = scope.getComponentCode()
     let successFunc = args.success
@@ -108,35 +114,35 @@ Transaction.prototype = {
       }
     })(this, successStatus, successFunc)
     return params
-  },
-  isBegined: function () {
+  }
+  isBegined () {
     return this.transactionStatus == STATUS_ACTIVE
-  },
-  isCommited: function () {
+  }
+  isCommited () {
     return this.transactionStatus == STATUS_COMMITTED
-  },
-  isRollbacked: function () {
+  }
+  isRollbacked () {
     return this.transactionStatus == STATUS_ROLLEDBACK
-  },
-  markRollback: function () {
+  }
+  markRollback () {
     this.transactionStatus = STATUS_ROLLEDBACK
-  },
-  getTransactionId: function () {
+  }
+  getTransactionId () {
     return this.transactionId
-  },
-  getTransactionStatus: function () {
+  }
+  getTransactionStatus () {
     return this.transactionStatus
-  },
-  setScopeId: function (scopeId) {
+  }
+  setScopeId (scopeId:string) {
     this.scopeId = scopeId
-  },
-  getScopeId: function () {
+  }
+  getScopeId () {
     return this.scopeId
-  },
-  setComponentCode: function (componentCode) {
+  }
+  setComponentCode (componentCode:string) {
     this.componentCode = componentCode
-  },
-  getComponentCode: function () {
+  }
+  getComponentCode () {
     return this.componentCode
   }
 }

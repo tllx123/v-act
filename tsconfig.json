@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
