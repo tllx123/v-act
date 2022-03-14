@@ -780,13 +780,19 @@ const convertWindowSchema = function (windowSchema: WindowSchema): Window {
  * @param context 转换上下文
  * @returns
  */
-const parseWindowSchema = function (
-  componentCode: string,
-  windowSchema: WindowSchema,
-  widgetDefines: WidgetDefines,
+const parseWindowSchema = function (params: {
+  instanceId: string
+  componentCode: string
+  windowSchema: WindowSchema
+  widgetDefines: WidgetDefines
   context: WidgetConvertContext
-): JSX.Element | null {
+}): JSX.Element | null {
   try {
+    const instanceId = params.instanceId
+    const componentCode = params.componentCode
+    const windowSchema = params.windowSchema
+    const widgetDefines = params.widgetDefines
+    const context = params.context
     let windowDefine = convertWindowSchema(windowSchema)
     const renderChildrenFunc = (
       controls: Array<Control>,
@@ -824,6 +830,7 @@ const parseWindowSchema = function (
     const define = widgetDefines[widgetType]
     if (define) {
       const widgetContext = createContext({
+        instanceId,
         position: 'relative',
         componentCode: componentCode
       })

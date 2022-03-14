@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
+import {uuid} from '@v-act/vjs.framework.extension.util.uuid'
 const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent').then(mod=>mod.JsonJGComponent)});
 const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer').then(mod=>mod.JsonJGSpacer)});
 const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel').then(mod=>mod.JsonJGGroupPanel)});
@@ -34,6 +35,7 @@ function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
+    const instanceId = uuid.generate();
     useEffect(async ()=>{
       try{
         debugger
@@ -50,6 +52,7 @@ function Index(){
             "showChromePlugin": false
           },
           "languageCode": "",
+          "scopeId":instanceId,
           "componentCode": "{{@ componentCode}}",
           "windowCode": "{{@ windowCode}}",
           "componentPackMappingDatas": {},
@@ -74,7 +77,13 @@ function Index(){
     });
     return (
         <React.Fragment>
-            {parseWindowSchema("{{@ componentCode}}",windowObjs,widgetDefines,{router,stackInfo})}
+            {parseWindowSchema({
+              instanceId,
+              componentCode:"{{@ componentCode}}",
+              windowSchema: windowObjs,
+              widgetDefines,
+              context: {router,stackInfo}
+            })}
         </React.Fragment>   
     );
 }
