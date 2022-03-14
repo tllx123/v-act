@@ -4,6 +4,13 @@ import {
 } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
+let sandbox:any
+export function initModule(sb:any) {
+  if (sb) {
+    sandbox = sb
+  }
+}
+
 let tokenPrefix = 'ComponentData_'
 
 let COMPONENT_ROUTE_INFO_KEY = 'COMPONENT_ROUTE_INFO_KEY'
@@ -18,7 +25,7 @@ let COMPONENT_INITED_FLAG = 'COMPONENT_INITED_FLAG'
 
 let COMPONENT_LOADED_FLAG = 'COMPONENT_LOADED_FLAG'
 
-let COMPONENT_TYPE_FLAG = null
+let COMPONENT_TYPE_FLAG:any = null
 
 /**
  * 生成数据仓库标志id
@@ -26,7 +33,7 @@ let COMPONENT_TYPE_FLAG = null
  * @param {String} domain 领域
  * @return String
  */
-let generateToken = function (componentCode, domain) {
+let generateToken = function (componentCode:string, domain:string) {
   return tokenPrefix + componentCode + '_' + domain
 }
 
@@ -36,7 +43,7 @@ let generateToken = function (componentCode, domain) {
  * @param {String} domain 领域
  * @return {Storage}
  */
-let getComponentStorage = function (componentCode, domain) {
+let getComponentStorage = function (componentCode:string, domain:string) {
   let token = generateToken(componentCode, domain)
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
@@ -48,7 +55,7 @@ let getComponentStorage = function (componentCode, domain) {
  * @param {String} key
  * @return Object
  */
-let getStorageValue = function (componentCode, domain, key) {
+let getStorageValue = function (componentCode:string, domain:string, key:string) {
   let token = generateToken(componentCode, domain)
   if (StorageManager.exists(StorageManager.TYPES.MAP, token)) {
     let storage = StorageManager.get(StorageManager.TYPES.MAP, token)
@@ -57,13 +64,13 @@ let getStorageValue = function (componentCode, domain, key) {
   return null
 }
 
-const addComponentRouteInfo = function (componentCode, routeCode, routeInfo) {
+const addComponentRouteInfo = function (componentCode:string, routeCode:string, routeInfo:any) {
   let storage = getComponentStorage(componentCode, COMPONENT_ROUTE_INFO_KEY)
   let routeConfig = RouteConfigFactory.unSerialize(routeInfo)
   storage.put(routeCode, routeConfig)
 }
 
-const getRouteConfig = function (componentCode, routeCode) {
+const getRouteConfig = function (componentCode:string, routeCode:string) {
   let route = getStorageValue(
     componentCode,
     COMPONENT_ROUTE_INFO_KEY,
@@ -83,21 +90,21 @@ const getRouteConfig = function (componentCode, routeCode) {
 /**
  * 添加参数信息到数据仓库中(如构件变量、常量等)
  */
-let addParamsToStorage = function (componentCode, domain, configs) {
+let addParamsToStorage = function (componentCode:string, domain:string, configs:[]) {
   let params = ParamConfigFactory.unSerialize(configs)
   if (params) {
     let storage = getComponentStorage(componentCode, domain)
-    sandbox.util.collections.each(params, function (param) {
+    sandbox.util.collections.each(params, function (param:any) {
       storage.put(param.getCode(), param)
     })
   }
 }
 
-const addComponentVariantDefines = function (componentCode, variants) {
+const addComponentVariantDefines = function (componentCode:string, variants:[]) {
   addParamsToStorage(componentCode, COMPONENT_VARIANT_INFO_KEY, variants)
 }
 
-let getParamFromStorage = function (componentCode, domain, code) {
+let getParamFromStorage = function (componentCode:string, domain:string, code:string) {
   let value = getStorageValue(componentCode, domain, code)
   if (value) {
     return value
@@ -110,7 +117,7 @@ let getParamFromStorage = function (componentCode, domain, code) {
   )
 }
 
-const getComponentVariantDefine = function (componentCode, variantCode) {
+const getComponentVariantDefine = function (componentCode:string, variantCode:string) {
   return getParamFromStorage(
     componentCode,
     COMPONENT_VARIANT_INFO_KEY,
@@ -118,11 +125,11 @@ const getComponentVariantDefine = function (componentCode, variantCode) {
   )
 }
 
-const addComponentOptionDefines = function (componentCode, options) {
+const addComponentOptionDefines = function (componentCode:string, options:[]) {
   addParamsToStorage(componentCode, COMPONENT_OPTION_INFO_KEY, options)
 }
 
-const getComponentOptionDefine = function (componentCode, optionCode) {
+const getComponentOptionDefine = function (componentCode:string, optionCode:string) {
   return getParamFromStorage(
     componentCode,
     COMPONENT_OPTION_INFO_KEY,
@@ -130,7 +137,7 @@ const getComponentOptionDefine = function (componentCode, optionCode) {
   )
 }
 
-const destroy = function (componentCode) {
+const destroy = function (componentCode:string) {
   let type = StorageManager.TYPES.MAP
   let token = generateToken(componentCode, COMPONENT_ROUTE_INFO_KEY)
   StorageManager.destory(type, token)
@@ -142,7 +149,7 @@ const destroy = function (componentCode) {
   StorageManager.destory(type, token)
 }
 
-const componentIsLoaded = function (componentCode) {
+const componentIsLoaded = function (componentCode:string) {
   let value = getStorageValue(
     componentCode,
     COMPONENT_FLAG,
@@ -151,12 +158,12 @@ const componentIsLoaded = function (componentCode) {
   return !!value
 }
 
-const markForComponentLoaded = function (componentCode) {
+const markForComponentLoaded = function (componentCode:string) {
   let storage = getComponentStorage(componentCode, COMPONENT_FLAG)
   storage.put(COMPONENT_LOADED_FLAG, true)
 }
 
-const componentIsInited = function (componentCode) {
+const componentIsInited = function (componentCode:string) {
   let value = getStorageValue(
     componentCode,
     COMPONENT_FLAG,
@@ -165,12 +172,12 @@ const componentIsInited = function (componentCode) {
   return !!value
 }
 
-const markForComponentInited = function (componentCode) {
+const markForComponentInited = function (componentCode:string) {
   let storage = getComponentStorage(componentCode, COMPONENT_FLAG)
   storage.put(COMPONENT_INITED_FLAG, true)
 }
 
-const setComponentType = function (componentType) {
+const setComponentType = function (componentType:string) {
   COMPONENT_TYPE_FLAG = componentType
 }
 
@@ -182,19 +189,19 @@ export {
   addComponentOptionDefines,
   addComponentRouteInfo,
   addComponentVariantDefines,
-  addRuleSetInputs,
+  //addRuleSetInputs,
   componentIsInited,
   componentIsLoaded,
   destroy,
-  exists,
+  //exists,
   getComponentOptionDefine,
   getComponentType,
   getComponentVariantDefine,
   getRouteConfig,
-  getRuleSetInput,
-  getRuleSetInputs,
-  isAppConfigInfoLoaded,
-  markAppConfigInfoLoaded,
+  //getRuleSetInput,
+ // getRuleSetInputs,
+ // isAppConfigInfoLoaded,
+  //markAppConfigInfoLoaded,
   markForComponentInited,
   markForComponentLoaded,
   setComponentType

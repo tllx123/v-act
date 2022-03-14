@@ -1,13 +1,13 @@
 import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let token = 'Platform_Icon_Data'
-let loadedIconCodes = []
+let loadedIconCodes:any = []
 
 let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
 
-const init = function (datas) {
+const init = function (datas:any) {
   if (datas) {
     let storage = getStorage()
     for (let code in datas) {
@@ -18,13 +18,13 @@ const init = function (datas) {
   }
 }
 
-let exeFunc = function (func) {
+let exeFunc = function (func:any) {
   if (typeof func == 'function') {
     func()
   }
 }
 
-const loadIcons = function (params) {
+const loadIcons = function (params:any) {
   let iconCodes = params.iconCodes,
     callback = params.callback
   if (iconCodes && iconCodes.length > 0) {
@@ -61,27 +61,27 @@ const loadIcons = function (params) {
 }
 
 export {
-  addComponentOptionDefines,
-  addComponentRouteInfo,
-  addComponentVariantDefines,
-  addRuleSetInputs,
-  componentIsInited,
-  componentIsLoaded,
-  destroy,
-  existMapping,
-  exists,
-  getComponentOptionDefine,
-  getComponentType,
-  getComponentVariantDefine,
-  getMapping,
-  getRouteConfig,
-  getRuleSetInput,
-  getRuleSetInputs,
+  //addComponentOptionDefines,
+  //addComponentRouteInfo,
+  //addComponentVariantDefines,
+  //addRuleSetInputs,
+  //componentIsInited,
+  //componentIsLoaded,
+  //destroy,
+  //existMapping,
+  //exists,
+  //getComponentOptionDefine,
+  //getComponentType,
+  //getComponentVariantDefine,
+  //getMapping,
+  //getRouteConfig,
+  //getRuleSetInput,
+  //getRuleSetInputs,
   init,
-  isAppConfigInfoLoaded,
+  //isAppConfigInfoLoaded,
   loadIcons,
-  markAppConfigInfoLoaded,
-  markForComponentInited,
-  markForComponentLoaded,
-  setComponentType
+  //markAppConfigInfoLoaded,
+  //markForComponentInited,
+  //markForComponentLoaded,
+  //setComponentType
 }
