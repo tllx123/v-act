@@ -98,12 +98,12 @@ const Integer = function (params: params) {
   return _generate(params, null, 'integer')
 }
 
-const unSerialize = function (params: params) {
+const unSerialize = function (params: params): Field {
   let type = params.type
   let methodName = type.substring(0, 1).toUpperCase() + type.substring(1)
   let constructor = exports[methodName]
   if (constructor) {
-    return constructor.call(this, params)
+    return constructor.call(constructor, params)
   } else {
     throw Error('[FieldFactory.unSerialize]不支持[' + type + ']字段类型！')
   }

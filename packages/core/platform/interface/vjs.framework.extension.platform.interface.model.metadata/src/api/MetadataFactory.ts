@@ -1,11 +1,8 @@
 import { DatasourceEnums as datasourceEnums } from '@v-act/vjs.framework.extension.platform.interface.enum'
-
 import * as fieldFactory from '../api/FieldFactory'
-import * as Metadata from '../api/Metadata'
+import Metadata from '../api/Metadata'
 
-export function initModule(sb) {}
-
-const create = function (params) {
+const create = function (params: Metadata) {
   let dataSourceName = params.dataSourceName,
     fields = params.fields,
     chineseName = params.chineseName
@@ -20,6 +17,7 @@ const create = function (params) {
   if (hasPrimaryKey == false) {
     fields.push(
       fieldFactory.unSerialize({
+        name: '***',
         code: datasourceEnums.IDFIELD,
         type: 'char',
         defaultValue: '',
@@ -28,7 +26,10 @@ const create = function (params) {
     )
   }
   let metadata = new Metadata(dataSourceName, fields)
-  metadata.setChineseName(chineseName)
+  if (chineseName) {
+    metadata.setChineseName(chineseName)
+  }
+
   return metadata
 }
 
