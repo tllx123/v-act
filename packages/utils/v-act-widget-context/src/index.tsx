@@ -2,12 +2,7 @@ import React, { ReactNode, useState } from 'react'
 
 import { Property } from 'csstype'
 
-import {
-  Height,
-  Width,
-  ControlReact,
-  WidgetRenderContext
-} from '@v-act/schema-types'
+import { Height, Width } from '@v-act/schema-types'
 
 type FieldValue = string | number | boolean | null
 
@@ -23,6 +18,10 @@ type Entities = {
 }
 
 interface WidgetContextProps {
+  /**
+   * 窗体实例id
+   */
+  instanceId: string
   /**
    * 控件position
    */
