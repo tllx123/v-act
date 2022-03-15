@@ -36,6 +36,7 @@ DevRPC.prototype = {
     //@ts-ignore
     if (window.GlobalVariables) {
       //如果存在，则代表为手机app
+      //@ts-ignore
       return GlobalVariables.getServerUrl()
     }
     return location.protocol + '//' + location.host

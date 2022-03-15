@@ -5,6 +5,7 @@ const _putAop = function (a:any) {
 }
 
 const getHook = function () {
+  //@ts-ignore
   return window.V3PlatformAOP
 }
 
@@ -17,6 +18,7 @@ let RuntimeV3PlatformAOP = {
       aop.update(componentCode, windowCode, ruleSetCode, ruleCode, json)
     } catch (e) {
       var msg = typeof e.getMessage == 'function' ? e.getMessage() : e.message
+      //@ts-ignore
       V3PlatformAOP.handleException(
         componentCode,
         windowCode,
@@ -31,11 +33,13 @@ let RuntimeV3PlatformAOP = {
    */
   exeExp: function (expression:any) {
     var rs = aop.exeExp(expression)
+    //@ts-ignore
     V3PlatformAOP.ExeExp(rs)
   }
 }
 
 if (window) {
+  //@ts-ignore
   window.RuntimeV3PlatformAOP = RuntimeV3PlatformAOP
 }
 
