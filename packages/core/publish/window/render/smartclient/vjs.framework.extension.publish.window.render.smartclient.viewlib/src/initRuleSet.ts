@@ -1,43 +1,16 @@
 import { run } from '../../../../../../../utils/v-act-xml-parser/src/index'
 import { WindowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import {
+  ruleSet,
+  logicType,
+  routeParamsSchema,
+  ruleInstanceSchema,
+  ruleInstancesSchema
+} from './interfase/ruleSetInterFace'
 
-type logicType = {
-  $: { type: string }
-  ruleInstances: any
-  ruleSets: { ruleSet: any }
-}
-
-type XMLElementObj = {
-  tagName: string
-  attrs: { [key: string]: string | number | undefined }
-  children: Array<string | number | boolean | undefined | XMLElementObj>
-}
-
-type routeParamsType = {
-  handler: Function | null
-  ruleInstances: {}
-  transactionInfo: {}
-}
-
-type ruleInstanceType = {
-  $: {
-    instanceCode: string
-    instanceName: string
-    isEnabled: string
-    isNeedLog: string
-    ruleCode: string
-    ruleName: string
-    transactionType: string
-  }
-  condition: string
-  ruleConfig: string
-}
-
-const getRuleInstances = (ruleInstances: {
-  ruleInstance: ruleInstanceType | ruleInstanceType[]
-}): object => {
+const getRuleInstances = (ruleInstances: ruleInstancesSchema): object => {
   let instances = {}
-  const setInstances = (instance: ruleInstanceType): void => {
+  const setInstances = (instance: ruleInstanceSchema): void => {
     let {
       ruleConfig,
       $: {
@@ -74,8 +47,8 @@ const getRuleInstances = (ruleInstances: {
   return instances
 }
 
-const renderRoute = (logic: logicType): routeParamsType => {
-  let routeParamsType: routeParamsType = {
+const renderRoute = (logic: logicType): routeParamsSchema => {
+  let routeParamsType: routeParamsSchema = {
     handler: null,
     ruleInstances: {},
     transactionInfo: {}
@@ -84,10 +57,7 @@ const renderRoute = (logic: logicType): routeParamsType => {
     routeParamsType = madeData(logic.ruleSets.ruleSet, logic.ruleInstances)
   }
 
-  function madeData(
-    ruleSet: { ruleInstances: any; ruleRoute: any },
-    ruleInstances: any
-  ): routeParamsType {
+  function madeData(ruleSet: ruleSet, ruleInstances: any): routeParamsSchema {
     let { ruleRoute } = ruleSet
     return {
       handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
@@ -112,7 +82,7 @@ const addRoute = (
     componentCode: componentCode,
     windowCode: windowCode,
     route: {
-      routeCode: logic.ruleSets.ruleSet.$.code,
+      routeCode: logic.ruleSets.ruleSet['$'].code,
       outputs: null,
       transactionType: 'TRANSACTION',
       handler: function (
