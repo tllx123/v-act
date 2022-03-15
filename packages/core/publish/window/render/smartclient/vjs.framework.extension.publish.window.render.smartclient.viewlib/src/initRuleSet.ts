@@ -54,10 +54,10 @@ const renderRoute = (logic: logicType): routeParamsSchema => {
     transactionInfo: {}
   }
   if (logic['$'].type == 'client') {
-    routeParamsType = madeData(logic.ruleSets.ruleSet, logic.ruleInstances)
+    routeParamsType = madeData(logic.ruleSets.ruleSet)
   }
 
-  function madeData(ruleSet: ruleSet, ruleInstances: any): routeParamsSchema {
+  function madeData(ruleSet: ruleSet): routeParamsSchema {
     let { ruleRoute } = ruleSet
     return {
       handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
