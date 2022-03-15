@@ -5,8 +5,8 @@ import { RuleContext } from '@v-act/vjs.framework.extension.platform.interface.r
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { Share as service } from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { Share as service } from '@v-act/vjs.framework.extension.platform.services.native.mobile.umeng.share'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 function main(ruleContext: RuleContext) {

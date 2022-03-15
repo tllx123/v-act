@@ -14,6 +14,7 @@ const filterTagEle = (
 }
 
 export const run = (resources: XMLElementObj[]): Function => {
+  console.log(resources)
   let codes: string[] = []
 
   // if else状态开关

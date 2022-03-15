@@ -32,10 +32,10 @@ import {
   WindowActionSchema,
   WindowSchema
 } from '@v-act/schema-types'
-import * as ruleEngine from '@v-act/vjs.framework.extension.platform.engine.rule'
+import { RuleEngine as ruleEngine } from '@v-act/vjs.framework.extension.platform.engine.rule'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as eventManager from '@v-act/vjs.framework.extension.platform.services.view.event'
-import * as commonEventManager from '@v-act/vjs.framework.extension.platform.services.view.widget.common.event.binding'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import { EventManager as commonEventManager } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.event.binding'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
@@ -172,6 +172,7 @@ const enhanceWindow = function (
       controlEventMap[controlCode] = controlEvents
     })
   }
+
   const controls = win.controls
   if (controls && controls.length > 0) {
     controls.forEach((control) => {
@@ -230,13 +231,17 @@ const _enhanceControl = function (
 
           const handler = commonEventManager.fireEvent(
             controlCode,
-            triggerEvent
+            triggerEvent,
+            instanceId,
+            () => {},
+            () => {}
           )
           controlEvents.push({
             code: triggerEvent,
             name: item.eventName,
             handler: handler
           })
+
           control.events = controlEvents
         } catch (error) {
           console.log(error)
