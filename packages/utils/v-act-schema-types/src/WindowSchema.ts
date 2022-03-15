@@ -44,6 +44,9 @@ interface WindowSchema {
   entitys: { entity: EntitySchema | EntitySchema[] }
   prototype?: ProptotypeSchema
   masterPage?: MasterPageSchema
+  events?: {
+    event?: Array<Record<string, any>>
+  }
 }
 
 interface EntityFieldSchema {
