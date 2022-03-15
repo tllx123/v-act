@@ -8,24 +8,12 @@
  * vds.import("vds.exception.*");
  * vds.exception.warn("打印警告信息！");
  */
-window.vds = window.vds || {}
-window.vds.exception = window.vds.exception || {}
 
-var exception = window.vds.exception
+import {
+  ExceptionFactory as factory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
 
-exports = exception
-
-var logUtil, factory, exceptionHandler
-
-export function initModule(sb) {
-  logUtil = sb.getService('vjs.framework.extension.util.log')
-  factory = sb.getService(
-    'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-  )
-  exceptionHandler = sb.getService(
-    'vjs.framework.extension.platform.interface.exception.ExceptionHandler'
-  )
-}
 /**
  * 创建配置类异常
  * @param {String} msg
