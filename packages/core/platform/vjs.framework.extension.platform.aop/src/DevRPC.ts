@@ -13,26 +13,29 @@ let charMap = {
   '@6': new RegExp('&', 'g')
 }
 
-let DevRPC = function (params:any) {
-  //@ts-ignore
+class DevRPC{
+  url
+  param:any
+  timeout
+  success
+  error
+
+  constructor(params:any){
+
   this.url = params.url || ''
-  //@ts-ignore
+
   this.param = params.param || {}
-  //@ts-ignore
+
   this.timeout = params.timeout || 3000
-  //@ts-ignore
+
   this.success = params.success || null
-  //@ts-ignore
+  
   this.error = params.error || null
-}
-
-DevRPC.prototype = {
-  _putAop: function (a:any) {
+  }
+  _putAop(a:any) {
     aop = a
-  },
-
-
-  getServerHost: function () {
+  }
+  getServerHost() {
     //@ts-ignore
     if (window.GlobalVariables) {
       //如果存在，则代表为手机app
@@ -40,25 +43,22 @@ DevRPC.prototype = {
       return GlobalVariables.getServerUrl()
     }
     return location.protocol + '//' + location.host
-  },
-
-  getLocalHost: function () {
-    return (
+  }
+  getLocalHost() {
+    return(
       this.getServerHost() +
       environment.getContextPath() +
       '/module-operation!executeOperation?operation=aop&componentCode=' +
       this.param.componentCode
     )
-  },
-
-  processUrl: function (url:string) {
+  }
+  processUrl(url:string) {
     for (let k in charMap) {
       url = url.replace(charMap[k], k)
     }
     return url
-  },
-
-  rpcServer: function (param:any, success:any, error:any) {
+  }
+  rpcServer(param:any, success:any, error:any) {
     let _this = this
     //发送请求，提交数据，发送到服务器
     rpc.orginalRequest({
@@ -87,9 +87,8 @@ DevRPC.prototype = {
         }
       }
     })
-  },
-
-  rpcDev: function (id:string) {
+  }
+  rpcDev(id:any) {
     let uuid = this.param.NowServerUUID
       ? '&closeId=' + this.param.NowServerUUID
       : ''
@@ -99,9 +98,8 @@ DevRPC.prototype = {
       type: 'GET',
       param: {}
     })
-  },
-
-  suspend: function (id:string) {
+  }
+  suspend(id:any) {
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.rpcServer(
       {
@@ -145,9 +143,8 @@ DevRPC.prototype = {
         this.error(rs)
       }
     )
-  },
-
-  request: function () {
+  }
+  request() {
     //先将数据同步到服务器上
     let id
     let _this = this
@@ -170,7 +167,12 @@ DevRPC.prototype = {
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.suspend(id)
   }
+
 }
+
+
+
+
 
 //获取服务器初始化信息，使用type为：debugInfoUpdate
 //	getdebugInfoUpdate:function(){
