@@ -50,7 +50,10 @@ var exeExtRuleMock = function (params) {
   var _this = this
   return new Promise(function (resolve, reject) {
     var ruleCtx = params.ruleContext
-    var rs = _this._getMainFunc(params.mainFunc)
+    var rs =
+      typeof params.mainFunc == 'function'
+        ? { func: params.mainFunc, caller: params.mainFunc }
+        : _this._getMainFunc(params.mainFunc)
     var ruleCfg = ruleCtx._getRuleCfg()
     if (!rs) {
       var detail =
@@ -134,7 +137,10 @@ export function exeExtRule(params) {
   if (typeof ruleCtx._isMock == 'function') {
     return exeExtRuleMock.apply(this, [params])
   }
-  var rs = this._getMainFunc(params.mainFunc)
+  var rs =
+    typeof params.mainFunc == 'function'
+      ? { func: params.mainFunc, caller: params.mainFunc }
+      : _this._getMainFunc(params.mainFunc)
   var ruleCfg = ruleCtx.getRuleCfg()
   if (!rs) {
     ruleCtx.setRuleStatus(false)
