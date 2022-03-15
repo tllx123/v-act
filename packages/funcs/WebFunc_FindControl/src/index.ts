@@ -1,5 +1,3 @@
-import * as widgetContext from 'vjs.framework.extension.platform.services.view.widget.common.context.widgetContext'
-
 /**
     函数FindControl(EntityName，FieldName, ControlType，Index）获取控件编码
     参数1：字符串，必填，实体名
@@ -18,10 +16,9 @@ import * as widgetContext from 'vjs.framework.extension.platform.services.view.w
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 //vds.import('vds.widget.*')
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 
-console.log(widget)
-
-const vds = { exception }
+const vds = { exception, widget }
 
 const main = function (
   entityName: string,
