@@ -1,13 +1,12 @@
-import * as exceptionFactory from '@v-act/vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-import * as datasourceFactory from '@v-act/vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-import * as ExpressionContext from '@v-act/vjs.framework.extension.platform.services.engine.expression.ExpressionContext'
-import * as engine from '@v-act/vjs.framework.extension.platform.services.engine.expression.ExpressionEngine'
-import * as manager from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
-import * as baseVarOperation from '@v-act/vjs.framework.extension.platform.services.window.variable.operation.BaseVarOperation'
-import * as entityVarOperation from '@v-act/vjs.framework.extension.platform.services.window.variable.operation.EntityVarOperation'
-import * as jsonUtil from '@v-act/vjs.framework.extension.util.JsonUtil'
-import * as logUtil from '@v-act/vjs.framework.extension.util.logutil'
-
+import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { BaseVarOperation as baseVarOperation } from '@v-act/vjs.framework.extension.platform.services.window.variable.operation'
+import { EntityVarOperation as entityVarOperation } from '@v-act/vjs.framework.extension.platform.services.window.variable.operation'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 import RuleContext from './RuleContext'
 
 export function _getMainFunc(funStr: string) {
