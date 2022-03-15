@@ -55,19 +55,6 @@ const getRuleInstances = (ruleInstances: {
       enable: isEnabled === 'True',
       condition: '',
       ruleCode: ruleCode,
-      extraFuncs: ['I18nExpression'],
-      languageItem: [
-        {
-          value: null,
-          id: null,
-          defaultValue: 'asdfasdf',
-          code: 'lang.var6a204bd89f3c8348afd5c77c717a097a',
-          desc: '\u8868\u8fbe\u5f0f\u914d\u7f6e\uff1a"asdfasdf"',
-          componentInstance: null,
-          translatedValue: 'asdfasdf',
-          translated: false
-        }
-      ],
       instanceCode: instanceCode,
       needLog: isNeedLog === 'True',
       instanceName: instanceName,
@@ -87,24 +74,16 @@ const getRuleInstances = (ruleInstances: {
   return instances
 }
 
-const renderRoute = (logics: any[] | { logic: logicType }): routeParamsType => {
+const renderRoute = (logic: logicType): routeParamsType => {
   let routeParamsType: routeParamsType = {
     handler: null,
     ruleInstances: {},
     transactionInfo: {}
   }
-  if (Array.isArray(logics)) {
-    for (let logic of logics) {
-      if (logic['$'].type == 'client') {
-        routeParamsType = madeData(logic.ruleSets.ruleSet, logic.ruleInstances)
-      }
-    }
-  } else {
-    let { logic } = logics
-    if (logic['$'].type == 'client') {
-      routeParamsType = madeData(logic.ruleSets.ruleSet, logic.ruleInstances)
-    }
+  if (logic['$'].type == 'client') {
+    routeParamsType = madeData(logic.ruleSets.ruleSet, logic.ruleInstances)
   }
+
   function madeData(
     ruleSet: { ruleInstances: any; ruleRoute: any },
     ruleInstances: any
@@ -112,7 +91,7 @@ const renderRoute = (logics: any[] | { logic: logicType }): routeParamsType => {
     let { ruleRoute } = ruleSet
     return {
       handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
-      ruleInstances: getRuleInstances(ruleInstances),
+      ruleInstances: getRuleInstances(ruleSet.ruleInstances),
       transactionInfo: {}
     }
   }
@@ -123,11 +102,9 @@ const renderRoute = (logics: any[] | { logic: logicType }): routeParamsType => {
 const addRoute = (
   componentCode: string,
   windowCode: string,
-  windowDatas: { logics: { logic: logicType } | logicType[] }
+  logic: logicType
 ) => {
-  let { handler, ruleInstances, transactionInfo } = renderRoute(
-    windowDatas.logics
-  )
+  let { handler, ruleInstances, transactionInfo } = renderRoute(logic)
 
   let $addRoute = WindowRoute.addRoute
 
@@ -135,7 +112,7 @@ const addRoute = (
     componentCode: componentCode,
     windowCode: windowCode,
     route: {
-      routeCode: 'JGButton1_OnClick',
+      routeCode: logic.ruleSets.ruleSet.$.code,
       outputs: null,
       transactionType: 'TRANSACTION',
       handler: function (
@@ -155,17 +132,28 @@ const addRoute = (
       transactionInfo: transactionInfo
     }
   }
-  console.log('最终结构', routeParams)
+  console.log('添加route，结构：', routeParams)
   $addRoute(routeParams)
 }
 
 const init = function (params: {
   componentCode: string
   windowCode: string
-  winDatas: { logics: { logic: logicType } | logicType[] }
+  winDatas: { logics: { logic: logicType | logicType[] } }
 }) {
+  console.log('初始化')
+
   const { componentCode, windowCode, winDatas } = params
-  addRoute(componentCode, windowCode, winDatas)
+  let { logic } = winDatas.logics
+
+  // 如果是数组，则添加多个Route
+  if (Array.isArray(logic)) {
+    for (let item of logic) {
+      addRoute(componentCode, windowCode, item)
+    }
+  } else {
+    addRoute(componentCode, windowCode, logic)
+  }
 }
 
 export { init }
