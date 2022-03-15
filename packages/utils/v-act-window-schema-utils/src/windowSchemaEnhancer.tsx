@@ -32,6 +32,10 @@ import {
   WindowActionSchema,
   WindowSchema
 } from '@v-act/schema-types'
+import * as ruleEngine from '@v-act/vjs.framework.extension.platform.engine.rule'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import * as eventManager from '@v-act/vjs.framework.extension.platform.services.view.event'
+import * as commonEventManager from '@v-act/vjs.framework.extension.platform.services.view.widget.common.event.binding'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 
 import { layoutControls } from './layout'
@@ -119,11 +123,14 @@ const enhanceWindowPadding = function (win: Window) {
  */
 const enhanceWindow = function (
   win: Window,
-  context: { router: any; stackInfo: any }
+  context: { router: any; stackInfo: any },
+  instanceId: string
 ) {
+  debugger
+  console.log('Zona has a test')
   const prototype = win.prototype
+  const controlEventMap: { [controlCode: string]: Event[] } = {}
   if (prototype) {
-    const controlEventMap: { [controlCode: string]: Event[] } = {}
     const router = context.router
     const { thisLevel } = context.stackInfo
     prototype.forEach((action) => {
@@ -164,12 +171,12 @@ const enhanceWindow = function (
       })
       controlEventMap[controlCode] = controlEvents
     })
-    const controls = win.controls
-    if (controls && controls.length > 0) {
-      controls.forEach((control) => {
-        _enhanceControl(control, controlEventMap)
-      })
-    }
+  }
+  const controls = win.controls
+  if (controls && controls.length > 0) {
+    controls.forEach((control) => {
+      _enhanceControl(control, controlEventMap, instanceId)
+    })
   }
 }
 
@@ -188,19 +195,62 @@ const _enhanceControlDock = function (control: Control) {
 
 const _enhanceControl = function (
   control: Control,
-  controlEventMap: { [controlCode: string]: Event[] }
+  controlEventMap: { [controlCode: string]: Event[] },
+  instanceId: string
 ) {
   _enhanceControlDock(control)
+
   const properties = control.properties
   const controlCode = properties.code
   const events = controlEventMap[controlCode]
   if (events) {
     control.events = events
+  } else {
+    if (Array.isArray(control.event)) {
+      control.event.forEach((item: any) => {
+        scopeManager.openScope(instanceId)
+
+        const controlEvents = []
+        const triggerEvent = item.eventCode
+        const evaluateRule = item.evaluateRule
+
+        const $addEventHandler = eventManager.addEventHandler
+        const $executeRouteRule = ruleEngine.executeRouteRule
+
+        try {
+          $addEventHandler(controlCode, triggerEvent, function () {
+            $executeRouteRule({
+              ruleSetCode: triggerEvent,
+              ruleCode: evaluateRule,
+              args: arguments,
+              argMapping: {},
+              argIndex: {}
+            })
+          })
+
+          const handler = commonEventManager.fireEvent(
+            controlCode,
+            triggerEvent
+          )
+          controlEvents.push({
+            code: triggerEvent,
+            name: item.eventName,
+            handler: handler
+          })
+          control.events = controlEvents
+        } catch (error) {
+          console.log(error)
+        } finally {
+          scopeManager.closeScope()
+        }
+      })
+    }
   }
+
   const controls = control.controls
   if (controls && controls.length > 0) {
     controls.forEach((con) => {
-      _enhanceControl(con, controlEventMap)
+      _enhanceControl(con, controlEventMap, instanceId)
     })
   }
 }
@@ -515,12 +565,32 @@ const parseSchemaControl = function (controlObj: ControlSchema): Control {
       dataBindings.push(parseSchemaDataBinding(dataBindingObj))
     })
   }
+
+  //获取事件
+  let event: Array<any> = []
+  let originalArray = controlObj?.events?.event
+  if (!(originalArray && Array.isArray(originalArray))) {
+    originalArray = [originalArray]
+  }
+
+  if (originalArray && Array.isArray(originalArray)) {
+    originalArray.forEach((eventItem) => {
+      if (eventItem?.evaluateRule && eventItem?.evaluateRule?.$?.code) {
+        event.push({
+          eventCode: eventItem.$.code,
+          eventName: eventItem.$.name,
+          evaluateRule: eventItem.evaluateRule.$.code
+        })
+      }
+    })
+  }
   return {
     type: controlObj.$.type,
     properties: parseSchemaProperty(controlObj.propertys),
     headerControls,
     controls,
-    dataBindings
+    dataBindings,
+    event
   }
 }
 
@@ -757,12 +827,29 @@ const convertWindowSchema = function (windowSchema: WindowSchema): Window {
     let actions = parseSchemaActions(actionObjs)
     prototype = prototype.concat(actions)
   }
+
+  //获取事件
+  let event: Array<any> = []
+  const originalArray = windowSchema?.events?.event
+  if (originalArray && Array.isArray(originalArray)) {
+    originalArray.forEach((eventItem) => {
+      if (eventItem?.evaluateRule && eventItem?.evaluateRule?.$?.code) {
+        event.push({
+          eventCode: eventItem.$.code,
+          eventName: eventItem.$.name,
+          evaluateRule: eventItem.evaluateRule.$.code
+        })
+      }
+    })
+  }
+
   const windowJsonObj: Window = {
     type: 'JGComponent',
     properties,
     controls,
     entities,
-    prototype
+    prototype,
+    event
   }
   if (windowSchema.masterPage) {
     const masterPage = parseSchemaMasterPage(windowSchema.masterPage)
@@ -824,7 +911,7 @@ const parseWindowSchema = function (params: {
     windowDefine = _dealWindowMasterPageInfo(windowDefine)
     convetToGroupedTopDock(windowDefine)
     //处理窗体schema，将控件事件值转换成Function
-    enhanceWindow(windowDefine, context)
+    enhanceWindow(windowDefine, context, instanceId)
     enhanceWindowPadding(windowDefine)
     const widgetType = windowDefine.type
     const define = widgetDefines[widgetType]

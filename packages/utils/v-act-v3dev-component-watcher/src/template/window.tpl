@@ -39,7 +39,12 @@ function Index(){
     useEffect(async ()=>{
       try{
         debugger
+        {{@ ruleImports}}
+        {{@ funcImports}}
+        const ruleDefines = {{@ ruleDefines}}
+        const funcDefines = {{@ funcDefines}}
         const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).ViewLib
+        const scopeManager = (await import('@v-act/vjs.framework.extension.interface.scope')).ScopeManager;
         viewLib.init({
           "paramCfg": {
             "skinType": "default",
@@ -69,7 +74,12 @@ function Index(){
               "workspaceKey": "",
             }
           },
-          winDatas:windowObjs
+          winDatas:windowObjs,
+          rendered:(scopeId)=>{
+            const scope = scopeManager.getScope(scopeId);
+            scope.set("ruleDefines",ruleDefines);
+            scope.set("funcDefines",funcDefines);
+          }
         });
       }catch(e){
         console.error(e);

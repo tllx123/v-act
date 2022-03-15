@@ -1,5 +1,6 @@
 import { Modal as modal } from '@v-act/vjs.framework.extension.platform.services.view.modal'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as dataManager from './DataManager'
 import * as eventObserver from './EventObserver'
@@ -36,9 +37,7 @@ let ConsumeTimeDom =
   '</div>' +
   '<div class="pop-mod" style="display:none"><div class="pop-submit"><h5>数据标识：</h5><textarea placeholder="为数据可靠的标识"></textarea><div class="btn-bar"><a href="#" class="btn btn-important">提交</a><a href="#" class="btn btn-default">取消</a></div></div></div>' +
   '</section>'
-let closeFuncHandler
-
-export function initModule(sb) {}
+let closeFuncHandler: Function | null
 
 const render = function () {
   //		environment.parseCssStr(css);
@@ -52,10 +51,12 @@ const render = function () {
     }
     $('.vprofiles')
       .find('a')
-      .click(function () {
+      .click(function (event: Event) {
         $('.vprofiles a.cur').removeClass('cur')
-        $(this).addClass('cur')
-        let type = $(this).attr('type')
+        //$(this).addClass('cur')
+        //let type = $(this).attr('type')
+        let type = $(event.target).attr('type')
+        $(event.target).addClass('cur')
         let func = dispatcher[type]
         if (func) {
           func()
@@ -64,7 +65,7 @@ const render = function () {
   })
 }
 
-let dispatcher = {
+let dispatcher: Record<string, any> = {
   display: function () {
     modal.create({
       title: '耗时监控',
@@ -72,9 +73,9 @@ let dispatcher = {
       height: 200,
       tmpZIndex: 8888888,
       //				maximizeBox:false,
-      rendered: function (containerCode, closeFunc) {
+      rendered: function (containerCode: string, closeFunc: Function) {
         closeFuncHandler = closeFunc
-        var tmp_data = dataManager.genViewTimePoint()
+        var tmp_data = dataManager.genViewTimePoint('')
         var hasData = false
         for (var i = 0, l = tmp_data.length; i < l; i++) {
           if (tmp_data[i]['data'].length > 0) {
@@ -151,20 +152,26 @@ let dispatcher = {
   },
   submit: function () {}
 }
-let _createTimeLineChart = function (targetDom, data, containerCode) {
+let _createTimeLineChart = function (
+  targetDom: HTMLElement,
+  data: Record<string, any>,
+  containerCode: string
+) {
   targetDom.innerHTML = ''
+  //@ts-ignore
   let timeline = new TimelineChart(targetDom, data, {
     intervalMinWidth: 16,
     enableLiveTimer: true,
-    tip: function (d) {
+    tip: function (d: any) {
       if (d.customClass == 'type-rule' && d.children.length > 0) {
         $(this).css('cursor', 'pointer')
       }
       return d.dt || '${d.from}<br>${d.to}'
     },
     dblclick: (function (cCode) {
-      return function (data) {
-        $(event.target).trigger('mouseout')
+      return function (data: Record<string, any>) {
+        //$(event.target).trigger('mouseout')
+        $(targetDom).trigger('mouseout')
         if (
           data.customClass == 'type-rule' &&
           data.children &&
@@ -187,7 +194,7 @@ let _createTimeLineChart = function (targetDom, data, containerCode) {
     })(containerCode)
   })
 }
-let addTopNode = function (params) {
+let addTopNode = function (params: Record<string, any>) {
   let containerCode = params.containerCode,
     funName = params.funName,
     funKey = params.funKey,
@@ -208,15 +215,20 @@ let addTopNode = function (params) {
   targetDom.find("li[id='" + funKey + "']").on('click', function () {
     let removeli = []
     let isDelete = false
-    $('#' + containerCode + ' section div.tree-main ul li').each(function () {
-      let key = $(this).attr('id')
+    $('#' + containerCode + ' section div.tree-main ul li').each(function (
+      item: any
+    ) {
+      //let key = $(this).attr('id')
+      let key = $(item).attr('id')
       if (!isDelete) {
         if (key == funKey) {
-          $(this).addClass('cur')
+          //$(this).addClass('cur')
+          $(item).addClass('cur')
           isDelete = true
         }
       } else {
-        $(this).remove()
+        // $(this).remove()
+        $(item).remove()
         //					removeli.push(key);
       }
     })
@@ -231,16 +243,4 @@ let addTopNode = function (params) {
   })
 }
 
-export {
-  add,
-  clear,
-  clearTreeData,
-  doClear,
-  doStart,
-  doStop,
-  genViewTimePoint,
-  isOpenMonitor,
-  register,
-  remove,
-  render
-}
+export { render }

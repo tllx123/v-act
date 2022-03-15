@@ -8,19 +8,23 @@
       exports: {}
     }
     factory(mod)
+    //@ts-ignore
     global.TimelineChart = mod.exports
   }
 })(this, function (module) {
   'use strict'
 
-  function _classCallCheck(instance, Constructor) {
+  function _classCallCheck(instance: any, Constructor: Function) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError('Cannot call a class as a function')
     }
   }
 
   let _createClass = (function () {
-    function defineProperties(target, props) {
+    function defineProperties(
+      target: Record<string, any>,
+      props: Record<string, any>
+    ) {
       for (let i = 0; i < props.length; i++) {
         let descriptor = props[i]
         descriptor.enumerable = descriptor.enumerable || false
@@ -30,7 +34,11 @@
       }
     }
 
-    return function (Constructor, protoProps, staticProps) {
+    return function (
+      Constructor: Function,
+      protoProps: Record<string, any>,
+      staticProps: Record<string, any>
+    ) {
       if (protoProps) defineProperties(Constructor.prototype, protoProps)
       if (staticProps) defineProperties(Constructor, staticProps)
       return Constructor
@@ -38,7 +46,11 @@
   })()
 
   let TimelineChart = (function () {
-    function TimelineChart(element, data, opts) {
+    function TimelineChart(
+      element: any,
+      data: Array<any>,
+      opts: Record<string, any>
+    ) {
       _classCallCheck(this, TimelineChart)
 
       let self = this
@@ -68,13 +80,13 @@
       let height = elementHeight - margin.top - margin.bottom
 
       let groupWidth = 200
-
+      //@ts-ignore
       let x = d3.time.scale().domain([minDt, maxDt]).range([groupWidth, width])
-
+      //@ts-ignore
       let xAxis = d3.svg.axis().scale(x).orient('bottom').tickSize(-height)
-
+      //@ts-ignore
       let zoom = d3.behavior.zoom().x(x).on('zoom', zoomed)
-
+      //@ts-ignore
       let svg = d3
         .select(element)
         .append('svg')
@@ -126,10 +138,10 @@
         .attr('class', 'group-section')
         .attr('x1', 0)
         .attr('x2', width)
-        .attr('y1', function (d, i) {
+        .attr('y1', function (d: any, i: number) {
           return groupHeight * (i + 1)
         })
-        .attr('y2', function (d, i) {
+        .attr('y2', function (d: any, i: number) {
           return groupHeight * (i + 1)
         })
 
@@ -140,11 +152,11 @@
         .append('text')
         .attr('class', 'group-label')
         .attr('x', 0)
-        .attr('y', function (d, i) {
+        .attr('y', function (d: any, i: number) {
           return groupHeight * i + groupHeight / 2 + 5.5
         })
         .attr('dx', '0.5em')
-        .text(function (d) {
+        .text(function (d: any) {
           return d.label
         })
 
@@ -163,12 +175,12 @@
         .append('g')
         .attr('clip-path', 'url(#chart-content)')
         .attr('class', 'item')
-        .attr('transform', function (d, i) {
+        .attr('transform', function (d: any, i: number) {
           return 'translate(0, ' + groupHeight * i + ')'
         })
         .selectAll('.dot')
-        .data(function (d) {
-          return d.data.filter(function (_) {
+        .data(function (d: any) {
+          return d.data.filter(function (_: any) {
             return _.type === TimelineChart.TYPE.INTERVAL
           })
         })
@@ -179,18 +191,20 @@
       let intervals = groupIntervalItems
         .append('rect')
         .attr('class', withCustom('interval'))
-        .attr('width', function (d) {
+        .attr('width', function (d: any) {
           return Math.max(options.intervalMinWidth, x(d.to) - x(d.from))
         })
         .attr('height', intervalBarHeight)
         .attr('y', intervalBarMargin)
-        .attr('x', function (d) {
+        .attr('x', function (d: any) {
           return x(d.from)
         })
       //add by xiedh
       if (options.tip || options.dblclick) {
         let tip
+        //@ts-ignore
         if (d3.tip) {
+          //@ts-ignore
           tip = d3.tip().attr('class', 'd3-tip').html(options.tip)
           svg.call(tip)
           intervals.on('mouseover', tip.show).on('mouseout', tip.hide)
@@ -213,13 +227,13 @@
       //end
       let intervalTexts = groupIntervalItems
         .append('text')
-        .text(function (d) {
+        .text(function (d: any) {
           return d.label
         })
         .attr('fill', 'white')
         .attr('class', withCustom('interval-text'))
         .attr('y', groupHeight / 2 + 5)
-        .attr('x', function (d) {
+        .attr('x', function (d: any) {
           return x(d.from)
         })
 
@@ -230,12 +244,12 @@
         .append('g')
         .attr('clip-path', 'url(#chart-content)')
         .attr('class', 'item')
-        .attr('transform', function (d, i) {
+        .attr('transform', function (d: any, i: number) {
           return 'translate(0, ' + groupHeight * i + ')'
         })
         .selectAll('.dot')
-        .data(function (d) {
-          return d.data.filter(function (_) {
+        .data(function (d: any) {
+          return d.data.filter(function (_: any) {
             return _.type === TimelineChart.TYPE.POINT
           })
         })
@@ -244,13 +258,15 @@
       let dots = groupDotItems
         .append('circle')
         .attr('class', withCustom('dot'))
-        .attr('cx', function (d) {
+        .attr('cx', function (d: any) {
           return x(d.at)
         })
         .attr('cy', groupHeight / 2)
         .attr('r', 5)
       if (options.tip) {
+        //@ts-ignore
         if (d3.tip) {
+          //@ts-ignore
           let tip = d3.tip().attr('class', 'd3-tip').html(options.tip)
           svg.call(tip)
           dots.on('mouseover', tip.show).on('mouseout', tip.hide)
@@ -273,8 +289,8 @@
         self.now.attr('x1', nowX).attr('x2', nowX)
       }
 
-      function withCustom(defaultClass) {
-        return function (d) {
+      function withCustom(defaultClass: string) {
+        return function (d: any) {
           return d.customClass
             ? [d.customClass, defaultClass].join(' ')
             : defaultClass
@@ -282,9 +298,12 @@
       }
 
       function zoomed() {
+        //@ts-ignore
         if (self.onVizChangeFn && d3.event) {
           self.onVizChangeFn.call(self, {
+            //@ts-ignore
             scale: d3.event.scale,
+            //@ts-ignore
             translate: d3.event.translate,
             domain: x.domain()
           })
@@ -296,21 +315,21 @@
 
         svg.select('.x.axis').call(xAxis)
 
-        svg.selectAll('circle.dot').attr('cx', function (d) {
+        svg.selectAll('circle.dot').attr('cx', function (d: any) {
           return x(d.at)
         })
         svg
           .selectAll('rect.interval')
-          .attr('x', function (d) {
+          .attr('x', function (d: any) {
             return x(d.from)
           })
-          .attr('width', function (d) {
+          .attr('width', function (d: any) {
             return Math.max(options.intervalMinWidth, x(d.to) - x(d.from))
           })
 
         svg
           .selectAll('.interval-text')
-          .attr('x', function (d) {
+          .attr('x', function (d: any) {
             var positionData = getTextPositionData.call(this, d)
             if (
               positionData.upToPosition - groupWidth - 10 <
@@ -325,7 +344,7 @@
             }
             return positionData.xPosition
           })
-          .attr('text-anchor', function (d) {
+          .attr('text-anchor', function (d: any) {
             var positionData = getTextPositionData.call(this, d)
             if (
               positionData.upToPosition - groupWidth - 10 <
@@ -335,7 +354,7 @@
             }
             return 'start'
           })
-          .attr('dx', function (d) {
+          .attr('dx', function (d: any) {
             var positionData = getTextPositionData.call(this, d)
             if (
               positionData.upToPosition - groupWidth - 10 <
@@ -345,7 +364,7 @@
             }
             return '0.5em'
           })
-          .text(function (d) {
+          .text(function (d: any) {
             let positionData = getTextPositionData.call(this, d)
             let percent =
               (positionData.width - options.textTruncateThreshold) /
@@ -364,7 +383,7 @@
             return d.label
           })
 
-        function getTextPositionData(d) {
+        function getTextPositionData(d: any) {
           this.textSizeInPx = this.textSizeInPx || this.getComputedTextLength()
           let from = x(d.from)
           let to = x(d.to)
@@ -378,48 +397,52 @@
       }
     }
 
-    _createClass(TimelineChart, [
-      {
-        key: 'extendOptions',
-        value: function extendOptions() {
-          var ext =
-            arguments.length <= 0 || arguments[0] === undefined
-              ? {}
-              : arguments[0]
+    _createClass(
+      TimelineChart,
+      [
+        {
+          key: 'extendOptions',
+          value: function extendOptions() {
+            var ext =
+              arguments.length <= 0 || arguments[0] === undefined
+                ? {}
+                : arguments[0]
 
-          var defaultOptions = {
-            intervalMinWidth: 8, // px
-            tip: undefined,
-            textTruncateThreshold: 30,
-            enableLiveTimer: false,
-            timerTickInterval: 1000
+            var defaultOptions = {
+              intervalMinWidth: 8, // px
+              tip: undefined,
+              textTruncateThreshold: 30,
+              enableLiveTimer: false,
+              timerTickInterval: 1000
+            }
+            Object.keys(ext).map(function (k) {
+              return (defaultOptions[k] = ext[k])
+            })
+            return defaultOptions
           }
-          Object.keys(ext).map(function (k) {
-            return (defaultOptions[k] = ext[k])
-          })
-          return defaultOptions
+        },
+        {
+          key: 'getPointMinDt',
+          value: function getPointMinDt(p) {
+            return p.type === TimelineChart.TYPE.POINT ? p.at : p.from
+          }
+        },
+        {
+          key: 'getPointMaxDt',
+          value: function getPointMaxDt(p) {
+            return p.type === TimelineChart.TYPE.POINT ? p.at : p.to
+          }
+        },
+        {
+          key: 'onVizChange',
+          value: function onVizChange(fn) {
+            this.onVizChangeFn = fn
+            return this
+          }
         }
-      },
-      {
-        key: 'getPointMinDt',
-        value: function getPointMinDt(p) {
-          return p.type === TimelineChart.TYPE.POINT ? p.at : p.from
-        }
-      },
-      {
-        key: 'getPointMaxDt',
-        value: function getPointMaxDt(p) {
-          return p.type === TimelineChart.TYPE.POINT ? p.at : p.to
-        }
-      },
-      {
-        key: 'onVizChange',
-        value: function onVizChange(fn) {
-          this.onVizChangeFn = fn
-          return this
-        }
-      }
-    ])
+      ],
+      {}
+    )
 
     return TimelineChart
   })()

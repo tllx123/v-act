@@ -1,7 +1,8 @@
+import { BlankToken, Token } from '@v-act/tokenizer'
+
 import { parseToSyntax } from '../../Parser'
 import Position from '../../Position'
 import SyntaxParseContext from '../../SyntaxParseContext'
-import { Token, BlankToken } from '@v-act/tokenizer'
 import Syntax from '../Syntax'
 
 const getLeftSyntax = function (index: number, tokens: Array<Token | Syntax>) {
@@ -140,19 +141,6 @@ abstract class BinaryExpressionSyntax extends Syntax {
       //script.push(' ')
     }
     return script.join('')
-  }
-  visit(): boolean | string {
-    let script = []
-    let leftSyntax = this.getLeft()
-    if (leftSyntax) {
-      script.push(leftSyntax.visit())
-    }
-    this.constructor.toString()
-    let rightSyntax = this.getRight()
-    if (rightSyntax) {
-      script.push(rightSyntax.visit())
-    }
-    return script.join(',')
   }
 }
 

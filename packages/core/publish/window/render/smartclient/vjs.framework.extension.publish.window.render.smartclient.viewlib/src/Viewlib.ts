@@ -102,6 +102,7 @@ export function init(params) {
     inputParam = params.inputParam,
     languageCode = params.languageCode,
     vjsInitFunc = params.vjsInitFunc,
+    rendered = params.rendered,
     paramCfg = params.paramCfg
   _initWindowInfoFromJson(params)
   //设置领域信息
@@ -115,7 +116,7 @@ export function init(params) {
   componentPackData.init(componentPackMappingDatas)
   //切面函数
   if (vjsInitFunc) {
-    vjsInitFunc(sandbox)
+    vjsInitFunc()
   }
   //渲染窗体
 
@@ -148,7 +149,10 @@ export function init(params) {
     //				"scopeId" : scopeId
     //			},
     aops: {
-      rendered: function (scopeId) {
+      rendered: function (scopeId: string) {
+        if (typeof rendered == 'function') {
+          rendered(scopeId)
+        }
         /*let setTitle = function (newTitle) {
           if (newTitle) {
             document.title = newTitle

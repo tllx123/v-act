@@ -13,16 +13,8 @@ const filterTagEle = (
   return target.filter((item) => item.tagName === tagName)[0]
 }
 
-export const run = (resources: XMLElementObj[]): void => {
-  // 执行函数，暂时内置
-  function exeRule(instCode: string | number) {
-    return new Promise((res: Function) => {
-      setTimeout(() => {
-        console.log(instCode + ' executed!')
-        res()
-      }, 1500)
-    })
-  }
+export const run = (resources: XMLElementObj[]): Function => {
+  let codes: string[] = []
 
   // if else状态开关
   let elseMark = false
@@ -39,7 +31,7 @@ export const run = (resources: XMLElementObj[]): void => {
         parseForEach(target)
         break
       case 'evaluateRule':
-        await exeRule(target.attrs.code)
+        codes.push(String(target.attrs.code))
         break
     }
 
@@ -98,6 +90,29 @@ export const run = (resources: XMLElementObj[]): void => {
       }
     }
   }
-
   ForInObj(resources, executionRules)
+
+  let returnFun = function (
+    ruleEngine: {
+      executeWithRouteCallback: (config: {
+        ruleCode: string
+        routeContext: any
+      }) => void
+    },
+    routeRuntime: any
+  ) {
+    for (let code of codes) {
+      if (routeRuntime.isInterrupted()) {
+        routeRuntime.fireRouteCallBack()
+        break
+      }
+
+      ruleEngine.executeWithRouteCallback({
+        ruleCode: code,
+        routeContext: routeRuntime
+      })
+    }
+  }
+
+  return returnFun
 }
