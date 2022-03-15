@@ -21,6 +21,7 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 
 /**
  * @namespace DropdownSourceObserver
@@ -31,7 +32,21 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
  * vjs名称：vjs.framework.extension.ui.common.plugin.services.widget<br/>
  * vjs服务名称：vjs.framework.extension.ui.common.plugin.services.widget.DropdownSourceObserver<br/>
  */
-var DropdownSourceObserver = function (params) {
+class DropdownSourceObserver{
+  scopeId
+  widgetId
+  dropDownSource
+  textField
+  valueField
+  handler 
+  count
+  descInfoSeparator
+  saveColumn:any
+  showColumn:any
+  defaultValue = []
+ 
+
+  constructor(params:any){
   this.scopeId = params.scopeId
   this.widgetId = params.widgetId
   this.dropDownSource = params.dataSource
@@ -39,6 +54,7 @@ var DropdownSourceObserver = function (params) {
   this.valueField = params.valueField
   this.handler = params.handler
   this.count = 0
+  //@ts-ignore
   this.descInfoSeparator = window.v3PlatformSCSkin.dictBoxSeparator
   if (this.scopeId) {
     scopeManager.openScope(this.scopeId)
@@ -47,9 +63,9 @@ var DropdownSourceObserver = function (params) {
   } else {
     this.getDropdownSourceData()
   }
-}
-DropdownSourceObserver.prototype = {
-  genwhereRestrict: function (dataSourceSetting) {
+  }
+
+  genwhereRestrict (dataSourceSetting:any) {
     var config = dataSourceSetting['DataConfig']
     var Condition = config['Condition']
     var wr = whereRestrict.init()
@@ -116,8 +132,9 @@ DropdownSourceObserver.prototype = {
     }
 
     return wr
-  },
-  genTableQueryConfig: function (dataSourceSetting, whereRestrict) {
+  }
+ 
+  genTableQueryConfig(dataSourceSetting:any, whereRestrict:any) {
     var config = dataSourceSetting['DataConfig']
     var SourceID = config['SourceID']
     var SourceName = config['SourceName']
@@ -138,7 +155,7 @@ DropdownSourceObserver.prototype = {
       }
       return requestCfg
     } else if (SourceType == 'Query') {
-      var requestCfg = {
+      let requestCfg:{[code:string]:any} = {
         queryType: 'QUERY',
         queryDS: SourceName,
         whereRestrict: whereRestrict,
@@ -147,15 +164,15 @@ DropdownSourceObserver.prototype = {
       }
       return requestCfg
     }
-  },
-  genTableQueryData: function (
-    result,
-    dataSourceSetting,
-    valueField,
-    textField,
-    widgetId,
-    descField,
-    isRealTable
+  }
+  genTableQueryData (
+    result:any,
+    dataSourceSetting:any,
+    valueField:any,
+    textField:any,
+    widgetId:any,
+    descField:any,
+    isRealTable:any
   ) {
     var datas = []
     var config = dataSourceSetting['DataConfig']
@@ -185,15 +202,15 @@ DropdownSourceObserver.prototype = {
       descField
     )
     return datas
-  },
-  getTableQueryData: function (
-    result,
-    valueField,
-    textField,
-    saveColumn,
-    showColumn,
-    config,
-    descField
+  }
+  getTableQueryData (
+    result:any,
+    valueField:any,
+    textField:any,
+    saveColumn:any,
+    showColumn:any,
+    config:any,
+    descField:any
   ) {
     var datas = []
     var firstRecord = result[0].datas.values[0]
@@ -243,7 +260,7 @@ DropdownSourceObserver.prototype = {
     // 循环记录，构建其初始化数据格式
     for (var i = 0; i < result[0].datas.values.length; i++) {
       var resultData = result[0].datas.values[i]
-      var data = {}
+      let data:{[code:string]:any} = {}
 
       data[valueField] = resultData[saveColumn]
       if (resultData[showColumn] != null) {
@@ -269,14 +286,14 @@ DropdownSourceObserver.prototype = {
       datas.push(data)
     }
     return datas
-  },
-  genTableQuery: function (
-    dataSourceSetting,
-    whereRestrict,
-    valueField,
-    textField,
-    widgetId,
-    descField
+  }
+  genTableQuery (
+    dataSourceSetting:any,
+    whereRestrict:any,
+    valueField:any,
+    textField:any,
+    widgetId:any,
+    descField:any
   ) {
     var requestCfg = this.genTableQueryConfig(dataSourceSetting, whereRestrict)
     var results = dropDownSourceUtil.getDataSourceFindDatas([requestCfg])
@@ -289,8 +306,8 @@ DropdownSourceObserver.prototype = {
       descField,
       true
     )
-  },
-  _doReturnResult: function (widgetId, dropDownSource, resultMap, descField) {
+  }
+  _doReturnResult (widgetId:any, dropDownSource:any, resultMap:any, descField:any) {
     //处理请求结果
     if (dropDownSource != undefined) {
       var dataSourceSetting = dropDownSource['DataSourceSetting']
@@ -332,7 +349,8 @@ DropdownSourceObserver.prototype = {
           valueField,
           textField,
           widgetId,
-          descField
+          descField,
+          null
         )
       } else if (dataSourceType == 'Entity') {
         datas = dropDownSourceUtil.genEntityData(
@@ -364,15 +382,15 @@ DropdownSourceObserver.prototype = {
 
       widgetProperty.set(widgetId, 'DropDownSource', dropDownSource)
     }
-  },
-  getApiData: function (
-    dataSourceSetting,
-    dropDownSource,
-    dataSourceType,
-    widgetId,
-    valueField,
-    textField,
-    descField
+  }
+  getApiData (
+    dataSourceSetting:any,
+    dropDownSource:any,
+    dataSourceType:any,
+    widgetId:any,
+    valueField:any,
+    textField:any,
+    descField:any
   ) {
     var apiOutputVar = dataSourceSetting.DataConfig.ApiOutputVar
     var invokeApiParams = dataSourceSetting.DataConfig.InvokeApiParams
@@ -398,11 +416,11 @@ DropdownSourceObserver.prototype = {
             var observer = new CurrentRecordObserver(entityName, '', {}, [
               fieldName
             ])
-            observer.setWidgetValueHandler(function (record) {
+            observer.setWidgetValueHandler(function (record:any) {
               _this.getDropdownSourceData()
               _this.count++
             })
-            observer.clearWidgetValueHandler(function (record) {
+            observer.clearWidgetValueHandler(function (record:any) {
               _this.getDropdownSourceData()
               _this.count++
             })
@@ -412,7 +430,7 @@ DropdownSourceObserver.prototype = {
           }
         }
       }
-      message = formulaEngine.execute({
+      let message = formulaEngine.execute({
         expression: value,
         context: context
       })
@@ -430,7 +448,7 @@ DropdownSourceObserver.prototype = {
       componentCode: componentCode,
       apiCode: apiCode,
       param: params,
-      afterResponse: function (data) {
+      afterResponse: function (data:any) {
         var uiDatas = data[apiOutputVar]
         if (descField) {
           for (var i = 0; i < uiDatas.length; i++) {
@@ -457,7 +475,7 @@ DropdownSourceObserver.prototype = {
         }
         _this.getDataAndDoHandler()
       },
-      error: function (e) {
+      error: function (e:{status:number,message:string,msg:string}) {
         //					alert('调用api失败，失败原因：' + e.message);
         //					throw new Error("调用api失败，失败原因：" + (e.message ? e.message : e.msg));
         var last = '失败原因：'
@@ -481,8 +499,8 @@ DropdownSourceObserver.prototype = {
         //					ExceptionHandler.handle(exception)
       }
     })
-  },
-  getDropdownSourceData: function () {
+  }
+  getDropdownSourceData() {
     if (!this.dropDownSource || !this.dropDownSource.DataSourceSetting) {
       this.handler({}) //如果不设置valueMap，会导致候选项变成整列的数据
       return
@@ -491,8 +509,8 @@ DropdownSourceObserver.prototype = {
     if (this.dropDownSource.DataSourceSetting.DataSourceType != 'Api') {
       this.getDataAndDoHandler()
     }
-  },
-  getDataAndDoHandler: function () {
+  }
+  getDataAndDoHandler () {
     var data = this.getData()
     var itemDatas = this.getItemData(data)
     var results = this.dataToValueMap(itemDatas)
@@ -504,8 +522,8 @@ DropdownSourceObserver.prototype = {
       },
       results.descInfo
     )
-  },
-  getSource: function (widgetId, dropDownSource) {
+  }
+  getSource(widgetId:string, dropDownSource:any) {
     var _this = this
     if (dropDownSource != undefined && dropDownSource != '') {
       if (typeof dropDownSource !== 'object') {
@@ -515,7 +533,7 @@ DropdownSourceObserver.prototype = {
       var dataSourceSetting = dropDownSource['DataSourceSetting']
       if (dataSourceSetting) {
         var dataSourceType = dataSourceSetting['DataSourceType']
-        var requestCfg = ''
+        var requestCfg:any = ''
         if (dataSourceType == 'SQL') {
           requestCfg = dropDownSourceUtil.genSQLConfig(dataSourceSetting)
           requestCfg.widgetId = widgetId
@@ -540,7 +558,7 @@ DropdownSourceObserver.prototype = {
         }
         if (requestCfg != '') {
           var operation = new Operation()
-          var selectData = dropDownSourceUtil.doRequestCfg(requestCfg)
+          var selectData:any = dropDownSourceUtil.doRequestCfg(requestCfg)
 
           if (descInfo) {
             if (selectData.field) {
@@ -569,7 +587,7 @@ DropdownSourceObserver.prototype = {
           operation.addParam('selectDatas', [selectData])
           operation.setAfterResponse(
             (function (widgetId, dropDownSource, selectData) {
-              return function (result) {
+              return function (result:any) {
                 if (result.success == true) {
                   var dsLoadConditionMap =
                     dropDownSourceUtil.doDataSourceLoadConditionMap([
@@ -603,8 +621,8 @@ DropdownSourceObserver.prototype = {
         }
       }
     }
-  },
-  getData: function () {
+  }
+  getData () {
     var data = this.dropDownSource
     var datas
     if (typeof data !== 'object') {
@@ -622,7 +640,7 @@ DropdownSourceObserver.prototype = {
         var IsWhereRestrict = data['IsWhereRestrict']
         var subTitle = dataSourceSetting.DataConfig.SubTitle
         var isTree = dataSourceSetting.DataConfig.IsTree
-        var descField
+        var descField:string
         if (subTitle && isTree) {
           descField = dataSourceSetting.DataConfig.SubTitle.Titles
         } else if (subTitle && !isTree) {
@@ -706,7 +724,7 @@ DropdownSourceObserver.prototype = {
             datasourceName: entityName
           })
           var rs = entity.getAllRecords()
-          rs.iterate(function (rd) {
+          rs.iterate(function (rd:any) {
             var temp = {}
             var idColumn = rd.get(saveColumn)
             var textColumn = rd.get(showColumn)
@@ -725,14 +743,14 @@ DropdownSourceObserver.prototype = {
       }
     }
     return datas
-  },
-  resultSetToValueMap: function (datas) {
+  }
+  resultSetToValueMap (datas:any) {
     var valueMap = {},
       defaultValue = null,
       showColumn = this.showColumn,
       saveColumn = this.saveColumn,
-      keys = []
-    datas.forEach(function (record) {
+      keys:any = []
+    datas.forEach(function (record:[]) {
       var key = record[saveColumn]
       keys.push(key)
       valueMap[key] = record[showColumn]
@@ -745,15 +763,15 @@ DropdownSourceObserver.prototype = {
       keys: keys,
       defaultValue: defaultValue
     }
-  },
-  dataToValueMap: function (data) {
-    var keys = []
+  }
+  dataToValueMap (data:{}[]) {
+    var keys:any = []
     var valueMap = {}
     this.defaultValue = []
-    var descInfo = {}
+    var descInfo:{[code:string]:any} = {}
     if (data) {
       for (i = 0; i < data.length; i++) {
-        var itemObj = data[i]
+        var itemObj:any = data[i]
         var itemText = itemObj[this.textField]
         var itemVal = itemObj[this.valueField]
         var itemDesc = itemObj.descInfo
@@ -771,8 +789,8 @@ DropdownSourceObserver.prototype = {
       keys: keys.length > 0 ? keys : null,
       descInfo: descInfo
     }
-  },
-  listenDataSourceUpdate: function (widgetId, datas) {
+  }
+  listenDataSourceUpdate (widgetId:string, datas:any) {
     var _this = this
     var data = datas
     var dropDownSource = this.dropDownSource
@@ -791,31 +809,31 @@ DropdownSourceObserver.prototype = {
         //DB加载
         dataSourceUtil.addDatasourceLoadEventHandler(
           entityName,
-          function (params) {
+          function (params:any) {
             _this.updateHandler(params, data)
           }
         )
         //DB新增
         dataSourceUtil.addDatasourceInsertEventHandler(
           entityName,
-          function (params) {
+          function (params:any) {
             _this.updateHandler(params, data)
           }
         )
         //DB删除
         dataSourceUtil.addDatasourceDeleteEventHandler(
           entityName,
-          function (params) {
+          function (params:any) {
             _this.updateHandler(params, data)
           }
         )
       }
     }
-  },
-  updateHandler: function (params, data) {
+  }
+  updateHandler (params:any, data:any) {
     var resultSet = params.datasource.getAllRecords()
     var records = []
-    resultSet.iterate(function (record) {
+    resultSet.iterate(function (record:any) {
       records.push(record.toMap())
     })
     for (var i = 0; i < data.length; i++) {
@@ -840,14 +858,14 @@ DropdownSourceObserver.prototype = {
     this.handler(valueMap, defaultValue, {
       keys: result.keys
     })
-  },
-  getItemData: function (data) {
+  }
+  getItemData (data:{}[]) {
     var itemData = []
     for (var i = 0; i < data.length; i++) {
       var temp = {}
       var valueMap = data[i]
       var idColumn = valueMap['id']
-      var valueColumn = valueMap[this.saveColumn]
+      var valueColumn:string = valueMap[this.saveColumn]
       var textColumn = valueMap[this.showColumn]
       if (typeof valueColumn == 'string' && valueColumn.indexOf(',') != -1) {
         valueColumn = valueColumn.split(',')[0]
@@ -860,6 +878,9 @@ DropdownSourceObserver.prototype = {
       itemData.push(temp)
     }
     return itemData
-  }
+  
+
+  
+}
 }
 export default DropdownSourceObserver
