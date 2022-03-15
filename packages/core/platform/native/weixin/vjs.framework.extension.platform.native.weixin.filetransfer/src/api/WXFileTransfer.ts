@@ -1,13 +1,12 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import * as fileService from '@v-act/vjs.framework.extension.platform.services.native.mobile.FileTransfer'
 import { Image as ImageService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.image'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-export function initModule(sb) {
-  let fileService = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.FileTransfer'
-  )
+export function initModule(sb: any) {
   fileService.putInstance(exports)
 }
 
@@ -15,11 +14,11 @@ export function initModule(sb) {
  * 微信文件上传内部实现
  */
 let uploadingFile = function (
-  mediaIds,
-  fileResultInfos,
-  allFileCount,
-  callback,
-  scopeId
+  mediaIds: Array<string>,
+  fileResultInfos: Array<Record<string, any>>,
+  allFileCount: number,
+  callback: Function,
+  scopeId: string
 ) {
   if (mediaIds.length > 0) {
     let fileSize = mediaIds.length
@@ -30,8 +29,8 @@ let uploadingFile = function (
       loadingMsg = '正在上传图片...'
     }
     progressbar.showProgress(loadingMsg)
-    let upload2WXServerCB = function (WXserverId) {
-      let uploadMongoCB = function (rs) {
+    let upload2WXServerCB = function (WXserverId: string) {
+      let uploadMongoCB = function (rs: Record<string, any>) {
         if (rs.success) {
           let fileId = rs.fileId
           let fileName = rs.fileName
@@ -62,10 +61,8 @@ let uploadingFile = function (
       let params = {
         fileUrls: [WXserverId],
         wxPlatform: '',
-        callback: uploadMongoCB
-      }
-      if (scopeId) {
-        params.scopeId = scopeId
+        callback: uploadMongoCB,
+        scopeId: scopeId ? scopeId : ''
       }
       wxUpload(params)
     }
@@ -84,26 +81,33 @@ let uploadingFile = function (
   }
 }
 
-const uploadFiles = function (mediaIds, callback, scopeId) {
+const uploadFiles = function (
+  mediaIds: Array<any>,
+  callback: Function,
+  scopeId: string
+) {
   if (mediaIds) {
     let firstElement = mediaIds[0]
     if (isArrayFn(firstElement)) {
       mediaIds = firstElement
     }
   }
-  let fileResultInfos = []
+  let fileResultInfos: Array<Record<string, any>> = []
   let allFileCount = mediaIds.length
   uploadingFile(mediaIds, fileResultInfos, allFileCount, callback, scopeId)
 }
 
-function isArrayFn(o) {
+function isArrayFn(o: any) {
   return Object.prototype.toString.call(o) === '[object Array]'
 }
 
 /**
  * 获取【企业号简单版】系统信息
  */
-let getCorpSimpleInfo = function (successCB, scopeId) {
+let getCorpSimpleInfo = function (
+  successCB: (...args: any[]) => void,
+  scopeId: string
+) {
   //		var errorCB = function(error){
   //			alert("执行微信企业号简单版API【获取企业信息】【API_QuerySimpleConfig】失败："+error);
   //		}
@@ -118,7 +122,7 @@ let getCorpSimpleInfo = function (successCB, scopeId) {
   //		remoteMethodAccessor.invoke(params);
 
   let func = function () {
-    let errorCB = function (error) {
+    let errorCB: (...args: any[]) => void = function (error: any) {
       alert(
         '执行微信企业号简单版API【获取企业信息】【API_QuerySimpleConfig】失败：' +
           error
@@ -129,11 +133,13 @@ let getCorpSimpleInfo = function (successCB, scopeId) {
         ruleSetCode: 'API_QuerySimpleConfig',
         componentCode: 'vbase_wx_qy_simple_yw_api',
         error: scopeManager.createScopeHandler({
+          scopeId: scopeId,
           handler: errorCB
         }),
         isAsyn: true,
         isRuleSetCode: true, // 是否是后台活动集
         afterResponse: scopeManager.createScopeHandler({
+          scopeId: scopeId,
           handler: successCB
         })
       }
@@ -156,8 +162,11 @@ let getCorpSimpleInfo = function (successCB, scopeId) {
 /**
  * 【企业号简单版】上传文件
  */
-let uploadFileQiyeSimple = function (corpSimpleInfo, successCB) {
-  let errorCB = function (error) {
+let uploadFileQiyeSimple = function (
+  corpSimpleInfo: Record<string, any>,
+  successCB: Function
+) {
+  let errorCB = function (error: any) {
     alert(
       '执行微信企业号简单版API失败【获取临时素材】【API_GetTemporaryMaterialSimple】:' +
         error
@@ -195,8 +204,8 @@ let uploadFileQiyeSimple = function (corpSimpleInfo, successCB) {
 /**
  * 获取【企业号授权版】系统信息
  */
-let getCorpInfo = function (successCB) {
-  let errorCB = function (error) {
+let getCorpInfo = function (successCB: Function) {
+  let errorCB = function (error: any) {
     alert(
       '执行微信企业号授权版API失败【获取企业信息】【API_GetConfigValue】：' +
         error
@@ -216,8 +225,11 @@ let getCorpInfo = function (successCB) {
 /**
  *【 企业号授权版】上传文件
  */
-let uploadFileQiye = function (corpInfo, successCB) {
-  let errorCB = function (error) {
+let uploadFileQiye = function (
+  corpInfo: Record<string, any>,
+  successCB: Function
+) {
+  let errorCB = function (error: any) {
     alert(
       '执行微信企业号授权版API失败【获取临时素材】【API_GetTemporaryMaterial】:' +
         error
@@ -247,8 +259,11 @@ let uploadFileQiye = function (corpInfo, successCB) {
 /**
  * 【公众号】上传文件
  */
-let uploadFileGongzhong = function (params, successCB) {
-  let errorCB = function (error) {
+let uploadFileGongzhong = function (
+  params: Record<string, any>,
+  successCB: Function
+) {
+  let errorCB = function (error: any) {
     alert(
       '执行微信公众号API失败【获取临时素材】【API_GetTemporaryMaterial】：' +
         error
@@ -268,11 +283,15 @@ let uploadFileGongzhong = function (params, successCB) {
   remoteMethodAccessor.invoke(parameter)
 }
 
-const filetransferUpload = function (fileUrls, wxPlatform, callback) {
-  let result = {}
+const filetransferUpload = function (
+  fileUrls: Array<string>,
+  wxPlatform: string,
+  callback: Function
+) {
+  let result: Record<string, any> = {}
   let currentUploadingCount = 0
 
-  let uploadSuccesCB = function (rs) {
+  let uploadSuccesCB = function (rs: any) {
     currentUploadingCount++
     let fileId = rs.AppFileInfo_id
     let fileName = rs.AppFileInfo_name
@@ -301,7 +320,7 @@ const filetransferUpload = function (fileUrls, wxPlatform, callback) {
   }
 
   if (wxPlatform == 'qiye') {
-    let getCorpInfoCB = function (rs) {
+    let getCorpInfoCB = function (rs: any) {
       for (let i = 0; i < fileUrls.length; i++) {
         rs['media_id'] = fileUrls[i]
         uploadFileQiye(rs, uploadSuccesCB)
@@ -309,13 +328,13 @@ const filetransferUpload = function (fileUrls, wxPlatform, callback) {
     }
     getCorpInfo(getCorpInfoCB)
   } else if (wxPlatform == 'qiyeSimple') {
-    let getCorpSimpleInfoCB = function (rs) {
+    let getCorpSimpleInfoCB = function (rs: any) {
       for (let i = 0; i < fileUrls.length; i++) {
         rs['media_id'] = fileUrls[i]
         uploadFileQiyeSimple(rs, uploadSuccesCB)
       }
     }
-    getCorpSimpleInfo(getCorpSimpleInfoCB)
+    getCorpSimpleInfo(getCorpSimpleInfoCB, '')
   } else {
     for (let i = 0; i < fileUrls.length; i++) {
       let params = [
@@ -349,18 +368,18 @@ const filetransferUpload = function (fileUrls, wxPlatform, callback) {
  * 		alert(JSON.stringify(res));
  * }
  */
-let wxUpload = function (params) {
+let wxUpload = function (params: Record<string, any>) {
   let fileUrls = params.fileUrls
   let wxPlatform = params.wxPlatform
   let callback = params.callback
   let scopeId = params.scopeId
 
-  let result = {}
+  let result: Record<string, any> = {}
   let currentUploadingCount = 0
 
   //去后台获取微信的平台类型
-  getWXPlatform(function (WXPlatformType) {
-    let uploadSuccesCB = function (rs) {
+  getWXPlatform(function (WXPlatformType: string) {
+    let uploadSuccesCB = function (rs: any) {
       currentUploadingCount++
       let fileId = rs.AppFileInfo_id
       let fileName = rs.AppFileInfo_name
@@ -390,7 +409,7 @@ let wxUpload = function (params) {
     }
 
     if (WXPlatformType == 'qyAuth') {
-      let getCorpInfoCB = function (rs) {
+      let getCorpInfoCB = function (rs: any) {
         for (let i = 0; i < fileUrls.length; i++) {
           rs['media_id'] = fileUrls[i]
           uploadFileQiye(rs, uploadSuccesCB)
@@ -398,7 +417,7 @@ let wxUpload = function (params) {
       }
       getCorpInfo(getCorpInfoCB)
     } else if (WXPlatformType == 'qySample') {
-      let getCorpSimpleInfoCB = function (rs) {
+      let getCorpSimpleInfoCB = function (rs: any) {
         for (let i = 0; i < fileUrls.length; i++) {
           rs['media_id'] = fileUrls[i]
           uploadFileQiyeSimple(rs, uploadSuccesCB)
@@ -425,25 +444,29 @@ let wxUpload = function (params) {
 /**
  * 获取当前开启的微信服务：企业号授权版、企业号简单版、公众号
  */
-let getWXPlatform = function (callback) {
+let getWXPlatform = function (callback: Function) {
   let ajaxUrl =
     location.href.substring(0, location.href.indexOf('module-operation')) +
     '/module-operation!executeOperation?operation=WXGetPlatform'
-  let cb = scopeManager.createScopeHandler({
-    handler: function (result) {
-      let rs = $.parseJSON(result.responseText)
-      let isOpen = rs.data.isOpen
-      if (isOpen == 'true') {
-        let platfrom = rs.data.currentPlatform
-        if (typeof callback == 'function') {
-          callback(platfrom)
-        }
-      } else {
-        alert(
-          '微信【图片上传】失败，请在服务端控制台-移动端管理-微信管理 开启微信服务'
-        )
+  const handler: (...args: any[]) => void = function (
+    result: Record<string, any>
+  ) {
+    let rs = $.parseJSON(result.responseText)
+    let isOpen = rs.data.isOpen
+    if (isOpen == 'true') {
+      let platfrom = rs.data.currentPlatform
+      if (typeof callback == 'function') {
+        callback(platfrom)
       }
+    } else {
+      alert(
+        '微信【图片上传】失败，请在服务端控制台-移动端管理-微信管理 开启微信服务'
+      )
     }
+  }
+  let cb = scopeManager.createScopeHandler({
+    scopeId: '',
+    handler: handler
   })
   remoteOperation.orginalRequest({
     host: ajaxUrl,

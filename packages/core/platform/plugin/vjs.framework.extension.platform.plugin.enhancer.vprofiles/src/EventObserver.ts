@@ -1,15 +1,17 @@
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import {
+  RouteContext,
+  RuleContext
+} from '@v-act/vjs.framework.extension.platform.interface.route'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
 
 import * as dataManager from './DataManager'
-import * as TimePoint from './TimePoint'
+import TimePoint from './TimePoint'
 
 let splitChar = '$_$',
   startFlag = false
 let OpenMonitor = 'OpenConsumingTimeMonitor'
-
-export function initModule(sb) {}
 
 let isEnable = function () {
   return startFlag
@@ -18,10 +20,10 @@ let isEnable = function () {
 /**
  * 获取路由上下文的时间点
  * */
-let _getRouteTimePoint = function (routeContext, type) {
-  let info = {}
-  let scopeId = routeContext.getScopeId()
-  if (!scopeId) scopeId = scopeManager.getCurrentScopeId()
+let _getRouteTimePoint = function (routeContext: RouteContext, type: number) {
+  let info: Record<string, any> = {}
+  let scopeId: string = routeContext.getScopeId() || ''
+  if (!scopeId) scopeId = scopeManager.getCurrentScopeId() || ''
   info.scopeId = scopeId
   info.parentScopeId = scopeManager.getParentScopeId(scopeId)
   let scope = scopeManager.getScope(scopeId)
@@ -30,7 +32,10 @@ let _getRouteTimePoint = function (routeContext, type) {
     info.windowCode = scope.getWindowCode()
   }
   let routeCfg = routeContext.getRouteConfig()
-  let funCode = routeCfg.getCode()
+  let funCode
+  if (routeCfg) {
+    funCode = routeCfg && routeCfg.getCode()
+  }
   info.funCode = funCode
   let monitorSign = routeContext._monitorSign
   info.key = monitorSign
@@ -47,17 +52,17 @@ let _getRouteTimePoint = function (routeContext, type) {
   return new TimePoint(info)
 }
 
-let _getRuleTimePoint = function (ruleContext, type) {
+let _getRuleTimePoint = function (ruleContext: RuleContext, type: number) {
   let rr = ruleContext.getRouteContext()
   if (rr.isVirtual) {
     //虚拟路由里面的规则不作显示
     return null
   }
-  let info = {}
+  let info: Record<string, any> = {}
   info.key = ruleContext._monitorSign
   let monitorSign = rr._monitorSign
   if (monitorSign) info.parentKey = monitorSign
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId = scopeManager.getCurrentScopeId() || ''
   info.scopeId = scopeId
   let scope = scopeManager.getScope()
   info.componentCode = scope.getComponentCode()
@@ -77,7 +82,11 @@ let _getRuleTimePoint = function (ruleContext, type) {
 /**
  * 获取窗体相关的时间点
  * */
-let _getWindowTimePoint = function (scopeId, type, uuid) {
+let _getWindowTimePoint = function (
+  scopeId: string,
+  type: number,
+  uuid: string
+) {
   let scope = scopeManager.getScope(scopeId)
   let componentCode = scope.getComponentCode()
   let winCode = scope.getWindowCode()
@@ -92,7 +101,11 @@ let _getWindowTimePoint = function (scopeId, type, uuid) {
 /**
  * 获取构件相关的时间点
  * */
-let _getComponentTimePoint = function (scopeId, type, uuid) {
+let _getComponentTimePoint = function (
+  scopeId: string,
+  type: number,
+  uuid: string
+) {
   let scope = scopeManager.getScope(scopeId)
   let componentCode = scope.getComponentCode()
   return new TimePoint({
@@ -106,7 +119,7 @@ let _getComponentTimePoint = function (scopeId, type, uuid) {
 /**
  * 获取rpc相关的时间点
  * */
-let _getRPCTimePoint = function (request, type, uuid) {
+let _getRPCTimePoint = function (request: any, type: number, uuid: string) {
   let operations = request.getOperations()
   let operationList = []
   let componentCode = null
@@ -155,7 +168,7 @@ let isOpenMonitor = function () {
 /**
  * 方法执行前
  */
-let beforeRouteExe = function (rr) {
+let beforeRouteExe = function (rr: RouteContext) {
   if (isOpenMonitor()) {
     let time = _getRouteTimePoint(rr, TimePoint.Types.BeforeRouteExe)
     dataManager.add(time)
@@ -165,7 +178,7 @@ let beforeRouteExe = function (rr) {
 /**
  * 方法执行后
  */
-let afterRouteExe = function (rr) {
+let afterRouteExe = function (rr: RouteContext) {
   if (isOpenMonitor()) {
     let monitorSign = rr._monitorSign
     if (monitorSign) {
@@ -182,12 +195,12 @@ let afterRouteExe = function (rr) {
   }
 }
 
-let _isBusinessRule = function (ruleContext) {
+let _isBusinessRule = function (ruleContext: RuleContext) {
   let ruleInstance = ruleContext.getRuleCfg()
   return ruleInstance.hasOwnProperty('transactionType')
 }
 
-let beforeRuleExe = function (ruleContext) {
+let beforeRuleExe = function (ruleContext: RuleContext) {
   if (isOpenMonitor()) {
     if (_isBusinessRule(ruleContext)) {
       let time = _getRuleTimePoint(ruleContext, TimePoint.Types.BeforeRuleExe)
@@ -199,7 +212,7 @@ let beforeRuleExe = function (ruleContext) {
   }
 }
 
-let afterRuleExe = function (ruleContext) {
+let afterRuleExe = function (ruleContext: RuleContext) {
   if (isOpenMonitor()) {
     if (_isBusinessRule(ruleContext)) {
       let time = _getRuleTimePoint(ruleContext, TimePoint.Types.AfterRuleExe)
@@ -208,7 +221,7 @@ let afterRuleExe = function (ruleContext) {
   }
 }
 
-let beforeWindowLoad = function (scopeId, uuid) {
+let beforeWindowLoad = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -219,7 +232,7 @@ let beforeWindowLoad = function (scopeId, uuid) {
   }
 }
 
-let afterWindowLoad = function (scopeId, uuid) {
+let afterWindowLoad = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -230,7 +243,7 @@ let afterWindowLoad = function (scopeId, uuid) {
   }
 }
 
-let beforeWindowRender = function (scopeId, uuid) {
+let beforeWindowRender = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -241,7 +254,7 @@ let beforeWindowRender = function (scopeId, uuid) {
   }
 }
 
-let afterWindowRender = function (scopeId, uuid) {
+let afterWindowRender = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -252,7 +265,7 @@ let afterWindowRender = function (scopeId, uuid) {
   }
 }
 
-let beforeWindowInit = function (scopeId, uuid) {
+let beforeWindowInit = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -263,7 +276,7 @@ let beforeWindowInit = function (scopeId, uuid) {
   }
 }
 
-let afterWindowInit = function (scopeId, uuid) {
+let afterWindowInit = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getWindowTimePoint(
       scopeId,
@@ -274,7 +287,7 @@ let afterWindowInit = function (scopeId, uuid) {
   }
 }
 
-let beforeComponentInit = function (scopeId, uuid) {
+let beforeComponentInit = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getComponentTimePoint(
       scopeId,
@@ -285,7 +298,7 @@ let beforeComponentInit = function (scopeId, uuid) {
   }
 }
 
-let afterComponentInit = function (scopeId, uuid) {
+let afterComponentInit = function (scopeId: string, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getComponentTimePoint(
       scopeId,
@@ -296,14 +309,14 @@ let afterComponentInit = function (scopeId, uuid) {
   }
 }
 
-let beforeRPC = function (request, uuid) {
+let beforeRPC = function (request: any, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getRPCTimePoint(request, TimePoint.Types.BeforeRPC, uuid)
     dataManager.add(time)
   }
 }
 
-let afterRPC = function (request, uuid) {
+let afterRPC = function (request: any, uuid: string) {
   if (isOpenMonitor()) {
     let time = _getRPCTimePoint(request, TimePoint.Types.AfterRPC, uuid)
     dataManager.add(time)
@@ -410,15 +423,4 @@ const register = function () {
   })
 }
 
-export {
-  add,
-  clear,
-  clearTreeData,
-  doClear,
-  doStart,
-  doStop,
-  genViewTimePoint,
-  isOpenMonitor,
-  register,
-  remove
-}
+export { doClear, doStart, doStop, isOpenMonitor, register }

@@ -1,11 +1,11 @@
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
-export function initModule(sb) {}
-
 function getHost() {
   //上传服务器地址
   let host = ''
+  //@ts-ignore
   if (window.GlobalVariables) {
+    //@ts-ignore
     host = GlobalVariables.getServerPath() + '/'
   } else {
     let url = window.location.href.split('/module-operation!executeOperation')
@@ -19,9 +19,13 @@ function getHost() {
   return host
 }
 
-const uploadFiles = function (element, callback, config) {
+const uploadFiles = function (
+  element: Element,
+  callback: Function,
+  config: Record<string, any>
+) {
   let uploadUrl = getHost()
-  let plUploadConfig = {
+  let plUploadConfig: Record<string, any> = {
     //实例化一个plupload上传对象
     browse_button: element,
     url: uploadUrl,
@@ -56,50 +60,69 @@ const uploadFiles = function (element, callback, config) {
 
   uploader.init() //初始化
 
-  uploader.bind('Init', function (uploader) {})
+  uploader.bind('Init', function (uploader: Record<string, any>) {})
 
-  uploader.bind('FilesAdded', function (uploader, files) {
-    let fileSize = files.length
-    if (fileSize > 0) {
-      uploader.start()
+  uploader.bind(
+    'FilesAdded',
+    function (uploader: Record<string, any>, files: Record<string, any>) {
+      let fileSize = files.length
+      if (fileSize > 0) {
+        uploader.start()
+      }
     }
-  })
+  )
 
-  uploader.bind('BeforeUpload', function (uploader, file) {
-    let loadingMsg = '正在上传'
-    progressbar.showProgress(loadingMsg)
-  })
-
-  uploader.bind('UploadProgress', function (uploader, file) {
-    debugger
-    let queueProgress = uploader.total
-    let percent = queueProgress.percent
-    let loadingMsg = '正在上传(' + percent + '%)'
-    progressbar.showProgress(loadingMsg)
-  })
-
-  uploader.bind('FileUploaded', function (uploader, file, responseObject) {
-    let rsStr = responseObject.response
-    if (rsStr) {
-      rsObj = JSON.parse(rsStr)
-      file.serverRes = rsObj
+  uploader.bind(
+    'BeforeUpload',
+    function (uploader: Record<string, any>, file: Record<string, any>) {
+      let loadingMsg = '正在上传'
+      progressbar.showProgress(loadingMsg)
     }
-  })
+  )
 
-  uploader.bind('UploadComplete', function (uploader, files) {
-    let result = []
-    let tmpFile = undefined
-    while ((tmpFile = files.pop()) != undefined) {
-      result.push(tmpFile.serverRes)
+  uploader.bind(
+    'UploadProgress',
+    function (uploader: Record<string, any>, file: any) {
+      debugger
+      let queueProgress = uploader.total
+      let percent = queueProgress.percent
+      let loadingMsg = '正在上传(' + percent + '%)'
+      progressbar.showProgress(loadingMsg)
     }
-    window.console.log(result)
-    if (typeof callback == 'function') {
-      callback(result)
-    }
-    progressbar.hideProgress()
-  })
+  )
 
-  uploader.bind('Error', function (uploader, error) {
+  uploader.bind(
+    'FileUploaded',
+    function (
+      uploader: Record<string, any>,
+      file: Record<string, any>,
+      responseObject: Record<string, any>
+    ) {
+      let rsStr = responseObject.response
+      if (rsStr) {
+        let rsObj = JSON.parse(rsStr)
+        file.serverRes = rsObj
+      }
+    }
+  )
+
+  uploader.bind(
+    'UploadComplete',
+    function (uploader: Record<string, any>, files: Array<any>) {
+      let result = []
+      let tmpFile = undefined
+      while ((tmpFile = files.pop()) != undefined) {
+        result.push(tmpFile.serverRes)
+      }
+      window.console.log(result)
+      if (typeof callback == 'function') {
+        callback(result)
+      }
+      progressbar.hideProgress()
+    }
+  )
+
+  uploader.bind('Error', function (uploader: Record<string, any>, error: any) {
     if (error && error.code == -601) {
       if (
         config.fileTypeErrorCB &&

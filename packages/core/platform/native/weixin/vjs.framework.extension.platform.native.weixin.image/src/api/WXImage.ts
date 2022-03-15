@@ -1,7 +1,6 @@
-export function initModule(sb) {
-  let Image = sb.getService(
-    'vjs.framework.extension.platform.services.native.mobile.Image'
-  )
+import * as Image from '@v-act/vjs.framework.extension.platform.services.native.mobile.Image'
+
+export function initModule(sb: any) {
   Image.putInstance(exports)
 }
 
@@ -15,7 +14,7 @@ export function initModule(sb) {
  *	    successCallback: function(res){alert(res.localIds)} // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
  *	}
  */
-let chooseImage = function (params) {
+let chooseImage = function (params: Record<string, any>) {
   //		alert(JSON.stringify(params));
   if (params.sizeType) {
     if (params.sizeType.length == 0) params.sizeType = undefined
@@ -24,13 +23,15 @@ let chooseImage = function (params) {
     if (params.sourceType.length == 0) params.sourceType = undefined
   }
 
+  //@ts-ignore
   wx.ready(function () {
     // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+    //@ts-ignore
     wx.chooseImage({
       count: params.count, // 默认9
       sizeType: params.sizeType, // 可以指定是原图还是压缩图，默认二者都有
       sourceType: params.sourceType, // 可以指定来源是相册还是相机，默认二者都有
-      complete: function (res) {
+      complete: function (res: Record<string, any>) {
         let localIds = res.localIds // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
         localIds = localIds || []
         if (typeof params.successCallback == 'function') {
@@ -56,9 +57,11 @@ let chooseImage = function (params) {
  *	    urls: [], // 需要预览的图片http链接列表
  *	}
  */
-let previewImage = function (params) {
+let previewImage = function (params: Record<string, any>) {
   // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+  //@ts-ignore
   wx.ready(function () {
+    //@ts-ignore
     wx.previewImage({
       current: params.current,
       urls: params.urls
@@ -75,20 +78,21 @@ let previewImage = function (params) {
  *		successCallback : function(serverId){)}    // 返回图片的服务器端ID
  *	}
  */
-let uploadImage = function (params) {
+let uploadImage = function (params: Record<string, any>) {
+  //@ts-ignore
   wx.uploadImage({
     localId: params.localId,
     isShowProgressTips: 0,
-    success: function (res) {
+    success: function (res: Record<string, any>) {
       let serverId = res.serverId
       if (typeof params.successCallback == 'function') {
         params.successCallback(serverId)
       }
     },
-    error: function (errMsg) {
+    error: function (errMsg: string) {
       alert('上传图片至微信失败:' + errMsg)
     }
   })
 }
 
-export { uploadImage, chooseImage, previewImage }
+export { chooseImage, previewImage, uploadImage }
