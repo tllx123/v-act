@@ -94,7 +94,11 @@ class ForeachVarSyntax extends Syntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitForeachVarSyntax) {
+      visitor.visitForeachVarSyntax(this)
+    }
   }
 }
 

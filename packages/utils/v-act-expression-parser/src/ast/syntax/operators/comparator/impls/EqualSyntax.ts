@@ -37,9 +37,13 @@ class EqualSyntax extends ComparatorSyntax {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
 
-    return visitor && visitor.visitEqualSyntax
-      ? visitor.visitEqualSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+    if (visitor && visitor.visitEqualSyntax) {
+      const res = visitor.visitEqualSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

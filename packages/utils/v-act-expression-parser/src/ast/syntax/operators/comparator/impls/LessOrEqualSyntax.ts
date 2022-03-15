@@ -36,9 +36,14 @@ class LessOrEqualSyntax extends ComparatorSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitLessOrEqualSyntax
-      ? visitor.visitLessOrEqualSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+
+    if (visitor && visitor.visitLessOrEqualSyntax) {
+      const res = visitor.visitLessOrEqualSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

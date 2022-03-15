@@ -46,37 +46,11 @@ class ParseResultSyntax extends Syntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitParseResultSyntax) {
-      return visitor.visitParseResultSyntax(
-        this,
-        (syntax) => <string>syntax.visit()
-      )
+      return visitor.visitParseResultSyntax(this)
     } else {
-      let script: string[] = []
       this.syntaxs.forEach((syntax) => {
-        if (syntax.visit() && syntax.visit() !== 'false') {
-          script.push(<string>syntax.visit())
-        }
+        syntax.visit()
       })
-
-      script = script.toString().split(',')
-
-      for (let i = 0; i < script.length; i++) {
-        if (
-          script[i] == '' ||
-          script[i] == null ||
-          String(script[i]) === 'false'
-        ) {
-          script.splice(i, 1)
-          i = i - 1
-        }
-      }
-
-      let uniqScript: string[] = [] // 去重数组
-      for (let i = 0; i < script.length; i++) {
-        uniqScript.indexOf(script[i]) == -1 && uniqScript.push(script[i])
-      }
-
-      return uniqScript.join(',')
     }
   }
 }

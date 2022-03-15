@@ -39,9 +39,13 @@ class SubtractSyntax extends BinaryExpressionSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitSubtractSyntax
-      ? visitor.visitSubtractSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+    if (visitor && visitor.visitSubtractSyntax) {
+      let res = visitor.visitSubtractSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

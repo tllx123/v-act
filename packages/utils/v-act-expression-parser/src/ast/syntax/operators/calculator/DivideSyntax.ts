@@ -40,9 +40,11 @@ class DivideSyntax extends BinaryExpressionSyntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitDivideSyntax) {
-      return visitor.visitDivideSyntax(this, (syntax) => syntax.visit())
-    } else {
-      return super.visit()
+      const res = visitor.visitDivideSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
     }
   }
 }
