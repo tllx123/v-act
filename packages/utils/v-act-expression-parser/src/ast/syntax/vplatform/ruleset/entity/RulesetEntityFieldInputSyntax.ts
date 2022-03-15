@@ -39,12 +39,11 @@ class RulesetEntityFieldInputSyntax extends RulesetEntitySyntax {
     }
   }
   visit() {
-    // const ctx = this.getContext(), visitor = ctx.getVisitor()
-
-    // return visitor && visitor.visitRulesetEntityFieldInputSyntax
-    // ? visitor.visitRulesetEntityFieldInputSyntax(this, syntax => syntax.visit()) : super.visit()
-
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitRulesetEntityFieldInputSyntax) {
+      visitor.visitRulesetEntityFieldInputSyntax(this)
+    }
   }
 }
 

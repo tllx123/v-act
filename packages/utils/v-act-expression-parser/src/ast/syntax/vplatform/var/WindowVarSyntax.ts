@@ -66,7 +66,11 @@ class WindowVarSyntax extends Syntax {
   }
 
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitWindowVarSyntax) {
+      visitor.visitWindowVarSyntax(this)
+    }
   }
 }
 

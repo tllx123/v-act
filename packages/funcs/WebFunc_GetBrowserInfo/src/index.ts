@@ -69,12 +69,14 @@ const main = function (
       return navigator.appCodeName
       break
     case 'appminorversion': // 浏览器的次级版本
+      //@ts-ignore
       return navigator.appMinorVersion
       break
     case 'cookieenabled': // 浏览器中是否启用 cookie
       return navigator.cookieEnabled
       break
     case 'cpuclass': // 浏览器系统的 CPU 等级
+      //@ts-ignore
       return navigator.cpuClass
       break
     case 'online': // 是否处于脱机模式
@@ -87,12 +89,15 @@ const main = function (
       return navigator.language
       break
     case 'browserlanguage': // 浏览器的语言
+      //@ts-ignore
       return navigator.browserLanguage
       break
     case 'userlanguage': // 客户机发送服务器的 user-agent 头部的值
+      //@ts-ignore
       return navigator.userLanguage
       break
     case 'systemlanguage': // 操作系统使用的默认语言
+      //@ts-ignore
       return navigator.systemLanguage
       break
     case 'useragent': // 浏览器userAgent

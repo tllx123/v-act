@@ -8,6 +8,7 @@ export function initModule(sb: any) {
  * 初始化cordova的device对象，注为全局对象
  *
  */
+//@ts-ignore
 if (window.VJSBridge) {
   window.VJSBridge.plugins.vplatform.Device = device
 }

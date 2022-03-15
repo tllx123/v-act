@@ -149,11 +149,7 @@ class StringIdentifierSyntax extends Syntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitStringIdentifierSyntax) {
-      return visitor.visitStringIdentifierSyntax(this, (syntax) =>
-        syntax.visit()
-      )
-    } else {
-      return false
+      visitor.visitStringIdentifierSyntax(this)
     }
   }
 }

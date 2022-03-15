@@ -70,7 +70,11 @@ class ComponentVarSyntax extends Syntax {
   }
 
   visit() {
-    return false
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitComponentVarSyntax) {
+      visitor.visitComponentVarSyntax(this)
+    }
   }
 }
 

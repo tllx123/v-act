@@ -35,7 +35,7 @@ let RuntimeV3PlatformAOP = {
   }
 }
 
-if (window) {
+if (typeof window != 'undefined') {
   window.RuntimeV3PlatformAOP = RuntimeV3PlatformAOP
 }
 

@@ -29,7 +29,11 @@ class RulesetVarSyntax extends RulesetPrimitiveSyntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitRulesetVarSyntax) {
+      visitor.visitRulesetVarSyntax(this)
+    }
   }
 }
 

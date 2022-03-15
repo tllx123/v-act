@@ -19,7 +19,7 @@ const main = function () {
         }
 
         try {
-          result = Number(vds.math.divide(result, tmpArg))
+          result = Number(vds.math.divide(result, tmpArg, undefined))
         } catch (e) {
           return NaN
         }

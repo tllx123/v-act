@@ -43,7 +43,11 @@ const main = function (ruleContext: RuleContext) {
       }
       let destTreeStruct = getTreeStructByDataSource(destName, treeStruct)
       let destTree = vds.tree.lookup(destName, destTreeStruct)
-      let destCurrentNode = destTree.getCurrentNode()
+      let destCurrentNode
+      if (destTree) {
+        destCurrentNode = destTree.getCurrentNode()
+      }
+
       //#endregion
 
       //#region 获取来源实体记录
@@ -102,18 +106,21 @@ const main = function (ruleContext: RuleContext) {
 
         //#region 目标树插入节点
         let parentNode: Array<Record<string, any>> = []
-        if (isCurrNode) {
+        if (isCurrNode && destCurrentNode) {
           parentNode = [destCurrentNode]
         }
-        insertTree(
-          destTree,
-          parentNode,
-          roots,
-          idChildren,
-          mappingItems,
-          ruleContext,
-          resetCurrent
-        )
+        if (destTree) {
+          insertTree(
+            destTree,
+            parentNode,
+            roots,
+            idChildren,
+            mappingItems,
+            ruleContext,
+            resetCurrent
+          )
+        }
+
         //#endregion
       } else {
         //#region 目标树插入节点
@@ -125,16 +132,19 @@ const main = function (ruleContext: RuleContext) {
             mappingItems,
             ruleContext
           )
-          let node = destTree.createNode()
+          let node
+          if (destTree) {
+            node = destTree.createNode()
+          }
 
           for (let j = 0, len = defaultValue.length; j < len; j++) {
             let tmpTreeValue = defaultValue[j]
-            node.set(tmpTreeValue.fieldName, tmpTreeValue.value, null)
+            node && node.set(tmpTreeValue.fieldName, tmpTreeValue.value)
           }
           if (isCurrNode) {
-            destCurrentNode.addChilds([node], resetCurrent)
+            destCurrentNode && destCurrentNode.addChilds([node], resetCurrent)
           } else {
-            destTree.addRootNodes([node], resetCurrent)
+            destTree && destTree.addRootNodes([node], resetCurrent)
           }
         }
         //#endregion

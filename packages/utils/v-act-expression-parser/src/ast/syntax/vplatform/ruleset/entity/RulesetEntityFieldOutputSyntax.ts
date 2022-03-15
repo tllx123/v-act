@@ -37,7 +37,11 @@ class RulesetEntityFieldOutputSyntax extends RulesetEntitySyntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitRulesetEntityFieldOutputSyntax) {
+      visitor.visitRulesetEntityFieldOutputSyntax(this)
+    }
   }
 }
 

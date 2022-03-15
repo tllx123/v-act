@@ -101,7 +101,11 @@ class BusinessWidgetPropertySyntax extends Syntax {
   }
 
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitBusinessWidgetPropertySyntax) {
+      visitor.visitBusinessWidgetPropertySyntax(this)
+    }
   }
 }
 
