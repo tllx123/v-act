@@ -356,7 +356,7 @@ let _appendToDest = function (
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
       let tempRecord = emptyRecord.clone()
       if (datasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid(undefined))
+        tempRecord.set('id', vds.string.uuid())
       }
       let record = tempRecord
 
@@ -434,7 +434,7 @@ let _copyToDest = function (
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
       let tempRecord = emptyRecord.clone()
       if (datasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid(undefined))
+        tempRecord.set('id', vds.string.uuid())
       }
       let record = tempRecord
       record = _setRecordValue(record, mappingRecords[i], fieldMapping)
@@ -835,6 +835,7 @@ let _copyRecordList = function (
           '替换或合并情况下，不允许对主键标识字段进行更新！',
           /* undefined,
           undefined, */
+          //@ts-ignore
           exceptionFactory.TYPES.Config
         )
       }
@@ -1140,7 +1141,7 @@ let _copy2Dest = function (
       // 使用克隆，防止调用createEmptyRecordByDS接口重新设置默认中，消耗性能
       let tempRecord = emptyRecord.clone()
       if (destDatasource.getMetadata().contains('id')) {
-        tempRecord.set('id', vds.string.uuid(undefined))
+        tempRecord.set('id', vds.string.uuid())
       }
       let record = tempRecord
       record = _setRecordValue(record, sourceMappingRecords[i], fieldMapping)
