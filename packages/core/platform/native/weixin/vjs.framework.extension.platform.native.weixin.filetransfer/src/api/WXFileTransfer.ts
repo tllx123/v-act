@@ -1,5 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as fileService from '@v-act/vjs.framework.extension.platform.services.native.mobile.FileTransfer'
+import { FileTransfer as fileService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.FileTransfer'
 import { Image as ImageService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.image'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { RemoteMethodAccessor as remoteMethodAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
