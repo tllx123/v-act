@@ -18,7 +18,7 @@ let _logCache: any
 let _disabled: boolean = false
 
 const getLogger = function () {
-  if (!_logCache) {
+  /*if (!_logCache) {
     const series = ScopeManager.getProperty('type')
     if (series) {
       // @ts-ignore
@@ -32,7 +32,11 @@ const getLogger = function () {
       _logCache = sandbox.logger
     }
   }
-  return _logCache
+  return _logCache*/
+  if (typeof window != 'undefined') {
+    return window.console
+  }
+  return null
 }
 
 const isEnable = function () {
@@ -42,7 +46,7 @@ const isEnable = function () {
 export function showLogConsole() {
   if (isEnable()) {
     const logger = getLogger()
-    if (logger.showLogConsole) {
+    if (logger && logger.showLogConsole) {
       logger.showLogConsole()
     }
   }
@@ -70,7 +74,7 @@ export function debug(msg: string) {
   try {
     if (isEnable()) {
       const logger = getLogger()
-      logger.log(msg)
+      logger && logger.log(msg)
     }
   } catch (e) {} //微信公众号中会报死循环，不要问为什么，我也不知道
 }
@@ -89,7 +93,7 @@ export function warn(msg: string) {
   try {
     if (isEnable()) {
       const logger = getLogger()
-      logger.warn(msg)
+      logger && logger.warn(msg)
     }
   } catch (e) {} //微信公众号中会报死循环，不要问为什么，我也不知道
 }
@@ -102,7 +106,7 @@ export function error(msg: string) {
   try {
     if (isEnable()) {
       const logger = getLogger()
-      logger.error(msg)
+      logger && logger.error(msg)
     }
   } catch (e) {} //微信公众号中会报死循环，不要问为什么，我也不知道
 }
