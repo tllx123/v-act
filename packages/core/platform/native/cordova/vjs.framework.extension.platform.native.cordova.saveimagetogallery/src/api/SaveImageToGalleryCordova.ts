@@ -1,4 +1,5 @@
 import { SaveImageToGallery as SaveImageToGalleryService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.saveimagetogallery'
+import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 
 export function initModule(sb: any) {
@@ -86,7 +87,12 @@ let downloadFile = function (
       }
     )
   } else {
-    dialogUtil.propmtDialog('目前暂不支持PC端访问下载！', null, false)
+    dialogUtil.propmtDialog(
+      '目前暂不支持PC端访问下载！',
+      null,
+      false,
+      undefined
+    )
   }
 }
 

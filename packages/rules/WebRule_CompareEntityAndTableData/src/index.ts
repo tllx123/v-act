@@ -229,6 +229,7 @@ const main = function (ruleContext: RuleContext) {
         sConfig.datas,
         sConfig.params
       )
+      //@ts-ignore
       promise.then(callback).catch(reject)
     } catch (ex) {
       reject(ex)
@@ -286,7 +287,7 @@ let getCopyRecordsByMapping = function (
   for (let i = 0; i < records.length; i++) {
     let tempRecord = emptyRecord.clone()
     if (datasource.getMetadata().contains('id')) {
-      tempRecord.set('id', vds.string.uuid(undefined))
+      tempRecord.set('id', vds.string.uuid())
     }
     let obj = tempRecord
 
@@ -520,7 +521,7 @@ let getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-let getCurrentRecord = function (ds: ds) {
+let getCurrentRecord = function (ds: string) {
   let datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }

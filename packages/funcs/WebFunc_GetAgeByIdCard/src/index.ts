@@ -135,6 +135,7 @@ function isIdCardNo(idCardNum: string) {
       arrSplit ? `19${arrSplit[3]}/${arrSplit[4]}/${arrSplit[5]}` : '###'
     )
     var bGoodDay =
+      //@ts-ignore
       dtmBirth.getYear() == Number(arrSplit ? arrSplit[3] : '###') &&
       dtmBirth.getMonth() + 1 == Number(arrSplit ? arrSplit[4] : '###') &&
       dtmBirth.getDate() == Number(arrSplit ? arrSplit[5] : '###')
