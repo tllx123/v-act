@@ -8,6 +8,7 @@ export function initModule(sb:any) {
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'
   )
+  //@ts-ignore
   dependency.putInstance(this)
 }
 

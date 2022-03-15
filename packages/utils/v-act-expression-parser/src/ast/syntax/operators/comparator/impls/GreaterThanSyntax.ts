@@ -48,9 +48,14 @@ class GreaterThanSyntax extends ComparatorSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitGreaterThanSyntax
-      ? visitor.visitGreaterThanSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+
+    if (visitor && visitor.visitGreaterThanSyntax) {
+      const res = visitor.visitGreaterThanSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

@@ -1,10 +1,9 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let urlEnhancer, cssProcessor
+let urlEnhancer: Function, cssProcessor: Function
 
-export function initModule(sb) {}
-
-const putUrlEnhancer = function (func) {
+const putUrlEnhancer = function (func: Function) {
   urlEnhancer = func
 }
 
@@ -12,7 +11,7 @@ const getUrlEnHancer = function () {
   return urlEnhancer
 }
 
-const putCssProcessor = function (func) {
+const putCssProcessor = function (func: Function) {
   cssProcessor = func
 }
 
@@ -24,20 +23,26 @@ let getCssAttrName = function () {
   return 'symbol'
 }
 
-const getCssAttrValue = function (widgetCode) {
+const getCssAttrValue = function (widgetCode: string) {
   let scope = scopeManager.getScope()
   return (
     scope.getComponentCode() + '-' + scope.getWindowCode() + '-' + widgetCode
   )
 }
 
-const mountStyle = function (element, params) {
+const mountStyle = function (
+  element: HTMLElement,
+  params: Record<string, any>
+) {
   let el = $(element)
   el.attr(getCssAttrName(), params.cssSymbol)
   return el[0]
 }
 
-const validate = function (vue, entityCodes) {
+const validate = function (
+  vue: { widgets: any; vueInstance: any },
+  entityCodes: Array<string>
+) {
   let widgets = vue.widgets
   if (widgets && widgets.length > 0) {
     let formIds = []
@@ -76,12 +81,12 @@ const validate = function (vue, entityCodes) {
 }
 
 export {
-  putUrlEnhancer,
-  getUrlEnHancer,
-  putCssProcessor,
-  getCssProcessor,
   getCssAttrName,
   getCssAttrValue,
+  getCssProcessor,
+  getUrlEnHancer,
   mountStyle,
+  putCssProcessor,
+  putUrlEnhancer,
   validate
 }

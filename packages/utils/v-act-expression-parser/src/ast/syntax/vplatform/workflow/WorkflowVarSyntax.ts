@@ -65,9 +65,7 @@ class WorkflowVarSyntax extends Syntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitWorkflowVarSyntax) {
-      return visitor.visitWorkflowVarSyntax(this, (syntax) => syntax.visit())
-    } else {
-      return false
+      return visitor.visitWorkflowVarSyntax(this)
     }
   }
 }

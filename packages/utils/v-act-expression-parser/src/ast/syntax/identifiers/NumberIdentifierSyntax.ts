@@ -119,7 +119,11 @@ class NumberIdentifierSyntax extends Syntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext()
+    const visitor = ctx.getVisitor()
+    if (visitor && visitor.visitNumberIdentifierSyntax) {
+      visitor.visitNumberIdentifierSyntax(this)
+    }
   }
 }
 

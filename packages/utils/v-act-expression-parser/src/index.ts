@@ -13,7 +13,7 @@ const print = function (syntax: Syntax, printer: Printer): string {
   ctx.setPrinter(printer)
   return syntax.toString()
 }
-const visit = function (syntax: Syntax, visitor: Visitor): string | boolean {
+const visit = function (syntax: Syntax, visitor: Visitor): void | boolean {
   const ctx = syntax.getContext()
   ctx.setVisitor(visitor)
   return syntax.visit()

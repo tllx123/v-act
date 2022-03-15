@@ -67,7 +67,7 @@ abstract class RulesetPrimitiveSyntax extends Syntax {
   }
 
   visit() {
-    return false
+    return
   }
 }
 

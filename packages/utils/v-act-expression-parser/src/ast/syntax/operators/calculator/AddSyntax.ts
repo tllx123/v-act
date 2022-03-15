@@ -44,9 +44,11 @@ class AddSyntax extends BinaryExpressionSyntax {
     const visitor = ctx.getVisitor()
 
     if (visitor && visitor.visitAddSyntax) {
-      return visitor.visitAddSyntax(this, (syntax) => syntax.visit())
-    } else {
-      return super.visit()
+      const res = visitor.visitAddSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
     }
   }
 }

@@ -1,8 +1,12 @@
-import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-import * as TimePoint from './TimePoint'
+import {
+  MapStorage,
+  StorageManager as storageManager
+} from '@v-act/vjs.framework.extension.platform.interface.storage'
 
-let storage,
-  storage_data,
+import TimePoint from './TimePoint'
+
+let storage: MapStorage,
+  storage_data: MapStorage,
   token = 'V3_Platform_Event_Observer_Data_Manager'
 let TimePointData = 'V3_Platform_Event_Observer_Data_Manager_Time_Point_Data'
 let OriginalData = 'Time_Point_Original_Data'
@@ -12,8 +16,6 @@ let TimePoint_Root = 'Time_Point_Root_Data'
 let TimePoint_Method = 'Time_Point_Method_Data'
 let TimePoint_Rule = 'Time_Point_Rule_Data'
 let TimePoint_WinComNet = 'Time_Point_WinComNet_Data'
-
-export function initModule(sb) {}
 
 let _getStorage = function () {
   if (!storage) {
@@ -29,9 +31,9 @@ let _getDataStorage = function () {
   return storage_data
 }
 
-const add = function (timePoint) {
+const add = function (timePoint: TimePoint) {
   let s = _getStorage()
-  let datas,
+  let datas: Array<TimePoint>,
     key = timePoint.getKey()
   if (!s.containsKey(key)) {
     datas = []
@@ -42,7 +44,7 @@ const add = function (timePoint) {
   datas.push(timePoint)
 }
 
-const remove = function (sourceKey) {
+const remove = function (sourceKey: string) {
   let s = _getStorage()
   let datas,
     key = sourceKey
@@ -62,7 +64,7 @@ const remove = function (sourceKey) {
       return true
     }
   }
-  console.log('没有找到对应的开始时间：' + timePoint + '\ndatas:' + datas)
+  //console.log('没有找到对应的开始时间：' + timePoint + '\ndatas:' + datas)
   return false
 }
 
@@ -77,17 +79,17 @@ let _resetViewData = function () {
   let s = _getStorage()
   //var datas=[];
   //var allTimePoint = {};
-  let ruleTimePoint = {} //保存规则时间点
-  let methodTimePoint = {} //保存方法时间点
-  let win_Net_ComTimePoint = {} //保存窗体、构件、网络的时间点
-  s.iterate(function (key, times) {
+  let ruleTimePoint: Record<string, any> = {} //保存规则时间点
+  let methodTimePoint: Record<string, any> = {} //保存方法时间点
+  let win_Net_ComTimePoint: Record<string, any> = {} //保存窗体、构件、网络的时间点
+  s.iterate(function (key: string, times: Array<Record<string, any>>) {
     let dataArray = []
     for (let i = 0; i < times.length; i++) {
       let time = times[i]
       let type = time.getType()
       let hasFound = false
       for (let j = dataArray.length - 1; j >= 0; j--) {
-        let data = dataArray[j]
+        let data: Record<string, any> = dataArray[j]
         if (data.dataType + type == 0 && data['key'] == time.getKey()) {
           if (type > 0) {
             data.to = time.getTime()
@@ -108,6 +110,7 @@ let _resetViewData = function () {
           scopeId: time.getScopeId(),
           parentScopeId: time.getParentScopeId(),
           ruleCode: time.getRuleCode(),
+          //@ts-ignore
           type: TimelineChart.TYPE.INTERVAL,
           customClass: time.getTypeCode(),
           series: time.getSeries(),
@@ -120,7 +123,7 @@ let _resetViewData = function () {
     //去掉没有开始点或者没有结束点的时间点。
     //var filterData = [];
     for (let i = 0, l = dataArray.length; i < l; i++) {
-      let tmpData = dataArray[i]
+      let tmpData: Record<string, any> = dataArray[i]
       if (tmpData.from && tmpData.to) {
         //filterData.push(tmpData);
         switch (tmpData.series) {
@@ -236,7 +239,7 @@ const clearTreeData = function () {
   s.clear()
 }
 
-const genViewTimePoint = function (ruleKey) {
+const genViewTimePoint = function (ruleKey: string) {
   let s = _getDataStorage()
   //如果结果是空，则重新生成数据
   if (!s.containsKey(TimePoint_Root)) {
@@ -416,7 +419,7 @@ const genViewTimePoint = function (ruleKey) {
 /**
  * 获取渲染数据
  * */
-let _getRenderData = function (params) {
+let _getRenderData = function (params: Record<string, any>) {
   let resultMap = params
   let RouteDatas = []
   let RuleDatas = []
@@ -491,8 +494,8 @@ let _getRenderData = function (params) {
 /**
  * 复制时间点
  * */
-let _copyTimePoint = function (timePoint) {
-  let time = {}
+let _copyTimePoint = function (timePoint: Record<string, any>) {
+  let time: Record<string, any> = {}
   for (let key in timePoint) {
     if (timePoint.hasOwnProperty(key)) {
       time[key] = timePoint[key]
@@ -500,4 +503,4 @@ let _copyTimePoint = function (timePoint) {
   }
   return time
 }
-export { add, remove, clear, clearTreeData, genViewTimePoint }
+export { add, clear, clearTreeData, genViewTimePoint, remove }

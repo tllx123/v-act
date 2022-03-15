@@ -1,14 +1,16 @@
-import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
-import { DatasourceObserver as DatasourceObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
-import * as v3VueUtil from './V3VueUtils'
 import { FrontEndAlerter as frontEndAlerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
-import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { window as i18n_window } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { MobileViewPortAdapter as mobileViewPortAdapter } from '@v-act/vjs.framework.extension.platform.interface.mobile.viewport.adapter'
+import { DatasourceObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
+import * as v3VueUtil from './V3VueUtils'
 
 let sandbox
 /* 定义事件运行状态常量 */
@@ -33,73 +35,96 @@ if (typeof EventStatus == 'undefined') {
  *            events 事件列表
  *
  */
-let V3ComponentVue = function (params) {
-  this.others = {}
-  if (params) {
-    this.element = params.element
-    this.componentCode = params.componentCode
-    this.windowCode = params.windowCode
-    this.widgetCode = params.widgetCode
-    this.entities = params.entities || []
-    this.events = params.events || []
-    this.widgets = params.pros.widgets || []
-    this.eventStatusPool = {}
-    /* 初始化事件状态池 */
-    for (let index = 0; index < this.events.length; index++) {
-      this.eventStatusPool[this.events[index]] = EventStatus.Complete
-    }
-    this.datas = params.datas || null
-    this.cssSymbol =
-      params.pros && params.pros.cssSymbol
-        ? params.pros.cssSymbol
-        : params.cssSymbol
-    this.autoMoutStyle =
-      typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
-    /* 是否在动态列表组内的vue实例，用于是否更新current */
-    this.isDuringThrendList = params.isDuringThrendList === true ? true : false
-    this.resetHeaderOrFootHeight = params.resetHeaderOrFootHeight
-    this.duringThrendListInfo = {
-      params: params.resetHeaderOrFootHeight,
-      duringThrendListEntity:
-        params.duringThrendListEntity /* 动态列表组实体，监听时候使用 */
-    }
-  } else {
-    this.entities = []
-    this.events = []
-  }
-  /* 窗体实体信息 */
-  this.windowEntitys =
-    params.pros && params.pros.windowEntitys ? params.pros.windowEntitys : []
-  /* 窗体实体信息 */
-  this.i18nPro =
-    params.pros && params.pros.i18n
-      ? (function () {
-          var pro = params.pros.i18n
-          var result = {}
-          for (var key in pro) {
-            if (pro.hasOwnProperty(key)) {
-              result[key] = pro[key]
-            }
-          }
-          return result
-        })()
-      : {}
-  this.moduleDefineFunc = {}
-  this.duringDS2Vue = {} // 从ds同步到ui
-  this.observerIds = []
-  this.series = params.series //此属性是为了处理网页窗体下不能添加f7相关的dom，因为添加后，网页窗体存在不显示的问题
-  // 注册数据源事件的函数列表
-  this.dsEventRegisterFunc = []
-}
+class V3ComponentVue {
+  others: Record<string, any> = {}
+  element
+  componentCode
+  windowCode
+  widgetCode
+  entities
+  events
+  widgets
+  eventStatusPool: Record<string, any> = {}
+  datas
+  cssSymbol
+  autoMoutStyle
+  isDuringThrendList
+  resetHeaderOrFootHeight
+  duringThrendListInfo
+  windowEntitys
+  i18nPro
+  moduleDefineFunc: Record<string, any>
+  duringDS2Vue
+  observerIds: Array<any>
+  series
+  dsEventRegisterFunc: Array<any>
+  vueInstance: any
 
-V3ComponentVue.prototype = {
-  initModule: function (sb) {
-    sandbox = sb
-  },
+  _data: Array<any> = []
+
+  constructor(params: Record<string, any>) {
+    if (params) {
+      this.element = params.element
+      this.componentCode = params.componentCode
+      this.windowCode = params.windowCode
+      this.widgetCode = params.widgetCode
+      this.entities = params.entities || []
+      this.events = params.events || []
+      this.widgets = params.pros.widgets || []
+      this.eventStatusPool = {}
+      /* 初始化事件状态池 */
+      for (let index = 0; index < this.events.length; index++) {
+        this.eventStatusPool[this.events[index]] = EventStatus.Complete
+      }
+      this.datas = params.datas || null
+      this.cssSymbol =
+        params.pros && params.pros.cssSymbol
+          ? params.pros.cssSymbol
+          : params.cssSymbol
+      this.autoMoutStyle =
+        typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
+      /* 是否在动态列表组内的vue实例，用于是否更新current */
+      this.isDuringThrendList =
+        params.isDuringThrendList === true ? true : false
+      this.resetHeaderOrFootHeight = params.resetHeaderOrFootHeight
+      this.duringThrendListInfo = {
+        params: params.resetHeaderOrFootHeight,
+        duringThrendListEntity:
+          params.duringThrendListEntity /* 动态列表组实体，监听时候使用 */
+      }
+    } else {
+      this.entities = []
+      this.events = []
+    }
+    /* 窗体实体信息 */
+    this.windowEntitys =
+      params.pros && params.pros.windowEntitys ? params.pros.windowEntitys : []
+    /* 窗体实体信息 */
+    this.i18nPro =
+      params.pros && params.pros.i18n
+        ? (function () {
+            let pro = params.pros.i18n
+            let result: Record<string, any> = {}
+            for (let key in pro) {
+              if (pro.hasOwnProperty(key)) {
+                result[key] = pro[key]
+              }
+            }
+            return result
+          })()
+        : {}
+    this.moduleDefineFunc = {}
+    this.duringDS2Vue = {} // 从ds同步到ui
+    this.observerIds = []
+    this.series = params.series //此属性是为了处理网页窗体下不能添加f7相关的dom，因为添加后，网页窗体存在不显示的问题
+    // 注册数据源事件的函数列表
+    this.dsEventRegisterFunc = []
+  }
+
   /**
    * 构造Vue数据
    */
-  _createVueData: function () {
+  _createVueData() {
     /* 此data除了实体，不允许值为数组的其他标识 */
     let widgetPropData = {}
     let data = {
@@ -204,11 +229,11 @@ V3ComponentVue.prototype = {
             }
           }
         }
-        // var ds =
+        // let  ds =
         // datasourceManager.lookup({datasourceName:entityCode});
-        // var rs;
+        // let  rs;
         // if(ds){
-        // var rs = ds.getAllRecords();
+        // let  rs = ds.getAllRecords();
         // data[entityCode]= rs.isEmpty() ?
         // []:rs.getOriginalDatas();
         // if(this.datas&&this.datas.hasOwnProperty(entityCode) &&
@@ -219,7 +244,7 @@ V3ComponentVue.prototype = {
         // data[entityCode].current = this.datas[entityCode][0];
         // }
         // }else{
-        // var currentRecord = ds.getCurrentRecord();
+        // let  currentRecord = ds.getCurrentRecord();
         // if(currentRecord){
         // data[entityCode].current = currentRecord.toMap();
         // }
@@ -240,30 +265,33 @@ V3ComponentVue.prototype = {
       }
     }
     return data
-  },
+  }
+
   /**
    * 将指定事件状态修改为正在运行
    *
    * @param eventName
    *            事件名称
    */
-  _markEventRunning: function (eventName) {
+  _markEventRunning(eventName: string) {
     if (typeof this.eventStatusPool[eventName] != 'undefined') {
       this.eventStatusPool[eventName] = EventStatus.Running
     }
-  },
+  }
+
   /**
    * 将指定事件状态修改为已完成
    */
-  _markEventComplete: function (eventName) {
+  _markEventComplete(eventName: string) {
     if (typeof this.eventStatusPool[eventName] != 'undefined') {
       this.eventStatusPool[eventName] = EventStatus.Complete
     }
-  },
+  }
+
   /**
    * 判断指定事件是否可以执行，只要事件不处于正在运行状态则为可以执行
    */
-  _couldRun: function (eventName) {
+  _couldRun(eventName: string) {
     if (
       typeof this.eventStatusPool[eventName] != 'undefined' &&
       this.eventStatusPool[eventName] != EventStatus.Running
@@ -271,18 +299,22 @@ V3ComponentVue.prototype = {
       return true
     }
     return false
-  },
+  }
+
   /**
    * 获取实体数据
    *
    * @param {String}
    *            entityCode 实体编码
    */
-  _getEntityRecord: function (entityCode) {
+  _getEntityRecord(entityCode: string) {
+    const datas: Array<Record<string, any>> = [],
+      current: Record<string, any> = {},
+      mapData: Record<string, any> = {}
     let dataArray = {
-      datas: [], // 实体数据，已复制，非引用
-      current: {}, // 当前行数据，引用datas
-      mapData: {} // key：id，value：record，record是引用datas
+      datas: datas, // 实体数据，已复制，非引用
+      current: current, // 当前行数据，引用datas
+      mapData: mapData // key：id，value：record，record是引用datas
     }
     let ds = datasourceManager.lookup({
       datasourceName: entityCode
@@ -300,6 +332,7 @@ V3ComponentVue.prototype = {
           records: dataArray.datas,
           dsName: entityCode
         })
+        //@ts-ignore
         dataArray.current = dataArray.datas.current
       }
     }
@@ -318,8 +351,9 @@ V3ComponentVue.prototype = {
     }
     dataArray.current._metadata_.dsName = entityCode
     return dataArray
-  },
-  _generateOtherField: function (records, dsName) {
+  }
+
+  _generateOtherField(records: Array<Record<string, any>>, dsName: string) {
     if (records.length > 0) {
       for (let i = 0, len = records.length; i < len; i++) {
         let record = records[i]
@@ -339,47 +373,52 @@ V3ComponentVue.prototype = {
         }
       }
     }
-  },
-  _getCallFunc: function () {
+  }
+
+  _getCallFunc() {
     return this.moduleDefineFunc
-  },
-  _existFunc: function (name) {
-    let funcs = this._getCallFunc()
+  }
+
+  _existFunc(name: string) {
+    let funcs: Record<string, any> = this._getCallFunc()
     if (funcs && typeof funcs[name] == 'function') {
       return true
     }
     return false
-  },
-  _extend: function (aim, source) {
+  }
+
+  _extend(aim: Record<string, any>, source: Record<string, any>) {
     for (let attr in source) {
       if (source.hasOwnProperty(attr) && !aim.hasOwnProperty(attr)) {
         aim[attr] = source[attr]
       }
     }
     return aim
-  },
-  clone: function (params) {
+  }
+
+  clone(params: Record<string, any>) {
     return new V3ComponentVue(params ? this._extend(params, this) : this)
-  },
+  }
+
   /**
    * 构造Vue方法
    */
-  _createVueMethod: function () {
+  _createVueMethod() {
     let scopeId = scopeManager.getCurrentScopeId()
     let windowScope = scopeManager.getWindowScope()
     let thisIntance = this
     let handleEvent =
       this.hanleEventFunc ||
       (function (sId, code) {
-        return function (eventName) {
+        return function (eventName: string) {
           /* 判断事件是否处于运行状态 */
-          var args = Array.prototype.slice.call(arguments, 1)
-          var isParallelism = false // 是否并行触发事件
+          let args = Array.prototype.slice.call(arguments, 1)
+          let isParallelism = false // 是否并行触发事件
           if (args && args.length > 0) {
-            var list = args.pop()
+            let list = args.pop()
             if (list && list.length > 0) {
               list = Array.prototype.slice.call(list, 0)
-              var last = list.pop()
+              let last = list.pop()
               if (
                 typeof last == 'object' &&
                 last != null &&
@@ -393,7 +432,7 @@ V3ComponentVue.prototype = {
           }
           if (isParallelism) {
             scopeManager.openScope(sId)
-            var handler = eventManager.fireEvent(
+            let handler = eventManager.fireEvent(
               code,
               eventName,
               arguments[2],
@@ -404,7 +443,7 @@ V3ComponentVue.prototype = {
           } else if (thisIntance._couldRun(eventName)) {
             thisIntance._markEventRunning(eventName)
             try {
-              var markComplete = function () {
+              let markComplete = function () {
                 thisIntance._markEventComplete(eventName)
                 /* arguments不为空且类型为function时才执行 */
                 if (
@@ -423,7 +462,7 @@ V3ComponentVue.prototype = {
                 }
               }
               scopeManager.openScope(sId)
-              var handler = eventManager.fireEvent(
+              let handler = eventManager.fireEvent(
                 code,
                 eventName,
                 markComplete,
@@ -436,15 +475,19 @@ V3ComponentVue.prototype = {
             } // catch
           }
           /*
-           * scopeManager.openScope(sId); var handler =
+           * scopeManager.openScope(sId); let  handler =
            * eventManager.fireEvent(code, eventName, arguments[2],
-           * arguments[3]); scopeManager.closeScope(); var args =
+           * arguments[3]); scopeManager.closeScope(); let  args =
            * Array.prototype.slice.call(arguments, 1)
            * handler.apply(this, args);
            */
         }
       })(scopeId, this.eventTargetCode || this.widgetCode)
-    let _$registerVuiTagEvent = function (widgetCode, eventName, handle) {
+    let _$registerVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      handle: Function
+    ) {
       if (!this._$vuiTagEventStorage) {
         this._$vuiTagEventStorage = {}
       }
@@ -455,7 +498,11 @@ V3ComponentVue.prototype = {
       let _event = _vuiTagEventStorage[widgetCode]
       _event[eventName] = handle
     }
-    let _$fireVuiTagEvent = function (widgetCode, eventName, params) {
+    let _$fireVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      params: Record<string, any>
+    ) {
       let _vuiTagEventStorage = this._$vuiTagEventStorage
       if (_vuiTagEventStorage && _vuiTagEventStorage[widgetCode]) {
         let tagEvents = _vuiTagEventStorage[widgetCode]
@@ -466,7 +513,7 @@ V3ComponentVue.prototype = {
       }
     }
     let _refFn = (function (v3Vue) {
-      return function (func) {
+      return function (func: string) {
         if (v3Vue._existFunc(func)) {
           let _func = v3Vue._getCallFunc()[func]
           return _func
@@ -476,7 +523,11 @@ V3ComponentVue.prototype = {
       }
     })(this)
     let _$synCurrentRecordToDs = (function (sId, dsManager) {
-      return function (entityCode, current, oldCurrent) {
+      return function (
+        entityCode: string,
+        current: Record<string, any>,
+        oldCurrent: Record<string, any>
+      ) {
         if (current && current._metadata_ && current._metadata_.dsName) {
           let _code = current._metadata_.dsName
           scopeManager.openScope(sId)
@@ -492,7 +543,7 @@ V3ComponentVue.prototype = {
         }
       }
     })(scopeId, datasourceManager)
-    let _$getCurrentRecord = function (entityCode) {
+    let _$getCurrentRecord = function (entityCode: string) {
       let currentRecord = null
       if (entityCode) {
         let ds = this._$getDatasource(entityCode)
@@ -505,20 +556,23 @@ V3ComponentVue.prototype = {
       }
       return currentRecord
     }
-    let _$getSelectedRecords = function (entityCode) {
-      let selectRecords = []
+    let _$getSelectedRecords = function (entityCode: string) {
+      let selectRecords: Array<Record<string, any>> = []
       if (entityCode) {
         let ds = this._$getDatasource(entityCode)
         if (ds) {
           let tmpSelectRecords = ds.getSelectedRecords()
-          tmpSelectRecords.iterate(function (record) {
+          tmpSelectRecords.iterate(function (record: Record<string, any>) {
             selectRecords.push(record.toMap())
           })
         }
       }
       return selectRecords
     }
-    let _$isSelectedRecord = function (entityCode, record) {
+    let _$isSelectedRecord = function (
+      entityCode: string,
+      record: Record<string, any>
+    ) {
       let isSelect = false
       if (entityCode && record) {
         let ds = this._$getDatasource(entityCode)
@@ -530,7 +584,10 @@ V3ComponentVue.prototype = {
       }
       return isSelect
     }
-    let _$isCurrentRecord = function (entityCode, record) {
+    let _$isCurrentRecord = function (
+      entityCode: string,
+      record: Record<string, any>
+    ) {
       let isCurrent = false
       if (entityCode && record) {
         let ds = this._$getDatasource(entityCode)
@@ -543,11 +600,11 @@ V3ComponentVue.prototype = {
       return isCurrent
     }
     let _$synCurrentIdToDs = (function (sId, dsManager) {
-      return function (entityCode, id) {
+      return function (entityCode: string, id: string) {
         /* 新版的实体在记录里面，不能单传id */
         throw new Error('not find function: _$synCurrentIdToDs')
         // scopeManager.openScope(sId);
-        // var ds = dsManager.lookup({datasourceName:entityCode});
+        // let  ds = dsManager.lookup({datasourceName:entityCode});
         // if(ds){
         // ds.setCurrentRecord({
         // record : ds.getRecordById(id)
@@ -557,7 +614,7 @@ V3ComponentVue.prototype = {
       }
     })(scopeId, datasourceManager)
     let _$synSelectRecordToDs = scopeManager.createScopeHandler({
-      scopeId: scopeId,
+      scopeId: scopeId as string,
       handler: (function (dsManager) {
         return function (entityCode, data, isSel) {
           let dsName = entityCode
@@ -594,7 +651,7 @@ V3ComponentVue.prototype = {
       })(datasourceManager)
     })
     let _$setDsMultiSelect = (function (sId, dsManager) {
-      return function (entityCode) {
+      return function (entityCode: string) {
         if (entityCode !== '' && typeof entityCode == 'string') {
           scopeManager.openScope(sId)
           let ds = dsManager.lookup({
@@ -626,27 +683,27 @@ V3ComponentVue.prototype = {
      */
     let _$getDatasource = (function (sId, dsManager) {
       return scopeManager.createScopeHandler({
-        scopeId: sId,
+        scopeId: sId as string,
         handler: function (entityCode) {
           if (!entityCode) {
             return null
           }
-          var ds = dsManager.lookup({
+          let ds = dsManager.lookup({
             datasourceName: entityCode
           })
           return ds
         }
       })
     })(scopeId, datasourceManager)
-    let parseDsData = function (params) {
+    let parseDsData = function (params: Record<string, any>) {
       let newRecord = []
-      let changeValue = []
+      let changeValue: Array<any> = []
       let resultSet = params.resultSet
       let eventName = params.eventName
       if (eventName == 'CURRENT') {
         newRecord.push(params.currentRecord.toMap())
       } else if (resultSet) {
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           changeValue.push(rd.getChangedData())
           newRecord.push(rd.toMap())
         })
@@ -657,10 +714,14 @@ V3ComponentVue.prototype = {
       }
     }
     // 处理数据源触发事件的参数
-    let handlerCellFunc = function (handler, field, tmpVue) {
-      return function (params) {
+    let handlerCellFunc = function (
+      handler: Function,
+      field: string,
+      tmpVue: any
+    ) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
-          let result = []
+          let result: Array<any> = []
           let datas = parseDsData(params)
           let newRecord = datas.newRecord
           let changeValue = datas.changeValue
@@ -685,13 +746,17 @@ V3ComponentVue.prototype = {
     /**
      * 处理返回函数的参数
      */
-    let handlerCallBackParamFunc = function (handler, controlType, tmpVue) {
-      return function (params) {
+    let handlerCallBackParamFunc = function (
+      handler: Function,
+      controlType: string,
+      tmpVue: any
+    ) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
           let result = []
           let datas = parseDsData(params)
           let eventName = params.eventName
-          let newRecord = []
+          let newRecord: Record<string, any> = {}
           if (eventName == 'CURRENT') {
             newRecord = params.currentRecord.toMap()
           } else if (eventName == 'SELECT') {
@@ -723,29 +788,29 @@ V3ComponentVue.prototype = {
      *            func 数据源事件注册函数
      */
     let _$registerDsEvent = (function (_this) {
-      return function (param) {
+      return function (param: any) {
         if (typeof param == 'function') _this.dsEventRegisterFunc.push(param)
         else if (typeof param == 'object' && param.dsName && param.eventType) {
           _this.dsEventRegisterFunc.push(
             (function (param) {
               return function () {
-                var dsName = param.dsName
-                var eventType = param.eventType
-                var handler = param.handler
-                var controlType = param.controlType
-                var datasource
-                var tmpVue = param.vueObj
+                let dsName = param.dsName
+                let eventType = param.eventType
+                let handler = param.handler
+                let controlType = param.controlType
+                let datasource
+                let tmpVue = param.vueObj
                 if (
                   tmpVue &&
                   typeof tmpVue.$root._$getDatasource == 'function'
                 ) {
                   if (controlType == 'cell') {
                     if (tmpVue.$vnode.data && tmpVue.$vnode.data.model) {
-                      var vModel = tmpVue.$vnode.data.model.expression
+                      let vModel = tmpVue.$vnode.data.model.expression
                       if (vModel) {
-                        var tmp = vModel.split('.')
+                        let tmp = vModel.split('.')
                         dsName = tmp[0]
-                        var field = tmp[tmp.length - 1]
+                        let field = tmp[tmp.length - 1]
                         // 处理返回函数
                         handler = handlerCellFunc(param.handler, field, tmpVue)
                       }
@@ -757,7 +822,7 @@ V3ComponentVue.prototype = {
                       controlType,
                       tmpVue
                     )
-                    var customEntity = tmpVue[dsName]
+                    let customEntity = tmpVue[dsName]
                     if (customEntity && customEntity._metadata_) {
                       dsName = customEntity._metadata_.dsName
                     }
@@ -819,7 +884,7 @@ V3ComponentVue.prototype = {
     /**
      * 获取实体字段类型列表
      * */
-    let _$getEntityFieldType = function (entityCode) {
+    let _$getEntityFieldType = function (entityCode: string) {
       let types = this._data._$EntityFieldTypes
       if (entityCode && types && types[entityCode]) {
         return types[entityCode]
@@ -851,90 +916,112 @@ V3ComponentVue.prototype = {
       _$getScopeId: _$getScopeId,
       _$getMultipleSelectList: _$getMultipleSelectList,
       _$v3platform: function () {
-        var _this = this
+        let _this = this
         return {
           datasource: {
-            synCurrentRecordToDs: function (entityCode, current, oldCurrent) {
-              var func = _this._$synCurrentRecordToDs
+            synCurrentRecordToDs: function (
+              entityCode: string,
+              current: Record<string, any>,
+              oldCurrent: Record<string, any>
+            ) {
+              let func = _this._$synCurrentRecordToDs
               if (func) {
                 func.apply(_this, [entityCode, current, oldCurrent])
               }
             },
-            synCurrentIdToDs: function (entityCode, id) {
-              var func = _this._$synCurrentIdToDs
+            synCurrentIdToDs: function (entityCode: string, id: string) {
+              let func = _this._$synCurrentIdToDs
               if (func) {
                 func.apply(_this, [entityCode, id])
               }
             },
-            synSelectRecordToDs: function (entityCode, data, isSel) {
-              var func = _this._$synSelectRecordToDs
+            synSelectRecordToDs: function (
+              entityCode: string,
+              data: Record<string, any>,
+              isSel: boolean
+            ) {
+              let func = _this._$synSelectRecordToDs
               if (func) {
                 func.apply(_this, [entityCode, data, isSel])
               }
             },
-            setDsMultiSelect: function (entityCode) {
-              var func = _this._$setDsMultiSelect
+            setDsMultiSelect: function (entityCode: string) {
+              let func = _this._$setDsMultiSelect
               if (func) {
                 func.apply(_this, [entityCode])
               }
             },
-            getCurrentRecord: function (entityCode) {
-              var func = _this._$getCurrentRecord
+            getCurrentRecord: function (entityCode: string) {
+              let func = _this._$getCurrentRecord
               if (func) {
                 return func.apply(_this, [entityCode])
               }
             },
-            getSelectedRecords: function (entityCode) {
-              var func = _this._$getSelectedRecords
+            getSelectedRecords: function (entityCode: string) {
+              let func = _this._$getSelectedRecords
               if (func) {
                 return func.apply(_this, [entityCode])
               }
             },
-            isSelectedRecord: function (entityCode, data) {
-              var func = _this._$isSelectedRecord
+            isSelectedRecord: function (
+              entityCode: string,
+              data: Record<string, any>
+            ) {
+              let func = _this._$isSelectedRecord
               if (func) {
                 return func.apply(_this, [entityCode, data])
               }
             },
-            isCurrentRecord: function (entityCode, data) {
-              var func = _this._$isCurrentRecord
+            isCurrentRecord: function (
+              entityCode: string,
+              data: Record<string, any>
+            ) {
+              let func = _this._$isCurrentRecord
               if (func) {
                 return func.apply(_this, [entityCode, data])
               }
             },
-            synCurrentRecordToUi: function (entityCode, current) {
-              var funcs = _this._data._$v3paltformData.setCurrentHandlers
+            synCurrentRecordToUi: function (
+              entityCode: string,
+              current: Record<string, any>
+            ) {
+              let funcs = _this._data._$v3paltformData.setCurrentHandlers
               if (funcs.length > 0) {
-                for (var i = 0, len = funcs.length; i < len; i++) {
-                  var func = funcs[i]
+                for (let i = 0, len = funcs.length; i < len; i++) {
+                  let func = funcs[i]
                   func(entityCode, current)
                 }
               }
             },
-            synSelectRecordToUi: function (entityCode, datas, isSel) {
-              var funcs = _this._data._$v3paltformData.setSelectHandlers
+            synSelectRecordToUi: function (
+              entityCode: string,
+              datas: Array<Record<string, any>>,
+              isSel: boolean
+            ) {
+              let funcs = _this._data._$v3paltformData.setSelectHandlers
               if (funcs.length > 0) {
-                for (var i = 0, len = funcs.length; i < len; i++) {
-                  var func = funcs[i]
+                for (let i = 0, len = funcs.length; i < len; i++) {
+                  let func = funcs[i]
                   func(entityCode, datas, isSel)
                 }
               }
             },
-            registerCurrentHandler: function (handler) {
+            registerCurrentHandler: function (handler: Function) {
               _this._data._$v3paltformData.setCurrentHandlers.push(handler)
             },
-            registerSelectHandler: function (handler) {
+            registerSelectHandler: function (handler: Function) {
               _this._data._$v3paltformData.setSelectHandlers.push(handler)
             },
-            markDsMultipleSelect: function (entityCode) {
+            markDsMultipleSelect: function (entityCode: string) {
               _this._data._$v3paltformData.multipleSelect.push(entityCode)
             }
           }
         }
       }
     }
-  },
-  getExtraFields: function (data, dsName) {
+  }
+
+  getExtraFields(data: Record<string, any>, dsName: string) {
     // 获取数据缺少的字段列表，解决获取规则只获取部分字段的数据时，在自定义div里面使用无法同步数据的问题
     let extraFields = []
     if (data) {
@@ -950,42 +1037,43 @@ V3ComponentVue.prototype = {
       }
     }
     return extraFields
-  },
+  }
+
   /**
    * 构造Vue观察者
    */
-  _createVueWatcher: function () {
+  _createVueWatcher() {
     let windowScope = scopeManager.getWindowScope(),
-      watchers = {}
-    let getWatcher = function (entityCode, v3Vue) {
+      watchers: Record<string, any> = {}
+    let getWatcher = function (entityCode: string, v3Vue) {
       return {
         // deep:true,
         sync: true,
         handler: (function (code, sId, sManager, dsManager, _vue) {
-          return function (val, oVal) {
+          return function (val: any, oVal: any) {
             if (_vue && !_vue.duringDS2Vue[code]) {
               // 当前同步数据到实体动作不是由实体数据同步到Vue引发
               scopeManager.openScope(sId)
-              var ds = dsManager.lookup({
+              let ds = dsManager.lookup({
                 datasourceName: code
               })
               if (!ds) return // 如果数据源不存在，则不进行数据同步
               /* 实体全部记录 */
-              var allRecords = ds.getAllRecords().toArray()
-              var allIds = []
-              for (var i = 0, len = allRecords.length; i < len; i++) {
+              let allRecords = ds.getAllRecords().toArray()
+              let allIds = []
+              for (let i = 0, len = allRecords.length; i < len; i++) {
                 allIds.push(allRecords[i].getSysId())
               }
-              var insertRecord = []
-              var removeRecord = []
+              let insertRecord = []
+              let removeRecord = []
               if (typeof val.length != 'number') {
                 val = [val]
               }
-              var newIds = []
-              for (var i = 0, l = val.length; i < l; i++) {
-                var record = val[i]
+              let newIds = []
+              for (let i = 0, l = val.length; i < l; i++) {
+                let record = val[i]
                 if (allIds.indexOf(record.id) == -1) {
-                  var rd = ds.createRecord()
+                  let rd = ds.createRecord()
                   if (record._metadata_) {
                     record._metadata_.dsName = code
                   } else {
@@ -1000,7 +1088,7 @@ V3ComponentVue.prototype = {
                 }
                 newIds.push(record.id)
               }
-              for (var i = 0, len = allIds.length; i < len; i++) {
+              for (let i = 0, len = allIds.length; i < len; i++) {
                 if (newIds.indexOf(allIds[i]) == -1) {
                   removeRecord.push(allIds[i])
                 }
@@ -1031,11 +1119,12 @@ V3ComponentVue.prototype = {
       watchers[entityCode] = getWatcher(entityCode, this)
     }
     return watchers
-  },
+  }
+
   /**
    * 获取标签名称
    */
-  _getVuiTagName: function () {
+  _getVuiTagName() {
     let name =
       'v3-business-window-' +
       this.componentCode +
@@ -1044,7 +1133,8 @@ V3ComponentVue.prototype = {
       '-' +
       this.widgetCode
     return name
-  },
+  }
+
   /**
    * 实体记录增加watch方法
    *
@@ -1053,11 +1143,11 @@ V3ComponentVue.prototype = {
    *            'vue':Vue//vue实例, 'doubleId' :
    *            false//默认false，用于区分动态列表组绑定的记录 }
    */
-  _addRecordWatch: function (params) {
+  _addRecordWatch(params: Record<string, any>) {
     let records = params.records,
       vue = params.vue,
-      doubleId = params.doubleId === true ? true : false
-    dsName = params.dsName
+      doubleId = params.doubleId === true ? true : false,
+      dsName = params.dsName
     if (records && records.length > 0) {
       /* 生成记录其他字段的数据 */
       this._generateOtherField(records, dsName)
@@ -1074,7 +1164,7 @@ V3ComponentVue.prototype = {
         let scopeId = scopeManager.getCurrentScopeId()
 
         //无法监听带特殊字符的表达式
-        //var fn = vue.$watch("recordMap." + dsName + "." + nowId + "", (function (dsManager, sId, nId, _vue) {
+        //let  fn = vue.$watch("recordMap." + dsName + "." + nowId + "", (function (dsManager, sId, nId, _vue) {
         let fn = vue.$watch(
           (function (rd) {
             return function () {
@@ -1082,21 +1172,21 @@ V3ComponentVue.prototype = {
             }
           })(record),
           (function (dsManager, sId, nId, _vue) {
-            return function (newVal, oldVal) {
+            return function (newVal: any, oldVal: any) {
               // 当前行改变
               if (newVal && newVal._metadata_ && newVal._metadata_.dsName) {
-                var _metadata_ = newVal._metadata_
-                var dsName = _metadata_.dsName
+                let _metadata_ = newVal._metadata_
+                let dsName = _metadata_.dsName
                 /* 如果是由数据源同步ui引发的可不用处理 */
                 if (_vue.duringDS2Vue[dsName]) {
                   return
                 }
                 scopeManager.openScope(scopeId)
-                var datasource = dsManager.lookup({
+                let datasource = dsManager.lookup({
                   datasourceName: dsName
                 })
                 if (datasource) {
-                  var record = datasource.getRecordById(newVal.id)
+                  let record = datasource.getRecordById(newVal.id)
                   if (record) {
                     record.setDatas(newVal)
                     if (record.isChanged()) {
@@ -1124,14 +1214,16 @@ V3ComponentVue.prototype = {
         vue.recordMapFn[dsName][nowId] = fn
       }
     }
-  },
-  _extendDiff: function (aim, source) {
+  }
+
+  _extendDiff(aim: Record<string, any>, source: Record<string, any>) {
     for (let f in source) {
       if (source.hasOwnProperty(f) && source[f] !== aim[f]) {
         aim[f] = source[f]
       }
     }
-  },
+  }
+
   /**
    * 清除记录的watch状态，在记录被删除时执行
    *
@@ -1140,7 +1232,7 @@ V3ComponentVue.prototype = {
    *            [],//实体记录，传入记录长度为0，则清空全部，如果有长度，就按照传入数据清除，不传则不处理 'dsName' :
    *            '实体编码' }
    */
-  _clearRecordWatch: function (params) {
+  _clearRecordWatch(params: Record<string, any>) {
     let records = params.records,
       vue = params.vue,
       dsName = params.dsName
@@ -1176,18 +1268,20 @@ V3ComponentVue.prototype = {
         }
       }
     }
-  },
-  _copyResultSetData: function (datasourceRecord) {
-    let records = []
+  }
+
+  _copyResultSetData(datasourceRecord: Array<Record<string, any>>) {
+    let records: Array<Record<string, any>> = []
     if (datasourceRecord && datasourceRecord.length > 0) {
       for (let i = 0, len = datasourceRecord.length; i < len; i++) {
         let record = datasourceRecord[i]
       }
     }
     return records
-  },
+  }
+
   /* 判断是否修改当前行 */
-  isChangeCurrent: function (ds) {
+  isChangeCurrent(ds: Record<string, any>) {
     /* 不在动态列表组内 或者 在动态列表组内但实体非动态列表组绑定的实体 */
     if (
       !this.isDuringThrendList ||
@@ -1197,11 +1291,12 @@ V3ComponentVue.prototype = {
       return true
     }
     return false
-  },
+  }
+
   /**
    * 数据源同步
    */
-  _synchroDatabase: function (vm) {
+  _synchroDatabase(vm) {
     let entities = this.entities
     let extend = this._extendDiff
     for (let i = 0, l = entities.length; i < l; i++) {
@@ -1211,7 +1306,7 @@ V3ComponentVue.prototype = {
         v3vm: this
       })
       observer.setAsync(false)
-      observer.setLoadHandler(function (args) {
+      observer.setLoadHandler(function (args: Record<string, any>) {
         let resultSet = args.resultSet
         let isAppend = args.isAppend
         let ds = this.datasourceName,
@@ -1224,11 +1319,11 @@ V3ComponentVue.prototype = {
         /* 保存动态列表组每一列的记录的id */
         let druingDataId = null
         /* 复制实体记录，避免产生引用的问题 */
-        let records = []
+        let records: Array<Record<string, any>> = []
         let extraFields = resultSet.datas
           ? v3vm.getExtraFields(resultSet.datas[0], ds)
           : []
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           let map = rd.toMap()
           for (let _i = 0, _len = extraFields.length; _i < _len; _i++) {
             map[extraFields[_i]] = null
@@ -1244,6 +1339,7 @@ V3ComponentVue.prototype = {
         v3vm._handleRecordExtraInfo(params)
         /* 更新current */
         if (v3vm.isChangeCurrent(ds)) {
+          //@ts-ignore
           current = records.current
         }
         /* 删除全部记录watch状态 */
@@ -1254,7 +1350,7 @@ V3ComponentVue.prototype = {
         })
 
         /* 保存动态列表组每一列的记录的id */
-        let druingDataId = null
+        druingDataId = null
         if (!isAppend) {
           vm[ds] = []
         }
@@ -1274,7 +1370,7 @@ V3ComponentVue.prototype = {
         }, 50)
         v3vm.duringDS2Vue[ds] = false
       })
-      observer.setInsertHandler(function (args) {
+      observer.setInsertHandler(function (args: Record<string, any>) {
         let resultSet = args.resultSet
         let ds = this.datasourceName
         let vm = this.pros.vm,
@@ -1298,9 +1394,9 @@ V3ComponentVue.prototype = {
           }
           return eIds
         })()
-        let records = []
+        let records: Array<Record<string, any>> = []
         v3vm.duringDS2Vue[ds] = true
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           if (existIds.indexOf(rd.getSysId()) == -1) {
             let nowMap = rd.toMap()
             for (let i = 0, l = entityFields.length; i < l; i++) {
@@ -1327,16 +1423,18 @@ V3ComponentVue.prototype = {
           params.records = records
           v3vm._handleRecordExtraInfo(params)
           datas.push.apply(datas, records)
+          //@ts-ignore
           if (records.current && typeof records.current != '{}') {
             /* 新增记录有当前行 */
+            //@ts-ignore
             datas.current = records.current
           }
         }
         //不能复制，不然二次开发直接用数据源push时不能正常插入数据~
-        //					var tmpData = [];
+        //					let  tmpData = [];
         //					if (datas && datas.length > 0) {
-        //						for (var i = 0, l = datas.length; i < l; i++) {
-        //							var data = datas[i];
+        //						for (let  i = 0, l = datas.length; i < l; i++) {
+        //							let  data = datas[i];
         //							tmpData.push(data);
         //						}
         //					}
@@ -1358,14 +1456,14 @@ V3ComponentVue.prototype = {
         v3vm._addRecordWatch(params)
         v3vm.duringDS2Vue[ds] = false
       })
-      observer.setUpdateHandler(function (args) {
+      observer.setUpdateHandler(function (args: Record<string, any>) {
         let resultSet = args.resultSet
         let ds = this.datasourceName
         let vm = this.pros.vm,
           v3vm = this.pros.v3vm
         let datas = vm[ds]
         v3vm.duringDS2Vue[ds] = true
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           for (let i = 0, l = datas.length; i < l; i++) {
             let d = datas[i]
             if (d.id == rd.getSysId()) {
@@ -1381,7 +1479,7 @@ V3ComponentVue.prototype = {
         })
         v3vm.duringDS2Vue[ds] = false
       })
-      observer.setRemoveHandler(function (args) {
+      observer.setRemoveHandler(function (args: Record<string, any>) {
         let resultSet = args.resultSet
         let ds = this.datasourceName
         let vm = this.pros.vm,
@@ -1391,8 +1489,8 @@ V3ComponentVue.prototype = {
 
         let current = vm[ds].current
         let tmpDatas = datas
-        let deleteIds = []
-        resultSet.iterate(function (rd) {
+        let deleteIds: Array<string> = []
+        resultSet.iterate(function (rd: Record<string, any>) {
           deleteIds.push(rd.getSysId())
         })
         /* 删除全部记录watch状态 */
@@ -1409,8 +1507,8 @@ V3ComponentVue.prototype = {
             }
           }
         }
-        //					for (var i = 0, l = datas.length; i < l; i++) {
-        //						var d = datas[i];
+        //					for (let  i = 0, l = datas.length; i < l; i++) {
+        //						let  d = datas[i];
         //						if (deleteIds.indexOf(d.id) == -1) {
         //							tmpDatas.push(d);
         //						}
@@ -1430,7 +1528,7 @@ V3ComponentVue.prototype = {
         vm[ds].current = current
         v3vm.duringDS2Vue[ds] = false
       })
-      observer.setCurrentRecordHandler(function (args) {
+      observer.setCurrentRecordHandler(function (args: Record<string, any>) {
         let ds = this.datasourceName
         let vm = this.pros.vm,
           v3vm = this.pros.v3vm
@@ -1462,7 +1560,7 @@ V3ComponentVue.prototype = {
         }
         v3vm.duringDS2Vue[ds] = false
       })
-      observer.setSelectRecordHandler(function (args) {
+      observer.setSelectRecordHandler(function (args: Record<string, any>) {
         let ds = this.datasourceName
         let vm = this.pros.vm,
           v3vm = this.pros.v3vm
@@ -1475,7 +1573,7 @@ V3ComponentVue.prototype = {
           resultSet.toArray(),
           isSelect
         )
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           for (let i = 0, l = datas.length; i < l; i++) {
             let d = datas[i]
             if (d.id == rd.__recordData__.id) {
@@ -1491,10 +1589,12 @@ V3ComponentVue.prototype = {
       })
       this.observerIds.push(oId)
     }
-  },
-  getHtml: function () {
+  }
+
+  getHtml() {
     return ''
-  },
+  }
+
   /**
    * 处理实体记录中添加额外的标识信息以及watch
    *
@@ -1503,7 +1603,7 @@ V3ComponentVue.prototype = {
    * @param {String}
    *            dsName 实体编码
    */
-  _handleRecordExtraInfo: function (params) {
+  _handleRecordExtraInfo(params: Record<string, any>) {
     let records = params.records,
       dsName = params.dsName
     let currentRecord = {}
@@ -1552,14 +1652,15 @@ V3ComponentVue.prototype = {
     /* 设置当前记录 */
     records.current = currentRecord
     return records
-  },
+  }
+
   /**
    * 校验标签是否注册
    *
    * @param {String}
    *            name 标签名称
    */
-  _checkVuiTag: function (name) {
+  _checkVuiTag(name: string) {
     if (!Vue.options.components[name]) {
       frontEndAlerter.error({
         title: 'vui错误',
@@ -1570,11 +1671,12 @@ V3ComponentVue.prototype = {
       return false
     }
     return true
-  },
+  }
+
   /**
    * 校验实体是否存在
    */
-  _checkVuiEntity: function (vuiTagName) {
+  _checkVuiEntity(vuiTagName: string) {
     let entities = this.entities
     /* vui组件对象 */
     let vuiComponent = Vue.options.components[vuiTagName]
@@ -1609,8 +1711,9 @@ V3ComponentVue.prototype = {
       return false
     }
     return true
-  },
-  getTemplate: function (name) {
+  }
+
+  getTemplate(name: string) {
     let html = ['<', name]
     for (let i = 0, l = this.entities.length; i < l; i++) {
       let entityCode = this.entities[i]
@@ -1641,7 +1744,7 @@ V3ComponentVue.prototype = {
       if (windowScope && windowScope.isSimpleDivWindow()) {
         viewPortData = mobileViewPortAdapter.getViewPortSize()
       }
-      let addAttr = function (html, name, val) {
+      let addAttr = function (html: Array<any>, name: string, val: any) {
         let prefix = ':'
         try {
           let num = Number(val)
@@ -1668,9 +1771,10 @@ V3ComponentVue.prototype = {
     html.push(name)
     html.push('>')
     return html.join('')
-  },
+  }
+
   /* 改变current的引用对象 */
-  changeCurrentQuote: function (_data) {
+  changeCurrentQuote(_data: Record<string, any>) {
     let data = _data
     if (data) {
       for (let code in data) {
@@ -1694,18 +1798,20 @@ V3ComponentVue.prototype = {
       }
     }
     return data
-  },
+  }
+
   /* 销毁观察者，目前移动端的动态列表组使用 */
-  destroyObserver: function () {
+  destroyObserver() {
     if (this.observerIds.length > 0)
       observerManager.destroy({
         ids: this.observerIds
       })
-  },
+  }
+
   /**
    * 渲染V3ComponentVue
    */
-  render: function () {
+  render() {
     /* 获取标签名称 */
     let name = this._getVuiTagName()
     /* 校验标签是否注册 */
@@ -1732,10 +1838,10 @@ V3ComponentVue.prototype = {
     } else {
       element = el.append($(document.createElement('div'))[0]).children()[0]
     }
-    //			var tDiv = $(document.createElement("div")).addClass("framework7-root ios auto-height-style").append(document.createElement("div"))[0];
-    //			var element = el.append(tDiv).children().children()[0];
+    //			let  tDiv = $(document.createElement("div")).addClass("framework7-root ios auto-height-style").append(document.createElement("div"))[0];
+    //			let  element = el.append(tDiv).children().children()[0];
     let _this = this
-    let _data = this._createVueData()
+    let _data: Record<string, any> = this._createVueData()
     let params = {
       el: element,
       framework7: {
@@ -1750,7 +1856,7 @@ V3ComponentVue.prototype = {
       mounted: function () {
         /* 动态列表组内，注册开始数据的监听事件 */
         if (_this.isDuringThrendList) {
-          for (var key in _data) {
+          for (let key in _data) {
             if (
               _data.hasOwnProperty(key) &&
               typeof _data[key] == 'object' &&
@@ -1772,7 +1878,7 @@ V3ComponentVue.prototype = {
     }
     // 获取语言包信息,创建vui18n实例
     let locale = 'zhCN'
-    let langPack = {}
+    let langPack: Record<string, any> = {}
     langPack[locale] = {
       message: i18n_window.getWidgetInfo({
         componentCode: this.componentCode,
@@ -1807,4 +1913,5 @@ V3ComponentVue.prototype = {
     }
   }
 }
-return V3ComponentVue
+
+export default V3ComponentVue

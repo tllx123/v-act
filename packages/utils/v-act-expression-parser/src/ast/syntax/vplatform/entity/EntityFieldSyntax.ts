@@ -101,9 +101,7 @@ class EntityFieldSyntax extends Syntax {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
     if (visitor && visitor.visitEntityFieldSyntax) {
-      visitor.visitEntityFieldSyntax(this, (syntax) => syntax.visit())
-    } else {
-      return false
+      visitor.visitEntityFieldSyntax(this)
     }
   }
 }

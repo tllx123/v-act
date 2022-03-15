@@ -3,8 +3,8 @@ if (!('classList' in document.documentElement)) {
   Object.defineProperty(HTMLElement.prototype, 'classList', {
     get: function () {
       var self = this
-      function update(fn) {
-        return function (value) {
+      function update(fn: Function) {
+        return function (value: any) {
           var classes = self.className.split(/\s+/g),
             index = classes.indexOf(value)
 
@@ -14,24 +14,28 @@ if (!('classList' in document.documentElement)) {
       }
 
       return {
-        add: update(function (classes, index, value) {
+        add: update(function (classes: Array<any>, index: number, value: any) {
           if (!~index) classes.push(value)
         }),
 
-        remove: update(function (classes, index) {
+        remove: update(function (classes: Array<any>, index: number) {
           if (~index) classes.splice(index, 1)
         }),
 
-        toggle: update(function (classes, index, value) {
+        toggle: update(function (
+          classes: Array<any>,
+          index: number,
+          value: any
+        ) {
           if (~index) classes.splice(index, 1)
           else classes.push(value)
         }),
 
-        contains: function (value) {
+        contains: function (value: any) {
           return !!~self.className.split(/\s+/g).indexOf(value)
         },
 
-        item: function (i) {
+        item: function (i: number) {
           return self.className.split(/\s+/g)[i] || null
         }
       }
@@ -54,7 +58,7 @@ if (__isIE && window.HTMLElement) {
         var attributes = this.attributes
         var name = [],
           value = []
-        var obj = {}
+        var obj: Record<string, any> = {}
         for (var i = 0; i < attributes.length; i++) {
           if (attributes[i].nodeName.slice(0, 5) == 'data-') {
             name.push(attributes[i].nodeName.slice(5))

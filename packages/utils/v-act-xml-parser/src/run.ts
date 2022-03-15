@@ -13,7 +13,7 @@ const filterTagEle = (
   return target.filter((item) => item.tagName === tagName)[0]
 }
 
-export const run = (resources: XMLElementObj[]): any => {
+export const run = (resources: XMLElementObj[]): Function => {
   let codes: string[] = []
 
   // if else状态开关

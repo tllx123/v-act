@@ -1,141 +1,159 @@
-let TimePoint = function (params) {
-  this.time = new Date()
-  this.type = params.type
-  this.key = params.key
-  this.series = params.series
-  this.componentCode = params.componentCode
-  this.componentName = params.componentName
-  this.windowCode = params.windowCode
-  this.windowName = params.windowName
-  this.funCode = params.funCode
-  this.funName = params.funName
-  this.ruleCode = params.ruleCode
-  this.ruleName = params.ruleName
-  this.ruleInstanceCode = params.ruleInstanceCode
-  this.rpcCode = params.rpcCode
-  this.parentKey = params.parentKey
-  this.scopeId = params.scopeId
-  this.parentScopeId = params.parentScopeId
-}
+export default class TimePoint {
+  time: Date
+  type: string
+  key: string
+  series
+  componentCode: string
+  componentName: string
+  windowCode: string
+  windowName: string
+  funCode: string
+  funName: string
+  ruleCode: string
+  ruleName: string
+  ruleInstanceCode: string
+  rpcCode: string
+  parentKey: string
+  scopeId: string
+  parentScopeId: string
 
-TimePoint.prototype = {
-  getComponentCode: function () {
+  constructor(params: Record<string, any>) {
+    this.time = new Date()
+    this.type = params.type
+    this.key = params.key
+    this.series = params.series
+    this.componentCode = params.componentCode
+    this.componentName = params.componentName
+    this.windowCode = params.windowCode
+    this.windowName = params.windowName
+    this.funCode = params.funCode
+    this.funName = params.funName
+    this.ruleCode = params.ruleCode
+    this.ruleName = params.ruleName
+    this.ruleInstanceCode = params.ruleInstanceCode
+    this.rpcCode = params.rpcCode
+    this.parentKey = params.parentKey
+    this.scopeId = params.scopeId
+    this.parentScopeId = params.parentScopeId
+  }
+
+  getComponentCode() {
     return this.componentCode
-  },
+  }
 
-  setComponentCode: function (componentCode) {
+  setComponentCode(componentCode: string) {
     this.componentCode = componentCode
-  },
+  }
 
-  getComponentName: function () {
+  getComponentName() {
     return this.componentName
-  },
+  }
 
-  setComponentName: function (componentName) {
+  setComponentName(componentName: string) {
     this.componentName = componentName
-  },
+  }
 
-  getWindowCode: function () {
+  getWindowCode() {
     return this.windowCode
-  },
+  }
 
-  setWindowCode: function (windowCode) {
+  setWindowCode(windowCode: string) {
     this.windowCode = windowCode
-  },
+  }
 
-  getWindowName: function () {
+  getWindowName() {
     return this.windowName
-  },
+  }
 
-  setWindowtName: function (windowName) {
+  setWindowtName(windowName: string) {
     this.windowName = windowName
-  },
+  }
 
-  getFunCode: function () {
+  getFunCode() {
     return this.funCode
-  },
+  }
 
-  setFunCode: function (funCode) {
+  setFunCode(funCode: string) {
     this.funCode = funCode
-  },
+  }
 
-  getFunName: function () {
+  getFunName() {
     return this.funName
-  },
+  }
 
-  setFuntName: function (funName) {
+  setFuntName(funName: string) {
     this.funName = funName
-  },
+  }
 
-  getRuleCode: function () {
+  getRuleCode() {
     return this.ruleCode
-  },
+  }
 
-  setRuleCode: function (ruleCode) {
+  setRuleCode(ruleCode: string) {
     this.ruleCode = ruleCode
-  },
+  }
 
-  getRuleName: function () {
+  getRuleName() {
     return this.ruleName
-  },
+  }
 
-  setRuletName: function (ruleName) {
+  setRuletName(ruleName: string) {
     this.ruleName = ruleName
-  },
+  }
 
-  getRuleInstanceCode: function () {
+  getRuleInstanceCode() {
     return this.ruleInstanceCode
-  },
+  }
 
-  setRuletInstanceCode: function (ruleInstanceCode) {
+  setRuletInstanceCode(ruleInstanceCode: string) {
     this.ruleInstanceCode = ruleInstanceCode
-  },
+  }
 
-  getRPCCode: function () {
+  getRPCCode() {
     return this.rpcCode
-  },
+  }
 
-  setRPCCode: function (rpcCode) {
+  setRPCCode(rpcCode: string) {
     this.rpcCode = rpcCode
-  },
+  }
 
-  getTime: function () {
+  getTime() {
     return this.time
-  },
+  }
 
-  getType: function () {
+  getType() {
     return this.type
-  },
+  }
 
-  getKey: function () {
+  getKey() {
     return this.key
-  },
+  }
 
-  getSeries: function () {
+  getSeries() {
     return this.series
-  },
+  }
 
-  getParentKey: function () {
+  getParentKey() {
     return this.parentKey
-  },
+  }
 
-  setParentKey: function (parentKey) {
+  setParentKey(parentKey: string) {
     this.parentKey = parentKey
-  },
+  }
 
-  getScopeId: function () {
+  getScopeId() {
     return this.scopeId
-  },
+  }
 
-  setScopeId: function (scopeId) {
+  setScopeId(scopeId: string) {
     this.scopeId = scopeId
-  },
+  }
 
-  getParentScopeId: function () {
+  getParentScopeId() {
     return this.parentScopeId
-  },
+  }
 
-  getTypeCode: function () {
+  getTypeCode() {
     let series = this.series
     let typeCode = ''
     switch (series) {
@@ -156,9 +174,9 @@ TimePoint.prototype = {
         break
     }
     return typeCode
-  },
+  }
 
-  getTipDom: function (data, time) {
+  getTipDom(data: any, time: any) {
     let dom = ''
     let type = time.type
     let componentCode = time.getComponentCode()
@@ -280,9 +298,9 @@ TimePoint.prototype = {
         break
     }
     return dom
-  },
+  }
 
-  Types: {
+  static Types = {
     BeforeRuleExe: -1,
     AfterRuleExe: 1,
 
@@ -303,9 +321,9 @@ TimePoint.prototype = {
 
     BeforeRPC: -7,
     AfterRPC: 7
-  },
+  }
 
-  Series: {
+  static Series = {
     Route: 1,
     Rule: 2,
     Network: 3,
@@ -313,9 +331,3 @@ TimePoint.prototype = {
     Component: 5
   }
 }
-
-TimePoint.Types = TimePoint.prototype.Types
-
-TimePoint.Series = TimePoint.prototype.Series
-
-export default TimePoint
