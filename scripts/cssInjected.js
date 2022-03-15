@@ -1,5 +1,7 @@
 export default function cssInjectedByJsPlugin(
-  { topExecutionPriority } = { topExecutionPriority: true }
+  { topExecutionPriority } = {
+    topExecutionPriority: true
+  }
 ) {
   //Globally so we can add it to legacy and non-legacy bundle.
   let cssToInject = ''
@@ -37,10 +39,13 @@ export default function cssInjectedByJsPlugin(
               topCode = chunk.code
             }
             // 字符串序列化操作
-            let temp = JSON.stringify({ temp: cssToInject })
-            temp.length > 12 && (temp = temp.slice(9, -2))
-
-            chunk.code = `${topCode}(function(){ try {var elementStyle = document.createElement('style'); elementStyle.innerText = \`${temp}\`; document.head.appendChild(elementStyle);} catch(e) {console.error(e, 'vite-plugin-css-injected-by-js: error when trying to add the style.');} })();${bottomCode}`
+            if (cssToInject && cssToInject.length > 0) {
+              let temp = JSON.stringify({
+                temp: cssToInject
+              })
+              temp.length > 12 && (temp = temp.slice(9, -2))
+              chunk.code = `${topCode}(function(){ try {var elementStyle = document.createElement('style'); elementStyle.innerText = \`${temp}\`; document.head.appendChild(elementStyle);} catch(e) {console.error(e, 'vite-plugin-css-injected-by-js: error when trying to add the style.');} })();${bottomCode}`
+            }
             break
           }
         }

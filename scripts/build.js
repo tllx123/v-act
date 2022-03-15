@@ -2,11 +2,11 @@ import chalk from 'chalk'
 import fs from 'fs-extra'
 import path from 'path'
 import { build } from 'vite'
-import usePluginImport from 'vite-plugin-importer'
 
 import { filterPackages } from '@lerna/filter-packages'
 import { getPackages } from '@lerna/project'
 import vitePluginReact from '@vitejs/plugin-react'
+
 import cssInjectedByJsPlugin from './cssInjected.js'
 
 const publicExternal = [

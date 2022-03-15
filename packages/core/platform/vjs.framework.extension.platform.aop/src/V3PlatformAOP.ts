@@ -164,8 +164,10 @@ const setRemoteDebugHost = function (host, callback) {
 }
 
 //TODO
-window.V3PlatformDebugger = {}
-V3PlatformDebugger.setRemoteDebugHost = setRemoteDebugHost
+if (typeof window != 'undefined') {
+  window.V3PlatformDebugger = {}
+  V3PlatformDebugger.setRemoteDebugHost = setRemoteDebugHost
+}
 
 const isEnable = function () {
   return enable
