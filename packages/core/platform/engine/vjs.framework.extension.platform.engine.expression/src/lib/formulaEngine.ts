@@ -9004,7 +9004,7 @@ com.toone.itop.formula.FormulaTreeExtra = {
         code: name
       })
     }
-    if (typeof cvar == 'undefine')
+    if (typeof cvar == 'undefined')
       throw new Error(
         '[' +
           name +

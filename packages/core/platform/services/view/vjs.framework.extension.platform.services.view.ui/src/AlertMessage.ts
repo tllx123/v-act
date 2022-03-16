@@ -1,6 +1,7 @@
 import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as backMask from './BackMask'
 import * as zindex from './ZIndex'
@@ -11,7 +12,7 @@ var dialogs = [],
   defaultViewTime = 3,
   currentDialogInfo = null
 
-var divId = '___alertMessageDiv'
+/*var divId = '___alertMessageDiv'
 //插入DOM到页面
 alertDiv = $('#' + divId)
 if (alertDiv && alertDiv.size() == 0) {
@@ -28,7 +29,7 @@ if (alertDiv && alertDiv.size() == 0) {
   alertDiv.find('#dialogIKnow').click(function () {
     iKnowHandler()
   })
-}
+}*/
 
 var confirmDialog = function (title, content, onCallback, isEsCapeHtml) {
   _dialogInterval(title, content, 'confirm', onCallback, isEsCapeHtml)

@@ -1,19 +1,18 @@
-import * as formulaEngine from 'module'
-
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-import * as ExpressionContext from './ExpressionContext'
+import ExpressionContext from './ExpressionContext'
 
 const execute = function (params) {
   let context = params.context,
     exp = params.expression
+  return exp
   // 使用函数执行器
   //TODO xiedh
   //context.put('executor', ruleExecutor['functionHandler']);
   //TODO xiedh
   //context.put('sandBox', sandbox);
-  let ctx = new formulaEngine.Map()
+  /*let ctx = new formulaEngine.Map()
   context = context || new ExpressionContext()
   ctx.put('expressionContext', context)
   let result
@@ -39,7 +38,7 @@ const execute = function (params) {
       )
     }
   }
-  return result
+  return result*/
 }
 
 const parseVars = function (params) {

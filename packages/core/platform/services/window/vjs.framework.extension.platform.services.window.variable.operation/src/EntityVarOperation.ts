@@ -4,16 +4,18 @@
  * vjs服务：vjs.framework.extension.platform.services.window.EntityVarOperation
  */
 
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 // 复制类型
 const COPY_TYPE = {
@@ -54,7 +56,7 @@ const VALUE_SOURCE_TYPE = {
   EXPRESSION: 'expression', //表达式
   ENTITYFIELD: 'entityField' //实体字段
 }
-export { SOURCE_TYPE, COPY_TYPE, OPERATOR_TYPE, ENTITY_TYPE, VALUE_SOURCE_TYPE }
+export { COPY_TYPE, ENTITY_TYPE, OPERATOR_TYPE, SOURCE_TYPE, VALUE_SOURCE_TYPE }
 /**
  * 复制实体（变量实体及界面实体）记录(jsonVersion>=1.0)
  * @param	params			赋值映射信息
@@ -179,7 +181,7 @@ const _mappingRecords = function (sourceRecords, fieldMapping, routeContext) {
       variable: {},
       systemVariable: {}
     }
-    for (const i = 0; i < sourceRecords.length; i++) {
+    for (let i = 0; i < sourceRecords.length; i++) {
       result.push(
         _mappingRecord(sourceRecords[i], fieldMapping, cache, routeContext)
       )
@@ -214,7 +216,7 @@ const _mappingRecord = function (
   const result = {}
   const variable = cache.variable
   const systemVariable = cache.systemVariable
-  for (const i = 0; i < fieldMapping.length; i++) {
+  for (let i = 0; i < fieldMapping.length; i++) {
     const destField = fieldMapping[i].destName
     const sourceField = fieldMapping[i].sourceName
     const sourceType = fieldMapping[i].type
@@ -256,7 +258,7 @@ const _mappingRecord = function (
  *            字段映射信息：决定需要复制哪些字段
  */
 const _setRecordValue = function (record, mappingRecord, fieldMapping) {
-  for (const i = 0; i < fieldMapping.length; i++) {
+  for (let i = 0; i < fieldMapping.length; i++) {
     const destField = fieldMapping[i].destName
     const value = mappingRecord[destField]
     // id字段也可赋值
@@ -377,10 +379,10 @@ const _indexOfDestRecord_List = function (
     )
   }
   try {
-    for (const i = 0; i < destRecords.length; i++) {
+    for (let i = 0; i < destRecords.length; i++) {
       const destRecord = destRecords[i]
       let isMatch = true
-      for (const j = 0; j < checkItems.length; j++) {
+      for (let j = 0; j < checkItems.length; j++) {
         const checkItem = checkItems[j]
         const destValue = destRecord.get(checkItem)
         //					const fileItems = checkItem.split(".");
@@ -615,16 +617,16 @@ const _copy2Dest = function (
     // 对于替换和合并，找到目标记录
     const destRecordList = []
     if (indexOfInsert.length > 0 && indexOfInsert[0] != -1) {
-      for (const j = 0; j < indexOfInsert.length; j++) {
+      for (let j = 0; j < indexOfInsert.length; j++) {
         destRecordList.push(insertRecords[indexOfInsert[j]])
       }
     } else if (indexOfUpdate.length > 0 && indexOfUpdate[0] != -1) {
-      for (const j = 0; j < indexOfUpdate.length; j++) {
+      for (let j = 0; j < indexOfUpdate.length; j++) {
         destRecordList.push(updateRecords[indexOfUpdate[j]])
       }
     } else {
       if (indexOfDest.length > 0 && indexOfDest[0] != -1) {
-        for (const _i = 0; _i < indexOfDest.length; _i++) {
+        for (let _i = 0; _i < indexOfDest.length; _i++) {
           destRecordList.push(destRecords[indexOfDest[_i]])
           updateRecords.push(destRecords[indexOfDest[_i]])
         }

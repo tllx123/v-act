@@ -1,14 +1,7 @@
-let sandBox
-
-export function initModule(sb) {
-  sandBox = sb
-}
+import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 
 const execute = function (params) {
-  let FunctionEngine = sandBox.getService(
-    'vjs.framework.extension.platform.engine.function.FunctionEngine'
-  )
   return FunctionEngine.execute(params)
 }
 
-export { excuteRouteExp, execute, parseVars }
+export { execute }

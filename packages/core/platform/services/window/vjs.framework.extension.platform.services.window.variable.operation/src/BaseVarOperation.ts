@@ -4,21 +4,25 @@
  * vjs服务:	vjs.framework.extension.platform.services.window.BaseVarOperation
  */
 
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
-import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
-import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { StoreTypes as storeTypes } from '@v-act/vjs.framework.extension.platform.interface.enum'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { DatasourcePusher as pusher } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import {
+  ComponentParam as componentParam,
+  WindowParam as windowParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 /**
  * 变量类型
@@ -40,7 +44,7 @@ const VALUE_SOURCE_TYPE = {
   EXPRESSION: 'expression', //表达式
   ENTITYFIELD: 'entityField' //实体字段
 }
-export { VAR_TYPE, VALUE_SOURCE_TYPE }
+export { VALUE_SOURCE_TYPE, VAR_TYPE }
 
 /**
  * 给变量赋值
@@ -83,7 +87,7 @@ const setTargetValue = function (fieldMap, routeContext) {
    * }
    * */
   let entityInfos = {}
-  for (const i = 0; i < fieldMap.length; i++) {
+  for (let i = 0; i < fieldMap.length; i++) {
     const fieldObj = fieldMap[i]
     const targetType = fieldObj['TargetType']
     const target = fieldObj['Target']
@@ -245,7 +249,7 @@ const setEntityVal = function (dsName, destFieldName, srcVal) {
     datasourceName: dsName
   })
   let flag = true
-  for (const index = 0; index < refWidgetIds.length; index++) {
+  for (let index = 0; index < refWidgetIds.length; index++) {
     const retWidgetId = refWidgetIds[index]
     const widgetType = widgetContext.get(retWidgetId, 'widgetType')
     const storeType = widgetContext.getStoreType(retWidgetId)
@@ -269,7 +273,7 @@ const setEntityVal = function (dsName, destFieldName, srcVal) {
       })
       if (mappingInfo['mappingItems'] != undefined) {
         const mappingItems = mappingInfo.mappingItems
-        for (const i = 0; i < mappingItems.length; i++) {
+        for (let i = 0; i < mappingItems.length; i++) {
           const mappingItem = mappingItems[i]
           if (mappingItem['refField'] == destFieldName) {
             flag = false
@@ -288,7 +292,7 @@ const setEntityVal = function (dsName, destFieldName, srcVal) {
       })
       if (mappingInfo['mappingItems'] != undefined) {
         const mappingItems = mappingInfo.mappingItems
-        for (const i = 0; i < mappingItems.length; i++) {
+        for (let i = 0; i < mappingItems.length; i++) {
           const mappingItem = mappingItems[i]
           if (mappingItem['refField'] == destFieldName) {
             flag = false
@@ -413,7 +417,7 @@ const getEntityVariableColumnConfig = function (variableType, variableCode) {
 const getFreeDBFieldsMapping = function (fieldObj) {
   const configFieldsMapping = fieldObj['entityFieldMapping']
   const fieldsMapping = []
-  for (const i = 0; i < configFieldsMapping.length; i++) {
+  for (let i = 0; i < configFieldsMapping.length; i++) {
     const configField = configFieldsMapping[i]
     const code = configField.destFieldName
     const type = 'char' //目前没有取值的来源，只能认为都是char
@@ -428,7 +432,7 @@ const getFreeDBFieldsMapping = function (fieldObj) {
 const getFreeDBCopyFieldsMapping = function (fieldObj) {
   const configFieldsMapping = fieldObj['entityFieldMapping']
   const copyFieldsMapping = []
-  for (const i = 0; i < configFieldsMapping.length; i++) {
+  for (let i = 0; i < configFieldsMapping.length; i++) {
     const configField = configFieldsMapping[i]
     const paramEntityField = configField.destFieldName
     const fieldValueType =
@@ -507,7 +511,7 @@ const getReportEntityDS = function (rptEntityName) {
   if (rptEntity) {
     const fieldsMapping = []
     const fieldNames = Object.keys(rptEntity)
-    for (const i = 0; i < fieldNames.length; i++) {
+    for (let i = 0; i < fieldNames.length; i++) {
       const code = fieldNames[i]
       const type = 'char'
       fieldsMapping.push({
@@ -551,7 +555,7 @@ const updateReportEntity = function (fieldObj, srcVal, rptEntityName) {
     if (mappings && mappings.size() > 0) {
       const destObj = getReportEntity(rptEntityName)
       if (destObj) {
-        for (const i = 0; i < mappings.size(); i++) {
+        for (let i = 0; i < mappings.size(); i++) {
           const mapping = mappings[i]
           const destFieldName = mapping['destFieldName']
           destObj[destFieldName] = srcObj.get(destFieldName)

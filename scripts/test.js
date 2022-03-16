@@ -1,15 +1,9 @@
 import fs from 'fs'
 import path from 'path'
 
-/*import manager from '@v-act/vjs.framework.extension.platform.interface.scope'
+import * as $ from '@v-act/vjs.framework.extension.platform.services.view.ui'
 
-manager.ScopeManager.createWindowScope({
-  componentCode: 'bb1',
-  windowCode: 'form1',
-  series: 'smartclient'
-})*/
-import ruleEngine from '@v-act/vjs.framework.extension.platform.engine.rule'
-ruleEngine.RuleEngine
+$.get
 
 const convertWebFuncs = function () {
   const desDir = 'D:\\Workspace\\github\\v-act\\packages\\funcs'
