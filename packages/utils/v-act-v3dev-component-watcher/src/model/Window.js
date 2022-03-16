@@ -40,8 +40,6 @@ class Window {
     // 处理xml脚本节点字符串问题
     forInObj(obj)
     this.obj = obj
-
-    console.log(JSON.stringify(this.obj, null, 2))
   }
 
   getCode() {
@@ -262,6 +260,24 @@ class Window {
         if (attrs && attrs.type == 'client') {
           if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
             let ruleInstanceList = logic.ruleInstances.ruleInstance
+            ruleInstanceList = Array.isArray(ruleInstanceList)
+              ? ruleInstanceList
+              : [ruleInstanceList]
+            ruleInstanceList.forEach((ruleInstance) => {
+              const ruleCode = ruleInstance.$.ruleCode
+              if (ruleSet.indexOf(ruleCode) == -1) {
+                ruleSet.push(ruleCode)
+              }
+            })
+          }
+          if (
+            logic.ruleSets &&
+            logic.ruleSets.ruleSet &&
+            logic.ruleSets.ruleSet.ruleInstances &&
+            logic.ruleSets.ruleSet.ruleInstances.ruleInstance
+          ) {
+            let ruleInstanceList =
+              logic.ruleSets.ruleSet.ruleInstances.ruleInstance
             ruleInstanceList = Array.isArray(ruleInstanceList)
               ? ruleInstanceList
               : [ruleInstanceList]

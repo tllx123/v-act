@@ -1,10 +1,10 @@
 import React,{useEffect} from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import {ScopeManager as scopeManager} from '@v-act/vjs.framework.extension.platform.interface.scope';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
-import {uuid} from '@v-act/vjs.framework.extension.util.uuid'
 const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent').then(mod=>mod.JsonJGComponent)});
 const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer').then(mod=>mod.JsonJGSpacer)});
 const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel').then(mod=>mod.JsonJGGroupPanel)});
@@ -35,7 +35,7 @@ function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
-    const instanceId = uuid.generate();
+    const instanceId = scopeManager.createWindowScope({componentCode:"{{@ componentCode}}",windowCode:"{{@ windowCode}}",series:"smartclient"});
     useEffect(async ()=>{
       try{
         debugger
@@ -44,7 +44,7 @@ function Index(){
         const ruleDefines = {{@ ruleDefines}}
         const funcDefines = {{@ funcDefines}}
         const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).ViewLib
-        const scopeManager = (await import('@v-act/vjs.framework.extension.interface.scope')).ScopeManager;
+        const scopeManager = (await import('@v-act/vjs.framework.extension.platform.interface.scope')).ScopeManager;
         viewLib.init({
           "paramCfg": {
             "skinType": "default",

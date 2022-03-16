@@ -1,6 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 
+/*import manager from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+manager.ScopeManager.createWindowScope({
+  componentCode: 'bb1',
+  windowCode: 'form1',
+  series: 'smartclient'
+})*/
+import ruleEngine from '@v-act/vjs.framework.extension.platform.engine.rule'
+ruleEngine.RuleEngine
+
 const convertWebFuncs = function () {
   const desDir = 'D:\\Workspace\\github\\v-act\\packages\\funcs'
   const sourceDir = 'D:\\Workspace\\github\\vplatform-plugin-function-client'
@@ -263,12 +273,4 @@ const dir = path.resolve(
 //moveTo(dir)
 //convertWebFuncs()
 //convertWebRules()
-const tmpDir = 'D:\\Workspace\\github\\v-act\\packages\\rules'
-const dirNames = fs.readdirSync(tmpDir)
-dirNames.forEach((dirName) => {
-  const p = path.resolve(tmpDir, dirName, 'packaget.json')
-  if (fs.existsSync(p)) {
-    fs.unlinkSync(p)
-  }
-})
 //convertWebFunc("D:\\Workspace\\github\\vplatform-plugin-function-client\\Webfunc_WXGetUserInfo", "D:\\Workspace\\github\\v-act\\packages\\funcs");
