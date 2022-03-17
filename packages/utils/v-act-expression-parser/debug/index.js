@@ -134,8 +134,14 @@ const testPrintAll = function () {
   console.log(`表达式个数：${exps.length}，总耗时：${endTime - startTime}毫秒`)
 }
 
-test()
+//test()
 //testAll()
-//testPrint()
+const script = testPrint(
+  'SetLocalStorage("mobileOfficeFrameKey",ConcatStr(BR_IN_PARENT.VAR_FrameType,",",GetCurrentWindowInstanceCode()))'
+)
+const func = new Function(
+  { getRulesetInput: function () {}, getRulesetVar: function () {} },
+  'return ' + script
+)
 // testPrintAll()
 //console.log(testPrint("IsEmpty(BR_VAR_PARENT.applicationId)||IsEmpty(BR_VAR_PARENT.bizWindow)"))
