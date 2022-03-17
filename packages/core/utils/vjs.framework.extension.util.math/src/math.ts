@@ -106,16 +106,14 @@ let getE = () => Math.E
 /**
  * 获取整数商
  */
-let divrem = function (arg1: argType, arg2: argType): number {
-  return truncate(divide(arg1, arg2))
-}
+let divrem = (arg1: argType, arg2: argType): number =>
+  truncate(divide(arg1, arg2))
 
 /**
  * 获取余数
  */
-let getRemainder = function (arg1: argType, arg2: argType): number {
-  return Number(arg1) % Number(arg2)
-}
+let getRemainder = (arg1: argType, arg2: argType): number =>
+  Number(arg1) % Number(arg2)
 
 /**
  * 返回数的绝对值
@@ -124,47 +122,34 @@ let getRemainder = function (arg1: argType, arg2: argType): number {
  *            arg1 数字
  * @return {Boolean} 数字的绝对值
  */
-let abs = function (arg1: argType) {
-  return new BigDecimal(arg1).abs().toString()
-}
+let abs = (arg1: argType) => new BigDecimal(arg1).abs().toString()
 
 // 角度转弧度
-let angleToRadian = function (arg1: number): number {
-  return (arg1 * Math.PI) / 180
-}
+let angleToRadian = (arg1: number): number => (arg1 * Math.PI) / 180
 //
 // 弧度转角度
-let radianToAngle = function (arg: number): number {
-  return (180 * arg) / Math.PI
-}
+let radianToAngle = (arg: number): number => (180 * arg) / Math.PI
 
 /**
  * 返回数的反余弦值
  */
-let acos = function (arg: argType): number {
-  return radianToAngle(Math.acos(Number(arg)))
-}
+let acos = (arg: argType): number => radianToAngle(Math.acos(Number(arg)))
 
 /**
  * 返回数的反正弦值
  */
-let asin = function (arg: argType): number {
-  return radianToAngle(Math.asin(Number(arg)))
-}
+let asin = (arg: argType): number => radianToAngle(Math.asin(Number(arg)))
 
 /**
  * 以介于 -PI/2 与 PI/2 弧度之间的数值来返回反正切值
  */
-let atan = function (arg: argType): number {
-  return radianToAngle(Math.atan(Number(arg)))
-}
+let atan = (arg: argType): number => radianToAngle(Math.atan(Number(arg)))
 
 /**
  * 返回从 x 轴到点 (x,y) 的角度（介于 -PI/2 与 PI/2 弧度之间）
  */
-let atan2 = function (arg: number, arg2: number): number {
-  return radianToAngle(Math.atan2(arg, arg2))
-}
+let atan2 = (arg: number, arg2: number): number =>
+  radianToAngle(Math.atan2(arg, arg2))
 
 /**
  * 对数进行向上取整
@@ -181,16 +166,12 @@ let ceil = function (arg: argType): number {
 /**
  * 返回数的余弦
  */
-let cos = function (arg: argType): number {
-  return Math.cos(angleToRadian(Number(arg)))
-}
+let cos = (arg: argType): number => Math.cos(angleToRadian(Number(arg)))
 
 /**
  * 返回 e 的指数
  */
-let exp = function (arg: argType): number {
-  return Math.exp(Number(arg))
-}
+let exp = (arg: argType): number => Math.exp(Number(arg))
 
 /**
  * 对数进行向下取整
@@ -207,23 +188,19 @@ let floor = function (arg1: argType): number {
 /**
  * 返回数的自然对数（底为e）
  */
-let log = function (arg: argType): number {
-  return Math.log(Number(arg))
-}
+let log = (arg: argType): number => Math.log(Number(arg))
 
 /**
  * 返回两个数的最大值
  */
-let max = function (arg1: argType, arg2: argType): number {
-  return Math.max(Number(arg1), Number(arg2))
-}
+let max = (arg1: argType, arg2: argType): number =>
+  Math.max(Number(arg1), Number(arg2))
 
 /**
  * 返回两个数的最小值
  */
-let min = function (arg1: argType, arg2: argType): number {
-  return Math.min(Number(arg1), Number(arg2))
-}
+let min = (arg1: argType, arg2: argType): number =>
+  Math.min(Number(arg1), Number(arg2))
 
 /**
  * 返回 x 的 y 次幂
@@ -236,9 +213,7 @@ let pow = function (arg1: argType, arg2: argType): number {
 /**
  * 返回 0 ~ 1 之间的随机数。
  */
-let random = function (): number {
-  return Math.random()
-}
+let random = (): number => Math.random()
 
 /**
  * 把数四舍五入为最接近的整数
@@ -247,38 +222,28 @@ let random = function (): number {
  *            arg1 数字
  * @return {Boolean} 四舍五入后的整数
  */
-let round = function (arg1: argType): number {
-  let result = new BigDecimal(arg1).round()
-  return Number(result.toString())
-}
+let round = (arg1: argType): number =>
+  Number(new BigDecimal(arg1).round().toString())
 
 /**
  * 返回数的正弦
  */
-let sin = function (arg: number): number {
-  return Math.sin(angleToRadian(arg))
-}
+let sin = (arg: number): number => Math.sin(angleToRadian(arg))
 
 /**
  * 返回数的平方根
  */
-let sqrt = function (arg: number): number {
-  return Math.sqrt(arg)
-}
+let sqrt = (arg: number): number => Math.sqrt(arg)
 
 /**
  * 返回数的正切
  */
-let tan = function (arg: number): number {
-  return Math.tan(angleToRadian(arg))
-}
+let tan = (arg: number): number => Math.tan(angleToRadian(arg))
 
 /**
  * 判断是否数字
  */
-let judgeNum = function (arg: any): boolean {
-  return judgeNumExt(arg)
-}
+let judgeNum = (arg: any): boolean => judgeNumExt(arg)
 
 /**
  * 判断是否数字(非正则表达式方法)
@@ -323,9 +288,7 @@ let toDecimal = function (arg1: argType, arg2: number) {
  *            arg2 需要保留小数的位数
  * @return {Number} 四舍五入后的数字
  */
-let toDecimalPositive = function (arg1: argType, arg2: number) {
-  return toDecimal(arg1, arg2)
-}
+let toDecimalPositive = (arg1: argType, arg2: number) => toDecimal(arg1, arg2)
 
 /**
  * 保留N位小数（非四舍五入）
@@ -356,9 +319,7 @@ let truncate = function (arg1: argType): number {
 /**
  * 求正负值(正数返回1,负数返回-1，0返回0)
  */
-let sign = function (arg: number): number {
-  return arg != 0 ? arg / Math.abs(arg) : 0
-}
+let sign = (arg: number): number => (arg != 0 ? arg / Math.abs(arg) : 0)
 
 /**
  * 字符串转换日期
@@ -460,14 +421,8 @@ let timeFormat = function (date: Date): string {
 let isEmpty = (para: any): boolean => undefined == para || null == para
 
 // 判断参数是否为空
-let isEmptyEX = function (para: any): boolean {
-  return (
-    undefined == para ||
-    null == para ||
-    para == '' ||
-    !(typeof para == 'string')
-  )
-}
+let isEmptyEX = (para: any): boolean =>
+  undefined == para || null == para || para == '' || !(typeof para == 'string')
 
 // 判断是否无穷数
 let isInfinity = (para: number): boolean =>
