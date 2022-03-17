@@ -12,9 +12,7 @@ import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework
 
 import * as utils from './Utils'
 
-export function initModule(sb) {}
-
-let _genParamFromDefine = function (componentCode, defines, fn) {
+let _genParamFromDefine = function (componentCode: any, defines: any, fn: any) {
   let rs = {}
   if (defines) {
     for (let i = 0, l = defines.length; i < l; i++) {
@@ -81,7 +79,7 @@ let _genWindowOutputs = function () {
 /**
  * 生成规则路由上下文信息
  */
-let _genRouteContext = function (routeContext) {
+let _genRouteContext = function (routeContext: any) {
   let rs = {
     inTransaction: routeContext.duringTransaction()
   }
@@ -89,13 +87,13 @@ let _genRouteContext = function (routeContext) {
   let inputs = routeCfg.getInputs()
   let outputs = routeCfg.getOutputs()
   let vars = routeCfg.getVars()
-  rs['inputs'] = _genParamFromDefine(null, inputs, function (param) {
+  rs['inputs'] = _genParamFromDefine(null, inputs, function (param: any) {
     return routeContext.getInputParam(param.code)
   })
-  rs['outputs'] = _genParamFromDefine(null, outputs, function (param) {
+  rs['outputs'] = _genParamFromDefine(null, outputs, function (param: any) {
     return routeContext.getOutPutParam(param.code)
   })
-  rs['variants'] = _genParamFromDefine(null, vars, function (param) {
+  rs['variants'] = _genParamFromDefine(null, vars, function (param: any) {
     return routeContext.getVariable(param.code)
   })
   let bRes = routeContext.getAllBusinessResult(),
@@ -120,7 +118,7 @@ let _genRuleContexts = function () {
  */
 let _genEntities = function () {
   let entities = {}
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId: any = scopeManager.getCurrentScopeId()
   if (scopeManager.isWindowScope(scopeId)) {
     let datasources = windowDatasource.getAll()
     for (let i = 0, l = datasources.length; i < l; i++) {
@@ -142,7 +140,7 @@ let _genWidgets = function () {
   return {}
 }
 
-const genParams = function (routeContext) {
+const genParams = function (routeContext: any) {
   let params = {
     componentCode: utils.getComponentCode(),
     componentVariants: _genComponentVariants(),
@@ -161,14 +159,14 @@ const genParams = function (routeContext) {
 }
 
 export {
-  _putAop,
-  addRequest,
-  clear,
-  genParams,
-  getHook,
-  init,
-  isDebugger,
-  isInited,
-  remove,
-  update
+  //_putAop,
+  // addRequest,
+  //clear,
+  genParams
+  // getHook,
+  // init,
+  // isDebugger,
+  //isInited,
+  // remove,
+  // update
 }

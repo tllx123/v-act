@@ -1,8 +1,9 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { getConstructor } from '../../datasource/vjs.framework.extension.platform.datasource.taffy/src/impl/TaffyDB'
 
-let aop:any
+let aop: any
 let charMap = {
   '@0': new RegExp(':', 'g'),
   '@1': new RegExp('\\.', 'g'),
@@ -13,27 +14,26 @@ let charMap = {
   '@6': new RegExp('&', 'g')
 }
 
-let DevRPC = function (params:any) {
-  //@ts-ignore
-  this.url = params.url || ''
-  //@ts-ignore
-  this.param = params.param || {}
-  //@ts-ignore
-  this.timeout = params.timeout || 3000
-  //@ts-ignore
-  this.success = params.success || null
-  //@ts-ignore
-  this.error = params.error || null
-}
+class DevRPC {
+  url
+  param: any
+  timeout
+  success
+  error
 
-DevRPC.prototype = {
-  _putAop: function (a:any) {
+  constructor(params: any) {
+    this.url = params.url || ''
+    this.param = params.param || {}
+    this.timeout = params.timeout || 3000
+    this.success = params.success || null
+    this.error = params.error || null
+  }
+
+  _putAop(a: any) {
     aop = a
-  },
+  }
 
- 
-
-  getServerHost: function () {
+  getServerHost() {
     //@ts-ignore
     if (window.GlobalVariables) {
       //如果存在，则代表为手机app
@@ -41,25 +41,25 @@ DevRPC.prototype = {
       return GlobalVariables.getServerUrl()
     }
     return location.protocol + '//' + location.host
-  },
+  }
 
-  getLocalHost: function () {
+  getLocalHost() {
     return (
       this.getServerHost() +
       environment.getContextPath() +
       '/module-operation!executeOperation?operation=aop&componentCode=' +
       this.param.componentCode
     )
-  },
+  }
 
-  processUrl: function (url:string) {
+  processUrl(url: string) {
     for (let k in charMap) {
       url = url.replace(charMap[k], k)
     }
     return url
-  },
+  }
 
-  rpcServer: function (param:any, success:any, error:any) {
+  rpcServer(param: any, success: any, error: any) {
     let _this = this
     //发送请求，提交数据，发送到服务器
     rpc.orginalRequest({
@@ -77,7 +77,7 @@ DevRPC.prototype = {
           })
         )
       },
-      afterResponse: function (rs:any) {
+      afterResponse: function (rs: any) {
         if (success) {
           success.call(_this, jsonUtil.json2obj(rs.responseText))
         }
@@ -88,9 +88,9 @@ DevRPC.prototype = {
         }
       }
     })
-  },
+  }
 
-  rpcDev: function (id:string) {
+  rpcDev(id: any) {
     let uuid = this.param.NowServerUUID
       ? '&closeId=' + this.param.NowServerUUID
       : ''
@@ -100,9 +100,9 @@ DevRPC.prototype = {
       type: 'GET',
       param: {}
     })
-  },
+  }
 
-  suspend: function (id:string) {
+  suspend(id: any) {
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.rpcServer(
       {
@@ -110,7 +110,7 @@ DevRPC.prototype = {
         closeId: this.param.NowServerUUID,
         id: id
       },
-      function (rs:any) {
+      function (rs: any) {
         let status = rs.status
         if (status == 'timeoutStatus') {
           let result = confirm(
@@ -124,11 +124,11 @@ DevRPC.prototype = {
                 id: id,
                 data: rs.data
               },
-              function (rs:any) {
+              function (rs: any) {
                 //@ts-ignore
                 this.suspend(rs.id)
               },
-              function (rs:any) {
+              function (rs: any) {
                 //@ts-ignore
                 this.error(rs)
               }
@@ -141,14 +141,13 @@ DevRPC.prototype = {
           this.success(jsonUtil.json2obj(rs.data))
         }
       },
-      function (rs:any) {
+      function (rs: any) {
         //@ts-ignore
         _this.error(rs)
       }
     )
-  },
-
-  request: function () {
+  }
+  request() {
     //先将数据同步到服务器上
     let id
     let _this = this
@@ -158,7 +157,7 @@ DevRPC.prototype = {
         closeId: this.param.NowServerUUID,
         data: jsonUtil.obj2json(this.param)
       },
-      function (rs:any) {
+      function (rs: any) {
         id = rs.id
       },
       function () {

@@ -5,26 +5,26 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import * as DebugInfoManager from './DebugInfoManager'
 import DevRPC from './DevRPC'
 
-let aop, objUtils
+let aop: any, objUtils
 
 let testUrl = '/WebDebugRest/GetConnection'
 
 let requestUrl = '/WebDebugRest/PostWebDebugData'
 
-let responseHandler = {}
+let responseHandler: { [code: string]: any } = {}
 
 let responseHandlerAOP
 
-let request = {}
+let request: { [code: string]: any } = {}
 
 //当前服务的标识id
-let NowServerUUID
+let NowServerUUID: any
 
-let utils = {
+let utils: { [code: string]: any } = {
   /**
    * 错误处理
    */
-  errorHandler: function (res) {
+  errorHandler: function (res: any) {
     var e = new Error(res)
     aop.markDebugDisable()
     //throw exceptionFatory.create({error:e,message:"与远程调试服务联调出现错误！",type:exceptionFatory.TYPES.Business});
@@ -44,7 +44,7 @@ let utils = {
   /**
    * 响应分发
    */
-  responseDispatcher: function (res) {
+  responseDispatcher: function (res: any) {
     //var obj = eval("("+res+")");
     var type = res.type
     //判断res返回字段中有没有含有debugInfo字段，
@@ -60,18 +60,18 @@ let utils = {
   /**
    * 发起请求
    */
-  request: function (data, success, error) {
+  request: function (data: any, success: any, error: any) {
     var params = {
       url: utils.getRemoteHost(),
       param: data,
-      success: function (res, status) {
+      success: function (res: any, status: any) {
         if (success) {
           success(res)
         } else {
           utils.responseDispatcher(res)
         }
       },
-      error: function (res, status) {
+      error: function (res: any, status: any) {
         if (error) {
           error(res)
         } else {
@@ -110,8 +110,8 @@ let utils = {
             rpc.invokeOperation(body);*/
   },
   //测试远程服务
-  testRemote: function (callback) {
-    var rnum = Math.random(10) * 10000
+  testRemote: function (callback: any) {
+    var rnum = Math.random() * 10000
     var ntime = new Date().getTime()
     console.log('开始:' + new Date().getTime() + ',iden: ' + rnum)
     rpc.crossDomainRequest({
@@ -119,7 +119,7 @@ let utils = {
       type: 'GET',
       isAsync: false,
       timeout: 3000,
-      afterResponse: function (res, status) {
+      afterResponse: function (res: any, status: any) {
         console.log(
           '耗时afterResponse：' +
             (new Date().getTime() - ntime) +
@@ -128,7 +128,7 @@ let utils = {
         )
         callback(true)
       },
-      error: function (res, status) {
+      error: function (res: any, status: any) {
         console.log(
           '耗时error：' + (new Date().getTime() - ntime) + ',iden: ' + rnum
         )
@@ -141,7 +141,7 @@ let utils = {
 /**
  * 终止调试
  */
-responseHandler.interrupt = function (result) {
+responseHandler.interrupt = function (result: any) {
   if (result.msg) {
     alert(result.msg)
   }
@@ -150,13 +150,14 @@ responseHandler.interrupt = function (result) {
 /**
  * 更新执行系统数据
  */
-responseHandler.update = function (result) {
+responseHandler.update = function (result: any) {
   try {
+    throw new Error('未识别异常，请联系系统管理员处理')
     aop.update(
       result.componentCode,
-      (windowCode = result.windowCode),
+      //(windowCode = result.windowCode),
       result.ruleSetCode,
-      (ruleCode = result.ruleCode),
+      // (ruleCode = result.ruleCode),
       result.data
     )
     request.updateAfter(result)
@@ -168,7 +169,7 @@ responseHandler.update = function (result) {
 /**
  * 执行系统数据更新后
  */
-request.updateAfter = function (datas) {
+request.updateAfter = function (datas: any) {
   let businessData = aop.getBusinessData()
   datas.type = 'updateAfter'
   datas.businessData = jsonUtil.obj2json(businessData)
@@ -178,7 +179,7 @@ request.updateAfter = function (datas) {
 /**
  * 更新执行系统数据出错后回调
  */
-request.handleException = function (msg, datas) {
+request.handleException = function (msg: string, datas: any) {
   datas.type = 'handleException'
   datas.data = msg
   utils.request(datas)
@@ -186,14 +187,14 @@ request.handleException = function (msg, datas) {
 /**
  * 执行表达式
  */
-responseHandler.exeExp = function (result) {
+responseHandler.exeExp = function (result: any) {
   let rs = aop.exeExp(result.data)
   request.exeExpAfter(rs, result)
 }
 /**
  * 表达式执行结果
  */
-request.exeExpAfter = function (rs, datas) {
+request.exeExpAfter = function (rs: any, datas: any) {
   datas.data = rs
   datas.type = 'exeExpAfter'
   utils.request(datas)
@@ -220,14 +221,14 @@ let api = {
    * 对外
    */
   beforeRuleExecute: function (
-    componentCode,
-    windowCode,
-    ruleSetCode,
-    ruleCode,
-    data,
-    scope,
-    success,
-    error
+    componentCode: string,
+    windowCode: string,
+    ruleSetCode: string,
+    ruleCode: string,
+    data: any,
+    scope: any,
+    success: any,
+    error: any
   ) {
     NowServerUUID = environment.getDevId()
     var datas = {
@@ -253,14 +254,14 @@ let api = {
    * 规则执行后
    */
   ruleExecuted: function (
-    componentCode,
-    windowCode,
-    ruleSetCode,
-    ruleCode,
-    data,
-    scope,
-    success,
-    error
+    componentCode: string,
+    windowCode: string,
+    ruleSetCode: string,
+    ruleCode: string,
+    data: any,
+    scope: any,
+    success: any,
+    error: any
   ) {
     var datas = {
       type: 'ruleExecuted',
@@ -279,16 +280,16 @@ let api = {
   /**
    * 测试远程地址
    */
-  testRemote: function (remoteUrl, callback) {
+  testRemote: function (remoteUrl: string, callback: any) {
     rpc.crossDomainRequest({
       host: remoteUrl + testUrl,
       type: 'GET',
       isAsync: true,
       timeout: 3000,
-      afterResponse: function (res, status) {
+      afterResponse: function (res: any, status: any) {
         callback(true)
       },
-      error: function (res, status) {
+      error: function (res: any, status: any) {
         callback(false)
       }
     })
@@ -310,11 +311,11 @@ let api = {
   }
 }
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   objUtils = sb.util.object
 }
 
-const _putAop = function (a) {
+const _putAop = function (a: any) {
   aop = a
   DevRPC.prototype._putAop(a)
 }
@@ -325,13 +326,13 @@ const getHook = function () {
 
 export {
   _putAop,
-  addRequest,
-  clear,
-  genParams,
-  getHook,
-  init,
-  isDebugger,
-  isInited,
-  remove,
-  update
+  //addRequest,
+  //clear,
+  //genParams,
+  getHook
+  // init,
+  //isDebugger,
+  //isInited,
+  //remove,
+  //update
 }
