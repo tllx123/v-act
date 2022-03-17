@@ -1,10 +1,13 @@
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-class Manager{
-  requestList:any = []
+let Manager = function () {
+  //任务列表
+  this.requestList = []
+}
 
-  remove(rq:any) {
+Manager.prototype = {
+  remove: function (rq) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request === rq) {
         arrayUtil.remove(this.requestList, request)
@@ -12,25 +15,27 @@ class Manager{
         break
       }
     }
-  }
-  get(id:string) {
+  },
+
+  get: function (id) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request.getId() == id) {
         return request
       }
     }
     return null
-  }
-  addRequest(request:any) {
+  },
+
+  addRequest: function (request) {
     this.requestList.push(request)
   }
 }
 
-
 let singlton = new Manager()
 
+export function initModule(sBox) {}
 
-const addRequest = function (request:any) {
+const addRequest = function (request) {
   let taskId = uuid.generate()
   request.setId(taskId)
   singlton.addRequest(request)
@@ -38,7 +43,7 @@ const addRequest = function (request:any) {
   return taskId
 }
 
-const remove = function (instanceId:string) {
+const remove = function (instanceId) {
   let rq = singlton.get(instanceId)
   if (rq) {
     rq.stop()
@@ -47,13 +52,13 @@ const remove = function (instanceId:string) {
 }
 
 export {
-  //_putAop,
+  _putAop,
   addRequest,
-  //clear,
-  //getHook,
-  //init,
-  //isDebugger,
-  //isInited,
+  clear,
+  getHook,
+  init,
+  isDebugger,
+  isInited,
   remove,
-  //update
+  update
 }

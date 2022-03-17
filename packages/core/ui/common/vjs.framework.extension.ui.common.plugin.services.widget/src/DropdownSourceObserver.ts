@@ -623,7 +623,6 @@ class DropdownSourceObserver{
     }
   }
   getData () {
-    _this=this;
     var data = this.dropDownSource
     var datas
     if (typeof data !== 'object') {
@@ -667,12 +666,12 @@ class DropdownSourceObserver{
           datas = scopeManager.createScopeHandler({
             scopeId: isPropertyMapping ? windowScope.getExtendId() : null,
             handler: function () {
-              return _this.genTableQuery(
+              return this.genTableQuery(
                 dataSourceSetting,
                 whereRestrict,
-                _this.valueField,
-                _this.textField,
-                _this.widgetId,
+                this.valueField,
+                this.textField,
+                this.widgetId,
                 descField
               )
             },
@@ -832,7 +831,6 @@ class DropdownSourceObserver{
     }
   }
   updateHandler (params:any, data:any) {
-    let _this=this;
     var resultSet = params.datasource.getAllRecords()
     var records = []
     resultSet.iterate(function (record:any) {
@@ -840,7 +838,7 @@ class DropdownSourceObserver{
     })
     for (var i = 0; i < data.length; i++) {
       var hasData = records.find(function (item) {
-        return (item[_this.saveColumn] = data[i][_this.saveColumn])
+        return (item[this.saveColumn] = data[i][this.saveColumn])
       })
       if (!hasData) {
         records.push(data[i])

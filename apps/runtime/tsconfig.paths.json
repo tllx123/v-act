@@ -906,10 +906,7 @@
       "@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.utils": [
         "../core/platform/services/view/window/vjs.framework.extension.platform.services.view.window.dispose.mode.utils/src"
       ],
-      "@v-act/vjs.framework.extension.vendor.jquery": ["../core/vendor/vjs.framework.extension.vendor.jquery/src"],
-      "@v-act/webrule_showmessage": ["../rules/WebRule_ShowMessage/src"],
-      "@v-act/window-schema-utils": ["../utils/v-act-window-schema-utils/src"],
-      "@v-act/webrule_executeruleset": ["../rules/WebRule_ExecuteRuleSet"]
+      "@v-act/vjs.framework.extension.vendor.jquery": ["../core/vendor/vjs.framework.extension.vendor.jquery/src"]
     }
   }
 }

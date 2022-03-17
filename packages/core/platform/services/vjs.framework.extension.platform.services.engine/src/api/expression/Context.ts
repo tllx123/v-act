@@ -6,38 +6,37 @@ import { ExpressionContext as Context } from '@v-act/vjs.framework.extension.pla
  * vjs名称：vjs.framework.extension.platform.services.engine<br/>
  * vjs服务名称：vjs.framework.extension.platform.services.engine.expression.ExpressionContext<br/>
  */
-class ExpressionContext{
-  context
-  constructor(){
-    this.context = new Context()
-  }
+let ExpressionContext = function () {
+  this.context = new Context()
+}
 
-  initModule(sb:any){
+ExpressionContext.prototype = {
+  initModule: function (sb) {
     Context.prototype.initModule(sb)
-  }
+  },
 
   /**
    * 设置路由上下文
    * @param {RouteContext} ctx 路由上下文
    */
-  setRouteContext(ctx:any){
+  setRouteContext: function (ctx) {
     this.context.setRouteContext(ctx)
-  }
+  },
   /**
    * 设置数据源配置信息
    * @param {Arary<{@link Record}>}
    */
-  setRecords(records:any){
+  setRecords: function (records) {
     this.context.setRecords(records)
-  }
+  },
 
   /**
    * @private
    * 获取表达式引擎上下文
    */
-  getExpressionContext(){
+  getExpressionContext: function () {
     return this.context
-  }
+  },
 
   /**
    * 设置数据源记录索引
@@ -47,10 +46,9 @@ class ExpressionContext{
    * 		"index" : Integer 索引
    * }
    */
-  setRecordIndex(params:any){
+  setRecordIndex: function (params) {
     this.context.setRecordIndex(params)
   }
 }
-
 
 export default ExpressionContext

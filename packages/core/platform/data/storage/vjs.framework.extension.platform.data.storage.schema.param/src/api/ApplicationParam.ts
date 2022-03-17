@@ -248,8 +248,7 @@ const existWindowMapping = function (params: {
  * */
 let refreshWindowMapping = function () {
   //@ts-ignore
-  let projectMapping =
-    typeof window != 'undefined' ? window._$V3PlatformWindowMapping : null
+  let projectMapping = window._$V3PlatformWindowMapping
   if (projectMapping) {
     let _storage = _getWindowMappingStorage()
     /* 是否新定制的版本 */

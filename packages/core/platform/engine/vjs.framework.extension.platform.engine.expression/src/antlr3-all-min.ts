@@ -8,7 +8,7 @@ Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
-if ((typeof window != 'undefined' && typeof org == 'undefined') || !org) {
+if (typeof org == 'undefined' || !org) {
   var org = {}
   window.org = org
 }

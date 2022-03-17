@@ -421,7 +421,7 @@ var getModifyProperty = function (componentCode, windowCode) {
   //预览的数据仅存在缓存，属于最优先且不能被忽略
   var previewServices = []
   //预览数据定制逻辑
-  if (typeof window != 'undefined' && window._v3Platform) {
+  if (window._v3Platform) {
     var _v3Platform = window._v3Platform
     if (_v3Platform.getExtraHandler) {
       services = services.concat(_v3Platform.getExtraHandler())

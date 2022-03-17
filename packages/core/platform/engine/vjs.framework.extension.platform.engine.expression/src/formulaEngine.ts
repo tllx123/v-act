@@ -1,4 +1,4 @@
-if ((typeof window != 'undefined' && typeof org == 'undefined') || !org) {
+if (typeof org == 'undefined' || !org) {
   let org = {}
   window.org = org
 }

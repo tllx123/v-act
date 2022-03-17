@@ -1,4 +1,4 @@
-import { Image } from '@v-act/vjs.framework.extension.platform.services.native.mobile.Image'
+import * as Image from '@v-act/vjs.framework.extension.platform.services.native.mobile.Image'
 
 export function initModule(sb: any) {
   Image.putInstance(exports)

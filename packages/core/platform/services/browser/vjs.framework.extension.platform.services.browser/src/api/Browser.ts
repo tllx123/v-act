@@ -1,13 +1,6 @@
-import { VPlatfromIframeManager as vPlatfromIframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
 import { ApplicationParam as AppData } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import {
-  ComponentPackData as componentPackData,
-  LoopManager as loopManager
-} from '@v-act/vjs.framework.extension.platform.global'
-import {
-  FrontEndAlerter as AlertUtils,
-  FrontEndAlerter as frontEndAlerterUtil
-} from '@v-act/vjs.framework.extension.platform.interface.alerter'
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
+import { FrontEndAlerter as AlertUtils } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
@@ -22,7 +15,6 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 /**
  * 关闭模态窗体
@@ -48,7 +40,6 @@ const closeModalWindow = function (params: Record<string, any>) {
     outputValue['values'] = null
   }
   let retVal = outputValue
-  //@ts-ignore
   window.returnValue = retVal
   if (window['opener']) {
     try {
@@ -60,7 +51,6 @@ const closeModalWindow = function (params: Record<string, any>) {
       )
     }
   }
-  //@ts-ignore
   actionHandler.executeComponentAction('closeComponent', retVal)
 }
 /**
@@ -100,14 +90,14 @@ let redirectModule = function (paramsObj: Record<string, any>) {
   let componentCode = paramsObj.componentCode
   let windowCode = paramsObj.windowCode
   //替换构件包映射信息
-  let newInfo = replaceComponentPackInfo(componentCode, windowCode)
+  var newInfo = replaceComponentPackInfo(componentCode, windowCode)
   if (newInfo) {
     componentCode = newInfo.componentCode
     windowCode = newInfo.windowCode
   }
   if (AppData && typeof AppData.getWindowMapping == 'function') {
     /* 获取窗体映射信息 */
-    let windowMappingInfo = AppData.getWindowMapping({
+    var windowMappingInfo = AppData.getWindowMapping({
       componentCode: componentCode,
       windowCode: windowCode
     })
@@ -117,8 +107,8 @@ let redirectModule = function (paramsObj: Record<string, any>) {
       windowCode = windowMappingInfo.windowCode
     }
   }
-  let params = paramsObj.params
-  let inputParam = params ? (params.inputParam ? params.inputParam : {}) : {}
+  var params = paramsObj.params
+  var inputParam = params ? (params.inputParam ? params.inputParam : {}) : {}
   //预加载主页（目前仅支持iOS）
   if (
     consoleConfigService &&
@@ -126,25 +116,25 @@ let redirectModule = function (paramsObj: Record<string, any>) {
   ) {
     consoleConfigService.showMainPage()
   } else {
-    let scopeId = scopeManager.getCurrentScopeId()
-    let scope = scopeManager.getChildWindowScope()
-    let RemoveModalFunc = scope.get('RemoveModalFunc')
+    var scopeId = scopeManager.getCurrentScopeId()
+    var scope = scopeManager.getChildWindowScope()
+    var RemoveModalFunc = scope.get('RemoveModalFunc')
     if (typeof RemoveModalFunc == 'function') {
       scope.un(scopeManager.EVENTS.DESTROY, RemoveModalFunc)
     }
-    let info = widgetRenderer.executeComponentRenderAction(
+    var info = widgetRenderer.executeComponentRenderAction(
       'getParentContainerInfo'
     )
     if (info && info.containerCode) {
       $('#' + info.containerCode).attr('data-is-link-jump', true)
     }
-    let extraParams = {
+    var extraParams = {
       inited: paramsObj.inited,
       vjsContext: paramsObj.vjsContext
     }
-    let extraPms = paramsObj.extraParams
+    var extraPms = paramsObj.extraParams
     if (extraPms) {
-      for (let key in extraPms) {
+      for (var key in extraPms) {
         if (extraPms.hasOwnProperty(key)) {
           extraParams[key] = extraPms[key]
         }
@@ -152,7 +142,6 @@ let redirectModule = function (paramsObj: Record<string, any>) {
     }
     return actionHandler.executeComponentAction(
       'loadComponent',
-      //@ts-ignore
       componentCode,
       windowCode,
       inputParam,
@@ -211,11 +200,8 @@ let callBrowserWindow = function (paramsObj: Record<string, any>) {
 
   if (!moduleId) {
     let exception = exceptionFactory.create({
-      //type: exceptionFactory.TYPES.Expected,
-      error: new Error(exceptionFactory.TYPES.Expected),
-      msg: exceptionFactory.TYPES.Expected,
-      message: '调用组件失败!传入的windowCode值为空.',
-      exceptionDatas: []
+      type: exceptionFactory.TYPES.Expected,
+      message: '调用组件失败!传入的windowCode值为空.'
     })
     throw exception
   }
@@ -311,7 +297,7 @@ const inputParam2Obj = function (inputParam: Record<string, any>) {
  * 		 width : <int>			   宽度
  *		 height : <int>			   高度
  * 		 inputParam : {}             组件入参
- * 		 callBack : <function>     回调函数 let  callBack = function(data) data为弹出窗口的输出参数
+ * 		 callBack : <function>     回调函数 var callBack = function(data) data为弹出窗口的输出参数
  * }>
  */
 const callBrowserModalWindow = function (paramsObj: Record<string, any>) {
@@ -390,11 +376,9 @@ let showModalDialogEx = function (params: Record<string, any>) {
   // 需要阻塞
   if (isBlock == true) {
     // 遮罩
-    //@ts-ignore
     mask()
 
     try {
-      //@ts-ignore
       retVal = window.showModalDialog(
         url,
         param,
@@ -414,7 +398,6 @@ let showModalDialogEx = function (params: Record<string, any>) {
     if (retVal == undefined) {
       if (window['ReturnValue'] != undefined) {
         // 拿到值之后对ReturnValue清空
-        //@ts-ignore
         retVal = window.ReturnValue
         if (window['ReturnValue'] != null) {
           window['ReturnValue'] = null
@@ -478,23 +461,19 @@ let showModelessDialogEx = function (params: Record<string, any>) {
       // add by xiedh 2015-04-29 打开窗体设置标题
       try {
         //如果此值不为空，链接地址打开不能再修改窗体标题
-        //@ts-ignore
         if (w) w._$VPLATFORMCHANGETITLEIDEN = title
         if (w && w.document) {
           if (title != null) {
             /* 标题不为空时才修改 */
             w.document.title = title
           }
-          //@ts-ignore
           wi.clearInterval(wi.scanInterval)
         }
       } catch (e) {
-        //@ts-ignore
         wi.clearInterval(wi.scanInterval)
       }
     }
   })(win, window)
-  //@ts-ignore
   window.scanInterval = window.setInterval(scanFun, 200)
   return win
 }
@@ -519,9 +498,9 @@ const showModelessDialogExNewTab = function (params: Record<string, any>) {
   let url = params.url,
     param = params.param
   window['inputJson'] = param
-  let closed = params.closed
-  let winName = params.winName ? params.winName : '_blank'
-  let win = window.open(url, winName)
+  var closed = params.closed
+  var winName = params.winName ? params.winName : '_blank'
+  var win = window.open(url, winName)
   //win.OpenIden = winName;跨域会引发异常
   //监听窗体设计器窗体关闭
   setTimeout(
@@ -529,41 +508,39 @@ const showModelessDialogExNewTab = function (params: Record<string, any>) {
       return function () {
         try {
           //此处为监听窗体设计器的保存事件，窗体设计器是同域的，但是打开链接地址规则可能是不同域的，跨域操作会报错，此功能非窗体设计器场景不需要使用，故异常不外抛不处理。
-          win &&
-            win.addEventListener(
-              'message',
-              function (params) {
-                let info = eventManager.parseCrossDomainParams(params)
-                if (info.isVPlatformCrossDomainParam) {
-                  let param = info.params
-                  if (
-                    param &&
-                    param.type == 'CloseDesignerWindow' &&
-                    param.iden == name
-                  ) {
-                    _win && _win.close()
-                  }
+          win.addEventListener(
+            'message',
+            function (params) {
+              var info = eventManager.parseCrossDomainParams(params)
+              if (info.isVPlatformCrossDomainParam) {
+                var param = info.params
+                if (
+                  param &&
+                  param.type == 'CloseDesignerWindow' &&
+                  param.iden == name
+                ) {
+                  _win.close()
                 }
-              },
-              false
-            )
+              }
+            },
+            false
+          )
           //打开的标识，用于判断哪个关闭，在窗体设计器中会使用到
-          //@ts-ignore
-          win && (win.OpenIden = winName)
+          win.OpenIden = winName
         } catch (e) {}
       }
     })(win, winName),
     10
   ) //延时是因为刚打开时无法执行win.addEventListener，时间可以适当调整
   if (typeof closed == 'function') {
-    let loopId = loopManager.add({
+    var loopId = loopManager.add({
       handler: (function (_win, cb) {
         return function () {
           //console.debug("【"+loopId+"】轮询中...");
-          if (_win && _win.closed) {
+          if (_win.closed) {
             //如果窗体已关闭，则移除轮询，并执行回调
             //console.debug("窗体已关闭，移除轮询【"+loopId+"】，并执行回调");
-            loopId && loopManager.remove(loopId)
+            loopManager.remove(loopId)
             cb()
           }
         }
@@ -573,8 +550,8 @@ const showModelessDialogExNewTab = function (params: Record<string, any>) {
   }
   //		win.onbeforeunload = (function(parentWindow, name){
   //			return function(params){
-  ////				let  context = new ExpressionContext();
-  ////				let  retValue = engine.execute({
+  ////				var context = new ExpressionContext();
+  ////				var retValue = engine.execute({
   ////					"expression":"SetCookie(\"\",)",
   ////					"context":context
   ////				});
@@ -620,18 +597,17 @@ const showModalModule = function (params: Record<string, any>) {
     height = params.height,
     inputParam = params.inputParam,
     closeCallback = params.closeCallback
-  let callBackCfg = { destroyed: closeCallback }
-  let extraParams = {
+  var callBackCfg = { destroyed: closeCallback }
+  var extraParams = {
     loaded: params.loaded,
-    vjsContext: params.vjsContext, //全部来源参数
-    isDefaultMaximize: false
+    vjsContext: params.vjsContext //全部来源参数
   } //额外参数
   if (params.hasOwnProperty('max')) {
     extraParams.isDefaultMaximize = params.max === true ? true : false
   }
-  let inputExtraParams = params.extraParams
+  var inputExtraParams = params.extraParams
   if (inputExtraParams) {
-    for (let key in inputExtraParams) {
+    for (var key in inputExtraParams) {
       if (inputExtraParams.hasOwnProperty(key)) {
         extraParams[key] = inputExtraParams[key]
       }
@@ -639,7 +615,6 @@ const showModalModule = function (params: Record<string, any>) {
   }
   return actionHandler.executeComponentAction(
     'showModalModule',
-    //@ts-ignore
     componentCode,
     windowCode,
     title,
@@ -653,9 +628,8 @@ const showModalModule = function (params: Record<string, any>) {
 /**
  *	取消mask遮罩
  */
-const unmask = function () {
-  let node = document.getElementById('maskdivgen')
-  node && document.body.removeChild(node)
+let unmask = function () {
+  document.body.removeChild(document.getElementById('maskdivgen'))
 }
 /**
  * 获取当前页面URL地址
@@ -672,21 +646,18 @@ const setWindowTitle = function (params: Record<string, any>) {
     return function () {
       // add by xiedh 2015-04-29 打开窗体设置标题
       try {
-        let doc = flag && top ? top.document : window.document
+        let doc = flag ? top.document : window.document
         if (doc) {
           if (title != null) {
             doc.title = title
           }
-          //@ts-ignore
           window.clearInterval(window.scanInterval)
         }
       } catch (e) {
-        //@ts-ignore
         window.clearInterval(window.scanInterval)
       }
     }
   })(isTop)
-  //@ts-ignore
   window.scanInterval = window.setInterval(scanFun, 200)
 }
 
@@ -736,11 +707,8 @@ const callModuleEx = function (params: Record<string, any>) {
   }
   if (!moduleId) {
     let exception = exceptionFactory.create({
-      //type: exceptionFactory.TYPES.Expected,
-      error: new Error(exceptionFactory.TYPES.Expected),
-      msg: exceptionFactory.TYPES.Expected,
-      message: '调用组件失败!传入的windowCode值为空.',
-      exceptionDatas: []
+      type: exceptionFactory.TYPES.Expected,
+      message: '调用组件失败!传入的windowCode值为空.'
     })
     throw exception
   }
@@ -873,11 +841,8 @@ const redirectLocation = function (paramsObj: Record<string, any>) {
 
   if (!moduleId) {
     let exception = exceptionFactory.create({
-      //type: exceptionFactory.TYPES.Expected,
-      error: new Error(exceptionFactory.TYPES.Expected),
-      msg: exceptionFactory.TYPES.Expected,
-      message: '调用组件失败!传入的windowCode值为空.',
-      exceptionDatas: []
+      type: exceptionFactory.TYPES.Expected,
+      message: '调用组件失败!传入的windowCode值为空.'
     })
     throw exception
   }
@@ -942,7 +907,6 @@ const redirectLocation = function (paramsObj: Record<string, any>) {
  * }
  * */
 const openWindowToDiv = function (params: any) {
-  //@ts-ignore
   actionHandler.executeComponentAction('loadWindowToDiv', params)
 }
 
@@ -960,7 +924,7 @@ const currentPageOpen = function (params: Record<string, any>) {
   let info = widgetRenderer.executeComponentRenderAction(
     'getParentContainerInfo'
   )
-  //		let  isRootContainer = widgetContext.get(info.containerCode, "IsRootContainer");
+  //		var isRootContainer = widgetContext.get(info.containerCode, "IsRootContainer");
   if (isRoot(info)) {
     let windowScope = scopeManager.getWindowScope()
     if (windowScope.getOpenMode() == scopeManager.OpenMode.ModalContaniner) {
@@ -1007,15 +971,12 @@ const currentPageOpen = function (params: Record<string, any>) {
 /**
  * 中转窗体
  * */
-const transferWindow = function (url: string) {
-  let result: Record<string, any> = {
+var transferWindow = function (url) {
+  var result = {
     transfer: false
   }
   if (url) {
-    let urlObj: Record<string, any> = vPlatfromIframeManager.parseUrl(
-      url,
-      undefined
-    )
+    var urlObj = vPlatfromIframeManager.parseUrl(url)
     if (
       urlObj &&
       !urlObj.isError && //非平台地址解析会报错
@@ -1026,19 +987,17 @@ const transferWindow = function (url: string) {
     ) {
       //统一认证加强后的地址不可以直接打开目标窗体，因为统一认证有其他逻辑需要执行
       //符合规则
-      let nowUrlObj: Record<string, any> = vPlatfromIframeManager.parseUrl(
-        window.location.href,
-        undefined
-      )
+      var nowUrlObj = vPlatfromIframeManager.parseUrl(window.location.href)
       if (nowUrlObj && !nowUrlObj.isError) {
         if (
           nowUrlObj.origin + environment.getContextPath() ==
           urlObj.origin + urlObj.contextPath
         ) {
           result.transfer = true
-          let param = urlObj.params
+          var param = urlObj.params
           result.componentCode = param.componentCode
           result.windowCode = param.windowCode
+          var inputParams = {}
           result.inputParams = {
             variable:
               param.token && param.token.variable ? param.token.variable : {}
@@ -1058,15 +1017,15 @@ const transferWindow = function (url: string) {
  * 	callback	打开后回调,
  * }
  * */
-const showByHomeTab = function (params: Record<string, any>) {
-  let url = params.url
-  let _callbackLabel = params.callback
+var showByHomeTab = function (params) {
+  var url = params.url
+  var _callbackLabel = params.callback
 
   if (!url) {
     _callbackLabel()
   }
-  let result: Record<string, any> = transferWindow(url)
-  let renderParam = result.transfer
+  var result = transferWindow(url)
+  var renderParam = result.transfer
     ? {
         title: params.title,
         componentCode: result.componentCode,
@@ -1076,7 +1035,7 @@ const showByHomeTab = function (params: Record<string, any>) {
         inputs: result.inputParams
       }
     : params
-  let renderer = sandbox.getService(
+  var renderer = sandbox.getService(
     'vjs.framework.extension.platform.services.view.window.render.mode',
     {
       type: 'iemsHomeTab'
