@@ -3,7 +3,6 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 let DebugInfoManager = function () {}
 
-export function initModule(sb) {}
 
 //定义初始化标记变量
 let initFlag = false
@@ -23,9 +22,10 @@ const isInited = function () {
   return initFlag
 }
 
-const init = function (devId) {
+const init = function (devId:string) {
   //向服务器发送请求，获得开发系统提交给服务器的调试信息
   //发送请求，提交数据，发送到服务器
+  //@ts-ignore
   let _this = this
   rpc.orginalRequest({
     isAsync: false,
@@ -37,7 +37,7 @@ const init = function (devId) {
       closeId: devId, //开发系统调试标识id
       ajaxRequest: true
     },
-    afterResponse: function (rs) {
+    afterResponse: function (rs:any) {
       //如果获得返回数据，将返回数据放到数组中保存起来
       initArr = jsonUtil.json2obj(rs.responseText)
       if (initArr != null && initArr.length > 0) {
@@ -56,7 +56,7 @@ const init = function (devId) {
 /**
  * 添加单个调试信息
  * */
-let addDebuggerData = function (data) {
+let addDebuggerData = function (data:any) {
   if (data) {
     let componentCode = data.componentCode
     if (!initMapping[componentCode]) {
@@ -84,7 +84,7 @@ let addDebuggerData = function (data) {
 /**
  * 删除单个debugger数据
  * */
-let removeDebuggerData = function (data) {
+let removeDebuggerData = function (data:any) {
   if (data) {
     let comCode = data.componentCode
     let winCode = data.windowCode
@@ -123,7 +123,7 @@ let removeDebuggerData = function (data) {
 /**
  * 判断规则是否属于调试数据
  * */
-let isDebuggerData = function (params) {
+let isDebuggerData = function (params:any) {
   let isdebgger = false
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
@@ -164,7 +164,7 @@ let isDebuggerData = function (params) {
   return isdebgger
 }
 
-const isDebugger = function (componentCode, windowCode, ruleSetCode, ruleCode) {
+const isDebugger = function (componentCode:string, windowCode:string, ruleSetCode:string, ruleCode:string) {
   return isDebuggerData({
     componentCode: componentCode,
     windowCode: windowCode,
@@ -184,7 +184,7 @@ const isDebugger = function (componentCode, windowCode, ruleSetCode, ruleCode) {
   //			return isdebgger;
 }
 
-const update = function (datas) {
+const update = function (datas:any) {
   //更新服务器返回的调试更新信息
   //遍历浏览器发回来的更新信息，把已经不需要调试的规则，从调试信息数组中删除
   for (let i = 0; i < datas.length; i++) {
@@ -210,4 +210,4 @@ const clear = function () {
   initMapping = {}
 }
 
-export { _putAop, clear, getHook, init, isDebugger, isInited, update }
+export {  clear, init, isDebugger, isInited, update }

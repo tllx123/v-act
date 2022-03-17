@@ -1,6 +1,6 @@
-let aop
+let aop:any
 
-const _putAop = function (a) {
+const _putAop = function (a:any) {
   aop = a
 }
 
@@ -12,7 +12,7 @@ let RuntimeV3PlatformAOP = {
   /**
    * 更新执行系统数据
    */
-  update: function (componentCode, windowCode, ruleSetCode, ruleCode, json) {
+  update: function (componentCode:string, windowCode:string, ruleSetCode:string, ruleCode:string, json:string) {
     try {
       aop.update(componentCode, windowCode, ruleSetCode, ruleCode, json)
     } catch (e) {
@@ -29,13 +29,13 @@ let RuntimeV3PlatformAOP = {
   /**
    * 执行表达式
    */
-  exeExp: function (expression) {
+  exeExp: function (expression:any) {
     var rs = aop.exeExp(expression)
     V3PlatformAOP.ExeExp(rs)
   }
 }
 
-if (typeof window != 'undefined') {
+if (window) {
   window.RuntimeV3PlatformAOP = RuntimeV3PlatformAOP
 }
 
