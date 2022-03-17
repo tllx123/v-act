@@ -1,6 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-export function initModule(sb) {}
+
 
 const getComponentCode = function () {
   let scope = scopeManager.getScope()
@@ -13,22 +13,22 @@ const getWindowCode = function () {
 }
 
 const isWindowScope = function () {
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId:any = scopeManager.getCurrentScopeId()
   return scopeManager.isWindowScope(scopeId)
 }
 
 export {
-  _putAop,
-  addRequest,
-  clear,
-  genParams,
+  //_putAop,
+  //addRequest,
+  //clear,
+  //genParams,
   getComponentCode,
-  getHook,
+  //getHook,
   getWindowCode,
-  init,
-  isDebugger,
-  isInited,
+  //init,
+  //isDebugger,
+  //isInited,
   isWindowScope,
-  remove,
-  update
+  //remove,
+  //update
 }
