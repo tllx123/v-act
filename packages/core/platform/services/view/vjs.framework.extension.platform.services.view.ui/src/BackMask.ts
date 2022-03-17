@@ -1,3 +1,6 @@
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import * as zindex from './ZIndex'
+
 var windowZindex = [],
   bodyOver = true
 

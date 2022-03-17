@@ -1,10 +1,4 @@
-import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.interface.view.widget.common.dialog'
-
-let sb
-
-export function initModule(sandbox) {
-  sb = sandbox
-}
+import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.dialog'
 
 /**
  * 显示确认提示框
