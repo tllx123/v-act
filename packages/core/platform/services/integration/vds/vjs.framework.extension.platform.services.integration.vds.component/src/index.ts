@@ -10,8 +10,11 @@
  */
 
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
+
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
+
 import { ComponentParam as componentParamService } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
 /**
@@ -127,3 +130,5 @@ export function getPack(componentCode, methodCode) {
     }
   })
 }
+
+module.exports = exports

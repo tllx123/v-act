@@ -8,12 +8,10 @@ Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 */
-import org from './org'
-
-/*if (typeof org == 'undefined' || !org) {
+if (typeof org == 'undefined' || !org) {
   var org = {}
   window.org = org
-}*/
+}
 if (typeof org.antlr == 'undefined' || !org.antlr) {
   org.antlr = {}
 }
@@ -468,9 +466,7 @@ org.antlr.runtime.EarlyExitException = function (B, A) {
 org.antlr.lang.extend(
   org.antlr.runtime.EarlyExitException,
   org.antlr.runtime.RecognitionException,
-  {
-    name: 'org.antlr.runtime.EarlyExitException'
-  }
+  { name: 'org.antlr.runtime.EarlyExitException' }
 )
 org.antlr.runtime.MismatchedSetException = function (B, A) {
   org.antlr.runtime.MismatchedSetException.superclass.constructor.call(this, A)
@@ -975,9 +971,7 @@ org.antlr.runtime.BitSet.prototype = {
     return D
   }
 }
-org.antlr.runtime.CharStream = {
-  EOF: -1
-}
+org.antlr.runtime.CharStream = { EOF: -1 }
 org.antlr.runtime.CommonToken = function () {
   var A
   this.charPositionInLine = -1

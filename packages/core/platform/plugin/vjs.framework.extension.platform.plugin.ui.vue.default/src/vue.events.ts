@@ -6,13 +6,12 @@
 /**
  * vue 全局对象
  */
-//@ts-ignore
-let _$vue = window._$V3Vue
+var _$vue = window._$V3Vue
 /**
  * 生成uuId
  */
 _$vue.genUUID = function () {
-  let S4 = function () {
+  var S4 = function () {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
   }
   return S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
@@ -30,9 +29,9 @@ _$vue.getEventStorage = function () {
  * 注册事件
  * handle {Function} 事件
  */
-_$vue.registerEvent = function (handle: Function) {
-  let key = this.genUUID()
-  let _storage = this.getEventStorage()
+_$vue.registerEvent = function (handle) {
+  var key = this.genUUID()
+  var _storage = this.getEventStorage()
   _storage[key] = handle
   return key
 }
@@ -40,10 +39,9 @@ _$vue.registerEvent = function (handle: Function) {
  * 是否有事件
  * id {String} 事件id
  */
-_$vue.hasEvent = function (id: string) {
-  let _storage = this.getEventStorage()
-  //if (_storage[key]) {
-  if (_storage[id]) {
+_$vue.hasEvent = function (id) {
+  var _storage = this.getEventStorage()
+  if (_storage[key]) {
     return true
   } else {
     return false
@@ -54,10 +52,9 @@ _$vue.hasEvent = function (id: string) {
  * id {String} 事件id
  * params {Object} 事件参数
  */
-_$vue.fireEvent = function (id: string, params: Record<string, any>) {
-  let _storage = this.getEventStorage()
-  //let func = _storage[key]
-  let func = _storage[id]
+_$vue.fireEvent = function (id, params) {
+  var _storage = this.getEventStorage()
+  var func = _storage[key]
   if (typeof func == 'function') {
     func.apply(this, params)
   }

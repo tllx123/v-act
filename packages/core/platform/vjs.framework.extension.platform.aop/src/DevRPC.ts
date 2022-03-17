@@ -2,7 +2,7 @@ import { Environment as environment } from '@v-act/vjs.framework.extension.platf
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let aop:any
+let aop
 let charMap = {
   '@0': new RegExp(':', 'g'),
   '@1': new RegExp('\\.', 'g'),
@@ -13,52 +13,46 @@ let charMap = {
   '@6': new RegExp('&', 'g')
 }
 
-class DevRPC{
-  url
-  param:any
-  timeout
-  success
-  error
-
-  constructor(params:any){
-
+let DevRPC = function (params) {
   this.url = params.url || ''
-
   this.param = params.param || {}
-
   this.timeout = params.timeout || 3000
-
   this.success = params.success || null
-  
   this.error = params.error || null
-  }
-  _putAop(a:any) {
+}
+
+DevRPC.prototype = {
+  _putAop: function (a) {
     aop = a
-  }
-  getServerHost() {
-    //@ts-ignore
+  },
+
+  initModule: function (sb) {},
+
+  getServerHost: function () {
     if (window.GlobalVariables) {
       //如果存在，则代表为手机app
-      //@ts-ignore
       return GlobalVariables.getServerUrl()
     }
     return location.protocol + '//' + location.host
-  }
-  getLocalHost() {
-    return(
+  },
+
+  getLocalHost: function () {
+    return (
       this.getServerHost() +
       environment.getContextPath() +
       '/module-operation!executeOperation?operation=aop&componentCode=' +
       this.param.componentCode
     )
-  }
-  processUrl(url:string) {
+  },
+
+  processUrl: function (url) {
     for (let k in charMap) {
       url = url.replace(charMap[k], k)
     }
     return url
-  }
-  rpcServer(param:any, success:any, error:any) {
+  },
+
+  rpcServer: function (param, success, error) {
     let _this = this
     //发送请求，提交数据，发送到服务器
     rpc.orginalRequest({
@@ -76,7 +70,7 @@ class DevRPC{
           })
         )
       },
-      afterResponse: function (rs:any) {
+      afterResponse: function (rs) {
         if (success) {
           success.call(_this, jsonUtil.json2obj(rs.responseText))
         }
@@ -87,8 +81,9 @@ class DevRPC{
         }
       }
     })
-  }
-  rpcDev(id:any) {
+  },
+
+  rpcDev: function (id) {
     let uuid = this.param.NowServerUUID
       ? '&closeId=' + this.param.NowServerUUID
       : ''
@@ -98,8 +93,9 @@ class DevRPC{
       type: 'GET',
       param: {}
     })
-  }
-  suspend(id:any) {
+  },
+
+  suspend: function (id) {
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.rpcServer(
       {
@@ -107,26 +103,23 @@ class DevRPC{
         closeId: this.param.NowServerUUID,
         id: id
       },
-      function (rs:any) {
+      function (rs) {
         let status = rs.status
         if (status == 'timeoutStatus') {
           let result = confirm(
             '与开发系统调试超时，是否继续等待？\n \n确认为继续调试\n取消为终止调试'
           )
           if (result) {
-            //@ts-ignore
             this.rpcServer(
               {
                 type: 'wait',
                 id: id,
                 data: rs.data
               },
-              function (rs:any) {
-                //@ts-ignore
+              function (rs) {
                 this.suspend(rs.id)
               },
-              function (rs:any) {
-                //@ts-ignore
+              function (rs) {
                 this.error(rs)
               }
             )
@@ -134,17 +127,16 @@ class DevRPC{
             aop.markDebugDisable()
           }
         } else {
-          //@ts-ignore
           this.success(jsonUtil.json2obj(rs.data))
         }
       },
-      function (rs:any) {
-        //@ts-ignore
-        this.error(rs)
+      function (rs) {
+        _this.error(rs)
       }
     )
-  }
-  request() {
+  },
+
+  request: function () {
     //先将数据同步到服务器上
     let id
     let _this = this
@@ -154,11 +146,10 @@ class DevRPC{
         closeId: this.param.NowServerUUID,
         data: jsonUtil.obj2json(this.param)
       },
-      function (rs:any) {
+      function (rs) {
         id = rs.id
       },
       function () {
-        //@ts-ignore
         this.error(arguments)
       }
     )
@@ -167,12 +158,7 @@ class DevRPC{
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.suspend(id)
   }
-
 }
-
-
-
-
 
 //获取服务器初始化信息，使用type为：debugInfoUpdate
 //	getdebugInfoUpdate:function(){

@@ -1,8 +1,15 @@
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import * as Context from './Context'
 
-import Context from './Context'
+let sandBox
+
+export function initModule(sb) {
+  sandBox = sb
+}
 
 const execute = function (params) {
+  let expressionEngine = sandBox.getService(
+    'vjs.framework.extension.platform.engine.expression.ExpressionEngine'
+  )
   let ctx = params.context ? params.context.getExpressionContext() : null
   let p = { expression: params.expression, context: ctx }
   return expressionEngine.execute(p)
@@ -15,10 +22,16 @@ const excuteRouteExp = function (params) {
     expression: params.expression,
     context: context.getExpressionContext()
   }
+  let expressionEngine = sandBox.getService(
+    'vjs.framework.extension.platform.engine.expression.ExpressionEngine'
+  )
   return expressionEngine.execute(p)
 }
 
 const parseVars = function (params) {
+  let expressionEngine = sandBox.getService(
+    'vjs.framework.extension.platform.engine.expression.ExpressionEngine'
+  )
   let p = {
     expression: params.expression,
     context: params.context.getExpressionContext()

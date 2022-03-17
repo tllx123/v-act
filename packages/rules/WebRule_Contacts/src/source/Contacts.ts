@@ -6,13 +6,13 @@ import {
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine'
+} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
 //规则主入口(必须有)
 /* import {
   RuleContext
 } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule' */
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { Contacts as ContactsService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.Contacts'
+import * as ContactsService from '@v-act/vjs.framework.extension.platform.services.native.mobile.Contacts'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 const main = function (ruleContext: RuleContext) {

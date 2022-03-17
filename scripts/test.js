@@ -1,10 +1,6 @@
 import fs from 'fs'
 import path from 'path'
 
-import * as $ from '@v-act/vjs.framework.extension.platform.services.view.ui'
-
-$.get
-
 const convertWebFuncs = function () {
   const desDir = 'D:\\Workspace\\github\\v-act\\packages\\funcs'
   const sourceDir = 'D:\\Workspace\\github\\vplatform-plugin-function-client'
@@ -267,4 +263,12 @@ const dir = path.resolve(
 //moveTo(dir)
 //convertWebFuncs()
 //convertWebRules()
+const tmpDir = 'D:\\Workspace\\github\\v-act\\packages\\rules'
+const dirNames = fs.readdirSync(tmpDir)
+dirNames.forEach((dirName) => {
+  const p = path.resolve(tmpDir, dirName, 'packaget.json')
+  if (fs.existsSync(p)) {
+    fs.unlinkSync(p)
+  }
+})
 //convertWebFunc("D:\\Workspace\\github\\vplatform-plugin-function-client\\Webfunc_WXGetUserInfo", "D:\\Workspace\\github\\v-act\\packages\\funcs");

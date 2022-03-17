@@ -39,7 +39,7 @@ com.toone.itop.formula.FormulaTreeExtra = {
       })
     }
 
-    if (typeof cvar == 'undefined') {
+    if (typeof cvar == 'undefine') {
       throw new Error('[' + name + ']' + '没有对应的系统变量')
     }
     // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题

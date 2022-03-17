@@ -9,7 +9,7 @@ interface ruleSet {
 
 interface logicType {
   $: { type: string }
-  ruleInstances: ruleInstancesSchema
+  ruleInstances: any
   ruleSets: {
     ruleSet: ruleSet
   }

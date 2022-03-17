@@ -9,8 +9,7 @@
  * vds.message.error("提示错误信息！");
  */
 
-import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
-
+import { dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 var _exe = function (funName: string, msg: string, params?: { time: number }) {
   var _this = this
   var func = (function (_this, _funName, _msg, _params) {

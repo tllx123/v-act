@@ -1,4 +1,4 @@
-import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.dialog'
+import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.interface.view.widget.common.dialog'
 
 let sb
 

@@ -1,2 +1,2 @@
-import { extend, isEmpty } from 'underscore'
-export { extend, isEmpty }
+import { extend } from 'underscore'
+export { extend }

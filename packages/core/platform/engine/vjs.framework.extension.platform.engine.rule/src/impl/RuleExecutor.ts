@@ -4,7 +4,6 @@ import {
 } from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { Engine as engine } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
 import * as ruleFactory from './RuleFactory'
@@ -68,11 +67,7 @@ RuleExecutor.prototype = {
     this.beginTime = new Date().getTime()
     if (this._evalCondition()) {
       try {
-        retValue = engine.exeExtRule({
-          ruleContext: this.ruleContext,
-          mainFunc: mainFunc
-        })
-        //retValue = mainFunc.call(this, this.ruleContext)
+        retValue = mainFunc.call(this, this.ruleContext)
         retValue = typeof retValue == 'undefined' ? true : retValue
         this.ruleContext.setRuleStatus(retValue)
         if (this.ruleContext.isRouteExecuteAuto()) {

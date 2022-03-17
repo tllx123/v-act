@@ -1,21 +1,3268 @@
-import './antlr3-all-min'
-
+if (typeof org == 'undefined' || !org) {
+  let org = {}
+  window.org = org
+}
+if (typeof org.antlr == 'undefined' || !org.antlr) org.antlr = {}
+org.antlr.global = function () {
+  return this
+}.call(null)
+org.antlr.namespace = function () {
+  let A = arguments,
+    E = null,
+    C,
+    B,
+    D
+  for (C = 0; C < A.length; C = C + 1) {
+    D = A[C].split('.')
+    E = org.antlr.global
+    for (B = 0; B < D.length; B = B + 1) {
+      E[D[B]] = E[D[B]] || {}
+      E = E[D[B]]
+    }
+  }
+  return E
+}
+org.antlr.env = org.antlr.env || {}
+org.antlr.env.ua = (function () {
+  var D = {
+    ie: 0,
+    opera: 0,
+    gecko: 0,
+    webkit: 0,
+    mobile: null,
+    air: 0,
+    rhino: false
+  }
+  var B, A
+  try {
+    B = navigator.userAgent
+    if (/KHTML/.test(B)) D.webkit = 1
+    A = B.match(/AppleWebKit\/([^\s]*)/)
+    if (A && A[1]) {
+      D.webkit = parseFloat(A[1])
+      if (/ Mobile\//.test(B)) D.mobile = 'Apple'
+      else {
+        A = B.match(/NokiaN[^\/]*/)
+        if (A) D.mobile = A[0]
+      }
+      A = B.match(/AdobeAIR\/([^\s]*)/)
+      if (A) D.air = A[0]
+    }
+    if (!D.webkit) {
+      A = B.match(/Opera[\s\/]([^\s]*)/)
+      if (A && A[1]) {
+        D.opera = parseFloat(A[1])
+        A = B.match(/Opera Mini[^;]*/)
+        if (A) D.mobile = A[0]
+      } else {
+        A = B.match(/MSIE\s([^;]*)/)
+        if (A && A[1]) D.ie = parseFloat(A[1])
+        else {
+          A = B.match(/Gecko\/([^\s]*)/)
+          if (A) {
+            D.gecko = 1
+            A = B.match(/rv:([^\s\)]*)/)
+            if (A && A[1]) D.gecko = parseFloat(A[1])
+          }
+        }
+      }
+    }
+  } catch (C) {}
+  try {
+    if (typeof window == 'undefined' && loadClass) D.rhino = true
+  } catch (C) {}
+  return D
+})()
+org.antlr.namespace('org.antlr.runtime.tree')
+org.antlr.lang = org.antlr.lang || {
+  isArray: function (B) {
+    if (B) {
+      var A = org.antlr.lang
+      return A.isNumber(B.length) && A.isFunction(B.splice)
+    }
+    return false
+  },
+  isBoolean: function (A) {
+    return typeof A === 'boolean'
+  },
+  isFunction: function (A) {
+    return typeof A === 'function'
+  },
+  isNull: function (A) {
+    return A === null
+  },
+  isNumber: function (A) {
+    return typeof A === 'number' && isFinite(A)
+  },
+  isObject: function (A) {
+    return (
+      (A && (typeof A === 'object' || org.antlr.lang.isFunction(A))) || false
+    )
+  },
+  isString: function (A) {
+    return typeof A === 'string'
+  },
+  isUndefined: function (A) {
+    return typeof A === 'undefined'
+  },
+  _IEEnumFix: function (C, B) {
+    if (org.antlr.env.ua.ie) {
+      var E = ['toString', 'valueOf'],
+        A
+      for (A = 0; A < E.length; A = A + 1) {
+        var F = E[A],
+          D = B[F]
+        if (org.antlr.lang.isFunction(D) && D != Object.prototype[F]) C[F] = D
+      }
+    }
+  },
+  extend: function (D, E, C) {
+    if (!E || !D)
+      throw new Error(
+        'org.antlr.lang.extend failed, please check that all dependencies are included.'
+      )
+    var B = function () {}
+    B.prototype = E.prototype
+    D.prototype = new B()
+    D.prototype.constructor = D
+    D.superclass = E.prototype
+    if (E.prototype.constructor == Object.prototype.constructor)
+      E.prototype.constructor = E
+    if (C) {
+      for (var A in C) D.prototype[A] = C[A]
+      org.antlr.lang._IEEnumFix(D.prototype, C)
+    }
+  },
+  augmentObject: function (E, D) {
+    if (!D || !E) throw new Error('Absorb failed, verify dependencies.')
+    var A = arguments,
+      C,
+      F,
+      B = A[2]
+    if (B && B !== true) for (C = 2; C < A.length; C = C + 1) E[A[C]] = D[A[C]]
+    else {
+      for (F in D) if (B || !E[F]) E[F] = D[F]
+      org.antlr.lang._IEEnumFix(E, D)
+    }
+  },
+  augmentProto: function (D, C) {
+    if (!C || !D) throw new Error('Augment failed, verify dependencies.')
+    var A = [D.prototype, C.prototype]
+    for (var B = 2; B < arguments.length; B = B + 1) A.push(arguments[B])
+    org.antlr.lang.augmentObject.apply(this, A)
+  },
+  merge: function () {
+    var D = {},
+      B = arguments
+    for (var C = 0, A = B.length; C < A; C = C + 1)
+      org.antlr.lang.augmentObject(D, B[C], true)
+    return D
+  },
+  isValue: function (B) {
+    var A = org.antlr.lang
+    return A.isObject(B) || A.isString(B) || A.isNumber(B) || A.isBoolean(B)
+  },
+  array: {
+    peek: function (B) {
+      if (!org.antlr.lang.isArray(B))
+        throw new Error('org.antlr.lang.array.peek: a is not an array.')
+      var A = B.length
+      if (A <= 0) throw new Error('org.antlr.lang.array.peek: a is empty.')
+      return B[A - 1]
+    }
+  }
+}
+org.antlr.runtime.RecognizerSharedState = function () {
+  this.following = []
+  this._fsp = -1
+  this.errorRecovery = false
+  this.lastErrorIndex = -1
+  this.failed = false
+  this.syntaxErrors = 0
+  this.backtracking = 0
+  this.ruleMemo = null
+  this.token = null
+  this.tokenStartCharIndex = -1
+  this.text = null
+}
+org.antlr.runtime.IndexOutOfBoundsException = function (A) {
+  org.antlr.runtime.IndexOutOfBoundsException.superclass.constructor.call(
+    this,
+    A
+  )
+}
+org.antlr.lang.extend(org.antlr.runtime.IndexOutOfBoundsException, Error, {
+  name: 'org.antlr.runtime.IndexOutOfBoundsException'
+})
+org.antlr.runtime.RecognitionException = function (A) {
+  org.antlr.runtime.RecognitionException.superclass.constructor.call(this)
+  this.input = A
+  this.index = A.index()
+  if (A instanceof org.antlr.runtime.CommonTokenStream) {
+    this.token = A.LT(1)
+    this.line = this.token.getLine()
+    this.charPositionInLine = this.token.getCharPositionInLine()
+  }
+  if (A instanceof org.antlr.runtime.tree.TreeNodeStream)
+    this.extractInformationFromTreeNodeStream(A)
+  else if (A instanceof org.antlr.runtime.ANTLRStringStream) {
+    this.c = A.LA(1)
+    this.line = A.getLine()
+    this.charPositionInLine = A.getCharPositionInLine()
+  } else this.c = A.LA(1)
+  this.message = this.toString()
+}
+org.antlr.lang.extend(org.antlr.runtime.RecognitionException, Error, {
+  input: null,
+  index: null,
+  token: null,
+  node: null,
+  c: null,
+  line: null,
+  name: 'org.antlr.runtime.RecognitionException',
+  charPositionInLine: null,
+  approximateLineInfo: null,
+  extractInformationFromTreeNodeStream: function (F) {
+    let A = F,
+      E,
+      I,
+      D,
+      H,
+      C
+    this.node = A.LT(1)
+    let B = A.getTreeAdaptor(),
+      G = B.getToken(this.node)
+    if (G) {
+      this.token = G
+      if (G.getLine() <= 0) {
+        C = -1
+        E = A.LT(C)
+        while (E) {
+          priorPayload = B.getToken(E)
+          if (priorPayload && priorPayload.getLine() > 0) {
+            this.line = priorPayload.getLine()
+            this.charPositionInLine = priorPayload.getCharPositionInLine()
+            this.approximateLineInfo = true
+            break
+          }
+          --C
+          E = A.LT(C)
+        }
+      } else {
+        this.line = G.getLine()
+        this.charPositionInLine = G.getCharPositionInLine()
+      }
+    } else if (this.node instanceof org.antlr.runtime.tree.CommonTree) {
+      this.line = this.node.getLine()
+      this.charPositionInLine = this.node.getCharPositionInLine()
+      if (this.node instanceof org.antlr.runtime.tree.CommonTree)
+        this.token = this.node.token
+    } else {
+      D = B.getType(this.node)
+      H = B.getText(this.node)
+      this.token = new org.antlr.runtime.CommonToken(D, H)
+    }
+  },
+  getUnexpectedType: function () {
+    if (this.input instanceof org.antlr.runtime.CommonTokenStream)
+      return this.token.getType()
+    else if (this.input instanceof org.antlr.runtime.tree.TreeNodeStream) {
+      let A = this.input
+      let B = A.getTreeAdaptor()
+      return B.getType(this.node)
+    } else return this.c
+  }
+})
+org.antlr.runtime.MismatchedTokenException = function (B, A) {
+  if (arguments.length === 0)
+    this.expecting = org.antlr.runtime.Token.INVALID_TOKEN_TYPE
+  else {
+    org.antlr.runtime.MismatchedTokenException.superclass.constructor.call(
+      this,
+      A
+    )
+    this.expecting = B
+  }
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MismatchedTokenException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      return (
+        'MismatchedTokenException(' +
+        this.getUnexpectedType() +
+        '!\x3d' +
+        this.expecting +
+        ')'
+      )
+    },
+    name: 'org.antlr.runtime.MismatchedTokenException'
+  }
+)
+org.antlr.runtime.UnwantedTokenException = function (B, A) {
+  if (arguments.length > 0)
+    org.antlr.runtime.UnwantedTokenException.superclass.constructor.call(
+      this,
+      B,
+      A
+    )
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.UnwantedTokenException,
+  org.antlr.runtime.MismatchedTokenException,
+  {
+    getUnexpectedToken: function () {
+      return this.token
+    },
+    toString: function () {
+      let A = ', expected ' + this.expecting
+      if (this.expecting === org.antlr.runtime.Token.INVALID_TOKEN_TYPE) A = ''
+      if (!org.antlr.lang.isValue(this.token))
+        return 'UnwantedTokenException(found\x3d' + A + ')'
+      return 'UnwantedTokenException(found\x3d' + this.token.getText() + A + ')'
+    },
+    name: 'org.antlr.runtime.UnwantedTokenException'
+  }
+)
+org.antlr.runtime.MissingTokenException = function (B, A, C) {
+  if (arguments.length > 0) {
+    org.antlr.runtime.MissingTokenException.superclass.constructor.call(
+      this,
+      B,
+      A
+    )
+    this.inserted = C
+  }
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MissingTokenException,
+  org.antlr.runtime.MismatchedTokenException,
+  {
+    getMissingType: function () {
+      return this.expecting
+    },
+    toString: function () {
+      if (
+        org.antlr.lang.isValue(this.inserted) &&
+        org.antlr.lang.isValue(this.token)
+      )
+        return (
+          'MissingTokenException(inserted ' +
+          this.inserted +
+          ' at ' +
+          this.token.getText() +
+          ')'
+        )
+      if (org.antlr.lang.isValue(this.token))
+        return 'MissingTokenException(at ' + this.token.getText() + ')'
+      return 'MissingTokenException'
+    },
+    name: 'org.antlr.runtime.MissingTokenException'
+  }
+)
+org.antlr.runtime.NoViableAltException = function (C, B, D, A) {
+  org.antlr.runtime.NoViableAltException.superclass.constructor.call(this, A)
+  this.grammarDecisionDescription = C
+  this.decisionNumber = B
+  this.stateNumber = D
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.NoViableAltException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      if (this.input instanceof org.antlr.runtime.ANTLRStringStream)
+        return (
+          "NoViableAltException('" +
+          this.getUnexpectedType() +
+          "'@[" +
+          this.grammarDecisionDescription +
+          '])'
+        )
+      else
+        return (
+          'NoViableAltException(' +
+          this.getUnexpectedType() +
+          '@[' +
+          this.grammarDecisionDescription +
+          '])'
+        )
+    },
+    name: 'org.antlr.runtime.NoViableAltException'
+  }
+)
+org.antlr.runtime.EarlyExitException = function (B, A) {
+  org.antlr.runtime.EarlyExitException.superclass.constructor.call(this, A)
+  this.decisionNumber = B
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.EarlyExitException,
+  org.antlr.runtime.RecognitionException,
+  { name: 'org.antlr.runtime.EarlyExitException' }
+)
+org.antlr.runtime.MismatchedSetException = function (B, A) {
+  org.antlr.runtime.MismatchedSetException.superclass.constructor.call(this, A)
+  this.expecting = B
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MismatchedSetException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      return (
+        'MismatchedSetException(' +
+        this.getUnexpectedType() +
+        '!\x3d' +
+        this.expecting +
+        ')'
+      )
+    },
+    name: 'org.antlr.runtime.MismatchedSetException'
+  }
+)
+org.antlr.runtime.MismatchedNotSetException = function (B, A) {
+  org.antlr.runtime.MismatchedNotSetException.superclass.constructor.call(
+    this,
+    B,
+    A
+  )
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MismatchedNotSetException,
+  org.antlr.runtime.MismatchedSetException,
+  {
+    toString: function () {
+      return (
+        'MismatchedNotSetException(' +
+        this.getUnexpectedType() +
+        '!\x3d' +
+        this.expecting +
+        ')'
+      )
+    },
+    name: 'org.antlr.runtime.MismatchedNotSetException'
+  }
+)
+org.antlr.runtime.MismatchedRangeException = function (B, A, C) {
+  if (arguments.length === 0) return this
+  org.antlr.runtime.MismatchedRangeException.superclass.constructor.call(
+    this,
+    C
+  )
+  this.a = B
+  this.b = A
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MismatchedRangeException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      return (
+        'MismatchedRangeException(' +
+        this.getUnexpectedType() +
+        ' not in [' +
+        this.a +
+        ',' +
+        this.b +
+        '])'
+      )
+    },
+    name: 'org.antlr.runtime.MismatchedRangeException'
+  }
+)
+org.antlr.runtime.FailedPredicateException = function (A, C, B) {
+  org.antlr.runtime.FailedPredicateException.superclass.constructor.call(
+    this,
+    A
+  )
+  this.ruleName = C
+  this.predicateText = B
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.FailedPredicateException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      return (
+        'FailedPredicateException(' +
+        this.ruleName +
+        ',{' +
+        this.predicateText +
+        '}?)'
+      )
+    },
+    name: 'org.antlr.runtime.FailedPredicateException'
+  }
+)
+org.antlr.runtime.BitSet = function (A) {
+  if (!A) A = org.antlr.runtime.BitSet.BITS
+  if (org.antlr.lang.isArray(A)) this.bits = A
+  else if (org.antlr.lang.isNumber(A)) this.bits = []
+}
+org.antlr.lang.augmentObject(org.antlr.runtime.BitSet, {
+  BITS: 32,
+  LOG_BITS: 5,
+  MOD_MASK: 31,
+  bitMask: function (B) {
+    let A = B & org.antlr.runtime.BitSet.MOD_MASK
+    return 1 << A
+  },
+  numWordsToHold: function (A) {
+    return (A >> org.antlr.runtime.BitSet.LOG_BITS) + 1
+  },
+  wordNumber: function (A) {
+    return A >> org.antlr.runtime.BitSet.LOG_BITS
+  },
+  of: function (D, A) {
+    let B, F, C, E
+    if (org.antlr.lang.isNumber(D))
+      if (org.antlr.lang.isNumber(A)) {
+        C = new org.antlr.runtime.BitSet(A + 1)
+        for (B = D; B <= A; B++) {
+          F = org.antlr.runtime.BitSet.wordNumber(B)
+          C.bits[F] |= org.antlr.runtime.BitSet.bitMask(B)
+        }
+        return C
+      } else {
+        C = new org.antlr.runtime.BitSet(D + 1)
+        C.add(D)
+        return C
+      }
+    else if (org.antlr.lang.isArray(D)) {
+      C = new org.antlr.runtime.BitSet()
+      for (B = D.length - 1; B >= 0; B--) C.add(D[B])
+      return C
+    } else if (D instanceof org.antlr.runtime.BitSet) {
+      if (!D) return null
+      return D
+    } else if (D instanceof org.antlr.runtime.IntervalSet) {
+      if (!D) return null
+      C = new org.antlr.runtime.BitSet()
+      C.addAll(D)
+      return C
+    } else if (org.antlr.lang.isObject(D)) {
+      E = []
+      for (B in D) if (org.antlr.lang.isNumber(B)) E.push(B)
+      return org.antlr.runtime.BitSet.of(E)
+    }
+  }
+})
+org.antlr.runtime.BitSet.prototype = {
+  add: function (A) {
+    let B = org.antlr.runtime.BitSet.wordNumber(A)
+    if (B >= this.bits.length) this.growToInclude(A)
+    this.bits[B] |= org.antlr.runtime.BitSet.bitMask(A)
+  },
+  addAll: function (C) {
+    let A, B, D
+    if (C instanceof org.antlr.runtime.BitSet) this.orInPlace(C)
+    else if (C instanceof org.antlr.runtime.IntervalSet) A = C
+    else if (org.antlr.lang.isArray(C))
+      for (B = 0; B < C.length; B++) {
+        D = C[B]
+        this.add(D)
+      }
+    else return
+  },
+  and: function (A) {
+    let B = this.clone()
+    B.andInPlace(A)
+    return B
+  },
+  andInPlace: function (A) {
+    let C = Math.min(this.bits.length, A.bits.length),
+      B
+    for (B = C - 1; B >= 0; B--) this.bits[B] &= A.bits[B]
+    for (B = C; B < this.bits.length; B++) this.bits[B] = 0
+  },
+  clear: function (B) {
+    if (arguments.length === 0) {
+      let A
+      for (A = this.bits.length - 1; A >= 0; A--) this.bits[A] = 0
+      return
+    }
+    let C = org.antlr.runtime.BitSet.wordNumber(B)
+    if (C >= this.bits.length) this.growToInclude(B)
+    this.bits[C] &= ~org.antlr.runtime.BitSet.bitMask(B)
+  },
+  clone: function () {
+    let C,
+      B,
+      A = []
+    for (C = 0, B = this.bits.length; C < B; C++) A[C] = this.bits[C]
+    return new org.antlr.runtime.BitSet(A)
+  },
+  size: function () {
+    let B = 0,
+      A,
+      C,
+      D
+    for (A = this.bits.length - 1; A >= 0; A--) {
+      C = this.bits[A]
+      if (C !== 0)
+        for (D = org.antlr.runtime.BitSet.BITS - 1; D >= 0; D--)
+          if ((C & (1 << D)) !== 0) B++
+    }
+    return B
+  },
+  equals: function (A) {
+    if (!A || !(A instanceof org.antlr.runtime.BitSet)) return false
+    let B = A,
+      C,
+      D = Math.min(this.bits.length, B.bits.length)
+    for (C = 0; C < D; C++) if (this.bits[C] != B.bits[C]) return false
+    if (this.bits.length > D)
+      for (C = D + 1; C < this.bits.length; C++) {
+        if (this.bits[C] !== 0) return false
+      }
+    else if (B.bits.length > D)
+      for (C = D + 1; C < B.bits.length; C++) if (B.bits[C] !== 0) return false
+    return true
+  },
+  growToInclude: function (D) {
+    let A = Math.max(
+        this.bits.length << 1,
+        org.antlr.runtime.BitSet.numWordsToHold(D)
+      ),
+      C = [],
+      B
+    for (B = 0, len = this.bits.length; B < len; B++) C[B] = this.bits[B]
+    this.bits = C
+  },
+  member: function (A) {
+    let B = org.antlr.runtime.BitSet.wordNumber(A)
+    if (B >= this.bits.length) return false
+    return (this.bits[B] & org.antlr.runtime.BitSet.bitMask(A)) !== 0
+  },
+  getSingleElement: function () {
+    let A
+    for (A = 0; A < this.bits.length << org.antlr.runtime.BitSet.LOG_BITS; A++)
+      if (this.member(A)) return A
+    return -1
+  },
+  isNil: function () {
+    let A
+    for (A = this.bits.length - 1; A >= 0; A--)
+      if (this.bits[A] !== 0) return false
+    return true
+  },
+  complement: function (B) {
+    if (B) return B.subtract(this)
+    else {
+      let A = this.clone()
+      A.notInPlace()
+      return A
+    }
+  },
+  notInPlace: function () {
+    let A, D, B, C
+    if (arguments.length === 0)
+      for (B = this.bits.length - 1; B >= 0; B--) this.bits[B] = ~this.bits[B]
+    else {
+      if (arguments.length === 1) {
+        A = 0
+        D = arguments[0]
+      } else {
+        A = arguments[0]
+        D = arguments[1]
+      }
+      this.growToInclude(D)
+      for (B = A; B <= D; B++) {
+        C = org.antlr.runtime.BitSet.wordNumber(B)
+        this.bits[C] ^= org.antlr.runtime.BitSet.bitMask(B)
+      }
+    }
+  },
+  or: function (A) {
+    if (!A) return this
+    let B = this.clone()
+    B.orInPlace(A)
+    return B
+  },
+  orInPlace: function (A) {
+    if (!A) return
+    if (A.bits.length > this.bits.length) this.setSize(A.bits.length)
+    let C = Math.min(this.bits.length, A.bits.length),
+      B
+    for (B = C - 1; B >= 0; B--) this.bits[B] |= A.bits[B]
+  },
+  remove: function (A) {
+    let B = org.antlr.runtime.BitSet.wordNumber(A)
+    if (B >= this.bits.length) this.growToInclude(A)
+    this.bits[B] &= ~org.antlr.runtime.BitSet.bitMask(A)
+  },
+  setSize: function (A) {
+    let B = A - this.bits.length
+    while (B >= 0) {
+      this.bits.push(0)
+      B--
+    }
+  },
+  numBits: function () {
+    return this.bits.length << org.antlr.runtime.BitSet.LOG_BITS
+  },
+  lengthInLongWords: function () {
+    return this.bits.length
+  },
+  subset: function (A) {
+    if (!A) return false
+    return this.and(A).equals(this)
+  },
+  subtractInPlace: function (A) {
+    if (!A) return
+    let B
+    for (B = 0; B < this.bits.length && B < A.bits.length; B++)
+      this.bits[B] &= ~A.bits[B]
+  },
+  subtract: function (A) {
+    if (!A || !(A instanceof org.antlr.runtime.BitSet)) return null
+    let B = this.clone()
+    B.subtractInPlace(A)
+    return B
+  },
+  toArray: function () {
+    let A = [],
+      C,
+      B = 0
+    for (C = 0; C < this.bits.length << org.antlr.runtime.BitSet.LOG_BITS; C++)
+      if (this.member(C)) A[B++] = C
+    return A
+  },
+  toPackedArray: function () {
+    return this.bits
+  },
+  toString: function () {
+    if (arguments.length === 0) return this.toString1(null)
+    else if (org.antlr.lang.isString(arguments[0]))
+      if (!org.antlr.lang.isValue(arguments[1])) return this.toString1(null)
+      else return this.toString2(arguments[0], arguments[1])
+    else return this.toString1(arguments[0])
+  },
+  toString1: function (D) {
+    let A = '{',
+      E = ',',
+      B,
+      C = false
+    for (B = 0; B < this.bits.length << org.antlr.runtime.BitSet.LOG_BITS; B++)
+      if (this.member(B)) {
+        if (B > 0 && C) A += E
+        if (D) A += D.getTokenDisplayName(B)
+        else A += B.toString()
+        C = true
+      }
+    return A + '}'
+  },
+  toString2: function (C, B) {
+    let D = '',
+      A
+    for (A = 0; A < this.bits.length << org.antlr.runtime.BitSet.LOG_BITS; A++)
+      if (this.member(A)) {
+        if (D.length > 0) D += C
+        if (A >= B.size()) D += "'" + A + "'"
+        else if (!org.antlr.lang.isValue(B.get(A))) D += "'" + A + "'"
+        else D += B.get(A)
+      }
+    return D
+  }
+}
+org.antlr.runtime.CharStream = { EOF: -1 }
+org.antlr.runtime.CommonToken = function () {
+  let A
+  this.charPositionInLine = -1
+  this.channel = 0
+  this.index = -1
+  if (arguments.length == 1)
+    if (org.antlr.lang.isNumber(arguments[0])) this.type = arguments[0]
+    else {
+      A = arguments[0]
+      this.text = A.getText()
+      this.type = A.getType()
+      this.line = A.getLine()
+      this.index = A.getTokenIndex()
+      this.charPositionInLine = A.getCharPositionInLine()
+      this.channel = A.getChannel()
+      if (A instanceof org.antlr.runtime.CommonToken) {
+        this.start = A.start
+        this.stop = A.stop
+      }
+    }
+  else if (arguments.length == 2) {
+    this.type = arguments[0]
+    this.text = arguments[1]
+    this.channel = 0
+  } else if (arguments.length == 5) {
+    this.input = arguments[0]
+    this.type = arguments[1]
+    this.channel = arguments[2]
+    this.start = arguments[3]
+    this.stop = arguments[4]
+  }
+}
+org.antlr.runtime.CommonToken.prototype = {
+  getType: function () {
+    return this.type
+  },
+  setLine: function (A) {
+    this.line = A
+  },
+  getText: function () {
+    if (org.antlr.lang.isString(this.text)) return this.text
+    if (!this.input) return null
+    this.text = this.input.substring(this.start, this.stop)
+    return this.text
+  },
+  setText: function (A) {
+    this.text = A
+  },
+  getLine: function () {
+    return this.line
+  },
+  getCharPositionInLine: function () {
+    return this.charPositionInLine
+  },
+  setCharPositionInLine: function (A) {
+    this.charPositionInLine = A
+  },
+  getChannel: function () {
+    return this.channel
+  },
+  setChannel: function (A) {
+    this.channel = A
+  },
+  setType: function (A) {
+    this.type = A
+  },
+  getStartIndex: function () {
+    return this.start
+  },
+  setStartIndex: function (A) {
+    this.start = A
+  },
+  getStopIndex: function () {
+    return this.stop
+  },
+  setStopIndex: function (A) {
+    this.stop = A
+  },
+  getTokenIndex: function () {
+    return this.index
+  },
+  setTokenIndex: function (A) {
+    this.index = A
+  },
+  getInputStream: function () {
+    return this.input
+  },
+  setInputStream: function (A) {
+    this.input = A
+  },
+  toString: function () {
+    let B = ''
+    if (this.channel > 0) B = ',channel\x3d' + this.channel
+    let A = this.getText()
+    if (!org.antlr.lang.isNull(A)) {
+      A = A.replace(/\n/g, '\\\\n')
+      A = A.replace(/\r/g, '\\\\r')
+      A = A.replace(/\t/g, '\\\\t')
+    } else A = '\x3cno text\x3e'
+    return (
+      '[@' +
+      this.getTokenIndex() +
+      ',' +
+      this.start +
+      ':' +
+      this.stop +
+      "\x3d'" +
+      A +
+      "',\x3c" +
+      this.type +
+      '\x3e' +
+      B +
+      ',' +
+      this.line +
+      ':' +
+      this.getCharPositionInLine() +
+      ']'
+    )
+  }
+}
+org.antlr.runtime.Token = function () {}
+org.antlr.lang.augmentObject(org.antlr.runtime.Token, {
+  EOR_TOKEN_TYPE: 1,
+  DOWN: 2,
+  UP: 3,
+  MIN_TOKEN_TYPE: 4,
+  EOF: org.antlr.runtime.CharStream.EOF,
+  EOF_TOKEN: new org.antlr.runtime.CommonToken(
+    org.antlr.runtime.CharStream.EOF
+  ),
+  INVALID_TOKEN_TYPE: 0,
+  INVALID_TOKEN: new org.antlr.runtime.CommonToken(0),
+  SKIP_TOKEN: new org.antlr.runtime.CommonToken(0),
+  DEFAULT_CHANNEL: 0,
+  HIDDEN_CHANNEL: 99
+})
+org.antlr.lang.augmentObject(
+  org.antlr.runtime.CommonToken,
+  org.antlr.runtime.Token
+)
+org.antlr.runtime.tree.RewriteCardinalityException = function (A) {
+  this.elementDescription = A
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteCardinalityException,
+  Error,
+  {
+    getMessage: function () {
+      if (org.antlr.lang.isString(this.elementDescription))
+        return this.elementDescription
+      return null
+    },
+    name: function () {
+      return 'org.antlr.runtime.tree.RewriteCardinalityException'
+    }
+  }
+)
+org.antlr.runtime.tree.RewriteEmptyStreamException = function (B) {
+  let A = org.antlr.runtime.tree.RewriteEmptyStreamException.superclass
+  A.constructor.call(this, B)
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteEmptyStreamException,
+  org.antlr.runtime.tree.RewriteCardinalityException,
+  {
+    name: function () {
+      return 'org.antlr.runtime.tree.RewriteEmptyStreamException'
+    }
+  }
+)
+org.antlr.runtime.tree.RewriteEarlyExitException = function (B) {
+  let A = org.antlr.runtime.tree.RewriteEarlyExitException.superclass
+  if (org.antlr.lang.isUndefined(B)) B = null
+  A.constructor.call(this, B)
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteEarlyExitException,
+  org.antlr.runtime.tree.RewriteCardinalityException,
+  {
+    name: function () {
+      return 'org.antlr.runtime.tree.RewriteEarlyExitException'
+    }
+  }
+)
+org.antlr.runtime.MismatchedTreeNodeException = function (B, A) {
+  if (B && A) {
+    org.antlr.runtime.MismatchedTreeNodeException.superclass.constructor.call(
+      this,
+      A
+    )
+    this.expecting = B
+  }
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.MismatchedTreeNodeException,
+  org.antlr.runtime.RecognitionException,
+  {
+    toString: function () {
+      return (
+        'MismatchedTreeNodeException(' +
+        this.getUnexpectedType() +
+        '!\x3d' +
+        this.expecting +
+        ')'
+      )
+    },
+    name: 'org.antlr.runtime.MismatchedTreeNodeException'
+  }
+)
+org.antlr.runtime.tree.BaseTree = function () {}
+org.antlr.runtime.tree.BaseTree.prototype = {
+  getChild: function (A) {
+    if (!this.children || A >= this.children.length) return null
+    return this.children[A]
+  },
+  getChildren: function () {
+    return this.children
+  },
+  getFirstChildWithType: function (C) {
+    let B, A
+    for (B = 0; this.children && B < this.children.length; B++) {
+      A = this.children[B]
+      if (A.getType() === C) return A
+    }
+    return null
+  },
+  getChildCount: function () {
+    if (!this.children) return 0
+    return this.children.length
+  },
+  addChild: function (B) {
+    if (!org.antlr.lang.isValue(B)) return
+    let C = B,
+      E,
+      A,
+      D
+    if (C.isNil()) {
+      if (this.children && this.children == C.children)
+        throw new Error('attempt to add child list to itself')
+      if (C.children)
+        if (this.children) {
+          E = C.children.length
+          for (A = 0; A < E; A++) {
+            D = C.children[A]
+            this.children.push(D)
+            D.setParent(this)
+            D.setChildIndex(this.children.length - 1)
+          }
+        } else {
+          this.children = C.children
+          this.freshenParentAndChildIndexes()
+        }
+    } else {
+      if (!this.children) this.children = this.createChildrenList()
+      this.children.push(B)
+      C.setParent(this)
+      C.setChildIndex(this.children.length - 1)
+    }
+  },
+  addChildren: function (A) {
+    let C, B
+    for (C = 0; C < A.length; C++) {
+      B = A[C]
+      this.addChild(B)
+    }
+  },
+  setChild: function (B, A) {
+    if (!A) return
+    if (A.isNil()) throw new Error("Can't set single child to a list")
+    if (!this.children) this.children = this.createChildrenList()
+    this.children[B] = A
+    A.setParent(this)
+    A.setChildIndex(B)
+  },
+  deleteChild: function (B) {
+    if (!this.children) return null
+    if (B < 0 || B >= this.children.length)
+      throw new Error('Index out of bounds.')
+    let A = this.children.splice(B, 1)[0]
+    this.freshenParentAndChildIndexes(B)
+    return A
+  },
+  replaceChildren: function (H, I, P) {
+    if (!this.children) throw new Error('indexes invalid; no children in list')
+    let O = I - H + 1
+    let A
+    let K = P
+    let D = null
+    if (K.isNil()) D = K.children
+    else {
+      D = []
+      D.push(K)
+    }
+    A = D.length
+    let B = D.length
+    let N = O - A
+    let F, G, C, E, M, J, L
+    if (N === 0) {
+      F = 0
+      for (G = H; G <= I; G++) {
+        C = D[F]
+        this.children[G] = C
+        C.setParent(this)
+        C.setChildIndex(G)
+        F++
+      }
+    } else if (N > 0) {
+      for (F = 0; F < B; F++) this.children[H + F] = D[F]
+      E = H + B
+      for (M = E; M <= I; M++) J = this.children.splice(E, 1)[0]
+      this.freshenParentAndChildIndexes(H)
+    } else {
+      for (F = 0; F < O; F++) this.children[H + F] = D[F]
+      L = A - O
+      for (F = O; F < A; F++) this.children.splice(H + F, 0, D[F])
+      this.freshenParentAndChildIndexes(H)
+    }
+  },
+  createChildrenList: function () {
+    return []
+  },
+  isNil: function () {
+    return false
+  },
+  freshenParentAndChildIndexes: function (A) {
+    if (!org.antlr.lang.isNumber(A)) A = 0
+    let D = this.getChildCount(),
+      C,
+      B
+    for (C = A; C < D; C++) {
+      B = this.getChild(C)
+      B.setChildIndex(C)
+      B.setParent(this)
+    }
+  },
+  sanityCheckParentAndChildIndexes: function (B, A) {
+    if (arguments.length === 0) {
+      B = null
+      A = -1
+    }
+    if (B !== this.getParent())
+      throw new Error(
+        "parents don't match; expected " + B + ' found ' + this.getParent()
+      )
+    if (A !== this.getChildIndex())
+      throw new Error(
+        "child indexes don't match; expected " +
+          A +
+          ' found ' +
+          this.getChildIndex()
+      )
+    let E = this.getChildCount(),
+      D,
+      C
+    for (D = 0; D < E; D++) {
+      C = this.getChild(D)
+      C.sanityCheckParentAndChildIndexes(this, D)
+    }
+  },
+  getChildIndex: function () {
+    return 0
+  },
+  setChildIndex: function (A) {},
+  getParent: function () {
+    return null
+  },
+  setParent: function (A) {},
+  getTree: function () {
+    return this
+  },
+  toStringTree: function () {
+    if (!this.children || this.children.length === 0) return this.toString()
+    let A = '',
+      C,
+      B
+    if (!this.isNil()) {
+      A += '('
+      A += this.toString()
+      A += ' '
+    }
+    for (C = 0; this.children && C < this.children.length; C++) {
+      B = this.children[C]
+      if (C > 0) A += ' '
+      A += B.toStringTree()
+    }
+    if (!this.isNil()) A += ')'
+    return A
+  },
+  getLine: function () {
+    return 0
+  },
+  getCharPositionInLine: function () {
+    return 0
+  }
+}
+org.antlr.runtime.tree.CommonTree = function (A) {
+  this.startIndex = -1
+  this.stopIndex = -1
+  this.childIndex = -1
+  this.parent = null
+  this.token = null
+  if (A instanceof org.antlr.runtime.tree.CommonTree) {
+    org.antlr.runtime.tree.CommonTree.superclass.constructor.call(this, A)
+    this.token = A.token
+    this.startIndex = A.startIndex
+    this.stopIndex = A.stopIndex
+  } else if (A instanceof org.antlr.runtime.CommonToken) this.token = A
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.CommonTree,
+  org.antlr.runtime.tree.BaseTree,
+  {
+    getToken: function () {
+      return this.token
+    },
+    dupNode: function () {
+      return new org.antlr.runtime.tree.CommonTree(this)
+    },
+    isNil: function () {
+      return !this.token
+    },
+    getType: function () {
+      if (!this.token) return org.antlr.runtime.Token.INVALID_TOKEN_TYPE
+      return this.token.getType()
+    },
+    getText: function () {
+      if (!this.token) return null
+      return this.token.getText()
+    },
+    getLine: function () {
+      if (!this.token || this.token.getLine() === 0) {
+        if (this.getChildCount() > 0) return this.getChild(0).getLine()
+        return 0
+      }
+      return this.token.getLine()
+    },
+    getCharPositionInLine: function () {
+      if (!this.token || this.token.getCharPositionInLine() === -1) {
+        if (this.getChildCount() > 0)
+          return this.getChild(0).getCharPositionInLine()
+        return 0
+      }
+      return this.token.getCharPositionInLine()
+    },
+    getTokenStartIndex: function () {
+      if (this.token) return this.token.getTokenIndex()
+      return this.startIndex
+    },
+    setTokenStartIndex: function (A) {
+      this.startIndex = A
+    },
+    getTokenStopIndex: function () {
+      if (this.token) return this.token.getTokenIndex()
+      return this.stopIndex
+    },
+    setTokenStopIndex: function (A) {
+      this.stopIndex = A
+    },
+    getChildIndex: function () {
+      return this.childIndex
+    },
+    getParent: function () {
+      return this.parent
+    },
+    setParent: function (A) {
+      this.parent = A
+    },
+    setChildIndex: function (A) {
+      this.childIndex = A
+    },
+    toString: function () {
+      if (this.isNil()) return 'nil'
+      if (this.getType() === org.antlr.runtime.Token.INVALID_TOKEN_TYPE)
+        return '\x3cerrornode\x3e'
+      if (!this.token) return null
+      return this.token.getText()
+    }
+  }
+)
+org.antlr.runtime.tree.Tree = {
+  INVALID_NODE: new org.antlr.runtime.tree.CommonTree(
+    org.antlr.runtime.Token.INVALID_TOKEN
+  )
+}
+org.antlr.runtime.tree.CommonErrorNode = function (A, D, B, C) {
+  if (
+    !B ||
+    (B.getTokenIndex() < D.getTokenIndex() &&
+      B.getType() != org.antlr.runtime.Token.EOF)
+  )
+    B = D
+  this.input = A
+  this.start = D
+  this.stop = B
+  this.trappedException = C
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.CommonErrorNode,
+  org.antlr.runtime.tree.CommonTree,
+  {
+    isNil: function () {
+      return false
+    },
+    getType: function () {
+      return org.antlr.runtime.Token.INVALID_TOKEN_TYPE
+    },
+    getText: function () {
+      let C = null
+      if (this.start instanceof org.antlr.runtime.CommonToken) {
+        let B = this.start.getTokenIndex()
+        let A = this.stop.getTokenIndex()
+        if (this.stop.getType() === org.antlr.runtime.Token.EOF)
+          A = this.input.size()
+        C = this.input.toString(B, A)
+      } else if (this.start instanceof org.antlr.runtime.tree.CommonTree)
+        C = this.input.toString(this.start, this.stop)
+      else C = '\x3cunknown\x3e'
+      return C
+    },
+    toString: function () {
+      if (
+        this.trappedException instanceof org.antlr.runtime.MissingTokenException
+      )
+        return (
+          '\x3cmissing type: ' + this.trappedException.getMissingType() + '\x3e'
+        )
+      else if (
+        this.trappedException instanceof
+        org.antlr.runtime.UnwantedTokenException
+      )
+        return (
+          '\x3cextraneous: ' +
+          this.trappedException.getUnexpectedToken() +
+          ', resync\x3d' +
+          this.getText() +
+          '\x3e'
+        )
+      else if (
+        this.trappedException instanceof
+        org.antlr.runtime.MismatchedTokenException
+      )
+        return (
+          '\x3cmismatched token: ' +
+          this.trappedException.token +
+          ', resync\x3d' +
+          this.getText() +
+          '\x3e'
+        )
+      else if (
+        this.trappedException instanceof org.antlr.runtime.NoViableAltException
+      )
+        return (
+          '\x3cunexpected: ' +
+          this.trappedException.token +
+          ', resync\x3d' +
+          this.getText() +
+          '\x3e'
+        )
+      return '\x3cerror: ' + this.getText() + '\x3e'
+    }
+  }
+)
+org.antlr.runtime.tree.BaseTreeAdaptor = function () {
+  this.uniqueNodeID = 1
+}
+org.antlr.runtime.tree.BaseTreeAdaptor.prototype = {
+  nil: function () {
+    return this.create(null)
+  },
+  errorNode: function (A, E, C, D) {
+    let B = new org.antlr.runtime.tree.CommonErrorNode(A, E, C, D)
+    return B
+  },
+  isNil: function (A) {
+    return A.isNil()
+  },
+  dupTree: function (B, C) {
+    if (arguments.length === 1) C = null
+    if (!B) return null
+    let D = this.dupNode(B)
+    this.setChildIndex(D, this.getChildIndex(B))
+    this.setParent(D, C)
+    let G = this.getChildCount(B),
+      A,
+      F,
+      E
+    for (A = 0; A < G; A++) {
+      F = this.getChild(B, A)
+      E = this.dupTree(F, B)
+      this.addChild(D, E)
+    }
+    return D
+  },
+  addChild: function (A, B) {
+    if (A && org.antlr.lang.isValue(B)) A.addChild(B)
+  },
+  becomeRoot: function (D, C) {
+    if (D instanceof org.antlr.runtime.CommonToken || !D) D = this.create(D)
+    let A = D,
+      B = C
+    if (!C) return D
+    if (A.isNil()) {
+      if (A.getChildCount() > 1)
+        throw new Error(
+          'more than one node as root (TODO: make exception hierarchy)'
+        )
+      A = A.getChild(0)
+    }
+    A.addChild(B)
+    return A
+  },
+  rulePostProcessing: function (A) {
+    let B = A
+    if (B && B.isNil())
+      if (B.getChildCount() === 0) B = null
+      else if (B.getChildCount() === 1) {
+        B = B.getChild(0)
+        B.setParent(null)
+        B.setChildIndex(-1)
+      }
+    return B
+  },
+  create: function (C, B) {
+    let D, A
+    if (arguments.length === 2)
+      if (org.antlr.lang.isString(arguments[1])) {
+        D = arguments[1]
+        B = this.createToken(C, D)
+        A = this.create(B)
+        return A
+      } else {
+        B = this.createToken(B)
+        B.setType(C)
+        A = this.create(B)
+        return A
+      }
+    else if (arguments.length === 3) {
+      D = arguments[2]
+      B = this.createToken(B)
+      B.setType(C)
+      B.setText(D)
+      A = this.create(B)
+      return A
+    }
+  },
+  getType: function (A) {
+    A.getType()
+    return 0
+  },
+  setType: function (A, B) {
+    throw new Error("don't know enough about Tree node")
+  },
+  getText: function (A) {
+    return A.getText()
+  },
+  setText: function (A, B) {
+    throw new Error("don't know enough about Tree node")
+  },
+  getChild: function (B, A) {
+    return B.getChild(A)
+  },
+  setChild: function (B, A, C) {
+    B.setChild(A, C)
+  },
+  deleteChild: function (B, A) {
+    return B.deleteChild(A)
+  },
+  getChildCount: function (A) {
+    return A.getChildCount()
+  },
+  getUniqueID: function (B) {
+    if (!this.treeToUniqueIDMap) this.treeToUniqueIDMap = {}
+    let C = this.treeToUniqueIDMap[B]
+    if (org.antlr.lang.isValue(C)) return C
+    let A = this.uniqueNodeID
+    this.treeToUniqueIDMap[B] = A
+    this.uniqueNodeID++
+    return A
+  }
+}
+org.antlr.runtime.tree.CommonTreeAdaptor = function () {}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.CommonTreeAdaptor,
+  org.antlr.runtime.tree.BaseTreeAdaptor,
+  {
+    dupNode: function (A) {
+      if (!org.antlr.lang.isValue(A)) return null
+      return A.dupNode()
+    },
+    create: function (A) {
+      if (arguments.length > 1)
+        return org.antlr.runtime.tree.CommonTreeAdaptor.superclass.create.apply(
+          this,
+          arguments
+        )
+      return new org.antlr.runtime.tree.CommonTree(A)
+    },
+    createToken: function (A) {
+      if (arguments.length === 2)
+        return new org.antlr.runtime.CommonToken(arguments[0], arguments[1])
+      else return new org.antlr.runtime.CommonToken(arguments[0])
+    },
+    setTokenBoundaries: function (C, E, A) {
+      if (!org.antlr.lang.isValue(C)) return
+      let D = 0,
+        B = 0
+      if (org.antlr.lang.isValue(E))
+        if (E.getTokenIndex) D = E.getTokenIndex()
+        else if (E.getStartIndex) D = E.getStartIndex()
+        else D = E.getTokenStartIndex()
+      if (org.antlr.lang.isValue(A))
+        if (B.getTokenIndex) B = A.getTokenIndex()
+        else if (A.getStopIndex) B = A.getStopIndex()
+        else B = A.getTokenStopIndex()
+      C.setTokenStartIndex(D)
+      C.setTokenStopIndex(B)
+    },
+    getTokenStartIndex: function (A) {
+      if (!A) return -1
+      return A.getTokenStartIndex()
+    },
+    getTokenStopIndex: function (A) {
+      if (!A) return -1
+      return A.getTokenStopIndex()
+    },
+    getText: function (A) {
+      if (!A) return null
+      return A.getText()
+    },
+    getType: function (A) {
+      if (!A) return org.antlr.runtime.Token.INVALID_TOKEN_TYPE
+      return A.getType()
+    },
+    getToken: function (A) {
+      if (A instanceof org.antlr.runtime.tree.CommonTree) return A.getToken()
+      return null
+    },
+    getChild: function (B, A) {
+      if (!B) return null
+      return B.getChild(A)
+    },
+    getChildCount: function (A) {
+      if (!A) return 0
+      return A.getChildCount()
+    },
+    getParent: function (A) {
+      return A.getParent()
+    },
+    setParent: function (A, B) {
+      A.setParent(B)
+    },
+    getChildIndex: function (A) {
+      return A.getChildIndex()
+    },
+    setChildIndex: function (B, A) {
+      B.setChildIndex(A)
+    },
+    replaceChildren: function (D, B, A, C) {
+      if (D) D.replaceChildren(B, A, C)
+    }
+  }
+)
+org.antlr.runtime.ANTLRStringStream = function (A) {
+  this.p = 0
+  this.line = 1
+  this.charPositionInLine = 0
+  this.markDepth = 0
+  this.markers = null
+  this.lastMarker = null
+  this.data = A
+  this.n = A.length
+}
+org.antlr.runtime.ANTLRStringStream.prototype = {
+  reset: function () {
+    this.p = 0
+    this.line = 1
+    this.charPositionInLine = 0
+    this.markDepth = 0
+  },
+  consume: function () {
+    if (this.p < this.n) {
+      this.charPositionInLine++
+      if (this.data.charAt(this.p) === '\n') {
+        this.line++
+        this.charPositionInLine = 0
+      }
+      this.p++
+    }
+  },
+  LA: function (B) {
+    if (B < 0) B++
+    let A = this.p + B - 1
+    if (A >= this.n || A < 0) return org.antlr.runtime.CharStream.EOF
+    return this.data.charAt(A)
+  },
+  index: function () {
+    return this.p
+  },
+  size: function () {
+    return this.n
+  },
+  mark: function () {
+    if (!this.markers) {
+      this.markers = []
+      this.markers.push(null)
+    }
+    this.markDepth++
+    let A = null
+    if (this.markDepth >= this.markers.length) {
+      A = {}
+      this.markers.push(A)
+    } else A = this.markers[this.markDepth]
+    A.p = this.p
+    A.line = this.line
+    A.charPositionInLine = this.charPositionInLine
+    this.lastMarker = this.markDepth
+    return this.markDepth
+  },
+  rewind: function (A) {
+    if (!org.antlr.lang.isNumber(A)) A = this.lastMarker
+    let B = this.markers[A]
+    this.seek(B.p)
+    this.line = B.line
+    this.charPositionInLine = B.charPositionInLine
+    this.release(A)
+  },
+  release: function (A) {
+    this.markDepth = A
+    this.markDepth--
+  },
+  seek: function (A) {
+    if (A <= this.p) {
+      this.p = A
+      return
+    }
+    while (this.p < A) this.consume()
+  },
+  substring: function (B, A) {
+    return this.data.substr(B, A - B + 1)
+  },
+  getLine: function () {
+    return this.line
+  },
+  getCharPositionInLine: function () {
+    return this.charPositionInLine
+  },
+  setLine: function (A) {
+    this.line = A
+  },
+  setCharPositionInLine: function (A) {
+    this.charPositionInLine = A
+  },
+  getSourceName: function () {
+    return null
+  }
+}
+org.antlr.runtime.ANTLRStringStream.LT = org.antlr.runtime.ANTLRStringStream.LA
+org.antlr.runtime.CommonTokenStream = function (A, B) {
+  this.p = -1
+  this.channel = org.antlr.runtime.Token.DEFAULT_CHANNEL
+  this.v_discardOffChannelTokens = false
+  this.tokens = []
+  if (arguments.length >= 2) this.channel = B
+  else if (arguments.length === 1) this.tokenSource = A
+}
+org.antlr.runtime.CommonTokenStream.prototype = {
+  setTokenSource: function (A) {
+    this.tokenSource = A
+    this.tokens = []
+    this.p = -1
+    this.channel = org.antlr.runtime.Token.DEFAULT_CHANNEL
+  },
+  fillBuffer: function () {
+    let B = 0,
+      C = this.tokenSource.nextToken(),
+      A,
+      D
+    while (
+      org.antlr.lang.isValue(C) &&
+      C.getType() != org.antlr.runtime.CharStream.EOF
+    ) {
+      A = false
+      if (this.channelOverrideMap) {
+        D = this.channelOverrideMap[C.getType()]
+        if (org.antlr.lang.isValue(D)) C.setChannel(D)
+      }
+      if (this.discardSet && this.discardSet[C.getType()]) A = true
+      else if (this.v_discardOffChannelTokens && C.getChannel() != this.channel)
+        A = true
+      if (!A) {
+        C.setTokenIndex(B)
+        this.tokens.push(C)
+        B++
+      }
+      C = this.tokenSource.nextToken()
+    }
+    this.p = 0
+    this.p = this.skipOffTokenChannels(this.p)
+  },
+  consume: function () {
+    if (this.p < this.tokens.length) {
+      this.p++
+      this.p = this.skipOffTokenChannels(this.p)
+    }
+  },
+  skipOffTokenChannels: function (A) {
+    let B = this.tokens.length
+    while (A < B && this.tokens[A].getChannel() != this.channel) A++
+    return A
+  },
+  skipOffTokenChannelsReverse: function (A) {
+    while (A >= 0 && this.tokens[A].getChannel() != this.channel) A--
+    return A
+  },
+  setTokenTypeChannel: function (B, A) {
+    if (!this.channelOverrideMap) this.channelOverrideMap = {}
+    this.channelOverrideMap[B] = A
+  },
+  discardTokenType: function (A) {
+    if (!this.discardSet) this.discardSet = {}
+    this.discardSet[A] = true
+  },
+  discardOffChannelTokens: function (A) {
+    this.v_discardOffChannelTokens = A
+  },
+  getTokens: function (F, D, C) {
+    if (this.p === -1) this.fillBuffer()
+    if (arguments.length === 0) return this.tokens
+    if (org.antlr.lang.isArray(C)) C = new org.antlr.runtime.BitSet(C)
+    else if (org.antlr.lang.isNumber(C)) C = org.antlr.runtime.BitSet.of(C)
+    if (D >= this.tokens.length) D = this.tokens.length - 1
+    if (F < 0) F = 0
+    if (F > D) return null
+    let E = [],
+      B,
+      A
+    for (B = F; B <= D; B++) {
+      A = this.tokens[B]
+      if (!this.types || C.member(A.getType())) E.push(A)
+    }
+    if (E.length === 0) E = null
+    return E
+  },
+  LT: function (A) {
+    if (this.p === -1) this.fillBuffer()
+    if (A === 0) return null
+    if (A < 0) return this.LB(-1 * A)
+    if (this.p + A - 1 >= this.tokens.length)
+      return org.antlr.runtime.Token.EOF_TOKEN
+    let B = this.p,
+      C = 1
+    while (C < A) {
+      B = this.skipOffTokenChannels(B + 1)
+      C++
+    }
+    if (B >= this.tokens.length) return org.antlr.runtime.Token.EOF_TOKEN
+    return this.tokens[B]
+  },
+  LB: function (A) {
+    if (this.p === -1) this.fillBuffer()
+    if (A === 0) return null
+    if (this.p - A < 0) return null
+    let B = this.p,
+      C = 1
+    while (C <= A) {
+      B = this.skipOffTokenChannelsReverse(B - 1)
+      C++
+    }
+    if (B < 0) return null
+    return this.tokens[B]
+  },
+  get: function (A) {
+    return this.tokens[A]
+  },
+  LA: function (A) {
+    return this.LT(A).getType()
+  },
+  mark: function () {
+    if (this.p === -1) this.fillBuffer()
+    this.lastMarker = this.index()
+    return this.lastMarker
+  },
+  release: function (A) {},
+  size: function () {
+    return this.tokens.length
+  },
+  index: function () {
+    return this.p
+  },
+  rewind: function (A) {
+    if (!org.antlr.lang.isNumber(A)) A = this.lastMarker
+    this.seek(A)
+  },
+  reset: function () {
+    this.p = -1
+    this.lastMarker = 0
+  },
+  seek: function (A) {
+    this.p = A
+  },
+  getTokenSource: function () {
+    return this.tokenSource
+  },
+  getSourceName: function () {
+    return this.getTokenSource().getSourceName()
+  },
+  toString: function (D, C) {
+    if (arguments.length === 0) {
+      if (this.p === -1) this.fillBuffer()
+      D = 0
+      C = this.tokens.length - 1
+    }
+    if (!org.antlr.lang.isNumber(D) && !org.antlr.lang.isNumber(C))
+      if (org.antlr.lang.isValue(D) && org.antlr.lang.isValue(C)) {
+        D = D.getTokenIndex()
+        C = C.getTokenIndex()
+      } else return null
+    let A = '',
+      B
+    if (D < 0 || C < 0) return null
+    if (this.p == -1) this.fillBuffer()
+    if (C >= this.tokens.length) C = this.tokens.length - 1
+    for (B = D; B <= C; B++) {
+      t = this.tokens[B]
+      A = A + this.tokens[B].getText()
+    }
+    return A
+  }
+}
+org.antlr.runtime.TokenRewriteStream = function () {
+  let A = org.antlr.runtime.TokenRewriteStream.superclass
+  this.programs = null
+  this.lastRewriteTokenIndexes = null
+  if (arguments.length === 0) this.init()
+  else {
+    A.constructor.apply(this, arguments)
+    this.init()
+  }
+}
+;(function () {
+  let A = org.antlr.runtime.TokenRewriteStream
+  org.antlr.lang.augmentObject(A, {
+    DEFAULT_PROGRAM_NAME: 'default',
+    PROGRAM_INIT_SIZE: 100,
+    MIN_TOKEN_INDEX: 0
+  })
+  A.RewriteOperation = function (B, C) {
+    this.index = B
+    this.text = C
+  }
+  A.RewriteOperation.prototype = {
+    execute: function (B) {
+      return this.index
+    },
+    toString: function () {
+      return this.text
+    }
+  }
+  A.InsertBeforeOp = function (B, C) {
+    A.InsertBeforeOp.superclass.constructor.call(this, B, C)
+  }
+  org.antlr.lang.extend(A.InsertBeforeOp, A.RewriteOperation, {
+    execute: function (B) {
+      B.push(this.text)
+      return this.index
+    }
+  })
+  A.ReplaceOp = function (D, C, B) {
+    A.ReplaceOp.superclass.constructor.call(this, D, B)
+    this.lastIndex = C
+  }
+  org.antlr.lang.extend(A.ReplaceOp, A.RewriteOperation, {
+    execute: function (B) {
+      if (org.antlr.lang.isValue(this.text)) B.push(this.text)
+      return this.lastIndex + 1
+    }
+  })
+  A.DeleteOp = function (C, B) {
+    A.DeleteOp.superclass.constructor.call(this, C, B)
+  }
+  org.antlr.lang.extend(A.DeleteOp, A.ReplaceOp)
+  org.antlr.lang.extend(A, org.antlr.runtime.CommonTokenStream, {
+    init: function () {
+      this.programs = {}
+      this.programs[A.DEFAULT_PROGRAM_NAME] = []
+      this.lastRewriteTokenIndexes = {}
+    },
+    rollback: function () {
+      let B, C
+      if (arguments.length === 1) {
+        B = A.DEFAULT_PROGRAM_NAME
+        C = arguments[0]
+      } else if (arguments.length === 2) {
+        B = arguments[0]
+        C = arguments[1]
+      }
+      let D = this.programs[B]
+      if (D) programs[B] = D.slice(A.MIN_TOKEN_INDEX, this.instructionIndex)
+    },
+    deleteProgram: function (B) {
+      B = B || A.DEFAULT_PROGRAM_NAME
+      this.rollback(B, A.MIN_TOKEN_INDEX)
+    },
+    addToSortedRewriteList: function () {
+      let H, E
+      if (arguments.length === 1) {
+        H = A.DEFAULT_PROGRAM_NAME
+        E = arguments[0]
+      } else if (arguments.length === 2) {
+        H = arguments[0]
+        E = arguments[1]
+      }
+      let F = this.getProgram(H)
+      let G, I, D, J, B, C
+      for (I = 0, G = F.length; I < G; I++) {
+        D = F[I]
+        if (D.index === E.index) {
+          if (E instanceof A.ReplaceOp) {
+            J = false
+            for (C = I; C < F.length; C++) {
+              B = F[I]
+              if (B.index !== E.index) break
+              if (B instanceof A.ReplaceOp) {
+                F[I] = E
+                J = true
+                break
+              }
+            }
+            if (!J) F.splice(C, 0, E)
+          } else F.splice(I, 0, E)
+          break
+        } else if (D.index > E.index) {
+          F.splice(I, 0, E)
+          break
+        }
+      }
+      if (I === G) F.push(E)
+    },
+    insertAfter: function () {
+      let C, B, D
+      if (arguments.length === 2) {
+        B = A.DEFAULT_PROGRAM_NAME
+        C = arguments[0]
+        D = arguments[1]
+      } else if (arguments.length === 3) {
+        B = arguments[0]
+        C = arguments[1]
+        D = arguments[2]
+      }
+      if (C instanceof org.antlr.runtime.CommonToken) C = C.index
+      this.insertBefore(B, C + 1, D)
+    },
+    insertBefore: function () {
+      let C, B, D
+      if (arguments.length === 2) {
+        B = A.DEFAULT_PROGRAM_NAME
+        C = arguments[0]
+        D = arguments[1]
+      } else if (arguments.length === 3) {
+        B = arguments[0]
+        C = arguments[1]
+        D = arguments[2]
+      }
+      if (C instanceof org.antlr.runtime.CommonToken) C = C.index
+      this.addToSortedRewriteList(B, new A.InsertBeforeOp(C, D))
+    },
+    replace: function () {
+      let B, E, C, D
+      if (arguments.length === 2) {
+        B = A.DEFAULT_PROGRAM_NAME
+        E = arguments[0]
+        C = arguments[0]
+        D = arguments[1]
+      } else if (arguments.length === 3) {
+        B = A.DEFAULT_PROGRAM_NAME
+        E = arguments[0]
+        C = arguments[1]
+        D = arguments[2]
+      }
+      if (arguments.length === 4) {
+        B = arguments[0]
+        E = arguments[1]
+        C = arguments[2]
+        D = arguments[3]
+      }
+      if (E instanceof org.antlr.runtime.CommonToken) E = E.index
+      if (C instanceof org.antlr.runtime.CommonToken) C = C.index
+      if (E > C || C < 0 || E < 0) return
+      this.addToSortedRewriteList(B, new A.ReplaceOp(E, C, D))
+    },
+    remove: function () {
+      let B = [],
+        C = arguments.length - 1
+      while (C >= 0) {
+        B[C] = arguments[C]
+        C--
+      }
+      B.push('')
+      this.replace.apply(this, B)
+    },
+    getLastRewriteTokenIndex: function (B) {
+      B = B || A.DEFAULT_PROGRAM_NAME
+      return this.lastRewriteTokenIndexes[B] || -1
+    },
+    setLastRewriteTokenIndex: function (B, C) {
+      this.lastRewriteTokenIndexes[B] = C
+    },
+    getProgram: function (B) {
+      let C = this.programs[B]
+      if (!C) C = this.initializeProgram(B)
+      return C
+    },
+    initializeProgram: function (B) {
+      let C = []
+      this.programs[B] = C
+      return C
+    },
+    toOriginalString: function (E, B) {
+      if (!org.antlr.lang.isNumber(E)) E = A.MIN_TOKEN_INDEX
+      if (!org.antlr.lang.isNumber(B)) B = this.size() - 1
+      let C = [],
+        D
+      for (
+        D = E;
+        D >= A.MIN_TOKEN_INDEX && D <= B && D < this.tokens.length;
+        D++
+      )
+        C.push(this.get(D).getText())
+      return C.join('')
+    },
+    toString: function () {
+      let J, B, F
+      if (arguments.length === 0) {
+        J = A.DEFAULT_PROGRAM_NAME
+        B = A.MIN_TOKEN_INDEX
+        F = this.size() - 1
+      } else if (arguments.length === 1) {
+        J = arguments[0]
+        B = A.MIN_TOKEN_INDEX
+        F = this.size() - 1
+      } else if (arguments.length === 2) {
+        J = A.DEFAULT_PROGRAM_NAME
+        B = arguments[0]
+        F = arguments[1]
+      }
+      let H = this.programs[J]
+      if (!H || H.length === 0) return this.toOriginalString(B, F)
+      let E = 0,
+        D = B,
+        C = [],
+        G
+      while (D >= A.MIN_TOKEN_INDEX && D <= F && D < this.tokens.length) {
+        if (E < H.length) {
+          G = H[E]
+          while (G.index < D && E < H.length) {
+            E++
+            if (E < H.length) G = H[E]
+          }
+          while (D === G.index && E < H.length) {
+            D = G.execute(C)
+            E++
+            if (E < H.length) G = H[E]
+          }
+        }
+        if (D <= F) {
+          C.push(this.get(D).getText())
+          D++
+        }
+      }
+      let I
+      for (I = E; I < H.length; I++) {
+        G = H[I]
+        if (G.index >= this.size()) G.execute(C)
+      }
+      return C.join('')
+    },
+    toDebugString: function (E, B) {
+      if (!org.antlr.lang.isNumber(E)) E = A.MIN_TOKEN_INDEX
+      if (!org.antlr.lang.isNumber(B)) B = this.size() - 1
+      let C = [],
+        D
+      for (
+        D = E;
+        D >= A.MIN_TOKEN_INDEX && D <= B && D < this.tokens.length;
+        D++
+      )
+        C.push(this.get(D))
+      return C.join('')
+    }
+  })
+})()
+org.antlr.runtime.tree.TreeNodeStream = function () {}
+org.antlr.runtime.tree.CommonTreeNodeStream = function (D, A, B) {
+  if (arguments.length === 1) {
+    A = D
+    D = new org.antlr.runtime.tree.CommonTreeAdaptor()
+  }
+  if (arguments.length <= 2)
+    B = org.antlr.runtime.tree.CommonTreeNodeStream.DEFAULT_INITIAL_BUFFER_SIZE
+  this.uniqueNavigationNodes = false
+  this.p = -1
+  let C = org.antlr.runtime.Token
+  this.root = A
+  this.adaptor = D
+  this.nodes = []
+  this.down = this.adaptor.create(C.DOWN, 'DOWN')
+  this.up = this.adaptor.create(C.UP, 'UP')
+  this.eof = this.adaptor.create(C.EOF, 'EOF')
+}
+org.antlr.lang.augmentObject(org.antlr.runtime.tree.CommonTreeNodeStream, {
+  DEFAULT_INITIAL_BUFFER_SIZE: 100,
+  INITIAL_CALL_STACK_SIZE: 10
+})
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.CommonTreeNodeStream,
+  org.antlr.runtime.tree.TreeNodeStream,
+  {
+    StreamIterator: function () {
+      let C = 0,
+        B = this.nodes,
+        A = this.eof
+      return {
+        hasNext: function () {
+          return C < B.length
+        },
+        next: function () {
+          var D = C
+          C++
+          if (D < B.length) return B[D]
+          return A
+        },
+        remove: function () {
+          throw new Error('cannot remove nodes from stream')
+        }
+      }
+    },
+    fillBuffer: function (C) {
+      let B = false
+      if (org.antlr.lang.isUndefined(C)) {
+        C = this.root
+        B = true
+      }
+      let A = this.adaptor.isNil(C)
+      if (!A) this.nodes.push(C)
+      let F = this.adaptor.getChildCount(C)
+      if (!A && F > 0) this.addNavigationNode(org.antlr.runtime.Token.DOWN)
+      let E, D
+      for (E = 0; E < F; E++) {
+        D = this.adaptor.getChild(C, E)
+        this.fillBuffer(D)
+      }
+      if (!A && F > 0) this.addNavigationNode(org.antlr.runtime.Token.UP)
+      if (B) this.p = 0
+    },
+    getNodeIndex: function (C) {
+      if (this.p == -1) this.fillBuffer()
+      let B, A
+      for (B = 0; B < this.nodes.length; B++) {
+        A = this.nodes[B]
+        if (A === C) return B
+      }
+      return -1
+    },
+    addNavigationNode: function (B) {
+      let A = null
+      if (B === org.antlr.runtime.Token.DOWN)
+        if (this.hasUniqueNavigationNodes())
+          A = this.adaptor.create(org.antlr.runtime.Token.DOWN, 'DOWN')
+        else A = this.down
+      else if (this.hasUniqueNavigationNodes())
+        A = this.adaptor.create(org.antlr.runtime.Token.UP, 'UP')
+      else A = this.up
+      this.nodes.push(A)
+    },
+    get: function (A) {
+      if (this.p === -1) this.fillBuffer()
+      return this.nodes[A]
+    },
+    LT: function (A) {
+      if (this.p === -1) this.fillBuffer()
+      if (A === 0) return null
+      if (A < 0) return this.LB(-1 * A)
+      if (this.p + A - 1 >= this.nodes.length) return this.eof
+      return this.nodes[this.p + A - 1]
+    },
+    getCurrentSymbol: function () {
+      return this.LT(1)
+    },
+    LB: function (A) {
+      if (A === 0) return null
+      if (this.p - A < 0) return null
+      return this.nodes[this.p - A]
+    },
+    getTreeSource: function () {
+      return this.root
+    },
+    getSourceName: function () {
+      return this.getTokenStream().getSourceName()
+    },
+    getTokenStream: function () {
+      return this.tokens
+    },
+    setTokenStream: function (A) {
+      this.tokens = A
+    },
+    getTreeAdaptor: function () {
+      return this.adaptor
+    },
+    setTreeAdaptor: function (A) {
+      this.adaptor = A
+    },
+    hasUniqueNavigationNodes: function () {
+      return this.uniqueNavigationNodes
+    },
+    setUniqueNavigationNodes: function (A) {
+      this.uniqueNavigationNodes = A
+    },
+    consume: function () {
+      if (this.p === -1) this.fillBuffer()
+      this.p++
+    },
+    LA: function (A) {
+      return this.adaptor.getType(this.LT(A))
+    },
+    mark: function () {
+      if (this.p === -1) this.fillBuffer()
+      this.lastMarker = this.index()
+      return this.lastMarker
+    },
+    release: function (A) {},
+    index: function () {
+      return this.p
+    },
+    rewind: function (A) {
+      if (!org.antlr.lang.isNumber(A)) A = this.lastMarker
+      this.seek(A)
+    },
+    seek: function (A) {
+      if (this.p === -1) this.fillBuffer()
+      this.p = A
+    },
+    push: function (A) {
+      if (!this.calls) this.calls = []
+      this.calls.push(this.p)
+      this.seek(A)
+    },
+    pop: function () {
+      let A = this.calls.pop()
+      this.seek(A)
+      return A
+    },
+    reset: function () {
+      this.p = -1
+      this.lastMarker = 0
+      if (this.calls) this.calls = []
+    },
+    size: function () {
+      if (this.p === -1) this.fillBuffer()
+      return this.nodes.length
+    },
+    iterator: function () {
+      if (this.p === -1) this.fillBuffer()
+      return this.StreamIterator()
+    },
+    replaceChildren: function (D, B, A, C) {
+      if (D) this.adaptor.replaceChildren(D, B, A, C)
+    },
+    toTokenString: function (E, D) {
+      if (this.p === -1) this.fillBuffer()
+      let A = '',
+        C,
+        B
+      for (C = E; C < this.nodes.length && C <= D; C++) {
+        B = this.nodes[C]
+        A += ' ' + this.adaptor.getToken(B)
+      }
+      return A
+    },
+    toString: function (H, D) {
+      let A = '',
+        E,
+        C,
+        B
+      if (arguments.length === 0) {
+        if (this.p === -1) this.fillBuffer()
+        for (B = 0; B < this.nodes.length; B++) {
+          C = this.nodes[B]
+          A += ' '
+          A += this.adaptor.getType(C)
+        }
+        return A
+      } else {
+        if (!org.antlr.lang.isNumber(H) || !org.antlr.lang.isNumber(D))
+          return null
+        if (this.p === -1) this.fillBuffer()
+        if (H instanceof org.antlr.runtime.tree.CommonTree);
+        else;
+        if (D instanceof org.antlr.runtime.tree.CommonTree);
+        else;
+        let G, F
+        if (this.tokens) {
+          G = this.adaptor.getTokenStartIndex(H)
+          F = this.adaptor.getTokenStopIndex(D)
+          if (this.adaptor.getType(D) === org.antlr.runtime.Token.UP)
+            F = this.adaptor.getTokenStopIndex(H)
+          else if (this.adaptor.getType(D) == org.antlr.runtime.Token.EOF)
+            F = this.size() - 2
+          return this.tokens.toString(G, F)
+        }
+        C = null
+        B = 0
+        for (; B < this.nodes.length; B++) {
+          C = this.nodes[B]
+          if (C === H) break
+        }
+        A = E = ''
+        C = this.nodes[B]
+        while (C !== D) {
+          E = this.adaptor.getText(C)
+          if (!org.antlr.lang.isString(E))
+            E = ' ' + this.adaptor.getType(C).toString()
+          A += E
+          B++
+          C = nodes[B]
+        }
+        E = this.adaptor.getText(D)
+        if (!org.antlr.lang.isString(E))
+          E = ' ' + this.adaptor.getType(D).toString()
+        A += E
+        return A
+      }
+    }
+  }
+)
+org.antlr.runtime.tree.RewriteRuleElementStream = function (C, B, A) {
+  this.cursor = 0
+  this.dirty = false
+  this.elementDescription = B
+  this.adaptor = C
+  if (A)
+    if (org.antlr.lang.isArray(A)) {
+      this.singleElement = null
+      this.elements = A
+    } else this.add(A)
+}
+org.antlr.runtime.tree.RewriteRuleElementStream.prototype = {
+  reset: function () {
+    this.cursor = 0
+    this.dirty = true
+  },
+  add: function (A) {
+    if (!org.antlr.lang.isValue(A)) return
+    if (this.elements) {
+      this.elements.push(A)
+      return
+    }
+    if (!org.antlr.lang.isValue(this.singleElement)) {
+      this.singleElement = A
+      return
+    }
+    this.elements = []
+    this.elements.push(this.singleElement)
+    this.singleElement = null
+    this.elements.push(A)
+  },
+  nextTree: function () {
+    let B = this.size(),
+      A
+    if (this.dirty || (this.cursor >= B && B == 1)) {
+      A = this._next()
+      return this.dup(A)
+    }
+    A = this._next()
+    return A
+  },
+  _next: function () {
+    let B = this.size()
+    if (B === 0)
+      throw new org.antlr.runtime.tree.RewriteEmptyStreamException(
+        this.elementDescription
+      )
+    if (this.cursor >= B) {
+      if (B === 1) return this.toTree(this.singleElement)
+      throw new org.antlr.runtime.tree.RewriteCardinalityException(
+        this.elementDescription
+      )
+    }
+    if (org.antlr.lang.isValue(this.singleElement)) {
+      this.cursor++
+      return this.toTree(this.singleElement)
+    }
+    let A = this.toTree(this.elements[this.cursor])
+    this.cursor++
+    return A
+  },
+  toTree: function (A) {
+    if (A && A.getTree) return A.getTree()
+    return A
+  },
+  hasNext: function () {
+    return (
+      (org.antlr.lang.isValue(this.singleElement) && this.cursor < 1) ||
+      (this.elements && this.cursor < this.elements.length)
+    )
+  },
+  size: function () {
+    let A = 0
+    if (org.antlr.lang.isValue(this.singleElement)) A = 1
+    if (this.elements) return this.elements.length
+    return A
+  },
+  getDescription: function () {
+    return this.elementDescription
+  }
+}
+org.antlr.runtime.tree.RewriteRuleNodeStream = function (C, B, A) {
+  org.antlr.runtime.tree.RewriteRuleNodeStream.superclass.constructor.apply(
+    this,
+    arguments
+  )
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteRuleNodeStream,
+  org.antlr.runtime.tree.RewriteRuleElementStream,
+  {
+    nextNode: function () {
+      return this._next()
+    },
+    toTree: function (A) {
+      return this.adaptor.dupNode(A)
+    },
+    dup: function () {
+      throw new Error("dup can't be called for a node stream.")
+    }
+  }
+)
+org.antlr.runtime.tree.RewriteRuleTokenStream = function (D, C, B) {
+  let A = org.antlr.runtime.tree.RewriteRuleTokenStream.superclass
+  A.constructor.apply(this, arguments)
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteRuleTokenStream,
+  org.antlr.runtime.tree.RewriteRuleElementStream,
+  {
+    nextNode: function () {
+      let A = this._next()
+      return this.adaptor.create(A)
+    },
+    nextToken: function () {
+      return this._next()
+    },
+    toTree: function (A) {
+      return A
+    },
+    dup: function (A) {
+      throw new Error("dup can't be called for a token stream.")
+    }
+  }
+)
+org.antlr.runtime.tree.RewriteRuleSubtreeStream = function () {
+  let A = org.antlr.runtime.tree.RewriteRuleSubtreeStream.superclass
+  A.constructor.apply(this, arguments)
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.tree.RewriteRuleSubtreeStream,
+  org.antlr.runtime.tree.RewriteRuleElementStream,
+  {
+    nextNode: function () {
+      let B = this.size(),
+        A
+      if (this.dirty || (this.cursor >= B && B === 1)) {
+        A = this._next()
+        return this.adaptor.dupNode(A)
+      }
+      A = this._next()
+      return A
+    },
+    dup: function (A) {
+      return this.adaptor.dupTree(A)
+    }
+  }
+)
+org.antlr.runtime.BaseRecognizer = function (A) {
+  this.state = A || new org.antlr.runtime.RecognizerSharedState()
+}
+org.antlr.lang.augmentObject(org.antlr.runtime.BaseRecognizer, {
+  MEMO_RULE_FAILED: -2,
+  MEMO_RULE_UNKNOWN: -1,
+  INITIAL_FOLLOW_STACK_SIZE: 100,
+  MEMO_RULE_FAILED_I: -2,
+  DEFAULT_TOKEN_CHANNEL: org.antlr.runtime.Token.DEFAULT_CHANNEL,
+  HIDDEN: org.antlr.runtime.Token.HIDDEN_CHANNEL,
+  NEXT_TOKEN_RULE_NAME: 'nextToken'
+})
+org.antlr.runtime.BaseRecognizer.prototype = {
+  reset: function () {
+    let B, A
+    if (!this.state) return
+    this.state._fsp = -1
+    this.state.errorRecovery = false
+    this.state.lastErrorIndex = -1
+    this.state.failed = false
+    this.state.syntaxErrors = 0
+    this.state.backtracking = 0
+    if (this.state.ruleMemo)
+      for (B = 0, A = this.state.ruleMemo.length; B < A; B++)
+        this.state.ruleMemo[B] = null
+  },
+  match: function (B, D, A) {
+    let C = this.getCurrentInputSymbol(B)
+    if (B.LA(1) === D) {
+      B.consume()
+      this.state.errorRecovery = false
+      this.state.failed = false
+      return C
+    }
+    if (this.state.backtracking > 0) {
+      this.state.failed = true
+      return C
+    }
+    C = this.recoverFromMismatchedToken(B, D, A)
+    return C
+  },
+  matchAny: function (A) {
+    this.state.errorRecovery = false
+    this.state.failed = false
+    A.consume()
+  },
+  mismatchIsUnwantedToken: function (A, B) {
+    return A.LA(2) === B
+  },
+  mismatchIsMissingToken: function (C, A) {
+    if (!A) return false
+    if (A.member(org.antlr.runtime.Token.EOR_TOKEN_TYPE)) {
+      if (this.state._fsp >= 0) A.remove(org.antlr.runtime.Token.EOR_TOKEN_TYPE)
+      let B = this.computeContextSensitiveRuleFOLLOW()
+      A = A.or(this.viableTokensFollowingThisRule)
+    }
+    if (A.member(C.LA(1)) || A.member(org.antlr.runtime.Token.EOR_TOKEN_TYPE))
+      return true
+    return false
+  },
+  mismatch: function (B, C, A) {
+    if (this.mismatchIsUnwantedToken(B, C))
+      throw new org.antlr.runtime.UnwantedTokenException(C, B)
+    else if (this.mismatchIsMissingToken(B, A))
+      throw new org.antlr.runtime.MissingTokenException(C, B, null)
+    throw new org.antlr.runtime.MismatchedTokenException(C, B)
+  },
+  reportError: function (A) {
+    if (this.state.errorRecovery) return
+    this.state.syntaxErrors++
+    this.state.errorRecovery = true
+    this.displayRecognitionError(this.getTokenNames(), A)
+  },
+  displayRecognitionError: function (A, B) {
+    let D = this.getErrorHeader(B),
+      C = this.getErrorMessage(B, A)
+    this.emitErrorMessage(D + ' ' + C)
+  },
+  getErrorHeader: function (A) {
+    if (!org.antlr.lang.isNumber(A.line)) A.line = 0
+    return 'line ' + A.line + ':' + A.charPositionInLine
+  },
+  emitErrorMessage: function (A) {
+    if (typeof window != 'undefined' && window.console && window.console.log)
+      console.log(A)
+    else;
+  },
+  getErrorMessage: function (E, D) {
+    let F = E && E.getMessage ? E.getMessage() : null,
+      A,
+      C
+    if (E instanceof org.antlr.runtime.UnwantedTokenException) {
+      let B = E
+      C = '\x3cunknown\x3e'
+      if (B.expecting == org.antlr.runtime.Token.EOF) C = 'EOF'
+      else C = D[B.expecting]
+      F =
+        'extraneous input ' +
+        this.getTokenErrorDisplay(B.getUnexpectedToken()) +
+        ' expecting ' +
+        C
+    } else if (E instanceof org.antlr.runtime.MissingTokenException) {
+      A = E
+      C = '\x3cunknown\x3e'
+      if (A.expecting == org.antlr.runtime.Token.EOF) C = 'EOF'
+      else C = D[A.expecting]
+      F = 'missing ' + C + ' at ' + this.getTokenErrorDisplay(E.token)
+    } else if (E instanceof org.antlr.runtime.MismatchedTokenException) {
+      A = E
+      C = '\x3cunknown\x3e'
+      if (A.expecting == org.antlr.runtime.Token.EOF) C = 'EOF'
+      else C = D[A.expecting]
+      F =
+        'mismatched input ' +
+        this.getTokenErrorDisplay(E.token) +
+        ' expecting ' +
+        C
+    } else if (E instanceof org.antlr.runtime.NoViableAltException)
+      F = 'no viable alternative at input ' + this.getTokenErrorDisplay(E.token)
+    else if (E instanceof org.antlr.runtime.EarlyExitException)
+      F =
+        'required (...)+ loop did not match anything at input ' +
+        this.getTokenErrorDisplay(E.token)
+    else if (E instanceof org.antlr.runtime.MismatchedSetException)
+      F =
+        'mismatched input ' +
+        this.getTokenErrorDisplay(E.token) +
+        ' expecting set ' +
+        E.expecting
+    else if (E instanceof org.antlr.runtime.MismatchedNotSetException)
+      F =
+        'mismatched input ' +
+        this.getTokenErrorDisplay(E.token) +
+        ' expecting set ' +
+        E.expecting
+    else if (E instanceof org.antlr.runtime.FailedPredicateException)
+      F = 'rule ' + E.ruleName + ' failed predicate: {' + E.predicateText + '}?'
+    return F
+  },
+  getNumberOfSyntaxErrors: function () {
+    return this.state.syntaxErrors
+  },
+  getTokenErrorDisplay: function (A) {
+    let B = A.getText()
+    if (!org.antlr.lang.isValue(B))
+      if (A.getType() == org.antlr.runtime.Token.EOF) B = '\x3cEOF\x3e'
+      else B = '\x3c' + A.getType() + '\x3e'
+    B = B.replace(/\n/g, '\\n')
+    B = B.replace(/\r/g, '\\r')
+    B = B.replace(/\t/g, '\\t')
+    return "'" + B + "'"
+  },
+  recover: function (A, B) {
+    if (this.state.lastErrorIndex == A.index()) A.consume()
+    this.state.lastErrorIndex = A.index()
+    let C = this.computeErrorRecoverySet()
+    this.beginResync()
+    this.consumeUntil(A, C)
+    this.endResync()
+  },
+  beginResync: function () {},
+  endResync: function () {},
+  computeErrorRecoverySet: function () {
+    return this.combineFollows(false)
+  },
+  computeContextSensitiveRuleFOLLOW: function () {
+    return this.combineFollows(true)
+  },
+  combineFollows: function (C) {
+    let E = this.state._fsp,
+      B,
+      A,
+      D = new org.antlr.runtime.BitSet()
+    for (B = E; B >= 0; B--) {
+      A = this.state.following[B]
+      D.orInPlace(A)
+      if (C)
+        if (A.member(org.antlr.runtime.Token.EOR_TOKEN_TYPE)) {
+          if (B > 0) D.remove(org.antlr.runtime.Token.EOR_TOKEN_TYPE)
+        } else break
+    }
+    return D
+  },
+  recoverFromMismatchedToken: function (B, F, A) {
+    let E = null
+    if (this.mismatchIsUnwantedToken(B, F)) {
+      E = new org.antlr.runtime.UnwantedTokenException(F, B)
+      this.beginResync()
+      B.consume()
+      this.endResync()
+      this.reportError(E)
+      let D = this.getCurrentInputSymbol(B)
+      B.consume()
+      return D
+    }
+    if (this.mismatchIsMissingToken(B, A)) {
+      let C = this.getMissingSymbol(B, E, F, A)
+      E = new org.antlr.runtime.MissingTokenException(F, B, C)
+      this.reportError(E)
+      return C
+    }
+    E = new org.antlr.runtime.MismatchedTokenException(F, B)
+    throw E
+  },
+  recoverFromMismatchedSet: function (B, C, A) {
+    if (this.mismatchIsMissingToken(B, A)) {
+      this.reportError(C)
+      return this.getMissingSymbol(
+        B,
+        C,
+        org.antlr.runtime.Token.INVALID_TOKEN_TYPE,
+        A
+      )
+    }
+    throw C
+  },
+  getCurrentInputSymbol: function (A) {
+    return null
+  },
+  getMissingSymbol: function (B, D, C, A) {
+    return null
+  },
+  consumeUntil: function (A, C) {
+    let B = A.LA(1)
+    while (B != org.antlr.runtime.Token.EOF && !C.member(B)) {
+      A.consume()
+      B = A.LA(1)
+    }
+  },
+  pushFollow: function (A) {
+    if (this.state._fsp + 1 >= this.state.following.length) {
+      let C = []
+      let B
+      for (B = this.state.following.length - 1; B >= 0; B--)
+        C[B] = this.state.following[B]
+      this.state.following = C
+    }
+    this.state._fsp++
+    this.state.following[this.state._fsp] = A
+  },
+  getRuleInvocationStack: function (B, A) {
+    throw new Error('Not implemented.')
+  },
+  getBacktrackingLevel: function () {
+    return this.state.backtracking
+  },
+  getTokenNames: function () {
+    return null
+  },
+  getGrammarFileName: function () {
+    return null
+  },
+  toStrings: function (C) {
+    if (!C) return null
+    let A = []
+    let B
+    for (B = 0; B < C.length; B++) A.push(C[B].getText())
+    return A
+  },
+  getRuleMemoization: function (B, A) {
+    if (!this.state.ruleMemo[B]) this.state.ruleMemo[B] = {}
+    let C = this.state.ruleMemo[B][A]
+    if (!org.antlr.lang.isNumber(C))
+      return org.antlr.runtime.BaseRecognizer.MEMO_RULE_UNKNOWN
+    return C
+  },
+  alreadyParsedRule: function (B, C) {
+    let A = this.getRuleMemoization(C, B.index())
+    if (A == org.antlr.runtime.BaseRecognizer.MEMO_RULE_UNKNOWN) return false
+    if (A == org.antlr.runtime.BaseRecognizer.MEMO_RULE_FAILED)
+      this.state.failed = true
+    else B.seek(A + 1)
+    return true
+  },
+  memoize: function (C, D, B) {
+    let A = this.state.failed
+      ? org.antlr.runtime.BaseRecognizer.MEMO_RULE_FAILED
+      : C.index() - 1
+    if (!org.antlr.lang.isValue(this.state.ruleMemo))
+      throw new Error(
+        '!!!!!!!!! memo array is null for ' + this.getGrammarFileName()
+      )
+    if (D >= this.state.ruleMemo.length)
+      throw new Error(
+        '!!!!!!!!! memo size is ' +
+          this.state.ruleMemo.length +
+          ', but rule index is ' +
+          D
+      )
+    if (org.antlr.lang.isValue(this.state.ruleMemo[D]))
+      this.state.ruleMemo[D][B] = A
+  },
+  getRuleMemoizationCacheSize: function () {
+    let C = 0,
+      A
+    for (A = 0; this.state.ruleMemo && A < this.state.ruleMemo.length; A++) {
+      let B = this.state.ruleMemo[A]
+      if (B) C += B.length
+    }
+    return C
+  },
+  traceIn: function (C, B, A) {
+    this.emitErrorMessage('enter ' + C + ' ' + A)
+    if (this.state.failed) this.emitErrorMessage(' failed\x3d' + this.failed)
+    if (this.state.backtracking > 0)
+      this.emitErrorMessage(' backtracking\x3d' + this.state.backtracking)
+  },
+  traceOut: function (C, B, A) {
+    this.emitErrorMessage('exit ' + C + ' ' + A)
+    if (this.state.failed)
+      this.emitErrorMessage(' failed\x3d' + this.state.failed)
+    if (this.state.backtracking > 0)
+      this.emitErrorMessage(' backtracking\x3d' + this.state.backtracking)
+  }
+}
+org.antlr.runtime.Lexer = function (A, B) {
+  if (B) org.antlr.runtime.Lexer.superclass.constructor.call(this, B)
+  if (A) this.input = A
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.Lexer,
+  org.antlr.runtime.BaseRecognizer,
+  {
+    reset: function () {
+      org.antlr.runtime.Lexer.superclass.reset.call(this)
+      if (org.antlr.lang.isValue(this.input)) this.input.seek(0)
+      if (!org.antlr.lang.isValue(this.state)) return
+      this.state.token = null
+      this.state.type = org.antlr.runtime.Token.INVALID_TOKEN_TYPE
+      this.state.channel = org.antlr.runtime.Token.DEFAULT_CHANNEL
+      this.state.tokenStartCharIndex = -1
+      this.state.tokenStartCharPositionInLine = -1
+      this.state.tokenStartLine = -1
+      this.state.text = null
+    },
+    nextToken: function () {
+      while (true) {
+        this.state.token = null
+        this.state.channel = org.antlr.runtime.Token.DEFAULT_CHANNEL
+        this.state.tokenStartCharIndex = this.input.index()
+        this.state.tokenStartCharPositionInLine =
+          this.input.getCharPositionInLine()
+        this.state.tokenStartLine = this.input.getLine()
+        this.state.text = null
+        if (this.input.LA(1) === org.antlr.runtime.CharStream.EOF)
+          return org.antlr.runtime.Token.EOF_TOKEN
+        try {
+          this.mTokens()
+          if (!org.antlr.lang.isValue(this.state.token)) this.emit()
+          else if (this.state.token == org.antlr.runtime.Token.SKIP_TOKEN)
+            continue
+          return this.state.token
+        } catch (A) {
+          if (A instanceof org.antlr.runtime.RecognitionException) {
+            this.reportError(A)
+            this.recover(A)
+          } else if (A instanceof org.antlr.runtime.NoViableAltException) {
+            this.reportError(A)
+            this.recover(A)
+          } else throw A
+        }
+      }
+    },
+    skip: function () {
+      this.state.token = org.antlr.runtime.Token.SKIP_TOKEN
+    },
+    setCharStream: function (A) {
+      this.input = null
+      this.reset()
+      this.input = A
+    },
+    getCharStream: function () {
+      return this.input
+    },
+    getSourceName: function () {
+      return this.input.getSourceName()
+    },
+    emit: function () {
+      if (arguments.length === 0) {
+        let A = new org.antlr.runtime.CommonToken(
+          this.input,
+          this.state.type,
+          this.state.channel,
+          this.state.tokenStartCharIndex,
+          this.getCharIndex() - 1
+        )
+        A.setLine(this.state.tokenStartLine)
+        A.setText(this.state.text)
+        A.setCharPositionInLine(this.state.tokenStartCharPositionInLine)
+        this.state.token = A
+        return A
+      } else this.state.token = arguments[0]
+    },
+    match: function (C) {
+      let B = 0,
+        A
+      if (org.antlr.lang.isString(C))
+        while (B < C.length) {
+          if (this.input.LA(1) != C.charAt(B)) {
+            if (this.state.backtracking > 0) {
+              this.state.failed = true
+              return
+            }
+            A = new org.antlr.runtime.MismatchedTokenException(
+              C.charAt(B),
+              this.input
+            )
+            this.recover(A)
+            throw A
+          }
+          B++
+          this.input.consume()
+          this.state.failed = false
+        }
+      else if (org.antlr.lang.isNumber(C)) {
+        if (this.input.LA(1) != C) {
+          if (this.state.backtracking > 0) {
+            this.state.failed = true
+            return
+          }
+          A = new org.antlr.runtime.MismatchedTokenException(C, this.input)
+          this.recover(A)
+          throw A
+        }
+        this.input.consume()
+        this.state.failed = false
+      }
+    },
+    matchAny: function () {
+      this.input.consume()
+    },
+    matchRange: function (B, A) {
+      if (this.input.LA(1) < B || this.input.LA(1) > A) {
+        if (this.state.backtracking > 0) {
+          this.state.failed = true
+          return
+        }
+        mre = new org.antlr.runtime.MismatchedRangeException(B, A, this.input)
+        this.recover(mre)
+        throw mre
+      }
+      this.input.consume()
+      this.state.failed = false
+    },
+    getLine: function () {
+      return this.input.getLine()
+    },
+    getCharPositionInLine: function () {
+      return this.input.getCharPositionInLine()
+    },
+    getCharIndex: function () {
+      return this.input.index()
+    },
+    getText: function () {
+      if (org.antlr.lang.isString(this.state.text)) return this.state.text
+      return this.input.substring(
+        this.state.tokenStartCharIndex,
+        this.getCharIndex() - 1
+      )
+    },
+    setText: function (A) {
+      this.state.text = A
+    },
+    reportError: function (A) {
+      this.displayRecognitionError(this.getTokenNames(), A)
+    },
+    getErrorMessage: function (B, A) {
+      let C = null
+      if (B instanceof org.antlr.runtime.MismatchedTokenException)
+        C =
+          'mismatched character ' +
+          this.getCharErrorDisplay(B.c) +
+          ' expecting ' +
+          this.getCharErrorDisplay(B.expecting)
+      else if (B instanceof org.antlr.runtime.NoViableAltException)
+        C =
+          'no viable alternative at character ' + this.getCharErrorDisplay(B.c)
+      else if (B instanceof org.antlr.runtime.EarlyExitException)
+        C =
+          'required (...)+ loop did not match anything at character ' +
+          this.getCharErrorDisplay(B.c)
+      else if (B instanceof org.antlr.runtime.MismatchedNotSetException)
+        C =
+          'mismatched character ' +
+          this.getCharErrorDisplay(B.c) +
+          ' expecting set ' +
+          B.expecting
+      else if (B instanceof org.antlr.runtime.MismatchedSetException)
+        C =
+          'mismatched character ' +
+          this.getCharErrorDisplay(B.c) +
+          ' expecting set ' +
+          B.expecting
+      else if (B instanceof org.antlr.runtime.MismatchedRangeException)
+        C =
+          'mismatched character ' +
+          this.getCharErrorDisplay(B.c) +
+          ' expecting set ' +
+          this.getCharErrorDisplay(B.a) +
+          '..' +
+          this.getCharErrorDisplay(B.b)
+      else
+        C = org.antlr.runtime.Lexer.superclass.getErrorMessage.call(this, B, A)
+      return C
+    },
+    getCharErrorDisplay: function (B) {
+      let A = B
+      switch (A) {
+        case org.antlr.runtime.Token.EOF:
+          A = '\x3cEOF\x3e'
+          break
+        case '\n':
+          A = '\\n'
+          break
+        case '\t':
+          A = '\\t'
+          break
+        case '\r':
+          A = '\\r'
+          break
+      }
+      return "'" + A + "'"
+    },
+    recover: function (A) {
+      this.input.consume()
+    },
+    traceIn: function (C, B) {
+      let A =
+        String.fromCharCode(this.input.LT(1)) +
+        ' line\x3d' +
+        this.getLine() +
+        ':' +
+        this.getCharPositionInLine()
+      org.antlr.runtime.Lexer.superclass.traceIn.call(this, C, B, A)
+    },
+    traceOut: function (C, B) {
+      let A =
+        String.fromCharCode(this.input.LT(1)) +
+        ' line\x3d' +
+        this.getLine() +
+        ':' +
+        this.getCharPositionInLine()
+      org.antlr.runtime.Lexer.superclass.traceOut.call(this, C, B, A)
+    }
+  }
+)
+org.antlr.runtime.ParserRuleReturnScope = function () {}
+org.antlr.runtime.ParserRuleReturnScope.prototype = {
+  getStart: function () {
+    return this.start
+  },
+  getStop: function () {
+    return this.stop
+  }
+}
+org.antlr.runtime.tree.TreeRuleReturnScope = function () {}
+org.antlr.runtime.tree.TreeRuleReturnScope.prototype = {
+  getStart: function () {
+    return this.start
+  }
+}
+org.antlr.runtime.Parser = function (A, B) {
+  org.antlr.runtime.Parser.superclass.constructor.call(this, B)
+  this.setTokenStream(A)
+}
+org.antlr.lang.extend(
+  org.antlr.runtime.Parser,
+  org.antlr.runtime.BaseRecognizer,
+  {
+    reset: function () {
+      org.antlr.runtime.Parser.superclass.reset.call(this)
+      if (org.antlr.lang.isValue(this.input)) this.input.seek(0)
+    },
+    getCurrentInputSymbol: function (A) {
+      return A.LT(1)
+    },
+    getMissingSymbol: function (C, G, E, A) {
+      let B = '\x3cmissing ' + this.getTokenNames()[E] + '\x3e'
+      let D = new org.antlr.runtime.CommonToken(E, B)
+      let F = C.LT(1)
+      let H
+      if (F.getType() === org.antlr.runtime.Token.EOF) {
+        H = F
+        F = C.LT(-1)
+        if (!F) F = H
+      }
+      D.line = F.getLine()
+      D.charPositionInLine = F.getCharPositionInLine()
+      D.channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+      return D
+    },
+    setTokenStream: function (A) {
+      this.input = null
+      this.reset()
+      this.input = A
+    },
+    getTokenStream: function () {
+      return this.input
+    },
+    getSourceName: function () {
+      return this.input.getSourceName()
+    },
+    traceIn: function (B, A) {
+      org.antlr.runtime.Parser.superclass.traceIn.call(
+        this,
+        B,
+        A,
+        this.input.LT(1)
+      )
+    },
+    traceOut: function (B, A) {
+      org.antlr.runtime.Parser.superclass.traceOut.call(
+        this,
+        B,
+        A,
+        this.input.LT(1)
+      )
+    }
+  }
+)
+org.antlr.runtime.DFA = function () {}
+org.antlr.runtime.DFA.prototype = {
+  predict: function (C) {
+    let F = C.mark(),
+      D = 0,
+      B,
+      E,
+      A
+    try {
+      while (true) {
+        B = this.special[D]
+        if (B >= 0) {
+          D = this.specialStateTransition(B, C)
+          if (D === -1) {
+            this.noViableAlt(D, C)
+            return 0
+          }
+          C.consume()
+          continue
+        }
+        if (this.accept[D] >= 1) return this.accept[D]
+        E = C.LA(1)
+        if (E === org.antlr.runtime.Token.EOF) E = -1
+        else if (org.antlr.lang.isString(E)) E = E.charCodeAt(0)
+        if (E >= this.min[D] && E <= this.max[D]) {
+          A = this.transition[D][E - this.min[D]]
+          if (A < 0) {
+            if (this.eot[D] >= 0) {
+              D = this.eot[D]
+              C.consume()
+              continue
+            }
+            this.noViableAlt(D, C)
+            return 0
+          }
+          D = A
+          C.consume()
+          continue
+        }
+        if (this.eot[D] >= 0) {
+          D = this.eot[D]
+          C.consume()
+          continue
+        }
+        if (E == org.antlr.runtime.Token.EOF && this.eof[D] >= 0)
+          return this.accept[this.eof[D]]
+        this.noViableAlt(D, C)
+        return 0
+      }
+    } finally {
+      C.rewind(F)
+    }
+  },
+  noViableAlt: function (C, A) {
+    if (this.recognizer.state.backtracking > 0) {
+      this.recognizer.state.failed = true
+      return
+    }
+    let B = new org.antlr.runtime.NoViableAltException(
+      this.getDescription(),
+      this.decisionNumber,
+      C,
+      A
+    )
+    this.error(B)
+    throw B
+  },
+  error: function (A) {},
+  specialStateTransition: function (B, A) {
+    return -1
+  },
+  getDescription: function () {
+    return 'n/a'
+  }
+}
+org.antlr.lang.augmentObject(org.antlr.runtime.DFA, {
+  unpackEncodedString: function (D) {
+    let C,
+      F = [],
+      E = 0,
+      G,
+      A,
+      B
+    for (C = 0; C < D.length; C += 2) {
+      G = D.charCodeAt(C)
+      A = D.charCodeAt(C + 1)
+      if (A === 65535) A = -1
+      for (B = 1; B <= G; B++) F[E++] = A
+    }
+    return F
+  },
+  unpackEncodedStringToUnsignedChars: function (A) {
+    return org.antlr.runtime.DFA.unpackEncodedString(A)
+  }
+})
+org.antlr.runtime.tree.TreeParser = function (A) {
+  org.antlr.runtime.tree.TreeParser.superclass.constructor.call(
+    this,
+    arguments[1]
+  )
+  this.setTreeNodeStream(A)
+}
+;(function () {
+  let A = org.antlr.runtime.tree.TreeParser
+  org.antlr.lang.augmentObject(A, {
+    DOWN: org.antlr.runtime.Token.DOWN,
+    UP: org.antlr.runtime.Token.UP
+  })
+  org.antlr.lang.extend(A, org.antlr.runtime.BaseRecognizer, {
+    reset: function () {
+      A.superclass.reset.call(this)
+      if (this.input) this.input.seek(0)
+    },
+    setTreeNodeStream: function (B) {
+      this.input = B
+    },
+    getTreeNodeStream: function () {
+      return this.input
+    },
+    getSourceName: function () {
+      return this.input.getSourceName()
+    },
+    getCurrentInputSymbol: function (B) {
+      return B.LT(1)
+    },
+    getMissingSymbol: function (D, F, E, B) {
+      let C = '\x3cmissing ' + this.getTokenNames()[E] + '\x3e'
+      return new org.antlr.runtime.tree.CommonTree(
+        new org.antlr.runtime.CommonToken(E, C)
+      )
+    },
+    matchAny: function (E) {
+      this.state.errorRecovery = false
+      this.state.failed = false
+      let B = this.input.LT(1)
+      if (this.input.getTreeAdaptor().getChildCount(B) === 0) {
+        this.input.consume()
+        return
+      }
+      let D = 0,
+        C = this.input.getTreeAdaptor().getType(B)
+      while (C !== org.antlr.runtime.Token.EOF && !(C === A.UP && D === 0)) {
+        this.input.consume()
+        B = this.input.LT(1)
+        C = this.input.getTreeAdaptor().getType(B)
+        if (C === A.DOWN) D++
+        else if (C === A.UP) D--
+      }
+      this.input.consume()
+    },
+    mismatch: function (C, D, B) {
+      throw new org.antlr.runtime.MismatchedTreeNodeException(D, C)
+    },
+    getErrorHeader: function (B) {
+      return (
+        this.getGrammarFileName() +
+        ': node from ' +
+        (B.approximateLineInfo ? 'after ' : '') +
+        'line ' +
+        B.line +
+        ':' +
+        B.charPositionInLine
+      )
+    },
+    getErrorMessage: function (C, B) {
+      let D
+      if (this instanceof A) {
+        D = C.input.getTreeAdaptor()
+        C.token = D.getToken(C.node)
+        if (!org.antlr.lang.isValue(C.token))
+          C.token = new org.antlr.runtime.CommonToken(
+            D.getType(C.node),
+            D.getText(C.node)
+          )
+      }
+      return A.superclass.getErrorMessage.call(this, C, B)
+    },
+    traceIn: function (C, B) {
+      A.superclass.traceIn.call(this, C, B, this.input.LT(1))
+    },
+    traceOut: function (C, B) {
+      A.superclass.traceOut.call(this, C, B, this.input.LT(1))
+    }
+  })
+})()
 let com = { toone: { itop: { formula: {} } } }
-//Formula.js
-
 com.toone.itop.formula.Formula = {
   cache: {},
-
   eval: function (formula, context) {
-    var _context = context
-    if (!_context) {
-      _context = new com.toone.itop.formula.Map()
-    }
+    let _context = context
+    if (!_context) _context = new com.toone.itop.formula.Map()
     _context.put('_isExecutable', true)
-
-    // 缓存公式引擎的分词结果
-    var formulaCache = com.toone.itop.formula.Formula.cache[formula]
-    var cstream, lexer, tstream, parser, formulaTree
+    let formulaCache = com.toone.itop.formula.Formula.cache[formula]
+    let cstream, lexer, tstream, parser, formulaTree
     if (formulaCache) {
       tstream = formulaCache['tstream']
       formulaTree = formulaCache['formulaTree']
@@ -30,23 +3277,17 @@ com.toone.itop.formula.Formula = {
         formulaTree: formulaTree
       }
     }
-
-    var nodes = new org.antlr.runtime.tree.CommonTreeNodeStream(formulaTree)
+    let nodes = new org.antlr.runtime.tree.CommonTreeNodeStream(formulaTree)
     nodes.setTokenStream(tstream)
-    var walker = new com.toone.itop.formula.FormulaTreeJSExtend(_context, nodes)
+    let walker = new com.toone.itop.formula.FormulaTreeJSExtend(_context, nodes)
     return walker.eval()
   },
-
   varFinder: function (formula, context) {
-    var _context = context
-    if (!_context) {
-      _context = new com.toone.itop.formula.Map()
-    }
+    let _context = context
+    if (!_context) _context = new com.toone.itop.formula.Map()
     _context.put('_isExecutable', false)
-
-    // 缓存公式引擎的分词结果
-    var formulaCache = com.toone.itop.formula.Formula.cache[formula]
-    var cstream, lexer, tstream, parser, formulaTree
+    let formulaCache = com.toone.itop.formula.Formula.cache[formula]
+    let cstream, lexer, tstream, parser, formulaTree
     if (formulaCache) {
       tstream = formulaCache['tstream']
       formulaTree = formulaCache['formulaTree']
@@ -61,10 +3302,9 @@ com.toone.itop.formula.Formula = {
         formulaTree: formulaTree
       }
     }
-
-    var nodes = new org.antlr.runtime.tree.CommonTreeNodeStream(formulaTree)
+    let nodes = new org.antlr.runtime.tree.CommonTreeNodeStream(formulaTree)
     nodes.setTokenStream(tstream)
-    var walker = new com.toone.itop.formula.FormulaVarFinderJSExtend(
+    let walker = new com.toone.itop.formula.FormulaVarFinderJSExtend(
       _context,
       nodes
     )
@@ -74,17 +3314,9 @@ com.toone.itop.formula.Formula = {
     )
   }
 }
-
-//FormulaJSExtend.js
-
-com.toone.itop.formula.ext = {
-  FormulaJSLexer: {},
-  Util: {}
-}
-
-// 目前公式引擎的FormulaJSLexer中存在耗时循环操作,暂时使用setTimeout切片逻辑 TODO-后期考虑优化FormulaJSLexer的原有算法
+com.toone.itop.formula.ext = { FormulaJSLexer: {}, Util: {} }
 com.toone.itop.formula.ext.Util.chunk = function (array, process, context) {
-  if (array) {
+  if (array)
     if (
       window.jQuery &&
       jQuery.browser.msie &&
@@ -95,36 +3327,19 @@ com.toone.itop.formula.ext.Util.chunk = function (array, process, context) {
       setTimeout(function () {
         var item = items.shift()
         process.call(context, item)
-
-        if (items.length > 0) {
-          setTimeout(arguments.callee, 0)
-        } else {
-          //init.js 框架执行入口依赖这个状态
-          seajs.ready = true
-        }
+        if (items.length > 0) setTimeout(arguments.callee, 0)
+        else seajs.ready = true
       }, 0)
-    } else {
-      for (var i = 0; i < array.length; i++) {
-        process.call(context, array[i])
-      }
-    }
-  }
+    } else
+      for (var i = 0; i < array.length; i++) process.call(context, array[i])
 }
-
 com.toone.itop.formula.ext.FormulaJSLexer.processDFATransition = function (
   item
 ) {
-  var dfaTransition = com.toone.itop.formula.FormulaJSLexer[this.key]
-  if (!dfaTransition) {
-    com.toone.itop.formula.FormulaJSLexer[this.key] = []
-  } else {
-    dfaTransition.push(org.antlr.runtime.DFA.unpackEncodedString(item))
-  }
-}
-
-//FormulaJSLexer.js
-
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g 2018-10-31 15:44:04
+  let dfaTransition = com.toone.itop.formula.FormulaJSLexer[this.key]
+  if (!dfaTransition) com.toone.itop.formula.FormulaJSLexer[this.key] = []
+  else dfaTransition.push(org.antlr.runtime.DFA.unpackEncodedString(item))
+} // $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g 2018-10-31 15:44:04
 
 com.toone.itop.formula.FormulaJSLexer = function (input, state) {
   // alternate constructor @todo
@@ -206,7 +3421,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
   STR: 61
 })
 ;(function () {
-  var HIDDEN = org.antlr.runtime.Token.HIDDEN_CHANNEL,
+  let HIDDEN = org.antlr.runtime.Token.HIDDEN_CHANNEL,
     EOF = org.antlr.runtime.Token.EOF
   org.antlr.lang.extend(
     com.toone.itop.formula.FormulaJSLexer,
@@ -282,8 +3497,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start CONTROL
       mCONTROL: function () {
         try {
-          var _type = this.CONTROL
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.CONTROL
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:9:9: ( 'CC.' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:9:11: 'CC.'
           this.match('CC.')
@@ -298,8 +3513,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start BUSSINESSRULERESULT
       mBUSSINESSRULERESULT: function () {
         try {
-          var _type = this.BUSSINESSRULERESULT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.BUSSINESSRULERESULT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:10:21: ( 'BR.' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:10:23: 'BR.'
           this.match('BR.')
@@ -314,8 +3529,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start EVENTACTION
       mEVENTACTION: function () {
         try {
-          var _type = this.EVENTACTION
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.EVENTACTION
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:11:13: ( 'EA.' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:11:15: 'EA.'
           this.match('EA.')
@@ -330,8 +3545,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start KEYBOARD
       mKEYBOARD: function () {
         try {
-          var _type = this.KEYBOARD
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.KEYBOARD
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:12:10: ( 'Keys.' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:12:12: 'Keys.'
           this.match('Keys.')
@@ -346,12 +3561,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start NUMBER
       mNUMBER: function () {
         try {
-          var _type = this.NUMBER
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.NUMBER
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:109:2: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:109:5: ( DIGIT )+ ( '.' ( DIGIT )+ )?
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:109:5: ( DIGIT )+
-          var cnt1 = 0
+          let cnt1 = 0
           loop1: do {
             var alt1 = 2
             var LA1_0 = this.input.LA(1)
@@ -381,8 +3596,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           } while (true)
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:109:14: ( '.' ( DIGIT )+ )?
-          var alt3 = 2
-          var LA3_0 = this.input.LA(1)
+          let alt3 = 2
+          let LA3_0 = this.input.LA(1)
 
           if (LA3_0 == '.') {
             alt3 = 1
@@ -434,8 +3649,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start STRING
       mSTRING: function () {
         try {
-          var _type = this.STRING
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.STRING
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:114:2: ( '\\\"' ( options {greedy=false; } : ESCAPE_SEQUENCE | ~ '\\\\' )* '\\\"' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:115:2: '\\\"' ( options {greedy=false; } : ESCAPE_SEQUENCE | ~ '\\\\' )* '\\\"'
           this.match('"')
@@ -497,12 +3712,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start WHITESPACE
       mWHITESPACE: function () {
         try {
-          var _type = this.WHITESPACE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.WHITESPACE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:124:2: ( ( ' ' | '\\n' | '\\t' | '\\r' | '\\v' | '\\f' | '\\u00A0' )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:124:4: ( ' ' | '\\n' | '\\t' | '\\r' | '\\v' | '\\f' | '\\u00A0' )+
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:124:4: ( ' ' | '\\n' | '\\t' | '\\r' | '\\v' | '\\f' | '\\u00A0' )+
-          var cnt5 = 0
+          let cnt5 = 0
           loop5: do {
             var alt5 = 2
             var LA5_0 = this.input.LA(1)
@@ -564,14 +3779,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start TRUE
       mTRUE: function () {
         try {
-          var _type = this.TRUE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.TRUE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:127:2: ( ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' ) )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:127:4: ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' )
           if (this.input.LA(1) == 'T' || this.input.LA(1) == 't') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -582,7 +3797,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'R' || this.input.LA(1) == 'r') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -593,7 +3808,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'U' || this.input.LA(1) == 'u') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -604,7 +3819,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'E' || this.input.LA(1) == 'e') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -622,14 +3837,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start FALSE
       mFALSE: function () {
         try {
-          var _type = this.FALSE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.FALSE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:130:2: ( ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 's' | 'S' ) ( 'e' | 'E' ) )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:130:4: ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'l' | 'L' ) ( 's' | 'S' ) ( 'e' | 'E' )
           if (this.input.LA(1) == 'F' || this.input.LA(1) == 'f') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -640,7 +3855,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'A' || this.input.LA(1) == 'a') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -651,7 +3866,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'L' || this.input.LA(1) == 'l') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -662,7 +3877,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'S' || this.input.LA(1) == 's') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -673,7 +3888,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           if (this.input.LA(1) == 'E' || this.input.LA(1) == 'e') {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -691,8 +3906,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start NOTEQ
       mNOTEQ: function () {
         try {
-          var _type = this.NOTEQ
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.NOTEQ
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:133:17: ( '<>' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:133:19: '<>'
           this.match('<>')
@@ -707,8 +3922,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start LTEQ
       mLTEQ: function () {
         try {
-          var _type = this.LTEQ
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.LTEQ
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:134:17: ( '<=' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:134:19: '<='
           this.match('<=')
@@ -723,8 +3938,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start GTEQ
       mGTEQ: function () {
         try {
-          var _type = this.GTEQ
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.GTEQ
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:135:17: ( '>=' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:135:19: '>='
           this.match('>=')
@@ -739,8 +3954,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start AND
       mAND: function () {
         try {
-          var _type = this.AND
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.AND
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:136:8: ( '&&' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:136:10: '&&'
           this.match('&&')
@@ -755,8 +3970,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start OR
       mOR: function () {
         try {
-          var _type = this.OR
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.OR
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:137:7: ( '||' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:137:9: '||'
           this.match('||')
@@ -771,8 +3986,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start NOT
       mNOT: function () {
         try {
-          var _type = this.NOT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.NOT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:138:8: ( '!' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:138:10: '!'
           this.match('!')
@@ -787,8 +4002,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start EQ
       mEQ: function () {
         try {
-          var _type = this.EQ
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.EQ
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:139:17: ( '==' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:139:19: '=='
           this.match('==')
@@ -803,8 +4018,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start LT
       mLT: function () {
         try {
-          var _type = this.LT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.LT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:140:17: ( '<' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:140:19: '<'
           this.match('<')
@@ -819,8 +4034,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start GT
       mGT: function () {
         try {
-          var _type = this.GT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.GT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:141:17: ( '>' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:141:19: '>'
           this.match('>')
@@ -835,8 +4050,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start EXP
       mEXP: function () {
         try {
-          var _type = this.EXP
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.EXP
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:143:17: ( '^' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:143:19: '^'
           this.match('^')
@@ -851,8 +4066,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start MULT
       mMULT: function () {
         try {
-          var _type = this.MULT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.MULT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:144:17: ( '*' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:144:19: '*'
           this.match('*')
@@ -867,8 +4082,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start DIV
       mDIV: function () {
         try {
-          var _type = this.DIV
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.DIV
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:145:17: ( '/' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:145:19: '/'
           this.match('/')
@@ -883,8 +4098,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start ADD
       mADD: function () {
         try {
-          var _type = this.ADD
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.ADD
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:146:17: ( '+' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:146:19: '+'
           this.match('+')
@@ -899,8 +4114,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start SUB
       mSUB: function () {
         try {
-          var _type = this.SUB
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.SUB
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:147:17: ( '-' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:147:19: '-'
           this.match('-')
@@ -915,8 +4130,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start CONCAT
       mCONCAT: function () {
         try {
-          var _type = this.CONCAT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.CONCAT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:149:17: ( '&' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:149:19: '&'
           this.match('&')
@@ -931,8 +4146,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start LPAREN
       mLPAREN: function () {
         try {
-          var _type = this.LPAREN
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.LPAREN
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:151:17: ( '(' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:151:19: '('
           this.match('(')
@@ -947,8 +4162,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start RPAREN
       mRPAREN: function () {
         try {
-          var _type = this.RPAREN
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.RPAREN
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:152:17: ( ')' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:152:19: ')'
           this.match(')')
@@ -963,8 +4178,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start COMMA
       mCOMMA: function () {
         try {
-          var _type = this.COMMA
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.COMMA
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:153:17: ( ',' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:153:19: ','
           this.match(',')
@@ -979,8 +4194,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start PERCENT
       mPERCENT: function () {
         try {
-          var _type = this.PERCENT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.PERCENT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:154:17: ( '%' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:154:19: '%'
           this.match('%')
@@ -995,8 +4210,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start POINT
       mPOINT: function () {
         try {
-          var _type = this.POINT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.POINT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:155:7: ( '.' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:155:9: '.'
           this.match('.')
@@ -1011,13 +4226,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start DB
       mDB: function () {
         try {
-          var _type = this.DB
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.DB
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:159:4: ( '[' ( LETTER | DIGIT )+ ']' ( POINT DB )? )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:159:6: '[' ( LETTER | DIGIT )+ ']' ( POINT DB )?
           this.match('[')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:159:10: ( LETTER | DIGIT )+
-          var cnt6 = 0
+          let cnt6 = 0
           loop6: do {
             var alt6 = 3
             var LA6_0 = this.input.LA(1)
@@ -1060,8 +4275,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
           this.match(']')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:159:30: ( POINT DB )?
-          var alt7 = 2
-          var LA7_0 = this.input.LA(1)
+          let alt7 = 2
+          let LA7_0 = this.input.LA(1)
 
           if (LA7_0 == '.') {
             alt7 = 1
@@ -1085,14 +4300,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start ARRAY
       mARRAY: function () {
         try {
-          var _type = this.ARRAY
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.ARRAY
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:162:7: ( '[' ( ( STRING | DIGIT | '_' ) ( COMMA ( STRING | DIGIT | '_' ) )* )? ']' )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:162:9: '[' ( ( STRING | DIGIT | '_' ) ( COMMA ( STRING | DIGIT | '_' ) )* )? ']'
           this.match('[')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:162:13: ( ( STRING | DIGIT | '_' ) ( COMMA ( STRING | DIGIT | '_' ) )* )?
-          var alt11 = 2
-          var LA11_0 = this.input.LA(1)
+          let alt11 = 2
+          let LA11_0 = this.input.LA(1)
 
           if (
             LA11_0 == '"' ||
@@ -1239,13 +4454,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start BUSSINESSRULE
       mBUSSINESSRULE: function () {
         try {
-          var _type = this.BUSSINESSRULE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.BUSSINESSRULE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:165:14: ( BUSSINESSRULERESULT ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:165:16: BUSSINESSRULERESULT ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+
           this.mBUSSINESSRULERESULT()
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:165:36: ( LETTER | DIGIT )+
-          var cnt12 = 0
+          let cnt12 = 0
           loop12: do {
             var alt12 = 3
             var LA12_0 = this.input.LA(1)
@@ -1288,7 +4503,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
           this.match('.')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:165:56: ( LETTER | DIGIT )+
-          var cnt13 = 0
+          let cnt13 = 0
           loop13: do {
             var alt13 = 3
             var LA13_0 = this.input.LA(1)
@@ -1339,13 +4554,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start CONTROLPROPERTY
       mCONTROLPROPERTY: function () {
         try {
-          var _type = this.CONTROLPROPERTY
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.CONTROLPROPERTY
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:168:16: ( CONTROL ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:168:18: CONTROL ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+
           this.mCONTROL()
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:168:26: ( LETTER | DIGIT )+
-          var cnt14 = 0
+          let cnt14 = 0
           loop14: do {
             var alt14 = 3
             var LA14_0 = this.input.LA(1)
@@ -1388,7 +4603,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
           this.match('.')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:168:46: ( LETTER | DIGIT )+
-          var cnt15 = 0
+          let cnt15 = 0
           loop15: do {
             var alt15 = 3
             var LA15_0 = this.input.LA(1)
@@ -1439,13 +4654,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start EVENTACTIONPROPERTY
       mEVENTACTIONPROPERTY: function () {
         try {
-          var _type = this.EVENTACTIONPROPERTY
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.EVENTACTIONPROPERTY
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:172:2: ( EVENTACTION ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:172:4: EVENTACTION ( LETTER | DIGIT )+
           this.mEVENTACTION()
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:172:16: ( LETTER | DIGIT )+
-          var cnt16 = 0
+          let cnt16 = 0
           loop16: do {
             var alt16 = 3
             var LA16_0 = this.input.LA(1)
@@ -1496,13 +4711,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start KEYBOARDS
       mKEYBOARDS: function () {
         try {
-          var _type = this.KEYBOARDS
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.KEYBOARDS
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:175:2: ( KEYBOARD ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:175:4: KEYBOARD ( LETTER | DIGIT )+
           this.mKEYBOARD()
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:175:13: ( LETTER | DIGIT )+
-          var cnt17 = 0
+          let cnt17 = 0
           loop17: do {
             var alt17 = 3
             var LA17_0 = this.input.LA(1)
@@ -1553,14 +4768,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start QUERY
       mQUERY: function () {
         try {
-          var _type = this.QUERY
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.QUERY
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:177:6: ( '##' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:177:8: '##' ( LETTER | DIGIT )+
           this.match('##')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:177:12: ( LETTER | DIGIT )+
-          var cnt18 = 0
+          let cnt18 = 0
           loop18: do {
             var alt18 = 3
             var LA18_0 = this.input.LA(1)
@@ -1611,13 +4826,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start USERVAR
       mUSERVAR: function () {
         try {
-          var _type = this.USERVAR
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.USERVAR
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:189:8: ( '#' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:189:10: '#' ( LETTER | DIGIT )+
           this.match('#')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:189:13: ( LETTER | DIGIT )+
-          var cnt19 = 0
+          let cnt19 = 0
           loop19: do {
             var alt19 = 3
             var LA19_0 = this.input.LA(1)
@@ -1668,8 +4883,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start VARPARENTVARIABLE
       mVARPARENTVARIABLE: function () {
         try {
-          var _type = this.VARPARENTVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.VARPARENTVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:191:18: ( 'BR_VAR_PARENT.' DB )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:191:20: 'BR_VAR_PARENT.' DB
           this.match('BR_VAR_PARENT.')
@@ -1686,8 +4901,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start INPARENTVARIABLE
       mINPARENTVARIABLE: function () {
         try {
-          var _type = this.INPARENTVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.INPARENTVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:193:17: ( 'BR_IN_PARENT.' DB )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:193:19: 'BR_IN_PARENT.' DB
           this.match('BR_IN_PARENT.')
@@ -1704,14 +4919,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start BROUTRULE
       mBROUTRULE: function () {
         try {
-          var _type = this.BROUTRULE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.BROUTRULE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:195:10: ( 'BR_OUT.' ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:195:12: 'BR_OUT.' ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+
           this.match('BR_OUT.')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:195:21: ( LETTER | DIGIT )+
-          var cnt20 = 0
+          let cnt20 = 0
           loop20: do {
             var alt20 = 3
             var LA20_0 = this.input.LA(1)
@@ -1754,7 +4969,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
           this.match('.')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:195:40: ( LETTER | DIGIT )+
-          var cnt21 = 0
+          let cnt21 = 0
           loop21: do {
             var alt21 = 3
             var LA21_0 = this.input.LA(1)
@@ -1805,14 +5020,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start BRREPORT
       mBRREPORT: function () {
         try {
-          var _type = this.BRREPORT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.BRREPORT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:197:9: ( 'BR_REPORT.' ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:197:11: 'BR_REPORT.' ( LETTER | DIGIT )+ '.' ( LETTER | DIGIT )+
           this.match('BR_REPORT.')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:197:23: ( LETTER | DIGIT )+
-          var cnt22 = 0
+          let cnt22 = 0
           loop22: do {
             var alt22 = 3
             var LA22_0 = this.input.LA(1)
@@ -1855,7 +5070,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
           this.match('.')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:197:42: ( LETTER | DIGIT )+
-          var cnt23 = 0
+          let cnt23 = 0
           loop23: do {
             var alt23 = 3
             var LA23_0 = this.input.LA(1)
@@ -1906,14 +5121,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start OUTPARENT
       mOUTPARENT: function () {
         try {
-          var _type = this.OUTPARENT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.OUTPARENT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:199:10: ( 'BR_OUT_PARENT.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:199:12: 'BR_OUT_PARENT.' ( LETTER | DIGIT )+
           this.match('BR_OUT_PARENT.')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:199:28: ( LETTER | DIGIT )+
-          var cnt24 = 0
+          let cnt24 = 0
           loop24: do {
             var alt24 = 3
             var LA24_0 = this.input.LA(1)
@@ -1964,8 +5179,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start OUTPARENTVARIABLE
       mOUTPARENTVARIABLE: function () {
         try {
-          var _type = this.OUTPARENTVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.OUTPARENTVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:201:18: ( 'BR_OUT_PARENT.' DB )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:201:20: 'BR_OUT_PARENT.' DB
           this.match('BR_OUT_PARENT.')
@@ -1982,14 +5197,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start VARPARENT
       mVARPARENT: function () {
         try {
-          var _type = this.VARPARENT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.VARPARENT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:202:10: ( 'BR_VAR_PARENT.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:202:12: 'BR_VAR_PARENT.' ( LETTER | DIGIT )+
           this.match('BR_VAR_PARENT.')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:202:28: ( LETTER | DIGIT )+
-          var cnt25 = 0
+          let cnt25 = 0
           loop25: do {
             var alt25 = 3
             var LA25_0 = this.input.LA(1)
@@ -2040,14 +5255,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start INPARENT
       mINPARENT: function () {
         try {
-          var _type = this.INPARENT
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.INPARENT
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:204:9: ( 'BR_IN_PARENT.' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:204:11: 'BR_IN_PARENT.' ( LETTER | DIGIT )+
           this.match('BR_IN_PARENT.')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:204:26: ( LETTER | DIGIT )+
-          var cnt26 = 0
+          let cnt26 = 0
           loop26: do {
             var alt26 = 3
             var LA26_0 = this.input.LA(1)
@@ -2098,14 +5313,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start LVVARIABLE
       mLVVARIABLE: function () {
         try {
-          var _type = this.LVVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.LVVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:206:11: ( 'LV' ( '.' ( LETTER | DIGIT )+ )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:206:13: 'LV' ( '.' ( LETTER | DIGIT )+ )+
           this.match('LV')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:206:17: ( '.' ( LETTER | DIGIT )+ )+
-          var cnt28 = 0
+          let cnt28 = 0
           loop28: do {
             var alt28 = 2
             var LA28_0 = this.input.LA(1)
@@ -2185,14 +5400,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start SYSTEMVARIABLE
       mSYSTEMVARIABLE: function () {
         try {
-          var _type = this.SYSTEMVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.SYSTEMVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:208:15: ( '@@' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:208:17: '@@' ( LETTER | DIGIT )+
           this.match('@@')
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:208:21: ( LETTER | DIGIT )+
-          var cnt29 = 0
+          let cnt29 = 0
           loop29: do {
             var alt29 = 3
             var LA29_0 = this.input.LA(1)
@@ -2243,8 +5458,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start FIELDVARIABLE
       mFIELDVARIABLE: function () {
         try {
-          var _type = this.FIELDVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.FIELDVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:210:14: ( '@' DB )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:210:16: '@' DB
           this.match('@')
@@ -2260,12 +5475,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start STR
       mSTR: function () {
         try {
-          var _type = this.STR
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.STR
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:212:5: ( ( LETTER | DIGIT )+ ( POINT ( LETTER | DIGIT )+ )? )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:212:8: ( LETTER | DIGIT )+ ( POINT ( LETTER | DIGIT )+ )?
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:212:8: ( LETTER | DIGIT )+
-          var cnt30 = 0
+          let cnt30 = 0
           loop30: do {
             var alt30 = 3
             var LA30_0 = this.input.LA(1)
@@ -2307,8 +5522,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           } while (true)
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:212:24: ( POINT ( LETTER | DIGIT )+ )?
-          var alt32 = 2
-          var LA32_0 = this.input.LA(1)
+          let alt32 = 2
+          let LA32_0 = this.input.LA(1)
 
           if (LA32_0 == '.') {
             alt32 = 1
@@ -2372,8 +5587,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start I18NVARIABLE
       mI18NVARIABLE: function () {
         try {
-          var _type = this.I18NVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.I18NVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:214:13: ( 'I18N.' STR )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:214:15: 'I18N.' STR
           this.match('I18N.')
@@ -2390,13 +5605,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start COMPONENTVARIABLE
       mCOMPONENTVARIABLE: function () {
         try {
-          var _type = this.COMPONENTVARIABLE
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.COMPONENTVARIABLE
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:217:18: ( '@' ( LETTER | DIGIT )+ )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:217:20: '@' ( LETTER | DIGIT )+
           this.match('@')
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:217:23: ( LETTER | DIGIT )+
-          var cnt33 = 0
+          let cnt33 = 0
           loop33: do {
             var alt33 = 3
             var LA33_0 = this.input.LA(1)
@@ -2447,12 +5662,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       // $ANTLR start FUNCNAME
       mFUNCNAME: function () {
         try {
-          var _type = this.FUNCNAME
-          var _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
+          let _type = this.FUNCNAME
+          let _channel = org.antlr.runtime.BaseRecognizer.DEFAULT_TOKEN_CHANNEL
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:223:2: ( ( LETTER | DIGIT )+ LPAREN )
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:223:4: ( LETTER | DIGIT )+ LPAREN
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:223:4: ( LETTER | DIGIT )+
-          var cnt34 = 0
+          let cnt34 = 0
           loop34: do {
             var alt34 = 3
             var LA34_0 = this.input.LA(1)
@@ -2515,7 +5730,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
           ) {
             this.input.consume()
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -2544,8 +5759,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       mESCAPE_SEQUENCE: function () {
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:250:2: ( '\\\\' 't' | '\\\\' 'n' | '\\\\' '\\\"' | '\\\\' '\\'' | '\\\\' '\\\\' )
-          var alt35 = 5
-          var LA35_0 = this.input.LA(1)
+          let alt35 = 5
+          let LA35_0 = this.input.LA(1)
 
           if (LA35_0 == '\\') {
             switch (this.input.LA(2)) {
@@ -2575,7 +5790,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
                 throw nvae
             }
           } else {
-            var nvae = new org.antlr.runtime.NoViableAltException(
+            let nvae = new org.antlr.runtime.NoViableAltException(
               '',
               35,
               0,
@@ -2623,7 +5838,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
 
       mTokens: function () {
         // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:1:8: ( CONTROL | BUSSINESSRULERESULT | EVENTACTION | KEYBOARD | NUMBER | STRING | WHITESPACE | TRUE | FALSE | NOTEQ | LTEQ | GTEQ | AND | OR | NOT | EQ | LT | GT | EXP | MULT | DIV | ADD | SUB | CONCAT | LPAREN | RPAREN | COMMA | PERCENT | POINT | DB | ARRAY | BUSSINESSRULE | CONTROLPROPERTY | EVENTACTIONPROPERTY | KEYBOARDS | QUERY | USERVAR | VARPARENTVARIABLE | INPARENTVARIABLE | BROUTRULE | BRREPORT | OUTPARENT | OUTPARENTVARIABLE | VARPARENT | INPARENT | LVVARIABLE | SYSTEMVARIABLE | FIELDVARIABLE | STR | I18NVARIABLE | COMPONENTVARIABLE | FUNCNAME )
-        var alt36 = 52
+        let alt36 = 52
         alt36 = this.dfa36.predict(this.input)
         switch (alt36) {
           case 1:
@@ -3328,7 +6543,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       com.toone.itop.formula.FormulaJSLexer.DFA36_specialS
     ),
     DFA36_transition: (function () {
-      var a = [],
+      let a = [],
         i,
         numStates =
           com.toone.itop.formula.FormulaJSLexer.DFA36_transitionS.length
@@ -3365,11 +6580,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSLexer, {
       dummy: null
     }
   )
-})()
-
-//FormulaJSParser.js
-
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g 2018-10-31 15:44:04
+})() // $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g 2018-10-31 15:44:04
 
 com.toone.itop.formula.FormulaJSParser = function (input, state) {
   if (!state) {
@@ -3453,7 +6664,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
 })
 ;(function () {
   // public class variables
-  var EOF = -1,
+  let EOF = -1,
     POS = 4,
     NEG = 5,
     CALL = 6,
@@ -3554,12 +6765,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:29:1: formula : expression ;
       // $ANTLR start "formula"
       formula: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.formula_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.formula_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var expression1 = null
+        let expression1 = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:30:2: ( expression )
@@ -3621,13 +6832,13 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:34:1: expression : boolExpr ;
       // $ANTLR start "expression"
       expression: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.expression_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var boolExpr2 = null
+        let boolExpr2 = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:35:2: ( boolExpr )
@@ -3688,17 +6899,17 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:37:1: boolExpr : concatExpr ( ( AND | OR | LT | LTEQ | GT | GTEQ | EQ | NOTEQ ) concatExpr )* ;
       // $ANTLR start "boolExpr"
       boolExpr: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.boolExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var set4 = null
-        var concatExpr3 = null
-        var concatExpr5 = null
+        let set4 = null
+        let concatExpr3 = null
+        let concatExpr5 = null
 
-        var set4_tree = null
+        let set4_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:38:2: ( concatExpr ( ( AND | OR | LT | LTEQ | GT | GTEQ | EQ | NOTEQ ) concatExpr )* )
@@ -3805,17 +7016,17 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:40:1: concatExpr : sumExpr ( CONCAT sumExpr )* ;
       // $ANTLR start "concatExpr"
       concatExpr: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.concatExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var CONCAT7 = null
-        var sumExpr6 = null
-        var sumExpr8 = null
+        let CONCAT7 = null
+        let sumExpr6 = null
+        let sumExpr8 = null
 
-        var CONCAT7_tree = null
+        let CONCAT7_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:41:2: ( sumExpr ( CONCAT sumExpr )* )
@@ -3913,16 +7124,16 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:43:1: sumExpr : productExpr ( ( SUB | ADD ) productExpr )* ;
       // $ANTLR start "sumExpr"
       sumExpr: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.sumExpr_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.sumExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var set10 = null
-        var productExpr9 = null
-        var productExpr11 = null
+        let set10 = null
+        let productExpr9 = null
+        let productExpr11 = null
 
-        var set10_tree = null
+        let set10_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:44:2: ( productExpr ( ( SUB | ADD ) productExpr )* )
@@ -4029,17 +7240,17 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:46:1: productExpr : expExpr ( ( DIV | MULT ) expExpr )* ;
       // $ANTLR start "productExpr"
       productExpr: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.productExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var set13 = null
-        var expExpr12 = null
-        var expExpr14 = null
+        let set13 = null
+        let expExpr12 = null
+        let expExpr14 = null
 
-        var set13_tree = null
+        let set13_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:47:2: ( expExpr ( ( DIV | MULT ) expExpr )* )
@@ -4145,16 +7356,16 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:49:1: expExpr : unaryOperation ( EXP unaryOperation )* ;
       // $ANTLR start "expExpr"
       expExpr: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.expExpr_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.expExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var EXP16 = null
-        var unaryOperation15 = null
-        var unaryOperation17 = null
+        let EXP16 = null
+        let unaryOperation15 = null
+        let unaryOperation17 = null
 
-        var EXP16_tree = null
+        let EXP16_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:50:2: ( unaryOperation ( EXP unaryOperation )* )
@@ -4253,38 +7464,38 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:52:1: unaryOperation : ( NOT operand | ADD o= operand -> ^( POS $o) | SUB o= operand -> ^( NEG $o) | operand );
       // $ANTLR start "unaryOperation"
       unaryOperation: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.unaryOperation_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var NOT18 = null
-        var ADD20 = null
-        var SUB21 = null
-        var o = null
-        var operand19 = null
-        var operand22 = null
+        let NOT18 = null
+        let ADD20 = null
+        let SUB21 = null
+        let o = null
+        let operand19 = null
+        let operand22 = null
 
-        var NOT18_tree = null
-        var ADD20_tree = null
-        var SUB21_tree = null
-        var stream_SUB = new org.antlr.runtime.tree.RewriteRuleTokenStream(
+        let NOT18_tree = null
+        let ADD20_tree = null
+        let SUB21_tree = null
+        let stream_SUB = new org.antlr.runtime.tree.RewriteRuleTokenStream(
           this.adaptor,
           'token SUB'
         )
-        var stream_ADD = new org.antlr.runtime.tree.RewriteRuleTokenStream(
+        let stream_ADD = new org.antlr.runtime.tree.RewriteRuleTokenStream(
           this.adaptor,
           'token ADD'
         )
-        var stream_operand =
+        let stream_operand =
           new org.antlr.runtime.tree.RewriteRuleSubtreeStream(
             this.adaptor,
             'rule operand'
           )
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:53:2: ( NOT operand | ADD o= operand -> ^( POS $o) | SUB o= operand -> ^( NEG $o) | operand )
-          var alt6 = 4
+          let alt6 = 4
           switch (this.input.LA(1)) {
             case NOT:
               alt6 = 1
@@ -4541,63 +7752,63 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:60:1: operand : ( literal | functionExpr | percent | CONTROLPROPERTY | COMPONENTVARIABLE | KEYBOARDS | SYSTEMVARIABLE | FIELDVARIABLE | LVVARIABLE | DB | USERVAR | brParam | QUERY | BUSSINESSRULE | EVENTACTIONPROPERTY | I18NVARIABLE | ARRAY | LPAREN expression RPAREN -> expression );
       // $ANTLR start "operand"
       operand: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.operand_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.operand_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var CONTROLPROPERTY26 = null
-        var COMPONENTVARIABLE27 = null
-        var KEYBOARDS28 = null
-        var SYSTEMVARIABLE29 = null
-        var FIELDVARIABLE30 = null
-        var LVVARIABLE31 = null
-        var DB32 = null
-        var USERVAR33 = null
-        var QUERY35 = null
-        var BUSSINESSRULE36 = null
-        var EVENTACTIONPROPERTY37 = null
-        var I18NVARIABLE38 = null
-        var ARRAY39 = null
-        var LPAREN40 = null
-        var RPAREN42 = null
-        var literal23 = null
-        var functionExpr24 = null
-        var percent25 = null
-        var brParam34 = null
-        var expression41 = null
+        let CONTROLPROPERTY26 = null
+        let COMPONENTVARIABLE27 = null
+        let KEYBOARDS28 = null
+        let SYSTEMVARIABLE29 = null
+        let FIELDVARIABLE30 = null
+        let LVVARIABLE31 = null
+        let DB32 = null
+        let USERVAR33 = null
+        let QUERY35 = null
+        let BUSSINESSRULE36 = null
+        let EVENTACTIONPROPERTY37 = null
+        let I18NVARIABLE38 = null
+        let ARRAY39 = null
+        let LPAREN40 = null
+        let RPAREN42 = null
+        let literal23 = null
+        let functionExpr24 = null
+        let percent25 = null
+        let brParam34 = null
+        let expression41 = null
 
-        var CONTROLPROPERTY26_tree = null
-        var COMPONENTVARIABLE27_tree = null
-        var KEYBOARDS28_tree = null
-        var SYSTEMVARIABLE29_tree = null
-        var FIELDVARIABLE30_tree = null
-        var LVVARIABLE31_tree = null
-        var DB32_tree = null
-        var USERVAR33_tree = null
-        var QUERY35_tree = null
-        var BUSSINESSRULE36_tree = null
-        var EVENTACTIONPROPERTY37_tree = null
-        var I18NVARIABLE38_tree = null
-        var ARRAY39_tree = null
-        var LPAREN40_tree = null
-        var RPAREN42_tree = null
-        var stream_RPAREN = new org.antlr.runtime.tree.RewriteRuleTokenStream(
+        let CONTROLPROPERTY26_tree = null
+        let COMPONENTVARIABLE27_tree = null
+        let KEYBOARDS28_tree = null
+        let SYSTEMVARIABLE29_tree = null
+        let FIELDVARIABLE30_tree = null
+        let LVVARIABLE31_tree = null
+        let DB32_tree = null
+        let USERVAR33_tree = null
+        let QUERY35_tree = null
+        let BUSSINESSRULE36_tree = null
+        let EVENTACTIONPROPERTY37_tree = null
+        let I18NVARIABLE38_tree = null
+        let ARRAY39_tree = null
+        let LPAREN40_tree = null
+        let RPAREN42_tree = null
+        let stream_RPAREN = new org.antlr.runtime.tree.RewriteRuleTokenStream(
           this.adaptor,
           'token RPAREN'
         )
-        var stream_LPAREN = new org.antlr.runtime.tree.RewriteRuleTokenStream(
+        let stream_LPAREN = new org.antlr.runtime.tree.RewriteRuleTokenStream(
           this.adaptor,
           'token LPAREN'
         )
-        var stream_expression =
+        let stream_expression =
           new org.antlr.runtime.tree.RewriteRuleSubtreeStream(
             this.adaptor,
             'rule expression'
           )
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:61:2: ( literal | functionExpr | percent | CONTROLPROPERTY | COMPONENTVARIABLE | KEYBOARDS | SYSTEMVARIABLE | FIELDVARIABLE | LVVARIABLE | DB | USERVAR | brParam | QUERY | BUSSINESSRULE | EVENTACTIONPROPERTY | I18NVARIABLE | ARRAY | LPAREN expression RPAREN -> expression )
-          var alt7 = 18
+          let alt7 = 18
           alt7 = this.dfa7.predict(this.input)
           switch (alt7) {
             case 1:
@@ -4940,21 +8151,21 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:82:1: functionExpr : FUNCNAME ( ( boolExpr ) ( COMMA ( boolExpr ) )* )? RPAREN ;
       // $ANTLR start "functionExpr"
       functionExpr: function () {
-        var retval =
+        let retval =
           new com.toone.itop.formula.FormulaJSParser.functionExpr_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var FUNCNAME43 = null
-        var COMMA45 = null
-        var RPAREN47 = null
-        var boolExpr44 = null
-        var boolExpr46 = null
+        let FUNCNAME43 = null
+        let COMMA45 = null
+        let RPAREN47 = null
+        let boolExpr44 = null
+        let boolExpr46 = null
 
-        var FUNCNAME43_tree = null
-        var COMMA45_tree = null
-        var RPAREN47_tree = null
+        let FUNCNAME43_tree = null
+        let COMMA45_tree = null
+        let RPAREN47_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:83:2: ( FUNCNAME ( ( boolExpr ) ( COMMA ( boolExpr ) )* )? RPAREN )
@@ -4971,8 +8182,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
           root_0 = this.adaptor.becomeRoot(FUNCNAME43_tree, root_0)
 
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:83:15: ( ( boolExpr ) ( COMMA ( boolExpr ) )* )?
-          var alt9 = 2
-          var LA9_0 = this.input.LA(1)
+          let alt9 = 2
+          let LA9_0 = this.input.LA(1)
 
           if (
             (LA9_0 >= SUB && LA9_0 <= ADD) ||
@@ -5094,26 +8305,26 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:95:1: literal : ( NUMBER | STRING | TRUE | FALSE | ( LETTER )+ );
       // $ANTLR start "literal"
       literal: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.literal_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.literal_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var NUMBER48 = null
-        var STRING49 = null
-        var TRUE50 = null
-        var FALSE51 = null
-        var LETTER52 = null
+        let NUMBER48 = null
+        let STRING49 = null
+        let TRUE50 = null
+        let FALSE51 = null
+        let LETTER52 = null
 
-        var NUMBER48_tree = null
-        var STRING49_tree = null
-        var TRUE50_tree = null
-        var FALSE51_tree = null
-        var LETTER52_tree = null
+        let NUMBER48_tree = null
+        let STRING49_tree = null
+        let TRUE50_tree = null
+        let FALSE51_tree = null
+        let LETTER52_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:96:2: ( NUMBER | STRING | TRUE | FALSE | ( LETTER )+ )
-          var alt11 = 5
+          let alt11 = 5
           switch (this.input.LA(1)) {
             case NUMBER:
               alt11 = 1
@@ -5284,16 +8495,16 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:102:1: percent : NUMBER PERCENT ;
       // $ANTLR start "percent"
       percent: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.percent_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.percent_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var NUMBER53 = null
-        var PERCENT54 = null
+        let NUMBER53 = null
+        let PERCENT54 = null
 
-        var NUMBER53_tree = null
-        var PERCENT54_tree = null
+        let NUMBER53_tree = null
+        let PERCENT54_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:103:2: ( NUMBER PERCENT )
@@ -5360,14 +8571,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:180:1: brParam : ( BROUTRULE | OUTPARENT | VARPARENT | INPARENT | VARPARENTVARIABLE | INPARENTVARIABLE | OUTPARENTVARIABLE | BRREPORT );
       // $ANTLR start "brParam"
       brParam: function () {
-        var retval = new com.toone.itop.formula.FormulaJSParser.brParam_return()
+        let retval = new com.toone.itop.formula.FormulaJSParser.brParam_return()
         retval.start = this.input.LT(1)
 
-        var root_0 = null
+        let root_0 = null
 
-        var set55 = null
+        let set55 = null
 
-        var set55_tree = null
+        let set55_tree = null
 
         try {
           // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\FormulaJS.g:180:9: ( BROUTRULE | OUTPARENT | VARPARENT | INPARENT | VARPARENTVARIABLE | INPARENTVARIABLE | OUTPARENTVARIABLE | BRREPORT )
@@ -5380,7 +8591,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
             this.adaptor.addChild(root_0, this.adaptor.create(set55))
             this.state.errorRecovery = false
           } else {
-            var mse = new org.antlr.runtime.MismatchedSetException(
+            let mse = new org.antlr.runtime.MismatchedSetException(
               null,
               this.input
             )
@@ -5478,7 +8689,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
       com.toone.itop.formula.FormulaJSParser.DFA7_specialS
     ),
     DFA7_transition: (function () {
-      var a = [],
+      let a = [],
         i,
         numStates =
           com.toone.itop.formula.FormulaJSParser.DFA7_transitionS.length
@@ -5755,12 +8966,10 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaJSParser, {
     ])
   })
 })()
-
-//FormulaTreeExtra.js
 com.toone.itop.formula.FormulaTreeExtra = {
   VARIABLE_VALUE_KEY: '_VERIABLE_VALUE_KEY_',
   saveVariableValue: function (content, key, value) {
-    var vv = content.get(
+    let vv = content.get(
       com.toone.itop.formula.FormulaTreeExtra.VARIABLE_VALUE_KEY
     )
     if (!vv) {
@@ -5771,21 +8980,19 @@ com.toone.itop.formula.FormulaTreeExtra = {
       )
     }
     vv[key] = value
-  }, // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
-
+  },
   evaluateSystemVariable: function (context, v) {
-    var name = v.getText().substring(2, v.getText().length)
-    // 目前传入变量为@@xxx
-    var ctx = context.get('expressionContext')
-    var componentParam = ctx.getService(
+    let name = v.getText().substring(2, v.getText().length)
+    let ctx = context.get('expressionContext')
+    let componentParam = ctx.getService(
       'vjs.framework.extension.platform.services.param.manager.ComponentParam'
     )
-    var scopeManager = ctx.getService(
+    let scopeManager = ctx.getService(
       'vjs.framework.extension.platform.interface.scope.ScopeManager'
     )
-    var scope = scopeManager.getScope()
-    var componentCode = scope.getComponentCode()
-    var cvar
+    let scope = scopeManager.getScope()
+    let componentCode = scope.getComponentCode()
+    let cvar
     try {
       cvar = componentParam.getVariant({
         componentCode: componentCode,
@@ -5797,19 +9004,13 @@ com.toone.itop.formula.FormulaTreeExtra = {
         code: name
       })
     }
-
-    if (typeof cvar == 'undefined') {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
+    if (typeof cvar == 'undefine')
       throw new Error(
-        '[' + name + ']' + '没有对应的系统变量',
-        undefined,
-        undefined,
-        factory.TYPES.Config
+        '[' +
+          name +
+          ']' +
+          '\u6ca1\u6709\u5bf9\u5e94\u7684\u7cfb\u7edf\u53d8\u91cf'
       )
-    }
-    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
     com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
       context,
       v.getText(),
@@ -5820,71 +9021,51 @@ com.toone.itop.formula.FormulaTreeExtra = {
   evaluateNumber: function (context, v) {
     return Number(v)
   },
-
   evaluateAdd: function (context, v1, v2) {
     if (!isNaN(v1) && !isNaN(v2)) {
-      var ctx = context.get('expressionContext')
-      var mathUtil = ctx.getService('vjs.framework.extension.util.Math')
-      var val = mathUtil.add(v1, v2)
+      let ctx = context.get('expressionContext')
+      let mathUtil = ctx.getService('vjs.framework.extension.util.Math')
+      let val = mathUtil.add(v1, v2)
       return Number(val)
-    } else {
-      throw new Error(v1 + ',' + v2 + ' add type is wrong')
-      //$value = com.toone.itop.formula.FormulaTreeExtra.evaluateVariable(this._getContext(),v1)+com.toone.itop.formula.FormulaTreeExtra.evaluateVariable(this._getContext(),v2)
-    }
+    } else throw new Error(v1 + ',' + v2 + ' add type is wrong')
   },
-
   evaluateSub: function (context, v1, v2) {
     if (!isNaN(v1) && !isNaN(v2)) {
-      var ctx = context.get('expressionContext')
-      var mathUtil = ctx.getService('vjs.framework.extension.util.Math')
-      var val = mathUtil.subtract(v1, v2)
+      let ctx = context.get('expressionContext')
+      let mathUtil = ctx.getService('vjs.framework.extension.util.Math')
+      let val = mathUtil.subtract(v1, v2)
       return Number(val)
-    } else {
-      throw new Error(v1 + ',' + v2 + ' sub type is wrong')
-    }
+    } else throw new Error(v1 + ',' + v2 + ' sub type is wrong')
   },
-
   evaluateMult: function (context, v1, v2) {
     if (!isNaN(v1) && !isNaN(v2)) {
-      var ctx = context.get('expressionContext')
-      var mathUtil = ctx.getService('vjs.framework.extension.util.Math')
-      var val = mathUtil.multiply(v1, v2)
+      let ctx = context.get('expressionContext')
+      let mathUtil = ctx.getService('vjs.framework.extension.util.Math')
+      let val = mathUtil.multiply(v1, v2)
       return Number(val)
-    } else {
-      throw new Error(v1 + ',' + v2 + ' Mult type is wrong')
-    }
+    } else throw new Error(v1 + ',' + v2 + ' Mult type is wrong')
   },
-
   evaluateDiv: function (context, v1, v2) {
     if (!isNaN(v1) && !isNaN(v2)) {
-      var ctx = context.get('expressionContext')
-      var mathUtil = ctx.getService('vjs.framework.extension.util.Math')
-      var val = mathUtil.divide(v1, v2)
+      let ctx = context.get('expressionContext')
+      let mathUtil = ctx.getService('vjs.framework.extension.util.Math')
+      let val = mathUtil.divide(v1, v2)
       return Number(val)
-    } else {
-      throw new Error(v1 + ',' + v2 + ' Div type is wrong')
-    }
+    } else throw new Error(v1 + ',' + v2 + ' Div type is wrong')
   },
-
   evaluatePercent: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var mathUtil = ctx.getService('vjs.framework.extension.util.Math')
-    var val = mathUtil.divide(v, 100)
+    let ctx = context.get('expressionContext')
+    let mathUtil = ctx.getService('vjs.framework.extension.util.Math')
+    let val = mathUtil.divide(v, 100)
     return Number(val)
   },
-
   evaluateComponentVariable: function (context, v) {
-    var name = v.getText().substring(1, v.getText().length)
-    // 目前传入变量为@xxx
-    var ctx = context.get('expressionContext')
-    var windowParam = ctx.getService(
+    let name = v.getText().substring(1, v.getText().length)
+    let ctx = context.get('expressionContext')
+    let windowParam = ctx.getService(
       'vjs.framework.extension.platform.services.param.manager.WindowParam'
     )
-    var cvar = windowParam.getInput({ code: name })
-    //var viewContext = context.get("viewContext");
-    //var cvar = viewContext.getVariableValue(name);
-
-    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
+    let cvar = windowParam.getInput({ code: name })
     com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
       context,
       v.getText(),
@@ -5892,45 +9073,24 @@ com.toone.itop.formula.FormulaTreeExtra = {
     )
     return cvar
   },
-
   evaluateWindowFieldVariable: function (context, v) {
-    var text = v.getText()
-    var param = text.split('.')
-    var tablename = param[0].substring(2, param[0].length - 1)
-    var fieldname = param[1].substring(1, param[1].length - 1)
-    var ctx = context.get('expressionContext')
-
-    var windowParam = ctx.getService(
+    let text = v.getText()
+    let param = text.split('.')
+    let tablename = param[0].substring(2, param[0].length - 1)
+    let fieldname = param[1].substring(1, param[1].length - 1)
+    let ctx = context.get('expressionContext')
+    let windowParam = ctx.getService(
       'vjs.framework.extension.platform.services.param.manager.WindowParam'
     )
-    var datasource = windowParam.getInput({
-      code: tablename
-    })
-
-    if (null == datasource) {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '窗体输入变量【' + tablename + '】不存在，请检查配置.',
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-
-    var row
+    let datasource = windowParam.getInput({ code: tablename })
+    let row
     if (ctx.hasCurrentRecord(tablename)) row = ctx.getCurrentRecord(tablename)
     else if (ctx.hasRecordIndex(tablename))
       row = datasource.getRecordById(ctx.getRecordIndex(tablename))
     else row = datasource.getCurrentRecord()
-
-    // 如果上面都取不到记录，则取数据源的第一行记录
     row = row ? row : datasource.getRecordByIndex(0)
-
     if (row) {
-      var cvar = row ? row.get(fieldname) : null
-      // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
+      let cvar = row ? row.get(fieldname) : null
       com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
         context,
         v.getText(),
@@ -5940,310 +9100,217 @@ com.toone.itop.formula.FormulaTreeExtra = {
     }
     return null
   },
-
   evaluateUserVar: function (context, v) {
-    var name = v.getText().substring(1, v.getText().length)
-    // 传入变量为#xxx ,暂时没有业务规则 此规则非彼规则
-
-    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
+    let name = v.getText().substring(1, v.getText().length)
     com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
       context,
       v.getText(),
       1
     )
-
     return 1
   },
-
   evaluateArray: function (context, v) {
-    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
     com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
       context,
       v.getText(),
       v.getText()
     )
-
     return v.getText()
   },
-
   evaluateQuery: function (context, v) {
     return v.getText()
   },
-
   evaluateBrOutRule: function (context, v) {
-    var text = v.getText()
-    var param = text.split('.')
-    var code = param[1]
-    var key = param[2]
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      return routeContext.getBusinessRuleResult(code, key)
-    } else {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '获取规则业务返回值失败！路由上下文不存在，规则编号：' + code,
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-  },
-  //获取活动集输入参数值
-  evaluateBrIn: function (context, v) {
-    var text = v.getText()
-    var param = text.split('.')
-    var paramName = param[1]
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      return routeContext.getInputParam(paramName)
-    } else {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '获取活动集输入参数失败！路由上下文不存在，参数名称：' + paramName,
-        factory.TYPES.Config
-      )
-    }
-  },
-  //获取活动集输入实体参数的字段值
-  //格式：BR_IN_PARENT.[入參英文名字].[字段名称]
-  evaluateBrInFieldVariable: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    var text = v.getText()
-    var param = text.split('.')
-    var tablename = param[1].substring(1, param[1].length - 1)
-    var fieldname = param[2].substring(1, param[2].length - 1)
-    if (routeContext) {
-      var datasource = routeContext.getInputParam(tablename)
-      if (datasource) {
-        var row
-        if (ctx.hasCurrentRecord(tablename))
-          row = ctx.getCurrentRecord(tablename)
-        else if (ctx.hasRecordIndex(tablename))
-          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
-        else row = datasource.getCurrentRecord()
-        row = row ? row : datasource.getRecordByIndex(0)
-        return row ? row.get(fieldname) : null
-      } else {
-        var factory = ctx.getService(
-          'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-        )
-        throw new Error(
-          '获取活动集输入实体参数的字段值失败！活动集输入参数实体不存在，数据源名称：' +
-            tablename +
-            ',字段名称:' +
-            fieldname,
-          undefined,
-          undefined,
-          factory.TYPES.Config
-        )
-      }
-    } else {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '获取活动集输入实体参数的字段值失败！路由上下文不存在，数据源名称：' +
-          tablename +
-          ',字段名称:' +
-          fieldname,
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-  },
-  //获取活动集输出参数值
-  evaluateBrOut: function (context, v) {
-    var expContext = context.get('expressionContext')
-    var routeContext = expContext.getRouteContext()
-    var text = v.getText()
-    var param = text.split('.')
-    var paramName = param[1]
-    if (routeContext) {
-      return routeContext.getOutPutParam(paramName)
-    } else {
-      var factory = expContext.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '获取活动集输出参数失败！路由上下文不存在，参数名称：' + paramName,
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-  },
-  //获取活动集输出实体参数的字段值
-  //格式：BR_OUT_PARENT.[变量英文名称].[字段名称]
-  evaluateBrOutFieldVariable: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      var text = v.getText()
-      var param = text.split('.')
-      var tablename = param[1].substring(1, param[1].length - 1)
-      var fieldname = param[2].substring(1, param[2].length - 1)
-      var datasource = routeContext.getOutPutParam(tablename)
-      if (datasource) {
-        var row
-        if (ctx.hasCurrentRecord(tablename))
-          row = ctx.getCurrentRecord(tablename)
-        else if (ctx.hasRecordIndex(tablename))
-          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
-        else row = datasource.getCurrentRecord()
-
-        // 如果上面都取不到记录，则取数据源的第一行记录
-        row = row ? row : datasource.getRecordByIndex(0)
-        return row ? row.get(fieldname) : null
-      }
-    }
-    return null
-  },
-  //获取活动集输出实体参数的字段值
-  //格式：BR_OUT_PARENT.[变量英文名称].[字段名称]
-  evaluateOutParentVariable: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      var text = v.getText()
-      var param = text.split('.')
-      var tablename = param[1].substring(1, param[1].length - 1)
-      var fieldname = param[2].substring(1, param[2].length - 1)
-      var datasource = routeContext.getOutPutParam(tablename)
-      if (datasource) {
-        var row
-        if (ctx.hasCurrentRecord(tablename))
-          row = ctx.getCurrentRecord(tablename)
-        else if (ctx.hasRecordIndex(tablename))
-          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
-        else row = datasource.getCurrentRecord()
-
-        // 如果上面都取不到记录，则取数据源的第一行记录
-        row = row ? row : datasource.getRecordByIndex(0)
-        return row ? row.get(fieldname) : null
-      }
-    }
-    return null
-  },
-  //获取活动集的上下文变量
-  evaluateBrVar: function (context, v) {
-    var expContext = context.get('expressionContext')
-    var routeContext = expContext.getRouteContext()
-    var text = v.getText()
-    var param = text.split('.')
-    var paramName = param[1]
-    if (routeContext) {
-      return routeContext.getVariable(paramName)
-    } else {
-      var factory = expContext.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '获取活动集上下文变量失败！路由上下文不存在，参数名称：' + paramName,
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-  },
-
-  //获取活动集上下文实体变量的字段值
-  //格式：BR_VAR_PARENT.[变量英文名称].[字段名称]
-  evaluateBrVarFieldVariable: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      var text = v.getText()
-      var param = text.split('.')
-      var tablename = param[1].substring(1, param[1].length - 1)
-      var fieldname = param[2].substring(1, param[2].length - 1)
-      var datasource = routeContext.getVariable(tablename)
-      if (datasource) {
-        var row
-        if (ctx.hasCurrentRecord(tablename))
-          row = ctx.getCurrentRecord(tablename)
-        else if (ctx.hasRecordIndex(tablename))
-          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
-        else row = datasource.getCurrentRecord()
-
-        // 如果上面都取不到记录，则取数据源的第一行记录
-        row = row ? row : datasource.getRecordByIndex(0)
-        return row ? row.get(fieldname) : null
-      }
-    }
-    return null
-  },
-
-  //处理报表实体变量  格式 BR_REPORT.a.a1
-  evaluateBrReport: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      var text = v.getText()
-      var param = text.split('.')
-      var reportEntityName = param[1]
-      var field = param[2]
-      var reportEntity = ctx.get('Report@@Entity')
-      if (reportEntity != null) {
-        var fieldName = reportEntityName + '.' + field
-        return reportEntity[fieldName]
-      }
-    } else {
+    let text = v.getText()
+    let param = text.split('.')
+    let code = param[1]
+    let key = param[2]
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) return routeContext.getBusinessRuleResult(code, key)
+    else
       throw Error(
-        '[ExpressionEngine.evaluateBrReport]获取规则业务返回值失败！路由上下文不存在，规则编号：' +
+        '[ExpressionEngine.evaluateBrOutRule]\u83b7\u53d6\u89c4\u5219\u4e1a\u52a1\u8fd4\u56de\u503c\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u89c4\u5219\u7f16\u53f7\uff1a' +
           code
       )
+  },
+  evaluateBrIn: function (context, v) {
+    let text = v.getText()
+    let param = text.split('.')
+    let paramName = param[1]
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) return routeContext.getInputParam(paramName)
+    else
+      throw Error(
+        '[ExpressionEngine.evaluateBrIn]\u83b7\u53d6\u6d3b\u52a8\u96c6\u8f93\u5165\u53c2\u6570\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u53c2\u6570\u540d\u79f0\uff1a' +
+          paramName
+      )
+  },
+  evaluateBrInFieldVariable: function (context, v) {
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    let text = v.getText()
+    let param = text.split('.')
+    let tablename = param[1].substring(1, param[1].length - 1)
+    let fieldname = param[2].substring(1, param[2].length - 1)
+    if (routeContext) {
+      let datasource = routeContext.getInputParam(tablename)
+      if (datasource) {
+        let row
+        if (ctx.hasCurrentRecord(tablename))
+          row = ctx.getCurrentRecord(tablename)
+        else if (ctx.hasRecordIndex(tablename))
+          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
+        else row = datasource.getCurrentRecord()
+        row = row ? row : datasource.getRecordByIndex(0)
+        return row ? row.get(fieldname) : null
+      } else
+        throw Error(
+          '[ExpressionEngine.evaluateBrInFieldVariable]\u83b7\u53d6\u6d3b\u52a8\u96c6\u8f93\u5165\u5b9e\u4f53\u53c2\u6570\u7684\u5b57\u6bb5\u503c\u5931\u8d25\uff01\u6d3b\u52a8\u96c6\u8f93\u5165\u53c2\u6570\u5b9e\u4f53\u4e0d\u5b58\u5728\uff0c\u6570\u636e\u6e90\u540d\u79f0\uff1a' +
+            tablename +
+            ',\u5b57\u6bb5\u540d\u79f0:' +
+            fieldname
+        )
+    } else
+      throw Error(
+        '[ExpressionEngine.evaluateBrInFieldVariable]\u83b7\u53d6\u6d3b\u52a8\u96c6\u8f93\u5165\u5b9e\u4f53\u53c2\u6570\u7684\u5b57\u6bb5\u503c\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u6570\u636e\u6e90\u540d\u79f0\uff1a' +
+          tablename +
+          ',\u5b57\u6bb5\u540d\u79f0:' +
+          fieldname
+      )
+  },
+  evaluateBrOut: function (context, v) {
+    let expContext = context.get('expressionContext')
+    let routeContext = expContext.getRouteContext()
+    let text = v.getText()
+    let param = text.split('.')
+    let paramName = param[1]
+    if (routeContext) return routeContext.getOutPutParam(paramName)
+    else
+      throw Error(
+        '[ExpressionEngine.evaluateBrOut]\u83b7\u53d6\u6d3b\u52a8\u96c6\u8f93\u51fa\u53c2\u6570\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u53c2\u6570\u540d\u79f0\uff1a' +
+          paramName
+      )
+  },
+  evaluateBrOutFieldVariable: function (context, v) {
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) {
+      let text = v.getText()
+      let param = text.split('.')
+      let tablename = param[1].substring(1, param[1].length - 1)
+      let fieldname = param[2].substring(1, param[2].length - 1)
+      let datasource = routeContext.getOutPutParam(tablename)
+      if (datasource) {
+        let row
+        if (ctx.hasCurrentRecord(tablename))
+          row = ctx.getCurrentRecord(tablename)
+        else if (ctx.hasRecordIndex(tablename))
+          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
+        else row = datasource.getCurrentRecord()
+        row = row ? row : datasource.getRecordByIndex(0)
+        return row ? row.get(fieldname) : null
+      }
     }
     return null
   },
-
+  evaluateOutParentVariable: function (context, v) {
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) {
+      let text = v.getText()
+      let param = text.split('.')
+      let tablename = param[1].substring(1, param[1].length - 1)
+      let fieldname = param[2].substring(1, param[2].length - 1)
+      let datasource = routeContext.getOutPutParam(tablename)
+      if (datasource) {
+        let row
+        if (ctx.hasCurrentRecord(tablename))
+          row = ctx.getCurrentRecord(tablename)
+        else if (ctx.hasRecordIndex(tablename))
+          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
+        else row = datasource.getCurrentRecord()
+        row = row ? row : datasource.getRecordByIndex(0)
+        return row ? row.get(fieldname) : null
+      }
+    }
+    return null
+  },
+  evaluateBrVar: function (context, v) {
+    let expContext = context.get('expressionContext')
+    let routeContext = expContext.getRouteContext()
+    let text = v.getText()
+    let param = text.split('.')
+    let paramName = param[1]
+    if (routeContext) return routeContext.getVariable(paramName)
+    else
+      throw Error(
+        '[ExpressionEngine.evaluateBrVar]\u83b7\u53d6\u6d3b\u52a8\u96c6\u4e0a\u4e0b\u6587\u53d8\u91cf\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u53c2\u6570\u540d\u79f0\uff1a' +
+          paramName
+      )
+  },
+  evaluateBrVarFieldVariable: function (context, v) {
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) {
+      let text = v.getText()
+      let param = text.split('.')
+      let tablename = param[1].substring(1, param[1].length - 1)
+      let fieldname = param[2].substring(1, param[2].length - 1)
+      let datasource = routeContext.getVariable(tablename)
+      if (datasource) {
+        let row
+        if (ctx.hasCurrentRecord(tablename))
+          row = ctx.getCurrentRecord(tablename)
+        else if (ctx.hasRecordIndex(tablename))
+          row = datasource.getRecordById(ctx.getRecordIndex(tablename))
+        else row = datasource.getCurrentRecord()
+        row = row ? row : datasource.getRecordByIndex(0)
+        return row ? row.get(fieldname) : null
+      }
+    }
+    return null
+  },
+  evaluateBrReport: function (context, v) {
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) {
+      let text = v.getText()
+      let param = text.split('.')
+      let reportEntityName = param[1]
+      let field = param[2]
+      let reportEntity = ctx.get('Report@@Entity')
+      if (reportEntity != null) {
+        let fieldName = reportEntityName + '.' + field
+        return reportEntity[fieldName]
+      }
+    } else
+      throw Error(
+        '[ExpressionEngine.evaluateBrReport]\u83b7\u53d6\u89c4\u5219\u4e1a\u52a1\u8fd4\u56de\u503c\u5931\u8d25\uff01\u8def\u7531\u4e0a\u4e0b\u6587\u4e0d\u5b58\u5728\uff0c\u89c4\u5219\u7f16\u53f7\uff1a' +
+          code
+      )
+    return null
+  },
   evaluateTableChain: function (context, v) {
-    var ctx = context.get('expressionContext')
-    //var viewModel = context.get("viewModel");
-    var name = v.getText()
-    // 传入变量为[tablename].[tablename](....省略无数个table....).[字段名]
-    // 取当前页面中选定状态的行数据
-    // 目前只支持一种[表名].[字段名]
-    // 如果出现多个表的数据源，那一定会疯掉，yes
-    var t = name.split('.')
-    var tablename = t[0].substring(1, t[0].length - 1)
-    var fieldname = t[1].substring(1, t[1].length - 1)
-    var datasourceManager = ctx.getService(
+    let ctx = context.get('expressionContext')
+    let name = v.getText()
+    let t = name.split('.')
+    let tablename = t[0].substring(1, t[0].length - 1)
+    let fieldname = t[1].substring(1, t[1].length - 1)
+    let datasourceManager = ctx.getService(
       'vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
     )
-    var datasource = datasourceManager.lookup({ datasourceName: tablename })
-    if (null == datasource) {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
-      throw new Error(
-        '实体【' + tablename + '】不存在, 请检查配置.',
-        undefined,
-        undefined,
-        factory.TYPES.Config
-      )
-    }
-
-    var row
+    let datasource = datasourceManager.lookup({ datasourceName: tablename })
+    let row
     if (ctx.hasCurrentRecord(tablename)) row = ctx.getCurrentRecord(tablename)
     else if (ctx.hasRecordIndex(tablename))
       row = datasource.getRecordById(ctx.getRecordIndex(tablename))
     else row = datasource.getCurrentRecord()
-
-    // 如果上面都取不到记录，则取数据源的第一行记录
     row = row ? row : datasource.getRecordByIndex(0)
-
     if (row) {
-      var fieldValue = ''
+      let fieldValue = ''
       fieldValue = row.get(fieldname)
-      // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
       com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
         context,
         v.getText(),
@@ -6253,77 +9320,65 @@ com.toone.itop.formula.FormulaTreeExtra = {
     }
     return null
   },
-
   evaluateControlProperty: function (context, v) {
-    // CC.控件Code.控件属性
-    var name = v.getText().substring(3, v.getText().length)
-    var strArr = name.split('.')
-    var ctx = context.get('expressionContext')
+    let name = v.getText().substring(3, v.getText().length)
+    let strArr = name.split('.')
     if (strArr.length == 2) {
-      var propertyName = strArr[1]
-      var widgetId = strArr[0]
-      var widgetProperty = ctx.getService(
+      let propertyName = strArr[1]
+      let widgetId = strArr[0]
+      let ctx = context.get('expressionContext')
+      let widgetProperty = ctx.getService(
         'vjs.framework.extension.platform.services.view.widget.common.action.WidgetProperty'
       )
-      var propertyValue = widgetProperty.get(widgetId, propertyName)
+      let propertyValue = widgetProperty.get(widgetId, propertyName)
       return propertyValue
-    } else {
-      var factory = ctx.getService(
-        'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-      )
+    } else
       throw new Error(
-        '表达式【' + v.getText() + '】设置的控件属性信息不正确！',
-        undefined,
-        undefined,
-        factory.TYPES.Config
+        '\u8868\u8fbe\u5f0f\u3010' +
+          v.getText() +
+          '\u3011\u8bbe\u7f6e\u7684\u63a7\u4ef6\u5c5e\u6027\u4fe1\u606f\u4e0d\u6b63\u786e\uff01'
       )
-    }
   },
-
   evaluateKeyBoards: function (context, v) {
-    var expContext = context.get('expressionContext')
+    let expContext = context.get('expressionContext')
     if (expContext) {
-      var routeContext = expContext.getRouteContext()
-      var expression = v.getText()
-      var name = expression.substring(5, expression.length)
-      var keyboardKeys = expContext.getService(
+      let routeContext = expContext.getRouteContext()
+      let expression = v.getText()
+      let name = expression.substring(5, expression.length)
+      let keyboardKeys = expContext.getService(
         'vjs.framework.extension.platform.interface.enum.KeyboardKeys'
       )
       return keyboardKeys[name]
     }
   },
-
   evaluateEventAction: function (context, v) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
+    let ctx = context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
     if (routeContext) {
-      var expression = v.getText()
-      var name = expression.substring(3, expression.length)
+      let expression = v.getText()
+      let name = expression.substring(3, expression.length)
       return routeContext.getEventArgument(name)
     }
   },
-
   evaluateI18NVariable: function (context, v) {
-    // 格式以 "I18N." 开头
-    var langName = v.getText().substr(5)
-    var ctx = context.get('expressionContext')
+    let langName = v.getText().substr(5)
+    let ctx = context.get('expressionContext')
     if (ctx) {
-      var scopeManager = ctx.getService(
+      let scopeManager = ctx.getService(
         'vjs.framework.extension.platform.interface.scope.ScopeManager'
       )
-      var scopeId = scopeManager.getCurrentScopeId()
-      var scope = scopeManager.getScope(scopeId)
-      var params
+      let scopeId = scopeManager.getCurrentScopeId()
+      let scope = scopeManager.getScope(scopeId)
+      let params
       if (scopeManager.isComponentScope(scopeId)) {
-        var language = ctx.getService(
+        let language = ctx.getService(
           'vjs.framework.extension.platform.interface.i18n.component'
         )
         params = { componentCode: scope.getComponentCode(), code: langName }
-        if (language.hasExpLanguage(params)) {
+        if (language.hasExpLanguage(params))
           return language.getExpLanguage(params)
-        }
       } else {
-        var language = ctx.getService(
+        let language = ctx.getService(
           'vjs.framework.extension.platform.interface.i18n.window'
         )
         params = {
@@ -6331,261 +9386,166 @@ com.toone.itop.formula.FormulaTreeExtra = {
           windowCode: scope.getWindowCode(),
           code: langName
         }
-        if (language.hasExpLanguage(params)) {
+        if (language.hasExpLanguage(params))
           return language.getExpLanguage(params)
-        }
       }
-      var resourcePackage = ctx.getService(
+      let resourcePackage = ctx.getService(
         'vjs.framework.extension.ui.adapter.resourcepackage'
       )
       return resourcePackage.getLanguageItem(langName)
     }
     return ''
   },
-
-  //获取foreach循环变量的值
-  //格式：LV.[变量英文名称].[字段名称]
   evaluateForEachVar: function (context, v) {
-    var routeContext = context.get('expressionContext').getRouteContext()
-    var str = v.getText().split('.')
+    let routeContext = context.get('expressionContext').getRouteContext()
+    let str = v.getText().split('.')
     if (str && str.length == 3) {
-      var code = str[1]
-      var field = str[2]
-      var record = routeContext.getForEachVarValue(code)
+      let code = str[1]
+      let field = str[2]
+      let record = routeContext.getForEachVarValue(code)
       return record.get(field)
-    } else {
-      var factory = context
-        .get('expressionContext')
-        .getService(
-          'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-        )
-      throw new Error(
-        '循环变量表达式取值格式不正确: [' + str + ']',
-        undefined,
-        undefined,
-        factory.TYPES.Config
+    } else
+      throw Error(
+        '\u5faa\u73af\u53d8\u91cf\u8868\u8fbe\u5f0f\u53d6\u503c\u683c\u5f0f\u4e0d\u6b63\u786e: [' +
+          str +
+          ']'
       )
-    }
   },
-
   callFunction: function (stream, f, argTree, context) {
-    var expContext = context.get('expressionContext')
-    var handlerName = f.getText().substring(0, f.getText().length - 1)
-
-    // 解析表达式方法参数
-    var args = []
-    for (var index = 0; index < argTree.length; index++) {
-      var walker = new com.toone.itop.formula.FormulaTreeJSExtend(
+    let expContext = context.get('expressionContext')
+    let handlerName = f.getText().substring(0, f.getText().length - 1)
+    let args = []
+    for (let index = 0; index < argTree.length; index++) {
+      let walker = new com.toone.itop.formula.FormulaTreeJSExtend(
         context,
         new org.antlr.runtime.tree.CommonTreeNodeStream(argTree[index])
       )
-      var cur = walker.eval()
-
-      if (cur == null) {
-        if (
-          ',' == argTree[index].getText() ||
-          ')' == argTree[index].getText()
-        ) {
-        } else {
-          args.push(null)
-        }
-      } else {
-        args.push(cur)
-      }
+      let cur = walker.eval()
+      if (cur == null)
+        if (',' == argTree[index].getText() || ')' == argTree[index].getText());
+        else args.push(null)
+      else args.push(cur)
     }
-
-    //判断是否执行表达式
     if (context.get('_isExecutable')) {
-      // 获取表达式方法执行器
-      var executor = expContext.getService(
+      let executor = expContext.getService(
         'vjs.framework.extension.platform.engine.function.FunctionEngine'
       )
-      var FunctionContext = expContext.getService(
+      let FunctionContext = expContext.getService(
         'vjs.framework.extension.platform.interface.function.FunctionContext'
       )
-      //		var executor = context.get("executor");
-      if (executor) {
+      if (executor)
         return executor.execute({
           functionName: handlerName,
           context: new FunctionContext(args, expContext.getRouteContext())
         })
-      }
     }
   },
-
   lt: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) < Number(right)
-    } else {
-      if (left == null || right == null) {
-        return false
-      }
+    else {
+      if (left == null || right == null) return false
       return String(left) < String(right)
     }
   },
-
   lteq: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) <= Number(right)
-    } else {
-      if (left == null || right == null) {
-        return false
-      }
+    else {
+      if (left == null || right == null) return false
       return String(left) <= String(right)
     }
   },
-
   gt: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) > Number(right)
-    } else {
-      if (left == null || right == null) {
-        return false
-      }
+    else {
+      if (left == null || right == null) return false
       return String(left) > String(right)
     }
   },
-
   gteq: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) >= Number(right)
-    } else {
-      if (left == null || right == null) {
-        return false
-      }
+    else {
+      if (left == null || right == null) return false
       return String(left) >= String(right)
     }
   },
-
   eq: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) == Number(right)
-    } else {
-      if (left == null && right == null) {
-        return true
-      } else if (left == null || right == null) {
-        return false
-      }
+    else {
+      if (left == null && right == null) return true
+      else if (left == null || right == null) return false
       return String(left) == String(right)
     }
   },
-
   noteq: function (left, right) {
-    if (typeof left == 'number' && typeof right == 'number') {
+    if (typeof left == 'number' && typeof right == 'number')
       return Number(left) != Number(right)
-    } else {
-      if (left == null && right == null) {
-        return false
-      } else if (left == null || right == null) {
-        return true
-      }
+    else {
+      if (left == null && right == null) return false
+      else if (left == null || right == null) return true
       return String(left) != String(right)
     }
   }
 }
-
 com.toone.itop.formula.Map = function () {
-  /** Map 大小 * */
   this._size = 0
-  /** 对象 * */
   this.entry = new Object()
 }
-
 com.toone.itop.formula.Map.prototype = {
   _def_perfix: 'Context_KEY_',
-
-  /** 存 * */
   put: function (key, value) {
-    if (!this.containsKey(key)) {
-      this._size++
-    }
+    if (!this.containsKey(key)) this._size++
     this.entry[this._def_perfix + key] = value
   },
-
-  /** 取 * */
   get: function (key) {
     return this.containsKey(key) ? this.entry[this._def_perfix + key] : null
   },
-
-  /** 删除 * */
   remove: function (key) {
-    if (this.containsKey(key) && delete this.entry[this._def_perfix + key]) {
+    if (this.containsKey(key) && delete this.entry[this._def_perfix + key])
       this._size--
-    }
   },
-
-  /** 是否包含 Key * */
   containsKey: function (key) {
-    if (this.entry[this._def_perfix + key]) {
-      return true
-    } else {
-      return false
-    }
+    if (this.entry[this._def_perfix + key]) return true
+    else return false
   },
-
-  /** 是否包含 Value * */
   containsValue: function (value) {
-    for (var prop in this.entry) {
-      if (this.entry[prop] == value) {
-        return true
-      }
-    }
+    for (let prop in this.entry) if (this.entry[prop] == value) return true
     return false
   },
-
-  /** 所有 Value * */
   values: function () {
-    var values = new Array()
-    for (var prop in this.entry) {
-      if (this.entry.hasOwnProperty(prop)) {
-        values.push(this.entry[prop])
-      }
-    }
+    let values = new Array()
+    for (let prop in this.entry)
+      if (this.entry.hasOwnProperty(prop)) values.push(this.entry[prop])
     return values
   },
-
-  /** 所有 Key * */
   keys: function () {
-    var keys = new Array()
-    for (var prop in this.entry) {
-      if (this.entry.hasOwnProperty(prop)) {
-        keys.push(prop)
-      }
-    }
+    let keys = new Array()
+    for (let prop in this.entry)
+      if (this.entry.hasOwnProperty(prop)) keys.push(prop)
     return keys
   },
-
-  /** Map Size * */
   size: function () {
     return this._size
   },
-
-  /* 清空 */
   clear: function () {
     this._size = 0
     entry = new Object()
   }
 }
-//FormulaTreeJS.js
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g 2018-12-07 15:03:30
-
 com.toone.itop.formula.FormulaTreeJS = function (input, state) {
-  if (!state) {
-    state = new org.antlr.runtime.RecognizerSharedState()
-  }
-
+  if (!state) state = new org.antlr.runtime.RecognizerSharedState()
   ;(function () {}.call(this))
-
   com.toone.itop.formula.FormulaTreeJS.superclass.constructor.call(
     this,
     input,
     state
   )
-
-  /* @todo only create adaptor if output=AST */
   this.adaptor = new org.antlr.runtime.tree.CommonTreeAdaptor()
 }
-
 org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
   EOF: -1,
   POS: 4,
@@ -6648,8 +9608,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
   STR: 61
 })
 ;(function () {
-  // public class variables
-  var EOF = -1,
+  let EOF = -1,
     POS = 4,
     NEG = 5,
     CALL = 6,
@@ -6708,10 +9667,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
     OUTPARENTVARIABLE = 59,
     BRREPORT = 60,
     STR = 61
-  var UP = org.antlr.runtime.Token.UP,
+  let UP = org.antlr.runtime.Token.UP,
     DOWN = org.antlr.runtime.Token.DOWN
-
-  // public instance methods/vars
   org.antlr.lang.extend(
     com.toone.itop.formula.FormulaTreeJS,
     org.antlr.runtime.tree.TreeParser,
@@ -6727,124 +9684,88 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
   org.antlr.lang.augmentObject(
     com.toone.itop.formula.FormulaTreeJS.prototype,
     {
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:23:1: eval returns [var value] : v= expression ;
-      // $ANTLR start "eval"
       eval: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:24:2: (v= expression )
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:24:4: v= expression
           this.pushFollow(
             com.toone.itop.formula.FormulaTreeJS.FOLLOW_expression_in_eval60
           )
           v = this.expression()
-
           this.state._fsp--
-
           value = v
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:26:1: expression returns [var value] : (v= operand | v= operation );
-      // $ANTLR start "expression"
       expression: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:27:2: (v= operand | v= operation )
-          var alt1 = 2
-          var LA1_0 = this.input.LA(1)
-
+          let alt1 = 2
+          let LA1_0 = this.input.LA(1)
           if (
             (LA1_0 >= CONTROLPROPERTY && LA1_0 <= ARRAY) ||
             (LA1_0 >= NUMBER && LA1_0 <= FALSE) ||
             (LA1_0 >= BROUTRULE && LA1_0 <= BRREPORT)
-          ) {
+          )
             alt1 = 1
-          } else if (
+          else if (
             (LA1_0 >= POS && LA1_0 <= NEG) ||
             (LA1_0 >= AND && LA1_0 <= NOT) ||
             LA1_0 == FUNCNAME ||
             LA1_0 == PERCENT
-          ) {
+          )
             alt1 = 2
-          } else {
-            var nvae = new org.antlr.runtime.NoViableAltException(
+          else {
+            let nvae = new org.antlr.runtime.NoViableAltException(
               '',
               1,
               0,
               this.input
             )
-
             throw nvae
           }
           switch (alt1) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:27:4: v= operand
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_operand_in_expression78
               )
               v = this.operand()
-
               this.state._fsp--
-
               value = v
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:28:4: v= operation
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_operation_in_expression87
               )
               v = this.operation()
-
               this.state._fsp--
-
               value = v
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:30:1: operation returns [var value] : ( ^( POS a= expression ) | ^( NEG a= expression ) | ^( NOT a= expression ) | ^( OR a= expression b= expression ) | ^( AND a= expression b= expression ) | ^( LT a= expression b= expression ) | ^( LTEQ a= expression b= expression ) | ^( GT a= expression b= expression ) | ^( GTEQ a= expression b= expression ) | ^( EQ a= expression b= expression ) | ^( NOTEQ a= expression b= expression ) | ^( ADD a= expression b= expression ) | ^( SUB a= expression b= expression ) | ^( MULT a= expression b= expression ) | ^( DIV a= expression b= expression ) | ^( EXP a= expression b= expression ) | ^( CONCAT a= expression b= expression ) | ^( PERCENT n= NUMBER ) | ^( FUNCNAME (funcArgs+= . )* ) );
-      // $ANTLR start "operation"
       operation: function () {
-        var value = null
-
-        var n = null
-        var FUNCNAME1 = null
-        var a = null
-        var b = null
-
+        let value = null
+        let n = null
+        let FUNCNAME1 = null
+        let a = null
+        let b = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:31:2: ( ^( POS a= expression ) | ^( NEG a= expression ) | ^( NOT a= expression ) | ^( OR a= expression b= expression ) | ^( AND a= expression b= expression ) | ^( LT a= expression b= expression ) | ^( LTEQ a= expression b= expression ) | ^( GT a= expression b= expression ) | ^( GTEQ a= expression b= expression ) | ^( EQ a= expression b= expression ) | ^( NOTEQ a= expression b= expression ) | ^( ADD a= expression b= expression ) | ^( SUB a= expression b= expression ) | ^( MULT a= expression b= expression ) | ^( DIV a= expression b= expression ) | ^( EXP a= expression b= expression ) | ^( CONCAT a= expression b= expression ) | ^( PERCENT n= NUMBER ) | ^( FUNCNAME (funcArgs+= . )* ) )
-          var alt3 = 19
+          let alt3 = 19
           switch (this.input.LA(1)) {
             case POS:
               alt3 = 1
@@ -6910,468 +9831,357 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                 0,
                 this.input
               )
-
               throw nvae
           }
-
           switch (alt3) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:31:4: ^( POS a= expression )
               this.match(
                 this.input,
                 POS,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_POS_in_operation105
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation109
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = a
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:33:4: ^( NEG a= expression )
               this.match(
                 this.input,
                 NEG,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_NEG_in_operation120
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation124
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = a * -1
-
               break
             case 3:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:35:4: ^( NOT a= expression )
               this.match(
                 this.input,
                 NOT,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_NOT_in_operation136
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation140
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = !a
-
               break
             case 4:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:37:7: ^( OR a= expression b= expression )
               this.match(
                 this.input,
                 OR,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_OR_in_operation154
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation158
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation162
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = a || b
-
               break
             case 5:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:39:7: ^( AND a= expression b= expression )
               this.match(
                 this.input,
                 AND,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_AND_in_operation182
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation186
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation190
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = a && b
-
               break
             case 6:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:41:6: ^( LT a= expression b= expression )
               this.match(
                 this.input,
                 LT,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_LT_in_operation206
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation210
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation214
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.lt(a, b)
-
               break
             case 7:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:43:7: ^( LTEQ a= expression b= expression )
               this.match(
                 this.input,
                 LTEQ,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_LTEQ_in_operation231
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation235
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation239
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.lteq(a, b)
-
               break
             case 8:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:45:7: ^( GT a= expression b= expression )
               this.match(
                 this.input,
                 GT,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_GT_in_operation256
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation260
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation264
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.gt(a, b)
-
               break
             case 9:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:47:7: ^( GTEQ a= expression b= expression )
               this.match(
                 this.input,
                 GTEQ,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_GTEQ_in_operation281
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation285
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation289
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.gteq(a, b)
-
               break
             case 10:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:49:7: ^( EQ a= expression b= expression )
               this.match(
                 this.input,
                 EQ,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_EQ_in_operation306
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation310
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation314
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.eq(a, b)
-
               break
             case 11:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:51:7: ^( NOTEQ a= expression b= expression )
               this.match(
                 this.input,
                 NOTEQ,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_NOTEQ_in_operation331
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation335
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation339
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.noteq(a, b)
-
               break
             case 12:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:53:7: ^( ADD a= expression b= expression )
               this.match(
                 this.input,
                 ADD,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_ADD_in_operation356
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation360
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation364
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateAdd(
                 this._getContext(),
                 a,
                 b
               )
-
               break
             case 13:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:57:7: ^( SUB a= expression b= expression )
               this.match(
                 this.input,
                 SUB,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_SUB_in_operation381
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation385
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation389
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateSub(
                 this._getContext(),
                 a,
                 b
               )
-
               break
             case 14:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:61:7: ^( MULT a= expression b= expression )
               this.match(
                 this.input,
                 MULT,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_MULT_in_operation406
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation410
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation414
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateMult(
                 this._getContext(),
                 a,
                 b
               )
-
               break
             case 15:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:65:7: ^( DIV a= expression b= expression )
               this.match(
                 this.input,
                 DIV,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_DIV_in_operation431
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation435
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation439
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateDiv(
                 this._getContext(),
                 a,
                 b
               )
-
               break
             case 16:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:69:7: ^( EXP a= expression b= expression )
               this.match(
                 this.input,
                 EXP,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_EXP_in_operation456
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation460
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation464
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = Math.pow(
                 com.toone.itop.formula.FormulaTreeExtra.evaluateNumber(
@@ -7383,47 +10193,37 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                   b
                 )
               )
-
               break
             case 17:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:71:7: ^( CONCAT a= expression b= expression )
               this.match(
                 this.input,
                 CONCAT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_CONCAT_in_operation481
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation485
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_expression_in_operation489
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = String(a) + String(b)
-
               break
             case 18:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:73:7: ^( PERCENT n= NUMBER )
               this.match(
                 this.input,
                 PERCENT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_PERCENT_in_operation506
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               n = this.match(
                 this.input,
@@ -7431,15 +10231,12 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_NUMBER_in_operation510
               )
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.evaluatePercent(
                 (this._getContext(), n ? n.getText() : null)
               )
-
               break
             case 19:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:75:7: ^( FUNCNAME (funcArgs+= . )* )
               FUNCNAME1 = this.match(
                 this.input,
                 FUNCNAME,
@@ -7449,31 +10246,22 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
               var list_funcArgs = []
               if (this.input.LA(1) == org.antlr.runtime.Token.DOWN) {
                 this.match(this.input, org.antlr.runtime.Token.DOWN, null)
-                // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:75:26: (funcArgs+= . )*
                 loop2: do {
                   var alt2 = 2
                   var LA2_0 = this.input.LA(1)
-
-                  if (LA2_0 >= POS && LA2_0 <= STR) {
-                    alt2 = 1
-                  }
-
+                  if (LA2_0 >= POS && LA2_0 <= STR) alt2 = 1
                   switch (alt2) {
                     case 1:
-                      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:75:26: funcArgs+= .
                       funcArgs = this.input.LT(1)
                       this.matchAny(this.input)
                       if (org.antlr.lang.isNull(list_funcArgs))
                         list_funcArgs = []
                       list_funcArgs.push(funcArgs)
-
                       break
-
                     default:
                       break loop2
                   }
                 } while (true)
-
                 this.match(this.input, org.antlr.runtime.Token.UP, null)
               }
               value = com.toone.itop.formula.FormulaTreeExtra.callFunction(
@@ -7482,63 +10270,41 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                 list_funcArgs,
                 this._getContext()
               )
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:78:1: operand returns [var value] : v= literal ;
-      // $ANTLR start "operand"
       operand: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:79:2: (v= literal )
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:79:4: v= literal
           this.pushFollow(
             com.toone.itop.formula.FormulaTreeJS.FOLLOW_literal_in_operand556
           )
           v = this.literal()
-
           this.state._fsp--
-
           value = v
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:81:1: literal returns [var value] : ( NUMBER | s= STRING | TRUE | FALSE | v= COMPONENTVARIABLE | v= FIELDVARIABLE | v= VARPARENTVARIABLE | v= INPARENTVARIABLE | v= SYSTEMVARIABLE | v= OUTPARENTVARIABLE | v= LVVARIABLE | v= DB | v= USERVAR | v= CONTROLPROPERTY | v= I18NVARIABLE | v= ARRAY | v= QUERY | v= BUSSINESSRULE | v= EVENTACTIONPROPERTY | v= KEYBOARDS | v= BROUTRULE | v= OUTPARENT | v= VARPARENT | v= INPARENT | v= BRREPORT );
-      // $ANTLR start "literal"
       literal: function () {
-        var value = null
-
-        var s = null
-        var v = null
-        var NUMBER2 = null
-
+        let value = null
+        let s = null
+        let v = null
+        let NUMBER2 = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:82:2: ( NUMBER | s= STRING | TRUE | FALSE | v= COMPONENTVARIABLE | v= FIELDVARIABLE | v= VARPARENTVARIABLE | v= INPARENTVARIABLE | v= SYSTEMVARIABLE | v= OUTPARENTVARIABLE | v= LVVARIABLE | v= DB | v= USERVAR | v= CONTROLPROPERTY | v= I18NVARIABLE | v= ARRAY | v= QUERY | v= BUSSINESSRULE | v= EVENTACTIONPROPERTY | v= KEYBOARDS | v= BROUTRULE | v= OUTPARENT | v= VARPARENT | v= INPARENT | v= BRREPORT )
-          var alt4 = 25
+          let alt4 = 25
           switch (this.input.LA(1)) {
             case NUMBER:
               alt4 = 1
@@ -7622,13 +10388,10 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                 0,
                 this.input
               )
-
               throw nvae
           }
-
           switch (alt4) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:82:4: NUMBER
               NUMBER2 = this.match(
                 this.input,
                 NUMBER,
@@ -7638,387 +10401,310 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
                 this._getContext(),
                 NUMBER2 ? NUMBER2.getText() : null
               )
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:83:4: s= STRING
               s = this.match(
                 this.input,
                 STRING,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_STRING_in_literal581
               )
               value = s.getText().substring(1, s.getText().length - 1)
-
               break
             case 3:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:85:4: TRUE
               this.match(
                 this.input,
                 TRUE,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_TRUE_in_literal591
               )
               value = true
-
               break
             case 4:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:86:4: FALSE
               this.match(
                 this.input,
                 FALSE,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_FALSE_in_literal598
               )
               value = false
-
               break
             case 5:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:87:4: v= COMPONENTVARIABLE
               v = this.match(
                 this.input,
                 COMPONENTVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_COMPONENTVARIABLE_in_literal607
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateComponentVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 6:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:89:5: v= FIELDVARIABLE
               v = this.match(
                 this.input,
                 FIELDVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_FIELDVARIABLE_in_literal614
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateWindowFieldVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 7:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:91:5: v= VARPARENTVARIABLE
               v = this.match(
                 this.input,
                 VARPARENTVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_VARPARENTVARIABLE_in_literal621
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrVarFieldVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 8:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:93:5: v= INPARENTVARIABLE
               v = this.match(
                 this.input,
                 INPARENTVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_INPARENTVARIABLE_in_literal628
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrInFieldVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 9:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:95:5: v= SYSTEMVARIABLE
               v = this.match(
                 this.input,
                 SYSTEMVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_SYSTEMVARIABLE_in_literal635
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateSystemVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 10:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:97:5: v= OUTPARENTVARIABLE
               v = this.match(
                 this.input,
                 OUTPARENTVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_OUTPARENTVARIABLE_in_literal642
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateOutParentVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 11:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:99:5: v= LVVARIABLE
               v = this.match(
                 this.input,
                 LVVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_LVVARIABLE_in_literal649
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateForEachVar(
                   this._getContext(),
                   v
                 )
-
               break
             case 12:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:101:5: v= DB
               v = this.match(
                 this.input,
                 DB,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_DB_in_literal656
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateTableChain(
                   this._getContext(),
                   v
                 )
-
               break
             case 13:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:103:5: v= USERVAR
               v = this.match(
                 this.input,
                 USERVAR,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_USERVAR_in_literal663
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateUserVar(
                 this._getContext(),
                 v
               )
-
               break
             case 14:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:105:5: v= CONTROLPROPERTY
               v = this.match(
                 this.input,
                 CONTROLPROPERTY,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_CONTROLPROPERTY_in_literal670
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateControlProperty(
                   this._getContext(),
                   v
                 )
-
               break
             case 15:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:107:5: v= I18NVARIABLE
               v = this.match(
                 this.input,
                 I18NVARIABLE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_I18NVARIABLE_in_literal677
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateI18NVariable(
                   this._getContext(),
                   v
                 )
-
               break
             case 16:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:109:5: v= ARRAY
               v = this.match(
                 this.input,
                 ARRAY,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_ARRAY_in_literal684
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateArray(
                 this._getContext(),
                 v
               )
-
               break
             case 17:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:111:5: v= QUERY
               v = this.match(
                 this.input,
                 QUERY,
                 com.toone.itop.formula.FormulaTreeJS.FOLLOW_QUERY_in_literal691
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateQuery(
                 this._getContext(),
                 v
               )
-
               break
             case 18:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:113:5: v= BUSSINESSRULE
               v = this.match(
                 this.input,
                 BUSSINESSRULE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_BUSSINESSRULE_in_literal698
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBussineRuleResult(
                   this._getContext(),
                   v
                 )
-
               break
             case 19:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:115:5: v= EVENTACTIONPROPERTY
               v = this.match(
                 this.input,
                 EVENTACTIONPROPERTY,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_EVENTACTIONPROPERTY_in_literal705
               )
-
               value =
                 com.toone.itop.formula.FormulaTreeExtra.evaluateEventAction(
                   this._getContext(),
                   v
                 )
-
               break
             case 20:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:117:5: v= KEYBOARDS
               v = this.match(
                 this.input,
                 KEYBOARDS,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_KEYBOARDS_in_literal712
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateKeyBoards(
                 this._getContext(),
                 v
               )
-
               break
             case 21:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:119:5: v= BROUTRULE
               v = this.match(
                 this.input,
                 BROUTRULE,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_BROUTRULE_in_literal719
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrOutRule(
                 this._getContext(),
                 v
               )
-
               break
             case 22:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:121:5: v= OUTPARENT
               v = this.match(
                 this.input,
                 OUTPARENT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_OUTPARENT_in_literal726
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrOut(
                 this._getContext(),
                 v
               )
-
               break
             case 23:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:123:5: v= VARPARENT
               v = this.match(
                 this.input,
                 VARPARENT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_VARPARENT_in_literal733
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrVar(
                 this._getContext(),
                 v
               )
-
               break
             case 24:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:125:5: v= INPARENT
               v = this.match(
                 this.input,
                 INPARENT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_INPARENT_in_literal740
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrIn(
                 this._getContext(),
                 v
               )
-
               break
             case 25:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaTreeJS.g:127:5: v= BRREPORT
               v = this.match(
                 this.input,
                 BRREPORT,
                 com.toone.itop.formula.FormulaTreeJS
                   .FOLLOW_BRREPORT_in_literal747
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrReport(
                 this._getContext(),
                 v
               )
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       }
-
-      // Delegated rules
     },
     true
-  ) // important to pass true to overwrite default implementations
-
-  // public class variables
+  )
   org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
     tokenNames: [
-      '<invalid>',
-      '<EOR>',
-      '<DOWN>',
-      '<UP>',
+      '\x3cinvalid\x3e',
+      '\x3cEOR\x3e',
+      '\x3cDOWN\x3e',
+      '\x3cUP\x3e',
       'POS',
       'NEG',
       'CALL',
@@ -8078,303 +10764,161 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaTreeJS, {
       'BRREPORT',
       'STR'
     ],
-    FOLLOW_expression_in_eval60: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_operand_in_expression78: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_operation_in_expression87: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_POS_in_operation105: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation109: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NEG_in_operation120: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation124: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NOT_in_operation136: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation140: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_OR_in_operation154: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_eval60: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_operand_in_expression78: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_operation_in_expression87: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_POS_in_operation105: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation109: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NEG_in_operation120: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation124: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NOT_in_operation136: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation140: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_OR_in_operation154: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation158: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation162: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_AND_in_operation182: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation162: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_AND_in_operation182: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation186: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation190: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_LT_in_operation206: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation190: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_LT_in_operation206: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation210: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation214: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_LTEQ_in_operation231: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation214: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_LTEQ_in_operation231: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation235: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation239: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_GT_in_operation256: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation239: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_GT_in_operation256: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation260: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation264: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_GTEQ_in_operation281: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation264: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_GTEQ_in_operation281: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation285: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation289: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_EQ_in_operation306: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation289: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_EQ_in_operation306: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation310: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation314: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NOTEQ_in_operation331: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation314: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NOTEQ_in_operation331: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation335: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation339: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_ADD_in_operation356: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation339: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_ADD_in_operation356: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation360: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation364: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_SUB_in_operation381: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation364: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_SUB_in_operation381: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation385: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation389: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_MULT_in_operation406: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation389: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_MULT_in_operation406: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation410: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation414: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_DIV_in_operation431: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation414: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_DIV_in_operation431: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation435: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation439: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_EXP_in_operation456: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation439: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_EXP_in_operation456: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation460: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation464: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_CONCAT_in_operation481: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation464: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_CONCAT_in_operation481: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation485: new org.antlr.runtime.BitSet([
-      0xfffff830, 0x1fe17a7f
+      4294965296, 534870655
     ]),
-    FOLLOW_expression_in_operation489: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_PERCENT_in_operation506: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_NUMBER_in_operation510: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_FUNCNAME_in_operation527: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_literal_in_operand556: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_NUMBER_in_literal572: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_STRING_in_literal581: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_TRUE_in_literal591: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_FALSE_in_literal598: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation489: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_PERCENT_in_operation506: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_NUMBER_in_operation510: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_FUNCNAME_in_operation527: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_literal_in_operand556: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_NUMBER_in_literal572: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_STRING_in_literal581: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_TRUE_in_literal591: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_FALSE_in_literal598: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_COMPONENTVARIABLE_in_literal607: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_FIELDVARIABLE_in_literal614: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_FIELDVARIABLE_in_literal614: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_VARPARENTVARIABLE_in_literal621: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_INPARENTVARIABLE_in_literal628: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_SYSTEMVARIABLE_in_literal635: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_INPARENTVARIABLE_in_literal628: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_SYSTEMVARIABLE_in_literal635: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_OUTPARENTVARIABLE_in_literal642: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_LVVARIABLE_in_literal649: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_DB_in_literal656: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_USERVAR_in_literal663: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_CONTROLPROPERTY_in_literal670: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_I18NVARIABLE_in_literal677: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_ARRAY_in_literal684: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_QUERY_in_literal691: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BUSSINESSRULE_in_literal698: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_LVVARIABLE_in_literal649: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_DB_in_literal656: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_USERVAR_in_literal663: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_CONTROLPROPERTY_in_literal670: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_I18NVARIABLE_in_literal677: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_ARRAY_in_literal684: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_QUERY_in_literal691: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BUSSINESSRULE_in_literal698: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_EVENTACTIONPROPERTY_in_literal705: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_KEYBOARDS_in_literal712: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BROUTRULE_in_literal719: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_OUTPARENT_in_literal726: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_VARPARENT_in_literal733: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_INPARENT_in_literal740: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BRREPORT_in_literal747: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ])
+    FOLLOW_KEYBOARDS_in_literal712: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BROUTRULE_in_literal719: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_OUTPARENT_in_literal726: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_VARPARENT_in_literal733: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_INPARENT_in_literal740: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BRREPORT_in_literal747: new org.antlr.runtime.BitSet([2, 0])
   })
 })()
-//FormulaTreeJSExtend.js
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\itop5.0\\My Dropbox\\svn\\Trunk\\03Component\\01ITOP\\12itop-formula\\WebContent\\itop\\formula\\com.toone.itop.formula.FormulaTreeJS.g 2011-08-24 14:59:55
-
 com.toone.itop.formula.FormulaTreeJSExtend = function (context, input, state) {
   ;(function () {
     this._setContext(context)
   }.call(this))
-
   com.toone.itop.formula.FormulaTreeJSExtend.superclass.constructor.call(
     this,
     input,
     state
   )
 }
-
 org.antlr.lang.extend(
   com.toone.itop.formula.FormulaTreeJSExtend,
   com.toone.itop.formula.FormulaTreeJS,
   {}
 )
-
 org.antlr.lang.augmentObject(
   com.toone.itop.formula.FormulaTreeJSExtend.prototype,
   {
     _map: null,
-
     _getContext: function () {
       return this._map
     },
-
     _setContext: function (map) {
       this._map = map
     }
   }
 )
-//FormulaVarFinderJS.js
-// $ANTLR 3.3 Nov 30, 2010 12:45:30 D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g 2018-10-25 19:18:48
-
 com.toone.itop.formula.FormulaVarFinderJS = function (input, state) {
-  if (!state) {
-    state = new org.antlr.runtime.RecognizerSharedState()
-  }
-
+  if (!state) state = new org.antlr.runtime.RecognizerSharedState()
   ;(function () {}.call(this))
-
   com.toone.itop.formula.FormulaVarFinderJS.superclass.constructor.call(
     this,
     input,
     state
   )
-
-  /* @todo only create adaptor if output=AST */
   this.adaptor = new org.antlr.runtime.tree.CommonTreeAdaptor()
 }
-
 org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
   EOF: -1,
   POS: 4,
@@ -8437,8 +10981,7 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
   STR: 61
 })
 ;(function () {
-  // public class variables
-  var EOF = -1,
+  let EOF = -1,
     POS = 4,
     NEG = 5,
     CALL = 6,
@@ -8497,10 +11040,8 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
     OUTPARENTVARIABLE = 59,
     BRREPORT = 60,
     STR = 61
-  var UP = org.antlr.runtime.Token.UP,
+  let UP = org.antlr.runtime.Token.UP,
     DOWN = org.antlr.runtime.Token.DOWN
-
-  // public instance methods/vars
   org.antlr.lang.extend(
     com.toone.itop.formula.FormulaVarFinderJS,
     org.antlr.runtime.tree.TreeParser,
@@ -8516,125 +11057,89 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
   org.antlr.lang.augmentObject(
     com.toone.itop.formula.FormulaVarFinderJS.prototype,
     {
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:23:1: eval returns [var value] : v= expression ;
-      // $ANTLR start "eval"
       eval: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:24:2: (v= expression )
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:24:4: v= expression
           this.pushFollow(
             com.toone.itop.formula.FormulaVarFinderJS
               .FOLLOW_expression_in_eval60
           )
           v = this.expression()
-
           this.state._fsp--
-
           value = v
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:26:1: expression returns [var value] : (v= operand | v= operation );
-      // $ANTLR start "expression"
       expression: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:27:2: (v= operand | v= operation )
-          var alt1 = 2
-          var LA1_0 = this.input.LA(1)
-
+          let alt1 = 2
+          let LA1_0 = this.input.LA(1)
           if (
             (LA1_0 >= CONTROLPROPERTY && LA1_0 <= DB) ||
             (LA1_0 >= BUSSINESSRULE && LA1_0 <= ARRAY) ||
             (LA1_0 >= NUMBER && LA1_0 <= FALSE) ||
             (LA1_0 >= BROUTRULE && LA1_0 <= BRREPORT)
-          ) {
+          )
             alt1 = 1
-          } else if (
+          else if (
             (LA1_0 >= POS && LA1_0 <= CALL) ||
             (LA1_0 >= AND && LA1_0 <= NOT) ||
             LA1_0 == PERCENT
-          ) {
+          )
             alt1 = 2
-          } else {
-            var nvae = new org.antlr.runtime.NoViableAltException(
+          else {
+            let nvae = new org.antlr.runtime.NoViableAltException(
               '',
               1,
               0,
               this.input
             )
-
             throw nvae
           }
           switch (alt1) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:27:4: v= operand
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_operand_in_expression78
               )
               v = this.operand()
-
               this.state._fsp--
-
               value = v
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:28:4: v= operation
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_operation_in_expression87
               )
               v = this.operation()
-
               this.state._fsp--
-
               value = v
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:30:1: operation returns [var value] : ( ^( POS a= expression ) | ^( NEG a= expression ) | ^( NOT a= expression ) | ^( OR a= expression b= expression ) | ^( AND a= expression b= expression ) | ^( LT a= expression b= expression ) | ^( LTEQ a= expression b= expression ) | ^( GT a= expression b= expression ) | ^( GTEQ a= expression b= expression ) | ^( EQ a= expression b= expression ) | ^( NOTEQ a= expression b= expression ) | ^( ADD a= expression b= expression ) | ^( SUB a= expression b= expression ) | ^( MULT a= expression b= expression ) | ^( DIV a= expression b= expression ) | ^( EXP a= expression b= expression ) | ^( CONCAT a= expression b= expression ) | ^( PERCENT n= NUMBER ) | ^( CALL FUNCNAME (funcArgs+= . )* ) );
-      // $ANTLR start "operation"
       operation: function () {
-        var value = null
-
-        var n = null
-        var FUNCNAME1 = null
-        var a = null
-        var b = null
-
+        let value = null
+        let n = null
+        let FUNCNAME1 = null
+        let a = null
+        let b = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:31:2: ( ^( POS a= expression ) | ^( NEG a= expression ) | ^( NOT a= expression ) | ^( OR a= expression b= expression ) | ^( AND a= expression b= expression ) | ^( LT a= expression b= expression ) | ^( LTEQ a= expression b= expression ) | ^( GT a= expression b= expression ) | ^( GTEQ a= expression b= expression ) | ^( EQ a= expression b= expression ) | ^( NOTEQ a= expression b= expression ) | ^( ADD a= expression b= expression ) | ^( SUB a= expression b= expression ) | ^( MULT a= expression b= expression ) | ^( DIV a= expression b= expression ) | ^( EXP a= expression b= expression ) | ^( CONCAT a= expression b= expression ) | ^( PERCENT n= NUMBER ) | ^( CALL FUNCNAME (funcArgs+= . )* ) )
-          var alt3 = 19
+          let alt3 = 19
           switch (this.input.LA(1)) {
             case POS:
               alt3 = 1
@@ -8700,489 +11205,372 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                 0,
                 this.input
               )
-
               throw nvae
           }
-
           switch (alt3) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:31:5: ^( POS a= expression )
               this.match(
                 this.input,
                 POS,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_POS_in_operation106
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation110
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:33:4: ^( NEG a= expression )
               this.match(
                 this.input,
                 NEG,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_NEG_in_operation121
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation125
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 3:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:35:4: ^( NOT a= expression )
               this.match(
                 this.input,
                 NOT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_NOT_in_operation137
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation141
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 4:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:37:7: ^( OR a= expression b= expression )
               this.match(
                 this.input,
                 OR,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_OR_in_operation155
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation159
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation163
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 5:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:39:7: ^( AND a= expression b= expression )
               this.match(
                 this.input,
                 AND,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_AND_in_operation183
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation187
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation191
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 6:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:41:6: ^( LT a= expression b= expression )
               this.match(
                 this.input,
                 LT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_LT_in_operation207
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation211
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation215
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 7:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:43:7: ^( LTEQ a= expression b= expression )
               this.match(
                 this.input,
                 LTEQ,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_LTEQ_in_operation232
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation236
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation240
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 8:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:45:7: ^( GT a= expression b= expression )
               this.match(
                 this.input,
                 GT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_GT_in_operation257
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation261
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation265
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 9:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:47:7: ^( GTEQ a= expression b= expression )
               this.match(
                 this.input,
                 GTEQ,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_GTEQ_in_operation282
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation286
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation290
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 10:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:49:7: ^( EQ a= expression b= expression )
               this.match(
                 this.input,
                 EQ,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_EQ_in_operation307
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation311
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation315
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 11:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:51:7: ^( NOTEQ a= expression b= expression )
               this.match(
                 this.input,
                 NOTEQ,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_NOTEQ_in_operation332
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation336
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation340
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 12:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:53:7: ^( ADD a= expression b= expression )
               this.match(
                 this.input,
                 ADD,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_ADD_in_operation357
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation361
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation365
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 13:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:57:7: ^( SUB a= expression b= expression )
               this.match(
                 this.input,
                 SUB,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_SUB_in_operation382
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation386
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation390
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 14:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:61:7: ^( MULT a= expression b= expression )
               this.match(
                 this.input,
                 MULT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_MULT_in_operation407
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation411
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation415
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 15:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:65:7: ^( DIV a= expression b= expression )
               this.match(
                 this.input,
                 DIV,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_DIV_in_operation432
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation436
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation440
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 16:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:69:7: ^( EXP a= expression b= expression )
               this.match(
                 this.input,
                 EXP,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_EXP_in_operation457
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation461
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation465
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 17:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:71:7: ^( CONCAT a= expression b= expression )
               this.match(
                 this.input,
                 CONCAT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_CONCAT_in_operation482
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation486
               )
               a = this.expression()
-
               this.state._fsp--
-
               this.pushFollow(
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_expression_in_operation490
               )
               b = this.expression()
-
               this.state._fsp--
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 18:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:73:7: ^( PERCENT n= NUMBER )
               this.match(
                 this.input,
                 PERCENT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_PERCENT_in_operation507
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               n = this.match(
                 this.input,
@@ -9190,19 +11578,15 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_NUMBER_in_operation511
               )
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
-
               break
             case 19:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:75:3: ^( CALL FUNCNAME (funcArgs+= . )* )
               this.match(
                 this.input,
                 CALL,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_CALL_in_operation524
               )
-
               this.match(this.input, org.antlr.runtime.Token.DOWN, null)
               FUNCNAME1 = this.match(
                 this.input,
@@ -9210,30 +11594,21 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_FUNCNAME_in_operation526
               )
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:75:27: (funcArgs+= . )*
               loop2: do {
                 var alt2 = 2
                 var LA2_0 = this.input.LA(1)
-
-                if (LA2_0 >= POS && LA2_0 <= STR) {
-                  alt2 = 1
-                }
-
+                if (LA2_0 >= POS && LA2_0 <= STR) alt2 = 1
                 switch (alt2) {
                   case 1:
-                    // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:75:27: funcArgs+= .
                     funcArgs = this.input.LT(1)
                     this.matchAny(this.input)
                     if (org.antlr.lang.isNull(list_funcArgs)) list_funcArgs = []
                     list_funcArgs.push(funcArgs)
-
                     break
-
                   default:
                     break loop2
                 }
               } while (true)
-
               this.match(this.input, org.antlr.runtime.Token.UP, null)
               value = com.toone.itop.formula.FormulaTreeExtra.callFunction(
                 this.input,
@@ -9241,63 +11616,41 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                 list_funcArgs,
                 this._getContext()
               )
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:78:1: operand returns [var value] : v= literal ;
-      // $ANTLR start "operand"
       operand: function () {
-        var value = null
-
-        var v = null
-
+        let value = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:79:2: (v= literal )
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:79:4: v= literal
           this.pushFollow(
             com.toone.itop.formula.FormulaVarFinderJS
               .FOLLOW_literal_in_operand555
           )
           v = this.literal()
-
           this.state._fsp--
-
           value = v
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       },
-
-      // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:81:1: literal returns [var value] : ( NUMBER | s= STRING | TRUE | FALSE | v= COMPONENTVARIABLE | v= FIELDVARIABLE | v= VARPARENTVARIABLE | v= INPARENTVARIABLE | v= SYSTEMVARIABLE | v= OUTPARENTVARIABLE | v= LVVARIABLE | v= DB | v= BUSSINESSRULE | v= CONTROLPROPERTY | v= EVENTACTIONPROPERTY | v= KEYBOARDS | v= ARRAY | v= BROUTRULE | v= OUTPARENT | v= VARPARENT | v= INPARENT | v= I18NVARIABLE | v= BRREPORT );
-      // $ANTLR start "literal"
       literal: function () {
-        var value = null
-
-        var s = null
-        var v = null
-
+        let value = null
+        let s = null
+        let v = null
         try {
-          // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:82:2: ( NUMBER | s= STRING | TRUE | FALSE | v= COMPONENTVARIABLE | v= FIELDVARIABLE | v= VARPARENTVARIABLE | v= INPARENTVARIABLE | v= SYSTEMVARIABLE | v= OUTPARENTVARIABLE | v= LVVARIABLE | v= DB | v= BUSSINESSRULE | v= CONTROLPROPERTY | v= EVENTACTIONPROPERTY | v= KEYBOARDS | v= ARRAY | v= BROUTRULE | v= OUTPARENT | v= VARPARENT | v= INPARENT | v= I18NVARIABLE | v= BRREPORT )
-          var alt4 = 23
+          let alt4 = 23
           switch (this.input.LA(1)) {
             case NUMBER:
               alt4 = 1
@@ -9375,60 +11728,48 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                 0,
                 this.input
               )
-
               throw nvae
           }
-
           switch (alt4) {
             case 1:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:82:4: NUMBER
               this.match(
                 this.input,
                 NUMBER,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_NUMBER_in_literal571
               )
-
               break
             case 2:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:83:4: s= STRING
               s = this.match(
                 this.input,
                 STRING,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_STRING_in_literal580
               )
-
               break
             case 3:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:85:4: TRUE
               this.match(
                 this.input,
                 TRUE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_TRUE_in_literal590
               )
-
               break
             case 4:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:86:3: FALSE
               this.match(
                 this.input,
                 FALSE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_FALSE_in_literal596
               )
-
               break
             case 5:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:87:4: v= COMPONENTVARIABLE
               v = this.match(
                 this.input,
                 COMPONENTVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_COMPONENTVARIABLE_in_literal602
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateComponentVariable(
@@ -9436,17 +11777,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 6:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:89:5: v= FIELDVARIABLE
               v = this.match(
                 this.input,
                 FIELDVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_FIELDVARIABLE_in_literal609
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateWindowFieldVariable(
@@ -9454,17 +11792,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 7:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:91:5: v= VARPARENTVARIABLE
               v = this.match(
                 this.input,
                 VARPARENTVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_VARPARENTVARIABLE_in_literal616
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateSystemVariable(
@@ -9472,17 +11807,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 8:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:93:5: v= INPARENTVARIABLE
               v = this.match(
                 this.input,
                 INPARENTVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_INPARENTVARIABLE_in_literal623
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrInFieldVariable(
@@ -9490,17 +11822,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 9:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:95:5: v= SYSTEMVARIABLE
               v = this.match(
                 this.input,
                 SYSTEMVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_SYSTEMVARIABLE_in_literal630
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateSystemVariable(
@@ -9508,17 +11837,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 10:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:97:5: v= OUTPARENTVARIABLE
               v = this.match(
                 this.input,
                 OUTPARENTVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_OUTPARENTVARIABLE_in_literal637
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateOutParentVariable(
@@ -9526,17 +11852,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 11:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:99:5: v= LVVARIABLE
               v = this.match(
                 this.input,
                 LVVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_LVVARIABLE_in_literal644
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateForEachVar(
@@ -9544,17 +11867,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 12:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:101:5: v= DB
               v = this.match(
                 this.input,
                 DB,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_DB_in_literal651
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateTableChain(
@@ -9562,17 +11882,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 13:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:103:5: v= BUSSINESSRULE
               v = this.match(
                 this.input,
                 BUSSINESSRULE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_BUSSINESSRULE_in_literal658
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBussineRule(
@@ -9580,17 +11897,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 14:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:105:5: v= CONTROLPROPERTY
               v = this.match(
                 this.input,
                 CONTROLPROPERTY,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_CONTROLPROPERTY_in_literal665
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateControlProperty(
@@ -9598,17 +11912,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 15:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:107:5: v= EVENTACTIONPROPERTY
               v = this.match(
                 this.input,
                 EVENTACTIONPROPERTY,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_EVENTACTIONPROPERTY_in_literal672
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateEventAction(
@@ -9616,17 +11927,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 16:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:109:5: v= KEYBOARDS
               v = this.match(
                 this.input,
                 KEYBOARDS,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_KEYBOARDS_in_literal679
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateKeyBoards(
@@ -9634,17 +11942,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 17:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:111:5: v= ARRAY
               v = this.match(
                 this.input,
                 ARRAY,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_ARRAY_in_literal686
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateArray(
@@ -9652,17 +11957,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 18:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:113:5: v= BROUTRULE
               v = this.match(
                 this.input,
                 BROUTRULE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_BROUTRULE_in_literal693
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrOutRule(
@@ -9670,17 +11972,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 19:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:115:5: v= OUTPARENT
               v = this.match(
                 this.input,
                 OUTPARENT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_OUTPARENT_in_literal700
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrOut(
@@ -9688,17 +11987,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 20:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:117:5: v= VARPARENT
               v = this.match(
                 this.input,
                 VARPARENT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_VARPARENT_in_literal707
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrVar(
@@ -9706,17 +12002,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 21:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:119:5: v= INPARENT
               v = this.match(
                 this.input,
                 INPARENT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_INPARENT_in_literal714
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateBrIn(
@@ -9724,17 +12017,14 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 22:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:121:5: v= I18NVARIABLE
               v = this.match(
                 this.input,
                 I18NVARIABLE,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_I18NVARIABLE_in_literal721
               )
-
               this._getContext().put(
                 v.getText(),
                 com.toone.itop.formula.FormulaTreeExtra.evaluateI18NVariable(
@@ -9742,48 +12032,37 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
                   v
                 )
               )
-
               break
             case 23:
-              // D:\\develop\\Toone-V3\\Trunk\\01source\\28engines\\com.toone.itop.formula.FormulaVarFinderJS.g:123:5: v= BRREPORT
               v = this.match(
                 this.input,
                 BRREPORT,
                 com.toone.itop.formula.FormulaVarFinderJS
                   .FOLLOW_BRREPORT_in_literal728
               )
-
               value = com.toone.itop.formula.FormulaTreeExtra.evaluateBrReport(
                 this._getContext(),
                 v
               )
-
               break
           }
         } catch (re) {
-          if (re instanceof org.antlr.runtime.RecognitionException) {
-            //this.reportError(re);
+          if (re instanceof org.antlr.runtime.RecognitionException)
             this.recover(this.input, re)
-          } else {
-            throw re
-          }
+          else throw re
         } finally {
         }
         return value
       }
-
-      // Delegated rules
     },
     true
-  ) // important to pass true to overwrite default implementations
-
-  // public class variables
+  )
   org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
     tokenNames: [
-      '<invalid>',
-      '<EOR>',
-      '<DOWN>',
-      '<UP>',
+      '\x3cinvalid\x3e',
+      '\x3cEOR\x3e',
+      '\x3cDOWN\x3e',
+      '\x3cUP\x3e',
       'POS',
       'NEG',
       'CALL',
@@ -9843,246 +12122,125 @@ org.antlr.lang.augmentObject(com.toone.itop.formula.FormulaVarFinderJS, {
       'BRREPORT',
       'STR'
     ],
-    FOLLOW_expression_in_eval60: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_operand_in_expression78: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_operation_in_expression87: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_POS_in_operation106: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation110: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NEG_in_operation121: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation125: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NOT_in_operation137: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_expression_in_operation141: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_OR_in_operation155: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_eval60: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_operand_in_expression78: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_operation_in_expression87: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_POS_in_operation106: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation110: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NEG_in_operation121: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation125: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NOT_in_operation137: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_expression_in_operation141: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_OR_in_operation155: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation159: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation163: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_AND_in_operation183: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation163: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_AND_in_operation183: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation187: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation191: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_LT_in_operation207: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation191: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_LT_in_operation207: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation211: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation215: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_LTEQ_in_operation232: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation215: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_LTEQ_in_operation232: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation236: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation240: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_GT_in_operation257: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation240: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_GT_in_operation257: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation261: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation265: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_GTEQ_in_operation282: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation265: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_GTEQ_in_operation282: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation286: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation290: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_EQ_in_operation307: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation290: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_EQ_in_operation307: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation311: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation315: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_NOTEQ_in_operation332: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation315: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_NOTEQ_in_operation332: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation336: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation340: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_ADD_in_operation357: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation340: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_ADD_in_operation357: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation361: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation365: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_SUB_in_operation382: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation365: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_SUB_in_operation382: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation386: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation390: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_MULT_in_operation407: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation390: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_MULT_in_operation407: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation411: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation415: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_DIV_in_operation432: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation415: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_DIV_in_operation432: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation436: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation440: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_EXP_in_operation457: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation440: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_EXP_in_operation457: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation461: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation465: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_CONCAT_in_operation482: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation465: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_CONCAT_in_operation482: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_expression_in_operation486: new org.antlr.runtime.BitSet([
-      0xfffff870, 0x1fe17879
+      4294965360, 534870137
     ]),
-    FOLLOW_expression_in_operation490: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_PERCENT_in_operation507: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
-    FOLLOW_NUMBER_in_operation511: new org.antlr.runtime.BitSet([
-      0x00000008, 0x00000000
-    ]),
-    FOLLOW_CALL_in_operation524: new org.antlr.runtime.BitSet([
-      0x00000004, 0x00000000
-    ]),
+    FOLLOW_expression_in_operation490: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_PERCENT_in_operation507: new org.antlr.runtime.BitSet([4, 0]),
+    FOLLOW_NUMBER_in_operation511: new org.antlr.runtime.BitSet([8, 0]),
+    FOLLOW_CALL_in_operation524: new org.antlr.runtime.BitSet([4, 0]),
     FOLLOW_FUNCNAME_in_operation526: new org.antlr.runtime.BitSet([
-      0xfffffff8, 0x3fffffff
+      4294967288, 1073741823
     ]),
-    FOLLOW_literal_in_operand555: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_NUMBER_in_literal571: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_STRING_in_literal580: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_TRUE_in_literal590: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_FALSE_in_literal596: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_literal_in_operand555: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_NUMBER_in_literal571: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_STRING_in_literal580: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_TRUE_in_literal590: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_FALSE_in_literal596: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_COMPONENTVARIABLE_in_literal602: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_FIELDVARIABLE_in_literal609: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_FIELDVARIABLE_in_literal609: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_VARPARENTVARIABLE_in_literal616: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_INPARENTVARIABLE_in_literal623: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_SYSTEMVARIABLE_in_literal630: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_INPARENTVARIABLE_in_literal623: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_SYSTEMVARIABLE_in_literal630: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_OUTPARENTVARIABLE_in_literal637: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_LVVARIABLE_in_literal644: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_DB_in_literal651: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BUSSINESSRULE_in_literal658: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_CONTROLPROPERTY_in_literal665: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
+    FOLLOW_LVVARIABLE_in_literal644: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_DB_in_literal651: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BUSSINESSRULE_in_literal658: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_CONTROLPROPERTY_in_literal665: new org.antlr.runtime.BitSet([2, 0]),
     FOLLOW_EVENTACTIONPROPERTY_in_literal672: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
+      2, 0
     ]),
-    FOLLOW_KEYBOARDS_in_literal679: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_ARRAY_in_literal686: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BROUTRULE_in_literal693: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_OUTPARENT_in_literal700: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_VARPARENT_in_literal707: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_INPARENT_in_literal714: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_I18NVARIABLE_in_literal721: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ]),
-    FOLLOW_BRREPORT_in_literal728: new org.antlr.runtime.BitSet([
-      0x00000002, 0x00000000
-    ])
+    FOLLOW_KEYBOARDS_in_literal679: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_ARRAY_in_literal686: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BROUTRULE_in_literal693: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_OUTPARENT_in_literal700: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_VARPARENT_in_literal707: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_INPARENT_in_literal714: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_I18NVARIABLE_in_literal721: new org.antlr.runtime.BitSet([2, 0]),
+    FOLLOW_BRREPORT_in_literal728: new org.antlr.runtime.BitSet([2, 0])
   })
 })()
-//FormulaVarFinderJSExtend.js
 com.toone.itop.formula.FormulaVarFinderJSExtend = function (
   context,
   input,
@@ -10091,37 +12249,29 @@ com.toone.itop.formula.FormulaVarFinderJSExtend = function (
   ;(function () {
     this._setContext(context)
   }.call(this))
-
   com.toone.itop.formula.FormulaVarFinderJSExtend.superclass.constructor.call(
     this,
     input,
     state
   )
 }
-
 org.antlr.lang.extend(
   com.toone.itop.formula.FormulaVarFinderJSExtend,
   com.toone.itop.formula.FormulaVarFinderJS,
   {}
 )
-
 org.antlr.lang.augmentObject(
   com.toone.itop.formula.FormulaVarFinderJSExtend.prototype,
   {
     _map: null,
-
     _getContext: function () {
       return this._map
     },
-
     _setContext: function (map) {
       this._map = map
     }
   }
 )
-//
-
-const Map = com.toone.itop.formula.Map
 const Formula = com.toone.itop.formula.Formula
-
+const Map = com.toone.itop.formula.Map
 export { Formula, Map }

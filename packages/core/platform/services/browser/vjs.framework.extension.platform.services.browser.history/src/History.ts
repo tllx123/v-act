@@ -4,7 +4,6 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 let historyStack: Array<Record<string, any>> = []
 
 export function initModule() {
-  //@ts-ignore
   History.Adapter.bind(window, 'popstate', function () {
     let index = historyStack.length
     --index
@@ -18,48 +17,40 @@ export function initModule() {
     }
   })
 }
-class Unit {
-  async: boolean
-  title: string
-  isVirtual: boolean
-  id: string
-  flag: boolean
-  callback: Function
-  args: Record<string, any>
-  currentScopeId: string
 
-  constructor(params: Record<string, any>, isVirtual: boolean) {
-    this.async = true
-    this.title = params.title ? params.title : document.title
-    this.isVirtual = isVirtual
-    this.id = uuid.generate()
-    this.flag = false
-    this.callback = params ? params.callback : () => {}
-    this.args = params ? params.params : {}
-    this.currentScopeId = params.currentScopeId
-  }
+let Unit = function (params: Record<string, any>, isVirtual: boolean) {
+  this.async = true
+  this.title = params.title ? params.title : document.title
+  this.isVirtual = isVirtual
+  this.id = uuid.generate()
+  this.flag = false
+  this.callback = params ? params.callback : null
+  this.args = params ? params.params : null
+  this.currentScopeId = params.currentScopeId
+}
 
-  getId() {
+Unit.prototype = {
+  getId: function () {
     return this.id
-  }
+  },
 
-  isInit() {
+  isInit: function () {
     return this.flag
-  }
+  },
 
-  markInit() {
+  markInit: function () {
     this.flag = true
-  }
+  },
 
-  getTitle() {
+  getTitle: function () {
     return this.title
-  }
+  },
 
-  markUnInit() {
+  markUnInit: function () {
     this.flag = false
-  }
+  },
 
-  fire() {
+  fire: function () {
     if (this.flag) {
       //				EventManager.fireEvent("WXConfirmWhenGoBack","popstate")();
       //				EventManager.fireEventByName("popstate");
@@ -87,7 +78,6 @@ class Unit {
             return
           } else {
             if (tmpThis.isVirtual) {
-              //@ts-ignore
               History.back()
               removeHistory(tmpThis.getId())
             } else {
@@ -126,7 +116,7 @@ class Unit {
   }
 }
 
-const _addBrowserHistory = function (id: string, title: string) {
+_addBrowserHistory = function (id: string, title: string) {
   let fiexdName = '_V3HistoryRandom'
   let data = { id: id }
   //		History.pushState(data, title, "?random="+uuid.generate());
@@ -140,12 +130,11 @@ const _addBrowserHistory = function (id: string, title: string) {
     }
   }
   newParam = newParam + fiexdName + '=' + uuid.generate()
-  //@ts-ignore
   History.pushState(data, title, newParam)
   //		alert("1");
 }
 
-const _pushHistory = function () {
+_pushHistory = function () {
   let state = {
     title: 'title',
     url: '#'
@@ -159,7 +148,6 @@ const addHistory = function (params: Record<string, any>) {
   historyStack.push(unit)
   let data = { id: id }
   let title = unit.getTitle()
-  //@ts-ignore
   History.pushState(data, title, null)
   //		_addBrowserHistory(id,params.title);
   return id
@@ -172,7 +160,6 @@ const replaceHistory = function (params: Record<string, any>) {
     let lastRecord = historyStack.pop()
     if (lastRecord && typeof lastRecord.callback == 'function') {
       let _cb = lastRecord.callback
-      //@ts-ignore
       _cb.apply(this, arguments)
     }
   }

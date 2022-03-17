@@ -2,24 +2,16 @@ import { aop } from '@v-act/vjs.framework.extension.platform.aop'
 import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
 import { WindowMappingManager as windowMappingManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.mapping'
 import {
-  ComponentRoute as componentRoute,
-  WindowRoute as windowRoute
-} from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
-import { RuleEngine } from '@v-act/vjs.framework.extension.platform.engine.rule'
-import {
   ComponentPackData as componentPackData,
   ScopeTask,
   TaskManager as taskManager
 } from '@v-act/vjs.framework.extension.platform.global'
-import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.init.view'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import {
   ExceptionFactory as exceptionFactory,
   ExceptionHandler as exceptionHandler
 } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteMethodAccessor as accessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
 import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
@@ -100,6 +92,9 @@ const executeWindowRoute = function (params) {
  *执行后台活动集
  */
 let exeServerRuleSet = function (targetConfig, inputParam, config, callback) {
+  let DBFactory = sb.getService(
+    'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
+  )
   let params = []
   for (let attr in inputParam) {
     let val = inputParam[attr]
@@ -557,13 +552,13 @@ let putRouteContextCallback = function (routeContext, callback) {
       this.callback.apply(this.routeContext, [output])
       scopeManager.closeScope()
     }
-    routeContext.onRouteCallBack(() => {
-      func.call({
+    routeContext.onRouteCallBack(
+      sb.util.functions.bind(func, {
         scopeId: scopeManager.getCurrentScopeId(),
         callback: callback,
         routeContext: routeContext
       })
-    })
+    )
   }
 }
 
@@ -586,6 +581,9 @@ let exeComponentRuleSet = function (
       ruleSetCode = newInfo.funcCode
     }
   }
+  let viewInit = sb.getService(
+    'vjs.framework.extension.platform.init.view.ViewInit'
+  )
   let scopeId = scopeManager.getCurrentScopeId()
   let errorFunc = config.error
   viewInit.initComponentSchema({
@@ -726,7 +724,7 @@ let _exeHandler = function (handler, routeContext, routeCfg, inputParam) {
     routeContext.setInputParams(inputParam)
   }
   try {
-    return _exeFunc(handler, handler, [RuleEngine, routeContext])
+    return _exeFunc(handler, handler, [routeContext])
   } catch (re) {
     _rollbackIfNecessary(routeContext)
     _fireExceptionEvent(routeContext)
@@ -771,7 +769,7 @@ let _doTransaction = function (routeContext, type) {
  *获取事务管理服务
  */
 let _getTransactionManager = function () {
-  return transactionManager
+  return sb.getService('vjs.framework.extension.platform.transaction.manager')
 }
 
 /**
@@ -788,11 +786,17 @@ let initRouteContext = function (params) {
     completed = params.completed
   let routeCfg
   if (routeType == 'component') {
+    let componentRoute = sb.getService(
+      'vjs.framework.extension.platform.data.storage.schema.route.ComponentRoute'
+    )
     routeCfg = componentRoute.getRoute({
       componentCode: componentCode,
       routeCode: ruleSetCode
     })
   } else {
+    let windowRoute = sb.getService(
+      'vjs.framework.extension.platform.data.storage.schema.route.WindowRoute'
+    )
     routeCfg = windowRoute.getRoute({
       componentCode: componentCode,
       windowCode: windowCode,
@@ -842,6 +846,9 @@ let initRouteContext = function (params) {
     //			logUtil.log("[RouteEngie.initRouteContext]未找到可执行的规则路由,路由code为："+ruleSetCode);
     return null
   }
+  let RouteContext = sb.getService(
+    'vjs.framework.extension.platform.interface.route.RouteContext'
+  )
   let ctx = new RouteContext(routeCfg, parentRouteContext)
   ctx.setParentRuleContext(parentRuleContext)
   if (completed) {

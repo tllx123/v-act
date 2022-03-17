@@ -776,9 +776,6 @@
       "@v-act/vjs.framework.extension.platform.services.where.restrict": [
         "packages/core/platform/services/vjs.framework.extension.platform.services.where.restrict/src"
       ],
-      "@v-act/vjs.framework.extension.platform.services.window.variable.operation": [
-        "packages/core/platform/services/window/vjs.framework.extension.platform.services.window.variable.operation/src"
-      ],
       "@v-act/vjs.framework.extension.platform.aop": [
         "packages/core/platform/vjs.framework.extension.platform.aop/src"
       ],
