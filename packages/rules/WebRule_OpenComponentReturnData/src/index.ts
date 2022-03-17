@@ -1,22 +1,33 @@
 /**
  * 打开组件并返回数据
  */
-vds.import(
-  'vds.component.*',
-  'vds.log.*',
-  'vds.browser.*',
-  'vds.expression.*',
-  'vds.exception.*',
-  'vds.ds.*',
-  'vds.widget.*',
-  'vds.window.*',
-  'vds.object.*',
-  'vds.string.*'
-)
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const vds = {
+  component,
+  log,
+  browser,
+  expression,
+  exception,
+  ds,
+  widget,
+  window,
+  object,
+  string
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {

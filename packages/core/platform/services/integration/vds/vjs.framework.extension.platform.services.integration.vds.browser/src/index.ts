@@ -8,61 +8,41 @@
  * vds.import("vds.browser.*");
  * vds.browser.dialog("http://www.yindangu.com");
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var browser = vds.browser
-if (!browser) {
-  browser = {}
-  vds.browser = browser
+
+import { Browser as browserUtils } from '@v-act/vjs.framework.extension.platform.services.browser'
+
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+
+import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+
+import { WindowRender as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration.render'
+
+import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+
+import { Modal as viewModel } from '@v-act/vjs.framework.extension.platform.services.view.modal'
+
+import { render as newWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.newwindow'
+import { render as windowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer'
+import { render as divWindowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.divwindowcontainer'
+import { render as iemsHomeTabRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.iemshometab'
+import { render as currentWindowRedirectionRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindowredirection'
+import { render as appointWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.appointwindow'
+
+const rendererObj = {
+  newWindow: newWindowRender,
+  windowContainer: windowContainerRender,
+  divWindowContainer: divWindowContainerRender,
+  iemsHomeTab: iemsHomeTabRender,
+  currentWindowRedirection: currentWindowRedirectionRender,
+  appointWindow: appointWindowRender
 }
 
-exports = browser
-
-var sandbox,
-  browserUtils,
-  modalByUrlUtil,
-  widgetAction,
-  scopeManager,
-  eventManager,
-  webViewService,
-  viewModel
-
-export function initModule(sBox) {
-  sandbox = sBox
-  browserUtils = sandbox.getService(
-    'vjs.framework.extension.platform.services.browser.Browser'
-  )
-  widgetAction = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-  )
-  scopeManager = sandbox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  modalByUrlUtil = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.modal.CreateModalByUrl'
-  )
-  webViewService = sandbox.getService(
-    'vjs.framework.extension.platform.services.integration.render'
-  )
-  eventManager = sandbox.getService(
-    'vjs.framework.extension.platform.interface.event.EventManager'
-  )
-  viewModel = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.modal.Modal'
-  )
-}
 /**
  * 网页窗体，vds.browser的initModule比browser触发更早，临时兼容
  * */
 var _getBrowserUtils = function () {
-  if (!browserUtils) {
-    browserUtils = sandbox.getService(
-      'vjs.framework.extension.platform.services.browser.Browser'
-    )
-  }
   return browserUtils
 }
 
@@ -330,12 +310,7 @@ export function newWindow(componentCode, windowCode, params) {
     ruleContext: ruleContext,
     inputs: inputs
   }
-  var renderer = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.window.render.mode',
-    {
-      type: 'newWindow'
-    }
-  )
+  const renderer = rendererObj.newWindow
   if (renderer) {
     renderer.render(newConfig)
   }
@@ -386,12 +361,7 @@ export function renderToContainer(
         inited: resolve,
         inputs: inputs
       }
-      var renderer = sandbox.getService(
-        'vjs.framework.extension.platform.services.view.window.render.mode',
-        {
-          type: 'windowContainer'
-        }
-      )
+      const renderer = rendererObj.windowContainer
       if (renderer) {
         renderer.render(newConfig)
       } else {
@@ -540,12 +510,7 @@ export function renderToDivContainer(
           resolve(windowInstanceCode)
         }
       }
-      var renderer = sandbox.getService(
-        'vjs.framework.extension.platform.services.view.window.render.mode',
-        {
-          type: 'divWindowContainer'
-        }
-      )
+      const renderer = rendererObj.divWindowContainer
       if (renderer) {
         renderer.render(newConfig)
       } else {
@@ -593,12 +558,7 @@ export function renderToHomeTab(componentCode, windowCode, params) {
           resolve(isSure, output)
         }
       }
-      var renderer = sandbox.getService(
-        'vjs.framework.extension.platform.services.view.window.render.mode',
-        {
-          type: 'iemsHomeTab'
-        }
-      )
+      const renderer = rendererObj.iemsHomeTab
       if (renderer) {
         renderer.render(newConfig)
       } else {
@@ -679,12 +639,7 @@ export function refresh(componentCode, windowCode, params) {
     }
     type = 'appointWindow'
   }
-  var renderer = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.window.render.mode',
-    {
-      type: type
-    }
-  )
+  const renderer = rendererObj[type]
   if (renderer) {
     renderer.render(newConfig)
   }
@@ -752,5 +707,3 @@ export function createDialog(params) {
   }
   viewModel.create(modalParams)
 }
-
-module.exports = exports
