@@ -3,11 +3,12 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let Manager = function () {
   //任务列表
+  //@ts-ignore
   this.requestList = []
 }
 
 Manager.prototype = {
-  remove: function (rq) {
+  remove: function (rq:any) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request === rq) {
         arrayUtil.remove(this.requestList, request)
@@ -17,7 +18,7 @@ Manager.prototype = {
     }
   },
 
-  get: function (id) {
+  get: function (id:string) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request.getId() == id) {
         return request
@@ -26,16 +27,16 @@ Manager.prototype = {
     return null
   },
 
-  addRequest: function (request) {
+  addRequest: function (request:any) {
     this.requestList.push(request)
   }
 }
 
 let singlton = new Manager()
 
-export function initModule(sBox) {}
+export function initModule(sBox:any) {}
 
-const addRequest = function (request) {
+const addRequest = function (request:any) {
   let taskId = uuid.generate()
   request.setId(taskId)
   singlton.addRequest(request)
@@ -43,7 +44,7 @@ const addRequest = function (request) {
   return taskId
 }
 
-const remove = function (instanceId) {
+const remove = function (instanceId:string) {
   let rq = singlton.get(instanceId)
   if (rq) {
     rq.stop()
@@ -52,13 +53,13 @@ const remove = function (instanceId) {
 }
 
 export {
-  _putAop,
+  //_putAop,
   addRequest,
-  clear,
-  getHook,
-  init,
-  isDebugger,
-  isInited,
+  //clear,
+  //getHook,
+  //init,
+  //isDebugger,
+  //isInited,
   remove,
-  update
+  //update
 }

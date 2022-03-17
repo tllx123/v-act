@@ -6,6 +6,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import * as ExpressionContext from './ExpressionContext'
 
 import * as parser from '@v-act/expression-parser'
+import Context from './Context'
 
 const execute = function (params) {
   let context = params.context,
@@ -123,6 +124,8 @@ const print = function (exp: string) {
     },
     printFunctionSyntax: function (syntax, print) {
       const script = ['context.executeFunction("']
+      script.push('"')
+      script.push(',')
       script.push(syntax.getCode())
       script.push('"')
       script.push(',')
