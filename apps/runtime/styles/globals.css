@@ -4,8 +4,8 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
 }
 
 a {
@@ -20,4 +20,153 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/*模态提示框样式*/
+.dialogContainer {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 270px;
+  max-width: 550px;
+  height: auto;
+  background: white;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
+
+.dialogContainer * {
+  box-sizing: content-box !important;
+}
+
+.dialogContainer > div {
+  -moz-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.dialogContainer-border {
+  border: none !important;
+}
+
+.dialogContainer.dialog-show {
+  display: block;
+}
+
+.dialogContainer.dialog-show > div {
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  opacity: 1;
+}
+
+.dialogContainer .header {
+  display: block;
+  padding: 0 16px;
+  height: 48px !important;
+  line-height: 48px !important;
+  font-size: 16px !important;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, \\5fae\8f6f\96c5\9ed1, Arial,
+    sans-serif;
+  font-weight: 600;
+  color: #333 !important;
+  background: #f6f7fb !important;
+  border-bottom: 1px solid #e8eaec !important;
+}
+
+.dialogContainer .content {
+  padding: 16px;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, \\5fae\8f6f\96c5\9ed1, Arial,
+    sans-serif;
+  font-size: 11px;
+  color: #333;
+  word-wrap: break-word;
+}
+
+.dialogContainer .foot {
+  padding: 0 16px;
+  height: 48px;
+  border: none !important;
+  text-align: right;
+  background: transparent;
+}
+
+.dialogContainer .foot_buttons {
+  text-align: right;
+  padding: 10px 0;
+  line-height: unset !important;
+}
+
+.dialogContainer .foot_buttons input[type='button'] {
+  padding: 0 12px;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, \\5fae\8f6f\96c5\9ed1, Arial,
+    sans-serif;
+  font-size: 11px !important;
+  height: 28px !important;
+  line-height: 26px !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+}
+
+.dialogContainer .foot_buttons .dialogConfirmUnSelect {
+  color: #333;
+  background: transparent;
+  border-color: #dcdee2 !important;
+}
+
+.dialogContainer .foot_buttons .dialogConfirmUnSelect:hover {
+  background: transparent;
+  color: #356abb;
+  border-color: #356abb !important;
+}
+
+.dialogContainer .foot_buttons .dialogConfirmSelect {
+  color: #fff;
+  background: #356abb !important;
+  border-color: #356abb !important;
+}
+
+.dialogContainer .foot_buttons .dialogConfirmSelect:hover {
+  background: #558fe8 !important;
+  border-color: #558fe8 !important;
+}
+
+.dialogContainer .foot_buttons .dialogConfirmSelect:active {
+  background: #356abb !important;
+}
+
+.dialogContainer .foot_buttons #dialogCancel,
+.dialogContainer .foot_buttons #dialogConfirm {
+  margin-left: 6px;
+}
+
+.dialogContainer .foot_buttons #dialogIKnow {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0 12px;
+  outline: none;
+  height: 28px;
+  line-height: 28px;
+  font-weight: 500;
+  font-size: 11px;
+  border: none;
+  color: #fff;
+  background: #356abb;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dialogContainer .foot_buttons #dialogIKnow > span {
+  color: #fff;
 }

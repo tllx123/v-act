@@ -85,7 +85,7 @@ export function copyEntity(params, routeContext) {
   const sourceName = params.sourceName
   const sourceDatasource = _getEntityDS(sourceType, sourceName, routeContext)
   params.sourceDs = sourceDatasource
-  exports.copyByEntity(params, routeContext)
+  copyByEntity(params, routeContext)
 }
 
 /**
@@ -220,7 +220,7 @@ const _mappingRecord = function (
     const destField = fieldMapping[i].destName
     const sourceField = fieldMapping[i].sourceName
     const sourceType = fieldMapping[i].type
-    const value = null
+    let value = null
     switch ('' + sourceType) {
       case 'entityField':
         // 来源
@@ -381,7 +381,7 @@ const _indexOfDestRecord_List = function (
   try {
     for (let i = 0; i < destRecords.length; i++) {
       const destRecord = destRecords[i]
-      const isMatch = true
+      let isMatch = true
       for (let j = 0; j < checkItems.length; j++) {
         const checkItem = checkItems[j]
         const destValue = destRecord.get(checkItem)

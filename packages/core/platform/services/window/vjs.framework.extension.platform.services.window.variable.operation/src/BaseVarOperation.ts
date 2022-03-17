@@ -61,7 +61,7 @@ export { VALUE_SOURCE_TYPE, VAR_TYPE }
  * },...]
  * @param	routeContext	路由上下文//从规则上下文可取：ruleContext.getRouteContext()，若无规则上下文，则可为空
  * */
-exports.setVariableValue = function (params, routeContext) {
+export function setVariableValue(params, routeContext) {
   if (!params || params.length < 1) {
     return
   }
@@ -94,13 +94,13 @@ const setTargetValue = function (fieldMap, routeContext) {
     entityInfos = updatePreEntityData(source, entityInfos)
     const srcVal = getSourceValue(sourceType, source, fieldObj, routeContext)
     switch (targetType + '') {
-      case exports.VAR_TYPE.TARGET_SYS_VAR:
+      case VAR_TYPE.TARGET_SYS_VAR:
         componentParam.setVariant({
           code: target,
           value: srcVal
         })
         break
-      case exports.VAR_TYPE.TARGET_CONTROL:
+      case VAR_TYPE.TARGET_CONTROL:
         if (target.indexOf('.') == -1) {
           // 目标不存在.表示为单值控件
           //						widgetDatasource.setSingleValue(target, srcVal);
@@ -113,13 +113,13 @@ const setTargetValue = function (fieldMap, routeContext) {
           widgetProperty.set(widgetId, propertyCode, srcVal)
         }
         break
-      case exports.VAR_TYPE.TARGET_COM_VAR:
+      case VAR_TYPE.TARGET_COM_VAR:
         windowParam.setInput({
           code: target,
           value: srcVal
         })
         break
-      case exports.VAR_TYPE.TARGET_ENTITY:
+      case VAR_TYPE.TARGET_ENTITY:
         const dest = target.split('.')
         const dsName = dest[0]
         /*const datasource = manager.lookup({
@@ -146,29 +146,29 @@ const setTargetValue = function (fieldMap, routeContext) {
           entityInfos[dsName] = field_value
         }
         break
-      case exports.VAR_TYPE.TARGET_CONTEXT_VAR:
+      case VAR_TYPE.TARGET_CONTEXT_VAR:
         // 给当前活动集上下文变量赋值
         routeContext.setVariable(target, srcVal)
         break
-      case exports.VAR_TYPE.TARGET_OUTPUT_VAR:
+      case VAR_TYPE.TARGET_OUTPUT_VAR:
         // 给当前活动集输出变量赋值
         routeContext.setOutputParam(target, srcVal)
         break
-      case exports.VAR_TYPE.TARGET_WINDOW_OUTPUT_VAR:
+      case VAR_TYPE.TARGET_WINDOW_OUTPUT_VAR:
         // 给当前窗体输出变量赋值
         windowParam.setOutput({
           code: target,
           value: srcVal
         })
         break
-      case exports.VAR_TYPE.TARGET_WINDOW_INPUT_VAR:
+      case VAR_TYPE.TARGET_WINDOW_INPUT_VAR:
         // 给当前窗体输入变量赋值
         windowParam.setInput({
           code: target,
           value: srcVal
         })
         break
-      case exports.VAR_TYPE.TARGET_REPORT_ENTITY:
+      case VAR_TYPE.TARGET_REPORT_ENTITY:
         updateReportEntity(fieldObj, srcVal, target)
         break
       default:
@@ -289,7 +289,7 @@ const setEntityVal = function (dsName, destFieldName, srcVal) {
       })
       if (mappingInfo['mappingItems'] != undefined) {
         const mappingItems = mappingInfo.mappingItems
-        for (const i = 0; i < mappingItems.length; i++) {
+        for (let i = 0; i < mappingItems.length; i++) {
           const mappingItem = mappingItems[i]
           if (mappingItem['refField'] == destFieldName) {
             flag = false
@@ -318,7 +318,7 @@ const setEntityVal = function (dsName, destFieldName, srcVal) {
  * 按照来源类型，获取来源的值
  */
 const getSourceValue = function (sourceType, source, fieldObj, routeContext) {
-  const value = null
+  let value = null
   switch (sourceType + '') {
     case 'expression':
       const context = new ExpressionContext()
@@ -435,7 +435,7 @@ const getFreeDBCopyFieldsMapping = function (fieldObj) {
     const fieldValueType =
       configField.srcValueType == 'expression' ? 'expression' : 'field'
     const _srcValueItems = configField.srcValue.split('.')
-    const fieldValue = null
+    let fieldValue = null
 
     if (fieldValueType == 'field') {
       fieldValue = _srcValueItems[_srcValueItems.length - 1]
@@ -552,7 +552,7 @@ const updateReportEntity = function (fieldObj, srcVal, rptEntityName) {
     if (mappings && mappings.size() > 0) {
       const destObj = getReportEntity(rptEntityName)
       if (destObj) {
-        for (const i = 0; i < mappings.size(); i++) {
+        for (let i = 0; i < mappings.size(); i++) {
           const mapping = mappings[i]
           const destFieldName = mapping['destFieldName']
           destObj[destFieldName] = srcObj.get(destFieldName)

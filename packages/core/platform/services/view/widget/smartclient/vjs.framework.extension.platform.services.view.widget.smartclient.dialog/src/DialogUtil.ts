@@ -1,11 +1,5 @@
 import { AlertMessage as alertMessage } from '@v-act/vjs.framework.extension.platform.services.view.ui'
 
-let sandbox
-
-export function initModule(sb) {
-  sandbox = sb
-}
-
 /**
  * 显示确认提示框
  *
@@ -107,7 +101,7 @@ let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
 }
 
 let _toString = function (content) {
-  return isc.isA.String(content) ? content : '' + content
+  return typeof content == 'string' ? content : '' + content
 }
 
 let _parseParam = function (param) {

@@ -5,13 +5,17 @@ const init = function (params) {
 }
 
 const get = function (params) {
-  let vjsPool = PLATFORM_POOL[params.vjsName]
-  if (vjsPool) {
-    return vjsPool.hasOwnProperty(params.code)
-      ? vjsPool[params.code]
-      : params.defaultVal
+  if (params && params.defaultVal) {
+    let vjsPool = PLATFORM_POOL[params.vjsName]
+    if (vjsPool) {
+      return vjsPool.hasOwnProperty(params.code)
+        ? vjsPool[params.code]
+        : params.defaultVal
+    }
+    return params.defaultVal
+  } else {
+    return params
   }
-  return params.defaultVal
 }
 
 const has = function (params) {
