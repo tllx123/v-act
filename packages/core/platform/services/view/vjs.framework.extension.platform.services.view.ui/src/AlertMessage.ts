@@ -1,6 +1,7 @@
 import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as backMask from './BackMask'
 import * as zindex from './ZIndex'
@@ -11,26 +12,34 @@ var dialogs = [],
   defaultViewTime = 3,
   currentDialogInfo = null
 
-var divId = '___alertMessageDiv'
-//插入DOM到页面
-alertDiv = $('#' + divId)
-if (alertDiv && alertDiv.size() == 0) {
-  //初始化提示框div
-  var dialogDOM = _generateDiaLog(divId)
-  $('body').append(dialogDOM)
-  alertDiv = $('#' + divId)
-  alertDiv.find('#dialogConfirm').click(function () {
-    confirmHandler()
-  })
-  alertDiv.find('#dialogCancel').click(function () {
-    cancelHandler()
-  })
-  alertDiv.find('#dialogIKnow').click(function () {
-    iKnowHandler()
-  })
+let _inited = false
+
+const _init = function () {
+  if (!_inited) {
+    var divId = '___alertMessageDiv'
+    //插入DOM到页面
+    alertDiv = $('#' + divId)
+    if (alertDiv && alertDiv.length == 0) {
+      //初始化提示框div
+      var dialogDOM = _generateDiaLog(divId)
+      $('body').append(dialogDOM)
+      alertDiv = $('#' + divId)
+      alertDiv.find('#dialogConfirm').click(function () {
+        confirmHandler()
+      })
+      alertDiv.find('#dialogCancel').click(function () {
+        cancelHandler()
+      })
+      alertDiv.find('#dialogIKnow').click(function () {
+        iKnowHandler()
+      })
+    }
+    _inited = true
+  }
 }
 
 var confirmDialog = function (title, content, onCallback, isEsCapeHtml) {
+  _init()
   _dialogInterval(title, content, 'confirm', onCallback, isEsCapeHtml)
 }
 
@@ -41,6 +50,7 @@ var propmtDialog = function (
   secDistance,
   isEsCapeHtml
 ) {
+  _init()
   if (undefined != secDistance && !isNaN(secDistance)) {
     defaultViewTime = secDistance
   }
@@ -54,6 +64,7 @@ var _dialogInterval = function (
   onCallback,
   isEsCapeHtml
 ) {
+  _init()
   // 对话框队列, 实现对话框按照执行顺序显示
   var _dialogId = 'dialog_' + _genRamdomNum()
   var _dialogInfo = {
@@ -84,6 +95,7 @@ var _dialogInterval = function (
 }
 
 var _dialogIntervalHandler = function () {
+  _init()
   if (dialogs.length > 0) {
     //队列不为空，且当前没有提示框显示
     if (!currentDialogInfo) {
@@ -108,6 +120,7 @@ var _dialogIntervalHandler = function () {
 }
 
 var _showConfirmDialog = function () {
+  _init()
   // 遮罩层显示
   backMask.Show()
   //清除初始的隐藏样式
@@ -122,6 +135,7 @@ var _showConfirmDialog = function () {
 }
 
 var _enterKeyPressHandler = function (_$div) {
+  _init()
   _$div
     .find('#dialogConfirm')
     .removeClass('dialogConfirmUnSelect')
@@ -180,6 +194,7 @@ var _enterKeyPressHandler = function (_$div) {
  * 显示确认框
  */
 var _showPromptDialog = function () {
+  _init()
   _showConfirmDialog()
   currentDialogInfo.viewTime = defaultViewTime
   //2017-02-14 liangzc:移动app上面不用显示倒计时
@@ -206,6 +221,7 @@ var _showPromptDialog = function () {
 }
 
 var clearDialogInfo = function () {
+  _init()
   alertDiv.removeClass('dialog-show').removeClass('dialogContainer-border')
   backMask.Hide()
   var result = currentDialogInfo
@@ -228,6 +244,7 @@ var cancelHandler = function () {
 }
 
 var iKnowHandler = function (isCancle) {
+  _init()
   var info = clearDialogInfo()
   var _info = info + ''
   if (_info !== 'null' && _info !== 'undefined') {
@@ -252,6 +269,7 @@ var _genRamdomNum = function () {
 }
 
 var _updateDialog = function () {
+  _init()
   var title = currentDialogInfo.title,
     content = currentDialogInfo.content,
     type = currentDialogInfo.type
@@ -286,6 +304,7 @@ var _updateDialog = function () {
 }
 
 var _handleDialogCenter = function () {
+  _init()
   /*
    * 移动端软键盘弹起，收起时计算错误
    * */

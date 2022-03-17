@@ -14,15 +14,16 @@ import * as rpcDebugger from './RPCDebugger'
 import * as updater from './Updater'
 import * as utils from './Utils'
 
-export function initModule(sb) {
+
+export function initModule(sb:any) {
   browserDebugger._putAop(exports)
   rpcDebugger._putAop(exports)
   IteratorRequest.prototype._putAop(exports)
 }
 
-let remoteHost,
+let remoteHost:any,
   enable = true,
-  currentRouteContext
+  currentRouteContext:any
 
 /**
  *是否处于debug模式
@@ -45,7 +46,7 @@ let getDevHook = function () {
   return hook ? hook : rpcDebugger.getHook()
 }
 
-const beforeRuleExecute = function (ruleSetCode, ruleCode, routeContext) {
+const beforeRuleExecute = function (ruleSetCode:string, ruleCode:string, routeContext:any) {
   if (inDebug()) {
     //这里判断初始化，获取初始化的调试信息，如果没有，向服务器请求调试信息
     if (!DebugInfoManager.isInited()) {
@@ -86,7 +87,7 @@ const getBusinessData = function () {
   return paramGener.genParams(routeContext)
 }
 
-const ruleExecuted = function (ruleSetCode, ruleCode, routeContext) {
+const ruleExecuted = function (ruleSetCode:string, ruleCode:string, routeContext:any) {
   if (inDebug()) {
     currentRouteContext = routeContext
     let hook = getDevHook(),
@@ -117,7 +118,7 @@ const ruleExecuted = function (ruleSetCode, ruleCode, routeContext) {
   }
 }
 
-const startServerRuleDebugger = function (data) {
+const startServerRuleDebugger = function (data:any) {
   if (inDebug()) {
     let rq = new IteratorRequest(data)
     //拿到唯一的uuid，作为标识符
@@ -126,33 +127,33 @@ const startServerRuleDebugger = function (data) {
   return null
 }
 
-const stopServerRuleDebugger = function (debuggerId) {
+const stopServerRuleDebugger = function (debuggerId:string) {
   if (inDebug()) {
     requestManager.remove(debuggerId)
   }
 }
 
 const update = function (
-  componentCode,
-  windowCode,
-  ruleSetCode,
-  ruleCode,
-  json
+  componentCode:string,
+  windowCode:string,
+  ruleSetCode:string,
+  ruleCode:string,
+  json:string
 ) {
   let data = jsonUtil.json2obj(json)
   let routeContext = _getCurrentRouteContext()
   updater.update(data, routeContext)
 }
 
-const exeExp = function (expression) {
+const exeExp = function (expression:any) {
   let expCtx = new expContext()
   expCtx.setRouteContext(_getCurrentRouteContext())
   return !!expEngine.execute({ expression: expression, context: expCtx })
 }
 
-const setRemoteDebugHost = function (host, callback) {
+const setRemoteDebugHost = function (host:any, callback:any) {
   let hook = rpcDebugger.getHook()
-  let cb = function (rs) {
+  let cb = function (rs:any) {
     if (rs) {
       remoteHost = host
     }
@@ -165,7 +166,7 @@ const setRemoteDebugHost = function (host, callback) {
 
 //TODO
 if (typeof window != 'undefined') {
-  window.V3PlatformDebugger = {}
+  let V3PlatformDebugger:{[code:string]:any} = {}
   V3PlatformDebugger.setRemoteDebugHost = setRemoteDebugHost
 }
 
@@ -201,26 +202,26 @@ const getDevId = function () {
 export {
   _getCurrentRouteContext,
   _getRemoteDebugHost,
-  _putAop,
-  addRequest,
+  //_putAop,
+  //addRequest,
   beforeRuleExecute,
-  clear,
+  //clear,
   exeExp,
-  genParams,
+  //genParams,
   getBusinessData,
-  getComponentCode,
+  //getComponentCode,
   getDevHook,
   getDevId,
-  getHook,
-  getWindowCode,
-  init,
-  isDebugger,
+  //getHook,
+  //getWindowCode,
+  //init,
+  //isDebugger,
   isEnable,
-  isInited,
-  isWindowScope,
+  //isInited,
+  //isWindowScope,
   markDebugDisable,
   markDebugEnable,
-  remove,
+  //remove,
   ruleExecuted,
   setRemoteDebugHost,
   startServerRuleDebugger,
