@@ -1,5 +1,4 @@
-//import * as viewContext from 'module'
-import * as viewContext from '@v-act/vjs.framework.extension.platform.services.integration.vds.viewContext'
+import * as viewContext from '@v-act/vjs.framework.extension.platform.init.view'
 import { WindowVMMappingManager as vmMappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 const vds = { viewContext }
 export function initModule() {}

@@ -1,7 +1,7 @@
 import * as eventManager from '@v-act/vjs.framework.extension.platform.services.view.event'
 import * as widgetProperty from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import * as widgetContext from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import * as $ from '@v-act/vjs.framework.extension.platform.services.integration.vds.$'
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
 const vds = { eventManager, widgetProperty, widgetContext, $ }
 let sb
 

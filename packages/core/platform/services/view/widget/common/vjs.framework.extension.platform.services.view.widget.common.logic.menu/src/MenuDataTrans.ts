@@ -2,10 +2,10 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
-} from '@v-act/vjs.framework.extension.platform.services'
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import * as operationLib from 'module'
+import * as operationLib from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 const vds = { operationLib }
 
 let sandbox
