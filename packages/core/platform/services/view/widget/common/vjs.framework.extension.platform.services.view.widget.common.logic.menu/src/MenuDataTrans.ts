@@ -2,9 +2,11 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.services'
 import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import * as operationLib from 'module'
+const vds = { operationLib }
 
 let sandbox
 
@@ -12,7 +14,7 @@ export function initModule(sb) {
   sandbox = sb
 }
 
-let getMenuDataByRuleSet = function (widgetId) {
+let getMenuDataByRuleSet = function (widgetId: string) {
   let isAsync = false
   let isInRuleChainTransaction = false
   let widget = widgetContext.get(widgetId, 'widgetObj')

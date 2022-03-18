@@ -9,7 +9,7 @@ export function initModule(sb) {}
  * @param {String} widgetCode 控件编号
  *
  */
-let setAnimationCss = function (target, Animation) {
+let setAnimationCss = function (target: any, Animation: any) {
   if (Animation == 'null') {
     return
   }
@@ -42,7 +42,12 @@ let setAnimationCss = function (target, Animation) {
  *
  *
  */
-let PreventDefault = function (widgetCode, EventType, millisecond, IsPrevent) {
+let PreventDefault = function (
+  widgetCode: string,
+  EventType: string,
+  millisecond: string,
+  IsPrevent: string
+) {
   if (typeof millisecond == 'boolean') {
     IsPrevent = millisecond
     millisecond = null

@@ -1,1 +1,1 @@
-export * as WidgetRelation from './WidgetRelation'
+export * from './WidgetRelation'

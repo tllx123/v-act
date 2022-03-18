@@ -1,22 +1,30 @@
-/**
- *
- *
- */
-vds.import(
-  'vds.widget.*',
-  'vds.exception.*',
-  'vds.expression.*',
-  'vds.ds.*',
-  'vds.component.*',
-  'vds.window.*',
-  'vds.string.*',
-  'vds.log.*',
-  'vds.rpc.*'
-)
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import * as collection from '@v-act/vjs.framework.extension.platform.services.integration.vds.collection'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const vds = {
+  widget,
+  exception,
+  expression,
+  ds,
+  component,
+  window,
+  string,
+  log,
+  rpc,
+  collection
+}
+
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -46,14 +54,14 @@ const main = function (ruleContext: RuleContext) {
         var dataSourceName = _inParamObj.tableCode
         var sheetn = _inParamObj.sheetNum
         var _ide = dataSourceName + '_' + sheetn
-        if (!tmpm.contains(_ide)) {
+        var rs = vds.collection.contains(tmpm, _ide)
+        if (!rs) {
           tmpm[a] = _ide
         } else {
           throw vds.exception.newConfigException(
             '同一个sheetno不能导入相同的表中'
           )
         }
-        var config = {}
         var treeStruct =
           inParamObj['treeStruct'] == null
             ? null
@@ -116,7 +124,8 @@ const main = function (ruleContext: RuleContext) {
         // 	}
         // 	// varMapList[_ide] = varMap;
         // }
-        var config = {
+        let config: { [code: string]: any } = {}
+        config = {
           tableCode: dataSourceName,
           treeStruct: treeStruct,
           sheetNum: sheetn + 1,
@@ -194,7 +203,7 @@ var genUUID = function () {
   return S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
 }
 
-function GetTreeStruct(treeStruct, tableName) {
+function GetTreeStruct(treeStruct: any[], tableName: string) {
   for (var i = 0; i < treeStruct.length; i++) {
     var _var = treeStruct[i]
     if (tableName == _var['tableName']) {
@@ -204,7 +213,7 @@ function GetTreeStruct(treeStruct, tableName) {
   return null
 }
 
-function MapTransform(inParamObj, ruleContext) {
+function MapTransform(inParamObj: any[], ruleContext: RuleContext) {
   var result = {}
   result['fileSource'] = inParamObj['fileSource']
   result['treeStruct'] = inParamObj['treeStruct']

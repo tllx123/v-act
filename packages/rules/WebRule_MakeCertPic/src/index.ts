@@ -1,6 +1,7 @@
 /**
  *	生成验证码
  */
+/*
 vds.import(
   'vds.window.*',
   'vds.string.*',
@@ -9,10 +10,19 @@ vds.import(
   'vds.environment.*',
   'vds.widget.*'
 )
+*/
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import * as environment from '@v-act/vjs.framework.extension.platform.services.integration.vds.environment'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const vds = { window, string, widget, rpc, environment, message }
+
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -32,7 +42,7 @@ const main = function (ruleContext: RuleContext) {
       var iden = vds.string.uuid()
       document.cookie = 'v_platform_make_code_iden=' + iden
       if ('fileID' == buildTargetType) {
-        var success = function (datas) {
+        var success = function () {
           var methodContext = ruleContext.getMethodContext()
           switch (fileIDReceiveTargetType) {
             case 'ruleSetInput':

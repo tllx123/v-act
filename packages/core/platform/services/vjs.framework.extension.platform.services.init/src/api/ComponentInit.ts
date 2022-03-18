@@ -2,7 +2,7 @@ import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.in
 
 export function initModule(sb) {}
 
-const initComponent = function (params) {
+const initComponent = function (params: any) {
   viewInit.initComponentSchema(params)
 }
 

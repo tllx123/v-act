@@ -5,7 +5,7 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 export function initModule(sandbox) {}
 
-const loadDropDownSourceFromEntity = function (widgetCode) {
+const loadDropDownSourceFromEntity = function (widgetCode: string) {
   let widget = widgetContext.get(widgetCode, 'widgetObj')
   let dropDownSource = widgetContext.get(widgetCode, 'DropDownSource')
   if (typeof dropDownSource !== 'object') {

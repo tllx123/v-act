@@ -3,9 +3,9 @@ import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.fra
 import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let showGlobalProgress = function (msg) {
+let showGlobalProgress = function (msg: string) {
   let div = $('#_waitMsgTD')
-  content = msg ? msg : ''
+  var content = msg ? msg : ''
   div.html(stringUtils.escapeHtml(content))
   div = $('#_waitingMsgDiv')
   if (!div || !div.length || div.length < 1) {
@@ -32,7 +32,7 @@ let _getContainerEleId = function () {
   return container.getEle()
 }
 
-let showInstanceProgress = function (msg) {
+let showInstanceProgress = function (msg: string) {
   let windowScope = scopeManager.getWindowScope()
   let series = windowScope.getSeries()
   if ('bootstrap_mobile' == series) {
@@ -47,7 +47,7 @@ let showInstanceProgress = function (msg) {
       zIndex += 100
     }
     let ele = parent.find('#_instanceWaitingMsg_view')
-    content = msg ? msg : ''
+    var content = msg ? msg : ''
     msg = stringUtils.escapeHtml(content)
     if (ele.size() > 0) {
       ele.find('span').html(msg)
@@ -86,7 +86,7 @@ let hideInstanceProgress = function () {
 /**
  * 显示进度条
  */
-let showProgress = function (msg, isGlobal) {
+let showProgress = function (msg: string, isGlobal: any) {
   if (typeof isGlobal == 'boolean') {
     isGlobal ? showGlobalProgress(msg) : showInstanceProgress(msg)
   } else {
@@ -97,7 +97,7 @@ let showProgress = function (msg, isGlobal) {
 /**
  * 隐藏进度条
  */
-let hideProgress = function (isGlobal) {
+let hideProgress = function (isGlobal: any) {
   if (typeof isGlobal == 'boolean') {
     isGlobal ? hideGlobalProgress() : hideInstanceProgress()
   } else {

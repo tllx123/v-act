@@ -13,21 +13,23 @@ import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extensi
 import { Permission as permission } from '@v-act/vjs.framework.extension.platform.services.view.permission'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+const vds = { window }
 
-const addRequestOperation = function (params) {
+const addRequestOperation = function (params: any) {
   windowRuntime.registerVariableHandler(params)
 }
 
-const hasPermission = function (params) {
+const hasPermission = function (params: any) {
   return windowRuntime.hasPermission(params)
 }
 
 let _createOperation = function (
-  componentCode,
-  windowCode,
-  operationName,
-  args,
-  handler
+  componentCode: string,
+  windowCode: string,
+  operationName: string,
+  args: any,
+  handler: any
 ) {
   /*let operation = new Operation()
   operation.setComponentCode(componentCode)
@@ -43,7 +45,7 @@ let _createOperation = function (
   return null
 }
 
-let _winPermOperation = function (componentCode, windowCode) {
+let _winPermOperation = function (componentCode: string, windowCode: string) {
   let inited = windowInfo.isWindowPermissionInited(componentCode, windowCode)
   if (!inited) {
     return _createOperation(
@@ -61,7 +63,7 @@ let _winPermOperation = function (componentCode, windowCode) {
   return null
 }
 
-let _componentVarOperation = function (componentCode) {
+let _componentVarOperation = function (componentCode: string) {
   let inited = componentParam.isVariantInited(componentCode)
   if (!inited) {
     return _createOperation(
@@ -90,7 +92,10 @@ let _componentVarOperation = function (componentCode) {
   return null
 }
 
-let _widgetPermOperation = function (componentCode, windowCode) {
+let _widgetPermOperation = function (
+  componentCode: string,
+  windowCode: string
+) {
   let inited = windowInfo.isWidgetPermissionInited(componentCode, windowCode)
   if (!inited) {
     return _createOperation(
@@ -111,7 +116,10 @@ let _widgetPermOperation = function (componentCode, windowCode) {
   return null
 }
 
-let _windowSeriesOperation = function (componentCode, windowCode) {
+let _windowSeriesOperation = function (
+  componentCode: string,
+  windowCode: string
+) {
   let inited = windowInfo.isWindowSeriesIntied(componentCode, windowCode)
   if (!inited) {
     return _createOperation(
@@ -129,7 +137,7 @@ let _windowSeriesOperation = function (componentCode, windowCode) {
   return null
 }
 
-let _getParam = function (param, key, def) {
+let _getParam = function (param: any, key: any, def: any) {
   if (param.hasOwnProperty(key)) {
     return param[key]
   }
@@ -140,7 +148,7 @@ let _getParam = function (param, key, def) {
  * 临时兼容，等iframe管理模块的版本后发布后，测试本场景ok后即可删除
  * 处理参数
  * */
-let handleScope = function (scopeId) {
+let handleScope = function (scopeId: string) {
   //		var url = window.location.href
   //		if(url.indexOf("/module-operation!executeOperation?")!=-1 && url.indexOf("vplatform_tmp_open_mode") !=-1){
   //			var scope = scopeManager.getWindowScope();
@@ -195,7 +203,7 @@ let handleScope = function (scopeId) {
   })
 }
 
-const initWindow = function (params) {
+const initWindow = function (params: any) {
   //开始监听message
   let scopeId = scopeManager.getCurrentScopeId()
   let scope = scopeManager.getWindowScope()
@@ -288,31 +296,31 @@ const initWindow = function (params) {
   }
 }
 
-const cleanWindowInfo = function (componentCode, windowCode) {
+const cleanWindowInfo = function (componentCode: string, windowCode: string) {
   windowInfo.clearWidgetPermission(componentCode, windowCode)
   windowInfo.clearWindowPermission(componentCode, windowCode)
 }
 
-const hasWindowPermission = function (params) {
+const hasWindowPermission = function (params: any) {
   return windowInfo.hasPermission(params.componentCode, params.windowCode)
 }
 
-const isWidgetPermissionInited = function (params) {
+const isWidgetPermissionInited = function (params: any) {
   return windowInfo.isWidgetPermissionInited(
     params.componentCode,
     params.windowCode
   )
 }
 
-const getWidgetPermission = function (params) {
+const getWidgetPermission = function (params: any) {
   return windowInfo.getWidgetPermission(params.componentCode, params.windowCode)
 }
 
-const getWindowSeries = function (params) {
+const getWindowSeries = function (params: any) {
   return windowInfo.getWindowSeries(params.componentCode, params.windowCode)
 }
 
-const setWindowSeries = function (params) {
+const setWindowSeries = function (params: any) {
   let componentCode = params.componentCode
   let windowCode = params.windowCode
   if (!windowInfo.isWindowSeriesIntied(componentCode, windowCode)) {

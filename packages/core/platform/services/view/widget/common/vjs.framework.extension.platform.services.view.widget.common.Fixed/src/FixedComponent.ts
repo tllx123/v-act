@@ -1,6 +1,8 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 
 let widgetAction
 let eventManager
@@ -59,7 +61,7 @@ let getWidgetBylSpecial = function () {
         var Anchor = widgetContext.get(widgetCode, 'DockType')
         var scope = ScopeManager.getScope()
         var globalCode = widgetContext.get(childrenWidget[i], 'GlobalCode')
-        isBottom =
+        var isBottom =
           Anchor &&
           Anchor.toLowerCase() == 'bottom' &&
           $('#' + globalCode).data('parentcode') == scope.getWindowCode()
@@ -74,9 +76,9 @@ let getWidgetBylSpecial = function () {
         break
       case 'JGMDataListFoot':
         var globalCode = widgetContext.get(widgetCode, 'GlobalCode')
-        parentGlobalCode = $('#' + globalCode).data('parentglobalcode')
-        parentCode = $('#' + globalCode).data('parentcode')
-        ShowFoot = widgetContext.get(parentCode, 'ShowFoot')
+        var parentGlobalCode = $('#' + globalCode).data('parentglobalcode')
+        var parentCode = $('#' + globalCode).data('parentcode')
+        var ShowFoot = widgetContext.get(parentCode, 'ShowFoot')
         if (ShowFoot) {
           result.push({
             code: widgetCode,

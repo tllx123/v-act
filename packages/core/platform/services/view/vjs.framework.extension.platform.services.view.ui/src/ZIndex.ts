@@ -1,3 +1,6 @@
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+const vds = { window }
+
 let zIndex = 800000
 
 const _update = function () {

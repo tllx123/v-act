@@ -7,14 +7,20 @@ import { PlayVideo as playVideoService } from '@v-act/vjs.framework.extension.pl
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ProgressBarUtil } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { window, $ }
 /**
  * 文档转换服务
  * @param fileId   <String>      mongodb 文件ID
  * @param successCB<Function>    成功回调  回调入参：{"preViewfileUrl":"xxx"}
  * @param errorCB  <Function>    失败回调  回调入参：{"errorMsg":"xxx"}
  */
-let conversionByFileId = function (mongodbFileId, successCB, errorCB) {
+let conversionByFileId = function (
+  mongodbFileId: string,
+  successCB: any,
+  errorCB: any
+) {
   let host = location.href.substring(
     0,
     location.href.indexOf('module-operation')
@@ -38,7 +44,7 @@ let conversionByFileId = function (mongodbFileId, successCB, errorCB) {
       }
     }
   }
-  let errorCallback = function () {
+  let errorCallback = function (data: any) {
     if (typeof errorCB == 'function') {
       errorCB(data)
     }
@@ -78,7 +84,11 @@ function getChromeVersion() {
  * 根据文件ID预览文件（打开页面）
  * @param fileId   <String>      mongodb 文件ID
  */
-let previewByFileId = function (mongodbFileId, successCB, errorCB) {
+let previewByFileId = function (
+  mongodbFileId: string,
+  successCB: any,
+  errorCB: any
+) {
   insertPreviewHTML2Body()
   if (typeof successCB != 'function') {
     successCB = function () {}
@@ -106,7 +116,7 @@ let previewByFileId = function (mongodbFileId, successCB, errorCB) {
     }
   }
   let getFileInfoExp = 'GetFileInfo("' + mongodbFileId + '","fileName")'
-  executeExpression(getFileInfoExp, getFileInfoCB)
+  executeExpression(getFileInfoExp, getFileInfoCB, errorCB)
 }
 
 let addHistory = function () {
@@ -130,7 +140,7 @@ let addHistory = function () {
         scopeManager.openScope(sId)
         var ret = window.history._$v3PlatformReturnValues
         window.history._$v3PlatformReturnValues = null
-        ck(ret)
+        ck()
         scopeManager.destroy(newScopeId)
         scopeManager.closeScope()
       }
@@ -141,7 +151,12 @@ let addHistory = function () {
   history.addHistory(historyParams)
 }
 
-let previewImage = function (fileId, fileName, successCB, errorCB) {
+let previewImage = function (
+  fileId: any,
+  fileName: string,
+  successCB: any,
+  errorCB: any
+) {
   let imgSrc = getImageSrc(fileId)
   let mobileType = getDeviceType()
   if (window.StatusBar) {
@@ -195,7 +210,7 @@ let previewImage = function (fileId, fileName, successCB, errorCB) {
   }
 }
 
-let imgScan = function (id, imgEl, imgSrc) {
+let imgScan = function (id: string, imgEl: any, imgSrc: any) {
   let options = {
     modal: false,
     closeOnScroll: false,
@@ -223,7 +238,7 @@ let imgScan = function (id, imgEl, imgSrc) {
   }, 300)
 }
 
-let previewVideo = function (_data) {
+let previewVideo = function (_data: any) {
   let mobileType = getDeviceType()
   if (mobileType.isAPP) {
     playVideo(_data)
@@ -232,7 +247,7 @@ let previewVideo = function (_data) {
   }
 }
 
-let playVideo = function (_data) {
+let playVideo = function (_data: any) {
   //Android&&ios 视频处理
   let mobileType = getDeviceType()
   let videoSuccess = function (successMsg) {}
@@ -242,7 +257,7 @@ let playVideo = function (_data) {
   if (mobileType.isAndroid) {
     this.getFileUrl(_data.fileId, function (url) {
       let path = window.GlobalVariables
-        ? GlobalVariables.getServerUrl() + '/' + url.data.result
+        ? window.GlobalVariables.getServerUrl() + '/' + url.data.result
         : url.data.result
       playVideoService.openVideoPlayer(
         path,
@@ -304,7 +319,7 @@ let playVideo = function (_data) {
 }
 
 //文件大小转换
-function change(limit) {
+function change(limit: number) {
   let size = ''
   if (limit < 0.1 * 1024) {
     //小于0.1KB，则转化成B
@@ -333,16 +348,21 @@ function change(limit) {
 let newLimit = change(1048576)
 console.log(newLimit)
 
-let previewAudio = function () {
-  if (mobileType.isAPP) {
-    let el = $('#' + gloabalCode + '_par')
-      .find('#' + _data.fileId)
-      .parent()
-    $audioPlay.call(this, _data, el)
-  }
-}
+// let previewAudio = function () {
+//   if (mobileType.isAPP) {
+//     let el = $('#' + gloabalCode + '_par')
+//       .find('#' + _data.fileId)
+//       .parent()
+//     $audioPlay.call(this, _data, el)
+//   }
+// }
 
-let previewFile = function (mongodbFileId, fileName, successCB, errorCB) {
+let previewFile = function (
+  mongodbFileId: string,
+  fileName: string,
+  successCB: any,
+  errorCB: any
+) {
   $('#file_preview_min').removeClass('img')
   let mobileType = getDeviceType()
   conversionByFileId(
@@ -403,11 +423,11 @@ let previewFile = function (mongodbFileId, fileName, successCB, errorCB) {
 }
 
 let getDeviceType = function () {
-  let mobileType = {}
+  let mobileType: { [code: string]: any } = {}
   mobileType.isDingDing =
-    navigator.userAgent.toLowerCase().match(/dingtalk/i) == 'dingtalk'
+    navigator.userAgent.toLowerCase().match(/dingtalk/i) + '' == 'dingtalk'
   mobileType.isWechat =
-    navigator.userAgent.toLowerCase().match(/MicroMessenger/i) ==
+    navigator.userAgent.toLowerCase().match(/MicroMessenger/i) + '' ==
     'micromessenger'
   let appReg = /[(]{1}[\d]+[)]{1}$/ //ios app，仅用VJSBridge在使用打开链接跳转时无法判断
   mobileType.isAPP =
@@ -462,7 +482,7 @@ let insertPreviewHTML2Body = function () {
   })
 }
 
-let getFileType = function (fileName) {
+let getFileType = function (fileName: string) {
   let isImg = /(gif|jpeg|jpg|png)$/gi.test(fileName)
   let isVideo = /(flv|gif|mov|mp4|avi)$/gi.test(fileName)
   let isAudio = /(amr|ape|mp3|ogg|wav|wma)$/gi.test(fileName)
@@ -478,7 +498,7 @@ let getFileType = function (fileName) {
 }
 
 //根据文件ID拼装成文件下载地址(兼容App端)
-let getImageSrc = function (src) {
+let getImageSrc = function (src: string) {
   if (src != null) {
     let result =
       'module-operation!executeOperation?operation=FileDown&token=%7B%22data%22%3A%7B%22dataId%22%3A%22' +
@@ -487,7 +507,7 @@ let getImageSrc = function (src) {
       src +
       '%22%7D%7D'
     if (window.GlobalVariables) {
-      result = GlobalVariables.getServerUrl() + '/' + result
+      result = window.GlobalVariables.getServerUrl() + '/' + result
     }
     return result
   } else {
@@ -498,7 +518,11 @@ let getImageSrc = function (src) {
 /**
  * 执行后台函数（根据文件ID获取文件信息）
  */
-let executeExpression = function (expression, callback) {
+let executeExpression = function (
+  expression: string,
+  callback: any,
+  errorFun: any
+) {
   let scope = scopeManager.getWindowScope(),
     windowCode = scope.getWindowCode()
   let paramData = { expression: expression }
@@ -513,7 +537,7 @@ let executeExpression = function (expression, callback) {
       callback(result)
     },
     error: function (e) {
-      HandleException(e)
+      errorFun(e)
     }
   })
 }

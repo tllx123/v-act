@@ -1,3 +1,5 @@
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 let isMust, topNodeName
 
 export function initModule(sb) {
@@ -5,13 +7,13 @@ export function initModule(sb) {
   isMust = 'has-error'
 }
 
-let setIsMust = function (id, state) {
+let setIsMust = function (id: string, state: any) {
   let _id = '#' + id
   if (state && state + '' === 'true') _handleRequireWidget(_id)
   else _handleUnRequireWidget(_id)
 }
 
-let getIsMust = function (id) {
+let getIsMust = function (id: string) {
   let _id = '#' + id,
     _topNodeId = _id + topNodeName,
     _$idElement = $(_id),
@@ -30,7 +32,7 @@ let getIsMust = function (id) {
 /**
  * 控件必填
  */
-let _handleRequireWidget = function (id) {
+let _handleRequireWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _$idElement = $(id),
     _$topNodeIdElement = $(_topNodeId)
@@ -46,7 +48,7 @@ let _handleRequireWidget = function (id) {
 /**
  * 去除控件必填
  */
-let _handleUnRequireWidget = function (id) {
+let _handleUnRequireWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _$idElement = $(id),
     _$topNodeIdElement = $(_topNodeId)
@@ -59,4 +61,4 @@ let _handleUnRequireWidget = function (id) {
   }
 }
 
-export { setEnabled, getEnabled, setIsMust }
+export { setIsMust }

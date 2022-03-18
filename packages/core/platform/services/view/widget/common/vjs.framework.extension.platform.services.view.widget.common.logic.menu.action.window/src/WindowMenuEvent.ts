@@ -8,7 +8,7 @@ export function initModule(sb) {
   sandbox = sb
 }
 
-const doAction = function (params) {
+const doAction = function (params: any) {
   let item = params.data
   let widget = params.properties
   let cbFunc = params.callback
@@ -20,7 +20,7 @@ const doAction = function (params) {
   }
 }
 
-let openWindowHandler = function (widget, item, cbFunc) {
+let openWindowHandler = function (widget: any, item: any, cbFunc: any) {
   try {
     let itemId = item.id
     let componentOpen = widget.ComponentOpenWay
@@ -90,7 +90,7 @@ let openWindowHandler = function (widget, item, cbFunc) {
         closeTabId: widget.ComponentContainer
       }
       componentVariable['variable']['formulaOpenMode'] = 'container'
-      componentVariable.variable.closeTabId = widget.ComponentContainer
+      componentVariable['variable']['closeTabId'] = widget.ComponentContainer
       for (let key in componentParams) {
         componentVariable['variable'][key] = componentParams[key]
       }

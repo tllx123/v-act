@@ -10,7 +10,7 @@ let _getChildWindowScope = function () {
   return scopeManager.getChildWindowScope()
 }
 
-const getDatasourceNamesByWidgetCode = function (params) {
+const getDatasourceNamesByWidgetCode = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -21,7 +21,7 @@ const getDatasourceNamesByWidgetCode = function (params) {
   )
 }
 
-const getFieldCodesByWidgetCode = function (params) {
+const getFieldCodesByWidgetCode = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -33,7 +33,7 @@ const getFieldCodesByWidgetCode = function (params) {
   )
 }
 
-const getFieldCodeByPropertyCode = function (params) {
+const getFieldCodeByPropertyCode = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -45,7 +45,7 @@ const getFieldCodeByPropertyCode = function (params) {
   )
 }
 
-const getPropertyCodeByFieldCode = function (params) {
+const getPropertyCodeByFieldCode = function (params: any) {
   let scope = _getChildWindowScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -57,7 +57,7 @@ const getPropertyCodeByFieldCode = function (params) {
   )
 }
 
-const getWidgetCodesByDatasourceName = function (params) {
+const getWidgetCodesByDatasourceName = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -68,7 +68,7 @@ const getWidgetCodesByDatasourceName = function (params) {
   )
 }
 
-const getWidgetCodesByFieldCode = function (params) {
+const getWidgetCodesByFieldCode = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -80,7 +80,7 @@ const getWidgetCodesByFieldCode = function (params) {
   )
 }
 
-const isCustomSqlDataSource = function (params) {
+const isCustomSqlDataSource = function (params: any) {
   let dsName = params.datasourceName
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
@@ -91,15 +91,12 @@ const isCustomSqlDataSource = function (params) {
     return cfg.fetchMode == 'SQL'
   } else {
     throw Error(
-      '[WindowVMMappingManager.isCustomSqlDataSource]不包含' +
-        dataSourceName +
-        '数据源'
+      '[WindowVMMappingManager.isCustomSqlDataSource]不包含' + dsName + '数据源'
     )
   }
-  return false
 }
 
-const isVirtualDataSource = function (params) {
+const isVirtualDataSource = function (params: any) {
   let dsName = params.datasourceName
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
@@ -110,12 +107,9 @@ const isVirtualDataSource = function (params) {
     return cfg.fetchMode == 'virtual'
   } else {
     throw Error(
-      '[WindowVMMappingManager.isCustomSqlDataSource]不包含' +
-        dataSourceName +
-        '数据源'
+      '[WindowVMMappingManager.isCustomSqlDataSource]不包含' + dsName + '数据源'
     )
   }
-  return false
 }
 
 const getWindowDataSources = function () {
@@ -133,7 +127,7 @@ const getWindowDataSources = function () {
   return dsNames
 }
 
-const resetToDefault = function (params) {
+const resetToDefault = function (params: any) {
   let widgetCode = params.widgetCode,
     dsName = params.datasourceName
   let scope = scopeManager.getWindowScope()
@@ -142,7 +136,7 @@ const resetToDefault = function (params) {
   return windowVM.resetToDefault(componentCode, windowCode, widgetCode, dsName)
 }
 
-const removeVMapping = function (params) {
+const removeVMapping = function (params: any) {
   let widgetCode = params.widgetCode,
     dsName = params.datasourceName
   let scope = scopeManager.getWindowScope()
@@ -158,7 +152,7 @@ const _getVMMapping = function () {
   return windowVM.getVMMapping(componentCode, windowCode)
 }
 
-const putVMMapping = function (vmmapping) {
+const putVMMapping = function (vmmapping: any) {
   let scope = scopeManager.getWindowScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()

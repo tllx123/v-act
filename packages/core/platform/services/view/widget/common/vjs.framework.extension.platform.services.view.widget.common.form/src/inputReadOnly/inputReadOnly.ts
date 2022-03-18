@@ -1,5 +1,6 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 export function initModule(sb) {}
 
 /**
@@ -14,7 +15,7 @@ export function initModule(sb) {}
  * 				1 readOnlyOn
  * $().readOnly(focus,blur);
  */
-let readOnlyOn = function (scopeId, focus, blur) {
+let readOnlyOn = function (scopeId: string, focus: any, blur: any) {
   if (!this[0]) {
     return
   }
@@ -51,18 +52,16 @@ let readOnlyOff = function () {
     console.warn('输入框只读错误')
   }
 }
-let readOnlyToggle = function (scopeId, focus, blur, state) {
+let readOnlyToggle = function (
+  scopeId: string,
+  focus: any,
+  blur: any,
+  state: any
+) {
   if (state) {
     readOnlyOn.call($(this), scopeId, focus, blur)
   } else {
     readOnlyOff.call($(this))
   }
 }
-export {
-  inputlisten,
-  inputListen,
-  inputScroll,
-  readOnlyOff,
-  readOnlyOn,
-  readOnlyToggle
-}
+export { readOnlyOff, readOnlyOn, readOnlyToggle }

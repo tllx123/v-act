@@ -26,25 +26,34 @@
  *}
  *
  */
-/**
- *
- */
-vds.import(
-  'vds.expression.*',
-  'vds.exception.*',
-  'vds.log.*',
-  'vds.browser.*',
-  'vds.string.*',
-  'vds.environment.*',
-  'vds.widget.*',
-  'vds.window.*',
-  'vds.component.*',
-  'vds.ds.*'
-)
+
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as environment from '@v-act/vjs.framework.extension.platform.services.integration.vds.environment'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
+const vds = {
+  expression,
+  window,
+  string,
+  widget,
+  environment,
+  ds,
+  exception,
+  component,
+  log,
+  browser
+}
 /**
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { MethodContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -189,7 +198,8 @@ const main = function (ruleContext: RuleContext) {
             if (isNaN(height)) height = null
           }
           var winName = vds.string.uuid()
-          var params = {
+          let params: { [code: string]: any } = {}
+          params = {
             winName: winName,
             url: url,
             title: title,
@@ -229,7 +239,8 @@ const main = function (ruleContext: RuleContext) {
             userAgent.indexOf('v3app') < 1 &&
             userAgent.indexOf('ydgApp') < 1
           ) {
-            var params = {
+            let params: { [code: string]: any } = {}
+            params = {
               // url: url,
               title: title
             }
@@ -267,9 +278,9 @@ const main = function (ruleContext: RuleContext) {
         //			    }
         //			}
 
-        var width = screen.availWidth
-        var height = screen.availHeight
-        var info = {}
+        var width: any = screen.availWidth
+        var height: any = screen.availHeight
+        let info: { [code: string]: any } = {}
         info.title = title
         info.otherInfo = url
         // 标注打开方式为container
@@ -409,7 +420,7 @@ const main = function (ruleContext: RuleContext) {
  * @param {String} code 返回值编码
  * @param {Any} value 值
  */
-var setResult = function (ruleContext, code, value) {
+var setResult = function (ruleContext: RuleContext, code: any, value: any) {
   if (ruleContext.setResult) {
     ruleContext.setResult(code, value)
   }
@@ -506,7 +517,7 @@ function handleOpenWindowReturnValues(
   }
 }
 
-var setFieldValue = function (params) {
+var setFieldValue = function (params: any) {
   var dsName = params.datasourceName,
     code = params.fieldCode,
     val = params.value
@@ -520,7 +531,11 @@ var setFieldValue = function (params) {
   datasource.updateRecords([record])
 }
 
-var _getInfo = function (entityName, entityType, methodContext) {
+var _getInfo = function (
+  entityName: any,
+  entityType: any,
+  methodContext: MethodContext
+) {
   var info = {
     isEntity: false,
     ds: null
@@ -573,7 +588,7 @@ var _getInfo = function (entityName, entityType, methodContext) {
   return info
 }
 
-function getData(value, ruleContext) {
+function getData(value: any, ruleContext: RuleContext) {
   if (value == null) return ''
   var val = ''
   val = vds.expression.execute(value, {

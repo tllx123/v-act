@@ -2,12 +2,10 @@
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
-
-/**
- *
- *
- */
-vds.import('vds.app.*', 'vds.log.*', 'vds.expression.*')
+import * as app from '@v-act/vjs.framework.extension.platform.services.integration.vds.app'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+const vds = { app, log, expression }
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
@@ -124,7 +122,7 @@ const main = function (ruleContext: RuleContext) {
     }
   })
 }
-function expressFunc(experss, ruleContext) {
+function expressFunc(experss: string, ruleContext: RuleContext) {
   if (experss == null || experss == '') {
     return null
   }
@@ -134,7 +132,11 @@ function expressFunc(experss, ruleContext) {
   return resultValue
 }
 
-function setResult(ruleContext, returnResult, resultValue) {
+function setResult(
+  ruleContext: RuleContext,
+  returnResult: any[],
+  resultValue: any
+) {
   for (var i = 0; i < returnResult.length; i++) {
     var resultType = returnResult[i].resultType
     var resultName = returnResult[i].resultValue

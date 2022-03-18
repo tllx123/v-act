@@ -16,7 +16,7 @@ const TYPES = {
 
 export { TYPES }
 
-const get = function (params) {
+const get = function (params: any) {
   let type = params.type
   let p = params.params
   let operation = new Operation()

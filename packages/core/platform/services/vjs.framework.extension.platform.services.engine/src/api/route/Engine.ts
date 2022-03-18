@@ -4,7 +4,7 @@ export function initModule(sb) {
   sandBox = sb
 }
 
-const execute = function (params) {
+const execute = function (params: any) {
   let RouteEngine = sandBox.getService(
     'vjs.framework.extension.platform.engine.route.RouteEngine'
   )
@@ -16,7 +16,7 @@ const execute = function (params) {
   return RouteEngine.execute(params)
 }
 
-const executeWindowRoute = function (params) {
+const executeWindowRoute = function (params: any) {
   let RouteEngine = sandBox.getService(
     'vjs.framework.extension.platform.engine.route.RouteEngine'
   )
