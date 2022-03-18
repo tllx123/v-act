@@ -116,7 +116,7 @@ let redirectModule = function (paramsObj: Record<string, any>) {
   ) {
     consoleConfigService.showMainPage()
   } else {
-    var scopeId = scopeManager.getCurrentScopeId()
+    /*var scopeId = scopeManager.getCurrentScopeId()
     var scope = scopeManager.getChildWindowScope()
     var RemoveModalFunc = scope.get('RemoveModalFunc')
     if (typeof RemoveModalFunc == 'function') {
@@ -146,7 +146,14 @@ let redirectModule = function (paramsObj: Record<string, any>) {
       windowCode,
       inputParam,
       extraParams
-    )
+    )*/
+    var windowScope = scopeManager.getWindowScope()
+    var handler = windowScope.get('currentWindowHandler')
+    if (handler) {
+      handler(componentCode, windowCode, null, inputParam)
+    } else {
+      throw Error('未找到当前页面跳转处理器！')
+    }
   }
 }
 /**
@@ -226,7 +233,7 @@ let callBrowserWindow = function (paramsObj: Record<string, any>) {
       })
     )
   )
-  let moduleUrl =
+  /*let moduleUrl =
     getUrlPrefix() +
     urlPath +
     '?componentCode=' +
@@ -234,7 +241,9 @@ let callBrowserWindow = function (paramsObj: Record<string, any>) {
     '&windowCode=' +
     moduleId +
     '&operation=' +
-    operation
+    operation*/
+  let moduleUrl =
+    getUrlPrefix() + urlPath + '/' + componentCode + '/' + moduleId
   let isCustomSize = width > 0 && height > 0
   let inputJson = {
     url: moduleUrl,
@@ -254,14 +263,15 @@ let callBrowserWindow = function (paramsObj: Record<string, any>) {
   // 用于多语言，从地址栏获取语言信息
   let newToken = inputJson.token ? inputJson.token : initToken
   let debugPort = environment.getDebugPort()
-  let moduleInitUrl =
+  /*let moduleInitUrl =
     'module-operation!executeOperation?componentCode=' +
     componentCode +
     '&windowCode=' +
     moduleId +
     (debugPort ? '&debugPort=' + debugPort : '') +
     '&token=' +
-    newToken
+    newToken*/
+  let moduleInitUrl = getUrlPrefix() + '/' + componentCode + '/' + moduleId
   let result = showModalDialogEx({
     id: moduleId,
     url: moduleInitUrl,

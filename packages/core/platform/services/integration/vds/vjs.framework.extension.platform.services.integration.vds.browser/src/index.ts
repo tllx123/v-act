@@ -213,7 +213,7 @@ export function dialog(url, params) {
  * })
  * */
 export function dialogWindow(componentCode, windowCode, params) {
-  var __params = params || {}
+  /*var __params = params || {}
   var func = function (resovle, reject) {
     var params = __params
     var inputs = handleInputParams(params.inputParams)
@@ -231,7 +231,22 @@ export function dialogWindow(componentCode, windowCode, params) {
       height: params.height
     })
   }
-  return new Promise(func)
+  return new Promise(func)*/
+  return new Promise((resolve, reject) => {
+    const windowScope = scopeManager.getWindowScope()
+    const handler = windowScope.get('dialogWindowHandler')
+    if (handler) {
+      handler(
+        componentCode,
+        windowCode,
+        params.title,
+        handleInputParams(params.inputParams)
+      )
+      resolve()
+    } else {
+      reject(Error('未找到模态打开窗体处理方法！'))
+    }
+  })
 }
 
 /**
@@ -312,7 +327,7 @@ export function newWindow(componentCode, windowCode, params) {
   }
   const renderer = rendererObj.newWindow
   if (renderer) {
-    renderer.render(newConfig)
+    renderer(newConfig)
   }
 }
 /**
@@ -363,7 +378,7 @@ export function renderToContainer(
       }
       const renderer = rendererObj.windowContainer
       if (renderer) {
-        renderer.render(newConfig)
+        renderer(newConfig)
       } else {
         resolve()
       }
@@ -512,7 +527,7 @@ export function renderToDivContainer(
       }
       const renderer = rendererObj.divWindowContainer
       if (renderer) {
-        renderer.render(newConfig)
+        renderer(newConfig)
       } else {
         resolve()
       }
@@ -560,7 +575,7 @@ export function renderToHomeTab(componentCode, windowCode, params) {
       }
       const renderer = rendererObj.iemsHomeTab
       if (renderer) {
-        renderer.render(newConfig)
+        renderer(newConfig)
       } else {
         resolve()
       }
@@ -641,7 +656,7 @@ export function refresh(componentCode, windowCode, params) {
   }
   const renderer = rendererObj[type]
   if (renderer) {
-    renderer.render(newConfig)
+    renderer(newConfig)
   }
 }
 /**
