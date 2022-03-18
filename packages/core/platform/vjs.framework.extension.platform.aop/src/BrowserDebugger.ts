@@ -39,7 +39,7 @@ let RuntimeV3PlatformAOP = {
    */
   exeExp: function (expression: any) {
     var rs = aop.exeExp(expression)
-    V3PlatformAOP.ExeExp(rs)
+    V3PlatformAOP.exeExp(rs)
   }
 }
 
