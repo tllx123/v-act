@@ -1,4 +1,4 @@
-import { designerProcessor } from '@v-act/vjs.framework.extension.platform.application.window.web.designer'
+import { Processor as designerProcessor } from '@v-act/vjs.framework.extension.platform.application.window.web.designer'
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
 import { ComponentResourceManager as componentResourceManager } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { WindowVMMapping as windowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
@@ -6,24 +6,87 @@ import {
   ComponentData as componetData,
   ComponentPackData as componentPackData
 } from '@v-act/vjs.framework.extension.platform.global'
-import { frontendAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
+import { FrontEndAlerter as frontendAlerterUtil } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
-import { windowI18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as windowI18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { elementManager } from '@v-act/vjs.framework.extension.platform.services.browser'
-import { windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import { widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
+import { BrowserUtil as elementManager } from '@v-act/vjs.framework.extension.platform.services.browser'
+import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
+import { WidgetAction as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 import { WidgetProcessor as widgetProcessor } from '@v-act/vjs.framework.extension.platform.services.view.window.property.processor'
-import { windowRenderer } from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
+import { WindowRenderer as windowRenderer } from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
 import {
   Resource,
-  windowResource
+  WindowResource as windowResource
 } from '@v-act/vjs.framework.extension.platform.services.view.window.resources'
-import { mediator } from '@v-act/vjs.framework.extension.system.mediator'
-import { widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
+import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
+import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import {
+  AppInfo,
+  ComponentInfo
+} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
+import { WindowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
+
+const _initWindowInfoFromJson = function (params) {
+  //TODO 标记appinfo已初始化
+  AppInfo.markAppSchemaInited()
+  ComponentInfo.markComponentSchemaInited(params.componentCode)
+  _initVMInfo(params)
+}
+
+const _initVMInfo = function (params) {
+  const vmInfo = {}
+  const entitys = params.winDatas.entitys
+  if (entitys && entitys.entity) {
+    let entityList = entitys.entity
+    const dataSources = {}
+    entityList = Array.isArray(entityList) ? entityList : [entityList]
+    entityList.forEach((entity) => {
+      const code = entity.$.code
+      const initMetaFields = []
+      if (entity.entityFields && entity.entityFields.entityField) {
+        let entityFieldList = entity.entityFields.entityField
+        entityFieldList = Array.isArray(entityFieldList)
+          ? entityFieldList
+          : [entityFieldList]
+        entityFieldList.forEach((entityField) => {
+          let length = entityField.$.length
+          length = parseInt(length)
+          length = isNaN(length) ? 255 : length
+          let precision = entityField.$.precision
+          precision = parseInt(precision)
+          precision = isNaN(precision) ? 0 : precision
+          initMetaFields.push({
+            code: entityField.$.code,
+            name: entityField.$.name,
+            expression: entityField.expression,
+            length: length,
+            precision,
+            type: entityField.$.type
+          })
+        })
+      }
+      dataSources[code] = {
+        chineseName: '',
+        defaultValues: [],
+        fetchMode: 'dataSet',
+        id: code,
+        initDefaultData: [],
+        initMetaFields: initMetaFields,
+        isVirtual: true,
+        persistence: false,
+        tables: code,
+        whereClause: ''
+      }
+    })
+    vmInfo.dataSources = dataSources
+  }
+  WindowVMMapping.addVMMapping(params.componentCode, params.windowCode, vmInfo)
+}
 
 /**
  * 窗体模板初始化
@@ -37,7 +100,7 @@ export function init(params) {
     languageCode = params.languageCode,
     vjsInitFunc = params.vjsInitFunc,
     paramCfg = params.paramCfg
-
+  _initWindowInfoFromJson(params)
   //设置领域信息
   //		Environment.setDomain(domain);
   //初始化环境变量信息
@@ -48,7 +111,9 @@ export function init(params) {
   //初始化构件包数据
   componentPackData.init(componentPackMappingDatas)
   //切面函数
-  vjsInitFunc(sandbox)
+  if (vjsInitFunc) {
+    vjsInitFunc(sandbox)
+  }
   //渲染窗体
 
   let rootID = $('body').attr('id')
@@ -79,8 +144,8 @@ export function init(params) {
     //				"scopeId" : scopeId
     //			},
     aops: {
-      rendered: function (component, scopeId) {
-        let setTitle = function (newTitle) {
+      rendered: function (scopeId) {
+        /*let setTitle = function (newTitle) {
           if (newTitle) {
             document.title = newTitle
           }
@@ -157,7 +222,7 @@ export function init(params) {
               }
             }
           })
-        }
+        }*/
       }
     },
     sc_languageCode: languageCode,

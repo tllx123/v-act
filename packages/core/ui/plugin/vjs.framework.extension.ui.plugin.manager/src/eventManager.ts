@@ -1,10 +1,8 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let allEventHandler = {}
+let allEventHandler: { [code: string]: any } = {}
 
-export function initModule(sBox) {}
-
-let handleError = function (e) {
+let handleError = function (e: any) {
   if (e.handle) {
     let error = e
     while (error.error && error.error.handle) {
@@ -23,7 +21,11 @@ let handleError = function (e) {
 /**
  * 增加事件处理器
  */
-let addEventHandler = function (widgetId, eventName, handler) {
+let addEventHandler = function (
+  widgetId: string,
+  eventName: string,
+  handler: any
+) {
   let scopeId = ScopeManager.getCurrentScopeId()
 
   let key = scopeId + '_' + widgetId
@@ -43,15 +45,15 @@ let addEventHandler = function (widgetId, eventName, handler) {
   eventHandler.push(handler)
 }
 
-let removeAllEventHandler = function (widgetId) {}
+let removeAllEventHandler = function (widgetId: string) {}
 
 /**
  * 执行事件
  */
-let fireDynamicWidgetEvent = function (eventName) {
+let fireDynamicWidgetEvent = function (eventName: string) {
   let scopeId = ScopeManager.getCurrentScopeId()
 
-  return function (widgetId) {
+  return function (widgetId: string) {
     ScopeManager.openScope(scopeId)
     try {
       let key = scopeId + '_' + widgetId
@@ -77,7 +79,7 @@ let fireDynamicWidgetEvent = function (eventName) {
 /**
  * 执行事件
  */
-let fireEvent = function (widgetId, eventName) {
+let fireEvent = function (widgetId: string, eventName: string) {
   let scopeId = ScopeManager.getCurrentScopeId()
   let key = scopeId + '_' + widgetId
 
@@ -106,7 +108,7 @@ export {
   addEventHandler,
   fireDynamicWidgetEvent,
   fireEvent,
-  Hide,
-  removeAllEventHandler,
-  Show
+  //Hide,
+  removeAllEventHandler
+  //Show
 }

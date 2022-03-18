@@ -8,9 +8,11 @@
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+
 const vds = { ds, exception }
 
-const main = function (sourceName) {
+const main = function (sourceName: string) {
   if (sourceName == undefined || sourceName == null || sourceName == '') {
     //throw new Error("参数错误！实体名称必填!");
     var exception = vds.exception.newConfigException('参数错误！实体名称必填!')

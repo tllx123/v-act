@@ -6,12 +6,33 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 const vds = { ds, expression, log, string, widget, window }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+interface keyIsString {
+  [key: string]: any
+}
+interface getTreeStructDataParams {
+  parentId: string
+  records: any
+  treeStruct: any
+}
+interface treeStructCfgVal {
+  tableID: null
+  tableName: any
+  type: string
+  pidField: any
+  treeCodeField?: any
+  orderField?: any
+  isLeafField?: any
+  leftField?: any
+  rightField?: any
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -46,7 +67,7 @@ const main = function (ruleContext: RuleContext) {
       //如果是树表或编码树表，则需要对数据按树结构排序
       var widgetType = vds.widget.getType(gridWidgetId)
       if (records.length > 0 && 'JGTreeGrid' == widgetType) {
-        var idRecordMap = {}
+        var idRecordMap: keyIsString = {}
         for (var i = 0; i < records.length; i++) {
           var record = records[i]
           var id = record.getSysId()
@@ -78,7 +99,7 @@ const main = function (ruleContext: RuleContext) {
 
         //树表
         if ('JGTreeGrid' == widgetType) {
-          var treeStructCfg = {
+          var treeStructCfg: treeStructCfgVal = {
             tableID: null,
             tableName: dataSource,
             type: '1',
@@ -121,14 +142,14 @@ const main = function (ruleContext: RuleContext) {
         var summaryData = vds.widget.execute(gridWidgetId, 'getSummaryData')
         if (summaryData != null) {
           var lastRowIndex = columnDefineObjs.length - 1
-          var columnidCodeMap = {}
+          var columnidCodeMap: keyIsString = {}
           var columns = columnDefineObjs[lastRowIndex]
           for (var i = 0; i < columns.length; i++) {
             var id = columns[i].id
             var code = columns[i].field
             columnidCodeMap[code] = id
           }
-          var sumaryRecord = {}
+          var sumaryRecord: keyIsString = {}
           for (var key in records.get(0).toMap()) {
             var id = columnidCodeMap[key]
             if (id != undefined) {
@@ -197,7 +218,12 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-function createForm(formId, iframeId, actionUrl, tokenId) {
+function createForm(
+  formId: string,
+  iframeId: string,
+  actionUrl: string,
+  tokenId: string
+) {
   var formObj = document.getElementById(formId)
   if (formObj == null) {
     formObj = document.createElement('form')
@@ -213,7 +239,7 @@ function createForm(formId, iframeId, actionUrl, tokenId) {
   return formObj
 }
 
-function createIFrame(iframeId, url) {
+function createIFrame(iframeId: string, url: string) {
   var iframeObj = document.getElementById(iframeId)
   if (iframeObj == null) {
     iframeObj = document.createElement('iframe')
@@ -224,7 +250,7 @@ function createIFrame(iframeId, url) {
   iframeObj.setAttribute('src', url)
 }
 
-var getFieldName = function (fieldName) {
+var getFieldName = function (fieldName: string) {
   if (fieldName == null) throw new Error('字段名不能为空!')
   var pos = fieldName.indexOf('.')
   if (pos > 0) {
@@ -233,8 +259,8 @@ var getFieldName = function (fieldName) {
   return fieldName
 }
 
-var getSortedTreeRecords = function (idRecordMap, treeStructDatas) {
-  var retSortedTreeDatas = []
+var getSortedTreeRecords = function (idRecordMap: any, treeStructDatas: any) {
+  var retSortedTreeDatas: any = []
   for (var i = 0; i < treeStructDatas.length; i++) {
     _getSortedTreeRecords(idRecordMap, retSortedTreeDatas, treeStructDatas[i])
   }
@@ -242,9 +268,9 @@ var getSortedTreeRecords = function (idRecordMap, treeStructDatas) {
 }
 
 var _getSortedTreeRecords = function (
-  idRecordMap,
-  retSortedRecords,
-  curTreeNode
+  idRecordMap: any,
+  retSortedRecords: any,
+  curTreeNode: any
 ) {
   if (curTreeNode == null) return
   var record = idRecordMap[curTreeNode.record.getSysId()]
@@ -258,7 +284,7 @@ var _getSortedTreeRecords = function (
   }
 }
 
-var findGridFields = function (widgetId, dataSourceName) {
+var findGridFields = function (widgetId: string, dataSourceName: string) {
   var datasource = vds.ds.lookup(dataSourceName)
   var metadata = datasource.getMetadata()
   var metaFields = metadata.getFields()
@@ -273,7 +299,12 @@ var findGridFields = function (widgetId, dataSourceName) {
 
   // TODO: 新方案处理多行列表头
   var spanMap = widgetObj._widget.spanMap
-  var getSpanName = function (headerIndex, tarColumnName, spansMap, seq) {
+  var getSpanName = function (
+    headerIndex: string | number,
+    tarColumnName: string,
+    spansMap: any,
+    seq?: any
+  ) {
     if (!spansMap) return
 
     if (seq == null) seq = 1
@@ -281,7 +312,7 @@ var findGridFields = function (widgetId, dataSourceName) {
     // 判断当前列是否存在
     var spanObj = spansMap[tarColumnName]
 
-    var getTitle = function (spanObj, seq) {
+    var getTitle: any = function (spanObj: any, seq: number) {
       if (spanObj) {
         seq++
 
@@ -347,7 +378,7 @@ var findGridFields = function (widgetId, dataSourceName) {
 /**
  * 获取列标题的文字部分
  * */
-var getColumnTitleText = function (title) {
+var getColumnTitleText = function (title: string) {
   var result = title
   if (title) {
     var dom = $('<div>' + title + '</div>')[0]
@@ -361,11 +392,15 @@ var getColumnTitleText = function (title) {
   return result
 }
 
-var filterExportColumns = function (allColumns, exportColumns, isFreeDB) {
+var filterExportColumns = function (
+  allColumns: any,
+  exportColumns: any,
+  isFreeDB: boolean | null
+) {
   if ((exportColumns == null || exportColumns.length == 0) && !isFreeDB)
     return null
 
-  var retColumns = []
+  var retColumns: any = []
   //allColumns为二维数组，最后一行索引
   var lastRowIndex = allColumns.length - 1
 
@@ -408,7 +443,7 @@ var filterExportColumns = function (allColumns, exportColumns, isFreeDB) {
 
 //#region getTreeStructData函数
 
-var getTreeStructData = function (param) {
+var getTreeStructData = function (param: getTreeStructDataParams) {
   var parentId = param.parentId
   var records = param.records
   var treeStruct = param.treeStruct
@@ -417,11 +452,11 @@ var getTreeStructData = function (param) {
   return data
 }
 
-var _getChildrensMapWithIdKey = function (records, treeStruct) {
-  var childrensMap = []
+var _getChildrensMapWithIdKey = function (records: any, treeStruct: any) {
+  var childrensMap: any = []
   if (records && records.length > 0) {
     var orderNoRefField = treeStruct.orderField
-    records.sort(function compare(a, b) {
+    records.sort(function compare(a: any, b: any) {
       return a.get(orderNoRefField) - b.get(orderNoRefField)
     })
     for (var index = 0; index < records.length; index++) {
@@ -454,7 +489,7 @@ var _getChildrensMapWithIdKey = function (records, treeStruct) {
   return childrensMap
 }
 
-var getParent = function (records, nodeId) {
+var getParent = function (records: any, nodeId: string | number) {
   for (var index = 0; index < records.length; index++) {
     if (records[index].getSysId() == nodeId) {
       return records[index]
@@ -463,7 +498,11 @@ var getParent = function (records, nodeId) {
   return null
 }
 
-var _getTreeJsonData = function (parentId, childrensMap, treeStruct) {
+var _getTreeJsonData = function (
+  parentId: string | number,
+  childrensMap: any,
+  treeStruct: any
+) {
   var datas = []
   var childs = childrensMap[parentId]
   if (childs && childs.length > 0) {
@@ -471,7 +510,7 @@ var _getTreeJsonData = function (parentId, childrensMap, treeStruct) {
     for (var i = 0; i < childCount; i++) {
       var child = childs[i]
       var id = child.getSysId()
-      var node = {}
+      var node: keyIsString = {}
       node['record'] = child
       if (
         child.get(treeStruct.isLeafField) == '0' ||
@@ -489,7 +528,7 @@ var _getTreeJsonData = function (parentId, childrensMap, treeStruct) {
   return datas
 }
 
-var _getIsHasChild = function (nodeId, childrensMap) {
+var _getIsHasChild = function (nodeId: string | number, childrensMap: any) {
   var rtn = false
   var childrens = childrensMap[nodeId]
   if (childrens && childrens.length > 0) {
@@ -498,32 +537,30 @@ var _getIsHasChild = function (nodeId, childrensMap) {
   return rtn
 }
 
-var _getTreeJsonData = function (parentId, childrensMap, treeStruct) {
-  var datas = []
-  var childs = childrensMap[parentId]
-  if (childs && childs.length > 0) {
-    var childCount = childs.length
-    for (var i = 0; i < childCount; i++) {
-      var child = childs[i]
-      var id = child.getSysId()
-      var node = {}
-      node['record'] = child
-      if (
-        child.get(treeStruct.isLeafField) == '0' ||
-        child.get(treeStruct.isLeafField) == false
-      ) {
-        var isHasChild = _getIsHasChild(id, childrensMap, treeStruct)
-        if (isHasChild) {
-          var children = _getTreeJsonData(id, childrensMap, treeStruct)
-          node['children'] = children
-        }
-      }
-      datas.push(node)
-    }
-  }
-  return datas
-}
-
+// var _getTreeJsonData = function (parentId:string|number, childrensMap:any, treeStruct:any) {
+//   var datas = []
+//   var childs = childrensMap[parentId]
+//   if (childs && childs.length > 0) {
+//     var childCount = childs.length
+//     for (var i = 0; i < childCount; i++) {
+//       var child = childs[i]
+//       var id = child.getSysId()
+//       var node:keyIsString = {}
+//       node['record'] = child
+//       if (
+//         child.get(treeStruct.isLeafField) == '0' ||
+//         child.get(treeStruct.isLeafField) == false
+//       ) {
+//         var isHasChild = _getIsHasChild(id, childrensMap)
+//         if (isHasChild) {
+//           var children = _getTreeJsonData(id, childrensMap, treeStruct)
+//           node['children'] = children
+//         }
+//       }
+//       datas.push(node)
+//     }
+//   }
+//   return datas
+// }
 //#endregion
-
 export { main }

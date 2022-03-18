@@ -1,13 +1,13 @@
 let sandbox
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
 /**
  * 处理颜色
  */
-let handleColor = function (colorStr) {
+let handleColor = function (colorStr: string) {
   if (colorStr.indexOf(',') == -1) {
     return colorStr
   } else {

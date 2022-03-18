@@ -5,8 +5,8 @@ let getMenuDataByRuleSet = function (widgetId) {
   let isInRuleChainTransaction = false
   let widget = widgetContext.get(widgetId, 'widgetObj')
   let params = widget.Param && widget.Param.invokeParams
-  let componentCode = viewContext.getComponentCode()
-  let backVal = {}
+  //let componentCode = viewContext.getComponentCode()
+  let backVal: { [code: string]: any } = {}
   for (let i = 0, num = params.length; i < num; i++) {
     let param = params[i]
     if (param['paramType'] == 'expression') {

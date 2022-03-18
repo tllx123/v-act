@@ -1,3 +1,5 @@
+import { ParamInitor as paramInitor } from '@v-act/vjs.framework.extension.platform.data.adapter'
+
 /**
  * @namespace ParamConfig
  * @class ParamConfig
@@ -10,7 +12,7 @@ class ParamConfig {
   static putInitor = function (initor: any) {
     ParamConfig.prototype.initor = initor
   }
-  initor: any | null = null
+  initor: any | null = paramInitor
   code: string
   name: string
   type: string

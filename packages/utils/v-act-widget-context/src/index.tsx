@@ -1,16 +1,9 @@
+import { Datasource } from '@v-act/vjs.framework.extension.platform.datasource.taffy'
+
 import React, { ReactNode, useState } from 'react'
-
 import { Property } from 'csstype'
-
-import {
-  Height,
-  Width,
-  ControlReact,
-  WidgetRenderContext
-} from '@v-act/schema-types'
-
+import { Height, Width } from '@v-act/schema-types'
 type FieldValue = string | number | boolean | null
-
 type EntityRecord = {
   [fieldCode: string]: FieldValue
 }
@@ -23,6 +16,10 @@ type Entities = {
 }
 
 interface WidgetContextProps {
+  /**
+   * 窗体实例id
+   */
+  instanceId: string
   /**
    * 控件position
    */
@@ -58,6 +55,11 @@ interface WidgetContextProps {
     context: WidgetContextProps
   ) => void
   inputVal?: any
+  TaffyDB_Data?: any
+  insertDataFunc?: (data: any) => void
+  updataDataFunc?: (data: any) => void
+  removeDataFunc?: (data: any) => void
+  datasource?: any
 }
 
 interface ContextProviderProps {
@@ -100,6 +102,27 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   const [contextTemp, setVal] = useState(context)
 
+  //datasource操作函数
+  const [datasource] = useState(Datasource.DB())
+  const [TaffyDB_Data, setData] = useState(datasource.db.datas)
+  const [TaffyDB_search_Data, setSearchData] = useState(datasource.datas)
+
+  //插入
+  const insertDataFunc = (params: any) => {
+    datasource.insertRecords(params)
+    setData(datasource.db.datas)
+  }
+  //更新
+  const updataDataFunc = (params: any) => {
+    datasource.updateRecords(params)
+    setData(datasource.db.datas)
+  }
+  //删除
+  const removeDataFunc = (params: any) => {
+    datasource.updateRecords(params)
+    setData(datasource.db.datas)
+  }
+
   const getFieldValue = (
     tableName: string,
     columnName: string,
@@ -139,7 +162,15 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   return (
     <WidgetContext.Provider
-      value={{ ...contextTemp, getFieldValue, setFieldValueTemp }}
+      value={{
+        ...contextTemp,
+        getFieldValue,
+        setFieldValueTemp,
+        insertDataFunc,
+        updataDataFunc,
+        removeDataFunc,
+        TaffyDB_Data
+      }}
     >
       {children}
     </WidgetContext.Provider>

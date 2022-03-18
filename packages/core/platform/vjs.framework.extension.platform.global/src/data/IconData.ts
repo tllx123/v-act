@@ -1,21 +1,13 @@
-let StorageManager
-let token = 'Platform_Icon_Data'
-let sandbox
-let loadedIconCodes = []
+import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
-export function initModule(sb) {
-  if (sb) {
-    sandbox = sb
-    StorageManager = sb.getService(
-      'vjs.framework.extension.platform.interface.storage.StorageManager'
-    )
-  }
-}
+let token = 'Platform_Icon_Data'
+let loadedIconCodes: any = []
+
 let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
 
-const init = function (datas) {
+const init = function (datas: any) {
   if (datas) {
     let storage = getStorage()
     for (let code in datas) {
@@ -26,13 +18,13 @@ const init = function (datas) {
   }
 }
 
-let exeFunc = function (func) {
+let exeFunc = function (func: any) {
   if (typeof func == 'function') {
     func()
   }
 }
 
-const loadIcons = function (params) {
+const loadIcons = function (params: any) {
   let iconCodes = params.iconCodes,
     callback = params.callback
   if (iconCodes && iconCodes.length > 0) {
@@ -69,27 +61,27 @@ const loadIcons = function (params) {
 }
 
 export {
-  addComponentOptionDefines,
-  addComponentRouteInfo,
-  addComponentVariantDefines,
-  addRuleSetInputs,
-  componentIsInited,
-  componentIsLoaded,
-  destroy,
-  existMapping,
-  exists,
-  getComponentOptionDefine,
-  getComponentType,
-  getComponentVariantDefine,
-  getMapping,
-  getRouteConfig,
-  getRuleSetInput,
-  getRuleSetInputs,
+  //addComponentOptionDefines,
+  //addComponentRouteInfo,
+  //addComponentVariantDefines,
+  //addRuleSetInputs,
+  //componentIsInited,
+  //componentIsLoaded,
+  //destroy,
+  //existMapping,
+  //exists,
+  //getComponentOptionDefine,
+  //getComponentType,
+  //getComponentVariantDefine,
+  //getMapping,
+  //getRouteConfig,
+  //getRuleSetInput,
+  //getRuleSetInputs,
   init,
-  isAppConfigInfoLoaded,
-  loadIcons,
-  markAppConfigInfoLoaded,
-  markForComponentInited,
-  markForComponentLoaded,
-  setComponentType
+  //isAppConfigInfoLoaded,
+  loadIcons
+  //markAppConfigInfoLoaded,
+  //markForComponentInited,
+  //markForComponentLoaded,
+  //setComponentType
 }

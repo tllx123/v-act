@@ -1,12 +1,10 @@
-import * as snapshotFactory from './SnapshotFactory'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
+import * as snapshotFactory from './SnapshotFactory'
+
 let stack = [],
   token = 'WINDOW_RUNTIME_SNAPSHOT'
-
-import { RouteContext as ruleContext } from '@v-act/vjs.framework.extension.platform.interface.route'
-ruleContext.prototype.setSnapshotManager(exports)
 
 let _getStorage = function () {
   let scope = scopeManager.getWindowScope()
@@ -61,4 +59,4 @@ const getCurrentSnapshot = function () {
   return null
 }
 
-export { create, takeSnapshot, begine, end, clear, getCurrentSnapshot }
+export { begine, clear, create, end, getCurrentSnapshot, takeSnapshot }

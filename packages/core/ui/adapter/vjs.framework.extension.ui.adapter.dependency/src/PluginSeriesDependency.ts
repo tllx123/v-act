@@ -1,12 +1,12 @@
-let instance
+let instance: any
 
 const loadResources = function (
-  componentCode,
-  windowCode,
-  sandbox,
-  scopeId,
-  callback,
-  errorFun
+  componentCode: string,
+  windowCode: string,
+  sandbox: any,
+  scopeId: string,
+  callback: any,
+  errorFun: any
 ) {
   if (!instance) {
     throw Error(
@@ -23,7 +23,7 @@ const loadResources = function (
   )
 }
 
-const batchLoadResources = function (wins, callback) {
+const batchLoadResources = function (wins: any, callback: any) {
   if (!instance) {
     throw Error(
       '[PluginSeriesDependency.batchLoadResources]插件体系依赖实例未注入，请检查！'
@@ -32,7 +32,7 @@ const batchLoadResources = function (wins, callback) {
   instance.loadDependencyLibs(wins, callback)
 }
 
-const putInstance = function (ie) {
+const putInstance = function (ie: any) {
   instance = ie
 }
 

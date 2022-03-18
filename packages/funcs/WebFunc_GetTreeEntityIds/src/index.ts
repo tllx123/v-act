@@ -1,3 +1,5 @@
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 /**
  *  获取树和树表控件特定节点及子节点的id集合
     代码示例：
@@ -10,11 +12,10 @@
 
 */
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
+
 const vds = { widget, exception, tree }
 
-const main = function (widgetCode, recordId, spitStr) {
+const main = function (widgetCode: string, recordId: string, spitStr: string) {
   if (!widgetCode || '' == widgetCode) {
     var exception =
       vds.exception.newConfigException('函数第一个参数,实体编码不能为空!')
@@ -60,10 +61,10 @@ const main = function (widgetCode, recordId, spitStr) {
 }
 export { main }
 
-var iterate = function (parent) {
-  var ids = []
+var iterate = function (parent: any): [] {
+  var ids: any = []
   var nodSet = parent.getChildren()
-  nodSet.iterate(function (node) {
+  nodSet.iterate(function (node: any) {
     ids.push(node.getSysId())
     var rs = iterate(node)
     for (var i = 0, l = rs.length; i < l; i++) {

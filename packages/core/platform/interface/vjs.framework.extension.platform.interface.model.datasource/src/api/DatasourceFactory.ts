@@ -2,16 +2,12 @@ import { MetadataFactory as metadataFactory } from '@v-act/vjs.framework.extensi
 import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
 import { ExpressionUtil as expressionUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.expression'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { Datasource as datasourceFactory } from '@v-act/vjs.framework.extension.platform.datasource.taffy'
 
 import Datasource from './Datasource'
 
-let sandbox
-
 let _getDSContructor = function () {
-  let datasourceFactory = sandbox.getService(
-    'vjs.framework.extension.system.datasource.factory'
-  )
-  return datasourceFactory.getDBConstructor()
+  return datasourceFactory.getConstructor()
 }
 
 let _getExpressionObserveDatasources = function (expression) {

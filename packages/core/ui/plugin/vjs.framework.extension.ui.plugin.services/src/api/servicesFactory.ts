@@ -1,6 +1,6 @@
-let sandbox, seriesService
+let sandbox: any, seriesService: any
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
   if (sb) {
     seriesService = sb.getService(
@@ -9,7 +9,7 @@ export function initModule(sb) {
   }
 }
 
-let getService = function (serviceName) {
+let getService = function (serviceName: string) {
   let widgetSeries = seriesService.getSeries()
   let service = sandbox.getService(serviceName, { type: widgetSeries })
   if (service == null) {

@@ -1,8 +1,8 @@
-let sandbox
-let seriesService
-let widgetContext
-let log
-export function initModule(sb) {
+let sandbox: any
+let seriesService: any
+let widgetContext: any
+let log: any
+export function initModule(sb: any) {
   sandbox = sb
   if (sb) {
     log = sb.getService('vjs.framework.extension.util.log')
@@ -18,7 +18,7 @@ export function initModule(sb) {
 /**
  * 执行控件的渲染方法
  */
-let executeComponentAction = function (funcName) {
+let executeComponentAction = function (funcName: string) {
   let type = seriesService.getSeries()
   let JGComponentHandler = sandbox.getService(
     'vjs.framework.extension.ui.plugin.JGComponent.render.JGComponent',
@@ -41,7 +41,7 @@ let executeComponentAction = function (funcName) {
 /**
  * 执行控件渲染动作
  */
-let executeWidgetAction = function (widgetCode, funcName) {
+let executeWidgetAction = function (widgetCode: string, funcName: string) {
   let widgetType = widgetContext.get(widgetCode, 'type')
   let type = seriesService.getSeries()
   let widgetHandler = sandbox.getService(

@@ -27,6 +27,7 @@
     "**/*.ts",
     "**/*.tsx"
   ],
+  "extends": "./tsconfig.paths.json",
   "exclude": [
     "node_modules"
   ]

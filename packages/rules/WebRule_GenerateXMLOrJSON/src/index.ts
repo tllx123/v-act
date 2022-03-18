@@ -7,10 +7,14 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
 const vds = { ds, expression, log, object, rpc, string }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+interface keyIsString {
+  [key: string]: any
+}
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -43,13 +47,13 @@ const main = function (ruleContext: RuleContext) {
       var datas = generateDatas(dataDetail, ruleContext)
 
       // 构建后台规则参数
-      var inParamsObj = {}
+      var inParamsObj: keyIsString = {}
       inParamsObj.dataType = dataType
       inParamsObj.datas = datas
       inParamsObj.rootName = rootName
 
       // 调用完活动集之后的回调方法
-      var callback = function (responseObj) {
+      var callback = function (responseObj: any) {
         var outputMessage = responseObj.OutputMessage
         // 设置业务返回值
         if (ruleContext.setResult) {
@@ -87,7 +91,7 @@ const main = function (ruleContext: RuleContext) {
  * 生成配置数据内容
  * @param dataDetail 配置数据内容类源配置
  */
-var generateDatas = function (dataDetail, ruleContext) {
+var generateDatas = function (dataDetail: any, ruleContext: any) {
   var datas = []
   for (var i = 0; i < dataDetail.length; i++) {
     var dataConfig = dataDetail[i]
@@ -97,7 +101,7 @@ var generateDatas = function (dataDetail, ruleContext) {
     var scope = dataConfig['Scope'] + ''
     var spliceType = dataConfig['SpliceType'] + ''
 
-    var data = {}
+    var data: keyIsString = {}
     data.elementName = vds.expression.execute(elementNameSrc, {
       ruleContext: ruleContext
     })
@@ -133,7 +137,10 @@ var generateDatas = function (dataDetail, ruleContext) {
  * @param {string} tableColumn 表名.字段名
  * @param {string} scope 来源范围
  */
-var getElementValueFromTableColumn = function (tableColumn, scope) {
+var getElementValueFromTableColumn = function (
+  tableColumn: string,
+  scope: string
+) {
   if (tableColumn.indexOf('.') == -1) {
     throw new Error(
       '[GenerateXMLOrJSON.getElementValueFromTableColumn]来源表字段' +
@@ -146,7 +153,7 @@ var getElementValueFromTableColumn = function (tableColumn, scope) {
   var SCOPR_ALL = '2'
 
   // 按照取值返回获取的元素值，可能是单值，也可能是列表
-  var elementValue = null
+  var elementValue: any = null
 
   var tableName = tableColumn.split('.')[0]
   var columnName = tableColumn.split('.')[1]
@@ -172,7 +179,7 @@ var getElementValueFromTableColumn = function (tableColumn, scope) {
       break
     case SCOPR_ALL:
       // 所有行
-      var elementValue = []
+      var elementValue: any = []
       var datasource = vds.ds.lookup(tableName)
       var records = datasource.getAllRecords().toArray()
       for (var rIndex = 0; rIndex < records.length; rIndex++) {

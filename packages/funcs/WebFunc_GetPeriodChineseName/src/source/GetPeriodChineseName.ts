@@ -1,14 +1,10 @@
 import { MathUtil as math } from '@v-act/vjs.framework.extension.util.math'
 
-export function initModule(sb) {
-  sandbox = sb
-}
-
-const main = function (param) {
+const main = function (param: { getArgs: () => string }) {
   let args = param.getArgs(),
     argsLen = args ? args.length : 0,
-    period = argsLen >= 1 ? args[0] : null,
-    type = argsLen >= 2 ? args[1] : null
+    period = argsLen >= 1 ? args[0] : '',
+    type = argsLen >= 2 ? args[1] : 0
 
   let result = ''
   // 传入参数不能为空

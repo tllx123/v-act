@@ -1,3 +1,3 @@
-import * as DefaultValueGenerator from './DefaultValueGenerator'
+import DefaultValueGenerator from './DefaultValueGenerator'
 
 export { DefaultValueGenerator }

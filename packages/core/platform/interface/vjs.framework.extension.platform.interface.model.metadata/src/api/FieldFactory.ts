@@ -2,7 +2,7 @@ import * as dataAdaptorFactory from '../adapter/DataAdaptorFactory'
 import Field from '../api/Field'
 
 interface params extends Field {
-  [key: string]: any
+  // [key: string]: any
 }
 
 /**
@@ -98,12 +98,24 @@ const Integer = function (params: params) {
   return _generate(params, null, 'integer')
 }
 
-const unSerialize = function (params: params): Field {
+const Constructors = {
+  Char,
+  Text,
+  Number,
+  Boolean,
+  Date,
+  LongDate,
+  File,
+  Object,
+  Integer
+}
+
+const unSerialize = function (params: params) {
   let type = params.type
   let methodName = type.substring(0, 1).toUpperCase() + type.substring(1)
-  let constructor = exports[methodName]
+  let constructor = Constructors[methodName]
   if (constructor) {
-    return constructor.call(constructor, params)
+    return constructor(params)
   } else {
     throw Error('[FieldFactory.unSerialize]不支持[' + type + ']字段类型！')
   }

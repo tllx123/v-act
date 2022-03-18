@@ -8,9 +8,11 @@
  */
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+
 const vds = { ds, exception }
 
-const main = function (param) {
+const main = function (param: any) {
   var args = param.getArgs()
   var sourceName = args[0]
   if (sourceName == undefined || sourceName == null || sourceName == '') {

@@ -8,6 +8,8 @@ import { ComponentData } from '@v-act/vjs.framework.extension.platform.global'
 
 import { AppData } from '@v-act/vjs.framework.extension.platform.global'
 
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+
 import { ApplicationParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 
 import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
@@ -21,7 +23,21 @@ import { EventManager as eventManager } from '@v-act/vjs.framework.extension.pla
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 import { WidgetRenderer as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 
-import { ProcessorManager as processorManager } from '@v-act/vjs.framework.extension.platform.services.view.window.property'
+import { ProcessorManager as processorManager } from '@v-act/vjs.framework.extension.platform.services.view.window.property.processor'
+
+import { ViewInit as viewInit } from '@v-act/vjs.framework.extension.platform.init.view'
+
+import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
+
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
+const viewLibMapping = {}
+
+const viewLibMappingError = {}
+
+const schemaMapping = {}
+
+const schemaMappingError = {}
 
 var _allRight = function (pool) {
   var flag = true
@@ -91,35 +107,22 @@ var renderComponentById = function (
     contextPath = cfg.contextPath
     runningMode = cfg.runningMode
     debug = cfg.debug
-    typeof contextPath != 'undefined' &&
-      isc.WidgetContext.setContextPath(contextPath)
-    typeof runningMode != 'undefined' &&
-      isc.WidgetContext.setRunningMode(runningMode)
   }
-  isc.setAutoDraw(false)
-  isc.Log.setDefaultPriority(3)
-  isc.Log.setLogPriority(isc.Log.getClassName(), 5)
   var _this = this
   //属性处理器里面会使用到窗体输入
   processorManager.addDatas(
     'WindowInputParams',
     inputParam.variable ? inputParam.variable : inputParam
   )
-  renderComponent.call(
-    _this,
+  renderComponent(
     componentCode,
     windowCode,
     scopeId,
-    function (component, scopeId) {
+    function (scopeId) {
       //component.showModal("组件正在初始化，请稍候...");
       //全局渲染事件
       //        	ScopeManager.fireEvent(ScopeManager.EVENTS.RENDERED, ScopeManager.getScope(scopeId));
-      _fireFunc(renderedCallback, this, [
-        component,
-        scopeId,
-        componentCode,
-        windowCode
-      ])
+      _fireFunc(renderedCallback, this, [scopeId, componentCode, windowCode])
       var viewLib = this
       var initComponent = function () {
         // TODO 临时修改：处理vbase在BS控件打开SC页面报错问题，待确认
@@ -133,9 +136,8 @@ var renderComponentById = function (
           scopeId,
           inputParam,
           function () {
-            viewLib.fireCallback()
+            //viewLib.fireCallback()
             _fireFunc(initedCallback, this, [
-              component,
               scopeId,
               componentCode,
               windowCode
@@ -164,9 +166,7 @@ var renderComponentById = function (
             }
           ]
         )
-        var progressbar = sandbox.getService(
-          'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'
-        )
+
         progressbar.hideProgress()
       }
       setTimeout(initComponent, 10)
@@ -426,10 +426,10 @@ var renderComponent = function (
   }
   var successback = function () {
     if (!fromPage) {
-      var hasPerm = runtimeManager.hasWindowPermission({
+      var hasPerm = true /*runtimeManager.hasWindowPermission({TODO 咱不处理权限
         componentCode: componentCode,
         windowCode: windowCode
-      })
+      })*/
       if (!hasPerm) {
         var msg = '对不起，您没有该窗体的浏览权限。'
         var exception = exceptionFactory.create({
@@ -440,17 +440,7 @@ var renderComponent = function (
         return
       }
     }
-    //        	var scopeTask = new ScopeTask(scopeId, false, _genRenderComponentCallback({
-    //        		'componentCode':componentCode,
-    //        		'windowCode':windowCode,
-    //        		'scopeId':scopeId,
-    //        		'func':func,
-    //        		'uuid':tmpUUID,
-    //        		'errorFunc':errorFunc
-    //        	}));
-    //        	var taskId = TaskManager.addTask(scopeTask);
-    //var taskId = AsyncManager.addHandler(_genRenderComponentCallback(componentCode,windowCode,scopeId,func,AsyncManager,error),false,scopeId);
-    var bundleName =
+    /*var bundleName =
       'vjs.framework.extension.publish.' +
       componentCode +
       '.' +
@@ -468,10 +458,6 @@ var renderComponent = function (
     var sandBox = sandbox.create(exrtaParams)
     var extensionCfgs = ['vjs.framework.extension.platform.interface.skin']
     extensionCfgs.push(bundleName)
-    /*var skinType = isc.WidgetContext.getSkinType();
-        	var skinBundleName = "vjs.framework.extension.publish." + componentCode + "." + windowCode + ".skin." + skinType;
-        	extensionCfgs.push(skinBundleName);*/
-
     var resourcePackage = sandbox.getService(
       'vjs.framework.extension.ui.adapter.resourcepackage'
     )
@@ -491,18 +477,12 @@ var renderComponent = function (
       .active()
       .done(function () {
         var viewLib = sandBox.getService(serviceName)
-        //        		TaskManager.execTaskById(taskId, [viewLib]);
         exeFunArr(viewLibMapping, key, [viewLib])
       })
       .fail(function (dependencyLib) {
         exeFunArr(viewLibMappingError, key, [dependencyLib])
-        //        		var exception = exceptionFactory.create({
-        //        			"message": dependencyLib.message,
-        //        			"type": dependencyLib.type,
-        //        			"exceptionLib": dependencyLib.exceptionLib
-        //        		});
-        //        		if (errorFunc) errorFunc(exception);
-      })
+      })*/
+    exeFunArr(viewLibMapping, key, [])
   }
   ScopeManager.openScope(scopeId) //防止请求回调用需要用到窗体域信息
   eventManager.fire({
@@ -532,34 +512,27 @@ var _genRenderComponentCallback = function (params) {
       event: eventManager.Events.AfterWindowLoad,
       args: [scopeId, uuid]
     })
-    var flag = _handleError(
+    var flag = false /*_handleError(
       viewLib,
       componentCode,
       windowCode,
       'viewLib',
       error
-    )
+    )*/
     if (!flag) {
-      //渲染组件
-      /*var skinType = isc.WidgetContext.getSkinType();
-                var skinLib = sandbox.getService("vjs.framework.extension.publish." + componentCode + "." + windowCode + ".skin");
-                skinLib.init();*/
       var tmpUUID = 'WINRENDER_' + uuidUtil.generate()
       eventManager.fire({
         event: eventManager.Events.BeforeWindowRender,
         args: [scopeId, tmpUUID]
       })
-      if (typeof viewLib.getSeries) {
-        //普通窗体打开移动窗体兼容逻辑
-        ScopeManager.getScope(scopeId).set('type', viewLib.getSeries())
-      }
-      var _callback = function (component, scopeId) {
+      //if (typeof viewLib.getSeries) {
+      //普通窗体打开移动窗体兼容逻辑
+      ScopeManager.getScope(scopeId).set('type', 'smartclient')
+      //}
+      var _callback = function () {
         ScopeManager.openScope(scopeId)
         var windowScope = ScopeManager.getWindowScope()
         windowScope.on(ScopeManager.EVENTS.DESTROY, function () {
-          var widgetAction = sandbox.getService(
-            'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-          )
           widgetAction.executeComponentAction('destroyComponentData', scopeId)
         })
         ScopeManager.closeScope()
@@ -574,9 +547,10 @@ var _genRenderComponentCallback = function (params) {
             fireCrossDomainEvent(windowCode)
           }
         })
-        _fireFunc(func, this, [component, scopeId, componentCode, windowCode])
+        _fireFunc(func, this, [scopeId, componentCode, windowCode])
       }
-      viewLib.execute(
+      _callback()
+      /*viewLib.execute(
         {
           scopeId: scopeId,
           componentId: windowCode,
@@ -585,7 +559,7 @@ var _genRenderComponentCallback = function (params) {
         },
         scopeId,
         _callback
-      ) //存在普通窗体打开移动窗体，两个viewlib入参不相同
+      )*/ //存在普通窗体打开移动窗体，两个viewlib入参不相同
     }
   }
 }
@@ -743,7 +717,7 @@ var prepareComponent = function (
   }
   //1、当前窗体是否替换其他窗体
   //2、如果存在替换其他窗体（B）,vjsNames添加B窗体所在的构件vjs以及B窗体的schema.window vjs
-  var vjsNames = []
+  /*var vjsNames = []
   for (var i = 0, len = sourceWinInfos.length; i < len; i++) {
     var info = sourceWinInfos[i]
     var comVjs =
@@ -766,22 +740,15 @@ var prepareComponent = function (
   sandBox
     .active()
     .done(function () {
-      //            TaskManager.execTaskById(taskId, []);
       exeFunArr(schemaMapping, key, [])
     })
     .fail(function (dependencyLib) {
-      //            var exception = exceptionFactory.create({
-      //                "message": dependencyLib.message,
-      //                "type": dependencyLib.type,
-      //                "exceptionLib": dependencyLib.exceptionLib
-      //            });
-      //            if (errorFunc) errorFunc(exception);
-      //发生异常时，需要把正常的回调清掉，否则重新打开不生效
       try {
         delete schemaMapping[key]
       } catch (e) {}
       exeFunArr(schemaMappingError, key, [dependencyLib])
-    })
+    })*/
+  exeFunArr(schemaMapping, key, [])
 }
 var exeFunArr = function (arrs, key, args) {
   var arr = arrs[key]
@@ -803,9 +770,6 @@ var _genPrepareComponentCallback = function (params) {
     sourceWinInfos = params.sourceWinInfos,
     inputParam = params.inputParam
   return function () {
-    var viewInit = sandbox.getService(
-      'vjs.framework.extension.platform.init.view.ViewInit'
-    )
     var successBack = function () {
       eventManager.fire({
         event: eventManager.Events.AfterWindowInit,

@@ -1,4 +1,4 @@
-const calculateAsciiCode = function (url, data) {
+const calculateAsciiCode = function (url: string, data: any) {
   let params = []
   let ecodeNum = 0
   /* 分析url的参数 */

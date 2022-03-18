@@ -10,15 +10,15 @@ import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platfor
 import { EasyTemplateUtil as tmplUtil } from '@v-act/vjs.framework.extension.util.easytemplate'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-import $ from 'jquery'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let sandBox,
-  printer:any,
+  printer: any,
   isLoaded = false
 
-export function initModule(sBox:any) {
+export function initModule(sBox: any) {
   sandBox = sBox
-  window.showModalDialog = function (strPURL:string) {
+  window.showModalDialog = function (strPURL: string) {
     window.open(
       strPURL,
       'printWindow',
@@ -31,7 +31,7 @@ const main = function (ruleContext: RuleContext) {
   ruleContext.markRouteExecuteUnAuto()
   let scopeId = ScopeManager.getCurrentScopeId()
   let ruleCfgValue = ruleContext.getRuleCfg()
-  let ruleConfig:any
+  let ruleConfig: any
   ruleConfig = _getConfig(ruleCfgValue['inParams'], ruleContext)
   let inParamsObj = JSON.parse(ruleCfgValue['inParams'])
   let cfg = inParamsObj['curTemplate']['datas']['values'][0]
@@ -54,7 +54,7 @@ const main = function (ruleContext: RuleContext) {
 }
 
 //获取打印机序号
-let getPrinterIndex = function (printer:any, printerName:string) {
+let getPrinterIndex = function (printer: any, printerName: string) {
   if (printerName != '') {
     let count = printer.GET_PRINTER_COUNT()
     for (let i = 0; i < count; i++) {
@@ -68,7 +68,7 @@ let getPrinterIndex = function (printer:any, printerName:string) {
 }
 
 // 获取打印机所支持的所有纸张
-let getPrinterPapers = function (printer:any, printerName:string) {
+let getPrinterPapers = function (printer: any, printerName: string) {
   let pageSizeList
   if (printerName != '') {
     printer.SET_PRINTER_INDEXA(printerName) //设置打印机
@@ -81,8 +81,8 @@ let getPrinterPapers = function (printer:any, printerName:string) {
 }
 
 // 获取纸张名称
-let getPaperName = function (paperSize:number) {
-  let paperNames:{[code:string]:any} = {
+let getPaperName = function (paperSize: number) {
+  let paperNames: { [code: string]: any } = {
     'null': 'A4',
     '8': 'A3',
     '11': 'A5',
@@ -93,7 +93,7 @@ let getPaperName = function (paperSize:number) {
   return paperSize1
 }
 
-let printDataConvert = function (printer:any, cfg:any, offset:any) {
+let printDataConvert = function (printer: any, cfg: any, offset: any) {
   // 服务器类型
   let serverHostType = cfg['serverHostType']
   // 打印机名称
@@ -115,7 +115,7 @@ let printDataConvert = function (printer:any, cfg:any, offset:any) {
   let array = datasource.getAllRecords().toArray()
   // 打印比例
   let zoomScale = 100
-  let map:{[code:string]:any} = {}
+  let map: { [code: string]: any } = {}
   for (let i = 0; i < array.length; i++) {
     let objs = array[i].getOriginalData()[resultContentField]
     let obj = JSON.parse(objs)
@@ -143,7 +143,7 @@ let printDataConvert = function (printer:any, cfg:any, offset:any) {
     return
   }
 
-  let printReportTimer:any = null
+  let printReportTimer: any = null
   //最大重试次数
   let printReportMaxTime = 50
   //当前重试次数
@@ -350,13 +350,19 @@ let printDataConvert = function (printer:any, cfg:any, offset:any) {
   doPrintReport()
 }
 
-let getHost = function (path:string) {
+let getHost = function (path: string) {
   let _host =
     window.location.protocol + '//' + window.location.host + '/' + path
   return _host
 }
 
-let addImg = function (printer:any, imgs:any, tableIndex:any, tMargin:any, lMargin:any) {
+let addImg = function (
+  printer: any,
+  imgs: any,
+  tableIndex: any,
+  tMargin: any,
+  lMargin: any
+) {
   if (imgs == null) {
     return
   }
@@ -401,7 +407,11 @@ let addImg = function (printer:any, imgs:any, tableIndex:any, tMargin:any, lMarg
   }
 }
 
-let _checkAndExecutePrint = function (scopeId:string, waitTime:number, ruleContext:RuleContext) {
+let _checkAndExecutePrint = function (
+  scopeId: string,
+  waitTime: number,
+  ruleContext: RuleContext
+) {
   setTimeout(function () {
     waitTime += 100
     if (isLoaded === false && waitTime <= 3000) {
@@ -442,11 +452,11 @@ let _isWebSocketReady = function () {
   }
 }
 
-let _executePrint = function (ruleContext:RuleContext) {
+let _executePrint = function (ruleContext: RuleContext) {
   let ruleCfgValue = ruleContext.getRuleCfg()
   let inParams = ruleCfgValue['inParams']
   // 原始格式转换，原始格式请参考jsonschema.PrinterOperation.json
-  let ruleConfig:any = _getConfig(ruleCfgValue['inParams'], ruleContext)
+  let ruleConfig: any = _getConfig(ruleCfgValue['inParams'], ruleContext)
   if (ruleConfig.printType == 'test') {
     _test(ruleConfig, ruleContext)
   } else {
@@ -458,13 +468,23 @@ let _executePrint = function (ruleContext:RuleContext) {
 /**
  * 转换规则配置的数据格式，详细格式请参考jsonschema.PrinterOperation.json
  */
-let _getConfig = function (inParams:any, ruleContext:RuleContext) {
+let _getConfig = function (inParams: any, ruleContext: RuleContext) {
   if (undefined == inParams || null == inParams) return null
   let params = null
   if (typeof inParams == 'string') params = jsonUtil.json2obj(inParams)
   else params = inParams
 
-  let data:{[code:string]:any} = {customType:'',printType:'',templatePath:'',mappingList:{},entityMappingList:{},sourceEntityList:{},serviceHost:'',printerName:'',offset:''}
+  let data: { [code: string]: any } = {
+    customType: '',
+    printType: '',
+    templatePath: '',
+    mappingList: {},
+    entityMappingList: {},
+    sourceEntityList: {},
+    serviceHost: '',
+    printerName: '',
+    offset: ''
+  }
 
   //get printType
   data.printType = params.printType
@@ -592,7 +612,7 @@ let _getConfig = function (inParams:any, ruleContext:RuleContext) {
 }
 
 //解析打印机名称
-let _getPrinterName = function (printerName:string) {
+let _getPrinterName = function (printerName: string) {
   let reg = new RegExp('^".+?"$')
   if (reg.test(printerName)) {
     return printerName.replaceAll('\\', '\\\\') //需要时再替换回：data.printerName.replaceAll("\\\\",'\\');
@@ -608,7 +628,7 @@ let _getDPI = function () {
     //@ts-ignore
     dpi = window.screen.deviceXDPI
   } else {
-    let tmpNode:any = document.createElement('DIV')
+    let tmpNode: any = document.createElement('DIV')
     tmpNode.style.cssText =
       'width:1in;height:1in;position:absolute;left:0px;top:0px;z-index:99;visibility:hidden'
     document.body.appendChild(tmpNode)
@@ -618,7 +638,7 @@ let _getDPI = function () {
   return dpi
 }
 
-let _mm2px = function (mm:any) {
+let _mm2px = function (mm: any) {
   // 1mm = 0.039inch
   let mm_inch = 0.04
   let inch = mm * mm_inch
@@ -633,7 +653,7 @@ let _mm2px = function (mm:any) {
  * 转换前：abc<br>
  * 转换后："abc"
  */
-let _getExpression = function (exp:any) {
+let _getExpression = function (exp: any) {
   exp = exp.toString()
   if (exp.indexOf('"') == 0 && exp.lastIndexOf('"') == exp.length - 1)
     return exp
@@ -643,12 +663,16 @@ let _getExpression = function (exp:any) {
 /**
  * 获取打印模板
  */
-let _getTemplate = function (path:string, ruleConfig:any, ruleContext:RuleContext) {
+let _getTemplate = function (
+  path: string,
+  ruleConfig: any,
+  ruleContext: RuleContext
+) {
   let inputParams = {
     path: path
   }
   let scopeId = ScopeManager.getCurrentScopeId()
-  let callback = function (responseObj:any) {
+  let callback = function (responseObj: any) {
     let printView = jsonUtil.json2obj(responseObj.template)
     if (printView == null) {
       dialogUtil.propmtDialog('未获取打印模板！\n', null, false, 3)
@@ -657,11 +681,11 @@ let _getTemplate = function (path:string, ruleConfig:any, ruleContext:RuleContex
 
     // 如果表达式中有使用函数，则先加载函数依赖
     if (printView && printView.funcs && printView.funcs.length > 0) {
-      let sandbox:any
+      let sandbox: any
       sandbox = sandbox.create({
         extensions: printView.funcs
       })
-      sandbox.active().done(function (sbox:any) {
+      sandbox.active().done(function (sbox: any) {
         ScopeManager.openScope(scopeId)
         try {
           _print(printView, ruleConfig, ruleContext)
@@ -694,8 +718,11 @@ let _getTemplate = function (path:string, ruleConfig:any, ruleContext:RuleContex
 /**
  * 获取模板需要的数据
  */
-let _getData = function (entityMappingList:{[code:string]:any}, mappingList:{[code:string]:any}) {
-  let data:{[code:string]:any} = {}
+let _getData = function (
+  entityMappingList: { [code: string]: any },
+  mappingList: { [code: string]: any }
+) {
+  let data: { [code: string]: any } = {}
 
   for (let templateEntity in entityMappingList) {
     let datasource = DatasourceManager.lookup({
@@ -740,8 +767,12 @@ let _getData = function (entityMappingList:{[code:string]:any}, mappingList:{[co
   return data
 }
 
-let _getMappingData = function (entity:any, sourceData:{[code:string]:any}, mappingList:{[code:string]:any}) {
-  let data:{[code:string]:any} = {}
+let _getMappingData = function (
+  entity: any,
+  sourceData: { [code: string]: any },
+  mappingList: { [code: string]: any }
+) {
+  let data: { [code: string]: any } = {}
   let entityMap = mappingList[entity]
 
   for (let field in entityMap) {
@@ -760,13 +791,13 @@ let _getMappingData = function (entity:any, sourceData:{[code:string]:any}, mapp
 /**
  * 根据打印模板生成打印预览或
  */
-let _print = function (pv:any, ruleConfig:any, ruleContext:RuleContext) {
+let _print = function (pv: any, ruleConfig: any, ruleContext: RuleContext) {
   let template = pv.template
   let mappingList = ruleConfig.mappingList
   let entityMappingList = ruleConfig.entityMappingList
   let sourceEntityList = ruleConfig.sourceEntityList
   let data = _getData(entityMappingList, mappingList)
-  function convertChar(entityValue:any) {
+  function convertChar(entityValue: any) {
     if (
       entityValue == undefined ||
       entityValue == 'undefined' ||
@@ -858,7 +889,10 @@ let isIESupportWebScoket = function () {
 }
 
 //预览或直接打印
-let _printOrPreviewBegin = function (ruleConfig:any, ruleContext:RuleContext) {
+let _printOrPreviewBegin = function (
+  ruleConfig: any,
+  ruleContext: RuleContext
+) {
   let printType = ruleConfig.printType
   let serviceHost = ruleConfig.serviceHost
 
@@ -911,7 +945,7 @@ let _printOrPreviewBegin = function (ruleConfig:any, ruleContext:RuleContext) {
 
     ruleContext.fireRouteCallback()
   } else {
-    let checkStateTimer:any = null
+    let checkStateTimer: any = null
     let maxCheckTime = 50
     let seq = 0
     let checkState = function () {
@@ -943,7 +977,7 @@ let _printOrPreviewBegin = function (ruleConfig:any, ruleContext:RuleContext) {
 }
 
 //直接打印
-let _printBegin = function (ruleConfig:any, ruleContext:RuleContext) {
+let _printBegin = function (ruleConfig: any, ruleContext: RuleContext) {
   let printType = ruleConfig.printType
   let serviceHost = ruleConfig.serviceHost
 
@@ -962,7 +996,7 @@ let _printBegin = function (ruleConfig:any, ruleContext:RuleContext) {
  * 生成偏移测试打印预览<br>
  * 在画布中画出一个20mm*20mm的矩形，x,y坐标都是0
  */
-let _test = function (ruleConfig:any, ruleContext:RuleContext) {
+let _test = function (ruleConfig: any, ruleContext: RuleContext) {
   printer.PRINT_INIT('')
   printer.SET_SHOW_MODE('NP_NO_RESULT', true)
   printer.ADD_PRINT_RECT('0mm', '0mm', '50.01mm', '50.01mm', 0, 1)
@@ -1002,7 +1036,7 @@ let _test = function (ruleConfig:any, ruleContext:RuleContext) {
 /**
  * 生成打印视图
  */
-let _genPrintView2 = function (template:any, data:Date) {
+let _genPrintView2 = function (template: any, data: Date) {
   printer.PRINT_INITA(10, 10, 762, 533, '')
   printer.SET_PRINT_STYLE('FontColor', '#0000FF')
   printer.ADD_PRINT_SHAPE(2, 116, 43, 655, 373, 0, 1, '#800000')
@@ -1168,8 +1202,8 @@ let _genPrintView2 = function (template:any, data:Date) {
   printer.ADD_PRINT_TEXT(191, 58, 100, 20, '国内漫游通话')
 }
 
-let createCLodopJSscript = function (strSrc:any) {
-  let ScriptSS:any = document.getElementsByTagName('script')
+let createCLodopJSscript = function (strSrc: any) {
+  let ScriptSS: any = document.getElementsByTagName('script')
   for (let i in ScriptSS) {
     if (ScriptSS[i].src && ScriptSS[i].src.indexOf('CLodopfuncs.js') >= 0) {
       if (ScriptSS[i].parentNode)
@@ -1191,7 +1225,7 @@ let createCLodopJSscript = function (strSrc:any) {
 }
 
 //打印地址有效性验证
-let _checkRemoteUrl = function (url:string) {
+let _checkRemoteUrl = function (url: string) {
   let result = false
   let strRegex =
     '^((https|http|ftp|rtsp|mms)?://)' +
@@ -1213,7 +1247,7 @@ let _checkRemoteUrl = function (url:string) {
 }
 
 //非http开头自动补全
-let _checkHttpRemoteUrl = function (urlStr:string) {
+let _checkHttpRemoteUrl = function (urlStr: string) {
   if (urlStr.length > 0) {
     if (urlStr.indexOf('http://') != 0) {
       urlStr = 'http://' + urlStr
@@ -1224,7 +1258,7 @@ let _checkHttpRemoteUrl = function (urlStr:string) {
 }
 
 //非/结尾自动补全
-let _checkSpritRemoteUrl = function (urlStr:string) {
+let _checkSpritRemoteUrl = function (urlStr: string) {
   if (urlStr.length > 0) {
     let str = urlStr.charAt(urlStr.length - 1)
     if (str != '/') {
@@ -1234,7 +1268,11 @@ let _checkSpritRemoteUrl = function (urlStr:string) {
   return urlStr
 }
 
-let getDatasource = function (ruleContext:RuleContext, resultEntity:any, resultEntityType:string) {
+let getDatasource = function (
+  ruleContext: RuleContext,
+  resultEntity: any,
+  resultEntityType: string
+) {
   let datasource
   if (resultEntityType == 'entity') {
     datasource = DatasourceManager.lookup({ datasourceName: resultEntity })
@@ -1250,11 +1288,11 @@ let getDatasource = function (ruleContext:RuleContext, resultEntity:any, resultE
 
 //获取远程打印服务
 let _getRemotePrinter2 = function (
-  ruleConfig:any,
-  ruleContext:RuleContext,
-  cfg:any,
-  offset:any,
-  printType:string
+  ruleConfig: any,
+  ruleContext: RuleContext,
+  cfg: any,
+  offset: any,
+  printType: string
 ) {
   let serviceHost = cfg['serviceHost']
   let serverHostType = cfg['serverHostType']
@@ -1365,7 +1403,7 @@ let _getRemotePrinter2 = function (
 }
 
 //打印模板
-let _getRemotePrinter = function (ruleConfig:any, ruleContext:RuleContext) {
+let _getRemotePrinter = function (ruleConfig: any, ruleContext: RuleContext) {
   printer = null
 
   let loadFunjs = 'CLodopfuncs.js'
@@ -1399,12 +1437,12 @@ let _getRemotePrinter = function (ruleConfig:any, ruleContext:RuleContext) {
       //@ts-ignore
       if (typeof LODOP === 'undefined' || !LODOP || !LODOP.VERSION) {
         _showRemoteAndLocalPrinterInstallTips(host)
-      //@ts-ignore
+        //@ts-ignore
       } else if (LODOP.VERSION !== '6.2.2.1') {
         // 检查版本， 提示用户升级打印插件
         _showPrinterUpdateTips(host)
       } else {
-      //@ts-ignore
+        //@ts-ignore
         printer = LODOP
         _lodopRegister(printer)
         _executePrint(ruleContext)
@@ -1415,7 +1453,7 @@ let _getRemotePrinter = function (ruleConfig:any, ruleContext:RuleContext) {
   })
 }
 
-let _lodopRegister = function (printer:any) {
+let _lodopRegister = function (printer: any) {
   printer.SET_LICENSES(
     '同望科技股份有限公司',
     '227D7CB7AB0D5C4BECD8D05CDF543847',
@@ -1451,7 +1489,7 @@ let _showPrinterInstallTips = function () {
   $('body').append($tips)
 }
 
-let _showRemoteAndLocalPrinterInstallTips = function (serviceHost:string) {
+let _showRemoteAndLocalPrinterInstallTips = function (serviceHost: string) {
   if (!serviceHost) serviceHost = ''
 
   let $tips = $(
@@ -1479,7 +1517,7 @@ let _showRemoteAndLocalPrinterInstallTips = function (serviceHost:string) {
   $('body').append($tips)
 }
 
-let _showPrinterUpdateTips = function (serviceHost:string) {
+let _showPrinterUpdateTips = function (serviceHost: string) {
   if (!serviceHost) serviceHost = ''
 
   let $tips = $(
@@ -1503,7 +1541,7 @@ let _showPrinterUpdateTips = function (serviceHost:string) {
 /**
  * 获取打印控件，该函数由Lodop提供
  */
-let _getPrinter = function (oOBJECT:any, oEMBED:any) {
+let _getPrinter = function (oOBJECT: any, oEMBED: any) {
   let CreatedOKLodop7766 = null
   let strHtmInstall =
     "<font color='#FF00FF'>打印控件未安装!点击这里<a href='itop/common/install_lodop32.exe' target='_self'>执行安装</a>,安装后请刷新页面或重新进入。</font>"

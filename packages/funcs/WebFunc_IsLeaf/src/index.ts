@@ -1,15 +1,31 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 /**
  * 判断树的节点是否是叶子节点。
  *
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
+
+interface treeStructVal {
+  type?: string
+  pidField?: string
+  treeCodeField?: string
+  orderField?: string
+  isLeafField?: string
+  leftField?: string
+  rightField?: string
+  bizCodeField?: string
+  bizCodeFormat?: string
+}
 const vds = { object, ds, exception, string, tree }
 
-const main = function (dataSourceName, nodeId, treeStructCfgStr) {
+const main = function (
+  dataSourceName: string,
+  nodeId: string,
+  treeStructCfgStr: any
+) {
   // 示例：IsLeaf("datasourceName", "ID", "type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField")
   var treeStructCfgObj = parseCfgObj(treeStructCfgStr)
 
@@ -34,7 +50,7 @@ const main = function (dataSourceName, nodeId, treeStructCfgStr) {
   // 业务过滤字段
   var busiFilterField = getPropertyValue(treeStructCfgObj, 'busiFilterField')
 
-  var treeStruct = {}
+  var treeStruct: treeStructVal = {}
   if ('1' == type) {
     if (vds.object.isUndefOrNull(pidField))
       throw vds.exception.newConfigException(
@@ -121,7 +137,7 @@ const main = function (dataSourceName, nodeId, treeStructCfgStr) {
   }
 
   try {
-    var treeViewModel = vds.tree.lookup(dataSourceName, treeStruct)
+    var treeViewModel: any = vds.tree.lookup(dataSourceName, treeStruct)
     var children = treeViewModel.getNodeById(nodeId)
     return children.isLeaf()
   } catch (e) {
@@ -130,7 +146,7 @@ const main = function (dataSourceName, nodeId, treeStructCfgStr) {
 }
 export { main }
 
-var getPropertyValue = function (obj, propertyName) {
+var getPropertyValue = function (obj: any, propertyName: string) {
   if (vds.object.isUndefOrNull(obj) || vds.object.isUndefOrNull(propertyName))
     return null
   for (var propName in obj) {
@@ -140,7 +156,7 @@ var getPropertyValue = function (obj, propertyName) {
   return null
 }
 
-var parseCfgObj = function (cfgStr) {
+var parseCfgObj = function (cfgStr: string) {
   // "type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField"
   if (vds.object.isUndefOrNull(cfgStr))
     throw vds.exception.newConfigException(
@@ -153,7 +169,7 @@ var parseCfgObj = function (cfgStr) {
       'isLeaf函数的第3个参数(树配置信息)格式错误:' + cfgStr
     )
 
-  var cfgObj = {}
+  var cfgObj: any = {}
   for (var i = 0; i < pairs.length; i++) {
     var t = vds.string.trim(pairs[i])
     if (vds.object.isUndefOrNull(t))

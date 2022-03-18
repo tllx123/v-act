@@ -1,21 +1,22 @@
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 /**
  *	流水号函数
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+
 const vds = { object, rpc, exception }
 
 const main = function (
-  TableName,
-  TableColumn,
-  prefix,
-  Length,
-  CoverLetter,
-  likeValStr,
-  subLength,
-  isLeftSubFlag,
-  isReuseSerialNumber
+  TableName: string,
+  TableColumn: any,
+  prefix: any,
+  Length: string,
+  CoverLetter: any,
+  likeValStr: string,
+  subLength: string,
+  isLeftSubFlag: boolean,
+  isReuseSerialNumber: boolean
 ) {
   if (
     vds.object.isUndefOrNull(TableName) ||
@@ -42,15 +43,15 @@ const main = function (
 export { main }
 
 var executeExpression = function (
-  TableName,
-  TableColumn,
-  prefix,
-  Length,
-  CoverLetter,
-  likeValStr,
-  subLength,
-  isLeftSubFlag,
-  isReuseSerialNumber
+  TableName: string,
+  TableColumn: any,
+  prefix: any,
+  Length: string,
+  CoverLetter: any,
+  likeValStr: string,
+  subLength: string,
+  isLeftSubFlag: boolean,
+  isReuseSerialNumber: boolean
 ) {
   var expression =
       'GetSerialNumberFunc("' +
@@ -78,10 +79,10 @@ var executeExpression = function (
   vds.rpc.callCommandSync('WebExecuteFormulaExpression', null, {
     isOperation: true,
     operationParam: paramData,
-    success: function (rs) {
+    success: function (rs: any) {
       result = rs.data.result
     },
-    fail: function (e) {
+    fail: function (e: any) {
       throw e
     }
   })

@@ -1,15 +1,17 @@
-let TaffyDB = function () {
-  this.indexData = {}
-  this.datas = []
-  this.primaryKey = 'id'
+interface obj {
+  [key: string]: any
 }
 
-TaffyDB.prototype = {
-  /**
-   * 加载数据
-   *
-   */
-  _load: function (datas, isAppend) {
+class TaffyDB {
+  constructor(
+    public indexData: obj = {},
+    public datas: Array<any> = [],
+    public primaryKey = 'id'
+  ) {
+    return this
+  }
+
+  _load(datas: Array<any>, isAppend: boolean) {
     if (!isAppend) {
       this.datas.splice(0, this.datas.length)
       this.indexData = {}
@@ -20,13 +22,13 @@ TaffyDB.prototype = {
       this.indexData[data[this.primaryKey]] = data
       this.datas.push(data)
     }
-  },
+  }
 
-  _getPrimaryKey: function (idstr) {
+  _getPrimaryKey(idstr: string) {
     this.primaryKey = idstr
-  },
+  }
 
-  _insert: function (records, index) {
+  _insert(records: Array<any>, index: number) {
     let datas = []
     for (let i = 0; i < records.length; i++) {
       let record = records[i]
@@ -37,25 +39,16 @@ TaffyDB.prototype = {
       record._setOriginalData(data)
     }
     if (typeof index == 'number' && index != -1) {
-      let param = [index, 0]
+      let param: any = [index, 0]
       param = param.concat(datas)
       this.datas.splice.apply(this.datas, param)
     } else {
       this.datas.push.apply(this.datas, datas)
     }
-    //			for(var i=0;i<records.length;i++){
-    //				var record=records[i];
-    //				var data = record.toMap();
-    //				datas.push(data);
-    //				this.datas.push(data);
-    //	//			同时把数据插入到indexData中
-    //				this.indexData[data[this.primaryKey]]=data;
-    //				record._setOriginalData(data);
-    //			}
     return datas
-  },
+  }
 
-  _update: function (records) {
+  _update(records: Array<any>) {
     let oldDatas = []
     for (let i = 0; i < records.length; i++) {
       let record = records[i]
@@ -64,9 +57,7 @@ TaffyDB.prototype = {
       if (!data) {
         throw Error('[TaffyDB.update]未找到更新记录! 记录id:' + id)
       }
-
       oldDatas.push(Object.create(data))
-
       let changeDatas = record.getChangedData()
       for (let field in changeDatas) {
         if (changeDatas.hasOwnProperty(field)) {
@@ -77,9 +68,9 @@ TaffyDB.prototype = {
       this.indexData[data[this.primaryKey]] = data
     }
     return oldDatas
-  },
+  }
 
-  _remove: function (ids) {
+  _remove(ids: Array<string>) {
     let removeDatas = []
     for (let i = 0, l = ids.length; i < l; i++) {
       let id = ids[i]
@@ -94,38 +85,39 @@ TaffyDB.prototype = {
       }
     }
     return removeDatas
-  },
+  }
 
-  _getById: function (id) {
+  _getById(id: string) {
     let rs = this.indexData[id]
     return rs
-  },
+  }
 
-  _getByIndex: function (index) {
+  _getByIndex(index: number) {
     if (index <= this.datas.length) {
       return this.datas[index]
     } else {
       return null
     }
-  },
+  }
 
-  _getAll: function () {
+  _getAll() {
     return this.datas
-  },
+  }
 
-  _getIndex: function (id) {
-    let records = this.datas
+  _getIndex(id: string) {
+    let records: any = this.datas
+    let primaryKey = this.primaryKey
     if (records) {
       for (let i = 0, l = records.length; i < l; i++) {
-        if (records[i][this.primaryKey] == id) {
+        if (records[i][primaryKey] == id) {
           return i
         }
       }
     }
     return -1
-  },
+  }
 
-  _query: function (criteria) {
+  _query(criteria: any) {
     let querydata = []
     //拿到该对象的查询条件,返回的是Operator对象数组
     let OperatorArr = criteria.getConditions()
@@ -157,8 +149,8 @@ TaffyDB.prototype = {
       }
     }
     return querydata
-  },
-  getNextRecordId: function (ids) {
+  }
+  getNextRecordId() {
     return null
   }
 }
@@ -167,7 +159,7 @@ TaffyDB.prototype = {
  *
  * @param {Object} input
  */
-let unSerialize = function (input) {
+let unSerialize = function (input: any) {
   //			var dataSourceName = input.dataSource;
   //			var dataCfg = input.datas;
   //			var metadataCfg = input.metadata;
@@ -184,7 +176,7 @@ let DB = function () {
   return new TaffyDB()
 }
 
-let isDB = function (db) {
+let isDB = function (db: any) {
   return db instanceof TaffyDB
 }
 
@@ -192,14 +184,4 @@ const getConstructor = function () {
   return TaffyDB
 }
 
-export {
-  initModule,
-  DB,
-  unSerialize,
-  isDB,
-  getConstructor,
-  DB,
-  unSerialize,
-  isDB,
-  getConstructor
-}
+export { DB, unSerialize, isDB, getConstructor }

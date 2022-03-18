@@ -1,8 +1,9 @@
 /*var viewContext = require("system/view/viewContext");
  var viewModel = require("system/view/viewModel");
  var logUtil = require("system/util/logUtil");*/
-let sandBox
-export function initModule(sBox) {
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+let sandBox: any
+export function initModule(sBox: any) {
   sandBox = sBox
 }
 
@@ -27,7 +28,7 @@ let bind = function () {
 /**
  *	handler对象生成器
  */
-let _handlerCreator = function (widgetType) {
+let _handlerCreator = function (widgetType: string) {
   return sandBox.getService(
     'vjs.framework.extension.ui.plugin.' +
       widgetType +
@@ -45,7 +46,13 @@ let _handlerCreator = function (widgetType) {
  *	@param	valueAccessor	控件值存储器
  *	@param	widgetType	控件类型
  */
-let _action = function (action, widgetType, element, valueAccessor, code) {
+let _action = function (
+  action: any,
+  widgetType: string,
+  element: any,
+  valueAccessor: any,
+  code: string
+) {
   let handler = _handlerCreator(widgetType)
   //如果不存在处理对象,则用默认处理对象
   let existHandler = true
@@ -91,7 +98,12 @@ let _action = function (action, widgetType, element, valueAccessor, code) {
  *	@param	valueAccessor	控件值存储器
  *	@param	widgetType	控件类型
  */
-let _init = function (widgetType, element, valueAccessor, code) {
+let _init = function (
+  widgetType: string,
+  element: any,
+  valueAccessor: any,
+  code: string
+) {
   return _action('init', widgetType, element, valueAccessor, code)
 }
 
@@ -101,7 +113,12 @@ let _init = function (widgetType, element, valueAccessor, code) {
  *	@param	valueAccessor	控件值存储器
  *	@param	widgetType	控件类型
  */
-let _update = function (widgetType, element, valueAccessor, code) {
+let _update = function (
+  widgetType: string,
+  element: any,
+  valueAccessor: any,
+  code: string
+) {
   return _action('update', widgetType, element, valueAccessor, code)
 }
 

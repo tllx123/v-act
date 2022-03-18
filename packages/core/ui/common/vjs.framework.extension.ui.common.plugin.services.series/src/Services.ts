@@ -1,12 +1,12 @@
 import { ScopeManager as ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let sandbox
+let sandbox: any
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
-let getService = function (serviceName) {
+let getService = function (serviceName: string) {
   let widgetSeries = ScopeManager.getProperty('type')
   let service = sandbox.getService(serviceName, { type: widgetSeries })
   if (service == null) {
@@ -21,4 +21,4 @@ let getService = function (serviceName) {
   return service
 }
 
-export { getSeries, getService }
+export { getService }

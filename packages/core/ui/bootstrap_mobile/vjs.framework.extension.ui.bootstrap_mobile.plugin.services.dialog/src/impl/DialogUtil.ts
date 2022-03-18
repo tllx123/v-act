@@ -1,6 +1,6 @@
-let sandbox, dialogService
+let sandbox, dialogService: any
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   if (sb) {
     sandbox = sb
     dialogService = sandbox.getService(
@@ -14,7 +14,11 @@ export function initModule(sb) {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   return dialogService.confirmDialog(content, responseCallBackFunc)
 }
 /**
@@ -22,7 +26,11 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let propmtDialog = function (content, responseCallBackFunc, isUseDefault) {
+let propmtDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.propmtDialog(content, responseCallBackFunc)
 }
 /**
@@ -30,7 +38,11 @@ let propmtDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.errorDialog(content, responseCallBackFunc)
 }
 /**
@@ -38,7 +50,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.warnDialog(content, responseCallBackFunc)
 }
 /**
@@ -46,7 +62,11 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.infoDialog(content, responseCallBackFunc)
 }
 

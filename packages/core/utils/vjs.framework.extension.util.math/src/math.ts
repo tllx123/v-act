@@ -1,12 +1,18 @@
-import { log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 ;(function () {
   var y = (function () {
       function h() {
+        // @ts-ignore
         this.form = this.digits = 0
+        // @ts-ignore
         this.lostDigits = !1
+        // @ts-ignore
         this.roundingMode = 0
+        // @ts-ignore
         var v = this.DEFAULT_FORM,
+          // @ts-ignore
           r = this.DEFAULT_LOSTDIGITS,
+          // @ts-ignore
           f = this.DEFAULT_ROUNDINGMODE
         if (4 == h.arguments.length)
           (v = h.arguments[1]), (r = h.arguments[2]), (f = h.arguments[3])
@@ -20,17 +26,26 @@ import { log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
             ' arguments given; expected 1 to 4'
           )
         var t = h.arguments[0]
+        // @ts-ignore
         if (t != this.DEFAULT_DIGITS) {
+          // @ts-ignore
           if (t < this.MIN_DIGITS) throw 'MathContext(): Digits too small: ' + t
+          // @ts-ignore
           if (t > this.MAX_DIGITS) throw 'MathContext(): Digits too large: ' + t
         }
+        // @ts-ignore
         if (v != this.SCIENTIFIC && v != this.ENGINEERING && v != this.PLAIN)
           throw 'MathContext() Bad form value: ' + v
+        // @ts-ignore
         if (!this.isValidRound(f))
           throw 'MathContext(): Bad roundingMode value: ' + f
+        // @ts-ignore
         this.digits = t
+        // @ts-ignore
         this.form = v
+        // @ts-ignore
         this.lostDigits = r
+        // @ts-ignore
         this.roundingMode = f
       }
       h.prototype.getDigits = function () {
@@ -1417,7 +1432,11 @@ let multiply = function (arg1, arg2) {
  *            arg3 需要保留的小数位数
  * @return {String} 运算结果
  */
-let divide = function (arg1, arg2, arg3) {
+let divide = function (
+  arg1: string | number,
+  arg2: string | number,
+  arg3?: string | number
+) {
   let a1 = new BigDecimal(processValue(arg1).toString())
   if (processValue(arg2) == '0') {
     throw Error('数值计算有误, 除数不能为0')
@@ -1435,7 +1454,7 @@ let divide = function (arg1, arg2, arg3) {
  *            arg1 数字
  * @return {Boolean} 是否数字
  */
-let isNum = function (arg1) {
+let isNum = function (arg1: string): boolean {
   let re = /^(\+|-)?\d+(?:\.\d+)?$/
   return re.test(arg1)
 }
@@ -1457,14 +1476,14 @@ let getE = function () {
 /**
  * 获取整数商
  */
-let divrem = function (arg1, arg2) {
+let divrem = function (arg1: number, arg2: number): number {
   return truncate(divide(arg1, arg2))
 }
 
 /**
  * 获取余数
  */
-let getRemainder = function (arg1, arg2) {
+let getRemainder = function (arg1: number, arg2: number): number {
   return arg1 % arg2
 }
 
@@ -1475,36 +1494,36 @@ let getRemainder = function (arg1, arg2) {
  *            arg1 数字
  * @return {Boolean} 数字的绝对值
  */
-let abs = function (arg1) {
+let abs = function (arg1: number) {
   return new BigDecimal('' + arg1).abs().toString()
 }
 
 /**
  * 返回数的反余弦值
  */
-let acos = function (arg) {
+let acos = function (arg: number): number {
   return radianToAngle(Math.acos(arg))
 }
 
 /**
  * 返回数的反正弦值
  */
-let asin = function (arg) {
+let asin = function (arg: number): number {
   return radianToAngle(Math.asin(arg))
 }
 
 /**
  * 以介于 -PI/2 与 PI/2 弧度之间的数值来返回反正切值
  */
-let atan = function (arg) {
+let atan = function (arg: number): number {
   return radianToAngle(Math.atan(arg))
 }
 
 /**
  * 返回从 x 轴到点 (x,y) 的角度（介于 -PI/2 与 PI/2 弧度之间）
  */
-let atan2 = function (arg) {
-  return radianToAngle(Math.atan2(arg))
+let atan2 = function (arg: number, arg2: number): number {
+  return radianToAngle(Math.atan2(arg, arg2))
 }
 
 /**
@@ -1514,7 +1533,7 @@ let atan2 = function (arg) {
  *            arg1 数字
  * @return {Boolean} 向上取整的数字
  */
-let ceil = function (arg1) {
+let ceil = function (arg1: number): number {
   let result = new BigDecimal('' + arg1).setScale(
     0,
     BigDecimal.prototype.ROUND_CEILING
@@ -1525,14 +1544,14 @@ let ceil = function (arg1) {
 /**
  * 返回数的余弦
  */
-let cos = function (arg) {
+let cos = function (arg: number): number {
   return Math.cos(angleToRadian(arg))
 }
 
 /**
  * 返回 e 的指数
  */
-let exp = function (arg) {
+let exp = function (arg: number): number {
   return Math.exp(arg)
 }
 
@@ -1543,7 +1562,7 @@ let exp = function (arg) {
  *            arg1 数字
  * @return {Boolean} 向下取整的数字
  */
-let floor = function (arg1) {
+let floor = function (arg1: number): number {
   let result = new BigDecimal('' + arg1).setScale(
     0,
     BigDecimal.prototype.ROUND_FLOOR
@@ -1554,28 +1573,28 @@ let floor = function (arg1) {
 /**
  * 返回数的自然对数（底为e）
  */
-let log = function (arg) {
+let log = function (arg: number): number {
   return Math.log(arg)
 }
 
 /**
  * 返回两个数的最大值
  */
-let max = function (arg1, arg2) {
+let max = function (arg1: number, arg2: number): number {
   return Math.max(arg1, arg2)
 }
 
 /**
  * 返回两个数的最小值
  */
-let min = function (arg1, arg2) {
+let min = function (arg1: number, arg2: number): number {
   return Math.min(arg1, arg2)
 }
 
 /**
  * 返回 x 的 y 次幂
  */
-let pow = function (arg1, arg2) {
+let pow = function (arg1: number, arg2: number): number {
   let result = new BigDecimal('' + arg1).pow(new BigDecimal('' + arg2))
   return Number(result.toString())
 }
@@ -1583,7 +1602,7 @@ let pow = function (arg1, arg2) {
 /**
  * 返回 0 ~ 1 之间的随机数。
  */
-let random = function () {
+let random = function (): number {
   return Math.random()
 }
 
@@ -1594,7 +1613,7 @@ let random = function () {
  *            arg1 数字
  * @return {Boolean} 四舍五入后的整数
  */
-let round = function (arg1) {
+let round = function (arg1: number): number {
   let result = new BigDecimal('' + arg1).setScale(
     0,
     BigDecimal.prototype.ROUND_HALF_UP
@@ -1605,28 +1624,28 @@ let round = function (arg1) {
 /**
  * 返回数的正弦
  */
-let sin = function (arg) {
+let sin = function (arg: number): number {
   return Math.sin(angleToRadian(arg))
 }
 
 /**
  * 返回数的平方根
  */
-let sqrt = function (arg) {
+let sqrt = function (arg: number): number {
   return Math.sqrt(arg)
 }
 
 /**
  * 返回数的正切
  */
-let tan = function (arg) {
+let tan = function (arg: number): number {
   return Math.tan(angleToRadian(arg))
 }
 
 /**
  * 判断是否数字
  */
-let judgeNum = function (arg) {
+let judgeNum = function (arg: any): boolean {
   //xiedh 传递数字时，判断不正确  2017-07-21
   /*var re = /^(\+|-)?\d+(?:\.\d+)?$/;
     return re.test(arg);*/
@@ -1636,7 +1655,7 @@ let judgeNum = function (arg) {
 /**
  * 判断是否数字(非正则表达式方法)
  */
-let judgeNumExt = function (arg) {
+let judgeNumExt = function (arg: any): boolean {
   if (arg == null || typeof arg == 'undefined' || arg === '') {
     return false
   }
@@ -1648,9 +1667,9 @@ let judgeNumExt = function (arg) {
 /**
  * 判断是否整数
  */
-let judgeInt = function (arg) {
+let judgeInt = function (arg: number | string): boolean {
   let re = /^(\+|-)?\d+$/
-  return re.test(arg)
+  return re.test(String(arg))
 }
 
 /**
@@ -1772,7 +1791,7 @@ let toDate = function (arg) {
 }
 
 // 格式化日期 yyyy-MM-dd
-let dateFormat = function (date) {
+let dateFormat = function (date: any): string {
   let myyear = date.getFullYear()
   let mymonth = date.getMonth() + 1
   let myweekday = date.getDate()
@@ -1786,7 +1805,7 @@ let dateFormat = function (date) {
 }
 
 // 格式化时间 HH:mm:ss
-let timeFormat = function (date) {
+let timeFormat = function (date: any): string {
   let myhour = date.getHours()
   if (myhour < 10) {
     myhour = '0' + myhour
@@ -1803,12 +1822,12 @@ let timeFormat = function (date) {
 }
 
 // 判断参数是否为空
-let isEmpty = function (para) {
+let isEmpty = function (para: any): boolean {
   return undefined == para || null == para
 }
 
 // 判断参数是否为空
-let isEmptyEX = function (para) {
+let isEmptyEX = function (para: any): boolean {
   return (
     undefined == para ||
     null == para ||
@@ -1818,17 +1837,17 @@ let isEmptyEX = function (para) {
 }
 
 // 判断是否无穷数
-let isInfinity = function (para) {
+let isInfinity = function (para: number): boolean {
   return para == Infinity || para == -Infinity
 }
 
 // 角度转弧度
-let angleToRadian = function (arg) {
+let angleToRadian = function (arg: number): number {
   return (arg * Math.PI) / 180
 }
 
 // 弧度转角度
-let radianToAngle = function (arg) {
+let radianToAngle = function (arg: number): number {
   return (180 * arg) / Math.PI
 }
 
@@ -1840,7 +1859,7 @@ let radianToAngle = function (arg) {
  * @param {Object}
  *            num
  */
-let numberCodeAdd = function (numberCode, num) {
+let numberCodeAdd = function (numberCode: any, num: number) {
   let numberCodeNum = 0
   let numberCodeSize = 0
   if (typeof num != 'number') {
@@ -1919,7 +1938,7 @@ let numberCodeAdd = function (numberCode, num) {
   return resultNumCode
 }
 
-let _rmNumLastZore = function (num) {
+let _rmNumLastZore = function (num: string): string {
   if (num && num.indexOf('.') != -1) {
     let nums = num.split('.'),
       intNum = nums[0],

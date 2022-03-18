@@ -1,3 +1,4 @@
+import { Adapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.data.adapter'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 /**
@@ -151,8 +152,8 @@ Record.prototype.set = function (fieldname, value, adapteValueCallbackFunc) {
     fieldCode = fieldname
   }
   let originalFieldValue = this.__recordData__[fieldCode]
-  if (this.dataAdapter) {
-    value = this.dataAdapter.adapt({
+  if (dataAdapter) {
+    value = dataAdapter.adapt({
       type: field.getType(),
       value: value,
       length: field.getLength(),
@@ -312,15 +313,6 @@ Record.prototype.isChanged = function () {
     return true
   }
   return false
-}
-
-/**
- * 设置数据适配器
- *
- * @param {Object} adapter 数据适配器
- */
-Record.putDataAdapter = function (adapter) {
-  Record.prototype.dataAdapter = adapter
 }
 
 export default Record

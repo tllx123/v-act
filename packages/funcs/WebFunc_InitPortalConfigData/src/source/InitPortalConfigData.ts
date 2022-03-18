@@ -1,20 +1,19 @@
 import * as actionHandler from 'module'
 import * as viewModel from 'module'
 
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 //加载actionHandler模块
-
 //加载jsonUtil模块
-let jsonUtil
-let ScopeManager
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sb) {
-  if (sb) {
-    jsonUtil = sb.getService('vjs.framework.extension.util.JsonUtil')
-    ScopeManager = sb.getService(
-      'vjs.framework.extension.platform.interface.scope.ScopeManager'
-    )
-  }
-}
+// export function initModule(sb) {
+//   if (sb) {
+//     jsonUtil = sb.getService('vjs.framework.extension.util.JsonUtil')
+//     ScopeManager = sb.getService(
+//       'vjs.framework.extension.platform.interface.scope.ScopeManager'
+//     )
+//   }
+// }
 
 /**
  * 主入口
@@ -22,7 +21,11 @@ export function initModule(sb) {
  * @param configDataJson 初始化数据
  * @param tabSetInitConfig
  */
-const main = function (widgetId, configDataJson, tabSetInitConfig) {
+const main = function (
+  widgetId: string,
+  configDataJson: any,
+  tabSetInitConfig: any
+) {
   let configDataJsonArr = jsonUtil.json2obj(configDataJson)
   let tabSetInitConfigArr = jsonUtil.json2obj(tabSetInitConfig)
   if (configDataJsonArr && configDataJsonArr.length > 0) {
@@ -61,11 +64,11 @@ const main = function (widgetId, configDataJson, tabSetInitConfig) {
 
 //绑定注册事件
 let bindingPortletEvent = function (
-  widgetId,
-  portletId,
-  componentCode,
-  windowCode,
-  params
+  widgetId: string,
+  portletId: string,
+  componentCode: string,
+  windowCode: string,
+  params: any
 ) {
   let fn = getOpenNewWindowFunc(widgetId, componentCode, windowCode, params)
   actionHandler.executeWidgetAction(
@@ -79,16 +82,16 @@ let bindingPortletEvent = function (
 
 // 以新窗体方式打开组件
 let getOpenNewWindowFunc = function (
-  widgetId,
-  componentCode,
-  windowCode,
-  params
+  widgetId: string,
+  componentCode: string,
+  windowCode: string,
+  params: any
 ) {
   let scopeId = ScopeManager.getCurrentScopeId()
   return (function (componentCode, windowCode, params) {
     function innerFunc() {
       ScopeManager.openScope(scopeId)
-      var componentVariable = {}
+      var componentVariable: any = {}
       componentVariable['variable'] = params
       // 标注打开方式为dialog
       componentVariable['variable']['formulaOpenMode'] = 'dialog'

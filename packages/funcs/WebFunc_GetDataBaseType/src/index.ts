@@ -1,9 +1,10 @@
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 /**
  *
  *
  */
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+
 const vds = { window, rpc }
 
 const main = function () {
@@ -23,10 +24,10 @@ var executeExpression = function () {
     operationParam: {
       expression: expression
     },
-    success: function (rs) {
+    success: function (rs: any) {
       result = rs.data.result
     },
-    fail: function (e) {
+    fail: function (e: any) {
       throw e
     }
   })

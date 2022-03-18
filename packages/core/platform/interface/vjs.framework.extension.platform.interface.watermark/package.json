@@ -18,6 +18,7 @@
     "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.view.relation": "1.0.0-alpha.1",
     "@v-act/vjs.framework.extension.platform.services.view.ui": "1.0.0-alpha.1",
-    "@v-act/vjs.framework.extension.util.object": "1.0.0-alpha.1"
+    "@v-act/vjs.framework.extension.util.object": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.vendor.jquery": "1.0.0-alpha.1"
   }
 }

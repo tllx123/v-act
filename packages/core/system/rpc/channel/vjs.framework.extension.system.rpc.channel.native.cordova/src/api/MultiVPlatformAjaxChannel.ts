@@ -11,7 +11,7 @@ import {
   Manager as channelManager
 } from '@v-act/vjs.framework.extension.system.rpc.channel'
 
-let objectUtil
+let objectUtil: any
 
 let MultiVPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
@@ -23,7 +23,7 @@ let MultiVPlatformAjaxChannel = function () {
   }
 }
 
-let _genExceptionFromResult = function (result) {
+let _genExceptionFromResult = function (result: any) {
   let exception
   if (
     typeof result == 'object' &&
@@ -34,7 +34,7 @@ let _genExceptionFromResult = function (result) {
   return exception
 }
 
-let _log = function (res, status, requestInfo) {
+let _log = function (res: any, status: any, requestInfo: any) {
   if (requestInfo) {
     let params = {
       request: requestInfo.request,
@@ -47,7 +47,7 @@ let _log = function (res, status, requestInfo) {
 }
 
 MultiVPlatformAjaxChannel.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -67,8 +67,10 @@ MultiVPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request, contract) {
+  buildRequest: function (request: any, contract: any) {
+    //@ts-ignore
     if (window.GlobalVariables) {
+      //@ts-ignore
       this.url = GlobalVariables.getServerUrl() + '/' + this.url
     }
     let operations = request.getOperations()
@@ -78,9 +80,10 @@ MultiVPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, operations, contract, request) {
-        return function (res, status) {
+        return function (res: any, status: any) {
           //更新sessionId
           if (res.JSESSIONID) {
+            //@ts-ignore
             GlobalVariables.setJSESSIONID(res.JSESSIONID)
           }
           //	              GlobalVariables.setJSESSIONID(res.JSESSIONID);
@@ -120,7 +123,7 @@ MultiVPlatformAjaxChannel.prototype = {
       })(this, operations, contract, request)
     )
     let taskId = taskManager.addTask(scopeTask)
-    let callback = function (res, status) {
+    let callback = function (res: any, status: any) {
       taskManager.execTaskById(taskId, [res, status])
     }
     let timeout = 60 * 60 * 24 //如果没设置超时
@@ -132,12 +135,13 @@ MultiVPlatformAjaxChannel.prototype = {
       timeout: timeout,
       trustAll: true,
       isAsync: request.isAsync(),
+      //@ts-ignore
       JSESSIONID: GlobalVariables.getJSESSIONID()
     }
     return [this.url, this.type, data, config, callback]
   },
 
-  processResponse: function (res, status, requestInfo) {
+  processResponse: function (res: any, status: any, requestInfo: any) {
     if (status === 'success' || status === 'notmodified') {
       return eval('(' + res.responseText + ')')
     } else if (status === 'timeout') {
@@ -173,7 +177,7 @@ MultiVPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request, contract) {
+  request: function (request: any, contract: any) {
     let operations = request.getOperations()
     if (operations && operations.length > 0) {
       for (let i = 0, l = operations.length; i < l; i++) {
@@ -184,6 +188,7 @@ MultiVPlatformAjaxChannel.prototype = {
       }
       let args = this.buildRequest(request, contract)
       let func =
+        //@ts-ignore
         window.VJSBridge.plugins.vplatform.RPC.httprequestplugin.execute
       func.apply(this, args)
     }
