@@ -2,11 +2,11 @@ import { DatasourceObserverManager as manager } from '@v-act/vjs.framework.exten
 
 export function initModule(sb) {}
 
-const addObserver = function (params) {
+const addObserver = function (params: any) {
   return manager.addObserver(params.observer)
 }
 
-const destroy = function (params) {
+const destroy = function (params: any) {
   manager.destroy(params.ids)
 }
 

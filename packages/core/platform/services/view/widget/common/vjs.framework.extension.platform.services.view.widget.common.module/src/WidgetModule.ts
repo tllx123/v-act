@@ -12,7 +12,7 @@ export function initModule(sandbox) {
  *
  * @widgetId 控件编号
  */
-let getWidgetActionHandler = function (widgetId) {
+let getWidgetActionHandler = function (widgetId: string) {
   let proxyWidgetId = widgetContext.get(widgetId, 'ProxyWidgetId')
   let widgetType
   if (undefined == proxyWidgetId || null == proxyWidgetId) {
@@ -39,7 +39,7 @@ let getWidgetActionHandler = function (widgetId) {
  *
  * @widgetId 控件编号
  */
-let getWidgetDataHandler = function (widgetId) {
+let getWidgetDataHandler = function (widgetId: string) {
   let widgetType = widgetContext.getType(widgetId)
   let seriesType = scopeManager.getWindowScope().getSeries()
   let widgetDataHandler = sb.getService(

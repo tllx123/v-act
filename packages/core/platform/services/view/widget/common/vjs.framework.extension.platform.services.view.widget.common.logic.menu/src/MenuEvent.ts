@@ -8,12 +8,18 @@ let sandbox, widgetAction, routeEngine, browser, remoteMethodAccessor
 export function initModule(sb) {
   sandbox = sb
 }
-let menuEvent = function (currentScopeId, widget, items, handler, cbFunc) {
+let menuEvent = function (
+  currentScopeId: string,
+  widget: any,
+  items: any,
+  handler: any,
+  cbFunc: any
+) {
   // 处理回调函数未初始化
   if (!cbFunc || typeof cbFunc !== 'function') cbFunc = function () {}
 
   scopeManager.openScope(currentScopeId)
-  let _id = returnEventId(items)
+  let _id = returnEventId(items, handler)
   if (widget.menuTable && items) {
     let item = widget.menuTable[_id]
     if (item && item.isItem) {
@@ -41,7 +47,7 @@ let menuEvent = function (currentScopeId, widget, items, handler, cbFunc) {
   scopeManager.closeScope()
 }
 
-let returnEventId = function (items, handler) {
+let returnEventId = function (items: any, handler: any) {
   let eventID = items
   if (items) {
     if (items.id) {
@@ -56,15 +62,15 @@ let returnEventId = function (items, handler) {
 /*
  * 数据格式处理
  */
-let _getImage = function (imageObjId) {
+let _getImage = function (imageObjId: string) {
   return imageObjId == null || imageObjId == ''
     ? null
     : fileUtil.getImageByName(imageObjId)
 }
 
 // 控制Table显示格式处理
-let _genMenuItem = function (item, ctype) {
-  let node = {}
+let _genMenuItem = function (item: any, ctype: any) {
+  let node: { [code: string]: any } = {}
   node.id = item['id']
   let lang = item['language']
   let langMenuItemName
@@ -128,15 +134,15 @@ let _genMenuItem = function (item, ctype) {
   if (item.submenu) {
     node.submenu = []
     for (let i = 0, len = item.submenu.length; i < len; i++) {
-      node.submenu.push(_genMenuItem(item.submenu[i]))
+      node.submenu.push(_genMenuItem(item.submenu[i], ctype))
     }
   }
   return node
 }
 
 // 控制事件
-let _genMenuTable = function (item) {
-  let node = {}
+let _genMenuTable = function (item: any) {
+  let node: { [code: string]: any } = {}
   if (item['id']) {
     node.id = item['id']
   }
@@ -180,7 +186,7 @@ let _genMenuTable = function (item) {
   return node
 }
 
-let _findParent = function (menuItems, item) {
+let _findParent = function (menuItems: any, item: any) {
   let parent = null
   let parentId = item.parentId
   if (menuItems) {
@@ -197,13 +203,13 @@ let _findParent = function (menuItems, item) {
   return parent
 }
 
-let systemSort = function (array) {
+let systemSort = function (array: any[]) {
   return array.sort(function (a, b) {
     return a.orderNo - b.orderNo
   })
 }
 
-let MenuData = function (items, ctype) {
+let MenuData = function (items: any, ctype: any) {
   if (items.length == 0) {
     return
   } else {
@@ -216,7 +222,6 @@ let MenuData = function (items, ctype) {
       )
     ) {
       throw new Error('菜单数据格式不正确')
-      return
     }
   }
   items = systemSort(items)
@@ -249,4 +254,4 @@ let MenuData = function (items, ctype) {
   } else return
 }
 
-export { getMenuDataByRuleSet, MenuData, menuEvent }
+export { MenuData, menuEvent }

@@ -1,29 +1,33 @@
 let instance
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
-const listGroups = function (successCB, failCB) {
+const listGroups = function (successCB: any, failCB: any) {
   return instance.listGroups(successCB, failCB)
 }
 
-const queryRoomMember = function (roomId, successCB) {
+const queryRoomMember = function (roomId: string, successCB: any) {
   return instance.queryRoomMember(roomId, successCB)
 }
 
-const getGroupBlackList = function (roomId, successCB, failCB) {
+const getGroupBlackList = function (
+  roomId: string,
+  successCB: any,
+  failCB: any
+) {
   return instance.getGroupBlackList(roomId, successCB, failCB)
 }
 
 const createGroup = function (
-  groupName,
-  description,
-  members,
-  optionsPublic,
-  optionsModerate,
-  optionsMembersOnly,
-  optionsAllowInvites
+  groupName: string,
+  description: string,
+  members: any,
+  optionsPublic: any,
+  optionsModerate: any,
+  optionsMembersOnly: any,
+  optionsAllowInvites: any
 ) {
   return instance.createGroup(
     groupName,
@@ -36,31 +40,49 @@ const createGroup = function (
   )
 }
 
-const queryGroupInfo = function (roomId, successCB, failCB) {
+const queryGroupInfo = function (roomId: string, successCB: any, failCB: any) {
   return instance.queryGroupInfo(roomId, successCB, failCB)
 }
 
-const changeGroupInfo = function (roomId, groupName, description, successCB) {
+const changeGroupInfo = function (
+  roomId: string,
+  groupName: string,
+  description: string,
+  successCB: any
+) {
   return instance.changeGroupInfo(roomId, groupName, description, successCB)
 }
 
-const addGroupMembers = function (roomId, memberList) {
+const addGroupMembers = function (roomId: string, memberList: any) {
   return instance.addGroupMembers(roomId, memberList)
 }
 
-const addToGroupBlackList = function (roomId, memberId, successCB) {
+const addToGroupBlackList = function (
+  roomId: string,
+  memberId: string,
+  successCB: any
+) {
   return instance.addToGroupBlackList(roomId, memberId, successCB)
 }
 
-const removeFromGroupBlackList = function (roomId, memberId, successCB) {
+const removeFromGroupBlackList = function (
+  roomId: string,
+  memberId: string,
+  successCB: any
+) {
   return instance.removeFromGroupBlackList(roomId, memberId, successCB)
 }
 
-const destroyGroup = function (roomId, reason, successCB) {
+const destroyGroup = function (roomId: string, reason: string, successCB: any) {
   return instance.destroyGroup(roomId, reason, successCB)
 }
 
-const leaveGroup = function (roomId, memberId, successCB, failCB) {
+const leaveGroup = function (
+  roomId: string,
+  memberId: string,
+  successCB: any,
+  failCB: any
+) {
   return instance.leaveGroup(roomId, memberId, successCB, failCB)
 }
 

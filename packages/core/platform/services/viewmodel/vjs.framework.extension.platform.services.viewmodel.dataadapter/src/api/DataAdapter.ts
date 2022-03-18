@@ -15,7 +15,7 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.repository.remote.base'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-const queryData = function (params) {
+const queryData = function (params: any) {
   let config = params.config,
     isCover = !params.isAppend
   let daos = config.dataAccessObjects
@@ -41,7 +41,7 @@ const queryData = function (params) {
       queryParams.push(param)
     }
     //将查询数据填充到界面实体
-    let loadDataCallback = function (resultData) {
+    let loadDataCallback = function (resultData: any) {
       routeContext && snapshotManager.begine(routeContext.snapshotId)
       try {
         _loadDataToEntity(
@@ -85,7 +85,7 @@ const queryData = function (params) {
  * @param {*} resultData 后台返回的数据结果
  * @param {*} dsName 要获取结果的实体名称
  */
-let getDataFromResult = function (resultData, dsName) {
+let getDataFromResult = function (resultData: any, dsName: string) {
   if (resultData) {
     for (let i = 0; i < resultData.length; i++) {
       if (resultData[i].dataSource == dsName) {
@@ -100,7 +100,7 @@ let getDataFromResult = function (resultData, dsName) {
  * @param {*} resultData 后台返回结果对象
  * @param {*} fields 表格标题数据
  */
-let removeEmptyCol = function (resultData, fields) {
+let removeEmptyCol = function (resultData: any, fields: any) {
   let dataVals = resultData ? resultData.datas.values : []
   for (let n = 0; n < fields.length; n++) {
     let currentCol = fields[n].code
@@ -129,7 +129,7 @@ let removeEmptyCol = function (resultData, fields) {
   }
 }
 
-const queryDataSenior = function (params) {
+const queryDataSenior = function (params: any) {
   let config = params.config,
     isCover = !params.isAppend
   let daos = config.dataAccessObjects
@@ -155,7 +155,9 @@ const queryDataSenior = function (params) {
         let ds = getDbObjByType(entityName, entityType, routeContext)
         ds.markWillToFecth()
       }
-      let param = _packageParamSenior(dao)
+
+      let param: { [code: string]: any } = {}
+      param = _packageParamSenior(dao)
       //保存实体信息
       if (param) {
         param.entityInfo = entityInfo
@@ -164,7 +166,7 @@ const queryDataSenior = function (params) {
       queryParams.push(param)
     }
     //将查询数据填充到界面实体
-    let loadDataCallback = function (resultData) {
+    let loadDataCallback = function (resultData: any) {
       for (let i = 0; i < daos.length; i++) {
         let dao = daos[i]
         // 获取当列值为空是否显示的配置
@@ -232,13 +234,13 @@ const queryDataSenior = function (params) {
   }
 }
 
-const saveData = function (params) {
+const saveData = function (params: any) {
   let configs = params.configs,
     isAsync = params.isAsync,
     success = params.success,
     treeStructs = params.treeStructs,
-    routeContext = params.routeContext
-  isLocalDb = params.isLocalDb
+    routeContext = params.routeContext,
+    isLocalDb = params.isLocalDb
   if (configs && configs.length > 0) {
     let commitDataModels = []
     let savedDataSources = []
@@ -320,10 +322,10 @@ const saveData = function (params) {
  * @return {Function}
  */
 let generateSuccessCallback = function (
-  datasources,
-  successCallback,
-  errorCallback,
-  routeContext
+  datasources: any,
+  successCallback: any,
+  errorCallback: any,
+  routeContext: any
 ) {
   return function (result) {
     if (result.success == true) {
@@ -346,11 +348,11 @@ let generateSuccessCallback = function (
 }
 
 let getSaveDataInfo = function (
-  dsName,
-  isSaveAll,
-  fieldMapArray,
-  routeContext,
-  isLocalDb
+  dsName: string,
+  isSaveAll: boolean,
+  fieldMapArray: any,
+  routeContext: any,
+  isLocalDb: boolean
 ) {
   let commitDatas = []
   let records = isSaveAll
@@ -385,7 +387,7 @@ let getSaveDataInfo = function (
 /**
  *获取数据源所有记录
  */
-let getAllRecords = function (dsName, routeContext) {
+let getAllRecords = function (dsName: string, routeContext: any) {
   //var datasource = datasourceManager.lookup({"datasourceName":dsName});
   /*获取数据源*/
   let datasource = getDataSource(dsName, routeContext)
@@ -396,7 +398,7 @@ let getAllRecords = function (dsName, routeContext) {
  * 获取所有需要保存的记录(除去删除的)
  * @return {Array<Record>}
  */
-let getInsertOrUpdateRecords = function (dsName, routeContext) {
+let getInsertOrUpdateRecords = function (dsName: string, routeContext: any) {
   //		var datasource = datasourceManager.lookup({"datasourceName":dsName});
   /*获取数据源*/
   let datasource = getDataSource(dsName, routeContext)
@@ -417,7 +419,7 @@ let getInsertOrUpdateRecords = function (dsName, routeContext) {
  * @param {String} dsName 数据源名称
  * @return {Array<Record>}
  */
-let getRemovedRecords = function (dsName, routeContext) {
+let getRemovedRecords = function (dsName: string, routeContext: any) {
   //		var datasource = datasourceManager.lookup({"datasourceName":dsName});
   /*获取数据源*/
   let datasource = getDataSource(dsName, routeContext)
@@ -428,12 +430,12 @@ let getRemovedRecords = function (dsName, routeContext) {
  * 根据字段映射信息，将record记录转换成json对象
  */
 let toJsonObjectByMapping = function (
-  record,
-  fieldMapArray,
-  routeContext,
-  isLocalDb
+  record: any,
+  fieldMapArray: any,
+  routeContext: any,
+  isLocalDb: boolean
 ) {
-  let result = {}
+  let result: { [code: string]: any } = {}
   for (let i = 0, len = fieldMapArray.length; i < len; i++) {
     let fieldMap = fieldMapArray[i]
     let cellVal = getDestFieldMappingValue(record, fieldMap, routeContext)
@@ -459,7 +461,11 @@ let toJsonObjectByMapping = function (
   return result
 }
 
-let getDestFieldMappingValue = function (record, fieldMapping, routeContext) {
+let getDestFieldMappingValue = function (
+  record: any,
+  fieldMapping: any,
+  routeContext: any
+) {
   let colValue = fieldMapping['colValue']
   let valueType = fieldMapping['valueType']
   let valueCol = ''
@@ -485,7 +491,7 @@ let getDestFieldMappingValue = function (record, fieldMapping, routeContext) {
 /**
  *获取字段编号
  */
-let getFieldCode = function (fieldStr) {
+let getFieldCode = function (fieldStr: string) {
   return fieldStr.substring(fieldStr.indexOf('.') + 1, fieldStr.length)
 }
 
@@ -494,7 +500,7 @@ let getFieldCode = function (fieldStr) {
  * @param DAO对象
  * @param isAsync 是否异步
  */
-let _packageParam = function (dao) {
+let _packageParam = function (dao: any) {
   let dataProvider = dao.getDataProvider()
   let command_config = dao.getCommand().config
   let dataSourceName = dataProvider.name
@@ -519,7 +525,7 @@ let _packageParam = function (dao) {
  * @param DAO对象
  * @param isAsync 是否异步
  */
-let _packageParamSenior = function (dao) {
+let _packageParamSenior = function (dao: any) {
   let dataProvider = dao.getDataProvider()
   let command_config = dao.getCommand().config
   let dataSourceName = dataProvider.name
@@ -551,12 +557,12 @@ let _packageParamSenior = function (dao) {
  * @param	{String}	mps				映射信息的映射关系
  * */
 let autoMappingField = function (
-  sourceFields,
-  targetFields,
-  mappings,
-  entityCode,
-  tableCode,
-  mps
+  sourceFields: any,
+  targetFields: any,
+  mappings: any,
+  entityCode: string,
+  tableCode: string,
+  mps: any
 ) {
   if (entityCode.indexOf('.') != -1) {
     entityCode = entityCode.split('.')[1]
@@ -610,15 +616,15 @@ let autoMappingField = function (
  * @param isFireLoadEvent 是否触发加载事件（默认为是）
  */
 let _loadDataToEntity = function (
-  resultData,
-  resultDAO,
-  isAsync,
-  isCover,
-  isCallObserver,
-  isLoadData,
-  isFireLoadEvent,
-  isRefreshCondition,
-  routeContext
+  resultData: any,
+  resultDAO: any,
+  isAsync: boolean,
+  isCover: boolean,
+  isCallObserver: boolean,
+  isLoadData: boolean,
+  isFireLoadEvent: boolean,
+  isRefreshCondition: boolean,
+  routeContext: any
 ) {
   isCover = null == isCover || undefined == isCover ? true : isCover
   isRefreshCondition =
@@ -698,7 +704,11 @@ let _loadDataToEntity = function (
  * @param routeContext 上下文
  * @return 目标实体DB对象
  */
-let getDbObjByType = function (entityName, entityType, routeContext) {
+let getDbObjByType = function (
+  entityName: string,
+  entityType: any,
+  routeContext: any
+) {
   if (!entityName) return null
 
   // 兼容处理旧版本开发系统数据，默认不传为窗体实体类型
@@ -752,7 +762,11 @@ let getDbObjByType = function (entityName, entityType, routeContext) {
  * @param mappings 数据源结果之间映射(需要收集的字段映射中，只有type为1的字段。其他认为是来源信息并非字段类型，sourceField中直接为最终值)
  * @return 将来源数据映射到目标数据源后的Record对象列表
  */
-let _getResultDatas = function (destEntityName, values, mappings) {
+let _getResultDatas = function (
+  destEntityName: string,
+  values: any,
+  mappings: any
+) {
   // 只有类型为1的mappings，才会收集
   if (!values || values.length <= 0) {
     return []
@@ -812,7 +826,7 @@ let _getResultDatas = function (destEntityName, values, mappings) {
   return destRecords
 }
 
-let _prcocessFieldStr = function (fieldStr) {
+let _prcocessFieldStr = function (fieldStr: string) {
   let index = fieldStr.lastIndexOf('.')
   return index != -1 ? fieldStr.substring(index + 1) : fieldStr
 }
@@ -830,7 +844,7 @@ let _prcocessFieldStr = function (fieldStr) {
  * 		ExpressionContext = sandbox.getService("vjs.framework.extension.platform.services.engine.expression.ExpressionContext");
  * 		engine = sandbox.getService("vjs.framework.extension.platform.services.engine.expression.ExpressionEngine");
  * */
-function getDataSource(dataSourceName, routeContext) {
+function getDataSource(dataSourceName: string, routeContext: any) {
   let dsName = dataSourceName
   let datasource = null
   if (dsName != null && dsName != '') {

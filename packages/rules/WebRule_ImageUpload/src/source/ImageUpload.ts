@@ -4,18 +4,20 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from '@v-act/vjs.framework.extension.platform.engine.expression'
 //规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import {
   Camera as CameraService,
   ImagePicker as ImagePickerService
-} from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+} from '@v-act/vjs.framework.extension.platform.services.native.mobile.localdb'
 import { ProgressBarUtil as progressbar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let FileTransferService, routeContext, ImageService, sandbox
 let ERRORNAME
@@ -52,7 +54,7 @@ const main = function (ruleContext: RuleContext) {
     APPUpload(ruleContext)
   }
 }
-let StringToArray = function (str) {
+let StringToArray = function (str: string) {
   let tmpvar = []
   tmpvar[0] = str
   return tmpvar
@@ -73,7 +75,7 @@ let showDailog = function () {
  * services:
  * 		factory = sandbox.getService("vjs.framework.extension.platform.interface.exception.ExceptionFactory");
  * */
-function HandleException(ruleContext, error_msg) {
+function HandleException2(ruleContext: RuleContext, error_msg: string) {
   error_msg = ERRORNAME + error_msg
   let exception = factory.create({
     type: factory.TYPES.Business,
@@ -89,7 +91,7 @@ function HandleException(ruleContext, error_msg) {
  * services:
  * 		factory = sandbox.getService("vjs.framework.extension.platform.interface.exception.ExceptionFactory");
  * */
-function HandleException(error_msg) {
+function HandleException(error_msg: string) {
   error_msg = ERRORNAME + error_msg
   let exception = factory.create({
     type: factory.TYPES.Business,
@@ -107,11 +109,11 @@ function HandleException(error_msg) {
  * @service
  * 		mathUtil = sandbox.getService("vjs.framework.extension.util.Math");
  * */
-function getNum(sourceValue, paramName) {
+function getNum(sourceValue: any, paramName: string) {
   if (sourceValue == null || sourceValue == '') {
     return 0
   }
-  if (!mathUtil.isNum(sourceValue) || Number(sourceValue) == 'NaN') {
+  if (!mathUtil.isNum(sourceValue) || isNaN(parseFloat(sourceValue + ''))) {
     HandleException(paramName + '不是数字类型')
   }
   return Number(sourceValue)
@@ -125,7 +127,7 @@ function getNum(sourceValue, paramName) {
  * services
  * 		log = sandbox.getService("vjs.framework.extension.util.log");
  * */
-function OutPutLog(content, type) {
+function OutPutLog(content: any, type: string) {
   if (log == null) return
   /*打印log类型的日志*/
   if (type == 'log') {
@@ -154,7 +156,7 @@ function OutPutLog(content, type) {
  * 		engine = sandbox.getService("vjs.framework.extension.platform.services.engine.expression.ExpressionEngine");
  *
  * */
-function experssFunc(experss, routeContext) {
+function experssFunc(experss: string, routeContext: RouteContext) {
   if (experss == null || experss == '') {
     return null
   }
@@ -167,7 +169,7 @@ function experssFunc(experss, routeContext) {
   return resultValue
 }
 //获取实体对象
-function GetDataSource(ds, routeContext) {
+function GetDataSource(ds: any, routeContext: RouteContext) {
   let dsName = ds
   let datasource = null
   if (DBFactory.isDatasource(dsName)) {
@@ -192,7 +194,7 @@ function GetDataSource(ds, routeContext) {
 /**
  * 设置业务返回结果
  */
-function setBusinessRuleResult(ruleContext, result) {
+function setBusinessRuleResult(ruleContext: RuleContext, result: any) {
   if (ruleContext.setBusinessRuleResult) {
     ruleContext.setBusinessRuleResult({
       isSuccess: result
@@ -203,6 +205,7 @@ function setBusinessRuleResult(ruleContext, result) {
 //判断终端是否是微信
 function isWeiXin() {
   let ua = window.navigator.userAgent.toLowerCase()
+  //@ts-ignore
   if (ua.match(/MicroMessenger/i) == 'micromessenger') {
     return true
   } else {
@@ -211,7 +214,7 @@ function isWeiXin() {
 }
 
 //微信端上传图片
-function WXUpload(ruleContext) {
+function WXUpload(ruleContext: RuleContext) {
   ERRORNAME = '规则[ImageUpload]：'
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()
@@ -289,17 +292,17 @@ function WXUpload(ruleContext) {
  * 将图片上传到微信服务器
  */
 function upload2WX(
-  ruleContext,
-  imageIds,
-  mongoFileIds,
-  mongoFileNames,
-  mongoFileSizes,
-  dataSource,
-  fieldCode,
-  chooseCount,
-  fileNameField,
-  fileSizeField,
-  wxPlatform
+  ruleContext: RuleContext,
+  imageIds: any[],
+  mongoFileIds: any[],
+  mongoFileNames: any[],
+  mongoFileSizes: any[],
+  dataSource: any,
+  fieldCode: any,
+  chooseCount: number,
+  fileNameField: any,
+  fileSizeField: any,
+  wxPlatform: any
 ) {
   if (imageIds.length > 0) {
     let imageID = imageIds.shift()
@@ -382,7 +385,7 @@ function upload2WX(
   }
 }
 
-function APPUpload(ruleContext) {
+function APPUpload(ruleContext: RuleContext) {
   ERRORNAME = '规则[ImageUpload]：'
   // 获取规则链路由上下文,终止执行后续规则
   routeContext = ruleContext.getRouteContext()
@@ -409,7 +412,7 @@ function APPUpload(ruleContext) {
       ? false
       : true
   //图片宽度
-  let _targetWidth = experssFunc(inParamObj.targetWidth)
+  let _targetWidth = experssFunc(inParamObj.targetWidth, ruleContext)
   if (_targetWidth == null || _targetWidth == '') {
     _targetWidth = 0
   } else {
@@ -420,23 +423,23 @@ function APPUpload(ruleContext) {
     }
   }
   //图片高度
-  let _targetHeight = experssFunc(inParamObj.targetHeight)
+  let _targetHeight = experssFunc(inParamObj.targetHeight, ruleContext)
   if (_targetHeight == null || _targetHeight == '') {
     _targetHeight = 0
   } else {
     //转换成数字
-    _targetHeight = getNum(_targetHeight)
+    _targetHeight = getNum(_targetHeight, '图片高度')
     if (_targetHeight < 0) {
       HandleException('图片高度不能小于0')
     }
   }
   //图片质量
-  let _quality = experssFunc(inParamObj.quatity)
+  let _quality = experssFunc(inParamObj.quatity, ruleContext)
   if (_quality == null || _quality == '') {
     _quality = 50
   } else {
     //转换成数字
-    _quality = getNum(_quality)
+    _quality = getNum(_quality, '图片质量')
     if (_quality < 0 || _quality > 100) {
       HandleException('图片质量不能小于0且不能大于100')
     }
@@ -470,7 +473,7 @@ function APPUpload(ruleContext) {
             undefined != results.success &&
             (results.success == false || results.success == 'false')
           ) {
-            HandleException(ruleContext, '图片上传规则：上传图片不成功')
+            HandleException2(ruleContext, '图片上传规则：上传图片不成功')
             setBusinessRuleResult(ruleContext, false)
           } else {
             let fileIds = results
@@ -507,7 +510,7 @@ function APPUpload(ruleContext) {
       removeDailog()
       ruleContext.fireRouteCallback()
     }
-    let options = {}
+    let options: { [code: string]: any } = {}
     options['quality'] = _quality
     if (valueCode == 'cancle') {
       removeDailog()
@@ -515,10 +518,10 @@ function APPUpload(ruleContext) {
       ruleContext.fireRouteCallback()
       return
     } else if (valueCode == 'picture') {
-      options.destinationType = Camera.DestinationType.FILE_URI
-      options.sourceType = Camera.PictureSourceType.CAMERA
-      options.encodingType = Camera.EncodingType.JPEG
-      options.mediaType = Camera.MediaType.PICTURE
+      options.destinationType = CameraService.DestinationType.FILE_URI
+      options.sourceType = CameraService.PictureSourceType.CAMERA
+      options.encodingType = CameraService.EncodingType.JPEG
+      options.mediaType = CameraService.MediaType.PICTURE
       options.allowEdit = false
       options.correctOrientation = true
       options.saveToPhotoAlbum = false
@@ -534,7 +537,7 @@ function APPUpload(ruleContext) {
       }
       ImagePickerService.getPicture(SuncceccCallBack, FailCallBack, options)
     } else {
-      HandleException(
+      HandleException2(
         ruleContext,
         '图片上传规则暂时不支持这种类型：' + valueCode
       )

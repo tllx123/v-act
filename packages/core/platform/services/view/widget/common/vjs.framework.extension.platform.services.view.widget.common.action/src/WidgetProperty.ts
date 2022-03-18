@@ -2,17 +2,17 @@ import * as widgetAction from './WidgetAction'
 
 export function initModule(sb) {}
 
-let set = function (widgetId, propertyName, propertyValue) {
+let set = function (widgetId: any, propertyName: string) {
   let actionName = 'set' + propertyName
-  return widgetAction.executeWidgetAction(widgetId, actionName, propertyValue)
+  return widgetAction.executeWidgetAction(widgetId, actionName)
 }
 
-let get = function (widgetId, propertyName) {
+let get = function (widgetId: any, propertyName: string) {
   let actionName = 'get' + propertyName
   return widgetAction.executeWidgetAction(widgetId, actionName)
 }
 
-let hasProperty = function (widgetId, propertyName) {
+let hasProperty = function (widgetId: any, propertyName: string) {
   let getActionName = 'get' + propertyName
   let setActionName = 'set' + propertyName
   if (
@@ -23,17 +23,4 @@ let hasProperty = function (widgetId, propertyName) {
   else return false
 }
 
-export {
-  executeComponentAction,
-  executeSubWidgetAction,
-  executeWidgetAction,
-  get,
-  getComponentActionHandler,
-  getProxyWidgetId,
-  getService,
-  getWidgetActionHandler,
-  hasProperty,
-  isComponentActionExist,
-  isWidgetActionExist,
-  set
-}
+export { get, hasProperty, set }

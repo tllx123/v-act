@@ -1,6 +1,6 @@
 export function initModule(sb) {}
 
-const inputListen = function (el, callBack) {
+const inputListen = function (el: any, callBack: any) {
   if (!callBack instanceof Function || !el instanceof HTMLElement) {
     return
   }
@@ -18,11 +18,4 @@ const inputListen = function (el, callBack) {
   })
 }
 
-export {
-  inputlisten,
-  inputScroll,
-  readOnlyOn,
-  readOnlyOff,
-  readOnlyToggle,
-  inputListen
-}
+export { inputListen }

@@ -4,7 +4,7 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 export function initModule(sBox) {}
 
-const getPagingInfoByDataSource = function (entityName) {
+const getPagingInfoByDataSource = function (entityName: string) {
   let widgetCodes = windowVMManager.getWidgetCodesByDatasourceName({
     datasourceName: entityName
   })

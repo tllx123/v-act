@@ -1,6 +1,6 @@
 let instance
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
@@ -30,21 +30,33 @@ const roomType = {
 
 export { chatType, mediaType, roomType }
 
-const sendText = function (message, receiveId, chatType, successCB, failCB) {
+const sendText = function (
+  message: string,
+  receiveId: string,
+  chatType: any,
+  successCB: any,
+  failCB: any
+) {
   return instance.sendText(message, receiveId, chatType, successCB, failCB)
 }
 
-const sendCmdText = function (message, receiveId, ext, successCB, failCB) {
+const sendCmdText = function (
+  message: string,
+  receiveId: string,
+  ext: any,
+  successCB: any,
+  failCB: any
+) {
   return instance.sendCmdText(message, receiveId, ext, successCB, failCB)
 }
 
 const sendMedia = function (
-  receiveId,
-  chatType,
-  roomType,
-  mediaType,
-  successCB,
-  errorCB
+  receiveId: string,
+  chatType: any,
+  roomType: any,
+  mediaType: any,
+  successCB: any,
+  errorCB: any
 ) {
   return instance.sendMedia(
     receiveId,
@@ -56,23 +68,4 @@ const sendMedia = function (
   )
 }
 
-export {
-  putInstance,
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
-  addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  putInstance,
-  addListener,
-  putInstance,
-  sendText,
-  sendCmdText,
-  sendMedia
-}
+export { sendText, sendCmdText, sendMedia }

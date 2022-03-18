@@ -22,7 +22,7 @@ export function initModule(sb) {}
  * @param {String} widgetCode 控件编号
  *
  */
-let getPosition = function (widgetCode, IsAutoHeight) {
+let getPosition = function (widgetCode: string, IsAutoHeight: any) {
   let info = widgetRenderer.executeComponentRenderAction(
     'getParentContainerInfo'
   ) // 获取窗体宽度
@@ -90,7 +90,7 @@ let getPosition = function (widgetCode, IsAutoHeight) {
   }
   return PositionAnchor
 }
-let toTrim = function (arr) {
+let toTrim = function (arr: any) {
   for (let i = 0; i < arr.lenght; i++) {
     arr[i] = arr[i].trim()
   }
@@ -105,7 +105,12 @@ let toTrim = function (arr) {
  *
  *
  */
-let PreventDefault = function (widgetCode, EventType, millisecond, IsPrevent) {
+let PreventDefault = function (
+  widgetCode: string,
+  EventType: string,
+  millisecond: any,
+  IsPrevent: any
+) {
   if (typeof millisecond == 'boolean') {
     IsPrevent = millisecond
     millisecond = null

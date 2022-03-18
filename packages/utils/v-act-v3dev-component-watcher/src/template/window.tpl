@@ -31,6 +31,11 @@ widgetDefines.JGCollapse = JGCollapse1;
 
 const windowObjs = {{@ windowJsonScript}};
 
+const _getRandomNum = function () {
+  const random = Math.random() * 10000
+  return parseInt(random + '')
+}
+
 function Index(){
     parse();
     const router = useRouter();
@@ -78,6 +83,44 @@ function Index(){
             const scope = scopeManager.getScope(scopeId);
             scope.set("ruleDefines",ruleDefines);
             scope.set("funcDefines",funcDefines);
+            const { thisLevel } = stackInfo
+            const windowScope = scopeManager.getWindowScope()
+            windowScope.set(
+              'dialogWindowHandler',
+              (
+                componentCode: string,
+                windowCode: string,
+                title: string,
+                param: { [code: string]: any }
+              ) => {
+                router.push({
+                  pathname: `/${componentCode}/${windowCode}`,
+                  query: {
+                    modal: thisLevel + 1,
+                    title: title ? title : '',
+                    v: _getRandomNum()
+                  }
+                })
+              }
+            )
+            windowScope.set(
+              'currentWindowHandler',
+              (
+                componentCode: string,
+                windowCode: string,
+                title: string,
+                param: { [code: string]: any }
+              ) => {
+                router.push({
+                  pathname: `/${componentCode}/${windowCode}`,
+                  query: {
+                    modal: thisLevel,
+                    title: title ? title : '',
+                    v: _getRandomNum()
+                  }
+                })
+              }
+            )
           }
         });
       }catch(e){

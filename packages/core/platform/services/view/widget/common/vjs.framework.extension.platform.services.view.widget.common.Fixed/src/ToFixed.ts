@@ -1,6 +1,8 @@
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { window, $ }
 import * as widget from './FixedComponent'
 
 let keyBoradFixed
@@ -19,7 +21,7 @@ const init = function () {
   return window.keyBoradFixed
 }
 
-const addEventlistener = function (fn) {
+const addEventlistener = function (fn: any) {
   if (!window.keyBoradFixed) {
     window.keyBoradFixed = new resizeFixed()
   }
@@ -28,7 +30,7 @@ const addEventlistener = function (fn) {
   }
 }
 
-const addEventlisteners = function (fn) {
+const addEventlisteners = function (fn: any) {
   if (!window.keyBoradFixed) {
     window.keyBoradFixed = new resizeFixed()
   }
@@ -70,9 +72,9 @@ resizeFixed.prototype = {
     }
   },
   $setHeight: function () {
-    $this = this
+    $.this = this
     $('input,textarea').on('touchstart', function () {
-      $this.orginheight = $(document).height()
+      $.this.orginheight = $(document).height()
     })
   },
   $changeWidget: function () {
@@ -126,7 +128,7 @@ resizeFixed.prototype = {
       })(this)
     )
   },
-  $addEventlistener: function (fn) {
+  $addEventlistener: function (fn: any) {
     if ((typeof fn).toLowerCase() == 'function') {
       this.callBack.push(fn)
     }
@@ -157,4 +159,4 @@ resizeFixed.prototype = {
     this.widget = this.widget.concat(widget.getBottomWidget())
   }
 }
-export { addEventlistener, addEventlisteners, getBottomWidget, init }
+export { addEventlistener, addEventlisteners, init }

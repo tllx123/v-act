@@ -1,5 +1,6 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
+import * as $ from '@v-act/vjs.framework.extension.platform.services.integration.vds.$'
+const vds = { $ }
 /*
  * 1、创建隐藏文本域
  * 2、引入第三方 keyUp keyDown keyPress
@@ -11,7 +12,7 @@ import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.
 
 let barCode
 export function initModule(sb) {}
-let listenBarCodeScanning = function (options, callback) {
+let listenBarCodeScanning = function (options: any, callback: any) {
   let currentScopeId = ScopeManager.getCurrentScopeId()
   $('body').startListen(
     {
@@ -36,7 +37,7 @@ let clearListen = function () {
   barCode.clear()
   barCode = null
 }
-function Scanning(options) {
+function Scanning(options: any) {
   this.listenerObj = null
   /*
      * check 默认为false  不校验任何限制
@@ -64,7 +65,7 @@ function Scanning(options) {
 }
 Scanning.prototype = {
   constructor: Scanning,
-  setOptions: function (options) {
+  setOptions: function (options: any) {
     this.createEl()
     this.listenerObj = $('#codeScanner_device')
     this.options = options || {}
@@ -101,7 +102,7 @@ Scanning.prototype = {
                    return ;
                }*/
       let d = new Date()
-      let curTime = parseInt(d.getTime())
+      let curTime = parseInt(d.getTime() + '')
       if (that.keyDownTime !== '' && that.keyDownTime !== NaN) {
         that.twoKeyTime = curTime - that.keyDownTime
       }
@@ -114,7 +115,7 @@ Scanning.prototype = {
       let d = new Date()
       let keyUpTime = d.getTime()
 
-      that.oneKeyTime = parseInt(keyUpTime) - parseInt(that.keyDownTime)
+      that.oneKeyTime = parseInt(keyUpTime + '') - parseInt(that.keyDownTime)
       let isHand = that.checkHandInput()
       console.log(that.oneKeyTime)
       if (isHand) {
@@ -136,7 +137,7 @@ Scanning.prototype = {
     })
   },
   //判断按下的键是否在字母加数字这个范围
-  in_range: function (key) {
+  in_range: function (key: any) {
     let isLegal = false
     if (this.number) {
       isLegal = this.is_number(key)
@@ -207,7 +208,7 @@ Scanning.prototype = {
     this.listenerObj.focus().select()
   }
 }
-$.fn.startListen = function (options, callback) {
+$.fn.startListen = function (options: any, callback: any) {
   let settings = $.extend(
     {
       callback: function (code) {
@@ -225,4 +226,4 @@ $.fn.startListen = function (options, callback) {
     barCode.setOptions(settings)
   }
 }
-export { clearListen, listenCodeScanner }
+export { clearListen }

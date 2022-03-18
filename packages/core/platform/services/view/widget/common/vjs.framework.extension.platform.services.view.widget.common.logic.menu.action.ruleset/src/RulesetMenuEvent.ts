@@ -8,7 +8,7 @@ export function initModule(sb) {
   sandbox = sb
 }
 
-const doAction = function (params) {
+const doAction = function (params: any) {
   let item = params.data
   let widget = params.properties
   let cbFunc = params.callback

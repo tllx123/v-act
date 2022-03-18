@@ -1,3 +1,6 @@
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
+
 let sandbox, topNodeName, secNodeName, attDisable
 
 export function initModule(sb) {
@@ -10,7 +13,7 @@ export function initModule(sb) {
 /**
  * 设置控件使能属性值
  */
-let setEnabled = function (id, state) {
+let setEnabled = function (id: string, state: any) {
   let _id = '#' + id
   if (state && state + '' === 'true') _handleEnabledWidget(_id)
   else _handleDisabledWidget(_id)
@@ -19,7 +22,7 @@ let setEnabled = function (id, state) {
 /**
  * 获取控件使能属性值
  */
-let getEnabled = function (id) {
+let getEnabled = function (id: string) {
   let _id = '#' + id,
     _topNodeId = _id + topNodeName,
     _secElement = id + secNodeName,
@@ -56,7 +59,7 @@ let getEnabled = function (id) {
 /**
  * 非使能控件
  */
-let _handleDisabledWidget = function (id) {
+let _handleDisabledWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _secElement = id + secNodeName,
     _$idElement = $(id),
@@ -87,7 +90,7 @@ let _handleDisabledWidget = function (id) {
 /**
  * 使能控件
  */
-let _handleEnabledWidget = function (id) {
+let _handleEnabledWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _secElement = id + secNodeName,
     _$idElement = $(id),

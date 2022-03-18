@@ -7,7 +7,7 @@ var windowZindex = [],
 /**
  * @param Number tmpZIndex 层级，可不传
  * */
-export function Show(tmpZIndex) {
+export function Show(tmpZIndex: number) {
   if (bodyOver) {
     var _$body = $('body')
     if (_$body.css('overflow') != 'hidden') {

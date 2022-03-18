@@ -1,1 +1,1 @@
-export * as ProgressBarUtil from './ProgressBarUtil'
+export * from './ProgressBarUtil'

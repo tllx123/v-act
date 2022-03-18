@@ -1,4 +1,6 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+const vds = { window }
 
 let loadedResourcePaths = []
 
@@ -17,7 +19,7 @@ export function initModule(sb) {}
  * Resource({resources:[namespace.vueLibPath]})); } }
  */
 
-let meger = function (aim, megered) {
+let meger = function (aim: any, megered: any) {
   if (megered && megered.length > 0) {
     for (let i = 0, l = megered.length; i < l; i++) {
       let item = megered[i]
@@ -30,7 +32,7 @@ let meger = function (aim, megered) {
 }
 
 // 通过依赖中的key值获取对应的资源对象
-let mapResourceByKey = function (keys) {
+let mapResourceByKey = function (keys: any[]) {
   let resources = []
   for (let i = 0; i < keys.length; i++) {
     for (let j = 0; j < toLoadResources.length; j++) {
@@ -45,7 +47,7 @@ let mapResourceByKey = function (keys) {
 /**
  * 判断一个资源是否在资源列表中已存在，以key为标示
  */
-let hasResource = function (orderList, res) {
+let hasResource = function (orderList: any[], res: any) {
   for (let k = 0; k < orderList.length; k++) {
     if (res.key == orderList[k].key) {
       return true
@@ -58,7 +60,7 @@ let hasResource = function (orderList, res) {
  * @param {Resource} resource 要访问的资源节点
  * @param {Array} orderList 最终排序队列
  */
-let visitDeps = function (resource, orderList) {
+let visitDeps = function (resource: any, orderList: any[]) {
   if (!resource || !resource.deps) {
     return
   }
@@ -82,7 +84,7 @@ let visitDeps = function (resource, orderList) {
  * 对给定的资源数组按依赖顺序进行排序，没有key值的放最后
  * @param {Array} resources
  */
-let orderResource = function (resources) {
+let orderResource = function (resources: any[]) {
   if (!resources || resources.length < 2) {
     return resources
   }
@@ -98,7 +100,7 @@ let orderResource = function (resources) {
   return orderList.concat(noKeysource)
 }
 
-const addResource = function (resource) {
+const addResource = function (resource: any) {
   if (resource) {
     let resources = resource.getResources()
     if (resources && resources.length > 0) {
@@ -121,7 +123,7 @@ const addResource = function (resource) {
   }
 }
 
-let getSubfix = function (path) {
+let getSubfix = function (path: string) {
   let index = path.lastIndexOf('.')
   let subfix = 'js'
   if (index > 0) {
@@ -134,15 +136,17 @@ let getSubfix = function (path) {
   return subfix
 }
 
-let concurrentLoadResources = function (libs) {
+let concurrentLoadResources = function (libs: any) {
   try {
+    //@ts-ignore
     vdk.resource.load.apply(vdk, libs)
   } catch (e) {
+    //@ts-ignore
     head.js.apply(head, libs)
   }
 }
 
-const loadResources = function (params) {
+const loadResources = function (params: any) {
   if (toLoadResources.length < 1 && params.success) {
     params.success()
   } else {
@@ -221,7 +225,7 @@ const loadResources = function (params) {
   }
 }
 
-let markResourceLoaded = function (libs) {
+let markResourceLoaded = function (libs: any) {
   if (libs && libs.length > 0) {
     meger(loadedResourcePaths, libs)
   }

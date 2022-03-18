@@ -1347,7 +1347,31 @@
       "@v-act/vjs.framework.extension.vendor.jquery": [
         "packages/core/vendor/vjs.framework.extension.vendor.jquery/src"
       ],
-      "@v-act/vjs.framework.vdk": ["packages/core/vjs.framework.vdk/src"]
+      "@v-act/vjs.framework.vdk": ["packages/core/vjs.framework.vdk/src"],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.appointwindow": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.appointwindow/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindow": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.currentwindow/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindowredirection": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.currentwindowredirection/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.dialogwindow": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.dialogwindow/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.divwindowcontainer": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.divwindowcontainer/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.iemshometab": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.iemshometab/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.newwindow": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.newwindow/src"
+      ],
+      "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer": [
+        "packages/core/platform/services/view/window/renderer/mode/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer/src"
+      ]
     }
   }
 }

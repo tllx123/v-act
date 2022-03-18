@@ -1,0 +1,18 @@
+{
+  "name": "@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindow",
+  "version": "1.0.0-alpha.1",
+  "description": "2018-11-24liangzc：处理窗体替换后，复制数据到窗体输出没有值的问题",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vjs.framework.extension.platform.services.view.window.render.mode.currentwindow"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {}
+}

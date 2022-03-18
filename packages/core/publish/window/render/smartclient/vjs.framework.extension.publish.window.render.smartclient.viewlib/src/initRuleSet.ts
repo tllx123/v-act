@@ -46,27 +46,34 @@ const getRuleInstances = (ruleInstances: Array<ruleInstanceSchema>): object => {
 
 const parseLogic = (logic: logicType): routeParamsSchema | null => {
   if (logic['$'].type == 'client') {
-    const ruleSet2 = logic.ruleSets.ruleSet
-    const ruleRoute = ruleSet2.ruleRoute
-    const ruleInstances = ruleSet2.ruleInstances.ruleInstance
-    const ruleInstanceList = Array.isArray(ruleInstances)
-      ? ruleInstances
-      : [ruleInstances]
-    if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
-      if (Array.isArray(logic.ruleInstances.ruleInstance)) {
-        logic.ruleInstances.ruleInstance.forEach((inst: ruleInstanceSchema) => {
-          ruleInstanceList.push(inst)
-        })
-      } else {
-        ruleInstanceList.push(logic.ruleInstances.ruleInstance)
+    try {
+      const ruleSet2 = logic.ruleSets.ruleSet
+      const ruleRoute = ruleSet2.ruleRoute
+      const ruleInstances = ruleSet2.ruleInstances.ruleInstance
+      const ruleInstanceList = Array.isArray(ruleInstances)
+        ? ruleInstances
+        : [ruleInstances]
+      if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
+        if (Array.isArray(logic.ruleInstances.ruleInstance)) {
+          logic.ruleInstances.ruleInstance.forEach(
+            (inst: ruleInstanceSchema) => {
+              ruleInstanceList.push(inst)
+            }
+          )
+        } else {
+          ruleInstanceList.push(logic.ruleInstances.ruleInstance)
+        }
       }
+      let route = {
+        handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
+        ruleInstances: getRuleInstances(ruleInstanceList),
+        transactionInfo: {}
+      }
+      return route
+    } catch (e) {
+      console.error('解析方法配置失败！错误信息：' + e)
+      return null
     }
-    let route = {
-      handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
-      ruleInstances: getRuleInstances(ruleInstanceList),
-      transactionInfo: {}
-    }
-    return route
   } else {
     return null
   }

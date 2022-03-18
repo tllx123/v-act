@@ -10,7 +10,12 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { object, string, exception }
 
-const main = function (arg1, arg2, arg3, isRegexp) {
+const main = function (
+  arg1: string,
+  arg2: string,
+  arg3: string,
+  isRegexp: boolean
+) {
   if (vds.object.isUndefOrNull(arg1)) arg1 = ''
 
   if (vds.object.isUndefOrNull(arg2))

@@ -1,15 +1,22 @@
-import * as actionHandler from 'module'
-import * as dbManager from 'module'
-import * as jsTool from 'module'
-import * as log from 'module'
-import * as rendererUtil from 'module'
-import * as viewContext from 'module'
-import * as viewModel from 'module'
-import * as whereRestrict from 'module'
-
+import * as actionHandler from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import * as dbManager from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
+import { jsonUtil as jsTool } from '@v-act/vjs.framework.extension.util.jsonutil'
+import * as rendererUtil from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
+import * as viewModel from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import * as whereRestrict from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import * as viewContext from '@v-act/vjs.framework.extension.platform.init.view'
 import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
-
+import * as log from '@v-act/vjs.framework.extension.util.logutil'
+const vds = {
+  actionHandler,
+  dbManager,
+  rendererUtil,
+  viewModel,
+  whereRestrict,
+  viewContext,
+  log
+}
 export function initModule(sBox) {}
 
 /**
@@ -26,7 +33,7 @@ let Enum_MoveTo = {
  *  @param treeStruct 树结构信息，单条记录。 不接受数组
  *  @return treeViewModel
  */
-let getInstance = function (dataSourceName, treeStruct) {
+let getInstance = function (dataSourceName: string, treeStruct: any) {
   return new TreeViewModel(dataSourceName, treeStruct)
 }
 /**
@@ -34,7 +41,7 @@ let getInstance = function (dataSourceName, treeStruct) {
  * @param dataSourceName 数据源
  * @param treeStruct  插入的条数
  */
-function TreeViewModel(dataSourceName, treeStruct) {
+function TreeViewModel(dataSourceName: string, treeStruct: any) {
   this.dataSourceName = dataSourceName
   this.treeStruct = treeStruct
   this.treeType = treeStruct['type']
@@ -91,7 +98,7 @@ TreeViewModel.prototype.getOrderNoRefField = function () {
  * 获取叶子信息的数据库存储字段
  * @param widgetId 控件ID
  */
-TreeViewModel.prototype.getIsLeafRefField = function (widgetId) {
+TreeViewModel.prototype.getIsLeafRefField = function (widgetId: string) {
   return this.isLeafRefField
 }
 /**
@@ -113,16 +120,17 @@ TreeViewModel.prototype.getTreeStruct = function () {
  * 所以这里没有使用调用getChildren("")的方法去获取根节点。
  * 采用一种变通的方式处理: 在viewModel中没有父亲节点即为根节点
  */
-TreeViewModel.prototype.getRoots = function (sorted) {
+TreeViewModel.prototype.getRoots = function (sorted: boolean) {
   let records = viewModel.getDataModule().getAllRecordsByDS(this.dataSourceName)
   //如果所有节点都没有， 说明没有加载过
-  if (records && jsTool.isArray(records) && records.length > 0) {
+  var roots
+  if (records && Array.isArray(records) && records.length > 0) {
     roots = this.getRootsInRecords(records, false)
   } else {
     this._loadNodeFromDB('')
     roots = this.getChildrenFromViewModel('')
   }
-  if (sorted && sorted !== false) {
+  if (sorted) {
     let orderNoRefField = this.orderNoRefField
     if (orderNoRefField) {
       roots.sort(function compare(a, b) {
@@ -136,7 +144,10 @@ TreeViewModel.prototype.getRoots = function (sorted) {
  * 获取records中的顶级节点
  * @param records 记录集
  */
-TreeViewModel.prototype.getRootsInRecords = function (records, sorted) {
+TreeViewModel.prototype.getRootsInRecords = function (
+  records: any,
+  sorted: boolean
+) {
   let roots = []
   let idMap = {}
   for (let i = 0; i < records.length; i++) {
@@ -152,7 +163,7 @@ TreeViewModel.prototype.getRootsInRecords = function (records, sorted) {
     }
   }
 
-  if (sorted && sorted !== false) {
+  if (sorted) {
     let orderNoRefField = this.orderNoRefField
     if (orderNoRefField) {
       roots.sort(function compare(a, b) {
@@ -166,7 +177,7 @@ TreeViewModel.prototype.getRootsInRecords = function (records, sorted) {
  * 判断记录是否为根节点
  * @param record
  */
-TreeViewModel.prototype._isRoot = function (record) {
+TreeViewModel.prototype._isRoot = function (record: any) {
   if (!record) {
     throw new Error(
       '\u53c2\u6570\u4f20\u5165\u9519\u8bef\uff0c \u8bf7\u68c0\u67e5\uff01'
@@ -192,7 +203,7 @@ TreeViewModel.prototype._isRoot = function (record) {
  * 判断记录是否为根节点
  * @param record
  */
-TreeViewModel.prototype.isRoot = function (record, roots) {
+TreeViewModel.prototype.isRoot = function (record: any, roots: any) {
   if (!record) {
     throw new Error(
       '\u53c2\u6570\u4f20\u5165\u9519\u8bef\uff0c \u8bf7\u68c0\u67e5\uff01'
@@ -221,10 +232,13 @@ TreeViewModel.prototype.isRoot = function (record, roots) {
  * @param parentId 父亲节点记录
  * @param sorted 是否排序
  */
-TreeViewModel.prototype.getChildren = function (parentId, sorted) {
+TreeViewModel.prototype.getChildren = function (
+  parentId: any,
+  sorted: boolean
+) {
   //主要考虑ParentId为“”， 根节点的情况
   let children = this.getChildrenFromViewModel(parentId)
-  if (!children || (jsTool.isArray(children) && children.length <= 0)) {
+  if (!children || (Array.isArray(children) && children.length <= 0)) {
     let parent = this._getRecordValue(parentId)
     if (!parent || parent.get(this.isLeafRefField) == true) {
       return []
@@ -232,7 +246,7 @@ TreeViewModel.prototype.getChildren = function (parentId, sorted) {
     this._loadNodeFromDB(parentId)
     children = this.getChildrenFromViewModel(parentId)
   }
-  if (sorted && sorted !== false) {
+  if (sorted) {
     let orderNoRefField = this.orderNoRefField
     children.sort(function compare(a, b) {
       return a.get(orderNoRefField) - b.get(orderNoRefField)
@@ -244,7 +258,7 @@ TreeViewModel.prototype.getChildren = function (parentId, sorted) {
  * 获取父亲节点
  * @param nodeId
  */
-TreeViewModel.prototype.getParent = function (nodeId) {
+TreeViewModel.prototype.getParent = function (nodeId: string) {
   let node = this._getRecordValue(nodeId)
   let parentNode = this.getParentByNode(node)
   return parentNode
@@ -253,7 +267,7 @@ TreeViewModel.prototype.getParent = function (nodeId) {
  * 获取父亲节点
  * @param nodeId
  */
-TreeViewModel.prototype.getParentByNode = function (node) {
+TreeViewModel.prototype.getParentByNode = function (node: any) {
   let parentNode = null
   if (node) {
     let parentId
@@ -261,7 +275,7 @@ TreeViewModel.prototype.getParentByNode = function (node) {
     if (datas.hasOwnProperty(this.parentIdRefField)) {
       parentId = node.get(this.parentIdRefField)
     } else {
-      record = this._getRecordValue(node.getSysId())
+      var record = this._getRecordValue(node.getSysId())
       parentId = record.get(this.parentIdRefField)
     }
     parentNode = this._getRecordValue(parentId)
@@ -272,7 +286,7 @@ TreeViewModel.prototype.getParentByNode = function (node) {
  * 获取父亲节点ID, 主要用于兼容 bizCodeTree
  * @param nodeId
  */
-TreeViewModel.prototype.getParentIdByNode = function (node) {
+TreeViewModel.prototype.getParentIdByNode = function (node: any) {
   let parentId = null
   if (node) {
     parentId = node.get(this.parentIdRefField)
@@ -283,7 +297,7 @@ TreeViewModel.prototype.getParentIdByNode = function (node) {
  * 删除节点（同时清理子树）
  * @param recordId
  */
-TreeViewModel.prototype.deleteNode = function (recordId) {
+TreeViewModel.prototype.deleteNode = function (recordId: string) {
   let treeStruct = this.getTreeStruct()
   let refWidgetId = treeStruct.refWidgetId
   let dataModule = viewModel.getDataModule()
@@ -319,7 +333,8 @@ TreeViewModel.prototype.deleteNode = function (recordId) {
     //如果没有关联到树控件
     let record = dataModule.getRecordById(this.dataSourceName, recordId)
     if (record) {
-      let criteria = {
+      let criteria: { [code: string]: any } = {}
+      criteria = {
         fieldName: this.innerCodeField,
         operator: 'startsWith',
         value: record.get(this.innerCodeField)
@@ -334,6 +349,7 @@ TreeViewModel.prototype.deleteNode = function (recordId) {
         this._clearTreeNodes(descendantIds)
       }
       parentId = this.getParentIdByNode(record)
+
       criteria = {}
       criteria[this.parentIdRefField] = parentId
       let children = db.queryRecord(criteria)
@@ -353,7 +369,7 @@ TreeViewModel.prototype.deleteNode = function (recordId) {
  * 获取节点的子树节点（不包括record自身）
  * @param record
  */
-TreeViewModel.prototype.getSubTreeNodes = function (record) {
+TreeViewModel.prototype.getSubTreeNodes = function (record: any) {
   let subNodes = []
   this._getSubTree(record, subNodes)
   return subNodes
@@ -364,7 +380,7 @@ TreeViewModel.prototype.getSubTreeNodes = function (record) {
  * @param nodeId 节点ID
  * @param subNodes 返回值
  */
-TreeViewModel.prototype._getSubTree = function (record, subNodes) {
+TreeViewModel.prototype._getSubTree = function (record: any, subNodes: any) {
   let children = this.getChildren(record.getSysId(), false)
   for (let i = 0; i < children.length; i++) {
     subNodes.push(children[i])
@@ -848,13 +864,13 @@ TreeViewModel.prototype._getOldestYoungerBrother = function (
  */
 TreeViewModel.prototype._reloadDataFromModel = function (nodeIds) {
   let reloadIds = []
-  if (nodeIds && jsTool.isArray(nodeIds) && nodeIds.length > 2) {
+  if (nodeIds && Array.isArray(nodeIds) && nodeIds.length > 2) {
     throw new Error(
       '\u53ea\u652f\u6301\u5237\u65b0\u4e24\u4e2a\u8282\u70b9\uff01\u8bf7\u68c0\u67e5\u76f8\u5173\u6570\u636e\uff01'
     )
   }
   let treeNodePathData = []
-  if (nodeIds && jsTool.isArray(nodeIds) && nodeIds.length == 2) {
+  if (nodeIds && Array.isArray(nodeIds) && nodeIds.length == 2) {
     if (!nodeIds[0] || !nodeIds[1]) {
       reloadIds.push('')
       //刷新根
@@ -960,6 +976,7 @@ TreeViewModel.prototype._getYoungBrothers = function (currNode) {
       break
     }
   }
+  let youngBrothers
   if (index < brothers.length) {
     youngBrothers = brothers.slice(index + 1)
   }
@@ -1042,7 +1059,7 @@ TreeViewModel.prototype._getRecordValue = function (id) {
   let records = viewModel
     .getDataModule()
     .getBaseValueByDS(this.dataSourceName, [], [id])
-  if (!records || !jsTool.isArray(records) || records.length <= 0) {
+  if (!records || !Array.isArray(records) || records.length <= 0) {
     return null
   }
   return records[0]
@@ -1087,7 +1104,7 @@ TreeViewModel.prototype.toMap = function (records) {
     records = viewModel.getDataModule().getAllRecordsByDs(this.dataSourceName)
   }
   let recordsMap = new mapUtil.Map()
-  if (records && jsTool.isArray(records)) {
+  if (records && Array.isArray(records)) {
     for (let i = 0; i < records.length; i++) {
       recordsMap.put(records[i].getSysId(), records[i])
     }

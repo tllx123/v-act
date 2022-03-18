@@ -150,8 +150,8 @@
         }
         var helperEl = framework.createEl(),
           helperStyle = helperEl.style,
-          vendor = '',
-          features = {}
+          vendor = ''
+        let features: { [code: string]: any } = {}
 
         // IE8 and below
         features.oldIE = document.all && !document.addEventListener
@@ -195,7 +195,7 @@
 
           var match = ua.match(/Android\s([0-9\.]*)/)
           var androidversion = match ? match[1] : 0
-          androidversion = parseFloat(androidversion)
+          androidversion = parseFloat(androidversion + '')
           if (androidversion >= 1) {
             if (androidversion < 4.4) {
               features.isOldAndroid = true // for fixed position bug & performance

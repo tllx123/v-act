@@ -4,7 +4,7 @@ export function initModule(sb) {
   sandBox = sb
 }
 
-const execute = function (params) {
+const execute = function (params: any) {
   let FunctionEngine = sandBox.getService(
     'vjs.framework.extension.platform.engine.function.FunctionEngine'
   )

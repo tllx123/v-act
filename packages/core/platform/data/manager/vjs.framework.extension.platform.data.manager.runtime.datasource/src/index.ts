@@ -1,1 +1,1 @@
-export * as WindowDatasource from './api/WindowDatasource'
+export * from './api/WindowDatasource'

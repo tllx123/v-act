@@ -1,3 +1,5 @@
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 let sandbox, topNodeName, secNodeName, attReadOnly
 
 export function initModule(sb) {
@@ -10,7 +12,7 @@ export function initModule(sb) {
 /**
  * 设置控件只读属性值
  */
-let setReadOnly = function (id, state) {
+let setReadOnly = function (id: string, state: any) {
   let _id = '#' + id
   if (state && state + '' === 'true') _handleReadOnlyWidget(_id)
   else _handleEditableWidget(_id)
@@ -19,7 +21,7 @@ let setReadOnly = function (id, state) {
 /**
  * 获取控件只读属性值
  */
-let getReadOnly = function (id) {
+let getReadOnly = function (id: string) {
   let _id = '#' + id,
     _topNodeId = _id + topNodeName,
     _secElement = id + secNodeName,
@@ -51,7 +53,7 @@ let getReadOnly = function (id) {
 /**
  * 设置控件只读
  */
-let _handleReadOnlyWidget = function (id) {
+let _handleReadOnlyWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _secElement = id + secNodeName,
     _$idElement = $(id),
@@ -70,7 +72,7 @@ let _handleReadOnlyWidget = function (id) {
 /**
  * 设置控件可编辑
  */
-let _handleEditableWidget = function (id) {
+let _handleEditableWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _secElement = id + secNodeName,
     _$idElement = $(id),
@@ -84,4 +86,4 @@ let _handleEditableWidget = function (id) {
   if (_$secNodeIdElement.length > 0) _$secNodeIdElement.removeAttr(attReadOnly)
 }
 
-export { setEnabled, getEnabled, setIsMust, setReadOnly, getReadOnly }
+export { setReadOnly, getReadOnly }

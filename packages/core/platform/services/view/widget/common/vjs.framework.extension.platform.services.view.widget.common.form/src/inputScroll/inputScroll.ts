@@ -1,3 +1,5 @@
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 export function initModule(sb) {}
 
 /**
@@ -8,7 +10,7 @@ export function initModule(sb) {}
  * 		JQ
  *
  */
-let scroll = function (target) {
+let scroll = function (target: any) {
   target = $(target)
   if (!target || !target.size()) {
     console.warn('将要发生无效事件')
@@ -48,15 +50,4 @@ let scroll = function (target) {
     })
   }
 }
-export {
-  inputlisten,
-  inputScroll,
-  readOnlyOn,
-  readOnlyOff,
-  readOnlyToggle,
-  inputListen,
-  readOnlyOn,
-  readOnlyOff,
-  readOnlyToggle,
-  scroll
-}
+export { scroll }

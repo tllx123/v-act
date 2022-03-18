@@ -6,17 +6,27 @@ import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.in
 /**
  *	修改数据库中的记录
  */
-vds.import(
-  'vds.ds.*',
-  'vds.exception.*',
-  'vds.expression.*',
-  'vds.window.*',
-  'vds.component.*',
-  'vds.widget.*',
-  'vds.log.*',
-  'vds.string.*',
-  'vds.rpc.*'
-)
+
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+const vds = {
+  expression,
+  window,
+  string,
+  widget,
+  rpc,
+  ds,
+  exception,
+  component,
+  log
+}
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
@@ -113,7 +123,7 @@ const main = function (ruleContext: RuleContext) {
           }
         }
         if (parsedDatas.length > 0) {
-          var params = {}
+          let params: { [code: string]: any } = {}
           params.condParams = parsedDatas
 
           var callback = function (responseObj) {

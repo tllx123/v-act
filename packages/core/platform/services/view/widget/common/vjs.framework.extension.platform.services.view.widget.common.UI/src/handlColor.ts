@@ -1,11 +1,11 @@
 export function initModule(sb) {}
-let _handleColor = function (colors) {
+let _handleColor = function (colors: any) {
   let _handleColor = ''
-  _color = colors.split(',')
+  var _color = colors.split(',')
   if (_color.length == 3) {
     _handleColor = colors + ',1'
   } else if (_color.length == 4) {
-    let opacity = parseInt((_color[0] * 100) / 255) / 100
+    let opacity = parseInt((_color[0] * 100) / 255 + '') / 100
     _color.splice(0, 1)
     _color.push(opacity)
     _handleColor = _color.join(',')
@@ -15,17 +15,17 @@ let _handleColor = function (colors) {
   return _handleColor
 }
 
-const setRgbaColor = function (el, property, colors) {
+const setRgbaColor = function (el: any, property: any, colors: any) {
   let _colors = 'rgba(' + _handleColor(colors) + ')'
   el.css(property, _colors)
 }
 
-const setRgbaColors = function (el, optionArrys) {
+const setRgbaColors = function (el: any, optionArrys: any[]) {
   if (optionArrys instanceof Array) {
-    let options = {}
+    let options: { [code: string]: any } = {}
     for (let i = 0; i < optionArrys.length; i++) {
       let _option = optionArrys[i]
-      if (!_option instanceof Array) {
+      if (!Array.isArray(_option)) {
         i == 1 && (options[optionArrys[0]] = _handleColor(optionArrys[1]))
       } else {
         options[_option[0]] = _handleColor(_option[1])
@@ -35,4 +35,4 @@ const setRgbaColors = function (el, optionArrys) {
   }
 }
 
-export { setWidgetCss, setRgbaColor, setRgbaColors }
+export { setRgbaColor, setRgbaColors }

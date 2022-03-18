@@ -13,11 +13,11 @@
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 const vds = { exception }
 
-const main = function (num, zeroType, formatStr) {
+const main = function (num: string, zeroType: string, formatStr: string) {
   //获取函数传入的参数
-  var num
-  var zeroType
-  var formatStr
+  var num: string
+  var zeroType: string
+  var formatStr: string
   if (num == undefined || num === '') {
     var exception =
       vds.exception.newConfigException('需要转换为中文的字符串不能为空！')
@@ -40,7 +40,7 @@ const main = function (num, zeroType, formatStr) {
     result += getchinese(num[i])
   }
 
-  function getchinese(p) {
+  function getchinese(p: any) {
     var input = p
     if (input == '0') return cnNums[0]
     else if (input == '1') return cnNums[1]

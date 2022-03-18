@@ -6,7 +6,7 @@ export function initModule(sandbox) {
   sb = sandbox
 }
 
-let handleError = function (e) {
+let handleError = function (e: any) {
   if (e.handle) {
     let error = e
     while (error.error && error.error.handle) {

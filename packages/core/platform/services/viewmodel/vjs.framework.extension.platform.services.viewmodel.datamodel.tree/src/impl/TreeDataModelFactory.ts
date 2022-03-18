@@ -19,7 +19,7 @@ let __treeViewModelInstanceCache = {}
  *  @param treeStruct 树结构信息，单条记录。 不接受数组{pid:***, dd:***}
  *  @return treeViewModel
  */
-let getInstance = function (dataSourceName, treeStruct) {
+let getInstance = function (dataSourceName: string, treeStruct: any) {
   let scopeId = ScopeManager.getCurrentScopeId()
   let treeType = treeStruct['type']
   if (!treeType) {

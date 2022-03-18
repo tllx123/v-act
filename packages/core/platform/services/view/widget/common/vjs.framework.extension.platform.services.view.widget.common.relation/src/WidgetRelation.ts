@@ -17,7 +17,11 @@ let relationPool = {}
  * @widgetRelationList 子控件编号列表：['xxx', 'xxx']
  * @relationType 关系类型：[WidgetRelation.WIDGET_RELATION, COMPONENT_RELATION]
  */
-let put = function (widgetId, widgetRelationList, relationType) {
+let put = function (
+  widgetId: string,
+  widgetRelationList: any,
+  relationType: any
+) {
   let poolInScope = getPoolInScope()
   if (undefined != poolInScope && null != poolInScope) {
     relationType = relationType ? relationType : WIDGET_RELATION
@@ -36,7 +40,7 @@ let put = function (widgetId, widgetRelationList, relationType) {
  * @relationType 关系类型：[WidgetRelation.WIDGET_RELATION,
  *               WidgetRelation.COMPONENT_RELATION]
  */
-let get = function (widgetId, isRecursive, relationType) {
+let get = function (widgetId: string, isRecursive: boolean, relationType): any {
   let poolInScope = getPoolInScope()
   if (undefined == poolInScope || null == poolInScope) {
     return []
@@ -99,7 +103,7 @@ let getPoolInScope = function () {
   return storage
 }
 
-const getParent = function (widgetId, relationType) {
+const getParent = function (widgetId: string, relationType: any) {
   let poolInScope = getPoolInScope()
   if (undefined == poolInScope || null == poolInScope) {
     return null
@@ -119,7 +123,7 @@ const getParent = function (widgetId, relationType) {
   return parent
 }
 
-const getParents = function (widgetId, relationType) {
+const getParents = function (widgetId: string, relationType: any) {
   let parents = []
   let parent = this.getParent(widgetId, relationType)
   while (parent != null) {

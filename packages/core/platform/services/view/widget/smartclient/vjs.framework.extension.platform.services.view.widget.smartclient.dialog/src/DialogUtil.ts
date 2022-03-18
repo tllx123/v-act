@@ -5,7 +5,11 @@ import { AlertMessage as alertMessage } from '@v-act/vjs.framework.extension.pla
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let result
   // 兼容处理
   let useDefault = _parseParam(responseCallBackFunc)
@@ -30,10 +34,10 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  * @secDistance 倒计时
  */
 let propmtDialog = function (
-  content,
-  responseCallBackFunc,
-  isUseDefault,
-  secDistance
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean,
+  secDistance: any
 ) {
   // 兼容处理
   let useDefault = _parseParam(responseCallBackFunc)
@@ -54,7 +58,11 @@ let propmtDialog = function (
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   // 兼容处理
   let useDefault = _parseParam(responseCallBackFunc)
   if (useDefault) {
@@ -69,7 +77,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   // 兼容处理
   let useDefault = _parseParam(responseCallBackFunc)
   if (useDefault) {
@@ -84,7 +96,11 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   // 兼容处理
   let useDefault = _parseParam(responseCallBackFunc)
   if (useDefault) {
@@ -100,11 +116,11 @@ let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
   }
 }
 
-let _toString = function (content) {
+let _toString = function (content: string) {
   return typeof content == 'string' ? content : '' + content
 }
 
-let _parseParam = function (param) {
+let _parseParam = function (param: any) {
   return true
 }
 

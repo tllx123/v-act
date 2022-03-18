@@ -1,21 +1,27 @@
 import { FrontEndAlerter as frontEndAlerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
 import { Modal as viewModel } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 export function initModule(sandbox) {}
 
-const print = function (cfg, offset) {
+const print = function (cfg: any[], offset: number) {
   doPrint(cfg, offset, 'print')
 }
 
-const preview = function (cfg, offset) {
+const preview = function (cfg: any[], offset: number) {
   doPrint(cfg, offset, 'preview')
 }
 
-const selectPrint = function (cfg, offset) {
+const selectPrint = function (cfg: any[], offset: number) {
   doPrint(cfg, offset, 'selectPrint')
 }
 
-let showFrmSelectPrinter = function (printer, cfg, offset, printType) {
+let showFrmSelectPrinter = function (
+  printer: any,
+  cfg: any,
+  offset: any,
+  printType: string
+) {
   let html = createFrmSelectPrinter()
   viewModel.create({
     title: '选择打印机',
@@ -107,7 +113,11 @@ let createFrmSelectPrinter = function () {
   return html
 }
 
-let getAllPrinter = function (printer, srcPrinterName, srcPrintNum) {
+let getAllPrinter = function (
+  printer: any,
+  srcPrinterName: string,
+  srcPrintNum: any
+) {
   let isExist = false
   let iPrinterCount = printer.GET_PRINTER_COUNT()
   for (let i = 0; i < iPrinterCount; i++) {
@@ -133,7 +143,7 @@ let getAllPrinter = function (printer, srcPrinterName, srcPrintNum) {
   }
 }
 
-let getPrintNum = function (printNumVal) {
+let getPrintNum = function (printNumVal: any) {
   let val = -1
   let r = /^\+?[1-9][0-9]*$/
   let flag = r.test(printNumVal)
@@ -147,7 +157,7 @@ let getPrintNum = function (printNumVal) {
 }
 
 // 准备打印
-let doPrint = function (cfg, offset, printType) {
+let doPrint = function (cfg: any, offset: any, printType: any) {
   if (offset == null) {
     offset = {}
     offset.offsetLeft = 0
@@ -162,7 +172,7 @@ let doPrint = function (cfg, offset, printType) {
   let serviceHost = getServiceHost(cfg)
   let result = checkServiceHost(serviceHost)
   if (!result) {
-    let params = {}
+    let params: { [code: string]: any } = {}
     params.title = '打印服务地址检查'
     params.msgHeader = ''
     params.msg = '打印服务地址是非法的URL，请检查！'
@@ -199,11 +209,14 @@ let doPrint = function (cfg, offset, printType) {
 
   // 组装打印服务地址, 加载CLodopfuncs.js
   let lodopFuncsUrl = serviceHost + 'CLodopfuncs.js'
+  let LODOP
+  //@ts-ignore
   head.js(lodopFuncsUrl, function () {
-    isLoaded = true
+    var isLoaded = true
     if (typeof LODOP === 'undefined' || !LODOP || !LODOP.VERSION) {
       if (!isService) {
         lodopFuncsUrl = 'http://localhost:18000/CLodopfuncs.js'
+        //@ts-ignore
         head.js(lodopFuncsUrl, function () {
           isLoaded = true
           if (typeof LODOP === 'undefined' || !LODOP || !LODOP.VERSION) {
@@ -226,7 +239,7 @@ let doPrint = function (cfg, offset, printType) {
 }
 
 // 获取打印服务地址
-let getServiceHost = function (cfg) {
+let getServiceHost = function (cfg: any) {
   let serviceHost = cfg['serviceHost']
   if (serviceHost == '' || serviceHost === undefined) {
     serviceHost = 'http://localhost:8000/'
@@ -245,7 +258,7 @@ let getServiceHost = function (cfg) {
 }
 
 // 校验打印服务地址是否有效
-let checkServiceHost = function (url) {
+let checkServiceHost = function (url: string) {
   let result = false
   let strRegex =
     '^((https|http|ftp|rtsp|mms)?://)' +
@@ -267,7 +280,7 @@ let checkServiceHost = function (url) {
 }
 
 // 注册许可证信息
-let registerLicenses = function (printer) {
+let registerLicenses = function (printer: any) {
   printer.SET_LICENSES(
     '同望科技股份有限公司',
     '227D7CB7AB0D5C4BECD8D05CDF543847',
@@ -283,7 +296,7 @@ let registerLicenses = function (printer) {
 }
 
 // 提示用户安装打印插件
-let showPrinterInstallTips = function (serviceHost) {
+let showPrinterInstallTips = function (serviceHost: string) {
   if (!serviceHost) serviceHost = ''
 
   let $tips = $(
@@ -312,7 +325,7 @@ let showPrinterInstallTips = function (serviceHost) {
 }
 
 // 提示用户升级打印插件
-let showPrinterUpdateTips = function (serviceHost) {
+let showPrinterUpdateTips = function (serviceHost: string) {
   if (!serviceHost) serviceHost = ''
 
   let $tips = $(
@@ -334,7 +347,12 @@ let showPrinterUpdateTips = function (serviceHost) {
 }
 
 // 执行打印
-let executePrint = function (printer, cfg, offset, printType) {
+let executePrint = function (
+  printer: any,
+  cfg: any,
+  offset: any,
+  printType: any
+) {
   // 服务器类型
   let serverHostType = cfg['serverHostType']
   // 打印机名称
@@ -594,7 +612,7 @@ let executePrint = function (printer, cfg, offset, printType) {
 }
 
 //获取打印机序号
-let getPrinterIndex = function (printer, printerName) {
+let getPrinterIndex = function (printer: any, printerName: string) {
   if (printerName != '') {
     let count = printer.GET_PRINTER_COUNT()
     for (let i = 0; i < count; i++) {
@@ -608,7 +626,7 @@ let getPrinterIndex = function (printer, printerName) {
 }
 
 // 获取打印机所支持的所有纸张
-let getPrinterPapers = function (printer, printerName) {
+let getPrinterPapers = function (printer: any, printerName: string) {
   let pageSizeList
   if (printerName != '') {
     printer.SET_PRINTER_INDEXA(printerName) //设置打印机
@@ -621,7 +639,7 @@ let getPrinterPapers = function (printer, printerName) {
 }
 
 // 获取纸张名称
-let getPaperName = function (paperSize) {
+let getPaperName = function (paperSize: any) {
   let paperNames = {
     'null': 'A4',
     '8': 'A3',
@@ -633,12 +651,18 @@ let getPaperName = function (paperSize) {
   return paperSize
 }
 
-let getHost = function (path) {
+let getHost = function (path: string) {
   let host = window.location.protocol + '//' + window.location.host + '/' + path
   return host
 }
 
-let addImg = function (printer, imgs, tableIndex, tMargin, lMargin) {
+let addImg = function (
+  printer: any,
+  imgs: any,
+  tableIndex: any,
+  tMargin: number,
+  lMargin: number
+) {
   if (imgs == null) {
     return
   }

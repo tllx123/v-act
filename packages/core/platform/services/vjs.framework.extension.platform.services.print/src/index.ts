@@ -1,1 +1,1 @@
-export * as PrintContext from './api/PrintContext'
+export * from './api/PrintContext'

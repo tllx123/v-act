@@ -13,7 +13,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 export function initModule(sb) {}
 
-const setVariant = function (params) {
+const setVariant = function (params: any) {
   //不能获取窗体域，当可能在构件域(构件方法)中调用
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode()
@@ -56,7 +56,7 @@ const setVariant = function (params) {
   }
 }
 
-const setVariants = function (params) {
+const setVariants = function (params: any) {
   let scope = scopeManager.getWindowScope()
   let componentCode = scope.getComponentCode()
   let windowCode = scope.getWindowCode()
@@ -106,7 +106,7 @@ const setVariants = function (params) {
   }
 }
 
-const initVariant = function (params) {
+const initVariant = function (params: any) {
   //构建operation对象
   //设置成功回掉：设置构建变量值
   //operation对象注入WindowuntimeInit.registerVariableHandler
@@ -140,7 +140,7 @@ const initVariant = function (params) {
   }*/
 }
 
-const getVariant = function (params) {
+const getVariant = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     variantCode = params.code
@@ -171,7 +171,7 @@ const getVariant = function (params) {
   }
 }
 
-const getOption = function (params) {
+const getOption = function (params: any) {
   let componentCode = params.componentCode,
     optionCode = params.code
   if (componentParam.existsOption(componentCode, optionCode)) {
@@ -197,7 +197,7 @@ const getOption = function (params) {
   }
 }
 
-const refreshVariant = function (params) {
+const refreshVariant = function (params: any) {
   let codes = params.codes
   let operation = new Operation()
   let scope = scopeManager.getScope()
@@ -219,7 +219,7 @@ const refreshVariant = function (params) {
   }
   let variables = []
   for (let i = 0, l = codes.length; i < l; i++) {
-    let variable = {}
+    let variable: { [code: string]: any } = {}
     variable.name = codes[i]
     variables.push(variable)
   }
@@ -249,14 +249,13 @@ const refreshVariant = function (params) {
   }
 }
 
-const getMetadata = function (componentCode, domain) {
+const getMetadata = function (componentCode: string, domain: string) {
   return schemaComponentParam.getMetadata(componentCode, domain)
 }
 
 export {
   getMetadata,
   getOption,
-  getRuleSetInputs,
   getVariant,
   initVariant,
   refreshVariant,

@@ -5,9 +5,8 @@ let sb
 
 export function initModule(sb) {}
 
-let pool = {}
-
-let setPool = function (key, millisecond) {
+let pool: { [code: string]: any } = {}
+let setPool = function (key: any, millisecond: any) {
   if (!pool.key) {
     pool[key] = true
     let callback = function (key) {
@@ -19,7 +18,7 @@ let setPool = function (key, millisecond) {
   }
 }
 
-let isExistNow = function (key) {
+let isExistNow = function (key: any) {
   if (pool[key]) {
     return true
   }
@@ -35,7 +34,13 @@ let isExistNow = function (key) {
  *
  * return Function
  */
-let fireEvent = function (widgetCode, eventName, millisecond, success, fail) {
+let fireEvent = function (
+  widgetCode: string,
+  eventName: string,
+  millisecond: number,
+  success: any,
+  fail: any
+) {
   let scopeId = scopeManager.getCurrentScopeId()
   let key = scopeId + '_' + widgetCode
   return function () {
@@ -60,7 +65,7 @@ let fireEvent = function (widgetCode, eventName, millisecond, success, fail) {
  *
  * return Function
  */
-let fireFunc = function (widgetCode, func, millisecond) {
+let fireFunc = function (widgetCode: string, func: any, millisecond: number) {
   let scopeId = scopeManager.getCurrentScopeId()
   let key = scopeId + '_' + widgetCode
   return function () {
@@ -82,7 +87,12 @@ let fireFunc = function (widgetCode, func, millisecond) {
  * @eventName 事件名称（必填）
  * @millisecond 事件触发间隔毫秒数，默认1000ms（可选）
  */
-let handleKeyDown = function (widgetCode, eventName, millisecond) {
+type Eventx = { keyCode: number }
+let handleKeyDown = function (
+  widgetCode: string,
+  eventName: string,
+  millisecond: number
+) {
   let handler = oldEventManager.fireEvent(widgetCode, eventName)
   let syncFunc = oldEventManager.fireEvent(widgetCode, 'DBUpdate')
   let scopeId = scopeManager.getCurrentScopeId()
@@ -93,16 +103,18 @@ let handleKeyDown = function (widgetCode, eventName, millisecond) {
     for (let i = 0, len = arguments.length; i < len; i++) {
       args.push(arguments[i])
     }
-    let eventArgs = {
+    let eventArgs: { [code: string]: any } = {}
+    eventArgs = {
       isPrimitive: false
     }
-    eventArgs.KeyCode = event.keyCode
+    const ev = <Eventx>event
+    eventArgs.KeyCode = ev.keyCode
     args.push(eventArgs)
     if (!millisecond) {
       millisecond = 1000
     }
     if (!isExistNow(key)) {
-      if (event.keyCode == 13) {
+      if (ev.keyCode == 13) {
         setPool(key, millisecond)
         syncFunc.call(this)
       }

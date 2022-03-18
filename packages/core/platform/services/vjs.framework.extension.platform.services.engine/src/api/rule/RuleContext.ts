@@ -5,7 +5,7 @@ function RuleContext(mock) {
 }
 
 RuleContext.prototype = {
-  getInput: function (code) {
+  getInput: function (code: string) {
     if (this.mock) {
       return this.mock._getInput(code)
     }

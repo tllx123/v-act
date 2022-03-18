@@ -86,7 +86,7 @@ export function _getMainFunc(funStr) {
 		  ]
 		}
 	 */
-export function exeExtRule(params) {
+export function exeExtRule(params: any) {
   var ruleCtx = params.ruleContext
   var rs = this._getMainFunc(params.mainFunc)
   if (!rs) {

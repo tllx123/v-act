@@ -38,10 +38,32 @@ class Window {
     this.vactWidgetMap = vactWidgetMap
 
     // 处理xml脚本节点字符串问题
-    forInObj(obj)
+    //forInObj(obj)
     this.obj = obj
+    this.convertRuleRouteToJson()
+  }
 
-    console.log(JSON.stringify(this.obj, null, 2))
+  convertRuleRouteToJson() {
+    if (this.obj.logics && this.obj.logics.logic) {
+      let logicList = this.obj.logics.logic
+      logicList = Array.isArray(logicList) ? logicList : [logicList]
+      logicList.forEach((logic) => {
+        if (logic.$ && logic.$.type == 'client') {
+          if (
+            logic.ruleSets &&
+            logic.ruleSets.ruleSet &&
+            logic.ruleSets.ruleSet.ruleRoute
+          ) {
+            const ruleRoute = logic.ruleSets.ruleSet.ruleRoute
+            const text = ruleRoute._
+            if (text) {
+              const dom = parser.parse(`<root>${text}</root>`)
+              ruleRoute._ = dom[0].children
+            }
+          }
+        }
+      })
+    }
   }
 
   getCode() {
@@ -265,6 +287,19 @@ class Window {
             ruleInstanceList = Array.isArray(ruleInstanceList)
               ? ruleInstanceList
               : [ruleInstanceList]
+            if (
+              logic.ruleSets &&
+              logic.ruleSets.ruleSet &&
+              logic.ruleSets.ruleSet.ruleInstances &&
+              logic.ruleSets.ruleSet.ruleInstances.ruleInstance
+            ) {
+              let ruleInst = logic.ruleSets.ruleSet.ruleInstances.ruleInstance
+              if (Array.isArray(ruleInst)) {
+                ruleInstanceList = ruleInstanceList.concat(ruleInst)
+              } else {
+                ruleInstanceList.push(ruleInst)
+              }
+            }
             ruleInstanceList.forEach((ruleInstance) => {
               const ruleCode = ruleInstance.$.ruleCode
               if (ruleSet.indexOf(ruleCode) == -1) {

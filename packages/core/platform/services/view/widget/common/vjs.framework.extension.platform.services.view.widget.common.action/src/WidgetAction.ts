@@ -8,7 +8,7 @@ import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let isWidgetActionExist = function (widgetId, actionName) {
+let isWidgetActionExist = function (widgetId: string, actionName: string) {
   let widgetActionHandler = getWidgetActionHandler(widgetId)
   if (widgetActionHandler) {
     if (typeof widgetActionHandler[actionName] == 'function') {
@@ -36,7 +36,7 @@ let isWidgetActionExist = function (widgetId, actionName) {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let isComponentActionExist = function (actionName) {
+let isComponentActionExist = function (actionName: string) {
   let componentActionHandler = getComponentActionHandler()
   if (componentActionHandler) {
     if (typeof componentActionHandler[actionName] == 'function') {
@@ -51,7 +51,7 @@ let isComponentActionExist = function (actionName) {
  *
  * @widgetId 控件编号
  */
-let getWidgetActionHandler = function (widgetId) {
+let getWidgetActionHandler = function (widgetId: string) {
   let proxyWidgetId = widgetContext.get(widgetId, 'ProxyWidgetId')
   let widgetType
   if (undefined == proxyWidgetId || null == proxyWidgetId) {
@@ -93,7 +93,7 @@ let getComponentActionHandler = function () {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeWidgetAction = function (widgetId, actionName) {
+let executeWidgetAction = function (widgetId: any, actionName: any) {
   let scope = scopeManager.getChildWindowScope()
   let scopeId = scope ? scope.getInstanceId() : scopeManager.getCurrentScopeId()
   return scopeManager
@@ -196,7 +196,7 @@ let executeWidgetAction = function (widgetId, actionName) {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeSubWidgetAction = function (widgetId, actionName) {
+let executeSubWidgetAction = function (widgetId: string, actionName: string) {
   let widgetRelationList = widgetRelation.get(widgetId, false)
   for (let i = 0; i < widgetRelationList.length; i++) {
     let subWidgetId = widgetRelationList[i]
@@ -217,7 +217,7 @@ let executeSubWidgetAction = function (widgetId, actionName) {
  *
  * @actionName 控件接口名
  */
-let executeComponentAction = function (actionName) {
+let executeComponentAction = function (actionName: string) {
   if (isComponentActionExist(actionName)) {
     let componentActionHandler = getComponentActionHandler()
     let params = []
@@ -244,7 +244,6 @@ export {
   executeWidgetAction,
   getComponentActionHandler,
   getProxyWidgetId,
-  getService,
   getWidgetActionHandler,
   isComponentActionExist,
   isWidgetActionExist

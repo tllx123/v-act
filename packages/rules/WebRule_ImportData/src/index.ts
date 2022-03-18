@@ -44,6 +44,16 @@
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+const vds = { message, widget, ds, expression, component, string, log, window }
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -92,7 +102,7 @@ const main = function (ruleContext: RuleContext) {
         }
         if (importNodeId != null && importNodeId != '') {
           var selectId = vds.expression.execute(importNodeId, {
-            ruleContext: context
+            ruleContext: RuleContext
           })
         }
       }
@@ -106,8 +116,8 @@ const main = function (ruleContext: RuleContext) {
           dataSourceName = value.substring(0, value.indexOf('.'))
           var datasource = vds.ds.lookup(dataSourceName)
           var currentRow = datasource.getCurrentRecord()
-          var datasource = vds.ds.lookup(changeDsArr[changeIndex])
-          var db = datasourceclearRemoveDatas()
+          //var datasource = vds.ds.lookup(changeDsArr[changeIndex])
+          //var db = datasourceclearRemoveDatas()
 
           if (currentRow != null) {
             varMap[fieldName] = currentRow.get(value)

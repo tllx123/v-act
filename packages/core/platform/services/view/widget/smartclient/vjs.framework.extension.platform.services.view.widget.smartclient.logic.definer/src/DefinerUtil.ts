@@ -1,8 +1,8 @@
 let __storagePool__ = {}
 
-let _registryFactory = function (type) {
+let _registryFactory = function (type: string) {
   if (typeof __storagePool__[type] != 'undefined') {
-    throw new Error('定义储存器:' + factoryType + ' 已存在，不能重复注册')
+    throw new Error('定义储存器:' + type + ' 已存在，不能重复注册')
   }
   let factory = (__storagePool__[type] = {})
   let definerPool = (__storagePool__[type]['definerPool'] = {})
@@ -19,9 +19,9 @@ let _registryFactory = function (type) {
   }
 }
 
-let _getFactory = function (type) {
+let _getFactory = function (type: string) {
   if (typeof __storagePool__[type] == 'undefined') {
-    throw new Error('定义储存器:' + factoryType + '未注册')
+    throw new Error('定义储存器:' + type + '未注册')
   }
   return __storagePool__[type]
 }
@@ -36,7 +36,7 @@ let _getFactory = function (type) {
  * @param definer
  *            定义对象
  */
-let registryDefiner = function (type, name, definer) {
+let registryDefiner = function (type: string, name: string, definer: any) {
   if (typeof __storagePool__[type] == 'undefined') {
     _registryFactory(type)
   }
@@ -52,26 +52,26 @@ let registryDefiner = function (type, name, definer) {
  * @param name
  *            定义名
  */
-let getDefiner = function (type, name) {
+let getDefiner = function (type: string, name: string) {
   let factory = _getFactory(type)
   return factory.getDefiner(name)
 }
 
 // ========== 下面为与定义，以后可往外扩展 =========
 let DEFINE_COLUMN_EDITOR = 'columnEditor'
-let registryColumnEditor = function (name, definer) {
+let registryColumnEditor = function (name: string, definer: any) {
   registryDefiner(DEFINE_COLUMN_EDITOR, name, definer)
 }
 
 // 列表控件列editor属性
-let getColumnEditor = function (name) {
+let getColumnEditor = function (name: string) {
   return getDefiner(DEFINE_COLUMN_EDITOR, name)
 }
 
 // 列表控件列默认宽度
 let DEFINE_COLUMN_WIDTH = 'columnWidth'
 registryDefiner(DEFINE_COLUMN_WIDTH, 'width', 80)
-let getColumnWidth = function (name) {
+let getColumnWidth = function (name: string) {
   return getDefiner(DEFINE_COLUMN_WIDTH, 'width')
 }
 
@@ -106,7 +106,7 @@ registryColumnEditor('text', {
  * 控件进行虚拟化DB时，可能需要的字段列表定义
  */
 let WIDGET_VIRTUAL_FIELDS = 'WidgetVirtualFields'
-let getWidgetVirtualFields = function (name) {
+let getWidgetVirtualFields = function (name: string) {
   return getDefiner(WIDGET_VIRTUAL_FIELDS, name)
 }
 registryDefiner(WIDGET_VIRTUAL_FIELDS, 'JGComboBox', {
@@ -144,7 +144,7 @@ registryDefiner(WIDGET_VIRTUAL_FIELDS, 'JGAuditSignature', {
  * metadata中数字type对应的真实type名称
  */
 let METADATA_FIELD_TYPE = 'MetadataFieldType'
-let getMetadataFieldType = function (name) {
+let getMetadataFieldType = function (name: string) {
   return getDefiner(METADATA_FIELD_TYPE, name)
 }
 registryDefiner(METADATA_FIELD_TYPE, '1', 'char')

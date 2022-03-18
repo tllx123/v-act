@@ -1,6 +1,7 @@
 /**
  *  界面实体记录循环处理
  */
+/** 
 vds.import(
   'vds.ds.*',
   'vds.exception.*',
@@ -9,10 +10,19 @@ vds.import(
   'vds.component.*',
   'vds.window.*'
 )
+*/
+
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const vds = { ds, exception, expression, log, component, window }
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -122,7 +132,13 @@ var TYPE_EXPRESSIONS = 'expression'
  *  @param	formula		  	源字段内容
  *  @param  obj             目标实体当前行（用于表达式计算）
  */
-var calculateValue = function (type, formula, dsName, record, ruleContext) {
+var calculateValue = function (
+  type: any,
+  formula: string,
+  dsName: string,
+  record: any,
+  ruleContext: RuleContext
+) {
   var retValue
   var datasource = vds.ds.lookup(dsName)
 

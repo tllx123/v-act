@@ -14,7 +14,7 @@ export function initModule(sBox) {}
  * 转换类容：
  * 将是否是叶子节点转换成是否是节点
  */
-let translate = function (widgetId, datas, isCover) {
+let translate = function (widgetId: any, datas: any, isCover: boolean) {
   if (datas && datas.length > 0) {
     let properties = _getPropertyMap(widgetId)
     let value = propertyHandler.getProperty(widgetId, 'RealizeWay')
@@ -34,7 +34,12 @@ let translate = function (widgetId, datas, isCover) {
 /**
  *父子节点实现方式
  */
-let translateByParentType = function (widgetId, properties, datas, isCover) {
+let translateByParentType = function (
+  widgetId: string,
+  properties: any,
+  datas: any,
+  isCover: boolean
+) {
   let nodeMap = {}
   let parentField = properties.parentField
   let openProperty = properties.openProperty
@@ -126,13 +131,23 @@ let translateByParentType = function (widgetId, properties, datas, isCover) {
 /**
  *左右编码实现方式
  */
-let translateByLRCodeType = function (widgetId, properties, datas, isCover) {
+let translateByLRCodeType = function (
+  widgetId: string,
+  properties: any,
+  datas: any,
+  isCover: boolean
+) {
   return translateByParentType(widgetId, properties, datas, isCover)
 }
 /**
  *业务编码实现方式
  */
-let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
+let translateByBizCodeType = function (
+  widgetId: string,
+  properties: any,
+  datas: any,
+  isCover: boolean
+) {
   let businessCodeRefField = getBusinessCodeRefField(widgetId)
   let bizCodeMap = {}
   let parentHashMap = {}
@@ -213,7 +228,7 @@ let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
  * 获取编码字段
  * @param {Object} widgetId
  */
-let getBusinessCodeRefField = function (widgetId) {
+let getBusinessCodeRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_CodeColumn')
   if (obj) {
@@ -222,9 +237,9 @@ let getBusinessCodeRefField = function (widgetId) {
   return ret
 }
 
-let _getPropertyMap = function (widgetId) {
+let _getPropertyMap = function (widgetId: string) {
   let widget = viewContext.getRuntimeWidgetObjFromContext(widgetId)
-  let properties = {}
+  let properties: { [code: string]: any } = {}
   properties.folderProperty = widget.getfolderProperty()
   properties.leafField = widget.getLeafField()
   properties.openProperty = widget.getOpenProperty()
@@ -240,12 +255,12 @@ let _getPropertyMap = function (widgetId) {
 }
 
 let _setTreeNodeIcon = function (
-  data,
-  treeIcons,
-  openIcon,
-  closeIcon,
-  iconProperty,
-  dsName
+  data: any,
+  treeIcons: any,
+  openIcon: any,
+  closeIcon: any,
+  iconProperty: any,
+  dsName: any
 ) {
   // 新版属性，支持表达式条件
   if (undefined != treeIcons.jsonVersion && '1.0' == treeIcons.jsonVersion) {
@@ -321,14 +336,17 @@ let _setTreeNodeIcon = function (
   }
 }
 
-let getImageByName = function (imageName) {
+let getImageByName = function (imageName: string) {
   let componentCode = viewContext.getComponentCode()
   return fileUtil.getImageByName(componentCode + '_' + imageName)
 }
 /**
  *获取父节点业务编码
  */
-let _getParentBusinessCode = function (businessCodeCfg, businessCode) {
+let _getParentBusinessCode = function (
+  businessCodeCfg: any,
+  businessCode: any
+) {
   if (businessCode === null || typeof businessCode == 'undefined') {
     return null
   }
@@ -355,7 +373,7 @@ let _getParentBusinessCode = function (businessCodeCfg, businessCode) {
 /**
  *获取层级码配置信息
  */
-let _getBusinessCodeFormat = function (widgetId) {
+let _getBusinessCodeFormat = function (widgetId: string) {
   let gridProperties = viewContext.getWidgetPropertyFromContext(widgetId)
   let value = gridProperties['CodeFormat']
   if (!value) {
@@ -375,11 +393,11 @@ let _getBusinessCodeFormat = function (widgetId) {
   return value.split(',')
 }
 
-let _getPropertyIgnoreCase = function (obj, property) {
-  for (p in obj) {
+let _getPropertyIgnoreCase = function (obj: any, property: any) {
+  for (var p in obj) {
     if (p.toUpperCase() == property.toUpperCase()) return p
   }
   return null
 }
 
-export { destroy, Enum_MoveTo, getInstance, translate }
+export { translate }

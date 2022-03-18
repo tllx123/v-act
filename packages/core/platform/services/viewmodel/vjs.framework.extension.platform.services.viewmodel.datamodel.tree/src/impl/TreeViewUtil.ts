@@ -17,7 +17,7 @@ export function initModule(sBox) {
  * @param widgetId 控件id
  * 通过一个控件id获取一个treeStruct对象
  */
-let getTreeStruct = function (widgetId) {
+let getTreeStruct = function (widgetId: string) {
   let treeStruct = {}
   treeStruct['type'] = getImplementType(widgetId)
   treeStruct['refWidgetId'] = widgetId
@@ -40,7 +40,7 @@ let getTreeStruct = function (widgetId) {
  * @param widgetId 控
  * 通过控件ID 获取一个treeviewModel实例
  */
-let getTreeViewModel = function (widgetId) {
+let getTreeViewModel = function (widgetId: string) {
   let dsNames = vmManager.getDatasourceNamesByWidgetCode({
     widgetCode: widgetId
   })
@@ -55,7 +55,7 @@ let getTreeViewModel = function (widgetId) {
  * 获取父亲节点ID的数据库存储字段
  * @param widgetId 控件ID
  */
-let getParentIdRefField = function (widgetId) {
+let getParentIdRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_parentId')
   if (obj) {
@@ -67,7 +67,7 @@ let getParentIdRefField = function (widgetId) {
  * 获取父亲节点ID的数据库存储字段
  * @param widgetId 控件ID
  */
-let getTextRefField = function (widgetId) {
+let getTextRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_text')
   if (obj) {
@@ -88,7 +88,7 @@ let getOrderNoRefField = function (widgetId) {
   return ret
 }
 
-let getBusinessCodeFormat = function (widgetId) {
+let getBusinessCodeFormat = function (widgetId: string) {
   let gridProperties = viewContext.getWidgetPropertyFromContext(widgetId)
   let value = gridProperties['CodeFormat']
   if (!value) {
@@ -108,7 +108,7 @@ let getBusinessCodeFormat = function (widgetId) {
   return value
 }
 
-let getBusinessCodeRefField = function (widgetId) {
+let getBusinessCodeRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_CodeColumn')
   if (obj) {
@@ -120,7 +120,7 @@ let getBusinessCodeRefField = function (widgetId) {
  * 获取左节点信息的数据库存储字段
  * @param widgetId 控件ID
  */
-let getLeftRefField = function (widgetId) {
+let getLeftRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_left')
   if (obj) {
@@ -132,7 +132,7 @@ let getLeftRefField = function (widgetId) {
  * 获取右节点信息的数据库存储字段
  * @param widgetId 控件ID
  */
-let getRightRefField = function (widgetId) {
+let getRightRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_right')
   if (obj) {
@@ -144,7 +144,7 @@ let getRightRefField = function (widgetId) {
  * 获取叶子信息的数据库存储字段
  * @param widgetId 控件ID
  */
-let getIsLeafRefField = function (widgetId) {
+let getIsLeafRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_isLeaf')
   if (obj) {
@@ -156,7 +156,7 @@ let getIsLeafRefField = function (widgetId) {
  * 获取层级编码信息的数据库存储字段
  * @param widgetId 控件ID
  */
-let getInnerCodeRefField = function (widgetId) {
+let getInnerCodeRefField = function (widgetId: string) {
   let ret
   let obj = viewModel.getMetaModule().getMappingInfo(widgetId + '_innerCode')
   if (obj) {
@@ -165,7 +165,7 @@ let getInnerCodeRefField = function (widgetId) {
   return ret
 }
 
-let getImplementType = function (widgetId) {
+let getImplementType = function (widgetId: string) {
   let value = propertyHandler.getProperty(widgetId, 'RealizeWay')
   if (value == '父子节点') {
     value = '1'
@@ -186,10 +186,10 @@ let getImplementType = function (widgetId) {
  * @param isGenerateIcon 数据库记录(可选), 默认为true
  */
 let getTreeStructData2UI = function (
-  widgetId,
-  parentId,
-  records,
-  isGenerateIcon
+  widgetId: string,
+  parentId: string,
+  records: any,
+  isGenerateIcon: boolean
 ) {
   let childrensMap = getChildrensMapWithIdKey(widgetId, records)
   let treeIcons
@@ -283,7 +283,7 @@ let getChildrensMapWithIdKey = function (widgetId, records) {
 /**
  *  判断是否有孩子
  */
-let _getIsHasChild = function (nodeId, childrensMap) {
+let _getIsHasChild = function (nodeId: string, childrensMap: any) {
   let rtn = false
   let childrens = childrensMap[nodeId]
   if (childrens && childrens.length > 0) {
@@ -298,10 +298,10 @@ let _getIsHasChild = function (nodeId, childrensMap) {
  * @param records 数据库记录
  */
 let _getTreeJsonData2UI = function (
-  widgetId,
-  parentId,
-  childrensMap,
-  treeIcons
+  widgetId: string,
+  parentId: string,
+  childrensMap: any,
+  treeIcons: any
 ) {
   let datas = []
   let childs = childrensMap[parentId]
@@ -314,7 +314,9 @@ let _getTreeJsonData2UI = function (
       let id = child.getSysId()
       //TODO: 这个字段不能少
       let text = child.get(textRefField)
-      let node = {}
+
+      let node: { [code: string]: any } = {}
+
       node = child.toMap()
       //设置图标
       if (treeIcons) {
@@ -327,7 +329,7 @@ let _getTreeJsonData2UI = function (
       ) {
         node.id = id
         node.text = text
-        let attributes = {}
+        let attributes: { [code: string]: any } = {}
         attributes.loaded = true
         node.attributes = attributes
         node.leaf = true
@@ -337,7 +339,7 @@ let _getTreeJsonData2UI = function (
         node.text = text
         node.leaf = false
         let isHasChild = _getIsHasChild(id, childrensMap)
-        let attributes = {}
+        let attributes: { [code: string]: any } = {}
         if (isHasChild) {
           attributes.loaded = true
           node.attributes = attributes
@@ -368,7 +370,7 @@ let _getTreeJsonData2UI = function (
  *
  */
 //TODO: 只有JGbizcodetreeviewhandler使用 ， 后续重构
-let changeDBRecord2TreeNode = function (widgetId, records) {
+let changeDBRecord2TreeNode = function (widgetId: string, records: any) {
   if (!records || records.length <= 0) {
     return []
   }
@@ -381,13 +383,13 @@ let changeDBRecord2TreeNode = function (widgetId, records) {
 
   for (let i = 0; i < records.length; i++) {
     let record = records[i]
-    let treeNode = {}
+    let treeNode: { [code: string]: any } = {}
     treeNode = record.toMap()
     treeNode.id = record.getSysId()
     treeNode.text = record.get(textRefField)
     treeNode.leaf = false
     treeNode.state = 'closed'
-    let attributes = {}
+    let attributes: { [code: string]: any } = {}
     attributes.loaded = false
     //设置图标
     if (treeIcons) {
@@ -430,11 +432,11 @@ let changeDBRecord2TreeNode = function (widgetId, records) {
  * 获取图片文件服务
  * @param imageObjId 图标ID
  */
-let getImage = function (imageObjId) {
+let getImage = function (imageObjId: string) {
   return fileUtil.getImageById(imageObjId)
 }
 
-let getImageByName = function (imageName) {
+let getImageByName = function (imageName: string) {
   return fileUtil.getImageByName(imageName)
 }
 
@@ -446,10 +448,10 @@ let getImageByName = function (imageName) {
  * @return map , 格式：{id:[subTreeNodes]}
  */
 let changeRecordsTreeStructData = function (
-  widgetId,
-  records,
-  depth,
-  childrensMap
+  widgetId: string,
+  records: any,
+  depth: any,
+  childrensMap: any
 ) {
   let defDepth = 1
   let map = new mapUtil.Map()
@@ -482,7 +484,7 @@ let changeRecordsTreeStructData = function (
    * @param depth 需要展开的深度
    * @param childrensMap map类型的数据集， 格式{parentId: [children]}
    */
-  function changeTreeStructData(parentId, currDepth) {
+  function changeTreeStructData(parentId: string, currDepth: number) {
     let datas = []
     let childs = childrensMap[parentId]
     if (childs && childs.length > 0) {
@@ -572,7 +574,13 @@ let changeRecordsTreeStructData = function (
   }
 }
 
-let _vmDataChange = function (widgetId, dataSource, record, node, mappingInfo) {
+let _vmDataChange = function (
+  widgetId: string,
+  dataSource: any,
+  record: any,
+  node: any,
+  mappingInfo: any
+) {
   if (
     mappingInfo &&
     mappingInfo.mappingItems &&
@@ -628,7 +636,7 @@ let _vmDataChange = function (widgetId, dataSource, record, node, mappingInfo) {
 }
 
 /**简单的克隆*/
-function cloneJSON(js) {
+function cloneJSON(js: any) {
   let rs = {
     checked: false,
     selected: false,
@@ -643,7 +651,7 @@ function cloneJSON(js) {
   return rs
 }
 
-let _setTreeNodeIcon = function (node, treeIcons) {
+let _setTreeNodeIcon = function (node: any, treeIcons: any) {
   let treeIconField = treeIcons['_refField_']
   let treeIconFieldValue =
     node[treeIconField] == null ? '' : node[treeIconField].toString()
@@ -676,20 +684,16 @@ let _setTreeNodeIcon = function (node, treeIcons) {
 export {
   changeDBRecord2TreeNode,
   changeRecordsTreeStructData,
-  destroy,
-  Enum_MoveTo,
   getBusinessCodeFormat,
   getBusinessCodeRefField,
   getChildrensMapWithIdKey,
   getImplementType,
   getInnerCodeRefField,
-  getInstance,
   getIsLeafRefField,
   getOrderNoRefField,
   getParentIdRefField,
   getTextRefField,
   getTreeStruct,
   getTreeStructData2UI,
-  getTreeViewModel,
-  translate
+  getTreeViewModel
 }

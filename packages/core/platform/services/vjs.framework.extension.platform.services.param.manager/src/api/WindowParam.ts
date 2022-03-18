@@ -6,13 +6,13 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 
 export function initModule(sb) {}
 
-const setInput = function (params) {
+const setInput = function (params: any) {
   let c = params.code,
     value = params.value
   windowParam.setInput(c, value)
 }
 
-const getInput = function (params) {
+const getInput = function (params: any) {
   let code = params.code
   if (windowParam.existsInput(code)) {
     return windowParam.getInput(code)
@@ -64,7 +64,7 @@ const getInputs = function () {
   return result
 }
 
-const getInputDefine = function (params) {
+const getInputDefine = function (params: any) {
   let code = params.code
   let scope = scopeManager.getWindowScope()
   let componentCode = scope.getComponentCode(),
@@ -72,7 +72,7 @@ const getInputDefine = function (params) {
   return schemaWinParam.getInputDefine(componentCode, windowCode, code)
 }
 
-const setOutput = function (params) {
+const setOutput = function (params: any) {
   let scope = scopeManager.getChildWindowScope()
   if (!scope) {
     scope = scopeManager.getScope()
@@ -87,7 +87,7 @@ const setOutput = function (params) {
   })()
 }
 
-const getOutput = function (params) {
+const getOutput = function (params: any) {
   let scope = scopeManager.getChildWindowScope()
   if (!scope) {
     scope = scopeManager.getScope()
@@ -126,7 +126,7 @@ const getOutput = function (params) {
   })()
 }
 
-const getOutputDefine = function (params) {
+const getOutputDefine = function (params: any) {
   let code = params.code
   let scope = scopeManager.getWindowScope()
   let componentCode = scope.getComponentCode(),
@@ -159,19 +159,27 @@ const getOutputs = function () {
   return result
 }
 
-const addInputDefines = function (componentCode, windowCode, defines) {
+const addInputDefines = function (
+  componentCode: string,
+  windowCode: string,
+  defines: any
+) {
   schemaWinParam.addInputDefines(componentCode, windowCode, defines)
 }
 
-const addOutputDefines = function (componentCode, windowCode, defines) {
+const addOutputDefines = function (
+  componentCode: string,
+  windowCode: string,
+  defines: any
+) {
   schemaWinParam.addOutputDefines(componentCode, windowCode, defines)
 }
 
-const getOutputDefines = function (componentCode, windowCode) {
+const getOutputDefines = function (componentCode: string, windowCode: string) {
   return schemaWinParam.getOutputDefines(componentCode, windowCode)
 }
 
-const getInputDefines = function (componentCode, windowCode) {
+const getInputDefines = function (componentCode: string, windowCode: string) {
   return schemaWinParam.getInputDefines(componentCode, windowCode)
 }
 
@@ -182,18 +190,10 @@ export {
   getInputDefine,
   getInputDefines,
   getInputs,
-  getMetadata,
-  getOption,
   getOutput,
   getOutputDefine,
   getOutputDefines,
   getOutputs,
-  getRuleSetInputs,
-  getVariant,
-  initVariant,
-  refreshVariant,
   setInput,
-  setOutput,
-  setVariant,
-  setVariants
+  setOutput
 }
