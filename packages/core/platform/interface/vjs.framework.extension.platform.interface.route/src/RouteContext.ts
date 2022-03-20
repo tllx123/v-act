@@ -12,6 +12,7 @@ import { TransactionManager as transactionManager } from '@v-act/vjs.framework.e
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
+import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 
 import { TransactionInfo } from '../../vjs.framework.extension.platform.interface.model.config/src/api/types'
 import RuleContext from './RuleContext'
@@ -97,6 +98,11 @@ class RouteContext {
   __eventHandlers: { [eventName: string]: Array<(...args: any[]) => void> } = {}
 
   parentRuleContext?: RuleContext
+
+  __completeDtdList = []
+  __onCompleteCallback = []
+
+  exceptionHandler: null | ((...args: any[]) => any) = null
 
   constructor(routeConfig?: RouteConfig, parentRouteContext?: RouteContext) {
     //路由配置
@@ -1459,6 +1465,97 @@ class RouteContext {
 
   setParentRuleContext(ctx: RuleContext) {
     this.parentRuleContext = ctx
+  }
+
+  /**
+   * 设置异常处理
+   */
+  setExceptionHandler(handler: (...args: any[]) => any) {
+    this.exceptionHandler = handler
+  }
+  /**
+   * 处理异常
+   * 场景支持：按钮点击事件触发时，需要将按钮禁用，当绑定的活动集执行完成或者出现异常后，需要将按钮使能
+   */
+  handleException(exception) {
+    var e = exception
+    if (e instanceof Error && !factory.isException(exception)) {
+      e = this.createException({
+        exception: e
+      })
+    }
+    this.markForInterrupt(this.EXCEPTION)
+    var parentRoutCtx = this.getParentRouteContext()
+    var scopeId = this.getScopeId()
+    scopeManager.openScope(scopeId)
+    try {
+      if (this.duringTransaction()) {
+        var transactionId = this.getTransactionId()
+        var transactionManager = _getTransactionManager()
+        if (transactionManager) {
+          transactionManager.doRollback(transactionId)
+          transactionManager.remove(transactionId)
+          this.clearTransaction()
+        }
+      }
+      if (this.exceptionHandler) {
+        //传递默认处理方法，外部决定是否需要调用
+        this.exceptionHandler(e, exceptionHandler.handle)
+      } else if (!parentRoutCtx) {
+        //不存在父级且无异常处理回调，则使用默认方式处理异常
+        exceptionHandler.handle(e)
+      }
+    } catch (e) {
+      log.error(
+        '[ruleContext.handleException]规则链处理异常时出现错误！message：' +
+          e.message
+      )
+    } finally {
+      scopeManager.closeScope()
+    }
+    if (parentRoutCtx) {
+      parentRoutCtx.handleException(e)
+    }
+  }
+  /**
+   * 把异常对象封装成规则异常对象
+   * @param	{Object}	exception	当前异常对象
+   * @param	{Object}	message		指定异常信息
+   * @param	{Object}	exceptionType	指定异常类型
+   * */
+  createException(params) {
+    var e = params.exception || params.error,
+      message = params.message
+    var exceptionType = params.exceptionType
+      ? params.exceptionType
+      : factory.getExceptionTypeByError
+      ? factory.getExceptionTypeByError(e, factory.TYPES.System)
+      : factory.TYPES.System
+    var scope = scopeManager.getScope()
+    var componentCode = scope.getComponentCode()
+    var windowCode = scopeManager.isWindowScope(scope.getInstanceId())
+      ? scope.getWindowCode()
+      : null
+    var code = this.__routeConfig__ && this.__routeConfig__.routeCode
+    var exceptionDatas = [
+      { name: '构件编码', code: 'componentCode', value: componentCode },
+      { name: '方法编码', code: 'ruleInstanceCode', value: code }
+    ]
+    if (windowCode) {
+      exceptionDatas.splice(1, 0, {
+        name: '窗体编码',
+        code: 'windowCode',
+        value: windowCode
+      })
+    }
+    return factory.create({
+      error: e,
+      exceptionDatas: exceptionDatas,
+      type: exceptionType,
+      message: message
+        ? message
+        : '方法【' + code + '】执行失败，错误原因：' + e.message
+    })
   }
 }
 

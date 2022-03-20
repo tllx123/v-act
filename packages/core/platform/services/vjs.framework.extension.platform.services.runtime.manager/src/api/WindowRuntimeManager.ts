@@ -13,8 +13,6 @@ import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extensi
 import { Permission as permission } from '@v-act/vjs.framework.extension.platform.services.view.permission'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-const vds = { window }
 
 const addRequestOperation = function (params: any) {
   windowRuntime.registerVariableHandler(params)

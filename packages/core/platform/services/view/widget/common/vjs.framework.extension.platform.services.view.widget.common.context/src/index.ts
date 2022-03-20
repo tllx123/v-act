@@ -1,1 +1,1 @@
-export * from './WidgetContext'
+export * as WidgetContext from './WidgetContext'
