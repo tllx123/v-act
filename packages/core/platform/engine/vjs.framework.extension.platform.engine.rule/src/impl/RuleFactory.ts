@@ -40,10 +40,4 @@ const createRuleException = function (params) {
   return ruleContext.createRuleException(params)
 }
 
-export {
-  create,
-  createRuleException,
-  execute,
-  executeRouteRule,
-  executeWithRouteCallback
-}
+export { create, createRuleException }

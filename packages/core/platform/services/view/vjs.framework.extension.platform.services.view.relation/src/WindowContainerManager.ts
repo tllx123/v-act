@@ -145,7 +145,7 @@ const destroy = function (containerId: string) {
   let storage = _getWindowContainerStorage()
   var container = storage.get(containerId)
   if (container) {
-    var events = container.getEvent(exports.EVENTS.DESTROY)
+    var events = container.getEvent(EVENTS.DESTROY)
     if (events) {
       for (var i = 0, len = events.length; i < len; i++) {
         var event = events[i]
@@ -216,7 +216,7 @@ const existWindowInfo = function (params: any) {
 }
 
 const fireResize = function (windowContainerId: string) {
-  let container = exports.get(windowContainerId)
+  let container = get(windowContainerId)
   if (container) {
     let resizeFunc = container.getResizeFunc()
     if (typeof resizeFunc == 'function') {
@@ -230,7 +230,7 @@ const fireResize = function (windowContainerId: string) {
  * @enum {String}
  */
 
-exports.OPENTYPE = {
+const OPENTYPE = {
   //组件容器
   CONTAINER: 'ComponentContainer', //旧配置~
   //模态
@@ -243,17 +243,15 @@ const getOpenType = function (scopeId: string) {
   let container = _getContainerByScopeId(scopeId)
   if (null != container) {
     let openType = container.getWindowType()
-    if (
-      openType == exports.OPENTYPE.CONTAINER ||
-      openType == exports.OPENTYPE.MOADL
-    ) {
+    if (openType == OPENTYPE.CONTAINER || openType == OPENTYPE.MOADL) {
       return openType
     }
   }
-  return exports.OPENTYPE.DEFAULT
+  return OPENTYPE.DEFAULT
 }
 
 export {
+  OPENTYPE,
   destroy,
   existWindowInfo,
   fireResize,

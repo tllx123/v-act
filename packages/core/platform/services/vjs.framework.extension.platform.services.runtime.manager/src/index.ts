@@ -1,1 +1,1 @@
-export * from './api/WindowRuntimeManager'
+export * as WindowRuntimeManager from './api/WindowRuntimeManager'

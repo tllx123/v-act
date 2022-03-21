@@ -247,39 +247,41 @@ const existWindowMapping = function (params: {
  * 刷新窗体映射，因为每次访问前都有可能修改了配置信息
  * */
 let refreshWindowMapping = function () {
-  //@ts-ignore
-  let projectMapping = window._$V3PlatformWindowMapping
-  if (projectMapping) {
-    let _storage = _getWindowMappingStorage()
-    /* 是否新定制的版本 */
+  if (typeof window != 'undefined') {
     //@ts-ignore
-    let newVersion = window._$V3PlatformWindowMapping_iden
-    if (true === newVersion) {
-      /* 另一个项目定制的窗体映射  */
-      if (projectMapping.length > 0) {
-        for (let i = 0, l = projectMapping.length; i < l; i++) {
-          let mapping = projectMapping[i]
-          let sKey =
-            mapping.sourceComponentCode + '$_$' + mapping.sourceWindowCode
-          _storage.put(sKey, {
-            componentCode: mapping.targetComponentCode,
-            windowCode: mapping.targetWindowCode,
-            series: mapping.series
-          })
+    let projectMapping = window._$V3PlatformWindowMapping
+    if (projectMapping) {
+      let _storage = _getWindowMappingStorage()
+      /* 是否新定制的版本 */
+      //@ts-ignore
+      let newVersion = window._$V3PlatformWindowMapping_iden
+      if (true === newVersion) {
+        /* 另一个项目定制的窗体映射  */
+        if (projectMapping.length > 0) {
+          for (let i = 0, l = projectMapping.length; i < l; i++) {
+            let mapping = projectMapping[i]
+            let sKey =
+              mapping.sourceComponentCode + '$_$' + mapping.sourceWindowCode
+            _storage.put(sKey, {
+              componentCode: mapping.targetComponentCode,
+              windowCode: mapping.targetWindowCode,
+              series: mapping.series
+            })
+          }
         }
-      }
-    } else {
-      /* 旧版本窗体映射，只有一个项目定制 */
-      let separ = '__' /* 项目定制使用的分隔符 */
-      let len = 4 //key根据分隔符切分后的数组长度
-      let componentCodeIndex = 1
-      let windowCodeIndex = 2
-      for (let source in projectMapping) {
-        let arr = source.split(separ)
-        if (arr && arr.length == len) {
-          let sKey = arr[componentCodeIndex] + '$_$' + arr[windowCodeIndex]
-          let tKey = projectMapping[source]
-          _storage.put(sKey, tKey)
+      } else {
+        /* 旧版本窗体映射，只有一个项目定制 */
+        let separ = '__' /* 项目定制使用的分隔符 */
+        let len = 4 //key根据分隔符切分后的数组长度
+        let componentCodeIndex = 1
+        let windowCodeIndex = 2
+        for (let source in projectMapping) {
+          let arr = source.split(separ)
+          if (arr && arr.length == len) {
+            let sKey = arr[componentCodeIndex] + '$_$' + arr[windowCodeIndex]
+            let tKey = projectMapping[source]
+            _storage.put(sKey, tKey)
+          }
         }
       }
     }

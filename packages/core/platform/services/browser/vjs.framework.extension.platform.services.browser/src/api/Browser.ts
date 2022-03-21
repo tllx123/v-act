@@ -644,8 +644,8 @@ let unmask = function () {
 /**
  * 获取当前页面URL地址
  */
-let urlPath = window.location.pathname
 let getUrlPrefix = function () {
+  let urlPath = window.location.pathname
   return urlPath.indexOf('/') != 0 ? '/' : ''
 }
 
