@@ -1,22 +1,33 @@
+import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
 /**
  * 打开组件并返回数据
  */
 import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
-
 /**
  * 规则入口
  */
-import { MethodContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
+const vds = {
+  component,
+  log,
+  browser,
+  expression,
+  exception,
+  ds,
+  widget,
+  window,
+  object,
+  string
+}
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {

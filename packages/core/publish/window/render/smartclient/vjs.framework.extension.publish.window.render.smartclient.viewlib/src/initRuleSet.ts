@@ -1,11 +1,10 @@
-import { run } from '@v-act/xml-parser'
 import { WindowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import { run } from '@v-act/xml-parser'
+
 import {
-  ruleSet,
   logicType,
   routeParamsSchema,
-  ruleInstanceSchema,
-  ruleInstancesSchema
+  ruleInstanceSchema
 } from './interfase/ruleSetInterFace'
 
 const setInstances = (
@@ -50,9 +49,11 @@ const parseLogic = (logic: logicType): routeParamsSchema | null => {
     const ruleSet = logic.ruleSets.ruleSet
     const ruleRoute = ruleSet.ruleRoute
     const ruleInstances = ruleSet.ruleInstances.ruleInstance
-    const ruleInstanceList = Array.isArray(ruleInstances)
-      ? ruleInstances
-      : [ruleInstances]
+    const ruleInstanceList = ruleInstances
+      ? Array.isArray(ruleInstances)
+        ? ruleInstances
+        : [ruleInstances]
+      : []
     if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
       if (Array.isArray(logic.ruleInstances.ruleInstance)) {
         logic.ruleInstances.ruleInstance.forEach((inst) => {
