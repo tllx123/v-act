@@ -1,8 +1,8 @@
-const getLessPlugin = function (scopedId) {
+const getLessPlugin = function (scopedId: string | number) {
   return {
     plugins: [
       {
-        install: function (less, pluginManager) {
+        install: function (less: ILess, pluginManager: IPluginManager) {
           var _options = {
             viewportWidth: 750,
             viewportHeight: 568,
@@ -17,12 +17,17 @@ const getLessPlugin = function (scopedId) {
           /**
            * 遍历访问根节点的less规则
            */
-          var vistRootRules = function (rootRules, params) {
+          var vistRootRules = function (rootRules: rootRule[], params: IParam) {
             if (!rootRules) {
               return
             }
-            var context = {
-              params: params || {}
+            let context: IContext = {
+              currentSelector: undefined,
+              currentElements: undefined,
+              selectorIndex: 0,
+              params: params || {},
+              $rootRules: [],
+              currentRootRule: null
             }
             context.$rootRules = rootRules
             for (var i = 0, len = rootRules.length; i < len; i++) {
@@ -39,7 +44,7 @@ const getLessPlugin = function (scopedId) {
           /**
            * 遍历less语句块内部的每一条具体规则
            */
-          var vistRules = function (rules, context) {
+          var vistRules = function (rules: any[], context: IContext) {
             if (!rules || rules.length === 0) {
               return
             }
@@ -59,7 +64,10 @@ const getLessPlugin = function (scopedId) {
           /**
            * 媒体查询等特性语句会在features节点
            */
-          var vistFeatures = function (featureRules, context) {
+          var vistFeatures = function (
+            featureRules: { value: { value: any } },
+            context: IContext
+          ) {
             if (!featureRules || !featureRules.value) {
               return
             }
@@ -69,7 +77,7 @@ const getLessPlugin = function (scopedId) {
           /**
            * 将rpx单位转换为rem单位
            */
-          var replaceValue = function (ruleValue) {
+          var replaceValue = function (ruleValue: string | any[]) {
             if (!ruleValue) {
               return ruleValue
             }
@@ -108,11 +116,11 @@ const getLessPlugin = function (scopedId) {
           /**
            * 将给定的rpx数值转换为对应的em数值
            */
-          var rpxToRem = function (number) {
+          var rpxToRem = function (number: string | number) {
             if (!number) {
               return number
             }
-            number = parseFloat(number)
+            number = parseFloat(String(number))
             number = (number * 10) / _options.viewportWidth
             var multiplier = Math.pow(10, _options.unitPrecision + 1),
               wholeNumber = Math.floor(number * multiplier)
