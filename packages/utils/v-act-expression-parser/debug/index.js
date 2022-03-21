@@ -136,12 +136,11 @@ const testPrintAll = function () {
 
 //test()
 //testAll()
-const script = testPrint(
-  'SetLocalStorage("mobileOfficeFrameKey",ConcatStr(BR_IN_PARENT.VAR_FrameType,",",GetCurrentWindowInstanceCode()))'
-)
-const func = new Function(
-  { getRulesetInput: function () {}, getRulesetVar: function () {} },
-  'return ' + script
-)
+const script = testPrint('CC.JGButton1.LabelText')
+console.log(script)
+// const func = new Function(
+//   { getRulesetInput: function () {}, getRulesetVar: function () {} },
+//   'return ' + script
+// )
 // testPrintAll()
 //console.log(testPrint("IsEmpty(BR_VAR_PARENT.applicationId)||IsEmpty(BR_VAR_PARENT.bizWindow)"))
