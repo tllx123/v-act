@@ -8,7 +8,9 @@ import Select, { SelectProps } from '@mui/material/Select'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
+  getEntityDatas,
   getFieldValue,
+  setFieldValue,
   toHeight,
   toLabelWidth,
   toWidth
@@ -198,6 +200,11 @@ interface JGComboBoxProps extends BoxProps {
           id: string
           text: string
         }>
+        SourceID: string
+        SourceName: string
+        SourceType: string
+        SaveColumn: string
+        ShowColumn: string
       }
     }
   }
@@ -267,6 +274,27 @@ const JGComboBox = function (props: JGComboBoxProps) {
   const constData =
     props?.dropDownSource?.DataSourceSetting?.DataConfig?.ConstData || []
 
+  const {
+    SourceID: sourceID,
+    SourceName: sourceName,
+    SourceType: sourceType,
+    SaveColumn: saveColumn,
+    ShowColumn: showColumn
+  } = props?.dropDownSource?.DataSourceSetting?.DataConfig || {
+    SourceID: '',
+    SourceName: '',
+    SourceType: '',
+    SaveColumn: '',
+    ShowColumn: ''
+  }
+  const entries = getEntityDatas(sourceID, context) || []
+  entries.forEach(function (item) {
+    constData.push({
+      id: item[saveColumn] as string,
+      text: item[showColumn] as string
+    })
+  })
+
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
     width: width,
@@ -300,14 +328,32 @@ const JGComboBox = function (props: JGComboBoxProps) {
 
   const [selectedValue, setValue] = React.useState(value || '')
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: any, item: any) => {
     setValue(event.target.value)
     props.onValueChanged && props.onValueChanged()
+    const current = constData.filter((item) => {
+      return item.id === event.target.value
+    })
+    setFieldValue(
+      props.tableName as string,
+      props.columnName as string,
+      context,
+      current[0]?.text
+    )
+    setFieldValue(
+      props.tableName as string,
+      props.idColumnName as string,
+      context,
+      event.target.value
+    )
   }
 
   const renderValue = function <T>(selected: T) {
+    const current = constData.filter((item) => {
+      return item.id === String(selected).toString()
+    })
     if (selected) {
-      return <>{selected}</>
+      return <>{current[0]?.text}</>
     }
     return <span style={{ color: '#999999' }}>{props.placeholder || ''}</span>
   }
