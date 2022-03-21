@@ -1,21 +1,21 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const filetransferUpload = function (fileUrl, callback) {
+const filetransferUpload = function (fileUrl: string, callback: any) {
   if (instance) {
     instance.filetransferUpload(fileUrl, callback)
   }
 }
 
 const filetransferDownload = function (
-  fileID,
-  fileName,
-  success,
-  error,
-  onProgress
+  fileID: string,
+  fileName: string,
+  success: any,
+  error: any,
+  onProgress: any
 ) {
   if (instance) {
     instance.filetransferDownload(fileID, fileName, success, error, onProgress)
@@ -30,9 +30,8 @@ const supportOnProgress = function () {
 }
 
 export {
-  fileOpen,
-  putInstance,
-  filetransferUpload,
   filetransferDownload,
+  filetransferUpload,
+  putInstance,
   supportOnProgress
 }

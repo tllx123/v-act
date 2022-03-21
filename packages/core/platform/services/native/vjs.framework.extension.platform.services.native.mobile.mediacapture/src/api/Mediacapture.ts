@@ -1,15 +1,15 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const captureVideo = function (successCallback, errorCallback) {
+const captureVideo = function (successCallback: any, errorCallback: any) {
   instance.captureVideo(successCallback, errorCallback)
 }
 
-const captureAudio = function (successCallback, errorCallback) {
+const captureAudio = function (successCallback: any, errorCallback: any) {
   instance.captureAudio(successCallback, errorCallback)
 }
 
-export { putInstance, captureVideo, captureAudio }
+export { captureAudio, captureVideo, putInstance }

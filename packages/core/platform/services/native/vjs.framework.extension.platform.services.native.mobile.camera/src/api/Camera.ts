@@ -1,11 +1,15 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const getPicture = function (successCallback, errorCallback, options) {
+const getPicture = function (
+  successCallback: any,
+  errorCallback: any,
+  options: unknown
+) {
   instance.getPicture(successCallback, errorCallback, options)
 }
 
-export { putInstance, getPicture }
+export { getPicture, putInstance }

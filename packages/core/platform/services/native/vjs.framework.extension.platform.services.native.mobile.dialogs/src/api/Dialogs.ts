@@ -1,12 +1,12 @@
 import { AlertMessage as alertMessage } from '@v-act/vjs.framework.extension.platform.services.view.ui'
 
-let sandbox
+// let sandbox
 
-export function initModule(sb) {
-  sandbox = sb
-}
+// export function initModule(sb) {
+//   sandbox = sb
+// }
 
-let isFunction = function (func) {
+let isFunction = function (func: any) {
   if (typeof func == 'function') {
     return true
   } else {
@@ -14,9 +14,9 @@ let isFunction = function (func) {
   }
 }
 
-const confirmDialog = function (message, callback) {
+const confirmDialog = function (message: string, callback: any) {
   let result
-  alertMessage.confirmDialog('', message, callback)
+  alertMessage.confirmDialog('', message, callback, false)
   //		if(window.VJSBridge){//移动端
   //			var cb = function(arg1,arg2){
   //				if(isFunction(callback) && (arg1 == 1)){
@@ -36,7 +36,11 @@ const confirmDialog = function (message, callback) {
   return result
 }
 
-const propmtDialog = function (message, callback, secDistance) {
+const propmtDialog = function (
+  message: string,
+  callback: any,
+  secDistance: any
+) {
   let CB = function () {
     if (isFunction(callback)) {
       CB = callback()
@@ -51,16 +55,16 @@ const propmtDialog = function (message, callback, secDistance) {
   //			//2017-02-09 liangzc：显示规则需要支持设置倒计时描述
   //			alertMessage.propmtDialog("", _toString(message), CB,secDistance);
   //		}
-  alertMessage.propmtDialog('', _toString(message), CB, secDistance)
+  alertMessage.propmtDialog('', _toString(message), CB, secDistance, false)
 }
 
-let _toString = function (content) {
+let _toString = function (content: any) {
   return typeof content == 'string' ? content : '' + content
 }
 
-const infoDialog = function (message, callback) {
+const infoDialog = function (message: string, callback: any) {
   let result
-  let CB = function (res) {
+  let CB = function (res: any) {
     let result = false
     if (res == 1) {
       //确认为1  取消为2
@@ -70,8 +74,10 @@ const infoDialog = function (message, callback) {
       callback(result)
     }
   }
+  //@ts-ignore
   if (window.VJSBridge) {
     //移动端
+    //@ts-ignore
     result = window.VJSBridge.plugins.vplatform.Dialogs.confirm(
       message + '',
       CB,
@@ -80,19 +86,22 @@ const infoDialog = function (message, callback) {
     )
   } else {
     //PC端
+    //@ts-ignore
     result = confirm(content)
     CB(result)
   }
 }
 
-const warnDialog = function (message, callback) {
+const warnDialog = function (message: string, callback: any) {
   let CB = function () {
     if (isFunction(callback)) {
       CB = callback()
     }
   }
+  //@ts-ignore
   if (window.VJSBridge) {
     //移动端
+    //@ts-ignore
     window.VJSBridge.plugins.vplatform.Dialogs.alert(
       message + '',
       CB,
@@ -106,14 +115,16 @@ const warnDialog = function (message, callback) {
   }
 }
 
-const errorDialog = function (message, callback) {
+const errorDialog = function (message: string, callback: any) {
   let CB = function () {
     if (isFunction(callback)) {
       CB = callback()
     }
   }
+  //@ts-ignore
   if (window.VJSBridge) {
     //移动端
+    //@ts-ignore
     window.VJSBridge.plugins.vplatform.Dialogs.alert(
       message + '',
       CB,

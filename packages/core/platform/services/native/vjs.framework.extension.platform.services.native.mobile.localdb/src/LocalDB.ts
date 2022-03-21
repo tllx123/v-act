@@ -1,20 +1,30 @@
-import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-let sandBox
-let updatedTables = []
-
-export function initModule(sBox) {
-  sandBox = sBox
+interface queryParams {
+  queryParams: any
+  isAsync: boolean
+  success: any
+  routeContext: any
 }
 
-const query = function (params) {
+interface saveParams {
+  dataSchemas: any
+  success: any
+}
+
+// let sandBox
+let updatedTables: any[] = []
+
+// export function initModule(sBox) {
+//   sandBox = sBox
+// }
+
+const query = function (params: queryParams) {
   let queryParam = params.queryParams,
     isAsync = params.isAsync,
-    callback = params.success,
-    isLocalDb = params.isLocalDb
+    callback = params.success
+  // isLocalDb = params.isLocalDb
   let selectDatas = []
   if (arrayUtil.isArray(queryParam) && queryParam.length > 0) {
     for (let i = 0; i < queryParam.length; i++) {
@@ -38,23 +48,23 @@ const query = function (params) {
     }
   }
 
-  let callBackFunc = function (resultDataString) {
-    if (resultDataString.success == true) {
-      let outputResult = resultDataString.data.result
-      let outputJson = outputResult.OutputJson
-      let rsDataValueStr = outputJson.value
-      let resultData = jsonUtil.json2obj(rsDataValueStr)
-      if (typeof callback == 'function') {
-        callback(resultData)
-      }
-    } else {
-      let e = exceptionFactory.create({
-        message: resultDataString.msg,
-        type: resultDataString.exceptionType
-      })
-      throw e
-    }
-  }
+  // let callBackFunc = function (resultDataString) {
+  //   if (resultDataString.success == true) {
+  //     let outputResult = resultDataString.data.result
+  //     let outputJson = outputResult.OutputJson
+  //     let rsDataValueStr = outputJson.value
+  //     let resultData = jsonUtil.json2obj(rsDataValueStr)
+  //     if (typeof callback == 'function') {
+  //       callback(resultData)
+  //     }
+  //   } else {
+  //     let e = exceptionFactory.create({
+  //       message: resultDataString.msg,
+  //       type: resultDataString.exceptionType
+  //     })
+  //     throw e
+  //   }
+  // }
   let scope = scopeManager.getScope()
   //根据路由上下文传递事务id
   let routeContext = params.routeContext
@@ -64,7 +74,7 @@ const query = function (params) {
     transactonId = routeContext.getTransactionId()
   }
 
-  let result = []
+  let result: any[] = []
   let selectLength = selectDatas.length
   let componentCode = scope.getComponentCode()
 
@@ -105,89 +115,93 @@ const query = function (params) {
     if (selectData.QueryOrderBy) {
       sql = sql + ' order by ' + selectData.QueryOrderBy
     }
-
+    //@ts-ignore
     if (window.sqlitePlugin) {
       let currentScopeId = scopeManager.getWindowScope().getInstanceId()
-      executeSql(componentCode + '__' + tableName, sql, function (results) {
-        let resultObject = {
-          dataSource: tableName
-        }
-        let datas = {
-          recordCount: results.rows.length
-        }
+      executeSql(
+        componentCode + '__' + tableName,
+        sql,
+        function (results: any) {
+          let resultObject: any = {
+            dataSource: tableName
+          }
+          let datas: any = {
+            recordCount: results.rows.length
+          }
 
-        let rowDatas = []
-        let len = results.rows.length
-        for (let i = 0; i < len; i++) {
-          let o = results.rows.item(i)
-          for (let key in o) {
-            let value = o[key]
-            if (checkBoolean(value)) {
-              o[key] = restoreBoolean(value)
+          let rowDatas = []
+          let len = results.rows.length
+          for (let i = 0; i < len; i++) {
+            let o = results.rows.item(i)
+            for (let key in o) {
+              let value = o[key]
+              if (checkBoolean(value)) {
+                o[key] = restoreBoolean(value)
+              }
+            }
+            rowDatas.push(o)
+          }
+          datas.values = rowDatas
+          resultObject.datas = datas
+
+          let model = []
+          if (len > 0) {
+            let o = results.rows.item(0)
+            for (let key in o) {
+              let value = o[key]
+
+              if (checkBoolean(value)) {
+                value = restoreBoolean(value)
+              }
+
+              let dataType = typeof value
+              let modelObject: any = {
+                //截止目前（2019-12-26），这个对象保存的是服务端数据库的字段定义信息，但后面实际发挥作用的只有一个code字段，所以其他字段目前都只是填充值。
+                code: key,
+                name: key,
+                precision: '0'
+              }
+              if (dataType == 'string') {
+                modelObject.type = 'text'
+                modelObject.length = '10000'
+              } else if (dataType == 'number') {
+                modelObject.type = 'number'
+                modelObject.length = '50'
+              } else if (dataType == 'boolean') {
+                modelObject.type = 'boolean'
+                modelObject.length = '50'
+              }
+              model.push(modelObject)
             }
           }
-          rowDatas.push(o)
-        }
-        datas.values = rowDatas
-        resultObject.datas = datas
-
-        let model = []
-        if (len > 0) {
-          let o = results.rows.item(0)
-          for (let key in o) {
-            let value = o[key]
-
-            if (checkBoolean(value)) {
-              value = restoreBoolean(value)
-            }
-
-            let dataType = typeof value
-            let modelObject = {
-              //截止目前（2019-12-26），这个对象保存的是服务端数据库的字段定义信息，但后面实际发挥作用的只有一个code字段，所以其他字段目前都只是填充值。
-              code: key,
-              name: key,
-              precision: '0'
-            }
-            if (dataType == 'string') {
-              modelObject.type = 'text'
-              modelObject.length = '10000'
-            } else if (dataType == 'number') {
-              modelObject.type = 'number'
-              modelObject.length = '50'
-            } else if (dataType == 'boolean') {
-              modelObject.type = 'boolean'
-              modelObject.length = '50'
-            }
-            model.push(modelObject)
+          resultObject.metadata = {
+            model: [
+              {
+                object: tableName,
+                fields: model
+              }
+            ]
+          }
+          result.push(resultObject)
+          if (result.length == selectLength) {
+            scopeManager.createScopeHandler({
+              scopeId: currentScopeId,
+              handler: callback
+            })(result)
           }
         }
-        resultObject.metadata = {
-          model: [
-            {
-              object: tableName,
-              fields: model
-            }
-          ]
-        }
-        result.push(resultObject)
-        if (result.length == selectLength) {
-          scopeManager.createScopeHandler({
-            scopeId: currentScopeId,
-            handler: callback
-          })(result)
-        }
-      })
+      )
     } else {
       alert('本地数据库功能仅支持App端。')
     }
   }
 }
 
-const save = function (params) {
+const save = function (params: saveParams) {
   let dataSchemas = params.dataSchemas,
-    treeStructs = params.treeStructs,
-    success = params.success,
-    transactionId = params.transactionId
+    // treeStructs = params.treeStructs,
+    success = params.success
+  // transactionId = params.transactionId
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode()
   let currentScopeId = scopeManager.getWindowScope().getInstanceId()
@@ -196,7 +210,7 @@ const save = function (params) {
     handler: success
   })
 
-  let dataSchemaArray = []
+  let dataSchemaArray: any[] = []
   for (let dataSchemaKey in dataSchemas) {
     dataSchemaArray.push(dataSchemas[dataSchemaKey])
   }
@@ -218,36 +232,36 @@ const save = function (params) {
             let operateType = data.__ds_state__
             if (operateType === 'insert') {
               let insertSql = createInsertSql(tableName, data)
-              executeSql(tableName, insertSql, function (results) {
+              executeSql(tableName, insertSql, function (results: any) {
                 //									alert("insert结果： " + JSON.stringify(results));
                 executeSave()
               })
             } else if (operateType === 'update') {
               let updateSql = createUpdateSql(tableName, data)
-              executeSql(tableName, updateSql, function (results) {
+              executeSql(tableName, updateSql, function (results: any) {
                 //									alert("update结果： " + JSON.stringify(results));
                 executeSave()
               })
             } else if (operateType === 'delete') {
               let deleteSql = createDeleteSql(tableName, data)
-              executeSql(tableName, deleteSql, function (results) {
+              executeSql(tableName, deleteSql, function (results: any) {
                 //									alert("delete结果： " + JSON.stringify(results));
                 executeSave()
               })
             } else if (operateType === 'insertorupdate') {
               let selectSql =
                 'select * from ' + tableName + ' where id="' + data.id + '"'
-              executeSql(tableName, selectSql, function (sResults) {
+              executeSql(tableName, selectSql, function (sResults: any) {
                 let len = sResults.rows.length
                 if (len == 0) {
                   let insertSql = createInsertSql(tableName, data)
-                  executeSql(tableName, insertSql, function (results) {
+                  executeSql(tableName, insertSql, function (results: any) {
                     executeSave()
                     //											alert("insert结果： " + JSON.stringify(results));
                   })
                 } else {
                   let updateSql = createUpdateSql(tableName, data)
-                  executeSql(tableName, updateSql, function (results) {
+                  executeSql(tableName, updateSql, function (results: any) {
                     executeSave()
                     //											alert("update结果： " + JSON.stringify(results));
                   })
@@ -279,7 +293,7 @@ const save = function (params) {
 /**
  * 将参数值为undefined的改为null值
  * */
-let changeUndefinedToNull = function (params) {
+let changeUndefinedToNull = function (params: any) {
   if (undefined == params) return
   for (let _key in params) {
     if (undefined === params[_key]) {
@@ -289,7 +303,7 @@ let changeUndefinedToNull = function (params) {
   return params
 }
 
-function createUpdateSql(tableName, datas) {
+function createUpdateSql(tableName: string, datas: any) {
   let updateSql = ''
   let whereClause = ' where id = "' + datas.id + '"'
   for (let key in datas) {
@@ -311,7 +325,7 @@ function createUpdateSql(tableName, datas) {
   return 'update ' + tableName + ' set ' + updateSql + whereClause
 }
 
-function createInsertSql(tableName, datas) {
+function createInsertSql(tableName: string, datas: any) {
   let insertSql = 'insert into ' + tableName + '('
   let insertValueClause = ''
   for (let key in datas) {
@@ -345,7 +359,7 @@ function createInsertSql(tableName, datas) {
  * 	type:columnType
  * }]
  */
-function createCreateSql(tableName, columns) {
+function createCreateSql(tableName: string, columns: any) {
   let columnClause = ''
   for (let index in columns) {
     let column = columns[index]
@@ -377,16 +391,21 @@ function createCreateSql(tableName, columns) {
   return 'create table if not exists ' + tableName + '(' + columnClause + ')'
 }
 
-function createDeleteSql(tableName, datas) {
+function createDeleteSql(tableName: string, datas: any) {
+  //@ts-ignore
   return (deleteSql =
     'delete from ' + tableName + ' where id = "' + datas.id + '"')
 }
 
-function createAlterAddSql(tableName, column) {
+function createAlterAddSql(tableName: string, column: any) {
   return 'alter table ' + tableName + ' add ' + column
 }
 
-function createAlterRenameSql(tableName, columnOld, columnNew) {
+function createAlterRenameSql(
+  tableName: string,
+  columnOld: any,
+  columnNew: any
+) {
   return (
     'alter table ' +
     tableName +
@@ -397,13 +416,13 @@ function createAlterRenameSql(tableName, columnOld, columnNew) {
   )
 }
 
-function createRenameTableSql(oldTableName, newTableName) {
+function createRenameTableSql(oldTableName: string, newTableName: string) {
   return 'alter table ' + oldTableName + ' rename to ' + newTableName
 }
 
-function createAlterDropSql(tableName, columns) {}
+// function createAlterDropSql(tableName, columns) {}
 
-function executeSql(tableName, sql, successCB) {
+function executeSql(tableName: string | null, sql: any, successCB: any) {
   if (tableName != null) {
     let isUpdated = false
     for (let index in updatedTables) {
@@ -448,24 +467,28 @@ function executeSql(tableName, sql, successCB) {
       executeSql(null, sql, successCB)
     }
   } else {
+    //@ts-ignore
     if (!window.sqliteDB) {
+      //@ts-ignore
       window.sqliteDB = window.sqlitePlugin.openDatabase({
         name: 'mydb',
         location: 'default'
       })
     }
+    //@ts-ignore
     window.sqliteDB.transaction(function (tx) {
+      //@ts-ignore
       if (window.sqliteDB.debug) console.log('查询字符串：' + sql)
       tx.executeSql(
         sql,
         [],
-        function (tx, results) {
+        function (tx: any, results: any) {
           successCB(results)
           //							setTimeout(function(){
           //
           //							});
         },
-        function (tx, error) {
+        function (tx: any, error: any) {
           if (tableName == null) return
           if (
             (error.code == 5 &&
@@ -480,11 +503,11 @@ function executeSql(tableName, sql, successCB) {
   }
 }
 
-function addTableColumn(config, successCB, errorCB) {
+function addTableColumn(config: any, successCB: any, errorCB?: any) {
   let tableName = config.tableName
   let columns = config.columns
   let index = 0
-  let cb
+  let cb: any
   cb = function () {
     if (index < columns.length) {
       let column = columns[index]
@@ -510,10 +533,10 @@ function addTableColumn(config, successCB, errorCB) {
   cb()
 }
 
-function renameTableColumn(config, successCB, errorCB) {
+function renameTableColumn(config: any, successCB: any, errorCB?: any) {
   let tableName = config.tableName
   let columns = config.columns
-  let tableId = config.tableId
+  // let tableId = config.tableId
 
   let cb
   cb = function () {
@@ -540,7 +563,7 @@ function renameTableColumn(config, successCB, errorCB) {
   cb()
 }
 
-function deleteTableColumn(config, successCB, errorCB) {
+function deleteTableColumn(config: any, successCB: any, errorCB: any) {
   //1. 获取现有字段
   //2. 根据删除字段获取要保留的字段
   //3. 重命名现有表
@@ -553,9 +576,9 @@ function deleteTableColumn(config, successCB, errorCB) {
   executeSql(
     'system_tablecolumn',
     "select * from system_tablecolumn where tableId = '" + tableId + "'",
-    function (tableColumnResults) {
+    function (tableColumnResults: any) {
       if (tableColumnResults.rows.length > 0) {
-        let reservedColumns = []
+        let reservedColumns: any[] = []
         for (let i = 0; i < tableColumnResults.rows.length; i++) {
           let column = tableColumnResults.rows.item(i)
           let contained = false
@@ -573,11 +596,11 @@ function deleteTableColumn(config, successCB, errorCB) {
         executeSql(
           null,
           createRenameTableSql(tableName, bikTableName),
-          function (result1) {
+          function (result1: any) {
             executeSql(
               null,
               createCreateSql(tableName, reservedColumns),
-              function (result2) {
+              function (result2: any) {
                 let columnClause = ''
                 for (let reservedColumnIndex in reservedColumns) {
                   columnClause =
@@ -647,7 +670,7 @@ function deleteTableColumn(config, successCB, errorCB) {
  * 重新建表
  * @param newwColumns 新表信息，新表中不能有原表没有的字段定义，否则会出错
  */
-function reCreateTable(config, reCreateSuccessCB, errorCB) {
+function reCreateTable(config: any, reCreateSuccessCB: any, errorCB?: any) {
   //重命名原表
   //重新建表
   //将原表数据插入到新表中。
@@ -660,7 +683,7 @@ function reCreateTable(config, reCreateSuccessCB, errorCB) {
   executeSql(
     null,
     createRenameTableSql(tableName, bikTableName),
-    function (result1) {
+    function (result1: any) {
       executeSql(
         null,
         "delete from system_tablecolumn where tableId = '" + tableId + "'",
@@ -709,7 +732,7 @@ function reCreateTable(config, reCreateSuccessCB, errorCB) {
   )
 }
 
-function executeSyncTable(config, successCB, errorCB) {
+function executeSyncTable(config: any, successCB: any, errorCB?: any) {
   let addCB = function () {
     let renameCB = function () {
       //				var deleteCB = function(){
@@ -773,7 +796,7 @@ function executeSyncTable(config, successCB, errorCB) {
  * tableName , tableId , columns , successCB
  * @params columns [{id:id, name:name,type:type }]
  */
-function executeCreateTable(config) {
+function executeCreateTable(config: any) {
   let tableName = config.tableName
   let tableId = config.tableId
   let columns = config.columns
@@ -815,23 +838,24 @@ function executeCreateTable(config) {
   })
 }
 
-function syncTable(tableName, successCB, errorCB) {
-  let oldColumns = [] // 旧列名数组
-  let newColumns = [] // 新列名数组
+function syncTable(tableName: string, successCB: any, errorCB?: any) {
+  let oldColumns: any[] = [] // 旧列名数组
+  let newColumns: any[] = [] // 新列名数组
 
-  let deleteColumns = []
-  let addColumns = []
-  let renameColumns = []
-  let changeColumns = []
+  let deleteColumns: any[] = []
+  let addColumns: any[] = []
+  let renameColumns: any[] = []
+  let changeColumns: any[] = []
   let reCreate = false
-
+  //@ts-ignore
   if (!window.cordova.plugins.http.getTableDefine) {
     alert('App版本过旧，请升级客户端')
     return
   }
+  //@ts-ignore
   window.cordova.plugins.http.getTableDefine(
     { tableName: tableName },
-    function (data) {
+    function (data: any) {
       let dataObj = JSON.parse(data)
       let tableColumnInfos = dataObj.tableColumnInfos
       for (let tableColumnInfoIndex in tableColumnInfos) {
@@ -845,7 +869,7 @@ function syncTable(tableName, successCB, errorCB) {
       executeSql(
         'system_tableinfo',
         "select * from system_tableinfo where name = '" + tableName + "'",
-        function (tableInfoResults) {
+        function (tableInfoResults: any) {
           if (tableInfoResults.rows.length > 0) {
             let tableId = tableInfoResults.rows.item(0).id
             executeSql(
@@ -853,7 +877,7 @@ function syncTable(tableName, successCB, errorCB) {
               "select * from system_tablecolumn where tableId = '" +
                 tableId +
                 "'",
-              function (tableColumnResults) {
+              function (tableColumnResults: any) {
                 if (tableColumnResults) {
                   for (
                     let index = 0;
@@ -928,7 +952,7 @@ function syncTable(tableName, successCB, errorCB) {
         }
       )
     },
-    function (e) {
+    function (e: any) {
       console.info(e)
     }
   )
@@ -944,7 +968,7 @@ function syncTable(tableName, successCB, errorCB) {
  * sqlite内部不支持布尔型数据的存储，所以布尔型数据在保存时需要封装成字符串，以便读取时能够识别出源数据是布尔型。
  * @returns 如果入参是布尔型数据，返回封装后的对应的入参值。否则返回封装后的false。
  */
-function wrapBoolean(booleanValue) {
+function wrapBoolean(booleanValue: any) {
   if (typeof booleanValue == 'boolean') {
     return '_vplatform_inner_boolean_' + booleanValue
   } else {
@@ -956,7 +980,7 @@ function wrapBoolean(booleanValue) {
  * 检测数据是不是被封装的布尔型
  * @returns 如果入参是封装后的布尔型数据，返回true，否则返回false。
  */
-function checkBoolean(srcValue) {
+function checkBoolean(srcValue: any) {
   if (typeof srcValue == 'string') {
     if (
       srcValue == '_vplatform_inner_boolean_true' ||
@@ -975,7 +999,7 @@ function checkBoolean(srcValue) {
  * 将被封装成字符串的布尔型数据还原出来。
  * @returns 如果入参是封装后的true，返回true。否则返回false。
  */
-function restoreBoolean(wrapBoolean) {
+function restoreBoolean(wrapBoolean: any) {
   if (wrapBoolean == '_vplatform_inner_boolean_true') {
     return true
   } else {

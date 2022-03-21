@@ -1,10 +1,14 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const saveimagetogallery = function (successCallback, failCallback, options) {
+const saveimagetogallery = function (
+  successCallback: any,
+  failCallback: any,
+  options: any
+) {
   instance.saveimagetogallery(successCallback, failCallback, options)
 }
 

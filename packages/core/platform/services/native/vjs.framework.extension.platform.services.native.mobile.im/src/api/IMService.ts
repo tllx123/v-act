@@ -1,6 +1,6 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
@@ -8,16 +8,16 @@ const IMTYPE = {
   EASEMOB: 'easemob' //环信
 }
 
-const login = function (paranms, type) {
+const login = function (paranms: any, type: string) {
   instance.login(paranms, type)
 }
 
-const logout = function (paranms, type) {
+const logout = function (paranms: any, type: string) {
   instance.logout(paranms, type)
 }
 
-const customerChat = function (paranms, type) {
+const customerChat = function (paranms: any, type: string) {
   instance.customerChat(paranms, type)
 }
 
-export { IMTYPE, putInstance, login, logout, customerChat }
+export { customerChat, IMTYPE, login, logout, putInstance }
