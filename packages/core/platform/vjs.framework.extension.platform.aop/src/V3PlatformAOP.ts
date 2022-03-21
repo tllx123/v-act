@@ -14,10 +14,6 @@ import * as rpcDebugger from './RPCDebugger'
 import * as updater from './Updater'
 import * as utils from './Utils'
 
-browserDebugger._putAop(exports)
-rpcDebugger._putAop(exports)
-IteratorRequest.prototype._putAop(exports)
-
 let remoteHost: any,
   enable = true,
   currentRouteContext: any
@@ -205,6 +201,40 @@ const _getCurrentRouteContext = function () {
 const getDevId = function () {
   return environment.getDevId()
 }
+
+const exports = {
+  _getCurrentRouteContext,
+  _getRemoteDebugHost,
+  //_putAop,
+  //addRequest,
+  beforeRuleExecute,
+  //clear,
+  exeExp,
+  //genParams,
+  getBusinessData,
+  //getComponentCode,
+  getDevHook,
+  getDevId,
+  //getHook,
+  //getWindowCode,
+  //init,
+  //isDebugger,
+  isEnable,
+  //isInited,
+  //isWindowScope,
+  markDebugDisable,
+  markDebugEnable,
+  //remove,
+  ruleExecuted,
+  setRemoteDebugHost,
+  startServerRuleDebugger,
+  stopServerRuleDebugger,
+  update
+}
+
+browserDebugger._putAop(exports)
+rpcDebugger._putAop(exports)
+IteratorRequest.prototype._putAop(exports)
 
 export {
   _getCurrentRouteContext,
