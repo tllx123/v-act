@@ -1,4 +1,5 @@
-import V3PlatformAOP from './V3PlatformAOP'
+import * as V3PlatformAOP from './V3PlatformAOP'
+
 let aop: any
 
 const _putAop = function (a: any) {
