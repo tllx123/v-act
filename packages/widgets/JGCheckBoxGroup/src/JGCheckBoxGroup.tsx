@@ -7,7 +7,9 @@ import Checkbox from '@mui/material/Checkbox'
 import { JGInputLabel } from '@v-act/jginputlabel'
 import { useContext } from '@v-act/widget-context'
 import {
+  getEntityDatas,
   getFieldValue,
+  setFieldValue,
   toHeight,
   toLabelWidth,
   toWidth
@@ -190,6 +192,11 @@ export interface JGCheckBoxGroupProps extends BoxProps {
           text: string
           selected: boolean
         }>
+        SourceID: string
+        SourceName: string
+        SourceType: string
+        SaveColumn: string
+        ShowColumn: string
       }
     }
   }
@@ -257,6 +264,28 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
 
   const constData =
     props?.dropDownSource?.DataSourceSetting?.DataConfig?.ConstData || []
+
+  const {
+    SourceID: sourceID,
+    SourceName: sourceName,
+    SourceType: sourceType,
+    SaveColumn: saveColumn,
+    ShowColumn: showColumn
+  } = props?.dropDownSource?.DataSourceSetting?.DataConfig || {
+    SourceID: '',
+    SourceName: '',
+    SourceType: '',
+    SaveColumn: '',
+    ShowColumn: ''
+  }
+  const entries = getEntityDatas(sourceID, context) || []
+  entries.forEach(function (item) {
+    constData.push({
+      id: item[saveColumn] as string,
+      text: item[showColumn] as string,
+      selected: false
+    })
+  })
 
   /* 包装器样式 */
   const wrapStyles: CSSProperties = {
@@ -330,12 +359,24 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   })
 
   const [checkboxData, setCheckboxData] = React.useState(constData)
-  const handleChange = (event: any) => {
-    checkboxData.map((item) => {
+  const handleChange = (event: any, item: any) => {
+    const newCheckboxData = checkboxData.map((item) => {
       item.id === event.target.id && (item.selected = event.target.checked)
       return item
     })
-    //setCheckboxData(newCheckboxData)
+    setCheckboxData(newCheckboxData)
+    setFieldValue(
+      props.tableName as string,
+      props.columnName as string,
+      context,
+      item.text
+    )
+    setFieldValue(
+      props.tableName as string,
+      props.idColumnName as string,
+      context,
+      item.id
+    )
   }
 
   return (
@@ -391,7 +432,13 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
                 id={item.id}
                 defaultChecked={item.selected}
                 //checked={item.selected}
-                onChange={props.readOnly ? () => {} : handleChange}
+                onChange={
+                  props.readOnly
+                    ? () => {}
+                    : (e) => {
+                        handleChange(e, item)
+                      }
+                }
                 disabled={!props.enabled}
                 readOnly={props.readOnly}
                 inputProps={{

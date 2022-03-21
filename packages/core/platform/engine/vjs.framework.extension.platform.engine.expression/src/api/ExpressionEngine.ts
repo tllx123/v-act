@@ -16,12 +16,13 @@ interface IExecuteParams {
 const execute = function (params: IExecuteParams) {
   let context = params.context,
     exp = params.expression
+  return exp
   // 使用函数执行器
   //TODO xiedh
   //context.put('executor', ruleExecutor['functionHandler']);
   //TODO xiedh
   //context.put('sandBox', sandbox);
-  let ctx = new formulaEngine.Map()
+  /*let ctx = new formulaEngine.Map()
   context = context || new ExpressionContext()
   ctx.put('expressionContext', context)
 
@@ -48,7 +49,7 @@ const execute = function (params: IExecuteParams) {
       )
     }
   }
-  return result
+  return result*/
 }
 
 const parseVars = function (params: IExecuteParams) {
@@ -134,4 +135,4 @@ const parseMethods = function (params: IExecuteParams) {
   }
 }
 
-export { execute, parseVars, parseMethods }
+export { execute, parseMethods, parseVars }

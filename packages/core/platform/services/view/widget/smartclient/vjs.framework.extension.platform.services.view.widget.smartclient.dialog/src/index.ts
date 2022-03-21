@@ -1,1 +1,1 @@
-export * from './DialogUtil'
+export * as DialogUtil from './DialogUtil'

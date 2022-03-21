@@ -1,4 +1,5 @@
-import RuleContext from './RuleContext'
+import * as Engine from './Engine'
 import MethodContext from './MethodContext'
+import RuleContext from './RuleContext'
 
-export { RuleContext, MethodContext }
+export { Engine, MethodContext, RuleContext }

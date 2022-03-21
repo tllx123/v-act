@@ -1,4 +1,5 @@
-import V3PlatformAOP from './V3PlatformAOP'
+import * as V3PlatformAOP from './V3PlatformAOP'
+
 let aop: any
 
 const _putAop = function (a: any) {
@@ -24,14 +25,15 @@ let RuntimeV3PlatformAOP = {
     try {
       aop.update(componentCode, windowCode, ruleSetCode, ruleCode, json)
     } catch (e) {
-      var msg = typeof e.getMessage == 'function' ? e.getMessage() : e.message
-      V3PlatformAOP.handleException(
-        componentCode,
-        windowCode,
-        ruleSetCode,
-        ruleCode,
-        msg
-      )
+      // var msg = typeof e.getMessage == 'function' ? e.getMessage() : e.message
+      // V3PlatformAOP.handleException(
+      //   componentCode,
+      //   windowCode,
+      //   ruleSetCode,
+      //   ruleCode,
+      //   msg
+      // )
+      throw new Error('未识别异常，请联系系统管理员处理')
     }
   },
   /**

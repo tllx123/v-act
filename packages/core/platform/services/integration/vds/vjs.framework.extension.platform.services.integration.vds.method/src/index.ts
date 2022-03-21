@@ -15,6 +15,7 @@ import {
 } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
 import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.engine.route'
 import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { ApplicationParam as appData } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
@@ -82,7 +83,7 @@ export function get(methodCode, componentCode, windowCode) {
  * @returns {Promise}
  */
 export function execute(methodCode, params) {
-  var _info = _getInfo()
+  //var _info = _getInfo()
   return new Promise(function (resolve, reject) {
     try {
       if (!methodCode) {
