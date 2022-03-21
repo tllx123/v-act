@@ -1,11 +1,11 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const getInfo = function (successCallback, errorCallback) {
+const getInfo = function (successCallback: any, errorCallback: any) {
   instance.getInfo(successCallback, errorCallback)
 }
 
-export { putInstance, getInfo }
+export { getInfo, putInstance }

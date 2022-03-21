@@ -21,7 +21,7 @@ let init = function () {
 }
 
 //引入touchjs 绑定长按事件
-function loadTouchJS(callback: Function) {
+function loadTouchJS(callback: any) {
   let touchjs = ['itop/common/touchjs/touchjs.js']
   //@ts-ignore
   head.js(touchjs, function () {

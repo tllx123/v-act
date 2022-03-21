@@ -1,6 +1,6 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
@@ -36,11 +36,14 @@ let mimeType = {
   zip: 'application/zip'
 }
 
-const fileopen = function (fileID, fileName) {
+const fileopen = function (fileID: string, fileName: string) {
   let file = fileName.split('.')
   let fileType = file[1]
+  //@ts-ignore
   if (window.GlobalVariables) {
+    //@ts-ignore
     if (window.device && window.device.platform == 'iOS') {
+      //@ts-ignore
       url =
         cordova.file.documentsDirectory +
         '/path/to/downloads/' +
@@ -48,6 +51,7 @@ const fileopen = function (fileID, fileName) {
         '.' +
         fileType
     } else {
+      //@ts-ignore
       url =
         cordova.file.externalRootDirectory +
         'path/to/downloads/' +
@@ -57,7 +61,8 @@ const fileopen = function (fileID, fileName) {
     }
   }
   let mime = mimeType[fileType]
+  //@ts-ignore
   instance.fileopen(url, mime)
 }
 
-export { putInstance, fileopen }
+export { fileopen, putInstance }

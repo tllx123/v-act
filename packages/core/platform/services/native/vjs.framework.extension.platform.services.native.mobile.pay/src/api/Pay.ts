@@ -1,14 +1,18 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const pay = function (config, successCallback, failCallback) {
+const pay = function (config: any, successCallback: any, failCallback: any) {
   instance.pay(config, successCallback, failCallback)
 }
 
-const getPayInfo = function (chargeId, successCallback, errorCallback) {
+const getPayInfo = function (
+  chargeId: string,
+  successCallback: any,
+  errorCallback: any
+) {
   if (instance.getPayInfo) {
     instance.getPayInfo(chargeId, successCallback, errorCallback)
   } else {
@@ -16,4 +20,4 @@ const getPayInfo = function (chargeId, successCallback, errorCallback) {
   }
 }
 
-export { putInstance, pay, getPayInfo }
+export { getPayInfo, pay, putInstance }

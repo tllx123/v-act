@@ -1,6 +1,6 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
@@ -9,8 +9,8 @@ const BROWERTYPE = {
   SystemBrowser: '_system' //系统浏览器
 }
 
-const open = function (url, browerType) {
+const open = function (url: string, browerType: string) {
   instance.open(url, browerType)
 }
 
-export { BROWERTYPE, putInstance, open }
+export { BROWERTYPE, open, putInstance }

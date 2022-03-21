@@ -1,10 +1,10 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
-const getVersionNumber = function (callback) {
+const getVersionNumber = function (callback: any) {
   if (instance) {
     instance.getVersionNumber(callback)
   } else {
@@ -13,8 +13,8 @@ const getVersionNumber = function (callback) {
   }
 }
 
-const getAppName = function (callback) {
+const getAppName = function (callback: any) {
   instance.getAppName(callback)
 }
 
-export { putInstance, getVersionNumber, getAppName }
+export { getAppName, getVersionNumber, putInstance }

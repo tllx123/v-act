@@ -1,19 +1,28 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const filetransferUpload = function (fileUrl, platformType, callback) {
-  instance.filetransferUpload(fileUrl, serverUrl, callback)
+const filetransferUpload = function (
+  fileUrl: string,
+  platformType: string,
+  callback: any
+) {
+  instance.filetransferUpload(fileUrl, platformType, callback)
 }
 
-const wxUpload = function (params) {
+const wxUpload = function (params: any) {
   instance.wxUpload(params)
 }
 
-const filetransferDownload = function (fileID, fileName, successCB, errorCB) {
-  instance.filetransferDownload(fileUrl, serverUrl, callback)
+const filetransferDownload = function (
+  fileID: string,
+  fileName: string,
+  successCB: any,
+  errorCB: any
+) {
+  instance.filetransferDownload(fileID, fileName, successCB, errorCB)
 }
 
-export { putInstance, filetransferUpload, wxUpload, filetransferDownload }
+export { filetransferDownload, filetransferUpload, putInstance, wxUpload }

@@ -1,11 +1,15 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
-const bluetoothPrint = function (successCallback, errorCallback, params) {
+const bluetoothPrint = function (
+  successCallback: any,
+  errorCallback: any,
+  params: any
+) {
   instance.bluetoothPrint(successCallback, errorCallback, params)
 }
 
-export { putInstance, bluetoothPrint }
+export { bluetoothPrint, putInstance }
