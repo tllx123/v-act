@@ -17,6 +17,7 @@
     "vactWatch": "bin/start.js"
   },
   "scripts": {
+    "copy:runtime": "mkdirp ./apps/runtime/node_modules/@v-act/v3dev-component-watcher && cpy . ../../../apps/runtime/node_modules/@v-act/v3dev-component-watcher",
     "debug": "node bin/start.js"
   },
   "dependencies": {
