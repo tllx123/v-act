@@ -9,7 +9,7 @@ export default class Context {
 
   constructor(context: any) {
     this.context = context
-    this.routeContext = context.get('expressionContext').getRouteContext()
+    this.routeContext = context.routeContext
   }
   /**
    * 获取构件变量
