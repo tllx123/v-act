@@ -7,27 +7,27 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
 import { WindowVMMappingManager as windowVMManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-// 初始化vjs模块，如果规则逻辑需要引用相关vjs服务，则初始化相关vjs模块；如果不需要初始化逻辑可以为空
-export function initModule(sBox) {}
-
 const main = function (ruleContext: RuleContext) {
-  let inParamsObj = jsonUtil.json2obj(ruleContext.getRuleCfg()['inParams'])
+  //@ts-ignore
+  let inParamsObj: Record<string, any> = jsonUtil.json2obj(
+    ruleContext.getRuleCfg()['inParams']
+  )
 
   //解析参数
-  let Entiry = inParamsObj['EntityMoveByRecord']
+  let Entiry: Record<string, any> = inParamsObj['EntityMoveByRecord']
   if (!Entiry) {
     return false
   }
   // 源实体
-  let record =
+  let record: Record<string, any> =
     Entiry['datas'] && Entiry['datas']['values'] && Entiry['datas']['values'][0]
-  let sourceName = record && record['sourceName']
+  let sourceName: undefined | null | string = record && record['sourceName']
   if (sourceName == undefined || sourceName == null) {
     return false
   }
 
   // 移動方式
-  let Operation = record && record['operation']
+  let Operation: undefined | null | string = record && record['operation']
   if (Operation == null || Operation == undefined) {
     Operation = 'first'
   }
@@ -40,6 +40,7 @@ const main = function (ruleContext: RuleContext) {
   ) {
     //throw new Error("实体不存在！sourceName=" + sourceName);
     let exception = factory.create({
+      //@ts-ignore
       type: factory.TYPES.Dialog,
       message: '实体不存在！sourceName=' + sourceName
     })
@@ -47,23 +48,27 @@ const main = function (ruleContext: RuleContext) {
   }
 
   // 源记录集合
-  let datasource = manager.lookup({
+  let datasource: {
+    getAllRecords: () => any
+    getCurrentRecord: () => any
+    setCurrentRecord: (x: any) => any
+  } = manager.lookup({
     datasourceName: sourceName
   })
 
-  let locateCurrRecord
+  let locateCurrRecord: null | string = ''
 
-  let records = datasource.getAllRecords()
+  let records: any = datasource.getAllRecords()
   if (records) records = records.toArray()
 
   if (records == null || records.length == 0) {
     return false
   }
 
-  let currRecord = datasource.getCurrentRecord()
+  let currRecord: { getSysId: () => string } = datasource.getCurrentRecord()
 
   //获取记录索引
-  let GetRecordIndex = function (arrary, Id) {
+  let GetRecordIndex = function (arrary: any[], Id: string) {
     for (let i = 0, len = arrary.length; i < len; i++) {
       if (arrary[i].getSysId() === Id) return i
     }
@@ -80,11 +85,11 @@ const main = function (ruleContext: RuleContext) {
       locateCurrRecord = datasource.getAllRecords().last()
       break
     case 'prior':
-      var currIndex = GetRecordIndex(records, currRecord.getSysId())
+      var currIndex: number = GetRecordIndex(records, currRecord.getSysId())
       if (currIndex - 1 >= 0) locateCurrRecord = records[currIndex - 1]
       break
     case 'next':
-      var currIndex = GetRecordIndex(records, currRecord.getSysId())
+      var currIndex: number = GetRecordIndex(records, currRecord.getSysId())
       if (currIndex + 1 < records.length)
         locateCurrRecord = records[currIndex + 1]
       break
@@ -99,13 +104,13 @@ const main = function (ruleContext: RuleContext) {
     record: locateCurrRecord
   })
 
-  let widgetId = windowVMManager.getWidgetCodesByDatasourceName({
+  let widgetId: any[] = windowVMManager.getWidgetCodesByDatasourceName({
     datasourceName: sourceName
   })
 
   if (widgetId instanceof Array) {
     for (let _a = 0; _a < widgetId.length; _a++) {
-      let type = widgetContext.getType(widgetId[_a])
+      let type: string = widgetContext.getType(widgetId[_a])
       if (locateCurrRecord) {
         if (
           'JGBizCodeTreeGrid' == type ||
@@ -117,6 +122,7 @@ const main = function (ruleContext: RuleContext) {
           widgetAction.executeWidgetAction(
             widgetId[_a],
             'locateRecord',
+            //@ts-ignore
             locateCurrRecord
           )
         }
@@ -127,7 +133,7 @@ const main = function (ruleContext: RuleContext) {
       }
     }
   } else {
-    let type = widgetContext.getType(widgetId)
+    let type: string = widgetContext.getType(widgetId)
     if (locateCurrRecord) {
       if (
         'JGBizCodeTreeGrid' == type ||
@@ -139,6 +145,7 @@ const main = function (ruleContext: RuleContext) {
         widgetAction.executeWidgetAction(
           widgetId,
           'locateRecord',
+          //@ts-ignore
           locateCurrRecord
         )
       }

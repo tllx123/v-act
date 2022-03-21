@@ -2,9 +2,15 @@ import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.pa
 import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 
 export default class Context {
+  private context: any
+  private routeContext: any
+
+  constructor(context: any) {
+    this.context = context
+    this.routeContext = context.get('expressionContext').getRouteContext()
+  }
   /**
    * 获取构件变量
    * */
@@ -13,21 +19,33 @@ export default class Context {
   /**
    * 获取全局变量
    * */
-  getWindowVar = (name: string) => (name: string) =>
+  getWindowVar = (name: string) => {
+    let val = WindowParam.getInput({ code: name })
+
+    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
+    com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
+      this.context,
+      name,
+      val
+    )
+
     WindowParam.getInput({ code: name })
+  }
 
   /**
    * 获取全局变量
    * */
   getRecordValue(entityCode: string, fieldCode: string) {
-    let datasource = RouteContext.getOutPutParam(entityCode)
+    let datasource = this.routeContext.getOutPutParam(entityCode)
 
     if (datasource) {
       var row
-      if (RouteContext.hasCurrentRecord(entityCode))
-        row = RouteContext.getCurrentRecord(entityCode)
-      else if (RouteContext.hasRecordIndex(entityCode))
-        row = datasource.getRecordById(RouteContext.getRecordIndex(entityCode))
+      if (this.routeContext.hasCurrentRecord(entityCode))
+        row = this.routeContext.getCurrentRecord(entityCode)
+      else if (this.routeContext.hasRecordIndex(entityCode))
+        row = datasource.getRecordById(
+          this.routeContext.getRecordIndex(entityCode)
+        )
       else row = datasource.getCurrentRecord()
 
       // 如果上面都取不到记录，则取数据源的第一行记录
@@ -64,10 +82,7 @@ export default class Context {
 
     return FunctionEngine.execute({
       functionName: functionName,
-      context: new FunctionContext(
-        args,
-        context.get('expressionContext').getRouteContext()
-      )
+      context: new FunctionContext(args, this.routeContext)
     })
   }
 
@@ -75,7 +90,7 @@ export default class Context {
    * 获取业务规则执行结果
    */
   getRuleBusinessResult(instanceCode: string, resultCode: string) {
-    return RouteContext.getBusinessRuleResult(instanceCode, resultCode)
+    return this.routeContext.getBusinessRuleResult(instanceCode, resultCode)
   }
 
   /**
@@ -83,11 +98,10 @@ export default class Context {
    *格式：BR_IN_PARENT.[入參英文名字].[字段名称]
    */
   getRulesetEntityFieldInput(entityName: string, fieldName: string) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
+    let ctx = this.context.get('expressionContext')
 
-    if (routeContext) {
-      var datasource = routeContext.getInputParam(entityName)
+    if (this.routeContext) {
+      let datasource = this.routeContext.getInputParam(entityName)
       if (datasource) {
         var row
         if (ctx.hasCurrentRecord(entityName))
@@ -120,13 +134,11 @@ export default class Context {
    *格式：BR_OUT_PARENT.[入參英文名字].[字段名称]
    */
   getRulesetEntityFieldOut(entityName: string, fieldName: string) {
-    var ctx = context.get('expressionContext')
-    var routeContext = ctx.getRouteContext()
-    if (routeContext) {
-      x
-      var datasource = routeContext.getOutPutParam(entityName)
+    let ctx = this.context.get('expressionContext')
+    if (this.routeContext) {
+      let datasource = this.routeContext.getOutPutParam(entityName)
       if (datasource) {
-        var row
+        let row
         if (ctx.hasCurrentRecord(entityName))
           row = ctx.getCurrentRecord(entityName)
         else if (ctx.hasRecordIndex(entityName))
@@ -146,7 +158,7 @@ export default class Context {
    * 格式：BR_OUT_PARENT.[变量英文名称].[字段名称]
    */
   getRulesetEntityFieldVar(entityName: string, fieldName: string) {
-    var ctx = context.get('expressionContext')
+    var ctx = this.context.get('expressionContext')
     var routeContext = ctx.getRouteContext()
     if (routeContext) {
       var datasource = routeContext.getVariable(entityName)
@@ -170,13 +182,13 @@ export default class Context {
    * 获取输出参数值
    */
   getRulesetInput(entityName: string) {
-    return RouteContext.getOutPutParam(entityName)
+    return this.routeContext.getOutPutParam(entityName)
   }
 
   /**
    *获取活动集变量值
    */
   getRulesetVar(entityName: string) {
-    return RouteContext.getVariable(entityName)
+    return this.routeContext.routeContext.getVariable(entityName)
   }
 }

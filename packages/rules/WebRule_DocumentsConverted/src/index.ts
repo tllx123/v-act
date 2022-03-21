@@ -31,6 +31,7 @@
  * </code>
  */
 
+import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
@@ -39,35 +40,41 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 const vds = { component, ds, exception, expression, rpc, string, window }
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var inParamObj = ruleContext.getVplatformInput()
+      var inParamObj: { items: any[] } = ruleContext.getVplatformInput()
       if (!check(inParamObj)) {
         resolve()
         return
       }
 
       var params = {
-        condSqls: [], //查询条件
-        condParams: [], //查询参数
-        itemsField: [] //字段对应关系--对于系统变量、组件变量、前台表达式、实体字段参数要解析实际的值
+        condSqls: Array<any>(), //查询条件
+        condParams: Array<any>(), //查询参数
+        itemsField: Array<any>(), //字段对应关系--对于系统变量、组件变量、前台表达式、实体字段参数要解析实际的值
+        items: Array<any>()
       }
       if (inParamObj.items) {
         for (var i = 0; i < inParamObj.items.length; i++) {
           // 处理查询条件
-          var condCfgs = inParamObj.items[i].condition
-          var condSqls = ''
-          var condParams = {}
+          var condCfgs: null | any[] = inParamObj.items[i].condition
+          var condSqls: string = ''
+          var condParams: any = {}
           if (condCfgs != null && condCfgs.length > 0) {
             var wrParam = {
               type: vds.ds.WhereType.Query,
               methodContext: ruleContext.getMethodContext()
             }
-            var where = vds.ds.createWhere(wrParam)
+            var where: {
+              addCondition: (x: any[]) => string
+              toWhere: () => string
+              toParameters: () => string
+            } = vds.ds.createWhere(wrParam)
             where.addCondition(condCfgs)
             condSqls = where.toWhere()
             condParams = where.toParameters()
@@ -76,8 +83,8 @@ const main = function (ruleContext: RuleContext) {
           params.condParams.push(condParams)
 
           //处理字段对应关系
-          var itemsField = inParamObj.items[i].itemsField
-          var result = ParamField(itemsField, null, ruleContext)
+          var itemsField: string = inParamObj.items[i].itemsField
+          var result: any = ParamField(itemsField, null, ruleContext)
           params.itemsField.push(result.itemsConverted)
           if (condParams != null) {
             var paramMap = result.paramMap
@@ -88,7 +95,10 @@ const main = function (ruleContext: RuleContext) {
       params.items = inParamObj['items']
 
       // 调用完活动集之后的回调方法
-      var callback = function (responseObj) {
+      var callback: any = function (responseObj: {
+        Success: boolean
+        OutputMessage: string
+      }) {
         if (responseObj.Success == false) {
           var ex = vds.exception.newBusinessException(
             '将表（及从表）数据插入到其它表执行异常:' +
@@ -126,7 +136,7 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 配置检查
  */
-function check(inParamObj) {
+function check(inParamObj: { items: any[] }) {
   if (!checkMasterIdField(inParamObj)) return false
   return true
 }
@@ -137,11 +147,16 @@ function check(inParamObj) {
  * 目前的配置方式，没有指定从表目标表的外键字段，从表的外键字段是通过itemsField获取的；
  * 这种配置方式不明显，很容易使人遗漏，所以特别检查并提示。
  */
-function checkMasterIdField(inParamObj) {
-  var items = inParamObj.items
+function checkMasterIdField(inParamObj: { items: any[] }) {
+  var items: any[] = inParamObj.items
   for (var i = 0; i < items.length; i++) {
     // 主表或者某一个从表的规则配置
-    var config = items[i]
+    var config: {
+      isMasterTable: boolean | string
+      itemsField: string
+      refFK: string
+      destTableName: string
+    } = items[i]
     if (config.isMasterTable == true || config.isMasterTable == 'true') {
       //主表不需要检查
       continue
@@ -163,7 +178,10 @@ function checkMasterIdField(inParamObj) {
 /**
  * 检查ItemsField中，源表是否包含指定的名称
  */
-function checkItemsFieldContainsSrcRefFK(itemsField, srcRefFK) {
+function checkItemsFieldContainsSrcRefFK(
+  itemsField: string | any[],
+  srcRefFK: string
+) {
   for (var i = 0; i < itemsField.length; i++) {
     if (itemsField[i].sourceField == srcRefFK) return true
   }
@@ -172,9 +190,17 @@ function checkItemsFieldContainsSrcRefFK(itemsField, srcRefFK) {
 
 //#region ParamFieldUtil 实现
 
-var ParamField = function (itemsField, mapping, ruleContext) {
-  var itemsConverted = []
-  var paramMap = {}
+var ParamField = function (
+  itemsField: string | any[],
+  mapping: {
+    destField: string
+    sourceField: string
+    sourcetype: string
+  } | null,
+  ruleContext: RuleContext
+) {
+  var itemsConverted: any[] = []
+  var paramMap: Record<string, any> = {}
 
   mapping = mapping || {
     destField: 'destField',
@@ -191,11 +217,11 @@ var ParamField = function (itemsField, mapping, ruleContext) {
 
 /*转换一个字段、并且添加转换后的结果到this变量中*/
 var _convertField = function (
-  field,
-  ruleContext,
-  mapping,
-  itemsConverted,
-  paramMap
+  field: string,
+  ruleContext: RuleContext,
+  mapping: { destField: string; sourceField: string; sourcetype: string },
+  itemsConverted: any[],
+  paramMap: Record<string, any>
 ) {
   var sourceField = _getSourceField(field, mapping)
   switch (_getSourcetype(field, mapping)) {
@@ -233,10 +259,11 @@ var _convertField = function (
       _pushParamField(field, paramValue, mapping, itemsConverted, paramMap)
       break
     case '6': //6--实体字段
-      var dataSourceName = _getTableName(sourceField)
-      var fieldName = _getFieldName(sourceField)
-      var datasource = manager.lookup(dataSourceName)
-      var record = datasource.getCurrentRecord()
+      var dataSourceName: string = _getTableName(sourceField)
+      var fieldName: string = _getFieldName(sourceField)
+      //@ts-ignore
+      var datasource: any = manager.lookup(dataSourceName)
+      var record: { get: (x: string) => any } = datasource.getCurrentRecord()
       var paramValue = record.get(fieldName)
       _pushParamField(field, paramValue, mapping, itemsConverted, paramMap)
       break
@@ -245,16 +272,24 @@ var _convertField = function (
   }
 }
 
-var _pushOldField = function (field, itemsConverted, paramMap) {
+var _pushOldField = function (
+  field: string,
+  itemsConverted: any[],
+  paramMap: Record<string, any>
+) {
   itemsConverted.push($.extend({}, field))
 }
 
 var _pushParamField = function (
-  field,
-  paramValue,
-  mapping,
-  itemsConverted,
-  paramMap
+  field: string,
+  paramValue: any,
+  mapping: {
+    destField: string | undefined
+    sourceField: string
+    sourcetype?: string
+  },
+  itemsConverted: any[],
+  paramMap: Record<string, any>
 ) {
   var paramName = _genParamName(_getDestField(field, mapping))
   var item = $.extend({}, field)
@@ -263,28 +298,38 @@ var _pushParamField = function (
   paramMap[paramName] = paramValue
 }
 
-var _genParamName = function (fieldName) {
+var _genParamName = function (fieldName: string) {
   var name = fieldName.replace(/[.]/g, '_')
   return name + '_' + vds.string.uuid()
 }
 
-var _getDestField = function (item, mapping) {
+var _getDestField = function (item: string, mapping: { destField: any }) {
   return item[mapping.destField]
 }
 
-var _getSourceField = function (item, mapping) {
+var _getSourceField = function (
+  item: string,
+  mapping: { destField?: string; sourceField: string; sourcetype?: string }
+) {
   return item[mapping.sourceField]
 }
 
-var _setSourceField = function (item, newSourceField, mapping) {
+var _setSourceField = function (
+  item: string,
+  newSourceField: string,
+  mapping: { destField?: string; sourceField: string; sourcetype?: string }
+) {
   item[mapping.sourceField] = newSourceField
 }
 
-var _getSourcetype = function (item, mapping) {
+var _getSourcetype = function (
+  item: string,
+  mapping: { destField?: string; sourceField?: string; sourcetype: any }
+) {
   return item[mapping.sourcetype]
 }
 
-var _getTableName = function (field) {
+var _getTableName = function (field: string) {
   var retvalue = field
   if (field.indexOf('.') != -1) {
     retvalue = field.split('.')[0]
@@ -292,7 +337,7 @@ var _getTableName = function (field) {
   return retvalue
 }
 
-var _getFieldName = function (field) {
+var _getFieldName = function (field: string) {
   var retvalue = field
   if (field.indexOf('.') != -1) {
     retvalue = field.split('.')[1]

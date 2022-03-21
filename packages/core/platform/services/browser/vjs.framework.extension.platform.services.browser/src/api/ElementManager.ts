@@ -8,24 +8,25 @@
  * vjs服务：vjs.framework.extension.platform.services.browser.ElementManager
  */
 import { LoopManager as loopManager } from '@v-act/vjs.framework.extension.platform.global'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let supportObserver /* 是否支持使用ResizeObserver */,
-  domResizes = {} /* 监听dom大小改变的信息 */,
-  eventPool = {}, //事件池,key：eleId，value：[event]
-  elementSize = {}, //元素当前大小
-  elementPool = {} //元素池，key：eleId，value：loopId
+let supportObserver: boolean /* 是否支持使用ResizeObserver */,
+  domResizes: Record<string, any> = {} /* 监听dom大小改变的信息 */,
+  eventPool: Record<string, any> = {}, //事件池,key：eleId，value：[event]
+  elementSize: Record<string, any> = {}, //元素当前大小
+  elementPool: Record<string, any> = {} //元素池，key：eleId，value：loopId
 
 /**
  * 检查当前浏览器是否支持ResizeObserver， 如果不支持，则使用旧方案
  * */
-var check = function () {
+let check = function () {
   if (supportObserver === true) {
     return true
   } else if (supportObserver === false) {
     return false
   } else {
     try {
-      var observer = new ResizeObserver.ResizeObserver(function () {})
+      let observer = new ResizeObserver.ResizeObserver(function () {})
       if (observer) {
         supportObserver = true
       } else {
@@ -42,14 +43,14 @@ var check = function () {
  * @param {Object} dom 需要监听的dom对象
  * @param {Function} handler dom的大小改变后的处理回调
  * */
-var listener = function (dom, handler) {
-  var observer = new ResizeObserver.ResizeObserver(
+const listener = function (dom: HTMLElement, handler: Function) {
+  let observer = new ResizeObserver.ResizeObserver(
     (function (fun) {
-      return function (entries) {
-        var entry = entries.pop()
-        var contentRect = entry.contentRect
-        var width = contentRect.width
-        var height = contentRect.height
+      return function (entries: Record<string, any>) {
+        let entry = entries.pop()
+        let contentRect = entry.contentRect
+        let width = contentRect.width
+        let height = contentRect.height
         fun(width, height)
       }
     })(handler)
@@ -61,18 +62,18 @@ var listener = function (dom, handler) {
  * 开始setTimeout
  * @param {String} domId 需要监听的dom对象
  * */
-var start = function (domId) {
-  var index = setTimeout(
+const start = function (domId: string) {
+  let index = setTimeout(
     (function (id) {
       return function () {
-        var info = domResizes[id]
+        let info = domResizes[id]
         if (!info || !document.getElementById(id)) {
           return
         }
         info.index = -1
-        var handlers = info.handlers
-        for (var i = 0, len = handlers.length; i < len; i++) {
-          var handler = handlers[i]
+        let handlers = info.handlers
+        for (let i = 0, len = handlers.length; i < len; i++) {
+          let handler = handlers[i]
           if (typeof handler == 'function') {
             handler(info)
           }
@@ -92,12 +93,12 @@ var start = function (domId) {
  * 	listener	{Function}	改变后执行的方法
  * }
  * */
-export function bindEleResize(params) {
+export function bindEleResize(params: Record<string, any>) {
   if (!check()) {
     return bindEleResize_old(params)
   }
-  var domId = params.eleId
-  var handler = params.listener
+  let domId = params.eleId
+  let handler = params.listener
   if (
     !domId ||
     typeof handler != 'function' ||
@@ -108,12 +109,12 @@ export function bindEleResize(params) {
     }
     return
   }
-  var dom = document.getElementById(domId)
+  let dom = document.getElementById(domId)
   /* ResizeObserver不支持body */
-  if (dom.tagName == 'BODY') {
+  if (dom && dom.tagName == 'BODY') {
     return exports.bindEleResize_old(params)
   }
-  var info = domResizes[domId]
+  let info = domResizes[domId]
   if (!info) {
     /* 如果不存在，则创建监听 */
     info = domResizes[domId] = {
@@ -121,30 +122,32 @@ export function bindEleResize(params) {
       handlers: [handler] /* 支持绑定多个不同（===）监听事件 */
     }
     /* 开启监听 */
-    var observer = listener(
-      dom,
-      (function (id) {
-        return function (width, height) {
-          var info = domResizes[id]
-          if (!info) {
-            /* 忽略这种情况，理论上不存此情况 */
-            return
-          } else if (info.index == -1) {
-            /* 未开始setTimeout */
-            info.width = width
-            info.height = height
-            info.index = start(id) /* 开启setTimeout */
+    if (dom) {
+      let observer = listener(
+        dom,
+        (function (id) {
+          return function (width: number | string, height: number | string) {
+            let info = domResizes[id]
+            if (!info) {
+              /* 忽略这种情况，理论上不存此情况 */
+              return
+            } else if (info.index == -1) {
+              /* 未开始setTimeout */
+              info.width = width
+              info.height = height
+              info.index = start(id) /* 开启setTimeout */
+            }
           }
-        }
-      })(domId)
-    )
-    domResizes[domId].observer = observer
+        })(domId)
+      )
+      domResizes[domId].observer = observer
+    }
   } else {
     /* 如果存在，则判断是否多个handler */
-    var handlers = info.handlers
-    var exist = false
-    for (var i = 0, len = handlers.length; i < len; i++) {
-      var fun = handlers[i]
+    let handlers = info.handlers
+    let exist = false
+    for (let i = 0, len = handlers.length; i < len; i++) {
+      let fun = handlers[i]
       if (fun === handler) {
         exist = true
         break
@@ -163,22 +166,22 @@ export function bindEleResize(params) {
  * 	listener	{Function}	注册使用的函数，忽略则移除全部监听大小改变的事件
  * }
  * */
-export function unbindEleResize(params) {
+export function unbindEleResize(params: Record<string, any>) {
   if (!check()) {
     /* 不支持的执行旧方案 */
     return unbindEleResize_old(params)
   }
-  var domId = params.eleId
-  var listener = params.domId
+  let domId = params.eleId
+  let listener = params.domId
   if (!domId || !domResizes[domId]) {
     /* domId为空或者未监听的，忽略处理 */
     return
   }
-  var info = domResizes[domId]
-  var observer = info.observer
-  var dom = document.getElementById(domId)
+  let info = domResizes[domId]
+  let observer = info.observer
+  let dom = document.getElementById(domId)
   /* ResizeObserver不支持body */
-  if (dom.tagName == 'BODY') {
+  if (dom && dom.tagName == 'BODY') {
     return exports.bindEleResize_old(params)
   }
   try {
@@ -187,7 +190,7 @@ export function unbindEleResize(params) {
     } else {
       observer = null
     }
-    var index = domResizes[domId].index
+    let index = domResizes[domId].index
     if (index != -1) {
       clearTimeout(index)
     }
@@ -204,20 +207,20 @@ export function unbindEleResize(params) {
  * 	listener	{Function}	改变后执行的方法
  * }
  * */
-export function bindEleResize_old(params) {
-  var eleId = params.eleId,
+export function bindEleResize_old(params: Record<string, any>) {
+  let eleId = params.eleId,
     listener = params.listener
   if (!eleId || typeof listener != 'function' || $('#' + eleId).length != 1) {
     return
   }
-  var $dom = $('#' + eleId)
+  let $dom = $('#' + eleId)
   elementSize[eleId] = {
     width: $dom.width(),
     height: $dom.height()
   }
-  var handler = (function (domId) {
+  let handler = (function (domId) {
     return function () {
-      var $tmpDom = $('#' + domId)
+      let $tmpDom = $('#' + domId)
       if ($tmpDom.length == 0) {
         //如果被销毁，则停止监听
         exports.unbindEleResize({
@@ -225,9 +228,9 @@ export function bindEleResize_old(params) {
         })
         return
       }
-      var preSize = elementSize[eleId]
-      var width = $tmpDom.width()
-      var height = $tmpDom.height()
+      let preSize = elementSize[eleId]
+      let width = $tmpDom.width()
+      let height = $tmpDom.height()
       if ($tmpDom[0].tagName == 'BODY') {
         //首页页签来回切换的话，body大小不正确
         width = $(window).width()
@@ -237,9 +240,9 @@ export function bindEleResize_old(params) {
         //如果宽/高不一样
         preSize.width = width
         preSize.height = height
-        var events = eventPool[domId]
+        let events = eventPool[domId]
         if (events) {
-          for (var i = 0, len = events.length; i < len; i++) {
+          for (let i = 0, len = events.length; i < len; i++) {
             events[i]({
               width: width,
               height: height
@@ -253,7 +256,7 @@ export function bindEleResize_old(params) {
       }
     }
   })(eleId)
-  var loopId = loopManager.add({
+  let loopId = loopManager.add({
     handler: handler
   })
   elementPool[eleId] = loopId
@@ -271,17 +274,17 @@ export function bindEleResize_old(params) {
  * 	listener	{Function}	注册使用的函数，忽略则移除全部监听大小改变的事件
  * }
  * */
-export function unbindEleResize_old(params) {
-  var eleId = params.eleId,
+export function unbindEleResize_old(params: Record<string, any>) {
+  let eleId = params.eleId,
     listener = params.listener
   if (!eleId) {
     return
   }
-  var needRemove = true
+  let needRemove = true
   if (listener) {
-    var events = eventPool[eleId]
+    let events = eventPool[eleId]
     if (events && events.length > 0) {
-      var index = events.indexOf(listener)
+      let index = events.indexOf(listener)
       if (index != -1) {
         events.splice(index, 1)
         if (events != 0) {
@@ -292,7 +295,7 @@ export function unbindEleResize_old(params) {
   }
   if (needRemove) {
     //移除循环
-    var loopId = elementPool[eleId]
+    let loopId = elementPool[eleId]
     if (loopId) {
       loopManager.remove(loopId)
     }
