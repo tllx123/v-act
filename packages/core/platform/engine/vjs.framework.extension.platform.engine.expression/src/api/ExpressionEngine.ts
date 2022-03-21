@@ -6,7 +6,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import * as ExpressionContext from './ExpressionContext'
 import { ParseExpression } from './ParseExpression'
 
-import Context from './Context'
+import newContext from './Context'
 
 interface IExecuteParams {
   context: any
@@ -16,40 +16,19 @@ interface IExecuteParams {
 const execute = function (params: IExecuteParams) {
   let context = params.context,
     exp = params.expression
-  return exp
-  // 使用函数执行器
-  //TODO xiedh
-  //context.put('executor', ruleExecutor['functionHandler']);
-  //TODO xiedh
-  //context.put('sandBox', sandbox);
-  /*let ctx = new formulaEngine.Map()
-  context = context || new ExpressionContext()
-  ctx.put('expressionContext', context)
 
-  let result
-  if (!exp) {
-    let exception = exceptionFactory.create({
-      message: '不支持空表达式,请检查相关配置!',
-      exceptionDatas: genExceptionData(),
-      type: exceptionFactory.TYPES.Config
-    })
-    throw exception
-  }
+  // 使用函数执行器
+  context = new newContext(context)
+  let funMain = `return ${ParseExpression(exp)}`
+  let result: Function = new Function('context', funMain)
+
   try {
-    result = formulaEngine.Formula.eval(exp, ctx)
+    return result(context)
   } catch (e) {
-    if (exceptionFactory.isException(e)) {
-      throw e
-    } else {
-      throw new Error(
-        '执行表达式【' + exp + '】出现错误,错误原因：' + e.message,
-        undefined,
-        undefined,
-        exceptionFactory.getExceptionTypeByError(e)
-      )
-    }
+    throw new Error(
+      '解释表达式【' + exp + '】中的变量出现错误,错误原因：' + e.message
+    )
   }
-  return result*/
 }
 
 const parseVars = function (params: IExecuteParams) {
@@ -107,7 +86,7 @@ const parseMethods = function (params: IExecuteParams) {
     exp = params.expression
 
   let ctx = new formulaEngine.Map()
-  context = context || new Context(context)
+  context = new newContext(context)
   ctx.put('expressionContext', context)
 
   if (!exp) {
