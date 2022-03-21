@@ -1,4 +1,4 @@
-import * as V3PlatformAOP from './V3PlatformAOP'
+import V3PlatformAOP from './V3PlatformAOP'
 let aop: any
 
 const _putAop = function (a: any) {
@@ -43,7 +43,7 @@ let RuntimeV3PlatformAOP = {
   }
 }
 
-if (window) {
+if (typeof window != 'undefined') {
   //@ts-ignore
   window.RuntimeV3PlatformAOP = RuntimeV3PlatformAOP
 }

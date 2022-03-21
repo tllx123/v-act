@@ -130,5 +130,3 @@ export function getPack(componentCode, methodCode) {
     }
   })
 }
-
-module.exports = exports

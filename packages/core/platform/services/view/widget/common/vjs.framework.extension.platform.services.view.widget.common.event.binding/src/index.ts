@@ -1,1 +1,1 @@
-export * from './EventManager'
+export * as EventManager from './EventManager'

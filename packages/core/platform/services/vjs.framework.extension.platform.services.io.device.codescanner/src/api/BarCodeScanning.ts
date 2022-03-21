@@ -1,5 +1,5 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as $ from '@v-act/vjs.framework.extension.platform.services.integration.vds.$'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 const vds = { $ }
 /*
  * 1、创建隐藏文本域

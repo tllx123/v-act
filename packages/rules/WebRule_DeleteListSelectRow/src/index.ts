@@ -121,6 +121,4 @@ var getDataSource = function (dsName, entityType, ruleContext) {
   return datasource
 }
 
-exports.main = main
-
 export { main }
