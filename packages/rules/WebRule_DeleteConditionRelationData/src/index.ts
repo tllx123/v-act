@@ -6,21 +6,23 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 
 const vds = { ds, log, object, rpc, string }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var inParamsObj = ruleContext.getVplatformInput()
-      var dtChileMaps = inParamsObj['dtChileMaps']
-      var treeStructs = inParamsObj['treeStruct']
+      var inParamsObj: { (x: string): any } = ruleContext.getVplatformInput()
+      var dtChileMaps: undefined | null | any[] = inParamsObj['dtChileMaps']
+      var treeStructs: any[] = inParamsObj['treeStruct']
 
       var treeStruct = null
       if (
+        //@ts-ignore
         !vds.object.isArray(treeStructs) ||
+        //@ts-ignore
         (vds.object.isArray(treeStructs) && treeStructs.length < 1)
       ) {
         treeStruct = null
@@ -36,12 +38,16 @@ const main = function (ruleContext: RuleContext) {
         dtChileMaps.length > 0
       ) {
         for (var i = 0; i < dtChileMaps.length; i++) {
-          var delCfg = dtChileMaps[i]
-          var dsWhere = delCfg.dsWhere
+          var delCfg: Record<string, any> = dtChileMaps[i]
+          var dsWhere: string = delCfg.dsWhere
           delCfg['sql'] = null
           if (undefined != dsWhere && null != dsWhere && dsWhere.length > 0) {
             // 有进行字段的配置，按照配置生成条件sql
-            var w = vds.ds.createWhere({
+            var w: {
+              addCondition: (x: string) => void
+              toWhere: () => string
+              toParameters: () => string
+            } = vds.ds.createWhere({
               methodContext: ruleContext.getMethodContext()
             })
             w.addCondition(dsWhere)
@@ -55,14 +61,14 @@ const main = function (ruleContext: RuleContext) {
       }
       inParamsObj['isDelete'] = isDelete
 
-      var isSave = false // 后台是否需要保存标记位
-      var changeDsArr = [] // 保存的删除数据源
+      var isSave: boolean = false // 后台是否需要保存标记位
+      var changeDsArr: any[] = [] // 保存的删除数据源
       inParamsObj['isSave'] = isSave
 
       // 调用完活动集之后的回调方法
-      var callback = function (responseObj) {
+      var callback: any = function (responseObj: { IsSuccess: boolean }) {
         try {
-          var success = responseObj.IsSuccess
+          var success: boolean = responseObj.IsSuccess
           if (success != true) {
             throw new Error('删除数据失败')
           }
@@ -84,7 +90,7 @@ const main = function (ruleContext: RuleContext) {
         }
       }
 
-      var errorCallback = function (responseObj) {
+      var errorCallback: any = function (responseObj: { message: string }) {
         vds.log.error(responseObj.message)
         reject(responseObj)
       }
