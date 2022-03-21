@@ -1,9 +1,11 @@
-var enhanceUrl = function (target, attr, url) {
-  /*var func = v3VueUtil.getUrlEnHancer();
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
+let enhanceUrl = function (target: HTMLElement, attr: string, url: string) {
+  /*let func = v3VueUtil.getUrlEnHancer();
 	if(func){
 		func(target,attr,url);
 	}else{*/
-  var val = target.getAttribute(attr)
+  let val = target.getAttribute(attr)
   if (val !== url) {
     target.setAttribute(attr, url)
   }
@@ -11,11 +13,11 @@ var enhanceUrl = function (target, attr, url) {
 }
 //window._$V3TestData = {};
 //window._$V3TestDataFunc = function(el,arg,val){
-//	var S4 = function() {
+//	let S4 = function() {
 //		return (((1 + Math.random()) * 0x10000) | 0).toString(16)
 //				.substring(1);
 //	};
-//	var uuid = (S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4());
+//	let uuid = (S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4());
 //	if(!window._$V3TestData)
 //		window._$V3TestData = {};
 //	window._$V3TestData[uuid] = {
@@ -25,47 +27,57 @@ var enhanceUrl = function (target, attr, url) {
 //		ga : window.GlobalVariables
 //	}
 //}
-Vue.directive('res', function (el, binding, node) {
-  if (
-    binding.value == undefined ||
-    binding.value == null ||
-    !binding.value ||
-    binding.value == ''
+Vue.directive(
+  'res',
+  function (
+    el: HTMLElement,
+    binding: Record<string, any>,
+    node: Record<string, any>
   ) {
-    return
-  }
-  let vue = node.context
-  /* 递归去获取构件编码 */
-  let getComponentCode = function (node) {
-    if (typeof node._getComponentCode == 'function') {
-      return node._getComponentCode()
+    if (
+      binding.value == undefined ||
+      binding.value == null ||
+      !binding.value ||
+      binding.value == ''
+    ) {
+      return
     }
-    if (undefined != node.$parent) {
-      return getComponentCode(node.$parent)
+    let vue = node.context
+    /* 递归去获取构件编码 */
+    let getComponentCode: Function = function (node: Record<string, any>) {
+      if (typeof node._getComponentCode == 'function') {
+        return node._getComponentCode()
+      }
+      if (undefined != node.$parent) {
+        return getComponentCode(node.$parent)
+      }
+      return null
     }
-    return null
-  }
-  let componentCode = getComponentCode(vue)
-  if (!componentCode) {
-    throw new Error('无法获取构件编码.')
-  }
-  //	var componentCode = vue._getComponentCode();
-  let path = ''
-  let valueArray = binding.value.split('.')
-  if (valueArray.length > 2) {
-    let tempPath = [valueArray[1], valueArray[2]].join('.')
-    path = 'itop/resources/' + valueArray[0] + '_' + tempPath
-  } else {
-    path = 'itop/resources/' + componentCode + '_' + binding.value
-  }
+    let componentCode = getComponentCode(vue)
+    if (!componentCode) {
+      throw new Error('无法获取构件编码.')
+    }
+    //	let componentCode = vue._getComponentCode();
+    let path = ''
+    let valueArray = binding.value.split('.')
+    if (valueArray.length > 2) {
+      let tempPath = [valueArray[1], valueArray[2]].join('.')
+      path = 'itop/resources/' + valueArray[0] + '_' + tempPath
+    } else {
+      path = 'itop/resources/' + componentCode + '_' + binding.value
+    }
 
-  let val = window.GlobalVariables
-    ? GlobalVariables.getServerUrl() + '/' + path
-    : path
-  //	window._$V3TestDataFunc(el,binding.arg,val);
-  enhanceUrl(el, binding.arg, val)
-})
-Vue.directive('url', function (el, binding) {
+    //@ts-ignore
+    let val = window.GlobalVariables
+      ? //@ts-ignore
+        GlobalVariables.getServerUrl() + '/' + path
+      : path
+    //	window._$V3TestDataFunc(el,binding.arg,val);
+    enhanceUrl(el, binding.arg, val)
+  }
+)
+
+Vue.directive('url', function (el: HTMLElement, binding: Record<string, any>) {
   if (
     binding.value == undefined ||
     binding.value == null ||
@@ -75,122 +87,182 @@ Vue.directive('url', function (el, binding) {
     // value 为空
     return
   }
+  //@ts-ignore
   let val = window.GlobalVariables
-    ? GlobalVariables.getServerUrl() + '/' + binding.value
+    ? //@ts-ignore
+      GlobalVariables.getServerUrl() + '/' + binding.value
     : binding.value
   //	window._$V3TestDataFunc(el,binding.arg,val);
   enhanceUrl(el, binding.arg, val)
 })
-Vue.directive('id2url', function (el, binding) {
-  if (
-    binding.value == undefined ||
-    binding.value == null ||
-    !binding.value ||
-    binding.value == ''
+
+Vue.directive(
+  'id2url',
+  function (el: HTMLElement, binding: Record<string, any>) {
+    if (
+      binding.value == undefined ||
+      binding.value == null ||
+      !binding.value ||
+      binding.value == ''
+    ) {
+      // value 为空
+      return
+    }
+    let url =
+      'module-operation!executeOperation?operation=FileDown&token=%7B%22data%22%3A%7B%22dataId%22%3A%22' +
+      binding.value +
+      '%22%2C%22ImageObj%22%3A%22' +
+      binding.value +
+      '%22%7D%7D'
+    //@ts-ignore
+    let val = window.GlobalVariables
+      ? //@ts-ignore
+        GlobalVariables.getServerUrl() + '/' + url
+      : url
+    //	window._$V3TestDataFunc(el,binding.arg,val);
+    enhanceUrl(el, binding.arg, val)
+  }
+)
+
+Vue.directive(
+  'current',
+  function (
+    el: HTMLElement,
+    binding: Record<string, any>,
+    node: Record<string, any>
   ) {
-    // value 为空
-    return
+    let vue = node.context,
+      dsName = binding.arg,
+      rd = binding.value
+    el.addEventListener(
+      'click',
+      function () {
+        vue.$root._$synCurrentRecordToDs(dsName, rd)
+      },
+      true
+    )
   }
-  let url =
-    'module-operation!executeOperation?operation=FileDown&token=%7B%22data%22%3A%7B%22dataId%22%3A%22' +
-    binding.value +
-    '%22%2C%22ImageObj%22%3A%22' +
-    binding.value +
-    '%22%7D%7D'
-  let val = window.GlobalVariables
-    ? GlobalVariables.getServerUrl() + '/' + url
-    : url
-  //	window._$V3TestDataFunc(el,binding.arg,val);
-  enhanceUrl(el, binding.arg, val)
-})
-Vue.directive('current', function (el, binding, node) {
-  let vue = node.context,
-    dsName = binding.arg,
-    rd = binding.value
-  el.addEventListener(
-    'click',
-    function () {
-      vue.$root._$synCurrentRecordToDs(dsName, rd)
-    },
-    true
-  )
-})
-window._$V3Vue = function (params) {
-  var globalCode = params.element
-  if (!_$V3Vue.instance) {
-    _$V3Vue.instance = {}
+)
+class _$V3Vue {
+  static instance: any
+  _$handleEvent: any
+  _$vue_vm: any
+
+  static getInstance(globalCode: string) {
+    return _$V3Vue.instance ? _$V3Vue.instance[globalCode] : null
   }
-  _$V3Vue.instance[globalCode] = this
-  var pros = params.pros
-  //	if(params.Html) this.html = params.Html;
-  //	if(params.ModuleJavaScript) this.html=params.ModuleJavaScript;
-  //	if(params.JavaScript) this.html=params.JavaScript;
-  //	if(params.Css) this.html=params.Css;
-  //	if(params.ModuleCss) this.html=params.ModuleCss;
-  this.html = (pros && pros.Html) || params.Html || null
-  this.javascript =
-    (pros && pros.ModuleJavaScript) || params.ModuleJavaScript || null
-  this.globalCss = (pros && pros.Css) || params.Css || null
-  this.globalJavascript = (pros && pros.JavaScript) || params.JavaScript || null
-  this.css = (pros && pros.ModuleCss) || params.ModuleCss || null
-  this.entityMapping =
-    (pros && pros.entityMapping) || params.entityMapping || {}
-  this.windowEntitys =
-    (pros && pros.windowEntitys) || params.windowEntitys || {}
-  this.fieldTypes =
-    (pros && pros.windowEntityFieldTypes) || params.windowEntityFieldTypes || {}
-  this.treeMapping = (pros && pros.treeMapping) || params.treeMapping || {}
-  this.cssSymbol =
-    (pros && pros.cssSymbol) ||
-    params.cssSymbol ||
-    params.css_prefix_symbol ||
-    null
-  this.entities = (pros && pros.Entities) || params.entities || []
-  //	if(pros){
-  //		this.entities = pros.Entities||[];
-  //		this.cssSymbol = pros.cssSymbol||null;
-  //		this.entityMapping = pros.entityMapping||{};
-  //		this.treeMapping = pros.treeMapping||{};
-  //		this.windowEntitys = pros.windowEntitys||{};
-  //	}else{
-  //		this.cssSymbol = params.cssSymbol||null;
-  //		this.entities = params.entities ? params.entities:[];
-  //		this.windowEntitys = {};
-  //		this.treeMapping = {};
-  //		this.entityMapping = {};
-  //	}
-  this.componentCode = params.componentCode
-  this.parseCss = params.parseCss || true
-  this.parseJavascript = params.parseJavascript || true
-  this.processHtml = params.processHtml || true
-  this.widgetCode = params.widgetCode || null
-  this.eventTargetCode = params.eventTargetCode || null
-  this.element = params.element || null
-  this.datas = params.datas || null
-  this.moduleScriptId = params.moduleScriptId || null
-  this.autoMoutStyle =
-    typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
-  this.forEntities = params.forEntities || []
-  this.processedHtml = params.processedHtml || null
-  this.hanleEventFunc = params.handleEvent || null
-  this.eventHandlers = {}
-  this.moduleDefineFunc = {}
-  this.sandbox = null
-  this.duringDS2Vue = {} //从ds同步到ui
-  this.dsEventRegisterFunc = []
-  this._init()
-}
-window._$V3Vue.getInstance = function (globalCode) {
-  return _$V3Vue.instance ? _$V3Vue.instance[globalCode] : null
-}
-window._$V3Vue.prototype = {
-  _init: function () {
+
+  html: string
+  javascript: string | null
+  globalCss: string | null
+  globalJavascript: string | null
+  css: string | null
+  entityMapping: any
+  windowEntitys: any
+  fieldTypes: any
+  treeMapping: any
+  cssSymbol: any
+  entities: any
+  componentCode: any
+  parseCss: any
+  parseJavascript: any
+  processHtml: any
+  widgetCode: any
+  eventTargetCode: any
+  element: any
+  datas: any
+  moduleScriptId: any
+  autoMoutStyle: boolean
+  forEntities: any
+  hanleEventFunc: any
+  eventHandlers: Record<string, any>
+  moduleDefineFunc: Record<string, any>
+  sandbox: null
+  duringDS2Vue: Record<string, any>
+  dsEventRegisterFunc: Array<any>
+
+  _defaultModuleScript: string = `let _$hanleEventFunc$_,sandbox,_$V3Vue,vdk;vdk = window[_vdk];window[_vdk]=null;exports._$putV3Vue=function(v3Vue){this._$V3Vue=v3Vue};exports._$putSandbox=function(sb){sandbox=sb};let getSandbox=function(){return this._$V3Vue.sandbox;};exports._$putHandleEventFunc=function(func){_$hanleEventFunc$_=func;};let handleEvent=function(){if(_$hanleEventFunc$_)_$hanleEventFunc$_.apply(this,arguments)};`
+  Events = {
+    Rendered: 'Rendered'
+  }
+
+  constructor(params: Record<string, any>) {
+    let globalCode = params.element
+    if (!_$V3Vue.instance) {
+      _$V3Vue.instance = {}
+    }
+    _$V3Vue.instance[globalCode] = this
+    let pros = params.pros
+    //	if(params.Html) this.html = params.Html;
+    //	if(params.ModuleJavaScript) this.html=params.ModuleJavaScript;
+    //	if(params.JavaScript) this.html=params.JavaScript;
+    //	if(params.Css) this.html=params.Css;
+    //	if(params.ModuleCss) this.html=params.ModuleCss;
+    this.html = (pros && pros.Html) || params.Html || null
+    this.javascript =
+      (pros && pros.ModuleJavaScript) || params.ModuleJavaScript || null
+    this.globalCss = (pros && pros.Css) || params.Css || null
+    this.globalJavascript =
+      (pros && pros.JavaScript) || params.JavaScript || null
+    this.css = (pros && pros.ModuleCss) || params.ModuleCss || null
+    this.entityMapping =
+      (pros && pros.entityMapping) || params.entityMapping || {}
+    this.windowEntitys =
+      (pros && pros.windowEntitys) || params.windowEntitys || {}
+    this.fieldTypes =
+      (pros && pros.windowEntityFieldTypes) ||
+      params.windowEntityFieldTypes ||
+      {}
+    this.treeMapping = (pros && pros.treeMapping) || params.treeMapping || {}
+    this.cssSymbol =
+      (pros && pros.cssSymbol) ||
+      params.cssSymbol ||
+      params.css_prefix_symbol ||
+      null
+    this.entities = (pros && pros.Entities) || params.entities || []
+    //	if(pros){
+    //		this.entities = pros.Entities||[];
+    //		this.cssSymbol = pros.cssSymbol||null;
+    //		this.entityMapping = pros.entityMapping||{};
+    //		this.treeMapping = pros.treeMapping||{};
+    //		this.windowEntitys = pros.windowEntitys||{};
+    //	}else{
+    //		this.cssSymbol = params.cssSymbol||null;
+    //		this.entities = params.entities ? params.entities:[];
+    //		this.windowEntitys = {};
+    //		this.treeMapping = {};
+    //		this.entityMapping = {};
+    //	}
+    this.componentCode = params.componentCode
+    this.parseCss = params.parseCss || true
+    this.parseJavascript = params.parseJavascript || true
+    this.processHtml = params.processHtml || true
+    this.widgetCode = params.widgetCode || null
+    this.eventTargetCode = params.eventTargetCode || null
+    this.element = params.element || null
+    this.datas = params.datas || null
+    this.moduleScriptId = params.moduleScriptId || null
+    this.autoMoutStyle =
+      typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
+    this.forEntities = params.forEntities || []
+    this.processHtml = params.processedHtml || null
+    this.hanleEventFunc = params.handleEvent || null
+    this.eventHandlers = {}
+    this.moduleDefineFunc = {}
+    this.sandbox = null
+    this.duringDS2Vue = {} //从ds同步到ui
+    this.dsEventRegisterFunc = []
+    this._init()
+  }
+
+  _init() {
     this._injectCss()
     this._injectScript()
-  },
-  _injectCss: function () {
+  }
+
+  _injectCss() {
     if (this.parseCss) {
-      var cssStr = []
+      let cssStr = []
       if (this.globalCss) {
         cssStr.push(this.globalCss)
       }
@@ -198,11 +270,11 @@ window._$V3Vue.prototype = {
         cssStr.push(this.css)
       }
       if (cssStr.length > 0) {
-        var css = cssStr.join('')
-        //var cssProcessor = v3VueUtil.getCssProcessor();
+        let css = cssStr.join('')
+        //let cssProcessor = v3VueUtil.getCssProcessor();
         //css = cssProcessor ? cssProcessor(css) : css;
         //environment.parseCssStr(css);
-        var style = document.createElement('style')
+        let style = document.createElement('style')
         style.innerHTML = css
         document.getElementsByTagName('head')[0].appendChild(style)
       }
@@ -210,12 +282,11 @@ window._$V3Vue.prototype = {
       this.globalCss = null
       this.css = null
     }
-  },
-  _defaultModuleScript:
-    'var _$hanleEventFunc$_,sandbox,_$V3Vue,vdk;vdk = window[_vdk];window[_vdk]=null;exports._$putV3Vue=function(v3Vue){this._$V3Vue=v3Vue};exports._$putSandbox=function(sb){sandbox=sb};var getSandbox=function(){return this._$V3Vue.sandbox;};exports._$putHandleEventFunc=function(func){_$hanleEventFunc$_=func;};var handleEvent=function(){if(_$hanleEventFunc$_)_$hanleEventFunc$_.apply(this,arguments)};',
-  _injectScript: function () {
+  }
+
+  _injectScript() {
     if (this.parseJavascript) {
-      var javascriptStr = []
+      let javascriptStr = []
       if (this.globalJavascript) {
         javascriptStr.push(this.globalJavascript)
       }
@@ -227,7 +298,8 @@ window._$V3Vue.prototype = {
         javascriptStr.push('(function(exports,_vdk){')
         javascriptStr.push(this._defaultModuleScript)
         javascriptStr.push(this.javascript)
-        var uuid = this._generate()
+        let uuid = this._generate()
+        //@ts-ignore
         window[uuid] = this
         javascriptStr.push(
           "})(window._$V3Vue.getInstance('" +
@@ -238,7 +310,7 @@ window._$V3Vue.prototype = {
         )
       }
       if (javascriptStr.length > 0) {
-        var script = ['<script type="text/javascript">']
+        let script = ['<script type="text/javascript">']
         script = script.concat(javascriptStr)
         script.push('</script>')
         $('head').append(script.join(''))
@@ -247,32 +319,37 @@ window._$V3Vue.prototype = {
       this.globalJavascript = null
       this.javascript = null
     }
-  },
-  _getCallFunc: function () {
+  }
+
+  _getCallFunc() {
     return this.moduleDefineFunc
-  },
-  _existFunc: function (name) {
-    var funcs = this._getCallFunc()
+  }
+
+  _existFunc(name: string) {
+    let funcs = this._getCallFunc()
     if (funcs && typeof funcs[name] == 'function') {
       return true
     }
     return false
-  },
-  _generate: function () {
-    var S4 = function () {
+  }
+
+  _generate() {
+    let S4 = function () {
       return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
     }
     return S4() + S4() + S4() + S4() + S4() + S4() + S4() + S4()
-  },
-  _extendDiff: function (aim, source) {
-    for (var f in source) {
+  }
+
+  _extendDiff(aim: Record<string, any>, source: Record<string, any>) {
+    for (let f in source) {
       if (source.hasOwnProperty(f) && source[f] !== aim[f]) {
         aim[f] = source[f]
       }
     }
-  },
-  _createVueData: function () {
-    var data = {
+  }
+
+  _createVueData() {
+    let data = {
       _$v3paltformData: {
         setCurrentHandlers: [],
         setSelectHandlers: [],
@@ -281,23 +358,23 @@ window._$V3Vue.prototype = {
       //实体字段类型的数据
       _$EntityFieldTypes: this.fieldTypes
     }
-    var entitys = this.windowEntitys
+    let entitys = this.windowEntitys
     if (entitys) {
-      for (var entityCode in entitys) {
-        var fieldList = entitys[entityCode]
-        var fieldMap = {}
-        for (var j = 0, len = fieldList.length; j < len; j++) {
+      for (let entityCode in entitys) {
+        let fieldList = entitys[entityCode]
+        let fieldMap = {}
+        for (let j = 0, len = fieldList.length; j < len; j++) {
           fieldMap[fieldList[j]] = null
         }
         data[entityCode] = fieldMap
       }
     }
-    //		for(var i=0,l=this.entities.length;i<l;i++){
-    //			var entityCode = this.entities[i];
+    //		for(let i=0,l=this.entities.length;i<l;i++){
+    //			let entityCode = this.entities[i];
     //			if(entitys && entitys[entityCode]){
-    //				var fieldList = entitys[entityCode];
-    //				var fieldMap = {};
-    //				for(var j = 0,len = fieldList.length;j<len;j++){
+    //				let fieldList = entitys[entityCode];
+    //				let fieldMap = {};
+    //				for(let j = 0,len = fieldList.length;j<len;j++){
     //					fieldMap[fieldList[j]] = null;
     //				}
     //				data[entityCode] = fieldMap;
@@ -305,71 +382,81 @@ window._$V3Vue.prototype = {
     //				data[entityCode]= {};
     //			}
     //		}
-    for (var oldEntiyCode in this.entityMapping) {
+    for (let oldEntiyCode in this.entityMapping) {
       if (this.entityMapping.hasOwnProperty(oldEntiyCode)) {
-        var newEntityCode = this.entityMapping[oldEntiyCode]
+        let newEntityCode = this.entityMapping[oldEntiyCode]
         data[newEntityCode] = []
       }
     }
-    for (var oldEntiyCode in this.treeMapping) {
+    for (let oldEntiyCode in this.treeMapping) {
       if (this.treeMapping.hasOwnProperty(oldEntiyCode)) {
-        var singleInfo = this.treeMapping[oldEntiyCode]
-        var newEntityCode = singleInfo['newEntityCode']
+        let singleInfo = this.treeMapping[oldEntiyCode]
+        let newEntityCode = singleInfo['newEntityCode']
         data[newEntityCode] = []
       }
     }
     return data
-  },
-  _createVueMethod: function () {
-    var handleEvent =
+  }
+
+  _createVueMethod() {
+    let handleEvent =
       this.hanleEventFunc ||
       (function (nowVue) {
-        return function (eventName) {
-          var func = nowVue._$handleEvent
+        return function (eventName: string) {
+          let func = nowVue._$handleEvent
           if (func) {
             func.apply(nowVue, arguments)
           }
         }
       })(this)
-    //		var md = function(){
+    //		let md = function(){
     //			return this._$mdHandle;
     //		};
     /**
      * 往moduleDefineFunc注入对象方法
      * */
-    var _moduleDefineFunc = this.moduleDefineFunc
+    let _moduleDefineFunc = this.moduleDefineFunc
     if (_moduleDefineFunc) {
       /* 注入handleEvent方法 */
       if (typeof _moduleDefineFunc._$putHandleEventFunc == 'function')
         _moduleDefineFunc._$putHandleEventFunc(handleEvent)
     }
-    var _$registerVuiTagEvent = function (widgetCode, eventName, handle) {
+    let _$registerVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      handle: Function
+    ) {
       if (!this._$vuiTagEventStorage) {
         this._$vuiTagEventStorage = {}
       }
-      var _vuiTagEventStorage = this._$vuiTagEventStorage
+      let _vuiTagEventStorage = this._$vuiTagEventStorage
       if (!_vuiTagEventStorage[widgetCode]) {
         _vuiTagEventStorage[widgetCode] = {}
       }
-      var _event = _vuiTagEventStorage[widgetCode]
+      let _event = _vuiTagEventStorage[widgetCode]
       _event[eventName] = handle
     }
-    var _$fireVuiTagEvent = function (widgetCode, eventName, params) {
-      var _vuiTagEventStorage = this._$vuiTagEventStorage
+
+    let _$fireVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      params: Record<string, any>
+    ) {
+      let _vuiTagEventStorage = this._$vuiTagEventStorage
       if (_vuiTagEventStorage && _vuiTagEventStorage[widgetCode]) {
-        var tagEvents = _vuiTagEventStorage[widgetCode]
+        let tagEvents = _vuiTagEventStorage[widgetCode]
         if (typeof tagEvents[eventName] == 'function') {
-          var handle = tagEvents[eventName]
+          let handle = tagEvents[eventName]
           handle(params)
         }
       }
     }
-    var _refFn = (function (v3Vue) {
+    let _refFn = (function (v3Vue) {
       return function (func) {
         if (v3Vue._existFunc(func)) {
-          var _func = v3Vue._getCallFunc()[func]
+          let _func = v3Vue._getCallFunc()[func]
           return _func
-          //					var rs = _func.apply(v3Vue.vueInstance,Array.prototype.slice.call(arguments, 1));
+          //					let rs = _func.apply(v3Vue.vueInstance,Array.prototype.slice.call(arguments, 1));
           //					return rs;
         } else {
           throw Error('未找到方法[' + func + ']，请检查！')
@@ -379,22 +466,22 @@ window._$V3Vue.prototype = {
     /**
      * 获取实体字段类型列表
      * */
-    var _$getEntityFieldType = function (entityCode) {
-      var types = this._data._$EntityFieldTypes
+    let _$getEntityFieldType = function (entityCode: string) {
+      let types = this._data._$EntityFieldTypes
       if (entityCode && types && types[entityCode]) {
         return types[entityCode]
       }
       return {}
     }
-    var parseDsData = function (params) {
-      var newRecord = []
-      var changeValue = []
-      var resultSet = params.resultSet
-      var eventName = params.eventName
+    let parseDsData = function (params: Record<string, any>) {
+      let newRecord = []
+      let changeValue: Array<any> = []
+      let resultSet = params.resultSet
+      let eventName = params.eventName
       if (eventName == 'CURRENT') {
         newRecord.push(params.currentRecord.toMap())
       } else if (resultSet) {
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           changeValue.push(rd.getChangedData())
           newRecord.push(rd.toMap())
         })
@@ -405,19 +492,19 @@ window._$V3Vue.prototype = {
       }
     }
     // 处理数据源触发事件的参数
-    var handlerCellFunc = function (handler, field, tmpVue) {
-      return function (params) {
+    let handlerCellFunc = function (handler, field, tmpVue) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
-          var result = []
-          var datas = parseDsData(params)
-          var newRecord = datas.newRecord
-          var changeValue = datas.changeValue
+          let result = []
+          let datas = parseDsData(params)
+          let newRecord = datas.newRecord
+          let changeValue = datas.changeValue
           newRecord = newRecord.length > 0 ? newRecord[0] : newRecord
           if (params.eventName == 'LOAD') {
             handler.apply(tmpVue, result)
           } else {
             if (changeValue.length > 0) {
-              var tmp = changeValue[0]
+              let tmp = changeValue[0]
               if (tmp && tmp.hasOwnProperty(field)) {
                 changeValue = tmp[field]
                 result.push(changeValue)
@@ -433,13 +520,17 @@ window._$V3Vue.prototype = {
     /**
      * 处理返回函数的参数
      */
-    var handlerCallBackParamFunc = function (handler, controlType, tmpVue) {
-      return function (params) {
+    let handlerCallBackParamFunc = function (
+      handler: Function,
+      controlType: string,
+      tmpVue: any
+    ) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
-          var result = []
-          var datas = parseDsData(params)
-          var eventName = params.eventName
-          var newRecord = []
+          let result = []
+          let datas = parseDsData(params)
+          let eventName = params.eventName
+          let newRecord: Record<string, any> = {}
           if (eventName == 'CURRENT') {
             newRecord = params.currentRecord.toMap()
           } else if (eventName == 'SELECT') {
@@ -449,7 +540,7 @@ window._$V3Vue.prototype = {
             }
           } else {
             newRecord = datas.newRecord
-            var changeValue = datas.changeValue
+            let changeValue = datas.changeValue
             if (changeValue.length > 0) {
               if (controlType == 'record') {
                 changeValue = changeValue[0]
@@ -463,6 +554,7 @@ window._$V3Vue.prototype = {
         return handler
       }
     }
+
     return {
       handleEvent: handleEvent,
       call: (function (nowVue) {
@@ -470,21 +562,21 @@ window._$V3Vue.prototype = {
           nowVue._$callEvent.apply(nowVue, arguments)
         }
       })(this),
-      _$getEntityFieldType: function (entityCode) {
-        var types = this._data._$EntityFieldTypes
+      _$getEntityFieldType: function (entityCode: string) {
+        let types = this._data._$EntityFieldTypes
         if (entityCode && types && types[entityCode]) {
           return types[entityCode]
         }
         return {}
       },
       _$getDatasource: (function (nowVue) {
-        return function (func) {
+        return function (func: any) {
           return nowVue._$getDatasource.apply(nowVue, arguments)
         }
       })(this),
       refFn: _refFn,
       _$registerDsEvent: (function (nowVue) {
-        return function (param) {
+        return function (param: Record<string, any> | Function) {
           if (typeof nowVue._$registerDsEvent != 'function') {
             if (typeof param == 'function')
               nowVue.dsEventRegisterFunc.push(param)
@@ -496,23 +588,23 @@ window._$V3Vue.prototype = {
               nowVue.dsEventRegisterFunc.push(
                 (function (param) {
                   return function () {
-                    var dsName = param.dsName
-                    var eventType = param.eventType
-                    var handler = param.handler
-                    var controlType = param.controlType
-                    var datasource
-                    var tmpVue = param.vueObj
+                    let dsName = param.dsName
+                    let eventType = param.eventType
+                    let handler = param.handler
+                    let controlType = param.controlType
+                    let datasource
+                    let tmpVue = param.vueObj
                     if (
                       tmpVue &&
                       typeof tmpVue.$root._$getDatasource == 'function'
                     ) {
                       if (controlType == 'cell') {
                         if (tmpVue.$vnode.data && tmpVue.$vnode.data.model) {
-                          var vModel = tmpVue.$vnode.data.model.expression
+                          let vModel = tmpVue.$vnode.data.model.expression
                           if (vModel) {
-                            var tmp = vModel.split('.')
+                            let tmp = vModel.split('.')
                             dsName = tmp[0]
-                            var field = tmp[tmp.length - 1]
+                            let field = tmp[tmp.length - 1]
                             // 处理返回函数
                             handler = handlerCellFunc(
                               param.handler,
@@ -581,68 +673,88 @@ window._$V3Vue.prototype = {
         }
       })(this.componentCode),
       _$v3platform: function () {
-        var _this = this
+        let _this = this
         return {
           datasource: {
-            synCurrentRecordToDs: function (entityCode, current, oldCurrent) {
-              var func = _this._$synCurrentRecordToDs
+            synCurrentRecordToDs: function (
+              entityCode: string,
+              current: Record<string, any>,
+              oldCurrent: Record<string, any>
+            ) {
+              let func = _this._$synCurrentRecordToDs
               if (func) {
                 func.apply(_this, [entityCode, current, oldCurrent])
               }
             },
-            synCurrentIdToDs: function (entityCode, current, oldCurrent) {
-              var func = _this._$synCurrentIdToDs
+            synCurrentIdToDs: function (
+              entityCode: string,
+              current: Record<string, any>,
+              oldCurrent: Record<string, any>
+            ) {
+              let func = _this._$synCurrentIdToDs
               if (func) {
                 func.apply(_this, [entityCode, current, oldCurrent])
               }
             },
-            synSelectRecordToDs: function (entityCode, data, isSel) {
-              var func = _this._$synSelectRecordToDs
+            synSelectRecordToDs: function (
+              entityCode: string,
+              data,
+              isSel: boolean
+            ) {
+              let func = _this._$synSelectRecordToDs
               if (func) {
                 func.apply(_this, [entityCode, data, isSel])
               }
             },
-            synCurrentRecordToUi: function (entityCode, current) {
-              var funcs = _this._data._$v3paltformData.setCurrentHandlers
+            synCurrentRecordToUi: function (
+              entityCode: string,
+              current: Record<string, any>
+            ) {
+              let funcs = _this._data._$v3paltformData.setCurrentHandlers
               if (funcs.length > 0) {
-                for (var i = 0, len = funcs.length; i < len; i++) {
-                  var func = funcs[i]
+                for (let i = 0, len = funcs.length; i < len; i++) {
+                  let func = funcs[i]
                   func(entityCode, current)
                 }
               }
             },
-            synSelectRecordToUi: function (entityCode, datas, isSel) {
-              var funcs = _this._data._$v3paltformData.setSelectHandlers
+            synSelectRecordToUi: function (
+              entityCode: string,
+              datas: Array<any>,
+              isSel: boolean
+            ) {
+              let funcs = _this._data._$v3paltformData.setSelectHandlers
               if (funcs.length > 0) {
-                for (var i = 0, len = funcs.length; i < len; i++) {
-                  var func = funcs[i]
+                for (let i = 0, len = funcs.length; i < len; i++) {
+                  let func = funcs[i]
                   func(entityCode, datas, isSel)
                 }
               }
             },
-            registerCurrentHandler: function (handler) {
+            registerCurrentHandler: function (handler: Function) {
               _this._data._$v3paltformData.setCurrentHandlers.push(handler)
             },
-            registerSelectHandler: function (handler) {
+            registerSelectHandler: function (handler: Function) {
               _this._data._$v3paltformData.setSelectHandlers.push(handler)
             },
-            markDsMultipleSelect: function (entityCode) {
+            markDsMultipleSelect: function (entityCode: string) {
               _this._data._$v3paltformData.multipleSelect.push(entityCode)
             }
           }
         }
       }
     }
-  },
-  _createVueWatcher: function () {
-    var watchers = {}
-    var getWatcher = function (code, nowV) {
+  }
+
+  _createVueWatcher() {
+    let watchers = {}
+    let getWatcher = function (code: string, nowV: any) {
       return {
         deep: true,
         sync: true,
         handler: (function (entityCode, nowVue) {
-          return function (val) {
-            var func = nowVue._$synData
+          return function (val: any) {
+            let func = nowVue._$synData
             if (func) {
               func.apply(nowVue, [entityCode, val])
             }
@@ -650,18 +762,18 @@ window._$V3Vue.prototype = {
         })(code, nowV)
       }
     }
-    var entitys = this.windowEntitys
-    for (var entityCode in entitys) {
+    let entitys = this.windowEntitys
+    for (let entityCode in entitys) {
       watchers[entityCode] = getWatcher(entityCode, this)
     }
-    //		for(var i=0,l=this.entities.length;i<l;i++){
-    //			var entityCode = this.entities[i];
+    //		for(let i=0,l=this.entities.length;i<l;i++){
+    //			let entityCode = this.entities[i];
     //			watchers[entityCode] = getWatcher(entityCode,this);
     //		}
     if (this.entityMapping) {
-      for (var entityCode in this.entityMapping) {
+      for (let entityCode in this.entityMapping) {
         if (this.entityMapping.hasOwnProperty(entityCode)) {
-          var newEntityCode = this.entityMapping[entityCode]
+          let newEntityCode = this.entityMapping[entityCode]
           if (!watchers[newEntityCode]) {
             watchers[newEntityCode] = getWatcher(entityCode, this)
           }
@@ -669,14 +781,15 @@ window._$V3Vue.prototype = {
       }
     }
     return watchers
-  },
-  render: function () {
+  }
+
+  render() {
     if (this.moduleDefineFunc && this.moduleDefineFunc._$putV3Vue) {
       this.moduleDefineFunc._$putV3Vue(this)
     }
     //解析html绑定的实体名称
     this.analyEntity(this.html)
-    var el =
+    let el =
       typeof this.element == 'string'
         ? document.getElementById(this.element)
         : this.element
@@ -686,61 +799,71 @@ window._$V3Vue.prototype = {
     if (this.html) {
       el.innerHTML = this.html
     }
-    var vm = new Vue({
+    let vm = new Vue({
       el: el,
       data: this._createVueData(),
       methods: this._createVueMethod(),
       watch: this._createVueWatcher()
     })
     this._$vue_vm = vm
-  },
-  strTrim: function (str) {
+  }
+
+  strTrim(str: string) {
     return str ? str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '') : str
-  },
-  toNewEntityCode: function (entityCode) {
+  }
+
+  toNewEntityCode(entityCode: string) {
     return entityCode + '_' + new Date().getTime()
-  },
-  _getNewEntityCode: function (pool, entityCode) {
+  }
+
+  _getNewEntityCode(pool: Record<string, any>, entityCode: string) {
     entityCode = this.strTrim(entityCode)
     if (!pool[entityCode]) {
       pool[entityCode] = this.toNewEntityCode(entityCode)
     }
     return pool[entityCode]
-  },
-  analyEntity: function (html) {
+  }
+
+  analyEntity(html: string) {
     //分析实体
+
     if (!html) return
-    var template = html
-    var entityMapping = {} //普通实体映射新名称
-    var treeMapping = this.treeMapping ? this.treeMapping : {} //属性实体映射新名称
-    //		var entitys = this.windowEntitys;//实体字段信息
-    var tmpThis = this
-    var entitys = this.windowEntitys ? this.windowEntitys : []
-    var analyFunc = (function (tmp_this) {
+    let _this = this
+    let template = html
+    let entityMapping = {} //普通实体映射新名称
+    let treeMapping: Record<string, any> = this.treeMapping
+      ? this.treeMapping
+      : {} //属性实体映射新名称
+    //		let entitys = this.windowEntitys;//实体字段信息
+    let tmpThis = this
+    let entitys = this.windowEntitys ? this.windowEntitys : []
+    let analyFunc = (function (tmp_this) {
       //分析非 实体.字段和v-for 这两个格式的实体
-      return function (childNode) {
-        var components
-        var nodeName = childNode.nodeName
+      return function (childNode: HTMLElement) {
+        let components
+        let nodeName = childNode.nodeName
+        //@ts-ignore
         if (window._$V3Vue && window._$V3Vue._getComponents) {
+          //@ts-ignore
           components = window._$V3Vue._getComponents(nodeName)
         }
         if (components && components.length > 0) {
-          for (var i = 0, len = components.length; i < len; i++) {
-            var component = components[i]
-            var dataPro = component.getDataProp()
-            var attrName = childNode.hasAttribute(':' + dataPro)
+          for (let i = 0, len = components.length; i < len; i++) {
+            let component = components[i]
+            let dataPro = component.getDataProp()
+            let attrName = childNode.hasAttribute(':' + dataPro)
               ? ':' + dataPro
               : childNode.hasAttribute('v-bind:' + dataPro)
               ? 'v-bind:' + dataPro
               : null
-            var dataType = component.getDataType()
+            let dataType = component.getDataType()
             if (dataType == 'Array') {
               if (attrName) {
                 //绑定实体方式为 :data 或 v-bind:data
-                var entityCode = childNode.getAttribute(attrName)
-                var newEntityCode = this._getNewEntityCode(
+                let entityCode = childNode.getAttribute(attrName)
+                let newEntityCode = _this._getNewEntityCode(
                   entityMapping,
-                  entityCode
+                  entityCode || ''
                 )
                 childNode.setAttribute(attrName, newEntityCode)
                 childNode.setAttribute(':entity-code', "'" + entityCode + "'")
@@ -749,14 +872,14 @@ window._$V3Vue.prototype = {
               //以树的方式绑定实体
               if (attrName) {
                 //绑定实体方式为 :data 或 v-bind:data
-                var entityCode = childNode.getAttribute(attrName)
-                var newEntityCode = this.toNewEntityCode(entityCode)
-                var newMappingInfo = {
+                let entityCode = childNode.getAttribute(attrName)
+                let newEntityCode = _this.toNewEntityCode(entityCode || '')
+                let newMappingInfo: Record<string, any> = {
                   newEntityCode: newEntityCode
                 }
-                var treeStructProp = component.getTreeStructProp()
+                let treeStructProp = component.getTreeStructProp()
                 if (childNode.hasAttribute(':' + treeStructProp)) {
-                  var _fieldMapping = childNode.getAttribute(
+                  let _fieldMapping = childNode.getAttribute(
                     ':' + treeStructProp
                   )
                   try {
@@ -777,16 +900,16 @@ window._$V3Vue.prototype = {
                     title: 'title'
                   }
                 }
-                treeMapping[entityCode] = newMappingInfo
+                entityCode && (treeMapping[entityCode] = newMappingInfo)
                 childNode.setAttribute(attrName, newEntityCode)
                 childNode.setAttribute(':entity-code', "'" + entityCode + "'")
               }
             } else if (dataType == 'Object') {
               if (attrName) {
-                var entityCode = childNode.getAttribute(attrName)
-                var tagName = component.getComponentName()
-                var value_field_attr_name = ''
-                var text_field_attr_name = ''
+                let entityCode = childNode.getAttribute(attrName)
+                let tagName = component.getComponentName()
+                let value_field_attr_name = ''
+                let text_field_attr_name = ''
                 switch (tagName) {
                   case 'vui-dict-box':
                   case 'vui-radio-list':
@@ -800,8 +923,8 @@ window._$V3Vue.prototype = {
                   value_field_attr_name != '' &&
                   childNode.hasAttribute(value_field_attr_name)
                 ) {
-                  childNode.setAttribute('___ds___', entityCode)
-                  var _$fields = []
+                  childNode.setAttribute('___ds___', entityCode || '')
+                  let _$fields = []
                   _$fields.push(childNode.getAttribute(value_field_attr_name))
                   //							if(text_field_attr_name != "" && childNode.hasAttribute(text_field_attr_name)){
                   //								_$fields.push(childNode.getAttribute(text_field_attr_name));
@@ -812,17 +935,17 @@ window._$V3Vue.prototype = {
             }
           }
         }
-        var attrName = 'v-for'
+        let attrName = 'v-for'
         if (childNode.hasAttribute(attrName)) {
-          var expArray = childNode.getAttribute(attrName).split(' in ')
-          var varName = expArray[0],
+          let expArray = childNode.getAttribute(attrName).split(' in ')
+          let varName = expArray[0],
             entityCode = expArray[1]
           if (entitys[entityCode]) {
             childNode.setAttribute(
               attrName,
               varName +
                 ' in ' +
-                this._getNewEntityCode(entityMapping, entityCode)
+                _this._getNewEntityCode(entityMapping, entityCode)
             )
             childNode.setAttribute(':entity-code', "'" + entityCode + "'")
             childNode.setAttribute(':key', varName + '.id')
@@ -830,46 +953,46 @@ window._$V3Vue.prototype = {
         }
         attrName = 'v-model'
         if (childNode.hasAttribute(attrName)) {
-          var expArray = childNode.getAttribute(attrName).split('.')
-          var entityCode = expArray[0],
+          let expArray = childNode.getAttribute(attrName).split('.')
+          let entityCode = expArray[0],
             fieldCode = expArray[1]
           if (entitys[entityCode]) {
             childNode.setAttribute('___ds___', entityCode)
             childNode.setAttribute('___field___', fieldCode)
           }
         }
-        var tagName = nodeName.toLowerCase()
+        let tagName = nodeName.toLowerCase()
         if (tagName.substring(0, 4) == 'vui-') {
           childNode.setAttribute('vui-type', tagName)
         }
-        var childs = childNode.children
+        let childs = childNode.children
         if (childs && childs.length > 0) {
-          for (var i = 0, l = childs.length; i < l; i++) {
+          for (let i = 0, l = childs.length; i < l; i++) {
             analyFunc.call(tmp_this, childs[i])
           }
         }
       }
     })(tmpThis)
-    var tmpDom = document.createElement('div')
+    let tmpDom = document.createElement('div')
     tmpDom.innerHTML = template
     analyFunc(tmpDom)
-    var _tmplate = tmpDom.outerHTML
+    let _tmplate = tmpDom.outerHTML
     this.html = _tmplate.substring(5, _tmplate.length - 6)
     this.treeMapping = treeMapping
     this.entityMapping = entityMapping
-  },
-  on: function (params) {
-    var eventName = params.eventName,
+  }
+
+  on(params: Record<string, any>) {
+    let eventName = params.eventName,
       handler = params.handler
-    var handlers = this.eventHandlers[eventName]
+    let handlers = this.eventHandlers[eventName]
     if (!handlers) {
       handlers = []
       this.eventHandlers[eventName] = handlers
     }
     handlers.push(handler)
-  },
-
-  Events: {
-    Rendered: 'Rendered'
   }
 }
+
+//@ts-ignore
+window._$V3Vue = _$V3Vue
