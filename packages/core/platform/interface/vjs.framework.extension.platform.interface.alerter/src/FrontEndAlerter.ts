@@ -2,6 +2,7 @@ import { Environment as environment } from '@v-act/vjs.framework.extension.platf
 import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ProgressBarUtil as progressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let sandbox,
   modalCode = 'error_modal_div',
@@ -20,8 +21,6 @@ const TYPE = {
   BUSINESS: 'BusinessException', //业务异常弹框
   LOGIN: 'LoginException' //登录异常
 }
-
-export { TYPE }
 
 const initModule = function (sb) {
   sandbox = sb
@@ -89,7 +88,7 @@ let _show = function (params) {
   let dialog = $('#' + iden)
   if (!dialog.is(':hidden')) {
     //当前没有异常提示框显示
-    if (dialog.size() < 1) {
+    if (dialog.length < 1) {
       //初始化异常提示框
       _initDialog(params)
     }
@@ -503,4 +502,4 @@ let transEndEvent = function (obj) {
   })
 }
 
-export { error }
+export { error, TYPE }

@@ -15,7 +15,7 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-import * as RuleExecutor from '../impl/RuleExecutor'
+import RuleExecutor from '../impl/RuleExecutor'
 import * as ruleFactory from '../impl/RuleFactory'
 
 let _isBusinessRule = function (ruleInstance) {
