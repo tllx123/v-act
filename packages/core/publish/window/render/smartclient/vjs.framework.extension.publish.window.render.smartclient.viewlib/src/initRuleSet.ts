@@ -1,14 +1,16 @@
 import { run } from '@v-act/xml-parser'
 import { WindowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
 import {
+  ruleSet,
   logicType,
   routeParamsSchema,
-  ruleInstanceSchema
+  ruleInstanceSchema,
+  ruleInstancesSchema
 } from './interfase/ruleSetInterFace'
 
 const setInstances = (
   instance: ruleInstanceSchema,
-  instances: { [key: string]: any }
+  instances: { [code: string]: any }
 ): void => {
   let {
     ruleConfig,
@@ -35,8 +37,7 @@ const setInstances = (
     inParams: ruleConfig
   }
 }
-
-const getRuleInstances = (ruleInstances: Array<ruleInstanceSchema>): object => {
+const getRuleInstances = (ruleInstances: ruleInstanceSchema[]): object => {
   let instances = {}
   for (let instance of ruleInstances) {
     setInstances(instance, instances)
@@ -46,34 +47,27 @@ const getRuleInstances = (ruleInstances: Array<ruleInstanceSchema>): object => {
 
 const parseLogic = (logic: logicType): routeParamsSchema | null => {
   if (logic['$'].type == 'client') {
-    try {
-      const ruleSet2 = logic.ruleSets.ruleSet
-      const ruleRoute = ruleSet2.ruleRoute
-      const ruleInstances = ruleSet2.ruleInstances.ruleInstance
-      const ruleInstanceList = Array.isArray(ruleInstances)
-        ? ruleInstances
-        : [ruleInstances]
-      if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
-        if (Array.isArray(logic.ruleInstances.ruleInstance)) {
-          logic.ruleInstances.ruleInstance.forEach(
-            (inst: ruleInstanceSchema) => {
-              ruleInstanceList.push(inst)
-            }
-          )
-        } else {
-          ruleInstanceList.push(logic.ruleInstances.ruleInstance)
-        }
+    const ruleSet = logic.ruleSets.ruleSet
+    const ruleRoute = ruleSet.ruleRoute
+    const ruleInstances = ruleSet.ruleInstances.ruleInstance
+    const ruleInstanceList = Array.isArray(ruleInstances)
+      ? ruleInstances
+      : [ruleInstances]
+    if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
+      if (Array.isArray(logic.ruleInstances.ruleInstance)) {
+        logic.ruleInstances.ruleInstance.forEach((inst) => {
+          ruleInstanceList.push(inst)
+        })
+      } else {
+        ruleInstanceList.push(logic.ruleInstances.ruleInstance)
       }
-      let route = {
-        handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
-        ruleInstances: getRuleInstances(ruleInstanceList),
-        transactionInfo: {}
-      }
-      return route
-    } catch (e) {
-      console.error('解析方法配置失败！错误信息：' + e)
-      return null
     }
+    let route: routeParamsSchema = {
+      handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
+      ruleInstances: getRuleInstances(ruleInstanceList),
+      transactionInfo: {}
+    }
+    return route
   } else {
     return null
   }
@@ -88,19 +82,27 @@ const addRoute = (
   if (result != null) {
     let { handler, ruleInstances, transactionInfo } = result
     let routeParams = {
-      componentCode,
-      windowCode,
+      componentCode: componentCode,
+      windowCode: windowCode,
       route: {
         routeCode: logic.ruleSets.ruleSet['$'].code,
         outputs: null,
         transactionType: 'TRANSACTION',
-        handler: function (ruleEngine: any, routeRuntime: any) {
+        handler: function (
+          ruleEngine: {
+            executeWithRouteCallback: (config: {
+              ruleCode: string
+              routeContext: any
+            }) => void
+          },
+          routeRuntime: any
+        ) {
           handler && handler(ruleEngine, routeRuntime)
         },
         variables: [],
         inputs: null,
-        ruleInstances,
-        transactionInfo
+        ruleInstances: ruleInstances,
+        transactionInfo: transactionInfo
       }
     }
     WindowRoute.addRoute(routeParams)

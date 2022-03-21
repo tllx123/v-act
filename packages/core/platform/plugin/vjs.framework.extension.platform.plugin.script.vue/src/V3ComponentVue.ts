@@ -1,12 +1,12 @@
 import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
 import { FrontEndAlerter as frontEndAlerter } from '@v-act/vjs.framework.extension.platform.interface.alerter'
-import { window as i18n_window } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Platform as i18n_window } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { MobileViewPortAdapter as mobileViewPortAdapter } from '@v-act/vjs.framework.extension.platform.interface.mobile.viewport.adapter'
 import { DatasourceObserver } from '@v-act/vjs.framework.extension.platform.interface.observer'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
+import * as windowInit from '@v-act/vjs.framework.extension.platform.services.init'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
+import * as observerManager from '@v-act/vjs.framework.extension.platform.services.observer.manager'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
@@ -15,7 +15,7 @@ import * as v3VueUtil from './V3VueUtils'
 let sandbox
 /* 定义事件运行状态常量 */
 if (typeof EventStatus == 'undefined') {
-  let EventStatus = {
+  var EventStatus = {
     Running: 'running',
     Complete: 'complete'
   }
@@ -59,6 +59,7 @@ class V3ComponentVue {
   series
   dsEventRegisterFunc: Array<any>
   vueInstance: any
+  hanleEventFunc: any
 
   _data: Array<any> = []
 
