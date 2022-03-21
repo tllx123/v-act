@@ -1,6 +1,10 @@
-import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
+import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.logutil'
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as stringUtils from '@v-act/vjs.framework.extension.util.string'
+const vds = { i18n, log, $, window, stringUtils }
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as backMask from './BackMask'
 import * as zindex from './ZIndex'
@@ -11,36 +15,50 @@ var dialogs = [],
   defaultViewTime = 3,
   currentDialogInfo = null
 
-var divId = '___alertMessageDiv'
-//插入DOM到页面
-alertDiv = $('#' + divId)
-if (alertDiv && alertDiv.size() == 0) {
-  //初始化提示框div
-  var dialogDOM = _generateDiaLog(divId)
-  $('body').append(dialogDOM)
-  alertDiv = $('#' + divId)
-  alertDiv.find('#dialogConfirm').click(function () {
-    confirmHandler()
-  })
-  alertDiv.find('#dialogCancel').click(function () {
-    cancelHandler()
-  })
-  alertDiv.find('#dialogIKnow').click(function () {
-    iKnowHandler()
-  })
+let _inited = false
+
+const _init = function () {
+  if (!_inited) {
+    var divId = '___alertMessageDiv'
+    //插入DOM到页面
+    alertDiv = $('#' + divId)
+    if (alertDiv && alertDiv.length == 0) {
+      //初始化提示框div
+      var dialogDOM = _generateDiaLog(divId)
+      $('body').append(dialogDOM)
+      alertDiv = $('#' + divId)
+      alertDiv.find('#dialogConfirm').click(function () {
+        confirmHandler()
+      })
+      alertDiv.find('#dialogCancel').click(function () {
+        cancelHandler()
+      })
+      alertDiv.find('#dialogIKnow').click(function () {
+        iKnowHandler(false)
+      })
+    }
+    _inited = true
+  }
 }
 
-var confirmDialog = function (title, content, onCallback, isEsCapeHtml) {
+var confirmDialog = function (
+  title: any,
+  content: any,
+  onCallback: any,
+  isEsCapeHtml: any
+) {
+  _init()
   _dialogInterval(title, content, 'confirm', onCallback, isEsCapeHtml)
 }
 
 var propmtDialog = function (
-  title,
-  content,
-  onCallback,
-  secDistance,
-  isEsCapeHtml
+  title: any,
+  content: any,
+  onCallback: any,
+  secDistance: any,
+  isEsCapeHtml: any
 ) {
+  _init()
   if (undefined != secDistance && !isNaN(secDistance)) {
     defaultViewTime = secDistance
   }
@@ -48,12 +66,13 @@ var propmtDialog = function (
 }
 
 var _dialogInterval = function (
-  title,
-  content,
-  type,
-  onCallback,
-  isEsCapeHtml
+  title: any,
+  content: any,
+  type: any,
+  onCallback: any,
+  isEsCapeHtml: any
 ) {
+  _init()
   // 对话框队列, 实现对话框按照执行顺序显示
   var _dialogId = 'dialog_' + _genRamdomNum()
   var _dialogInfo = {
@@ -84,6 +103,7 @@ var _dialogInterval = function (
 }
 
 var _dialogIntervalHandler = function () {
+  _init()
   if (dialogs.length > 0) {
     //队列不为空，且当前没有提示框显示
     if (!currentDialogInfo) {
@@ -108,6 +128,7 @@ var _dialogIntervalHandler = function () {
 }
 
 var _showConfirmDialog = function () {
+  _init()
   // 遮罩层显示
   backMask.Show()
   //清除初始的隐藏样式
@@ -121,7 +142,8 @@ var _showConfirmDialog = function () {
   _enterKeyPressHandler(alertDiv)
 }
 
-var _enterKeyPressHandler = function (_$div) {
+var _enterKeyPressHandler = function (_$div: any) {
+  _init()
   _$div
     .find('#dialogConfirm')
     .removeClass('dialogConfirmUnSelect')
@@ -167,7 +189,7 @@ var _enterKeyPressHandler = function (_$div) {
             iKnowHandler(true)
           } else {
             // 隐藏窗体
-            iKnowHandler()
+            iKnowHandler(false)
           }
         }
       })
@@ -180,6 +202,7 @@ var _enterKeyPressHandler = function (_$div) {
  * 显示确认框
  */
 var _showPromptDialog = function () {
+  _init()
   _showConfirmDialog()
   currentDialogInfo.viewTime = defaultViewTime
   //2017-02-14 liangzc:移动app上面不用显示倒计时
@@ -188,7 +211,7 @@ var _showPromptDialog = function () {
       //显示倒计时
       currentDialogInfo.viewTime--
       if (!currentDialogInfo.viewTime) {
-        iKnowHandler()
+        iKnowHandler(false)
       }
     }, 1000)
   } else {
@@ -199,13 +222,14 @@ var _showPromptDialog = function () {
       currentDialogInfo.viewTime--
       alertDiv.find('#dialogIKnow > span').html(currentDialogInfo.viewTime)
       if (!currentDialogInfo.viewTime) {
-        iKnowHandler()
+        iKnowHandler(false)
       }
     }, 1000)
   }
 }
 
 var clearDialogInfo = function () {
+  _init()
   alertDiv.removeClass('dialog-show').removeClass('dialogContainer-border')
   backMask.Hide()
   var result = currentDialogInfo
@@ -227,7 +251,8 @@ var cancelHandler = function () {
   }
 }
 
-var iKnowHandler = function (isCancle) {
+var iKnowHandler = function (isCancle: boolean) {
+  _init()
   var info = clearDialogInfo()
   var _info = info + ''
   if (_info !== 'null' && _info !== 'undefined') {
@@ -252,6 +277,7 @@ var _genRamdomNum = function () {
 }
 
 var _updateDialog = function () {
+  _init()
   var title = currentDialogInfo.title,
     content = currentDialogInfo.content,
     type = currentDialogInfo.type
@@ -273,7 +299,7 @@ var _updateDialog = function () {
   var newIndex = zindex.getFrontZIndex()
 
   // 处理进度条已显示出来导致遮盖问题
-  var _loading = document.getElementById('_waitingMsgDiv')
+  var _loading: any = document.getElementById('_waitingMsgDiv')
   if (_loading) {
     var _loadingZIndex = _loading.style.zIndex * 1
     var _loadingIsShowed = _loading.style.display === 'none' ? false : true
@@ -286,6 +312,7 @@ var _updateDialog = function () {
 }
 
 var _handleDialogCenter = function () {
+  _init()
   /*
    * 移动端软键盘弹起，收起时计算错误
    * */
@@ -294,7 +321,8 @@ var _handleDialogCenter = function () {
       position: 'absolute',
       left: ($(window).width() - alertDiv.outerWidth()) / 2,
       top: '50%', // 处理窗体存在竖直方向滚动条
-      transform: 'translateY(-' + parseFloat(alertDiv.outerHeight() / 2) + 'px)'
+      transform:
+        'translateY(-' + parseFloat(alertDiv.outerHeight() / 2 + '') + 'px)'
     })
   } else {
     alertDiv.css({
@@ -308,7 +336,7 @@ var _handleDialogCenter = function () {
   }
 }
 
-var _generateDiaLog = function (id) {
+var _generateDiaLog = function (id: any) {
   var _left = ''
   var _right = ''
   if (!window.VJSBridge) {

@@ -5,10 +5,10 @@ export function initModule(sBox) {
   sandBox = sBox
 }
 let rebuildUrl = function (
-  isRootContainer,
-  windowCode,
-  componentCode,
-  windowInputParams
+  isRootContainer: any,
+  windowCode: string,
+  componentCode: string,
+  windowInputParams: any
 ) {
   if (isRootContainer != undefined && isRootContainer.toString() == 'true') {
     // 重新组装 url 地址上的 hash 值
@@ -19,7 +19,8 @@ let rebuildUrl = function (
       (navigator.appName == 'Microsoft Internet Explorer' && !__isOpera) ||
       navigator.userAgent.indexOf('Trident/') != -1
     if (windowInputParams && windowInputParams !== {}) {
-      let urlWinHashObj = _inputParam2Obj(windowInputParams)
+      let urlWinHashObj: { [code: string]: any } = {}
+      urlWinHashObj = _inputParam2Obj(windowInputParams)
       urlWinHashObj.windowCode = windowCode
       urlWinHashObj.componentCode = componentCode
       let jsonUtil = sandBox.getService('vjs.framework.extension.util.JsonUtil')
@@ -74,7 +75,7 @@ let rebuildUrl = function (
   }
 }
 
-let _inputParam2Obj = function (inputParam) {
+let _inputParam2Obj = function (inputParam: any) {
   if (inputParam && inputParam.variable) {
     let variable = inputParam.variable
     let obj = {}

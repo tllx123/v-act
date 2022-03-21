@@ -2,7 +2,7 @@
  *
  *
  */
-const main = function (LogMessage, Operation) {
+const main = function (LogMessage: string, Operation: string) {
   try {
     if (LogMessage == null || LogMessage == undefined) {
       LogMessage = ''

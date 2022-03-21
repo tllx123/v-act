@@ -17,8 +17,10 @@ let MultiVPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
   let contextPath = Environment.getContextPath()
   if (contextPath) {
+    //@ts-ignore
     this.url = contextPath + '/module-operation!executeMultiOperation'
   } else {
+    //@ts-ignore
     this.url = 'module-operation!executeMultiOperation'
   }
 }
@@ -183,7 +185,8 @@ MultiVPlatformAjaxChannel.prototype = {
       for (let i = 0, l = operations.length; i < l; i++) {
         let func = operations[i].getBeforeRequest()
         if (typeof func === 'function') {
-          func.call(operation)
+          //func.call(operation)
+          throw new Error('未识别异常，请联系系统管理员处理')
         }
       }
       let args = this.buildRequest(request, contract)
@@ -195,4 +198,4 @@ MultiVPlatformAjaxChannel.prototype = {
   }
 }
 
-return MultiVPlatformAjaxChannel
+export default MultiVPlatformAjaxChannel

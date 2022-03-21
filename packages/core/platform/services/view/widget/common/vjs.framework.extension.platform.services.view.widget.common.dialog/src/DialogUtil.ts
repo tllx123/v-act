@@ -1,17 +1,15 @@
-import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.interface.view.widget.common.dialog'
-
-let sb
-
-export function initModule(sandbox) {
-  sb = sandbox
-}
+import { DialogUtil as dialog } from '@v-act/vjs.framework.extension.platform.services.view.widget.smartclient.dialog'
 
 /**
  * 显示确认提示框
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let result = dialog.confirmDialog(content, responseCallBackFunc, isUseDefault)
   return result
 }
@@ -23,10 +21,10 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  * @secDistance 倒计时
  */
 let propmtDialog = function (
-  content,
-  responseCallBackFunc,
-  isUseDefault,
-  secDistance
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean,
+  secDistance: any
 ) {
   dialog.propmtDialog(content, responseCallBackFunc, isUseDefault, secDistance)
 }
@@ -36,7 +34,11 @@ let propmtDialog = function (
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialog.errorDialog(content, responseCallBackFunc, isUseDefault)
 }
 
@@ -45,7 +47,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialog.warnDialog(content, responseCallBackFunc, isUseDefault)
 }
 
@@ -54,7 +60,11 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialog.infoDialog(content, responseCallBackFunc, isUseDefault)
 }
 

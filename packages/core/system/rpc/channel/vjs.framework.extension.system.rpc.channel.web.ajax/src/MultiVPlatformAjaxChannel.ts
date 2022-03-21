@@ -13,23 +13,29 @@ import {
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let objectUtil
+let objectUtil: any
 
 let MultiVPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
   let contextPath = Environment.getContextPath()
   if (contextPath) {
+    //@ts-ignore
     this.url = contextPath + '/module-operation!executeMultiOperation'
   } else {
+    //@ts-ignore
     this.url = 'module-operation!executeMultiOperation'
   }
+  //@ts-ignore
   this.count = 0
+  //@ts-ignore
   this.requestParams = null
+  //@ts-ignore
   this.contractParams = null
 }
 
-let _genExceptionFromResult = function (result) {
+let _genExceptionFromResult = function (result: any) {
   let exception
   if (
     typeof result == 'object' &&
@@ -40,7 +46,7 @@ let _genExceptionFromResult = function (result) {
   return exception
 }
 
-let _log = function (res, status, requestInfo) {
+let _log = function (res: any, status: any, requestInfo: any) {
   if (requestInfo) {
     let params = {
       request: requestInfo.request,
@@ -53,7 +59,7 @@ let _log = function (res, status, requestInfo) {
 }
 
 MultiVPlatformAjaxChannel.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -73,18 +79,20 @@ MultiVPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request, contract) {
+  buildRequest: function (request: any, contract: any) {
     this.requestParams = request
     this.contractParams = contract
     let operations = request.getOperations()
     let data = contract.generate(request)
     let scopeId = scopeManager.getCurrentScopeId()
+    //@ts-ignore
     let headNamespace = window.head //TODO ie11下异步请求后，会重写该变量，导致headjs无法使用，目前在此作兼容处理
     let scopeTask = new ScopeTask(
       scopeId,
       false,
       (function (channel, operations, contract, request) {
-        return function (res, status) {
+        return function (res: any, status: any) {
+          //@ts-ignore
           window.head = headNamespace
           var results = channel.processResponse(res, status, {
             request: request,
@@ -135,7 +143,9 @@ MultiVPlatformAjaxChannel.prototype = {
     )
     let taskId = taskManager.addTask(scopeTask)
     let url = this.url
+    //@ts-ignore
     if (window.GlobalVariables) {
+      //@ts-ignore
       url = window.GlobalVariables.getServerUrl() + '/' + url
     }
     let splitChar = url.indexOf('?') == -1 ? '?' : '&'
@@ -147,7 +157,7 @@ MultiVPlatformAjaxChannel.prototype = {
       data: data,
       //timeout : this.getTimeout(),
       complete: (function (tId) {
-        return function (res, status) {
+        return function (res: any, status: any) {
           taskManager.execTaskById(tId, [res, status])
         }
       })(taskId),
@@ -159,12 +169,13 @@ MultiVPlatformAjaxChannel.prototype = {
     }
     let timeout = request.getTimeout()
     if (timeout) {
-      body.timeout = timeout
+      //body.timeout = timeout
+      throw new Error('未识别异常，请联系系统管理员处理')
     }
     return body
   },
 
-  processResponse: function (res, status, requestInfo) {
+  processResponse: function (res: any, status: any, requestInfo: any) {
     if (status === 'success' || status === 'notmodified') {
       this.count = 0
       return eval('(' + res.responseText + ')')
@@ -231,17 +242,18 @@ MultiVPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request, contract) {
+  request: function (request: any, contract: any) {
     let ajax
-    if (jQuery) {
-      ajax = jQuery.ajax
+    if ($) {
+      ajax = $.ajax
     }
     let operations = request.getOperations()
     if (operations && operations.length > 0) {
       for (let i = 0, l = operations.length; i < l; i++) {
         let func = operations[i].getBeforeRequest()
         if (typeof func === 'function') {
-          func.call(operation)
+          //func.call(operation)
+          throw new Error('未识别异常，请联系系统管理员处理')
         }
       }
       let rq = this.buildRequest(request, contract)
@@ -259,9 +271,9 @@ MultiVPlatformAjaxChannel.prototype = {
     }
   },
 
-  log: function (msg) {
+  log: function (msg: string) {
     if (logUtil) logUtil.log(msg)
   }
 }
 
-return MultiVPlatformAjaxChannel
+export default MultiVPlatformAjaxChannel

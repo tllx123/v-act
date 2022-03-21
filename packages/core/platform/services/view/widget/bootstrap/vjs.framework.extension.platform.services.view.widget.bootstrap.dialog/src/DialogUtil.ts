@@ -11,7 +11,11 @@ export function initModule(sb) {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alertMessage.confirmDialog('', _toString(content), responseCallBackFunc)
 }
 /**
@@ -21,10 +25,10 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  * @secDistance 倒计时
  */
 let propmtDialog = function (
-  content,
-  responseCallBackFunc,
-  isUseDefault,
-  secDistance
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean,
+  secDistance: any
 ) {
   alertMessage.propmtDialog(
     '',
@@ -38,7 +42,11 @@ let propmtDialog = function (
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alertMessage.confirmDialog('', _toString(content), responseCallBackFunc)
 }
 /**
@@ -46,7 +54,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alertMessage.propmtDialog('', _toString(content), responseCallBackFunc)
 }
 /**
@@ -54,11 +66,15 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alertMessage.propmtDialog('', _toString(content), responseCallBackFunc)
 }
 
-let _toString = function (content) {
+let _toString = function (content: any) {
   return typeof content == 'string' ? content : '' + content
 }
 

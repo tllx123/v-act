@@ -8,12 +8,12 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 const vds = { object, ds, exception, expression }
 
 const main = function (
-  dsName,
-  columnName,
-  separator,
-  selectType,
-  isNullFilter,
-  isUnique
+  dsName: string,
+  columnName: string,
+  separator: string,
+  selectType: number,
+  isNullFilter: boolean,
+  isUnique: boolean
 ) {
   if (vds.object.isUndefOrNull(dsName))
     throw new Error('实体名称不允许为空，请检查')
@@ -87,7 +87,7 @@ const main = function (
 
   return retStr
 }
-function contains(arr, obj) {
+function contains(arr: any[], obj: any) {
   var i = arr.length
   if (i > 0) {
     while (i--) {

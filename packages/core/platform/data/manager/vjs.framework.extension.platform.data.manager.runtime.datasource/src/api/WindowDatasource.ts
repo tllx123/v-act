@@ -12,7 +12,7 @@ import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework
 
 let token = 'WINDOW_INSTANCE_DATASOURCE'
 
-let _getJsonFromCfg = function (dsName: string, cfg: object) {
+let _getJsonFromCfg = function (dsName: string, cfg: any) {
   let defaultValues = cfg.defaultValues
   for (let i = 0; i < defaultValues.length; i++) {
     let fieldCode = defaultValues[i].name

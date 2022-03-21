@@ -1,11 +1,10 @@
-import * as jsonUtil from 'module'
-
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 /**
  * 根据表名字段名以及过滤条件获取数据 代码示例1:GetTableData("contName","LMF_CONT","ID=:ID and contCode=:contCode {'ID':'fc05bfcd9b82a411339547e99ad569ca','contCode':'1003'}") 代码示例2:GetTableData("contName","LMF_CONT","ID='fc05bfcd9b82a411339547e99ad569ca' & contCode='1003'") 返回值为ID为'fc05bfcd9b82a411339547e99ad569ca'，contCode为'1003',字段为"LMF_CONT.contName"的记录 参数数量:3 参数1(字符类型)--数据源名称。 参数2(字符类型)--所查字段，存在多个则用","分开;空串为所有字段。 参数3过滤条件,过滤字符串格式可为sql字符串类似于"a.a1<2 & a.b1>1"也可为"a.a1<:a & b.b1>:b"的mql字符串 返回查询出结果集第一条记录指定字段的值，如果查询结果集无数据则返回空字符串
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 const vds = { object, exception, rpc }
 

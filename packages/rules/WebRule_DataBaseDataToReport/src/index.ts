@@ -6,13 +6,16 @@ import * as component from '@v-act/vjs.framework.extension.platform.services.int
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
-import * as method from '@v-act/vjs.framework.extension.platform.services.integration.vds.method'
 import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import * as method from '@v-act/vjs.framework.extension.platform.services.integration.vds.method'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 const vds = {
   component,
   ds,
@@ -27,7 +30,6 @@ const vds = {
   window
 }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -56,7 +58,10 @@ const main = function (ruleContext: RuleContext) {
       }
 
       //获取"打印方式"完成事件
-      var afterGetReportEdition = function (result) {
+      var afterGetReportEdition = function (result: {
+        [x: string]: any
+        msg: string
+      }) {
         var success = result['success']
         if (success != true) {
           resolve()
@@ -76,9 +81,10 @@ const main = function (ruleContext: RuleContext) {
         if (reportEdition != 'TooneReport') {
           //加载报表文件完成事件
           var afterLoadReportFile = (function (reportCode, reportControlCode) {
-            return function (resultDataString, routeContext) {
+            return function (resultDataString: any) {
               if (resultDataString) {
                 //报表配置信息
+                //@ts-ignore
                 var reportCfg = vds.object.stringify(
                   resultDataString.outputJSON
                 )
@@ -100,6 +106,7 @@ const main = function (ruleContext: RuleContext) {
                   )
                   //报表ID
                   var curReportID = 'v3Report_' + curWidget.getID()
+                  //@ts-ignore
                   window['VReport'] = window[curReportID]
                   //执行脚本
                   exeExtendJs(itemConfigs)
@@ -176,10 +183,10 @@ const main = function (ruleContext: RuleContext) {
 }
 
 // 是否存在外部方法。返回值true：存在， false：不存在
-var isExistApi = function (itemConfigs) {
+var isExistApi = function (itemConfigs: any[]) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var itemConfig = itemConfigs[i]
-    var sourceType = itemConfig.Istype
+    var sourceType: string = itemConfig.Istype
     if (sourceType == 'Api') {
       return true
     }
@@ -188,10 +195,10 @@ var isExistApi = function (itemConfigs) {
 }
 
 // 是否存在窗体实体。返回值true：存在， false：不存在
-var isExistWindowEntity = function (itemConfigs) {
+var isExistWindowEntity = function (itemConfigs: any[]) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var itemConfig = itemConfigs[i]
-    var sourceType = itemConfig.Istype
+    var sourceType: string = itemConfig.Istype
     if (sourceType == 'WindowEntity') {
       return true
     }
@@ -200,10 +207,10 @@ var isExistWindowEntity = function (itemConfigs) {
 }
 
 // 是否存在执行脚本。返回值true：存在， false：不存在
-var isExistExeScript = function (itemConfigs) {
+var isExistExeScript = function (itemConfigs: any[]) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var itemConfig = itemConfigs[i]
-    var exeScript = itemConfig.exeScript
+    var exeScript: null | string = itemConfig.exeScript
     if (exeScript != null && exeScript != '') {
       return true
     }
@@ -212,12 +219,12 @@ var isExistExeScript = function (itemConfigs) {
 }
 
 // 所有配置中的字段映射中是否存在表达式。返回值true：存在， false：不存在
-var isExistExpression = function (itemConfigs) {
+var isExistExpression = function (itemConfigs: any[]) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var items = itemConfigs[i].items
     for (var j = 0; j < items.length; j++) {
       var item = items[j]
-      var type = item.type
+      var type: string = item.type
       if (type == 'expression') {
         return true
       }
@@ -227,10 +234,10 @@ var isExistExpression = function (itemConfigs) {
 }
 
 // 字段映射中是否存在表达式。返回值true：存在， false：不存在
-var isExistExpressionInItems = function (items) {
+var isExistExpressionInItems = function (items: any[]) {
   for (var j = 0; j < items.length; j++) {
     var item = items[j]
-    var type = item.type
+    var type: string = item.type
     if (type == 'expression') {
       return true
     }
@@ -239,7 +246,11 @@ var isExistExpressionInItems = function (items) {
 }
 
 // 校验配置信息是否正确
-var checkItemConfigs = function (ruleContext, reportEdition, itemConfigs) {
+var checkItemConfigs = function (
+  ruleContext: RuleContext,
+  reportEdition: string,
+  itemConfigs: any[]
+) {
   if (reportEdition != 'TooneReport') {
     var isExist = isExistApi(itemConfigs)
     if (isExist) {
@@ -259,12 +270,12 @@ var checkItemConfigs = function (ruleContext, reportEdition, itemConfigs) {
 }
 
 // 弹出提示窗口
-var showMessage = function (ruleContext, msg) {
+var showMessage = function (ruleContext: RuleContext, msg: string) {
   var promise = vds.message.warn(msg)
 }
 
 // 移除构件编码
-var getFieldName = function (name, fieldType) {
+var getFieldName = function (name: string, fieldType: string) {
   var result = name
   if (fieldType === 'entityField') {
     var nameArr = name.split('.')
@@ -276,13 +287,13 @@ var getFieldName = function (name, fieldType) {
 }
 
 // 重新整理映射信息，去掉构件编码
-var arrangeItems = function (itemConfigs) {
+var arrangeItems = function (itemConfigs: any[]) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var items = itemConfigs[i].items
     for (var j = 0; j < items.length; j++) {
       var item = items[j]
-      var destName = item.destName
-      var sourceName = item.sourceName
+      var destName: string = item.destName
+      var sourceName: string = item.sourceName
       destName = getFieldName(destName, item.type)
       sourceName = getFieldName(sourceName, item.type)
       item.destName = destName
@@ -292,7 +303,7 @@ var arrangeItems = function (itemConfigs) {
 }
 
 // 执行扩展脚本
-var exeExtendJs = function (itemConfigs) {
+var exeExtendJs = function (itemConfigs: any[]) {
   if (!itemConfigs) return
 
   for (var i = 0, len = itemConfigs.length; i < len; i++) {
@@ -302,6 +313,7 @@ var exeExtendJs = function (itemConfigs) {
       try {
         eval(exeScript)
       } catch (e) {
+        //@ts-ignore
         window.console && console.log('执行自定义脚本报错，请检查脚本：' + e)
       }
     }
@@ -309,8 +321,12 @@ var exeExtendJs = function (itemConfigs) {
 }
 
 // 获取数据源
-var getRemoteData = function (itemConfigs, ruleContext, reject) {
-  var reportDatas = {}
+var getRemoteData = function (
+  itemConfigs: any[],
+  ruleContext: RuleContext,
+  reject: (reason?: any) => void
+) {
+  var reportDatas: Record<string, any> = {}
   for (var i = 0; i < itemConfigs.length; i++) {
     var itemConfig = itemConfigs[i]
     //来源类型（Table：表，Query：查询， WindowEntity：窗体实体，Api：方法）
@@ -349,7 +365,7 @@ var getRemoteData = function (itemConfigs, ruleContext, reject) {
     if (isType == 'WindowEntity') {
       var db = vds.ds.lookup(sourceName)
       if (db) {
-        var datas = callBack(db.serialize(), items, ruleContext)
+        var datas: any = callBack(db.serialize(), items, ruleContext)
         reportDatas[entityName] = datas
       } else {
         throw Error(
@@ -395,7 +411,7 @@ var getRemoteData = function (itemConfigs, ruleContext, reject) {
         },
         methodContext: ruleContext.getMethodContext(),
         CheckUnique: true,
-        success: function (result) {
+        success: function (result: any[]) {
           if (result) {
             var datas = callBack(result[0], items, ruleContext)
             reportDatas[entityName] = datas
@@ -410,20 +426,20 @@ var getRemoteData = function (itemConfigs, ruleContext, reject) {
   }
 }
 
-var callBack = function (result, items, ruleContext) {
+var callBack = function (result: any, items: any[], ruleContext: RuleContext) {
   //封装成报表数据结构  {"values":{"dsName":[{"destfield1":value1},{"destfield2":value2}]}}
   var datas = []
   if (result) {
-    var resultData = result.datas.values
+    var resultData: any[] = result.datas.values
     if (items && items.length > 0) {
       for (var j = 0; j < resultData.length; j++) {
         var dataObj = resultData[j]
-        var temp = {}
+        var temp: Record<string, any> = {}
         for (var field in dataObj) {
           for (var i = 0; i < items.length; i++) {
-            var destName = items[i].destName
-            var sourceName = items[i].sourceName
-            var sourcetype = items[i].type
+            var destName: string = items[i].destName
+            var sourceName: string = items[i].sourceName
+            var sourcetype: string = items[i].type
             var destField = destName.split('.')[1]
             // 2015-07-15 兼容处理[构件名].[表名]的情况，只取[表名]
             if (destField.indexOf('.') != -1) {
@@ -453,9 +469,9 @@ var callBack = function (result, items, ruleContext) {
 }
 
 //获取自定义查询参数
-var genCustomSqlQueryParams = function (params) {
+var genCustomSqlQueryParams = function (params: { [x: string]: any }) {
   // 构建实际查询时需要的参数对象
-  var queryParams = {}
+  var queryParams: Record<string, any> = {}
   if (params) {
     for (var key in params) {
       queryParams[key] = {}
@@ -466,13 +482,16 @@ var genCustomSqlQueryParams = function (params) {
   return queryParams
 }
 
-var getFromWindowEntity = function (itemConfig, ruleContext) {
+var getFromWindowEntity = function (
+  itemConfig: { [x: string]: any },
+  ruleContext: RuleContext
+) {
   //来源数据
-  var sourceName = itemConfig['sourceName']
+  var sourceName: string = itemConfig['sourceName']
   //报表实体
-  var entityName = itemConfig['entityName']
+  var entityName: string = itemConfig['entityName']
   //映射关系
-  var items = itemConfig['items']
+  var items: [] = itemConfig['items']
 
   var db = vds.ds.lookup(sourceName)
   if (db) {
@@ -488,17 +507,20 @@ var getFromWindowEntity = function (itemConfig, ruleContext) {
   }
 }
 
-var getFromDataBase = function (itemConfig, ruleContext) {
+var getFromDataBase = function (
+  itemConfig: { [x: string]: any },
+  ruleContext: RuleContext
+) {
   //来源类型
-  var isType = itemConfig['Istype']
+  var isType: number = itemConfig['Istype']
   //来源数据
-  var sourceName = itemConfig['sourceName']
+  var sourceName: string = itemConfig['sourceName']
   //映射关系
-  var items = itemConfig['items']
+  var items: [] = itemConfig['items']
   //过滤条件
-  var queryConds = itemConfig['dsWhere']
+  var queryConds: string = itemConfig['dsWhere']
   //查询参数
-  var itemqueryparam = itemConfig['itemqueryparam']
+  var itemqueryparam: string = itemConfig['itemqueryparam']
 
   //根据过滤条件获取出源数据
   var isCustomSqlFind = isType + '' == '1'
@@ -512,15 +534,18 @@ var getFromDataBase = function (itemConfig, ruleContext) {
     whereRestrict.addCondition(queryConds)
   }
 
-  var params = genCustomParams(itemqueryparam, ruleContext)
+  var params: Record<string, any> = genCustomParams(itemqueryparam, ruleContext)
   whereRestrict.addParameters(params)
 
-  var queryParams = {}
+  var queryParams: Record<string, any> = {}
   var queryType = 'Table'
+
+  let resultObj: any
+  let reject: any
   if (isType == 1) {
     //自定义查询
     queryType = 'Query'
-    var params = whereRestrict.toParameters()
+    params = whereRestrict.toParameters()
     if (params) {
       for (var key in params) {
         queryParams[key] = {}
@@ -560,10 +585,10 @@ var getFromDataBase = function (itemConfig, ruleContext) {
       recordStart: -1
     },
     methodContext: ruleContext.getMethodContext(),
-    success: function (result) {
+    success: function (result: any[]) {
       if (result) {
         resultObj = result[0]
-        datas = callBack(resultObj, items, ruleContext)
+        let datas = callBack(resultObj, items, ruleContext)
         resultObj.datas = datas
       }
     },
@@ -574,7 +599,10 @@ var getFromDataBase = function (itemConfig, ruleContext) {
 }
 
 //获取表达式值
-var getExpressionValue = function (ruleContext, srcExpression) {
+var getExpressionValue = function (
+  ruleContext: RuleContext,
+  srcExpression: string
+) {
   var value = vds.expression.execute(srcExpression, {
     ruleContext: ruleContext
   })
@@ -583,10 +611,10 @@ var getExpressionValue = function (ruleContext, srcExpression) {
 
 //处理"表"、"查询"表达式
 var getWhereRestrictExpression = function (
-  ruleContext,
-  dsWhere,
-  itemqueryparam,
-  orderBys
+  ruleContext: RuleContext,
+  dsWhere: string | any[] | null | undefined,
+  itemqueryparam: any,
+  orderBys: string | any[] | null | undefined
 ) {
   var mode = vds.ds.WhereType.Table
   var wrParam = {
@@ -601,6 +629,7 @@ var getWhereRestrictExpression = function (
   }
 
   //查询参数
+
   var params = genCustomParams(itemqueryparam, ruleContext)
   whereRestrict.addParameters(params)
 
@@ -625,11 +654,14 @@ var getWhereRestrictExpression = function (
 }
 
 //处理"外部方法"表达式
-var getApiExpression = function (ruleContext, invokeRuleParams) {
+var getApiExpression = function (
+  ruleContext: RuleContext,
+  invokeRuleParams: any[] | null
+) {
   if (invokeRuleParams != null) {
     for (var j = 0; j < invokeRuleParams.length; j++) {
-      var item = invokeRuleParams[j]
-      var paramType = item.paramType
+      var item: Record<string, string> = invokeRuleParams[j]
+      var paramType: string = item.paramType
       if (paramType == 'expression') {
         var srcExpression = item.paramSourceValue
         var destExpression = getExpressionValue(ruleContext, srcExpression)
@@ -641,11 +673,11 @@ var getApiExpression = function (ruleContext, invokeRuleParams) {
 
 //打印方式为"TooneReport"，注册报表控件事件
 var registEventForTooneReport = function (
-  componentCode,
-  windowCode,
-  reportControlCode,
-  reportEvents,
-  ruleContext
+  componentCode: string,
+  windowCode: string,
+  reportControlCode: string,
+  reportEvents: string | any[] | null,
+  ruleContext: RuleContext
 ) {
   if (reportEvents != null && reportEvents.length > 0) {
     for (var i = 0; reportEvents != null && i < reportEvents.length; i++) {
@@ -672,10 +704,16 @@ var registEventForTooneReport = function (
   registControlEventItemForTooneReport(reportControlCode)
 }
 
-var registControlEventItemForTooneReport = function (reportControlCode) {
+var registControlEventItemForTooneReport = function (
+  reportControlCode: string
+) {
   vds.widget.execute(reportControlCode, 'registReportEvent', [
     'CellClick',
-    function (rptData, successCallback, failCallback) {
+    function (
+      rptData: Record<string, string>,
+      successCallback: any,
+      failCallback: any
+    ) {
       if (rptData && rptData.eventCode) {
         var ruleSetCode = rptData.eventCode
         var promise = vds.method.execute(ruleSetCode, {
@@ -690,18 +728,18 @@ var registControlEventItemForTooneReport = function (reportControlCode) {
 }
 
 var registEventItemForTooneReport = function (
-  componentCode,
-  windowCode,
-  reportControlCode,
-  ruleContext,
-  eventCode,
-  ruleSetCode,
-  invokeParams,
-  returnMappings
+  componentCode: string,
+  windowCode: string,
+  reportControlCode: string,
+  ruleContext: RuleContext,
+  eventCode: string,
+  ruleSetCode: string,
+  invokeParams: any,
+  returnMappings: string | any[]
 ) {
   vds.widget.execute(reportControlCode, 'registReportEvent', [
     eventCode,
-    function (rptData, successCallback, failCallback) {
+    function (rptData: any, successCallback: any, failCallback: any) {
       var param = parseParam(
         invokeParams,
         componentCode,
@@ -714,16 +752,16 @@ var registEventItemForTooneReport = function (
       )
       var promise = vds.method.execute(ruleSetCode, param)
       promise
-        .then(function (args) {
+        .then(function (args: any) {
           if (!successCallback) {
             return
           }
-          var returnArgs = {}
+          var returnArgs: Record<string, any> = {}
           if (returnMappings) {
             for (var j = 0; j < returnMappings.length; j++) {
-              var mapping = returnMappings[j]
-              var srcValue = mapping['srcValue']
-              var destValue = mapping['destValue']
+              var mapping: Record<string, any> = returnMappings[j]
+              var srcValue: string = mapping['srcValue']
+              var destValue: string = mapping['destValue']
               if (!srcValue || !destValue) {
                 continue
               }
@@ -736,12 +774,12 @@ var registEventItemForTooneReport = function (
               var srcObjs = srcDatasource.getAllRecords().datas
               if (srcObjs && srcObjs.length > 0) {
                 var srcObj = srcObjs[0]
-                var destObj = {}
+                var destObj: Record<string, any> = {}
                 for (var k = 0; k < fieldMappings.length; k++) {
                   var fieldMapping = fieldMappings[k]
-                  var srcType = fieldMapping['srcType']
-                  var srcFieldName = fieldMapping['srcValue']
-                  var destFieldName = fieldMapping['destValue']
+                  var srcType: string = fieldMapping['srcType']
+                  var srcFieldName: string = fieldMapping['srcValue']
+                  var destFieldName: string = fieldMapping['destValue']
                   if (!destFieldName) {
                     continue
                   }
@@ -782,22 +820,23 @@ var registEventItemForTooneReport = function (
 }
 
 var parseParam = function (
-  invokeParams,
-  componentCode,
-  windowCode,
-  ruleSetCode,
-  invokeType,
-  sourceType,
-  ruleContext,
-  rptData
+  invokeParams: string | any[] | null,
+  componentCode: string,
+  windowCode: string,
+  ruleSetCode: string,
+  invokeType: string,
+  sourceType: string,
+  ruleContext: RuleContext,
+  rptData: any
 ) {
-  var param = {}
-  var inputParam = {}
+  var param: Record<string, any> = {}
+  var inputParam: Record<string, any> = {}
   //获取活动集配置
-  var ruleSetConfig
+  var ruleSetConfig: any
   if (windowCode) {
     ruleSetConfig = vds.method.get(ruleSetCode, componentCode, windowCode)
   } else {
+    //@ts-ignore
     ruleSetConfig = vds.method.get(ruleSetCode, componentCode)
   }
   for (var i = 0; invokeParams != null && i < invokeParams.length; i++) {
@@ -838,12 +877,17 @@ var parseParam = function (
   }
 
   //如果调用活动集时，设置了入参，则将此入参的值覆盖到活动集原始配置参数中。
-  var mockParam = {}
-  var mockParamInputParam = {}
+  var mockParam: Record<string, string> = {}
+  var mockParamInputParam: any = {}
+  var input_code = ''
   if (ruleSetConfig && ruleSetConfig.getInputs()) {
-    var ruleSetcfg_inputs = ruleSetConfig.getInputs()
+    var ruleSetcfg_inputs: any[] = ruleSetConfig.getInputs()
     for (var i = 0, l = ruleSetcfg_inputs.length; i < l; i++) {
-      var input_Obj = ruleSetcfg_inputs[i]
+      var input_Obj: {
+        geInitValue: () => string
+        getType: () => string
+        getConfigs: () => string
+      } = ruleSetcfg_inputs[i]
       var input_value = input_Obj.geInitValue()
       var type = input_Obj.getType()
       //如果参数为实体类型，则转为游离DB
@@ -861,6 +905,7 @@ var parseParam = function (
     }
   }
   //执行SPI活动集时，当发现有configData信息时，需要以configData的入参来替换掉原装SPI入参
+  let appData: any
   if (invokeType == 'spi') {
     var configData_inputs = appData.getRuleSetInputs({
       componentCode: componentCode,
@@ -893,24 +938,24 @@ var parseParam = function (
 }
 
 var parseParamForExpression = function (
-  ruleContext,
-  invokeObj,
-  param,
-  rptData
+  ruleContext: RuleContext,
+  invokeObj: Record<string, any>,
+  param: Record<string, any>,
+  rptData: { data: { [x: string]: any } }
 ) {
   //活动集参数
   if (!rptData || !rptData.data) return
 
   var paramCode = invokeObj['paramCode']
-  var value = invokeObj['paramValue']
+  var value: null | string = invokeObj['paramValue']
   if (value != null && value != '') {
-    var selectedEntity = {}
-    var entityNames = Object.keys(rptData.data)
-    for (var i = 0; i < entityNames.size(); i++) {
+    var selectedEntity: Record<string, any> = {}
+    var entityNames: any[] = Object.keys(rptData.data)
+    for (var i = 0; i < entityNames.length; i++) {
       var entityName = entityNames[i]
       var entity = rptData.data[entityName]
-      var fieldCodes = Object.keys(entity)
-      for (var j = 0; j < fieldCodes.size(); j++) {
+      var fieldCodes: any[] = Object.keys(entity)
+      for (var j = 0; j < fieldCodes.length; j++) {
         var fieldCode = fieldCodes[j]
         var key = entityName + '.' + fieldCode
         selectedEntity[key] = entity[fieldCode]
@@ -926,27 +971,33 @@ var parseParamForExpression = function (
 }
 
 var parseParamForEntity = function (
-  ruleContext,
-  invokeObj,
-  param,
-  ruleSetConfig
+  ruleContext: RuleContext,
+  invokeObj: Record<string, any>,
+  param: Record<string, any>,
+  ruleSetConfig: {
+    getInput: (arg0: string) => {
+      (): any
+      new (): any
+      getConfigs: { (): any; new (): any }
+    }
+  }
 ) {
   //活动集参数
-  var paramCode = invokeObj['paramCode']
+  var paramCode: string = invokeObj['paramCode']
   //值来源
-  var srcEntityName = invokeObj['paramValue']
+  var srcEntityName: string = invokeObj['paramValue']
   //来源类型：窗体实体、窗体输入实体、方法输入实体、方法变量实体、报表实体
-  var paramSource = invokeObj['paramSource']
+  var paramSource: string = invokeObj['paramSource']
   //数据提交方式：modify:修改过的(新增,修改或删除的)，all:(默认,新增,修改或删除的)
-  var dataFilterType = invokeObj['dataFilterType']
+  var dataFilterType: string = invokeObj['dataFilterType']
   //字段映射
-  var paramFieldMapping = invokeObj['paramFieldMapping']
+  var paramFieldMapping: string = invokeObj['paramFieldMapping']
 
   checkParamFieldMapping(paramFieldMapping, ruleSetConfig)
 
   //创建游离DB
-  var fieldsMapping = ruleSetConfig.getInput(paramCode).getConfigs()
-  var freeDB = getFreeDB(fieldsMapping)
+  var fieldsMapping: string = ruleSetConfig.getInput(paramCode).getConfigs()
+  var freeDB: string = getFreeDB(fieldsMapping)
   var srcDB = null
   switch (paramSource) {
     case 'ruleSetInput':
@@ -956,6 +1007,8 @@ var parseParamForEntity = function (
       srcDB = ruleContext.getMethodContext().getVariable(srcEntityName)
       break
     case 'windowInput':
+      //@ts-ignore
+      //需要导入 windowParam
       srcDB = windowParam.getInput({
         code: srcEntityName
       })
@@ -966,6 +1019,7 @@ var parseParamForEntity = function (
   }
 
   if (srcDB) {
+    //@ts-ignore
     vds.ds.copy({
       sourceEntity: srcDB,
       destEntity: freeDB,
@@ -985,24 +1039,30 @@ var EDIT_STATE = 'Edit'
 var DELETE_STATE = 'Delete'
 
 var parseParamForReportEntity = function (
-  ruleContext,
-  invokeObj,
-  param,
-  ruleSetConfig,
-  rptData
+  ruleContext: RuleContext,
+  invokeObj: Record<string, any>,
+  param: Record<string, any>,
+  ruleSetConfig: {
+    getInput: (arg0: string) => {
+      (): any
+      new (): any
+      getConfigs: { (): any; new (): any }
+    }
+  },
+  rptData: { data: { [x: string]: any } }
 ) {
   if (!rptData || !rptData.data) return
 
   //活动集参数
-  var destEntityName = invokeObj['paramCode']
+  var destEntityName: string = invokeObj['paramCode']
   //值来源
-  var srcEntityName = invokeObj['paramValue']
+  var srcEntityName: string = invokeObj['paramValue']
   //活动集参数 值来源 之间的字段映射
-  var paramFieldMapping = invokeObj['paramFieldMapping']
+  var paramFieldMapping: {}[] = invokeObj['paramFieldMapping']
   //校验字段映射
   checkParamFieldMapping(paramFieldMapping, ruleSetConfig)
   //活动集参数中的实体字段列表
-  var destFields = ruleSetConfig.getInput(destEntityName).getConfigs()
+  var destFields: {}[] = ruleSetConfig.getInput(destEntityName).getConfigs()
   //受限于界面实体更新算法，增加stateFieldName字段，生成更新记录时，修改此字段的值。
   destFields = addStateField(destFields)
   paramFieldMapping = addStateFieldMapping(paramFieldMapping)
@@ -1018,7 +1078,22 @@ var parseParamForReportEntity = function (
   param[destEntityName] = destDataSource
 }
 
-var checkParamFieldMapping = function (paramFieldMapping, ruleSetConfig) {
+var checkParamFieldMapping = function (
+  paramFieldMapping: string | any[] | null,
+  ruleSetConfig: {
+    getInput:
+      | ((arg0: string) => {
+          (): any
+          new (): any
+          getConfigs: { (): any; new (): any }
+        })
+      | ((arg0: string) => {
+          (): any
+          new (): any
+          getConfigs: { (): any; new (): any }
+        })
+  }
+) {
   if (paramFieldMapping == null || paramFieldMapping.length == 0) {
     throw new Error('输入参数类型为实体时，参数实体字段映射不能为空')
   }
@@ -1045,23 +1120,28 @@ var checkParamFieldMapping = function (paramFieldMapping, ruleSetConfig) {
     }
   }
   if (!ruleSetConfig) {
+    //@ts-ignore
+    //exceptionFactory 导入
     var exception = exceptionFactory.create({
       message:
         '请先打开目标组件容器！componentCode=' +
+        //@ts-ignore
         componentCode +
         'windowCode=' +
+        //@ts-ignore
         windowCode,
+      //@ts-ignore
       type: exceptionFactory.TYPES.Business
     })
     throw exception
   }
 }
 
-var addStateField = function (destFields) {
-  var newDestFields = []
+var addStateField = function (destFields: {}[]) {
+  var newDestFields: any[] = []
   $.extend(newDestFields, destFields)
 
-  var extendField = {}
+  var extendField: Record<string, any> = {}
   $.extend(extendField, newDestFields[0])
   extendField.code = STATE_FIELDNAME
   extendField.configs = null
@@ -1072,11 +1152,11 @@ var addStateField = function (destFields) {
   return newDestFields
 }
 
-var addStateFieldMapping = function (paramFieldMapping) {
-  var newParamFieldMapping = []
+var addStateFieldMapping = function (paramFieldMapping: {}[]) {
+  var newParamFieldMapping: {}[] = []
   $.extend(newParamFieldMapping, paramFieldMapping)
 
-  var extendMappingItem = {}
+  var extendMappingItem: Record<string, any> = {}
   extendMappingItem['paramEntityField'] = STATE_FIELDNAME
   extendMappingItem['fieldValue'] = STATE_FIELDNAME
   newParamFieldMapping.push(extendMappingItem)
@@ -1084,7 +1164,7 @@ var addStateFieldMapping = function (paramFieldMapping) {
   return newParamFieldMapping
 }
 
-var changeParamFieldMapping = function (paramFieldMapping) {
+var changeParamFieldMapping = function (paramFieldMapping: string | any[]) {
   for (var i = 0; i < paramFieldMapping.length; i++) {
     var mappingItem = paramFieldMapping[i]
     var fieldValue = mappingItem['fieldValue']
@@ -1101,10 +1181,10 @@ var changeParamFieldMapping = function (paramFieldMapping) {
 }
 
 var createDataSource = function (
-  ruleContext,
-  srcDatas,
-  destFields,
-  paramFieldMapping
+  ruleContext: RuleContext,
+  srcDatas: string | any[],
+  destFields: {}[],
+  paramFieldMapping: {}[]
 ) {
   var freeDB = getFreeDB(destFields)
   var loadDatas = []
@@ -1135,7 +1215,7 @@ var createDataSource = function (
           paramFieldMapping,
           stateFieldValue
         )
-        var item = {}
+        var item: Record<string, any> = {}
         item.index = i
         item.records = destRecord
         addDatas.push(item)
@@ -1184,7 +1264,7 @@ var createDataSource = function (
   }
 
   //加载
-  var obj = {}
+  var obj: Record<string, any> = {}
   obj.datas = loadDatas
   obj.dataAmount = loadDatas.length
   obj.isAppend = true
@@ -1199,7 +1279,7 @@ var createDataSource = function (
       if (selectedRecord) {
         freeDB.selectRecords([selectedRecord])
       }
-      var addObj = {}
+      var addObj: Record<string, any> = {}
       addObj.records = [item.records]
       addObj.position = 'BEFORE'
       freeDB.insertRecords(addObj)
@@ -1208,7 +1288,7 @@ var createDataSource = function (
 
   //修改
   if (editDatas && editDatas.length > 0) {
-    var editObj = {}
+    var editObj: Record<string, any> = {}
     editObj.records = tmpEditDatas
     freeDB.updateRecords(editObj)
 
@@ -1225,12 +1305,12 @@ var createDataSource = function (
 }
 
 var createLoadData = function (
-  ruleContext,
-  srcData,
-  paramFieldMapping,
-  stateFieldValue
+  ruleContext: RuleContext,
+  srcData: Record<string, any>,
+  paramFieldMapping: string | any[],
+  stateFieldValue: string
 ) {
-  var result = {}
+  var result: Record<string, any> = {}
   for (var i = 0; i < paramFieldMapping.length; i++) {
     var mappingItem = paramFieldMapping[i]
     var paramEntityField = mappingItem['paramEntityField']
@@ -1251,11 +1331,11 @@ var createLoadData = function (
 }
 
 var createRecord = function (
-  ruleContext,
-  freeDB,
-  srcData,
-  paramFieldMapping,
-  stateFieldValue
+  ruleContext: RuleContext,
+  freeDB: { createRecord: () => any },
+  srcData: Record<string, any>,
+  paramFieldMapping: string | any[],
+  stateFieldValue: string
 ) {
   var destRecord = freeDB.createRecord()
   for (var i = 0; i < paramFieldMapping.length; i++) {
@@ -1277,13 +1357,13 @@ var createRecord = function (
   return destRecord
 }
 
-var getFreeDB = function (fieldsMapping) {
+var getFreeDB = function (fieldsMapping: string | {}[]) {
   var fields = createFields(fieldsMapping)
   var freeDBName = 'freeDB_' + vds.string.uuid()
   return vds.ds.unSerialize(fields, { dsCode: freeDBName })
 }
 
-var createFields = function (params) {
+var createFields = function (params: string | any[]) {
   var fields = []
   for (var i = 0, l = params.length; i < l; i++) {
     var param = params[i]
@@ -1298,7 +1378,10 @@ var createFields = function (params) {
 }
 
 //打印方式为"TooneReport"，整理itemConfigs
-var getRequestForTooneReport = function (itemConfigs, ruleContext) {
+var getRequestForTooneReport = function (
+  itemConfigs: string | any[],
+  ruleContext: RuleContext
+) {
   for (var i = 0; i < itemConfigs.length; i++) {
     var itemConfig = itemConfigs[i]
     //来源类型（Table：表，Query：查询， WindowEntity：窗体实体，Api：方法）
@@ -1340,13 +1423,13 @@ var getRequestForTooneReport = function (itemConfigs, ruleContext) {
 
 //打印方式为"TooneReport"，获取Html数据
 var getHtmlData = function (
-  reportType,
-  reportCode,
-  reportControlCode,
-  itemConfigs,
-  ruleContext,
-  resolve,
-  reject
+  reportType: string,
+  reportCode: string,
+  reportControlCode: string,
+  itemConfigs: string,
+  ruleContext: RuleContext,
+  resolve: () => void,
+  reject: ((reason: any) => PromiseLike<never>) | null | undefined
 ) {
   var params = {
     command: 'GetDataBaseDataToReport',
@@ -1380,7 +1463,7 @@ var getHtmlData = function (
     params: { isAsyn: true, isRuleSetCode: false }
   }
 
-  var callback = function (result) {
+  var callback = function (result: { [x: string]: any }) {
     var success = result['success']
     if (success == true) {
       var data = result['data']
@@ -1390,7 +1473,7 @@ var getHtmlData = function (
       var datasource = []
       datasource.push(reportData)
 
-      var cfg = {}
+      var cfg: Record<string, any> = {}
       // 服务器名称
       cfg.serviceHost = ''
       // 服务器类型
@@ -1415,14 +1498,14 @@ var getHtmlData = function (
 
 //打印方式为"TooneReport"，获取SpreadJs数据
 var getRemoteDataForTooneReport = function (
-  ruleContext,
-  reportType,
-  reportCode,
-  reportControlCode,
-  itemConfigs,
-  operateType,
-  resolve,
-  reject
+  ruleContext: RuleContext,
+  reportType: string,
+  reportCode: string,
+  reportControlCode: string,
+  itemConfigs: string,
+  operateType: string,
+  resolve: { (value: void | PromiseLike<void>): void; (): void },
+  reject: any
 ) {
   var readOnly = vds.widget.execute(reportControlCode, 'getReadOnly')
   if (readOnly == null || readOnly == 'True') readOnly = true
@@ -1469,7 +1552,7 @@ var getRemoteDataForTooneReport = function (
     params: { isAsyn: false, isRuleSetCode: false }
   }
 
-  var callback = function (result) {
+  var callback = function (result: { [x: string]: any }) {
     var success = result['success']
     if (success == true) {
       var data = result['data']
@@ -1504,8 +1587,11 @@ var getRemoteDataForTooneReport = function (
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (
+  paramDefines: string | any[],
+  ruleContext: RuleContext
+) {
+  var rs: Record<string, any> = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -1537,12 +1623,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: string,
+  componentControlId: string,
+  ruleContext: RuleContext
 ) {
-  var returnValue = ''
+  var returnValue: string | boolean | null = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -1587,8 +1673,9 @@ var getCustomParamValue = function (
       var value = queryfieldValue
       var storeType = vds.widget.getStoreType(valueQueryControlID)
       var storeTypes = vds.widget.StoreType
+      var ds: string
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
+      ds = getDsName(valueQueryControlID)
       var record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
@@ -1649,16 +1736,15 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
+var getCurrentRecord = function (ds: string) {
   var datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
+var getDsName = function (widgetCode: string) {
   var dsNames = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
 
 //#endregion
-
 export { main }

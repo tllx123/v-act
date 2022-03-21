@@ -45,12 +45,15 @@ const loadIcons = function (params: any) {
       }
     }
     if (loadIcons.length > 0) {
+      //@ts-ignore
       vdk.resource.add(
+        //@ts-ignore
         new vdk.resource({
           id: loadIcons.join(','),
           paths: iconPaths
         })
       )
+      //@ts-ignore
       vdk.resource.load(callback)
     } else {
       exeFunc(callback)

@@ -2,7 +2,7 @@ import { ApplicationParam as appParam } from '@v-act/vjs.framework.extension.pla
 
 export function initModule(sb) {}
 
-const getRuleSetInputs = function (params) {
+const getRuleSetInputs = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     metaCode = params.metaCode

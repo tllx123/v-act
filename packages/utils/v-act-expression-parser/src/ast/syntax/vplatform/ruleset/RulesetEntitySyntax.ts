@@ -99,7 +99,7 @@ abstract class RulesetEntitySyntax extends Syntax {
     )
   }
   visit() {
-    return false
+    return
   }
 }
 

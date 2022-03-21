@@ -80,6 +80,7 @@ const main = function (ruleContext: RuleContext) {
                       logMsg.indexOf(tmpStr) >= 0
                     )
                       continue
+                    //@ts-ignore
                     if (logMsg != '' && logMsg.length() > 0) logMsg += '\n'
                     logMsg += tmpStr
 

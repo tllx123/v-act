@@ -2,7 +2,7 @@ import * as actionHandler from 'module'
 import * as viewModel from 'module'
 import * as routeManager from 'module'
 
-let sandbox, fileUtil, scopeManager, ScopeManager, scopeContext, resourcePackage
+let sandbox, fileUtil, ScopeManager, scopeContext, resourcePackage
 export function initModule(sb) {
   if (sb) {
     sandbox = sb
@@ -19,7 +19,12 @@ export function initModule(sb) {
   }
 }
 
-const menuEvent = function (currentScopeId, widget, items, handler) {
+const menuEvent = function (
+  currentScopeId: any,
+  widget: any,
+  items: any,
+  handler: any
+) {
   ScopeManager.openScope(currentScopeId)
   if (widget.menuTable && items) {
     let _id = returnEventId(items)
@@ -37,7 +42,7 @@ const menuEvent = function (currentScopeId, widget, items, handler) {
           let _conCode = scopeContext.getComponentCode()
           let _winCode = scopeContext.getWindowCode()
           if (_conCode == item.ruleCompCode && _winCode == item.ruleWinCode) {
-            let targetConfig = {}
+            let targetConfig: { [code: string]: any } = {}
             targetConfig['sourceType'] = 'client-ruleSet'
             targetConfig['invokeType'] = 'local'
             targetConfig['componentCode'] = item.ruleCompCode
@@ -45,7 +50,7 @@ const menuEvent = function (currentScopeId, widget, items, handler) {
             targetConfig['ruleSetCode'] = item.ruleCode
 
             let ruleParams = item.ruleParams
-            let inputParam = {}
+            let inputParam: { [code: string]: any } = {}
             if (ruleParams) {
               ruleParams = ruleParams.split('&')
               for (let i = 0; i < ruleParams.length; i++) {
@@ -53,7 +58,7 @@ const menuEvent = function (currentScopeId, widget, items, handler) {
                 inputParam[param[0]] = param[1]
               }
             }
-            let config = {}
+            let config: { [code: string]: any } = {}
             config['instanceRefs'] = null
             config['currRouteRuntime'] = null
             config['callback'] = null
@@ -75,7 +80,7 @@ const menuEvent = function (currentScopeId, widget, items, handler) {
   ScopeManager.closeScope()
 }
 
-let openWindowHandler = function (widget, item) {
+let openWindowHandler = function (widget: any, item: any) {
   try {
     let itemId = item.id
     let componentOpen = widget.ComponentOpenWay
@@ -199,7 +204,7 @@ let openWindowHandler = function (widget, item) {
   } catch (e) {}
 }
 
-let returnEventId = function (items, handler) {
+let returnEventId = function (items: any, handler: any) {
   let eventID = items
   if (items) {
     if (items.id) {
@@ -214,15 +219,15 @@ let returnEventId = function (items, handler) {
 /*
  * 数据格式处理
  * */
-let _getImage = function (imageObjId) {
+let _getImage = function (imageObjId: any) {
   return imageObjId == null || imageObjId == ''
     ? null
     : fileUtil.getImageByName(imageObjId)
 }
 
 //控制Table显示格式处理
-let _genMenuItem = function (item) {
-  let node = {}
+let _genMenuItem = function (item: any) {
+  let node: { [code: string]: any } = {}
   node.id = item['id']
   node.isSelected = item['isSelected']
   let lang = item['language']
@@ -243,8 +248,8 @@ let _genMenuItem = function (item) {
   return node
 }
 //控制事件
-let _genMenuTable = function (item) {
-  let node = {}
+let _genMenuTable = function (item: any) {
+  let node: { [code: string]: any } = {}
   if (item['id']) {
     node.id = item['id']
   }
@@ -283,7 +288,7 @@ let _genMenuTable = function (item) {
   }
   return node
 }
-let _findParent = function (menuItems, item) {
+let _findParent = function (menuItems: any, item: any) {
   let parent = null
   let parentId = item.parentId
   if (menuItems) {
@@ -299,13 +304,13 @@ let _findParent = function (menuItems, item) {
   }
   return parent
 }
-let systemSort = function (array) {
-  return array.sort(function (a, b) {
+let systemSort = function (array: any) {
+  return array.sort(function (a: any, b: any) {
     return a.orderNo - b.orderNo
   })
 }
 
-const MenuData = function (items) {
+const MenuData = function (items: any) {
   if (items.length == 0) {
     return
   } else {
@@ -324,7 +329,7 @@ const MenuData = function (items) {
   items = systemSort(items)
 
   let nodes = []
-  let menuTable = {}
+  let menuTable: { [code: string]: any } = {}
   for (let i = 0, len = items.length; i < len; i++) {
     nodes.push(_genMenuItem(items[i]))
     menuTable[items[i].id] = _genMenuTable(items[i])

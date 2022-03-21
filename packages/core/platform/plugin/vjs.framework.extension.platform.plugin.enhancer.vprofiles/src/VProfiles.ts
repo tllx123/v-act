@@ -1,9 +1,5 @@
-import * as ViewUtil from './View'
 import * as EventObserver from './EventObserver'
-let sandbox
-export function initModule(sb) {
-  sandbox = sb
-}
+import * as ViewUtil from './View'
 
 const init = function () {
   //渲染工具
@@ -12,17 +8,4 @@ const init = function () {
   EventObserver.register()
 }
 
-export {
-  add,
-  remove,
-  clear,
-  clearTreeData,
-  genViewTimePoint,
-  doStart,
-  doStop,
-  doClear,
-  register,
-  isOpenMonitor,
-  render,
-  init
-}
+export { init }

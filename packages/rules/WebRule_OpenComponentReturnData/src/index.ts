@@ -1,22 +1,23 @@
 /**
  * 打开组件并返回数据
  */
-vds.import(
-  'vds.component.*',
-  'vds.log.*',
-  'vds.browser.*',
-  'vds.expression.*',
-  'vds.exception.*',
-  'vds.ds.*',
-  'vds.widget.*',
-  'vds.window.*',
-  'vds.object.*',
-  'vds.string.*'
-)
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as browser from '@v-act/vjs.framework.extension.platform.services.integration.vds.browser'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { MethodContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -36,7 +37,7 @@ const main = function (ruleContext: RuleContext) {
         inParams['inputParams']
       )
       if (openWindowType == 'fromParam') {
-        openWindowParam = getOpenParam(inParams, ruleContext)
+        let openWindowParam = getOpenParam(inParams, ruleContext)
       } else {
         // 如果打开窗口编号带有.则拆分并映射到构件编号和窗体编号上
         if (windowCode.indexOf('.') != -1) {
@@ -200,13 +201,13 @@ const main = function (ruleContext: RuleContext) {
  * @param {String} code 返回值编码
  * @param {Any} value 值
  */
-var setResult = function (ruleContext, code, value) {
+var setResult = function (ruleContext: RuleContext, code: any, value: any) {
   if (ruleContext.setResult) {
     ruleContext.setResult(code, value)
   }
 }
 
-var render = function (params, resolve, reject) {
+var render = function (params: any, resolve: any, reject: any) {
   // 模态窗体打开，并处理返回值信息
   /**
    *   dialogType
@@ -231,7 +232,7 @@ var render = function (params, resolve, reject) {
   // windowInputParams["variable"]["formulaOpenMode"] = "dialog";
   //移动控件
   if (inParams.dialogType) {
-    var _dialogParams = {}
+    let _dialogParams: { [code: string]: any } = {}
     _dialogParams.dialogType = inParams.dialogType
     _dialogParams.dialogFlag = inParams.dialogFlag
     _dialogParams.openLocation = inParams.openLocation
@@ -270,7 +271,7 @@ var render = function (params, resolve, reject) {
 /**
  * 获取打开窗体高度
  */
-var getOpenWindowHeight = function (inParams, ruleContext) {
+var getOpenWindowHeight = function (inParams: any, ruleContext: RuleContext) {
   var heightExp = inParams['heightExp']
   if (!heightExp) {
     return null
@@ -284,7 +285,7 @@ var getOpenWindowHeight = function (inParams, ruleContext) {
 /**
  * 获取打开窗体宽度
  */
-var getOpenWindowWidth = function (inParams, ruleContext) {
+var getOpenWindowWidth = function (inParams: any, ruleContext: RuleContext) {
   var widthExp = inParams['widthExp']
   if (!widthExp) {
     return null
@@ -299,9 +300,9 @@ var getOpenWindowWidth = function (inParams, ruleContext) {
  * 处理打开窗体返回信息
  */
 var handleOpenWindowReturnValues = function (
-  ruleContext,
-  windowReturnValue,
-  returnMappings
+  ruleContext: RuleContext,
+  windowReturnValue: any,
+  returnMappings: any[]
 ) {
   if (!returnMappings || returnMappings.length <= 0) {
     return
@@ -429,7 +430,11 @@ var handleOpenWindowReturnValues = function (
   }
 }
 
-var _getInfo = function (entityName, entityType, methodContext) {
+var _getInfo = function (
+  entityName: string,
+  entityType: string,
+  methodContext: MethodContext
+) {
   var info = {
     isEntity: false,
     ds: null
@@ -486,17 +491,17 @@ var _getInfo = function (entityName, entityType, methodContext) {
  * 打开模态窗体，并处理窗体返回值
  */
 var openDialogWindow = function (
-  ruleContext,
-  businessRuleResult,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  returnMappings,
-  title,
-  height,
-  width,
-  resolve,
-  reject
+  ruleContext: RuleContext,
+  businessRuleResult: any,
+  componentCode: any,
+  windowCode: any,
+  windowInputParams: any,
+  returnMappings: any,
+  title: any,
+  height: any,
+  width: any,
+  resolve: any,
+  reject: any
 ) {
   var returnMappingsConfig = returnMappings
   // 标注打开方式为dialog模态窗口
@@ -569,7 +574,11 @@ var openDialogWindow = function (
 /**
  * 获取模拟框参数
  */
-var getParam = function (inParams, ruleContext, valName) {
+var getParam = function (
+  inParams: any,
+  ruleContext: RuleContext,
+  valName: any
+) {
   var sourceValue = inParams[valName]
   // 默认按表达式取
   var openParam = vds.expression.execute(sourceValue, {
@@ -594,7 +603,7 @@ var getParam = function (inParams, ruleContext, valName) {
 /**
  * 获取打开窗体标题
  */
-var getOpenWindowTitle = function (inParams, ruleContext) {
+var getOpenWindowTitle = function (inParams: any, ruleContext: RuleContext) {
   // 窗体标题
   var titleExp = inParams['browerWindowTitle']
   if (!titleExp) {
@@ -609,14 +618,14 @@ var getOpenWindowTitle = function (inParams, ruleContext) {
 /**
  * 获取打开窗体的编号
  */
-var getOpenWindowCode = function (inParams, ruleContext) {
+var getOpenWindowCode = function (inParams: any, ruleContext: RuleContext) {
   var openType = inParams['openType']
   var windowCode = null
   switch (openType) {
     case 'fromParam':
       var sourceValue = inParams['windowNumSource']
       // 默认按表达式取
-      openParam = vds.expression.execute(sourceValue, {
+      let openParam = vds.expression.execute(sourceValue, {
         ruleContext: ruleContext
       })
       try {
@@ -660,12 +669,16 @@ var getOpenWindowCode = function (inParams, ruleContext) {
                 '。应为表名.字段名格式'
             )
           }
+          /*
           var dataSourceName = componentSrcValue.split('.')[0]
           // windowCode = viewModel.getDataModule().getSingleValueByDS(dataSourceName, dynamicValue);
           var datasource = vds.ds.lookup(dataSourceName)
           var record = datasource.getCurrentRecord()
           windowCode = record.get(dynamicValue)
-          break
+          */
+          throw vds.exception.newConfigException(
+            '动态来源为表字段, 无法获取窗体编码.'
+          )
         case 'systemVariant':
           // 动态来源为系统变量
           windowCode = vds.component.getVariant(dynamicValue)
@@ -697,7 +710,10 @@ var getOpenWindowCode = function (inParams, ruleContext) {
 /**
  * 产生目标窗体的窗体变量信息
  */
-var getOpenWindowInputParams = function (ruleContext, mappingItems) {
+var getOpenWindowInputParams = function (
+  ruleContext: RuleContext,
+  mappingItems: any[]
+) {
   var routeContext = ruleContext.getMethodContext()
   var variable = {}
   if (mappingItems) {
@@ -782,7 +798,7 @@ var getOpenWindowInputParams = function (ruleContext, mappingItems) {
   return variable
 }
 
-var getFreeDBFieldsMapping = function (fieldMappings) {
+var getFreeDBFieldsMapping = function (fieldMappings: any[]) {
   var fieldsMapping = []
   for (var i = 0; i < fieldMappings.length; i++) {
     var configField = fieldMappings[i]
@@ -796,7 +812,7 @@ var getFreeDBFieldsMapping = function (fieldMappings) {
   return fieldsMapping
 }
 
-var getFreeDBCopyFieldsMapping = function (fieldMappings) {
+var getFreeDBCopyFieldsMapping = function (fieldMappings: any[]) {
   var copyFieldsMapping = []
   for (var i = 0; i < fieldMappings.length; i++) {
     var configField = fieldMappings[i]
@@ -821,7 +837,7 @@ var getFreeDBCopyFieldsMapping = function (fieldMappings) {
 /**
  * 获取打开窗体高度
  */
-var getOpenWindowHeight = function (inParams, ruleContext) {
+var getOpenWindowHeight = function (inParams: any, ruleContext: RuleContext) {
   var heightExp = inParams['heightExp']
   if (!heightExp) {
     return null
@@ -835,7 +851,7 @@ var getOpenWindowHeight = function (inParams, ruleContext) {
 /**
  * 获取打开窗体宽度
  */
-var getOpenWindowWidth = function (inParams, ruleContext) {
+var getOpenWindowWidth = function (inParams: any, ruleContext: RuleContext) {
   var widthExp = inParams['widthExp']
   if (!widthExp) {
     return null
@@ -849,10 +865,10 @@ var getOpenWindowWidth = function (inParams, ruleContext) {
 /**
  * 获取打开参数
  * */
-var getOpenParam = function (inParams, ruleContext) {
+var getOpenParam = function (inParams: any, ruleContext: RuleContext) {
   var sourceValue = inParams['windowNumSource']
   // 默认按表达式取
-  openParam = vds.expression.execute(sourceValue, {
+  let openParam = vds.expression.execute(sourceValue, {
     ruleContext: ruleContext
   })
   try {
@@ -868,8 +884,8 @@ var getOpenParam = function (inParams, ruleContext) {
   return openParam
 }
 
-var getMappingWindowInfo = function (componentCode, windowCode) {
-  var result = {}
+var getMappingWindowInfo = function (componentCode: any, windowCode: any) {
+  let result: { [code: string]: any } = {}
   result.componentCode = componentCode
   result.windowCode = windowCode
   if (componentCode && windowCode && window._$V3PlatformWindowMapping) {

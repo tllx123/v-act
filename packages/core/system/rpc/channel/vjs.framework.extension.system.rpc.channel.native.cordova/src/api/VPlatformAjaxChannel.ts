@@ -134,4 +134,4 @@ VPlatformAjaxChannel.prototype = {
   }
 }
 
-return VPlatformAjaxChannel
+export default VPlatformAjaxChannel

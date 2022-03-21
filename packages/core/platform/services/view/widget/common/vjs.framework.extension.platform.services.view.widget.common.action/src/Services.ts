@@ -6,7 +6,7 @@ let sb
  *
  * @serviceName 服务名
  */
-let getService = function (serviceName) {
+let getService = function (serviceName: string) {
   let seriesType = scopeManager.getWindowScope().getSeries()
   let service = sb.getService(serviceName, {
     type: seriesType

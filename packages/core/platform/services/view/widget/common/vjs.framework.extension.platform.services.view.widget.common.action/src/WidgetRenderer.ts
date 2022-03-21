@@ -16,7 +16,7 @@ export function initModule(sandbox) {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let isWidgetRenderActionExist = function (widgetId, actionName) {
+let isWidgetRenderActionExist = function (widgetId: any, actionName: string) {
   let widgetRenderActionHandler = getWidgetRenderActionHandler(widgetId)
   if (typeof widgetRenderActionHandler[actionName] == 'function') {
     return true
@@ -30,7 +30,7 @@ let isWidgetRenderActionExist = function (widgetId, actionName) {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let isComponentRenderActionExist = function (actionName) {
+let isComponentRenderActionExist = function (actionName: string) {
   let componentRenderActionHandler = getComponentRenderActionHandler()
   if (typeof componentRenderActionHandler[actionName] == 'function') {
     return true
@@ -43,7 +43,7 @@ let isComponentRenderActionExist = function (actionName) {
  *
  * @widgetId 控件编号
  */
-let getWidgetRenderActionHandler = function (widgetId) {
+let getWidgetRenderActionHandler = function (widgetId: any) {
   let widgetType = widgetContext.getType(widgetId)
   let seriesType = scopeManager.getWindowScope().getSeries()
   let widgetRenderActionHandler = sb.getService(
@@ -75,7 +75,7 @@ let getComponentRenderActionHandler = function () {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeWidgetRenderAction = function (widgetId, actionName) {
+let executeWidgetRenderAction = function (widgetId: any, actionName: string) {
   let widgetType = widgetContext.getType(widgetId)
   let hasPermission = true
   let permission = sb.getService(
@@ -131,15 +131,18 @@ let executeWidgetRenderAction = function (widgetId, actionName) {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeSubWidgetRenderAction = function (widgetId, actionName) {
+let executeSubWidgetRenderAction = function (
+  widgetId: any,
+  actionName: string
+) {
   let widgetRelationList = widgetRelation.get(widgetId, false)
   for (let i = 0; i < widgetRelationList.length; i++) {
     let subWidgetId = widgetRelationList[i]
-    if (isWidgetActionExist(subWidgetId, actionName)) {
+    if (widgetAction.isWidgetActionExist(subWidgetId, actionName)) {
       let params = [widgetId, actionName]
       if (arguments.length > 2) {
         for (let i = 2; i < arguments.length; i++) {
-          params.push(arguments[j])
+          params.push(arguments[i])
         }
       }
       return executeWidgetRenderAction.apply(this, params)
@@ -152,7 +155,7 @@ let executeSubWidgetRenderAction = function (widgetId, actionName) {
  *
  * @actionName 控件接口名
  */
-let executeComponentRenderAction = function (actionName) {
+let executeComponentRenderAction = function (actionName: string) {
   if (isComponentRenderActionExist(actionName)) {
     let componentRenderActionHandler = getComponentRenderActionHandler()
     let params = []
@@ -168,23 +171,11 @@ let executeComponentRenderAction = function (actionName) {
 }
 
 export {
-  executeComponentAction,
   executeComponentRenderAction,
-  executeSubWidgetAction,
   executeSubWidgetRenderAction,
-  executeWidgetAction,
   executeWidgetRenderAction,
-  get,
-  getComponentActionHandler,
   getComponentRenderActionHandler,
-  getProxyWidgetId,
-  getService,
-  getWidgetActionHandler,
   getWidgetRenderActionHandler,
-  hasProperty,
-  isComponentActionExist,
   isComponentRenderActionExist,
-  isWidgetActionExist,
-  isWidgetRenderActionExist,
-  set
+  isWidgetRenderActionExist
 }

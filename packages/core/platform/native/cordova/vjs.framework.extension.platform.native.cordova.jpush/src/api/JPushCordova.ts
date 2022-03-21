@@ -19,6 +19,7 @@ export function initModule(sb: any) {
     })
   } else {
     let func = scopeManager.createScopeHandler({
+      scopeId: '',
       handler: function (event: any) {
         if (openNotificationListener) {
           lastopenNotificationEvent = undefined

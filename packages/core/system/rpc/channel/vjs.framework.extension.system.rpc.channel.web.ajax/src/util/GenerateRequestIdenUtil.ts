@@ -45,10 +45,10 @@ const calculateAsciiCode = function (url: string, data: any) {
       }
     }
   }
-  let count = 0
+  let count: any = 0
   if (params.length > 0) {
     for (let i = 0, len = params.length; i < len; i++) {
-      let val = params[i]
+      let val: any = params[i]
       for (let j = 0, l = val.length; j < l; j++) {
         if (typeof val[j].codePointAt == 'function') {
           /* ES6的方法 */

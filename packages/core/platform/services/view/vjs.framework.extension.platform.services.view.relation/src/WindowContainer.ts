@@ -1,6 +1,6 @@
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-let WindowContainer = function (params) {
+let WindowContainer = function (params: any) {
   this.id = uuidUtil.generate()
   if (!params) return
   this.ele = params.ele

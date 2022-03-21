@@ -52,7 +52,7 @@ abstract class Syntax {
     return this.tokenEndIndex
   }
 
-  abstract visit(): string | boolean
+  abstract visit(): void | boolean
 }
 
 export default Syntax

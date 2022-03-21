@@ -1,8 +1,9 @@
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { getConstructor } from '../../datasource/vjs.framework.extension.platform.datasource.taffy/src/impl/TaffyDB'
 
-let aop
+let aop: any
 let charMap = {
   '@0': new RegExp(':', 'g'),
   '@1': new RegExp('\\.', 'g'),
@@ -13,46 +14,52 @@ let charMap = {
   '@6': new RegExp('&', 'g')
 }
 
-let DevRPC = function (params) {
-  this.url = params.url || ''
-  this.param = params.param || {}
-  this.timeout = params.timeout || 3000
-  this.success = params.success || null
-  this.error = params.error || null
-}
+class DevRPC {
+  url
+  param: any
+  timeout
+  success
+  error
 
-DevRPC.prototype = {
-  _putAop: function (a) {
+  constructor(params: any) {
+    this.url = params.url || ''
+    this.param = params.param || {}
+    this.timeout = params.timeout || 3000
+    this.success = params.success || null
+    this.error = params.error || null
+  }
+
+  _putAop(a: any) {
     aop = a
-  },
+  }
 
-  initModule: function (sb) {},
-
-  getServerHost: function () {
+  getServerHost() {
+    //@ts-ignore
     if (window.GlobalVariables) {
       //如果存在，则代表为手机app
+      //@ts-ignore
       return GlobalVariables.getServerUrl()
     }
     return location.protocol + '//' + location.host
-  },
+  }
 
-  getLocalHost: function () {
+  getLocalHost() {
     return (
       this.getServerHost() +
       environment.getContextPath() +
       '/module-operation!executeOperation?operation=aop&componentCode=' +
       this.param.componentCode
     )
-  },
+  }
 
-  processUrl: function (url) {
+  processUrl(url: string) {
     for (let k in charMap) {
       url = url.replace(charMap[k], k)
     }
     return url
-  },
+  }
 
-  rpcServer: function (param, success, error) {
+  rpcServer(param: any, success: any, error: any) {
     let _this = this
     //发送请求，提交数据，发送到服务器
     rpc.orginalRequest({
@@ -70,7 +77,7 @@ DevRPC.prototype = {
           })
         )
       },
-      afterResponse: function (rs) {
+      afterResponse: function (rs: any) {
         if (success) {
           success.call(_this, jsonUtil.json2obj(rs.responseText))
         }
@@ -81,9 +88,9 @@ DevRPC.prototype = {
         }
       }
     })
-  },
+  }
 
-  rpcDev: function (id) {
+  rpcDev(id: any) {
     let uuid = this.param.NowServerUUID
       ? '&closeId=' + this.param.NowServerUUID
       : ''
@@ -93,9 +100,9 @@ DevRPC.prototype = {
       type: 'GET',
       param: {}
     })
-  },
+  }
 
-  suspend: function (id) {
+  suspend(id: any) {
     //请求服务，服务执行线程挂起，等待开发系统调用
     this.rpcServer(
       {
@@ -103,23 +110,26 @@ DevRPC.prototype = {
         closeId: this.param.NowServerUUID,
         id: id
       },
-      function (rs) {
+      function (rs: any) {
         let status = rs.status
         if (status == 'timeoutStatus') {
           let result = confirm(
             '与开发系统调试超时，是否继续等待？\n \n确认为继续调试\n取消为终止调试'
           )
           if (result) {
+            //@ts-ignore
             this.rpcServer(
               {
                 type: 'wait',
                 id: id,
                 data: rs.data
               },
-              function (rs) {
+              function (rs: any) {
+                //@ts-ignore
                 this.suspend(rs.id)
               },
-              function (rs) {
+              function (rs: any) {
+                //@ts-ignore
                 this.error(rs)
               }
             )
@@ -127,16 +137,17 @@ DevRPC.prototype = {
             aop.markDebugDisable()
           }
         } else {
+          //@ts-ignore
           this.success(jsonUtil.json2obj(rs.data))
         }
       },
-      function (rs) {
+      function (rs: any) {
+        //@ts-ignore
         _this.error(rs)
       }
     )
-  },
-
-  request: function () {
+  }
+  request() {
     //先将数据同步到服务器上
     let id
     let _this = this
@@ -146,10 +157,11 @@ DevRPC.prototype = {
         closeId: this.param.NowServerUUID,
         data: jsonUtil.obj2json(this.param)
       },
-      function (rs) {
+      function (rs: any) {
         id = rs.id
       },
       function () {
+        //@ts-ignore
         this.error(arguments)
       }
     )

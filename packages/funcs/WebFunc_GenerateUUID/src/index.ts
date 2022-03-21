@@ -6,6 +6,6 @@ import * as string from '@v-act/vjs.framework.extension.platform.services.integr
 const vds = { string }
 
 const main = function (param: any) {
-  return vds.string.uuid(undefined)
+  return vds.string.uuid()
 }
 export { main }

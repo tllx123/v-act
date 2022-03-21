@@ -352,7 +352,7 @@ let getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-let getCurrentRecord = function (ds: ds) {
+let getCurrentRecord = function (ds: string) {
   let datasource = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
@@ -467,7 +467,7 @@ let _pushParamField = function (
 
 let _genParamName = function (fieldName: string) {
   var name = fieldName.replace(/[.]/g, '_')
-  return name + '_' + vds.string.uuid(undefined)
+  return name + '_' + vds.string.uuid()
 }
 
 let _getDestField = function (item: Record<string, any>, mapping: mapping) {

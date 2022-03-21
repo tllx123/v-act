@@ -1,6 +1,6 @@
 let instance
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
@@ -8,51 +8,38 @@ const connection = function () {
   return instance.connection()
 }
 
-const register = function (username, password, nickname, successCB, errorCB) {
+const register = function (
+  username: string,
+  password: string,
+  nickname: string,
+  successCB: any,
+  errorCB: any
+) {
   return instance.register(username, password, nickname, successCB, errorCB)
 }
 
-const loginWithPwd = function (username, password, appkey, successCB, errorCB) {
+const loginWithPwd = function (
+  username: string,
+  password: string,
+  appkey: string,
+  successCB: any,
+  errorCB: any
+) {
   return instance.loginWithPwd(username, password, appkey, successCB, errorCB)
 }
 
 const loginWithToken = function (
-  username,
-  password,
-  appkey,
-  successCB,
-  errorCB
+  username: string,
+  password: string,
+  appkey: string,
+  successCB: any,
+  errorCB: any
 ) {
   return instance.loginWithToken(username, password, appkey, successCB, errorCB)
 }
 
-const quit = function (successCB, errorCB) {
+const quit = function (successCB: any, errorCB: any) {
   return instance.quit(successCB, errorCB)
 }
 
-export {
-  putInstance,
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
-  addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  putInstance,
-  addListener,
-  putInstance,
-  sendText,
-  sendCmdText,
-  sendMedia,
-  putInstance,
-  connection,
-  register,
-  loginWithPwd,
-  loginWithToken,
-  quit
-}
+export { connection, register, loginWithPwd, loginWithToken, quit }

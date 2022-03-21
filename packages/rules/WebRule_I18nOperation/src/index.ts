@@ -2,27 +2,36 @@
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import { MethodContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+import * as progress from '@v-act/vjs.framework.extension.platform.services.integration.vds.progress'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
+import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+const vds = {
+  progress,
+  message,
+  i18n,
+  expression,
+  rpc,
+  ds,
+  widget,
+  window,
+  component,
+  log,
+  exception
+}
 
 /**
  * 多语言操作
  */
-/**
- *
- */
-vds.import(
-  'vds.progress.*',
-  'vds.message.*',
-  'vds.i18n.*',
-  'vds.expression.*',
-  'vds.rpc.*',
-  'vds.ds.*',
-  'vds.widget.*',
-  'vds.window.*',
-  'vds.component.*',
-  'vds.log.*',
-  'vds.exception.*'
-)
-
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -97,7 +106,7 @@ var VPLATFORMI18NIDEN = 'langCookie'
  * @param	{Function}	success	成功的回调
  * @param	{Function}	error	失败的回调
  * */
-var InvokeCommand = function (params, success, error) {
+var InvokeCommand = function (params: any, success: any, error: any) {
   var promise = vds.rpc.callCommand('I18nOperation', [params], {
     isRuleSetCode: false
   })
@@ -107,7 +116,7 @@ var InvokeCommand = function (params, success, error) {
 /**
  * 把当前语言设置到localStorage
  * */
-function setLanguage(value) {
+function setLanguage(value: string) {
   //		document.cookie = VPLATFORMI18NIDEN + "=" + value;
   localStorage.setItem(VPLATFORMI18NIDEN, value)
   // VMetrix.putAllVjsContext({//
@@ -117,13 +126,12 @@ function setLanguage(value) {
 }
 
 // 创建游离 DB 对象信息
-var _createDBInfo = function (types) {
-  var len = 0
-  var objs = []
+var _createDBInfo = function (types: any[]) {
   var len = types.length
+  var objs = []
   for (var i = 0; i < len; i++) {
     var type = types[i]
-    var map = {}
+    var map: { [code: string]: any } = {}
     map.id = i
     map.code = type.code
     map.name = type.name
@@ -176,7 +184,12 @@ var _createDBInfo = function (types) {
    * @return {*}
    */
 }
-var _setDataToObject = function (returnMapping, value, ruleContext, isEntity) {
+var _setDataToObject = function (
+  returnMapping: any[],
+  value: any,
+  ruleContext: RuleContext,
+  isEntity: boolean
+) {
   if (returnMapping && returnMapping.length > 0) {
     for (var i = 0; i < returnMapping.length; i++) {
       var mapping = returnMapping[i],
@@ -191,7 +204,7 @@ var _setDataToObject = function (returnMapping, value, ruleContext, isEntity) {
           destFieldMapping = mapping['destFieldMapping'],
           updateDestEntityMethod = mapping['updateDestEntityMethod'],
           isCleanDestEntityData = mapping['isCleanDestEntityData']
-        var destEntity = getDatasource(dest, destType)
+        var destEntity = getDatasource(dest, destType, methodContext)
         var newMappings = []
         for (var j = 0, len = destFieldMapping.length; j < len; j++) {
           newMappings.push({
@@ -270,7 +283,11 @@ var _setDataToObject = function (returnMapping, value, ruleContext, isEntity) {
  * @param {@link MethodContext} methodContext 方法上下文
  * @return {@link Datasource} 数据源实例
  */
-var getDatasource = function (dsCode, type, methodContext) {
+var getDatasource = function (
+  dsCode: any,
+  type: any,
+  methodContext: MethodContext
+) {
   var err_msg = ''
   var datasource
   switch (type) {

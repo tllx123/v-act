@@ -14,7 +14,11 @@ export function initModule(sb) {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
+let confirmDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   return dialogService.confirmDialog(content, responseCallBackFunc)
 }
 /**
@@ -24,10 +28,10 @@ let confirmDialog = function (content, responseCallBackFunc, isUseDefault) {
  * @secDistance 倒计时
  */
 let propmtDialog = function (
-  content,
-  responseCallBackFunc,
-  isUseDefault,
-  secDistance
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean,
+  secDistance: any
 ) {
   dialogService.propmtDialog(content, responseCallBackFunc, secDistance)
 }
@@ -36,7 +40,11 @@ let propmtDialog = function (
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
+let errorDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.errorDialog(content, responseCallBackFunc)
 }
 /**
@@ -44,7 +52,11 @@ let errorDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
+let warnDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.warnDialog(content, responseCallBackFunc)
 }
 /**
@@ -52,7 +64,11 @@ let warnDialog = function (content, responseCallBackFunc, isUseDefault) {
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content, responseCallBackFunc, isUseDefault) {
+let infoDialog = function (
+  content: any,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   dialogService.infoDialog(content, responseCallBackFunc)
 }
 

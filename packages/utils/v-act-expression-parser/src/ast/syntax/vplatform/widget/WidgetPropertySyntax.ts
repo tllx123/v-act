@@ -104,9 +104,7 @@ class WidgetPropertySyntax extends Syntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitWidgetPropertySyntax) {
-      return visitor.visitWidgetPropertySyntax(this, (syntax) => syntax.visit())
-    } else {
-      return false
+      visitor.visitWidgetPropertySyntax(this)
     }
   }
 }

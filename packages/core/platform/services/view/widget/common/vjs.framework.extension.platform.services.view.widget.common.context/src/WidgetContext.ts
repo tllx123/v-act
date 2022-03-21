@@ -36,7 +36,7 @@ var _destroy = function(){
  * @param {String} contextKey 上下文标识
  * @return {String} 控件上下文信息属性值
  */
-let get = function (widgetId, contextKey) {
+let get = function (widgetId: string, contextKey: string) {
   //		var scope = scopeManager.getWindowScope();
   let scope = scopeManager.getChildWindowScope()
   if (scope) {
@@ -67,7 +67,11 @@ let get = function (widgetId, contextKey) {
  * @param {String} contextKey 上下文标识
  * @param {String} contextValue 上下文内容
  */
-let put = function (widgetId, contextKey, contextValue) {
+let put = function (
+  widgetId: string,
+  contextKey: string,
+  contextValue: string
+) {
   //		var scope = scopeManager.getWindowScope();
   let scope = scopeManager.getChildWindowScope()
   if (scope) {
@@ -93,7 +97,7 @@ let put = function (widgetId, contextKey, contextValue) {
  * @param {String} widgetId 控件编号
  * @param {Object} context 控件上下文
  */
-let putAll = function (widgetId, context) {
+let putAll = function (widgetId: string, context: any) {
   //_destroy();
   for (let contextKey in context) {
     put(widgetId, contextKey, context[contextKey])
@@ -106,7 +110,7 @@ let putAll = function (widgetId, context) {
  * @param {String} widgetId 控件编号
  * @return {Object} 控件上下文
  */
-let getAll = function (widgetId) {
+let getAll = function (widgetId: string) {
   //		var scope = scopeManager.getWindowScope();
   let scope = scopeManager.getChildWindowScope()
   if (scope) {
@@ -131,7 +135,7 @@ let getAll = function (widgetId) {
  *
  * @param widgetId {String} 控件编号
  */
-let isWidgetExist = function (widgetId) {
+let isWidgetExist = function (widgetId: string) {
   //_destroy();
   return get(widgetId, 'Code') ? true : false
 }
@@ -141,7 +145,7 @@ let isWidgetExist = function (widgetId) {
  *
  * @param widgetId {String} 控件编号
  */
-let getType = function (widgetId) {
+let getType = function (widgetId: string) {
   //_destroy();
   return get(widgetId, WIDGET_CONTEXT_TYPE)
 }
@@ -151,7 +155,7 @@ let getType = function (widgetId) {
  *
  * @param widgetId {String} 控件编号
  */
-let getStoreType = function (widgetId) {
+let getStoreType = function (widgetId: string) {
   //_destroy();
   return get(widgetId, WIDGET_CONTEXT_STORETYPE)
 }
@@ -161,7 +165,7 @@ let getWidgetList = function () {
   return widgetRelation.getWidgetList()
 }
 
-const destroy = function (scopeId) {
+const destroy = function (scopeId: string) {
   contextPool[scopeId] = null
   delete contextPool[scopeId]
 }

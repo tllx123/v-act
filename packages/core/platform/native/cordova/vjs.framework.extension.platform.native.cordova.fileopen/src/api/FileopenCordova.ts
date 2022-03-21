@@ -20,7 +20,7 @@ const fileopen = function (filePath: string, mime: any) {
   //@ts-ignore
   cordova.plugins.fileOpener2.open(filePath, mime, {
     error: function (e: any) {
-      dialogUtil.propmtDialog(e.message, null, false)
+      dialogUtil.propmtDialog(e.message, null, false, undefined)
     },
     success: function (success: any) {}
   })

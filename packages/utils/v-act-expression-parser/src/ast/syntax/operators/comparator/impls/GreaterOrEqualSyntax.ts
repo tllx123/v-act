@@ -41,9 +41,14 @@ class GreaterOrEqualSyntax extends ComparatorSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitGreaterOrEqualSyntax
-      ? visitor.visitGreaterOrEqualSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+
+    if (visitor && visitor.visitGreaterOrEqualSyntax) {
+      const res = visitor.visitGreaterOrEqualSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

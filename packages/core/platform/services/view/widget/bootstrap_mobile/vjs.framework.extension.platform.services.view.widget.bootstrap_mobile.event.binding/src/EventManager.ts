@@ -7,9 +7,9 @@ export function initModule(sandbox) {
   sb = sandbox
 }
 
-let pool = {}
+let pool: { [code: string]: any } = {}
 
-let setPool = function (key, millisecond) {
+let setPool = function (key: any, millisecond: any) {
   if (!pool.key) {
     pool[key] = true
     let callback = function (key) {
@@ -37,7 +37,13 @@ let isExistNow = function (key) {
  *
  * return Function
  */
-let fireEvent = function (widgetCode, eventName, millisecond, success, fail) {
+let fireEvent = function (
+  widgetCode: string,
+  eventName: string,
+  millisecond: number,
+  success: any,
+  fail: any
+) {
   let scopeId = scopeManager.getCurrentScopeId()
   let key = scopeId + '_' + widgetCode
   return function () {
@@ -69,7 +75,7 @@ let fireEvent = function (widgetCode, eventName, millisecond, success, fail) {
  * }
  *
  * */
-let genEventHandle = function (params) {
+let genEventHandle = function (params: any) {
   let widgetCode = params.widgetCode
   let targetKey = params.targetKey
   let eventName = params.eventName

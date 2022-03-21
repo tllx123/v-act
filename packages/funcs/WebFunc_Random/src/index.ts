@@ -10,7 +10,7 @@ import * as math from '@v-act/vjs.framework.extension.platform.services.integrat
 import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 const vds = { object, math, number }
 
-const main = function (min, max, fixed) {
+const main = function (min: number, max: number, fixed: number) {
   if (!vds.object.isUndefOrNull(max)) {
     if (!vds.object.isNumber(max))
       throw new Error('随机数函数的随机区域的最大值不是数字，请检查')

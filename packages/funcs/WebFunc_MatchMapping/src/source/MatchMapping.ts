@@ -1,5 +1,6 @@
-import * as stringUtil from 'module'
-import * as viewModel from 'module'
+import * as stringUtil from '@v-act/vjs.framework.extension.util.string'
+import * as viewModel from '@v-act/vjs.framework.extension.platform.services.view.modal'
+const vds = { stringUtil, viewModel }
 
 export function initModule() {}
 /**
@@ -13,10 +14,10 @@ export function initModule() {}
  *               "srcKeyField" : "11",  //源弹出框列的名称
  */
 const main = function (
-  insertDataSource,
-  destSourceName,
-  srcSourceName,
-  fieldPairs
+  insertDataSource: any,
+  destSourceName: any,
+  srcSourceName: any,
+  fieldPairs: string
 ) {
   let records = viewModel.getDataModule().getAllRecordsByDS(destSourceName)
   let srcRecords = viewModel.getDataModule().getAllRecordsByDS(srcSourceName)
@@ -55,7 +56,7 @@ const main = function (
     .insertByDS(insertDataSource, insertRecords, null, null, null)
 }
 
-let parseFieldPairs = function (fieldPairs) {
+let parseFieldPairs = function (fieldPairs: string) {
   if (
     stringUtil.isEmpty(fieldPairs) ||
     stringUtil.isEmpty(stringUtil.trim(fieldPairs))
@@ -70,11 +71,11 @@ let parseFieldPairs = function (fieldPairs) {
   for (let i = 0; i < pairs.length; i++) {
     let t = stringUtil.trim(pairs[i])
     if (stringUtil.isEmpty(t))
-      throw new Error('MatchMapping函数fieldPairs格式错误:' + cfgStr)
+      throw new Error('MatchMapping函数fieldPairs格式错误:' + t)
     let tmps = t.split(':')
     if (tmps == null || tmps.length == 0 || tmps.length > 2)
       throw new Error(
-        'MatchMapping函数fieldPairs格式错误中的[' + t + ']格式错误：' + cfgStr
+        'MatchMapping函数fieldPairs格式错误中的[' + t + ']格式错误：' + t
       )
     let name = stringUtil.trim(tmps[0])
     let value = tmps.length == 2 ? tmps[1] : null

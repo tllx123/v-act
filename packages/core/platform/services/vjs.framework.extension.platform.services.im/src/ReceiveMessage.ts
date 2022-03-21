@@ -1,26 +1,11 @@
 let instance
 
-const putInstance = function (ins) {
+const putInstance = function (ins: any) {
   instance = ins
 }
 
-const addListener = function (callbacks) {
+const addListener = function (callbacks: any) {
   instance.addListener(callbacks)
 }
 
-export {
-  putInstance,
-  listGroups,
-  queryRoomMember,
-  getGroupBlackList,
-  createGroup,
-  queryGroupInfo,
-  changeGroupInfo,
-  addGroupMembers,
-  addToGroupBlackList,
-  removeFromGroupBlackList,
-  destroyGroup,
-  leaveGroup,
-  putInstance,
-  addListener
-}
+export { addListener }

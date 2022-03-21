@@ -40,9 +40,13 @@ class OrSyntax extends LogicSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitOrSyntax
-      ? visitor.visitOrSyntax(this, (syntax) => syntax.visit())
-      : super.visit()
+    if (visitor && visitor.visitOrSyntax) {
+      const res = visitor.visitOrSyntax(this)
+      if (res !== false) {
+        this.getLeft().visit()
+        this.getRight().visit()
+      }
+    }
   }
 }
 

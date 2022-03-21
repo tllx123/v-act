@@ -71,6 +71,7 @@ let invoke = function (config: any, contractType: any, channelType: any) {
       args: [request, tmpUUID]
     })
     if (typeof config.afterResponse == 'function') {
+      //@ts-ignore
       config.afterResponse.apply(this, arguments)
     }
   }
@@ -91,7 +92,7 @@ const invokeExtensibleOperation = function (config: any) {
 
 const request = function (request: any) {
   let type = 'multiVPlatform'
-  return rq(request, type, type)
+  return rq(request, type, type, null)
 }
 
 const orginalRequest = function (config: any) {

@@ -12,7 +12,7 @@ const vds = { object, math }
 /**
  * 判断是否数字(非正则表达式方法)
  */
-var judgeNumExt = function (arg) {
+var judgeNumExt = function (arg: any) {
   if (arg == null || typeof arg == 'undefined' || arg === '') {
     return false
   }
@@ -20,7 +20,7 @@ var judgeNumExt = function (arg) {
   var result = new Number(arg).toString()
   return result.toUpperCase() == 'NAN' ? false : true
 }
-const main = function (arg1, arg2) {
+const main = function (arg1: number, arg2: number) {
   if (vds.object.isUndefOrNull(arg1) || vds.object.isUndefOrNull(arg2))
     throw new Error('求两数最大值函数参数为空，请检查')
   if (!judgeNumExt(arg1) || !judgeNumExt(arg2))

@@ -2,17 +2,30 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as utils from './Utils'
 
-let RollbackRequest = function (params) {
-  this.steps = params.steps
-  this.instance = params.instance
-  this.isAsync = !!params.isAsync
-  this.index = 0
-  this.status = 0 //1:回滚成功，2:废弃
-  this.intervalIndex = null
-}
+class RollbackRequest {
+  //@ts-ignore
+  steps
+  //@ts-ignore
+  instance
+  //@ts-ignore
+  isAsync
+  //@ts-ignore
+  index
+  //@ts-ignore
+  status
+  //@ts-ignore
+  intervalIndex
 
-RollbackRequest.prototype = {
-  start: function () {
+  constructor(params: any) {
+    this.steps = params.steps
+    this.instance = params.instance
+    this.isAsync = !!params.isAsync
+    this.index = 0
+    this.status = 0 //1:回滚成功，2:废弃
+    this.intervalIndex = null
+  }
+
+  start() {
     if (this.index < this.steps.length) {
       let time = this.steps[this.index++]
       if (time > 0) {
@@ -30,11 +43,11 @@ RollbackRequest.prototype = {
     } else {
       this.status = 2
     }
-  },
+  }
 
-  _genFailCallback: function () {
+  _genFailCallback() {
     let rq = this
-    return function (e) {
+    return function (e: any) {
       let msg =
         '[RollbackRequest.rollback]第' +
         rq.index +
@@ -47,9 +60,9 @@ RollbackRequest.prototype = {
       log.warn(msg)
       rq.start()
     }
-  },
+  }
 
-  _genSuccessCallback: function () {
+  _genSuccessCallback() {
     let rq = this
     return function () {
       log.warn(
@@ -60,9 +73,9 @@ RollbackRequest.prototype = {
       )
       rq.status = 1
     }
-  },
+  }
 
-  _rollback: function () {
+  _rollback() {
     log.warn(
       '[RollbackRequest.rollback]第' +
         (this.index == 0 ? 1 : this.index) +
@@ -76,9 +89,9 @@ RollbackRequest.prototype = {
       success: this._genSuccessCallback(),
       fail: this._genFailCallback()
     })
-  },
+  }
 
-  isAbandoned: function () {
+  isAbandoned() {
     return this.status != 0
   }
 }

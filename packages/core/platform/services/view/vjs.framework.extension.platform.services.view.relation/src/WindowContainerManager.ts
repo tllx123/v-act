@@ -173,7 +173,7 @@ const destroy = function (containerId: string) {
  * 	'funParams' : {Object} 设置title的函数参数
  * }
  * */
-const updateWindowInfo = function (containerId: string, params) {
+const updateWindowInfo = function (containerId: any, params: any) {
   if (!params || !containerId) {
     return
   }
@@ -197,7 +197,7 @@ const updateWindowInfo = function (containerId: string, params) {
   }
 }
 
-const existWindowInfo = function (params) {
+const existWindowInfo = function (params: any) {
   let storage = _getWindowContainerStorage()
   let containerId
   let componentCode = params.componentCode
@@ -215,8 +215,8 @@ const existWindowInfo = function (params) {
   return containerId
 }
 
-const fireResize = function (windowContainerId) {
-  let container = get(windowContainerId)
+const fireResize = function (windowContainerId: string) {
+  let container = exports.get(windowContainerId)
   if (container) {
     let resizeFunc = container.getResizeFunc()
     if (typeof resizeFunc == 'function') {
@@ -230,7 +230,7 @@ const fireResize = function (windowContainerId) {
  * @enum {String}
  */
 
-const OPENTYPE = {
+exports.OPENTYPE = {
   //组件容器
   CONTAINER: 'ComponentContainer', //旧配置~
   //模态
@@ -243,11 +243,14 @@ const getOpenType = function (scopeId: string) {
   let container = _getContainerByScopeId(scopeId)
   if (null != container) {
     let openType = container.getWindowType()
-    if (openType == OPENTYPE.CONTAINER || openType == OPENTYPE.MOADL) {
+    if (
+      openType == exports.OPENTYPE.CONTAINER ||
+      openType == exports.OPENTYPE.MOADL
+    ) {
       return openType
     }
   }
-  return OPENTYPE.DEFAULT
+  return exports.OPENTYPE.DEFAULT
 }
 
 export {
@@ -260,7 +263,6 @@ export {
   getOpenType,
   getScopeId,
   getScopeIdByContainerId,
-  OPENTYPE,
   put,
   updateTitleByScopeId,
   updateWindowInfo

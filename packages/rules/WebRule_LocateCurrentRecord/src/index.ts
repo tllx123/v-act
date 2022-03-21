@@ -13,12 +13,12 @@ import * as widget from '@v-act/vjs.framework.extension.platform.services.integr
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const vds = { ds, string, widget, expression, exception, log }
 
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -76,11 +76,11 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 var _getLocateCurrEntityRecord = function (
-  sourceName,
-  condition,
-  isCurrentBegin,
-  searchSort,
-  ruleContext
+  sourceName: string,
+  condition: string,
+  isCurrentBegin: boolean,
+  searchSort: any,
+  ruleContext: RuleContext
 ) {
   // 源记录集合
   var datasource = vds.ds.lookup(sourceName)
@@ -181,7 +181,5 @@ var _getLocateCurrEntityRecord = function (
   //没有匹配记录时，从当前行开始查找方式返回当前行，否则返回第一条记录
   return isCurrentBegin ? currRecord : records[0]
 }
-
-exports.main = main
 
 export { main }

@@ -6,4 +6,4 @@ const storeTypes = {
   NONE: 'none' //无数据存储类型
 }
 
-export { storeTypes }
+export default storeTypes

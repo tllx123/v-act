@@ -752,7 +752,7 @@ const ExtraConditionNode = function (routeContext) {
       if (returnValue == '' || returnValue == null) {
         return returnValue
       }
-      let tempArray = []
+      let tempArray: any = []
       if (arrayUtil.isArray(returnValue)) {
         tempArray = returnValue
       } else {
@@ -848,4 +848,4 @@ const ExtraConditionNode = function (routeContext) {
   }
 }
 
-export { ExtraConditionNode, genCustomParams, init }
+export { ExtraConditionNode, genCustomParams }

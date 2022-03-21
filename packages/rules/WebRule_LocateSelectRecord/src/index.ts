@@ -6,12 +6,13 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-const vds = { ds, expression, exception, string }
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const vds = { ds, expression, exception, string, log }
 
 /**
  * 规则入口
  */
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
@@ -60,7 +61,11 @@ const main = function (ruleContext: RuleContext) {
  * @param {RuleContext} ruleContext 规则上下文
  * @return {Array<Record>} 符合条件的记录列表
  */
-var _getAllLocateEntityRecord = function (sourceName, condition, ruleContext) {
+var _getAllLocateEntityRecord = function (
+  sourceName: string,
+  condition: string,
+  ruleContext: RuleContext
+) {
   // 源记录集合
   var datasource = vds.ds.lookup(sourceName)
   if (!datasource) {

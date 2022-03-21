@@ -1,13 +1,14 @@
 import { AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let objectUtil, cUtils
+let objectUtil: any, cUtils: any
 
 let CrossDomainChannel = function () {
   AbstractChannel.apply(this, arguments)
 }
 
 CrossDomainChannel.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     cUtils = sb.util.collections
     var initFunc = AbstractChannel.prototype.initModule
@@ -23,10 +24,10 @@ CrossDomainChannel.prototype = {
     )
     channelManager.injectCurrentChannel(CrossDomainChannel, 'crossDomain')
   },
-  buildRequest: function (request, contract) {
+  buildRequest: function (request: any, contract: any) {
     let data = {}
     let operations = request.getOperations()
-    cUtils.each(operations, function (op) {
+    cUtils.each(operations, function (op: any) {
       objectUtil.extend(data, op.getParams())
     })
     let host = request.getHost()
@@ -45,14 +46,14 @@ CrossDomainChannel.prototype = {
       url: host,
       dataType: dataType,
       data: data,
-      success: function (res, status) {
+      success: function (res: any, status: any) {
         var timeoutIden = request._$TimeOutIden
         if (timeoutIden) {
           clearTimeout(timeoutIden)
         }
         if (status === 'success' || status === 'notmodified') {
           var operations = request.getOperations()
-          cUtils.each(operations, function (op) {
+          cUtils.each(operations, function (op: any) {
             op.callAfterResponse(res, status)
           })
           request.callSuccessCallback(res, status)
@@ -60,7 +61,7 @@ CrossDomainChannel.prototype = {
           request.callErrorCallback(res, status)
         }
       },
-      error: function (res, status) {
+      error: function (res: any, status: any) {
         var timeoutIden = request._$TimeOutIden
         if (timeoutIden) {
           clearTimeout(timeoutIden)
@@ -70,15 +71,17 @@ CrossDomainChannel.prototype = {
     }
     let timeout = request.getTimeout()
     if (timeout) {
-      body.timeout = timeout
+      //body.timeout = timeout
+      throw new Error('未识别异常，请联系系统管理员处理')
     }
+    throw new Error('未识别异常，请联系系统管理员处理')
     return body
   },
 
-  request: function (request, contract) {
-    let ajax = jQuery.ajax
+  request: function (request: any, contract: any) {
+    let ajax = $.ajax
     let operations = request.getOperations()
-    cUtils.each(operations, function (op) {
+    cUtils.each(operations, function (op: any) {
       let func = op.getBeforeRequest()
       if (typeof func === 'function') {
         func.call(request)
@@ -95,4 +98,4 @@ CrossDomainChannel.prototype = {
   }
 }
 
-return CrossDomainChannel
+export default CrossDomainChannel

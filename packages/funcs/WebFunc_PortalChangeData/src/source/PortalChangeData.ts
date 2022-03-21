@@ -1,6 +1,6 @@
 import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { DatasourceManager as dbManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 //加载actionHandler模块
 
 export function initModule(sb) {}
@@ -11,14 +11,14 @@ export function initModule(sb) {}
  * @param configDataJson 初始化数据
  * @param tabSetInitConfig
  */
-const main = function (param) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let portalOldTable = args[0]
   let portalTable = args[1]
   let windowTable = args[2]
   let dataSourceObj = dbManager.lookup({ datasourceName: portalOldTable })
   if (!dataSourceObj) {
-    throw new Error('需要插入数据的数据源不存在:' + ds)
+    throw new Error('需要插入数据的数据源不存在:' + portalOldTable)
   }
   let records = dataSourceObj.getAllRecords().toArray()
   let recordList = {}
@@ -34,7 +34,7 @@ const main = function (param) {
   }
 
   let allHeight
-  let pageRow = {}
+  let pageRow: { [code: string]: any } = {}
   for (let rpage in recordList) {
     let row = 1
     let cHeight = {}
@@ -49,13 +49,13 @@ const main = function (param) {
       if (allHeight > 100) {
         row = items.length * row
       } else {
-        row = parseInt(100 / allHeight) * row
+        row = parseInt(100 / allHeight + '') * row
       }
     }
     pageRow[rpage] = { row: row, height: cHeight }
   }
 
-  let portalJson = {}
+  let portalJson: { [code: string]: any } = {}
   let windowList = []
   let portalList = []
   for (let rpage in recordList) {
@@ -94,13 +94,13 @@ const main = function (param) {
   datasourcePortalTable.insertRecords({ records: windowList })
 }
 
-let systemSort = function (array) {
+let systemSort = function (array: any[]) {
   return array.sort(function (a, b) {
     return a.orderNo - b.orderNo
   })
 }
 
-function getPage(item, row) {
+function getPage(item: any, row: any) {
   return {
     ptitle: item.title,
     pcloumn: item.columnCount,
@@ -109,7 +109,14 @@ function getPage(item, row) {
   }
 }
 
-function getWindow(windowTable, item, row, startRow, crossRow, pcode) {
+function getWindow(
+  windowTable: any,
+  item: any,
+  row: any,
+  startRow: any,
+  crossRow: any,
+  pcode: any
+) {
   startRow = Math.round(startRow)
   crossRow = Math.round(crossRow)
 

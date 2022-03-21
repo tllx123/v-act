@@ -1,10 +1,12 @@
+import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
+const vds = { $ }
 let sandbox
 
 export function initModule(sb) {
   sandbox = sb
 }
 
-let _isValLenValid = function (maxLength, value) {
+let _isValLenValid = function (maxLength: number, value: any) {
   if (value === null || value === undefined) return true
   // 按照字节处理, 中文按照3字节
   let inputNum = value.replace(/[^\x00-\xff]/g, 'aaa').length
@@ -12,7 +14,7 @@ let _isValLenValid = function (maxLength, value) {
   else return true
 }
 
-let _transforInput = function (maxLength, value) {
+let _transforInput = function (maxLength: number, value: any) {
   if (maxLength != null && typeof value === 'string') {
     let inputNum = value.replace(/[^\x00-\xff]/g, 'aaa').length //随便用三个字符替换中文计算总字节数
     if (inputNum > maxLength) {
@@ -60,7 +62,7 @@ let _transforInput = function (maxLength, value) {
   return value
 }
 
-let _maxLengthHandler = function (maxLength) {
+let _maxLengthHandler = function (maxLength: number) {
   let _curVal = this.value
 
   if (!_isValLenValid(maxLength, _curVal)) {
@@ -69,7 +71,7 @@ let _maxLengthHandler = function (maxLength) {
   }
 }
 
-let setMaxLength = function (globalCode, maxLength) {
+let setMaxLength = function (globalCode: string, maxLength: number) {
   let $target = $('#' + globalCode)
 
   // 处理中文输入法输入拼音时被input事件中断

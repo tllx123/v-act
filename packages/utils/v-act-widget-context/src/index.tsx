@@ -2,7 +2,9 @@ import { Datasource } from '@v-act/vjs.framework.extension.platform.datasource.t
 
 import React, { ReactNode, useState } from 'react'
 import { Property } from 'csstype'
+
 import { Height, Width } from '@v-act/schema-types'
+
 type FieldValue = string | number | boolean | null
 type EntityRecord = {
   [fieldCode: string]: FieldValue

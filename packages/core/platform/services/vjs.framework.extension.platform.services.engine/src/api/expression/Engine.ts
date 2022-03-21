@@ -1,4 +1,4 @@
-import * as Context from './Context'
+import Context from './Context'
 
 let sandBox
 
@@ -6,7 +6,7 @@ export function initModule(sb) {
   sandBox = sb
 }
 
-const execute = function (params) {
+const execute = function (params: any) {
   let expressionEngine = sandBox.getService(
     'vjs.framework.extension.platform.engine.expression.ExpressionEngine'
   )
@@ -15,7 +15,7 @@ const execute = function (params) {
   return expressionEngine.execute(p)
 }
 
-const excuteRouteExp = function (params) {
+const excuteRouteExp = function (params: any) {
   let context = new Context()
   context.setRouteContext(params.routeContext)
   let p = {
@@ -28,7 +28,7 @@ const excuteRouteExp = function (params) {
   return expressionEngine.execute(p)
 }
 
-const parseVars = function (params) {
+const parseVars = function (params: any) {
   let expressionEngine = sandBox.getService(
     'vjs.framework.extension.platform.engine.expression.ExpressionEngine'
   )

@@ -10,7 +10,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 const vds = { object, ds, exception, expression }
 
-const main = function (tableName, columnName) {
+const main = function (tableName: string, columnName: string) {
   if (vds.object.isUndefOrNull(tableName)) {
     throw vds.exception.newConfigException('参数1-实体编码不能为空')
   }
@@ -44,7 +44,7 @@ const main = function (tableName, columnName) {
       var temValue = record.get(columnName) * 1
       var reg = /^(-?)[0-9]+(.[0-9]*)?$/
 
-      if (reg.test(temValue)) {
+      if (reg.test(temValue + '')) {
         if (temValue * 1 > resultValue * 1) resultValue = temValue
       } else throw new Error('返回最大值列不是数字，请检查')
     }

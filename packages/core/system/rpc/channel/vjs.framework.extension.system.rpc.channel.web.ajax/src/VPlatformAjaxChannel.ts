@@ -12,6 +12,7 @@ import {
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let objectUtil
 
@@ -19,17 +20,22 @@ let VPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
   let contextPath = Environment.getContextPath()
   if (contextPath) {
+    //@ts-ignore
     this.url = contextPath + '/module-operation!executeOperation'
   } else {
+    //@ts-ignore
     this.url = 'module-operation!executeOperation'
   }
+  //@ts-ignore
   this.count = 0
+  //@ts-ignore
   this.requestParams = null
+  //@ts-ignore
   this.contractParams = null
 }
 
 VPlatformAjaxChannel.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -46,17 +52,19 @@ VPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request, contract) {
+  buildRequest: function (request: any, contract: any) {
     this.requestParams = request
     this.contractParams = contract
     let data = contract.generate(request)
     let scopeId = scopeManager.getCurrentScopeId()
+    //@ts-ignore
     let headNamespace = window.head //TODO ie11下异步请求后，会重写该变量，导致headjs无法使用，目前在此作兼容处理
     let scopeTask = new ScopeTask(
       scopeId,
       false,
       (function (channel, request, contract) {
-        return function (res, status) {
+        return function (res: any, status: any) {
+          //@ts-ignore
           window.head = headNamespace
           var result = channel.processResponse(res, status)
           if (result && (result.isError || result.error)) {
@@ -96,7 +104,9 @@ VPlatformAjaxChannel.prototype = {
     let taskId = taskManager.addTask(scopeTask)
     let operation = request.getOperations()[0]
     let url = this.url
+    //@ts-ignore
     if (window.GlobalVariables) {
+      //@ts-ignore
       url = window.GlobalVariables.getServerUrl() + '/' + url
     }
     url += '?componentCode=' + operation.getComponentCode()
@@ -114,7 +124,7 @@ VPlatformAjaxChannel.prototype = {
       data: data,
       //timeout: this.getTimeout(),
       complete: (function (tId) {
-        return function (res, status) {
+        return function (res: any, status: any) {
           taskManager.execTaskById(tId, [res, status])
         }
       })(taskId),
@@ -126,12 +136,13 @@ VPlatformAjaxChannel.prototype = {
     }
     let timeout = request.getTimeout()
     if (timeout) {
-      body.timeout = timeout
+      //body.timeout = timeout
+      throw new Error('未识别异常，请联系系统管理员处理')
     }
     return body
   },
 
-  processResponse: function (res, status) {
+  processResponse: function (res: any, status: any) {
     if (status === 'success' || status === 'notmodified') {
       this.count = 0
       return eval('(' + res.responseText + ')')
@@ -181,10 +192,10 @@ VPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request, contract) {
+  request: function (request: any, contract: any) {
     let ajax
-    if (jQuery) {
-      ajax = jQuery.ajax
+    if ($) {
+      ajax = $.ajax
     }
     let operations = request.getOperations()
     let operation = operations[0] //单重请求，只有一个operation
@@ -195,7 +206,7 @@ VPlatformAjaxChannel.prototype = {
     try {
       let scopeId = scopeManager.getCurrentScopeId()
       scopeManager.openScope(scopeId)
-      let request = this.buildRequest(request, contract)
+      request = this.buildRequest(request, contract)
       /* 获取额外参数 */
       let iden = generateRequestIdenUtil.calculateAsciiCode(
         request.url,
@@ -215,11 +226,11 @@ VPlatformAjaxChannel.prototype = {
     }
   },
 
-  log: function (msg) {
+  log: function (msg: string) {
     if (logUtil) logUtil.log(msg)
   }
 }
 
-return VPlatformAjaxChannel
+export default VPlatformAjaxChannel
 
-export { calculateAsciiCode }
+//export default { calculateAsciiCode }

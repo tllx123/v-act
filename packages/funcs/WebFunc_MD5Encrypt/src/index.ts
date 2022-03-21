@@ -8,7 +8,7 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 const vds = { object, exception, rpc }
 
-const main = function (encryptValue) {
+const main = function (encryptValue: any) {
   if (vds.object.isUndefOrNull(encryptValue)) return ''
 
   try {
@@ -19,7 +19,7 @@ const main = function (encryptValue) {
 }
 export { main }
 
-var executeExpression = function (encryptValue) {
+var executeExpression = function (encryptValue: any) {
   var strategy = 'MD5',
     expression =
       'WebFunc_EncryptionFunc("' + strategy + '","' + encryptValue + '")',

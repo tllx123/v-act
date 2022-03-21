@@ -2,13 +2,24 @@ import * as TaskManager from './TaskManager'
 
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let ScopeTask = function (scopeId, isAutoExe, handler, props) {
+let ScopeTask: any = function (
+  scopeId: string,
+  isAutoExe: boolean,
+  handler: any,
+  props: any
+) {
+  //@ts-ignore
   this.scopeId = scopeId
+  //@ts-ignore
   this.autoExe = isAutoExe
+  //@ts-ignore
   this.handler = handler
+  //@ts-ignore
   this.props = props
+  //@ts-ignore
   if (!this._registedHandler) {
     ScopeManager.on(ScopeManager.EVENTS.DESTROY, function () {
+      //@ts-ignore
       let scopeId = this.getCurrentScopeId()
       TaskManager.removeByFilter({ scopeId: scopeId })
     })
@@ -51,7 +62,7 @@ ScopeTask.prototype = {
    * 设置任务id
    * @param {String} 任务id
    */
-  setTaskId: function (taskId) {
+  setTaskId: function (taskId: string) {
     this.id = taskId
   },
 
@@ -66,7 +77,7 @@ ScopeTask.prototype = {
    * 根据属性值判断任务是否匹配
    * @param {Object} properties
    */
-  isMatch: function (properties) {
+  isMatch: function (properties: any) {
     let scopeId = properties.scopeId
     return this.scopeId == scopeId
   }

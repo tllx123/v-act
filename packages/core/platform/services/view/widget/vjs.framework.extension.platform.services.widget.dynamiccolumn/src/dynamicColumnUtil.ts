@@ -1,6 +1,6 @@
-import * as viewContext from 'module'
-import * as vmMappingManager from 'module'
-
+import * as viewContext from '@v-act/vjs.framework.extension.platform.init.view'
+import { WindowVMMappingManager as vmMappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
+const vds = { viewContext }
 export function initModule() {}
 
 // vmmapping动态列标识
@@ -11,7 +11,10 @@ let FIELD_DYNAMIC_MARK = '##'
 let FIELD_SPLIT_MARK = '||'
 
 // 清除由动态列生成的vmmapping信息
-let cleanDynamicMappingItems = function (widgetId, dataSourceName) {
+let cleanDynamicMappingItems = function (
+  widgetId: string,
+  dataSourceName: string
+) {
   let mappingInfos = vmMappingManager.getMappingInfoArray(
     widgetId,
     dataSourceName
@@ -37,7 +40,7 @@ let cleanDynamicMappingItems = function (widgetId, dataSourceName) {
  * 判断当前字段是否动态列名格式(包含##字段并且可以使用||进行拆分)
  * @param field 字段名
  */
-let _isDynamicField = function (field) {
+let _isDynamicField = function (field: string) {
   return (
     field.indexOf(FIELD_DYNAMIC_MARK) != -1 &&
     field.split(FIELD_SPLIT_MARK).length > 1
@@ -48,7 +51,11 @@ let _isDynamicField = function (field) {
  * 获取当前表格中，所有字段对应列定义Map，如果字段为动态列名，则取最终字段标识进行对应
  * @param widgetId 表格控件ID
  */
-let getGridField2DefineMap = function (widgetId, mappingItemCfg, columnsInfo) {
+let getGridField2DefineMap = function (
+  widgetId: string,
+  mappingItemCfg: any,
+  columnsInfo: any
+) {
   let fieldColumnCfgMap = {}
   let gridRows = columnsInfo
   let widgetType = viewContext.getWidgetTypeFromContext(widgetId)
@@ -70,7 +77,7 @@ let getGridField2DefineMap = function (widgetId, mappingItemCfg, columnsInfo) {
       }
 
       if (typeof fieldColumnCfgMap[field] == 'undefined') {
-        let columnCfg = {}
+        let columnCfg: { [code: string]: any } = {}
         columnCfg.field = field
         columnCfg.title = gridCol['title']
         //特殊处理列表的列宽
@@ -96,10 +103,10 @@ let getGridField2DefineMap = function (widgetId, mappingItemCfg, columnsInfo) {
  * @param columnIdMap 冻结列及非冻结列对应的列 IdMap
  */
 let genGridColumnDefines = function (
-  widgetId,
-  metaFields,
-  fieldColumnCfgMap,
-  columnIdMap
+  widgetId: string,
+  metaFields: any,
+  fieldColumnCfgMap: any,
+  columnIdMap: any
 ) {
   let rowsFixedCount =
     viewContext.getWidgetPropertyFromContext(widgetId)['RowsFixedCount']
@@ -145,7 +152,7 @@ let genGridColumnDefines = function (
     }
 
     // 收集分组动态列配置信息
-    let leftFields = {}
+    let leftFields: { [code: string]: any } = {}
     if (isDynamic) {
       leftFields[oriField] = {
         title: oriTitle
@@ -277,7 +284,11 @@ let genGridColumnDefines = function (
  * 生成表格需要使用的列定义
  * @param columnDefine {"frozenColumns" : frozenColumns, "columns" : columns}信息
  */
-let genRefreshColumn = function (widgetId, dataSourceName, columnDefine) {
+let genRefreshColumn = function (
+  widgetId: string,
+  dataSourceName: string,
+  columnDefine: any
+) {
   // 将columns转换成表格需要使用的格式
   let gridForzenColumns = []
   let gridColumns = []
@@ -286,7 +297,7 @@ let genRefreshColumn = function (widgetId, dataSourceName, columnDefine) {
     let _columnCfgs = columnDefine.columns[index]
     for (let cIndex = 0; cIndex < _columnCfgs.length; cIndex++) {
       let _columnCfg = _columnCfgs[cIndex]
-      let columnCfg = {}
+      let columnCfg: { [code: string]: any } = {}
       columnCfgs.push(columnCfg)
       columnCfg.title = _columnCfg.title
       if (_columnCfg.isFieldColumn) {
@@ -344,7 +355,7 @@ function DynamicColumnConfig() {
 /**
  * 表格列树解析器
  */
-function ColumnTreeAnaly(configurationParams) {
+function ColumnTreeAnaly(configurationParams: any) {
   // parentId标识
   let MARK_PARENT_ID = '-1'
   // 层级结构划分标识
@@ -356,7 +367,7 @@ function ColumnTreeAnaly(configurationParams) {
 
   // 列树叶子节点字段定义列表
   let _columnTreeLeafFields = []
-  let _columnTreeLeafTitleMap = {}
+  let _columnTreeLeafTitleMap: { [code: string]: any } = {}
   let getColumnTreeLeafFields = function () {
     return _columnTreeLeafFields
   }
@@ -381,7 +392,7 @@ function ColumnTreeAnaly(configurationParams) {
   }
 
   // 获取结构层级定义
-  let getStructById = function (id) {
+  let getStructById = function (id: string) {
     return _columnTreeStruct[id] || null
   }
 
@@ -402,7 +413,7 @@ function ColumnTreeAnaly(configurationParams) {
   let getColumnTreeStructRefNodeIds = function () {
     return _columnTreeStructRefNodeIds
   }
-  let putStructIdRefNodeIds = function (structId, nodeIds) {
+  let putStructIdRefNodeIds = function (structId: string, nodeIds: any) {
     if (typeof _columnTreeStructRefNodeIds[structId] == 'undefined') {
       _columnTreeStructRefNodeIds[structId] = []
     }
@@ -425,7 +436,7 @@ function ColumnTreeAnaly(configurationParams) {
   // 列树节点池
   let _columnTreeNodePool = {}
   // 检索列树节点
-  let getNodeById = function (nodeId) {
+  let getNodeById = function (nodeId: string) {
     return _columnTreeNodePool[nodeId] || null
   }
 
@@ -433,7 +444,7 @@ function ColumnTreeAnaly(configurationParams) {
    * 判断当前字段是否动态列名格式(包含##字段并且可以使用||进行拆分)
    * @param field 字段名
    */
-  let isDynamicField = function (field) {
+  let isDynamicField = function (field: string) {
     return (
       field.indexOf(MARK_FIELD_CELL) != -1 &&
       field.split(MARK_STRUCT_SPLIT).length > 1
@@ -445,7 +456,7 @@ function ColumnTreeAnaly(configurationParams) {
    * @param curNodeId 当前节点ID
    * @param structId 当前结构层级ID
    */
-  let genTreeNodeParentId = function (curNodeId, structId) {
+  let genTreeNodeParentId = function (curNodeId: string, structId: string) {
     let struct = getStructById(structId)
     if (null == struct) {
       throw new Error(
@@ -486,7 +497,7 @@ function ColumnTreeAnaly(configurationParams) {
         )
       }
     }
-
+    let parentId
     // 按照父结构层级的类型进行组装
     if (parentStruct.type === 'dynamic') {
       parentId = dataParentId
@@ -504,7 +515,7 @@ function ColumnTreeAnaly(configurationParams) {
    * @param nodeId 需要生成的节点ID
    * @param structId 生成节点所属的结构层级ID
    */
-  let createNode = function (nodeId, structId) {
+  let createNode = function (nodeId: string, structId: string) {
     let struct = getStructById(structId)
     if (null == struct) {
       throw new Error(
@@ -513,7 +524,7 @@ function ColumnTreeAnaly(configurationParams) {
           ' 未定义，无法创建新节点'
       )
     }
-    let node = {}
+    let node: { [code: string]: any } = {}
     node.id = nodeId
     node.type = struct.type
     node.title = struct.staticTitle || _dynamicColumnTitleMap[nodeId]

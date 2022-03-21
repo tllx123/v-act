@@ -7,11 +7,12 @@ import {
   WindowContainerManager as windowRelation
 } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 
-import * as componentUtil from './api/BootstrapUtil'
+import * as componentUtil from './BootstrapUtil'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let sandbox
+let sandbox: any
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -30,11 +31,11 @@ export function initModule(sb) {
  * refComponents:{}
  */
 let execute = function (
-  componentCode,
-  windowCode,
-  inputParam,
-  paramCfg,
-  languageCode
+  componentCode: string,
+  windowCode: string,
+  inputParam: any,
+  paramCfg: any,
+  languageCode: string
 ) {
   let runningMode = paramCfg.runningMode
   let debug = paramCfg.debug
@@ -49,17 +50,20 @@ let execute = function (
   environment.setContextPath(contextPath)
   environment.setDebugPort(paramCfg.debugPort)
   //environment.setPlatformType(platformType);
-  let callbackCfg = function (component, scopeId) {
-    if (first_window_scopeId != scopeId) {
-      $('body').append(component)
-    }
+  let callbackCfg = function (component: any, scopeId: string) {
+    //if (first_window_scopeId != scopeId) {
+    // $('body').append(component)
+    //}
+    throw new Error('未识别异常，请联系系统管理员处理')
     let _title = ScopeManager.getWindowScope().getTitle()
     //链接地址打开时没有域信息，暂时通过window对象上的信息传递
+    //@ts-ignore
     if (!window._$VPLATFORMCHANGETITLEIDEN) {
       if (_title && document.title != _title) {
         document.title = _title
       }
     } else {
+      //@ts-ignore
       document.title = window._$VPLATFORMCHANGETITLEIDEN
     }
     //更新ele，处理进度条不显示的问题
@@ -82,6 +86,7 @@ let execute = function (
         })
       }
     }
+    //@ts-ignore
     let viewLib = this
     if (typeof renderedCallback == 'function') {
       renderedCallback()
@@ -103,7 +108,7 @@ let execute = function (
         'vjs.framework.extension.platform.init.view.schema.component.' +
           componentCode
       ],
-      function (bundles) {
+      function (bundles: any) {
         componentUtil.prepareComponent(
           componentCode,
           windowCode,
@@ -149,7 +154,7 @@ let execute = function (
     })
   }
   ScopeManager.openScope(scopeId)
-  let setTitle = function (newTitle) {
+  let setTitle = function (newTitle: string) {
     if (newTitle) document.title = newTitle
   }
   let _title = ScopeManager.getWindowScope().getTitle()
@@ -180,13 +185,14 @@ let execute = function (
     scopeId,
     callbackCfg,
     refComponents,
-    function (exception) {
+    function (exception: any) {
       let progressbar = sandbox.getService(
         'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'
       )
       progressbar.hideProgress()
       exceptionHandler.handle(exception)
-    }
+    },
+    null
   )
   let progressbar = sandbox.getService(
     'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'

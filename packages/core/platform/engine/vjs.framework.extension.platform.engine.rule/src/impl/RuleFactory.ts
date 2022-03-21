@@ -1,15 +1,16 @@
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-const create = function (ruleCode) {
+const create = function (ruleCode: string) {
   let windowScope = scopeManager.getWindowScope()
-  let formula
-  if (windowScope) {
+  const ruleDefines = windowScope.get('ruleDefines')
+  let formula = ruleDefines[ruleCode]
+  /*if (windowScope) {
     //先从各个插件系统中查找实现版本
     let series = windowScope.getSeries()
     formula = sb.getService(ruleCode, { type: series })
   }
-  formula = formula || sb.getService(ruleCode)
+  formula = formula || sb.getService(ruleCode)*/
   if (formula) {
     if (!formula.main) {
       throw factory.create({

@@ -11,7 +11,7 @@ Events['OnDataInitLoad'] = windowInit.Events.dataInitLoad
 Events['WindowLoaded'] = windowInit.Events.windowLoaded
 Events['WindowInited'] = windowInit.Events.windowInited
 
-const registerHandler = function (params) {
+const registerHandler = function (params: any) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode(),
     windowCode = scope.getWindowCode()
@@ -24,7 +24,7 @@ const registerHandler = function (params) {
   windowInit.registerHandler(p)
 }
 
-const registerWindowOperation = function (params) {
+const registerWindowOperation = function (params: any) {
   windowInit.registerVariableHandler(params)
 }
 
@@ -38,4 +38,4 @@ const registerWindowOperation = function (params) {
  * @property {String} WindowInited  窗体初始化完成
  */
 
-export { Events, initComponent, registerHandler, registerWindowOperation }
+export { Events, registerHandler, registerWindowOperation }

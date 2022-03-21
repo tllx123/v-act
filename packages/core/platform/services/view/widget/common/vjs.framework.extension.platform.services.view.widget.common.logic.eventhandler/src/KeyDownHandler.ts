@@ -2,7 +2,7 @@ import { EventManager as eventManager } from '@v-act/vjs.framework.extension.pla
 
 export function initModule(sb) {}
 
-let handleKeyDown = function (widgetCode, eventName) {
+let handleKeyDown = function (widgetCode: string, eventName: string) {
   let handler = eventManager.fireEvent(widgetCode, eventName)
   let syncFunc = eventManager.fireEvent(widgetCode, 'DBUpdate')
   return function () {

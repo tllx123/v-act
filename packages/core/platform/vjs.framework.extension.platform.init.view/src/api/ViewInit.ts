@@ -13,9 +13,13 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 import * as windowRuntime from './WindowRuntimeInit'
 
-let taskPool = {}
+let taskPool: { [code: string]: any } = {}
 
-let _initSchema = function (vjsName, errorFn, scopeTaskId) {
+let _initSchema = function (
+  vjsName: string,
+  errorFn: any,
+  scopeTaskId: string
+) {
   //modify by xiedh 2015-11-30   cause:当批量去初始化同一个schema信息时，造成信息重复
   let taskIds = taskPool[vjsName]
   if (!taskIds) {
@@ -52,7 +56,7 @@ let _initSchema = function (vjsName, errorFn, scopeTaskId) {
   }
 }
 
-let _fireCallbackwithAsyn = function (params) {
+let _fireCallbackwithAsyn = function (params: any) {
   setTimeout(function () {
     if (params.scopeTaskId) {
       taskManager.execTaskById(params.scopeTaskId)
@@ -65,7 +69,11 @@ let _fireCallbackwithAsyn = function (params) {
   }, 1)
 }
 
-var _createScopeTask = function (scopeId, isAutoExe, handler) {
+var _createScopeTask = function (
+  scopeId: string,
+  isAutoExe: boolean,
+  handler: any
+) {
   var scopeTask = new ScopeTask(scopeId, isAutoExe, handler)
   return taskManager.addTask(scopeTask)
 }
@@ -78,7 +86,7 @@ var _createScopeTask = function (scopeId, isAutoExe, handler) {
  * 		"error" ： {Function} 初始化失败回调
  * }
  */
-const initAppSchema = function (params) {
+const initAppSchema = function (params: any) {
   var parentScopeId = params.scopeId || scopeManager.getCurrentScopeId()
   var scopeId = scopeManager.createScope(parentScopeId)
   scopeManager.openScope(scopeId)
@@ -94,7 +102,7 @@ const initAppSchema = function (params) {
   }
 }
 
-const initComponentSchema = function (params) {
+const initComponentSchema = function (params: any) {
   //		var componentCode = params.componentCode;
   //		var scopeId = scopeManager.createComponentScope({
   //			parentScopeId : params.scopeId || scopeManager.getCurrentScopeId(),
@@ -152,6 +160,7 @@ const initComponentSchema = function (params) {
           args: [scopeId, tmpUUID]
         })
         if (typeof _c == 'function') {
+          //@ts-ignore
           _c.apply(this, arguments)
         }
       }
@@ -222,7 +231,7 @@ const initComponentSchema = function (params) {
  * 		"error" ： {Function} 初始化失败回调
  * }
  */
-const initWindowSchema = function (params) {
+const initWindowSchema = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode
   let scopeId = params.scopeId
@@ -306,11 +315,11 @@ const initWindowSchema = function (params) {
   //		}
 }
 
-const initWindowRuntime = function (params) {
+const initWindowRuntime = function (params: any) {
   windowRuntime.init(params)
 }
 
-const init = function (params) {
+const init = function (params: any) {
   let winCb = function () {
     initWindowRuntime(params)
   }

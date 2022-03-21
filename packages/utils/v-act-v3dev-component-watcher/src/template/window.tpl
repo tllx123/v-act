@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
+import { useContext } from '@v-act/widget-context'
 const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent').then(mod=>mod.JsonJGComponent)});
 const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer').then(mod=>mod.JsonJGSpacer)});
 const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel').then(mod=>mod.JsonJGGroupPanel)});
@@ -30,11 +31,19 @@ widgetDefines.JGCollapse = JGCollapse1;
 
 const windowObjs = {{@ windowJsonScript}};
 
+
+
 function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
-    entityOperation = {};
+    const context = useContext()
+    const entityOperation = {
+        "insert": context.insertDataFunc,
+        "update": context.updateDataFunc,
+        "remove": context.removeDataFunc,
+        "clear": context.clearDataFunc,
+    };
     useEffect(async ()=>{
       try{
         debugger

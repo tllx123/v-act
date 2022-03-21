@@ -1,7 +1,14 @@
 import { Processor as designerProcessor } from '@v-act/vjs.framework.extension.platform.application.window.web.designer'
 import { WindowDatasource as windowDatasource } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.datasource'
+import {
+  AppInfo,
+  ComponentInfo
+} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
 import { ComponentResourceManager as componentResourceManager } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
-import { WindowVMMapping as windowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
+import {
+  WindowVMMapping,
+  WindowVMMapping as windowVMMapping
+} from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
 import {
   ComponentData as componetData,
   ComponentPackData as componentPackData
@@ -10,10 +17,7 @@ import { FrontEndAlerter as frontendAlerterUtil } from '@v-act/vjs.framework.ext
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { Platform as windowI18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { BrowserUtil as elementManager } from '@v-act/vjs.framework.extension.platform.services.browser'
 import { WindowInit as windowInit } from '@v-act/vjs.framework.extension.platform.services.init'
-import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
-import { WidgetAction as widgetRenderer } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 import { WidgetProcessor as widgetProcessor } from '@v-act/vjs.framework.extension.platform.services.view.window.property.processor'
@@ -25,17 +29,15 @@ import {
 import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
 import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
-import {
-  AppInfo,
-  ComponentInfo
-} from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
-import { WindowVMMapping } from '@v-act/vjs.framework.extension.platform.data.storage.schema.vmmapping'
+
+import * as initRuleSet from './initRuleSet'
 
 const _initWindowInfoFromJson = function (params) {
   //TODO 标记appinfo已初始化
   AppInfo.markAppSchemaInited()
   ComponentInfo.markComponentSchemaInited(params.componentCode)
   _initVMInfo(params)
+  initRuleSet.init(params)
 }
 
 const _initVMInfo = function (params) {
@@ -96,9 +98,11 @@ export function init(params) {
     componentPackMappingDatas = params.componentPackMappingDatas,
     componentCode = params.componentCode,
     windowCode = params.windowCode,
+    scopeId = params.scopeId,
     inputParam = params.inputParam,
     languageCode = params.languageCode,
     vjsInitFunc = params.vjsInitFunc,
+    rendered = params.rendered,
     paramCfg = params.paramCfg
   _initWindowInfoFromJson(params)
   //设置领域信息
@@ -112,7 +116,7 @@ export function init(params) {
   componentPackData.init(componentPackMappingDatas)
   //切面函数
   if (vjsInitFunc) {
-    vjsInitFunc(sandbox)
+    vjsInitFunc()
   }
   //渲染窗体
 
@@ -131,6 +135,7 @@ export function init(params) {
   //		});
   windowRenderer.render({
     source: {
+      assignScopeId: scopeId || null,
       componentCode: componentCode,
       windowCode: windowCode,
       inputs: inputParam
@@ -144,7 +149,10 @@ export function init(params) {
     //				"scopeId" : scopeId
     //			},
     aops: {
-      rendered: function (scopeId) {
+      rendered: function (scopeId: string) {
+        if (typeof rendered == 'function') {
+          rendered(scopeId)
+        }
         /*let setTitle = function (newTitle) {
           if (newTitle) {
             document.title = newTitle

@@ -2,14 +2,19 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let TaskManager = function () {
+let TaskManager: any = function () {
   //任务列表
+  //@ts-ignore
   this.taskList = []
+  //@ts-ignore
   this.intervalIndex
   //是否正在执行
+  //@ts-ignore
   this.executing
   //循环间隔
+  //@ts-ignore
   this.intervalStep
+  //@ts-ignore
   this.reset()
 }
 /**
@@ -36,7 +41,7 @@ TaskManager.prototype.execTask = function () {
   this.reset()
 }
 
-TaskManager.prototype.execTaskById = function (taskId, args) {
+TaskManager.prototype.execTaskById = function (taskId: string, args: any) {
   for (let i = 0, task; (task = this.taskList[i]); i++) {
     if (taskId === task.getTaskId()) {
       arrayUtil.remove(this.taskList, task)
@@ -47,7 +52,7 @@ TaskManager.prototype.execTaskById = function (taskId, args) {
   }
 }
 
-TaskManager.prototype.addTask = function (task) {
+TaskManager.prototype.addTask = function (task: any) {
   this.taskList.push(task)
 }
 
@@ -63,7 +68,7 @@ TaskManager.prototype.reset = function () {
   this.intervalIndex = null
 }
 
-TaskManager.prototype.exist = function (taskId) {
+TaskManager.prototype.exist = function (taskId: string) {
   let falg = false
   for (let i = 0, task; (task = this.taskList[i]); i++) {
     if (taskId === task.getTaskId()) {
@@ -76,7 +81,7 @@ TaskManager.prototype.exist = function (taskId) {
 
 let singlton = new TaskManager()
 
-const addTask = function (task) {
+const addTask = function (task: any) {
   let scopeId = task.scopeId
   let taskId = uuid.generate()
   if (!scopeId || !scopeManager.isDestroy(scopeId)) {
@@ -87,15 +92,15 @@ const addTask = function (task) {
   return taskId
 }
 
-const execTaskById = function (taskId, args) {
+const execTaskById = function (taskId: string, args: any) {
   return singlton.execTaskById(taskId, args)
 }
 
-const exists = function (taskId) {
+const exists = function (taskId: string) {
   return singlton.exist(taskId)
 }
 
-const removeById = function (taskId) {
+const removeById = function (taskId: string) {
   for (let task, i = 0; (task = singlton.taskList[i]); i++) {
     if (task.getTaskId() == taskId) {
       arrayUtil.remove(singlton.taskList, task)
@@ -105,7 +110,7 @@ const removeById = function (taskId) {
   return false
 }
 
-const removeByFilter = function (filter) {
+const removeByFilter = function (filter: any) {
   for (let task, i = 0; (task = singlton.taskList[i]); i++) {
     if (task.isMatch(filter)) {
       arrayUtil.remove(singlton.taskList, task)
@@ -115,31 +120,31 @@ const removeByFilter = function (filter) {
 }
 
 export {
-  addComponentOptionDefines,
-  addComponentRouteInfo,
-  addComponentVariantDefines,
-  addRuleSetInputs,
+  //addComponentOptionDefines,
+  //addComponentRouteInfo,
+  //addComponentVariantDefines,
+  //addRuleSetInputs,
   addTask,
-  componentIsInited,
-  componentIsLoaded,
-  destroy,
+  //componentIsInited,
+  //componentIsLoaded,
+  //destroy,
   execTaskById,
-  existMapping,
+  //existMapping,
   exists,
-  getComponentOptionDefine,
-  getComponentType,
-  getComponentVariantDefine,
-  getMapping,
-  getRouteConfig,
-  getRuleSetInput,
-  getRuleSetInputs,
-  init,
-  isAppConfigInfoLoaded,
-  loadIcons,
-  markAppConfigInfoLoaded,
-  markForComponentInited,
-  markForComponentLoaded,
+  //getComponentOptionDefine,
+  //getComponentType,
+  //getComponentVariantDefine,
+  //getMapping,
+  //getRouteConfig,
+  //getRuleSetInput,
+  //getRuleSetInputs,
+  //init,
+  //isAppConfigInfoLoaded,
+  //loadIcons,
+  //markAppConfigInfoLoaded,
+  //markForComponentInited,
+  //markForComponentLoaded,
   removeByFilter,
-  removeById,
-  setComponentType
+  removeById
+  //setComponentType
 }

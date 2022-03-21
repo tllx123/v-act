@@ -30,7 +30,11 @@ class RulesetInputSyntax extends RulesetPrimitiveSyntax {
     }
   }
   visit() {
-    return false
+    const ctx = this.getContext(),
+      visitor = ctx.getVisitor()
+    if (visitor && visitor.visitRulesetInputSyntax) {
+      visitor.visitRulesetInputSyntax(this)
+    }
   }
 }
 

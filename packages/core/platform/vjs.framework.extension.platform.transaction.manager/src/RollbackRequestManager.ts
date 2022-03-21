@@ -1,9 +1,9 @@
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-let requestList = []
-let intervalIndex = null
+let requestList: any = []
+let intervalIndex: any = null
 
-const add = function (request) {
+const add = function (request: any) {
   requestList.push(request)
   request.start()
   if (intervalIndex == null) {

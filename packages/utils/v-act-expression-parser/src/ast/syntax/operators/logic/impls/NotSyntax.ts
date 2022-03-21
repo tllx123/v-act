@@ -84,11 +84,13 @@ class NotSyntax extends Syntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-    return visitor && visitor.visitNotSyntax
-      ? visitor.visitNotSyntax(this, (syntax) => syntax.visit())
-      : this.getRight()
-      ? this.getRight().visit()
-      : false
+
+    if (visitor && visitor.visitNotSyntax) {
+      const res = visitor.visitNotSyntax(this)
+      if (res !== false) {
+        this.getRight().visit()
+      }
+    }
   }
 }
 

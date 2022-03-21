@@ -9,10 +9,11 @@ import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.ext
 import { DatasourceObserverManager as observerManager } from '@v-act/vjs.framework.extension.platform.services.observer.manager'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as v3VueUtil from './V3VueUtils'
 
-let sandbox, objectUtil
+let sandbox: any, objectUtil
 let Vue_Event_Manager_Storage_Token = 'Vue_Event_Manager_Storage_Token'
 /* 定义事件运行状态常量 */
 if (typeof EventStatus == 'undefined') {
@@ -21,12 +22,12 @@ if (typeof EventStatus == 'undefined') {
     Complete: 'complete'
   }
 }
-let eventStatusPool = {}
+let eventStatusPool: Record<string, any> = {}
 /**
  * 添加事件到事件池
  * @param {String} eventName 事件名称编号
  */
-let _addEventToPool = function (eventName) {
+let _addEventToPool = function (eventName: string) {
   /* 只有事件不存在才加入事件池 */
   if (typeof eventStatusPool[eventName] == 'undefined') {
     eventStatusPool[eventName] = EventStatus.Complete
@@ -36,7 +37,7 @@ let _addEventToPool = function (eventName) {
  * 将指定事件状态修改为正在运行
  * @param eventName 事件名称
  */
-let _markEventRunning = function (eventName) {
+let _markEventRunning = function (eventName: string) {
   if (typeof eventStatusPool[eventName] != 'undefined') {
     eventStatusPool[eventName] = EventStatus.Running
   }
@@ -44,7 +45,7 @@ let _markEventRunning = function (eventName) {
 /**
  * 将指定事件状态修改为已完成
  */
-let _markEventComplete = function (eventName) {
+let _markEventComplete = function (eventName: string) {
   if (typeof eventStatusPool[eventName] != 'undefined') {
     eventStatusPool[eventName] = EventStatus.Complete
   }
@@ -52,7 +53,7 @@ let _markEventComplete = function (eventName) {
 /**
  * 判断指定事件是否可以执行，只要事件不处于正在运行状态则为可以执行
  */
-let _couldRun = function (eventName) {
+let _couldRun = function (eventName: string) {
   if (
     typeof eventStatusPool[eventName] != 'undefined' &&
     eventStatusPool[eventName] != EventStatus.Running
@@ -62,20 +63,20 @@ let _couldRun = function (eventName) {
   return false
 }
 
-let _genEmptyObject = function (entityCode, widgetCode) {
+let _genEmptyObject = function (entityCode: string, widgetCode: string) {
   let ds = datasourceManager.lookup({
     datasourceName: entityCode
   })
   let metadata = ds.getMetadata()
   let fields = metadata.getFields()
-  let obj = {}
+  let obj: Record<string, any> = {}
   for (let i = 0, l = fields.length; i < l; i++) {
     obj[fields[i].getCode()] = null
   }
   return obj
 }
 
-let _flterEntity = function (codes) {
+let _flterEntity = function (codes: Array<string>) {
   let rs = []
   for (let i = 0, l = codes.length; i < l; i++) {
     let code = codes[i]
@@ -89,61 +90,106 @@ let _flterEntity = function (codes) {
   return rs
 }
 
-let V3Vue = function (params) {
-  let pros = params.pros
-  if (pros) {
-    this.html = pros.Html || null
-    this.javascript = pros.ModuleJavaScript || null
-    this.globalCss = pros.Css || null
-    this.globalJavascript = pros.JavaScript || null
-    this.entities = pros.Entities || []
-    this.css = pros.ModuleCss || null
-    this.cssSymbol = pros.cssSymbol || null
-    this.entityMapping = pros.entityMapping || {}
-    this.treeMapping = pros.treeMapping || {}
-    this.windowEntitys = pros.windowEntitys || {}
-  } else {
-    this.html = params.html || null
-    this.cssSymbol = params.cssSymbol || null
-    this.entities = params.entities ? params.entities : []
-    this.windowEntitys = params.windowEntitys ? params.windowEntitys : {}
-    this.treeMapping = params.treeMapping ? params.treeMapping : {}
-    this.entityMapping = params.entityMapping ? params.entityMapping : {}
-  }
-  this.parseCss = params.parseCss || true
-  this.parseJavascript = params.parseJavascript || true
-  this.processHtml = params.processHtml || true
-  this.widgetCode = params.widgetCode || null
-  this.eventTargetCode = params.eventTargetCode || null
-  this.element = params.element || null
-  this.datas = params.datas || null
-  this.moduleScriptId = params.moduleScriptId || null
-  this.autoMoutStyle =
-    typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
-  this.forEntities = params.forEntities || []
-  this.processedHtml = params.processedHtml || null
-  this.hanleEventFunc = params.handleEvent || null
-  this.dsEventRegisterFunc = []
-  this.eventHandlers = {}
-  if (!params.instance && params.globalCode) {
-    let vueInstance = window._$V3Vue.getInstance(params.globalCode)
-    this.instance = vueInstance
-  }
-  this.duringDS2Vue = {} //从ds同步到ui
-  this.vueInstance = null
-  this._init()
-}
+class V3Vue {
+  html
+  javascript
+  globalCss
+  globalJavascript
+  entities
+  css
+  cssSymbol
+  entityMapping
+  treeMapping
+  windowEntitys
 
-V3Vue.prototype = {
-  initModule: function (sb) {
+  parseCss
+  parseJavascript
+  processHtml
+  widgetCode
+  eventTargetCode
+  element
+  datas
+  moduleScriptId
+  autoMoutStyle
+  forEntities
+  processedHtml
+  hanleEventFunc
+  dsEventRegisterFunc: Array<any>
+  eventHandlers: Array<any>
+  instance
+  duringDS2Vue: Record<string, any>
+  vueInstance: any
+
+  _defaultModuleScript: string =
+    'let  _$hanleEventFunc$_,sandbox,vdk;exports._$putVdkFunc = function(_vdk){vdk=_vdk;};exports._$putSandbox=function(sb){sandbox=sb};let  getSandbox=function(){return sandbox;};exports._$putHandleEventFunc=function(func){_$hanleEventFunc$_=func;};let  handleEvent=function(){if(_$hanleEventFunc$_)_$hanleEventFunc$_.apply(this,arguments)};'
+  _trimReg = /(^\s*)|(\s*$)/g
+  commentReg = /\<\!\-\-[\s\S]*?\-\-\>/g
+  iterEntityReg = /\<[\s\S]*?v\-for=['"]([^'"]+)?['"][\s\S]*?\>/g
+  Events = {
+    Rendered: 'Rendered'
+  }
+
+  static mountStyle: (element: HTMLElement, params: Record<string, any>) => any
+
+  constructor(params: Record<string, any>) {
+    let pros = params.pros
+    if (pros) {
+      this.html = pros.Html || null
+      this.javascript = pros.ModuleJavaScript || null
+      this.globalCss = pros.Css || null
+      this.globalJavascript = pros.JavaScript || null
+      this.entities = pros.Entities || []
+      this.css = pros.ModuleCss || null
+      this.cssSymbol = pros.cssSymbol || null
+      this.entityMapping = pros.entityMapping || {}
+      this.treeMapping = pros.treeMapping || {}
+      this.windowEntitys = pros.windowEntitys || {}
+    } else {
+      this.html = params.html || null
+      this.cssSymbol = params.cssSymbol || null
+      this.entities = params.entities ? params.entities : []
+      this.windowEntitys = params.windowEntitys ? params.windowEntitys : {}
+      this.treeMapping = params.treeMapping ? params.treeMapping : {}
+      this.entityMapping = params.entityMapping ? params.entityMapping : {}
+    }
+    this.parseCss = params.parseCss || true
+    this.parseJavascript = params.parseJavascript || true
+    this.processHtml = params.processHtml || true
+    this.widgetCode = params.widgetCode || null
+    this.eventTargetCode = params.eventTargetCode || null
+    this.element = params.element || null
+    this.datas = params.datas || null
+    this.moduleScriptId = params.moduleScriptId || null
+    this.autoMoutStyle =
+      typeof params.autoMoutStyle == 'boolean' ? params.autoMoutStyle : true
+    this.forEntities = params.forEntities || []
+    this.processedHtml = params.processedHtml || null
+    this.hanleEventFunc = params.handleEvent || null
+    this.dsEventRegisterFunc = []
+    this.eventHandlers = []
+    if (!params.instance && params.globalCode) {
+      //@ts-ignore
+      let vueInstance = window._$V3Vue.getInstance(params.globalCode)
+      this.instance = vueInstance
+    }
+    this.duringDS2Vue = {} //从ds同步到ui
+    this.vueInstance = null
+    this._init()
+  }
+
+  initModule(sb: any) {
     sandbox = sb
     objectUtil = sb.util.object
     V3Vue.mountStyle = v3VueUtil.mountStyle
-  },
+  }
 
-  _initEvent: function (vue) {
+  _initEvent(vue) {
     let _registerVuiTagEvent = (function (_vue) {
-      return function (widgetCode, eventName, handle) {
+      return function (
+        widgetCode: string,
+        eventName: string,
+        handle: Function
+      ) {
         if (!_vue._$vuiTagEventStorage) {
           _vue._$vuiTagEventStorage = {}
         }
@@ -156,7 +202,11 @@ V3Vue.prototype = {
       }
     })(vue)
     let _fireVuiTagEvent = (function (_vue) {
-      return function (widgetCode, eventName, params) {
+      return function (
+        widgetCode: string,
+        eventName: string,
+        params: Record<string, any>
+      ) {
         let _vuiTagEventStorage = _vue._$vuiTagEventStorage
         if (_vuiTagEventStorage && _vuiTagEventStorage[widgetCode]) {
           let tagEvents = _vuiTagEventStorage[widgetCode]
@@ -169,18 +219,18 @@ V3Vue.prototype = {
     })(vue)
     vue._$registerVuiTagEvent = _registerVuiTagEvent
     vue._$fireVuiTagEvent = _fireVuiTagEvent
-    //			var _fireVuiTagEvent = function(widgetCode,eventName,params){
-    //				var storage = _getWindowContainerStorage();
+    //			let  _fireVuiTagEvent = function(widgetCode,eventName,params){
+    //				let  storage = _getWindowContainerStorage();
     //				if(storage.containsKey(eventName)){
-    //					var handle = storage.get(eventName);
+    //					let  handle = storage.get(eventName);
     //					if(typeof(handle) == 'function'){
     //						handle(params);
     //					}
     //				}
     //			}
-  },
+  }
 
-  _injectCss: function () {
+  _injectCss() {
     if (this.parseCss) {
       let cssStr = []
       if (this.globalCss) {
@@ -199,12 +249,9 @@ V3Vue.prototype = {
       this.globalCss = null
       this.css = null
     }
-  },
+  }
 
-  _defaultModuleScript:
-    'var _$hanleEventFunc$_,sandbox,vdk;exports._$putVdkFunc = function(_vdk){vdk=_vdk;};exports._$putSandbox=function(sb){sandbox=sb};var getSandbox=function(){return sandbox;};exports._$putHandleEventFunc=function(func){_$hanleEventFunc$_=func;};var handleEvent=function(){if(_$hanleEventFunc$_)_$hanleEventFunc$_.apply(this,arguments)};',
-
-  _injectScript: function () {
+  _injectScript() {
     if (this.parseJavascript) {
       let javascriptStr = []
       if (this.globalJavascript) {
@@ -220,8 +267,9 @@ V3Vue.prototype = {
         javascriptStr.push('",[],function(require, exports, module) {')
         let tmp_uuid = uuid.generate()
         javascriptStr.push(
-          "var _vdk='" + tmp_uuid + "';vdk=window[_vdk];window[_vdk]=null;"
+          "let  _vdk='" + tmp_uuid + "';vdk=window[_vdk];window[_vdk]=null;"
         )
+        //@ts-ignore
         window[tmp_uuid] = this
         javascriptStr.push(this._defaultModuleScript)
         javascriptStr.push(this.javascript)
@@ -237,37 +285,31 @@ V3Vue.prototype = {
       this.globalJavascript = null
       this.javascript = null
     }
-  },
-
-  _trimReg: /(^\s*)|(\s*$)/g,
+  }
 
   //移除字符串两端空格
-  _trim: function (str) {
+  _trim(str: string) {
     if (str) {
       str = str.replace(this._trimReg, '')
     }
     return str
-  },
-
-  commentReg: /\<\!\-\-[\s\S]*?\-\-\>/g,
+  }
 
   //移除html注释
-  _removeComments: function () {
+  _removeComments() {
     return this.html.replace(this.commentReg, '')
-  },
-
-  iterEntityReg: /\<[\s\S]*?v\-for=['"]([^'"]+)?['"][\s\S]*?\>/g,
+  }
 
   //处理html脚本，提取出迭代数据源
-  _processHtml: function () {
+  _processHtml() {
     if (this.processHtml) {
       let rs = []
       if (this.html) {
-        //					var h = this._removeComments(),_this = this;
+        //					let  h = this._removeComments(),_this = this;
         //					h = h.replace(this.iterEntityReg,function(re,script){
-        //						var s = _this._trim(script);
-        //						var array = s.split(" ");
-        //						var code = array.pop();
+        //						let  s = _this._trim(script);
+        //						let  array = s.split(" ");
+        //						let  code = array.pop();
         //						_this.forEntities.push(code);
         //						array.push(_this._genWrapEntityCode(code));
         //						s = array.join(" ");
@@ -279,13 +321,13 @@ V3Vue.prototype = {
         //					this.html = null;
       }
     }
-  },
+  }
 
-  _genWrapEntityCode: function (code) {
+  _genWrapEntityCode(code: string) {
     return code + '_$all'
-  },
+  }
 
-  _processEntities: function () {
+  _processEntities() {
     let rs = []
     for (let i = 0, l = this.entities.length; i < l; i++) {
       let code = this.entities[i]
@@ -297,43 +339,44 @@ V3Vue.prototype = {
       }
     }
     this.entities = rs
-  },
+  }
 
-  _init: function () {
+  _init() {
     if (!this.instance) {
       this._injectCss()
       this._injectScript()
     }
     this._processHtml()
     this._processEntities()
-  },
+  }
 
-  getHtml: function () {
+  getHtml() {
     return this.processedHtml
-  },
+  }
 
-  _createEmptyRecord: function (entityCode) {
+  _createEmptyRecord(entityCode: string) {
     let ds = datasourceManager.lookup({
       datasourceName: entityCode
     })
     let metadata = ds.getMetadata()
     let fields = metadata.getFields()
-    let obj = {}
+    let obj: Record<string, any> = {}
     for (let i = 0, l = fields.length; i < l; i++) {
       obj[fields[i].getCode()] = null
     }
     return obj
-  },
+  }
 
-  _extendDiff: function (aim, source) {
+  _extendDiff(aim: Record<string, any>, source: Record<string, any>) {
     for (let f in source) {
       if (source.hasOwnProperty(f) && source[f] !== aim[f]) {
         aim[f] = source[f]
       }
     }
-  },
-  _copyEntity: function (source, target) {
-    let sourceEntity = {}
+  }
+
+  _copyEntity(source: Record<string, any>, target: Record<string, any>) {
+    let sourceEntity: Record<string, any> = {}
     if (source) {
       for (let key in source) {
         sourceEntity[key] = source[key]
@@ -348,9 +391,10 @@ V3Vue.prototype = {
       }
     }
     return sourceEntity
-  },
-  _createVueData: function () {
-    let data = {
+  }
+
+  _createVueData() {
+    let data: Record<string, any> = {
       _$v3paltformData: {
         setCurrentHandlers: [],
         setSelectHandlers: [],
@@ -359,10 +403,10 @@ V3Vue.prototype = {
       //实体字段类型的数据
       _$EntityFieldTypes: {}
     }
-    //			var entitys = this.windowEntitys;
+    //			let  entitys = this.windowEntitys;
     let entitys = this._copyEntity(this.windowEntitys, this.entities)
     if (entitys) {
-      let types = data._$EntityFieldTypes
+      let types: Record<string, any> = data._$EntityFieldTypes
       for (let entityCode in entitys) {
         let ds = datasourceManager.lookup({
           datasourceName: entityCode
@@ -372,7 +416,7 @@ V3Vue.prototype = {
             let metadata = ds.getMetadata()
             if (metadata && metadata.fields) {
               let fields = metadata.fields
-              let type = {}
+              let type: Record<string, any> = {}
               for (let j = 0; j < fields.length; j++) {
                 let f = fields[j]
                 type[f.code] = f.type
@@ -392,7 +436,7 @@ V3Vue.prototype = {
             data[entityCode] = obj
           } else {
             let fieldList = entitys[entityCode]
-            let fieldMap = {}
+            let fieldMap: Record<string, any> = {}
             for (let j = 0, len = fieldList.length; j < len; j++) {
               fieldMap[fieldList[j]] = null
             }
@@ -401,14 +445,14 @@ V3Vue.prototype = {
         }
       }
     }
-    //			for(var i=0,l=this.entities.length;i<l;i++){
-    //				var entityCode = this.entities[i];
+    //			for(let  i=0,l=this.entities.length;i<l;i++){
+    //				let  entityCode = this.entities[i];
     //				if(this.datas&&this.datas.hasOwnProperty(entityCode)){
     //					data[entityCode] = this.datas[entityCode];
     //				}else{
-    //					var ds = datasourceManager.lookup({datasourceName:entityCode});
-    //					var record = ds.getCurrentRecord();
-    //					var obj = record ? record.toMap():this._createEmptyRecord(entityCode);
+    //					let  ds = datasourceManager.lookup({datasourceName:entityCode});
+    //					let  record = ds.getCurrentRecord();
+    //					let  obj = record ? record.toMap():this._createEmptyRecord(entityCode);
     //					data[entityCode]= obj;
     //				}
     //			}
@@ -441,21 +485,21 @@ V3Vue.prototype = {
         }
       }
     }
-    //			for(var i=0,l=this.forEntities.length;i<l;i++){
-    //				var entityCode = this.forEntities[i];
-    //				var ds = datasourceManager.lookup({datasourceName:entityCode});
-    //				var rs = ds.getAllRecords();
+    //			for(let  i=0,l=this.forEntities.length;i<l;i++){
+    //				let  entityCode = this.forEntities[i];
+    //				let  ds = datasourceManager.lookup({datasourceName:entityCode});
+    //				let  rs = ds.getAllRecords();
     //				data[this._genWrapEntityCode(entityCode)]= rs.isEmpty() ? []:rs.getOriginalDatas();
     //			}
     return data
-  },
+  }
 
-  _createVueWatcher: function () {
+  _createVueWatcher() {
     let windowScope = scopeManager.getWindowScope(),
-      watchers = {}
+      watchers: Record<string, any> = {}
     if (this.instance) {
       let watchEvent = (function (sId, sManager, dsManager, v3Vue) {
-        return function (code, val) {
+        return function (code: string, val: any) {
           if (v3Vue && !v3Vue.duringDS2Vue[code]) {
             //当前同步数据到实体动作不是由实体数据同步到Vue引发
             sManager.openScope(sId)
@@ -474,7 +518,7 @@ V3Vue.prototype = {
                 let changed = null
                 if (record) {
                   //add by xiedh 2018-04-19 过滤多余字段，vue当前行会默认给每个字段创建一个null值，如果不过滤，会造成多个字段更新问题
-                  let changed = {},
+                  let changed: Record<string, any> = {},
                     original = rd.getOriginalData()
                   for (let field in record) {
                     if (record.hasOwnProperty(field)) {
@@ -508,27 +552,27 @@ V3Vue.prototype = {
       })(windowScope.getInstanceId(), scopeManager, datasourceManager, this)
       this.instance._$synData = watchEvent
     } else {
-      let getWatcher = function (entityCode, v3Vue) {
+      let getWatcher = function (entityCode: string, v3Vue: V3Vue) {
         return {
           deep: true,
           sync: true,
           handler: (function (code, sId, sManager, dsManager, _vue) {
-            return function (val, oVal) {
+            return function (val: any, oVal: any) {
               if (_vue && !_vue.duringDS2Vue[code]) {
                 //当前同步数据到实体动作不是由实体数据同步到Vue引发
                 scopeManager.openScope(sId)
-                var ds = dsManager.lookup({
+                let ds = dsManager.lookup({
                   datasourceName: code
                 })
                 if (!ds) return //如果数据源不存在，则不进行数据同步
-                var insertRecord = []
-                var updateRecord = []
+                let insertRecord = []
+                let updateRecord = []
                 if (typeof val.length != 'number') {
                   val = [val]
                 }
-                for (var i = 0, l = val.length; i < l; i++) {
-                  var record = val[i]
-                  var rd = ds.getRecordById(record.id)
+                for (let i = 0, l = val.length; i < l; i++) {
+                  let record = val[i]
+                  let rd = ds.getRecordById(record.id)
                   if (rd) {
                     rd.setDatas(record)
                     updateRecord.push(rd)
@@ -564,8 +608,8 @@ V3Vue.prototype = {
       for (let entityCode in entitys) {
         watchers[entityCode] = getWatcher(entityCode, this)
       }
-      //				for(var i=0,l=this.entities.length;i<l;i++){
-      //					var entityCode = this.entities[i];
+      //				for(let  i=0,l=this.entities.length;i<l;i++){
+      //					let  entityCode = this.entities[i];
       //					watchers[entityCode] = getWatcher(entityCode);
       //				}
       if (this.entityMapping) {
@@ -580,20 +624,20 @@ V3Vue.prototype = {
       }
     }
     return watchers
-  },
+  }
 
-  _createVueMethod: function () {
+  _createVueMethod() {
     let scopeId = scopeManager.getCurrentScopeId()
     let windowScope = scopeManager.getWindowScope()
     let handleEvent =
       this.hanleEventFunc ||
       (function (sId, code) {
-        return function (eventName) {
+        return function (eventName: string) {
           _addEventToPool(eventName)
           if (_couldRun(eventName)) {
             _markEventRunning(eventName)
             try {
-              var finishBack = function () {
+              let finishBack = function () {
                 _markEventComplete(eventName)
                 /* arguments不为空且类型为function时才执行 */
                 if (
@@ -612,28 +656,28 @@ V3Vue.prototype = {
                 }
               }
               scopeManager.openScope(sId)
-              var handler = eventManager.fireEvent(
+              let handler = eventManager.fireEvent(
                 code,
                 eventName,
                 finishBack,
                 finishBack
               )
               scopeManager.closeScope()
-              var args = Array.prototype.slice.call(arguments, 1)
+              let args = Array.prototype.slice.call(arguments, 1)
               handler.apply(this, args)
             } catch (err) {
               _markEventComplete(eventName)
             }
           }
           /* 	scopeManager.openScope(sId);
-                    var handler = eventManager.fireEvent(code, eventName, arguments[2], arguments[3]);
+                    let  handler = eventManager.fireEvent(code, eventName, arguments[2], arguments[3]);
                     scopeManager.closeScope();
-                    var args = Array.prototype.slice.call(arguments, 1)
+                    let  args = Array.prototype.slice.call(arguments, 1)
                     handler.apply(this, args); */
         }
       })(scopeId, this.eventTargetCode || this.widgetCode)
     let _$getDatasource = (function (sId, dsManager) {
-      return function (entityCode) {
+      return function (entityCode: string) {
         scopeManager.openScope(sId)
         let ds = dsManager.lookup({
           datasourceName: entityCode
@@ -643,21 +687,21 @@ V3Vue.prototype = {
       }
     })(scopeId, datasourceManager)
     //			/* 注册数据源事件 */
-    //			var _$registerDsEvent = (function (_this) {
+    //			let  _$registerDsEvent = (function (_this) {
     //				return function (func) {
     //					if (typeof (func) == 'function')
     //						_this.dsEventRegisterFunc.push(func);
     //				}
     //			})(this);
-    let parseDsData = function (params) {
+    let parseDsData = function (params: Record<string, any>) {
       let newRecord = []
-      let changeValue = []
+      let changeValue: Array<any> = []
       let resultSet = params.resultSet
       let eventName = params.eventName
       if (eventName == 'CURRENT') {
         newRecord.push(params.currentRecord.toMap())
       } else if (resultSet) {
-        resultSet.iterate(function (rd) {
+        resultSet.iterate(function (rd: Record<string, any>) {
           changeValue.push(rd.getChangedData())
           newRecord.push(rd.toMap())
         })
@@ -668,10 +712,14 @@ V3Vue.prototype = {
       }
     }
     // 处理数据源触发事件的参数
-    let handlerCellFunc = function (handler, field, tmpVue) {
-      return function (params) {
+    let handlerCellFunc = function (
+      handler: Function,
+      field: string,
+      tmpVue: any
+    ) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
-          let result = []
+          let result: Array<any> = []
           let datas = parseDsData(params)
           let newRecord = datas.newRecord
           let changeValue = datas.changeValue
@@ -696,13 +744,17 @@ V3Vue.prototype = {
     /**
      * 处理返回函数的参数
      */
-    let handlerCallBackParamFunc = function (handler, controlType, tmpVue) {
-      return function (params) {
+    let handlerCallBackParamFunc = function (
+      handler: Function,
+      controlType: string,
+      tmpVue: any
+    ) {
+      return function (params: Record<string, any>) {
         if (typeof handler == 'function') {
           let result = []
           let datas = parseDsData(params)
           let eventName = params.eventName
-          let newRecord = []
+          let newRecord = {}
           if (eventName == 'CURRENT') {
             newRecord = params.currentRecord.toMap()
           } else if (eventName == 'SELECT') {
@@ -733,29 +785,29 @@ V3Vue.prototype = {
      *            func 数据源事件注册函数
      */
     let _$registerDsEvent = (function (_this) {
-      return function (param) {
+      return function (param: Record<string, any>) {
         if (typeof param == 'function') _this.dsEventRegisterFunc.push(param)
         else if (typeof param == 'object' && param.dsName && param.eventType) {
           _this.dsEventRegisterFunc.push(
             (function (param) {
               return function () {
-                var dsName = param.dsName
-                var eventType = param.eventType
-                var handler = param.handler
-                var controlType = param.controlType
-                var datasource
-                var tmpVue = param.vueObj
+                let dsName = param.dsName
+                let eventType = param.eventType
+                let handler = param.handler
+                let controlType = param.controlType
+                let datasource
+                let tmpVue = param.vueObj
                 if (
                   tmpVue &&
                   typeof tmpVue.$root._$getDatasource == 'function'
                 ) {
                   if (controlType == 'cell') {
                     if (tmpVue.$vnode.data && tmpVue.$vnode.data.model) {
-                      var vModel = tmpVue.$vnode.data.model.expression
+                      let vModel = tmpVue.$vnode.data.model.expression
                       if (vModel) {
-                        var tmp = vModel.split('.')
+                        let tmp = vModel.split('.')
                         dsName = tmp[0]
-                        var field = tmp[tmp.length - 1]
+                        let field = tmp[tmp.length - 1]
                         // 处理返回函数
                         handler = handlerCellFunc(param.handler, field, tmpVue)
                       }
@@ -814,7 +866,7 @@ V3Vue.prototype = {
       }
     }
     let _refFn = (function (module, v3Vue) {
-      return function (func) {
+      return function (func: string) {
         if (module && module[func]) {
           return module[func]
         } else {
@@ -823,15 +875,18 @@ V3Vue.prototype = {
       }
     })(md, this)
     let _callEvent = (function (module, sId, v3Vue) {
-      return function (func) {
+      return function (func: string) {
         if (module && module[func]) {
           scopeManager.openScope(sId)
           let rs
           try {
-            rs = module[func].apply(
-              v3Vue.vueInstance,
-              Array.prototype.slice.call(arguments, 1)
-            )
+            let funcTemp: Function = module[func]
+            rs = module[func]
+              ? funcTemp.apply(
+                  v3Vue.vueInstance,
+                  Array.prototype.slice.call(arguments, 1)
+                )
+              : ''
           } finally {
             scopeManager.closeScope()
           }
@@ -860,7 +915,11 @@ V3Vue.prototype = {
       }
     })(md, scopeId, this)
     let _$synCurrentRecordToDs = (function (sId, dsManager) {
-      return function (entityCode, current, oldCurrent) {
+      return function (
+        entityCode: string,
+        current: Record<string, any>,
+        oldCurrent: any
+      ) {
         scopeManager.openScope(sId)
         let ds = dsManager.lookup({
           datasourceName: entityCode
@@ -874,7 +933,7 @@ V3Vue.prototype = {
       }
     })(scopeId, datasourceManager)
     let _$synCurrentIdToDs = (function (sId, dsManager) {
-      return function (entityCode, id) {
+      return function (entityCode: string, id: string) {
         scopeManager.openScope(sId)
         let ds = dsManager.lookup({
           datasourceName: entityCode
@@ -888,7 +947,11 @@ V3Vue.prototype = {
       }
     })(scopeId, datasourceManager)
     let _$synSelectRecordToDs = (function (sId, dsManager) {
-      return function (entityCode, data, isSel) {
+      return function (
+        entityCode: string,
+        data: Record<string, any>,
+        isSel: boolean
+      ) {
         scopeManager.openScope(sId)
         let ds = dsManager.lookup({
           datasourceName: entityCode
@@ -910,20 +973,24 @@ V3Vue.prototype = {
     let _$getMultipleSelectList = function () {
       return this._data._$v3paltformData.multipleSelect
     }
-    //			var _registerVuiTagEvent = (function(_vue){
+    //			let  _registerVuiTagEvent = (function(_vue){
     //				return function(widgetCode,eventName,handle){
     //					if(!_vue._$vuiTagEventStorage){
     //						_vue._$vuiTagEventStorage = {}
     //					}
-    //					var _vuiTagEventStorage = _vue._$vuiTagEventStorage;
+    //					let  _vuiTagEventStorage = _vue._$vuiTagEventStorage;
     //					if(!_vuiTagEventStorage[widgetCode]){
     //						_vuiTagEventStorage[widgetCode] = {};
     //					}
-    //					var _event = _vuiTagEventStorage[widgetCode];
+    //					let  _event = _vuiTagEventStorage[widgetCode];
     //					_event[eventName] = handle;
     //				}
     //			})(vue);
-    let _$registerVuiTagEvent = function (widgetCode, eventName, handle) {
+    let _$registerVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      handle: Function
+    ) {
       if (!this._$vuiTagEventStorage) {
         this._$vuiTagEventStorage = {}
       }
@@ -934,19 +1001,23 @@ V3Vue.prototype = {
       let _event = _vuiTagEventStorage[widgetCode]
       _event[eventName] = handle
     }
-    //			var _fireVuiTagEvent =(function(_vue){
+    //			let  _fireVuiTagEvent =(function(_vue){
     //				return function(widgetCode,eventName,params){
-    //					var _vuiTagEventStorage = _vue._$vuiTagEventStorage;
+    //					let  _vuiTagEventStorage = _vue._$vuiTagEventStorage;
     //					if(_vuiTagEventStorage && _vuiTagEventStorage[widgetCode]){
-    //						var tagEvents = _vuiTagEventStorage[widgetCode];
+    //						let  tagEvents = _vuiTagEventStorage[widgetCode];
     //						if(typeof(tagEvents[eventName]) == "function"){
-    //							var handle = tagEvents[eventName];
+    //							let  handle = tagEvents[eventName];
     //							handle(params);
     //						}
     //					}
     //				}
     //			})(vue);
-    let _$fireVuiTagEvent = function (widgetCode, eventName, params) {
+    let _$fireVuiTagEvent = function (
+      widgetCode: string,
+      eventName: string,
+      params: Record<string, any>
+    ) {
       let _vuiTagEventStorage = this._$vuiTagEventStorage
       if (_vuiTagEventStorage && _vuiTagEventStorage[widgetCode]) {
         let tagEvents = _vuiTagEventStorage[widgetCode]
@@ -981,7 +1052,7 @@ V3Vue.prototype = {
     /**
      * 获取实体字段类型列表
      * */
-    let _$getEntityFieldType = function (entityCode) {
+    let _$getEntityFieldType = function (entityCode: string) {
       let types = this._data._$EntityFieldTypes
       if (entityCode && types && types[entityCode]) {
         return types[entityCode]
@@ -1026,52 +1097,67 @@ V3Vue.prototype = {
           }
         })(windowScope.getComponentCode()),
         _$v3platform: function () {
-          var _this = this
+          let _this = this
           return {
             datasource: {
-              synCurrentRecordToDs: function (entityCode, current, oldCurrent) {
-                var func = _this._$synCurrentRecordToDs
+              synCurrentRecordToDs: function (
+                entityCode: string,
+                current: Record<string, any>,
+                oldCurrent: Record<string, any>
+              ) {
+                let func = _this._$synCurrentRecordToDs
                 if (func) {
                   func.apply(_this, [entityCode, current, oldCurrent])
                 }
               },
-              synCurrentIdToDs: function (entityCode, id) {
-                var func = _this._$synCurrentIdToDs
+              synCurrentIdToDs: function (entityCode: string, id: string) {
+                let func = _this._$synCurrentIdToDs
                 if (func) {
                   func.apply(_this, [entityCode, id])
                 }
               },
-              synSelectRecordToDs: function (entityCode, data, isSel) {
-                var func = _this._$synSelectRecordToDs
+              synSelectRecordToDs: function (
+                entityCode: string,
+                data: Record<string, any>,
+                isSel: boolean
+              ) {
+                let func = _this._$synSelectRecordToDs
                 if (func) {
                   func.apply(_this, [entityCode, data, isSel])
                 }
               },
-              synCurrentRecordToUi: function (entityCode, current) {
-                var funcs = _this._data._$v3paltformData.setCurrentHandlers
+              synCurrentRecordToUi: function (
+                entityCode: string,
+                current: Record<string, any>
+              ) {
+                let funcs = _this._data._$v3paltformData.setCurrentHandlers
                 if (funcs.length > 0) {
-                  for (var i = 0, len = funcs.length; i < len; i++) {
-                    var func = funcs[i]
+                  for (let i = 0, len = funcs.length; i < len; i++) {
+                    let func = funcs[i]
                     func(entityCode, current)
                   }
                 }
               },
-              synSelectRecordToUi: function (entityCode, datas, isSel) {
-                var funcs = _this._data._$v3paltformData.setSelectHandlers
+              synSelectRecordToUi: function (
+                entityCode: string,
+                datas: any,
+                isSel: boolean
+              ) {
+                let funcs = _this._data._$v3paltformData.setSelectHandlers
                 if (funcs.length > 0) {
-                  for (var i = 0, len = funcs.length; i < len; i++) {
-                    var func = funcs[i]
+                  for (let i = 0, len = funcs.length; i < len; i++) {
+                    let func = funcs[i]
                     func(entityCode, datas, isSel)
                   }
                 }
               },
-              registerCurrentHandler: function (handler) {
+              registerCurrentHandler: function (handler: Function) {
                 _this._data._$v3paltformData.setCurrentHandlers.push(handler)
               },
-              registerSelectHandler: function (handler) {
+              registerSelectHandler: function (handler: Function) {
                 _this._data._$v3paltformData.setSelectHandlers.push(handler)
               },
-              markDsMultipleSelect: function (entityCode) {
+              markDsMultipleSelect: function (entityCode: Function) {
                 _this._data._$v3paltformData.multipleSelect.push(entityCode)
               }
             }
@@ -1079,9 +1165,9 @@ V3Vue.prototype = {
         }
       }
     }
-  },
+  }
 
-  render: function () {
+  render() {
     let vm
     if (this.instance) {
       this.processedHtml = this.instance.html
@@ -1136,13 +1222,13 @@ V3Vue.prototype = {
       }
     }
     let extend = this._extendDiff
-    let handler = function (record) {
+    let handler = function (record: Record<string, any>) {
       let vm = this.pros.vm,
         v3vm = this.pros.v3vm
       let dsName = this.datasourceName
       v3vm.duringDS2Vue[dsName] = true
       if (record) {
-        //var data = record.toMap();2017-06-22 xiedh 只同步更新过的值，防止引发触发其他未更新字段值逻辑
+        //let  data = record.toMap();2017-06-22 xiedh 只同步更新过的值，防止引发触发其他未更新字段值逻辑
         //objectUtil.extend(vm[dsName],data);
         extend(vm[dsName], record.toMap())
       } else {
@@ -1176,14 +1262,14 @@ V3Vue.prototype = {
           }
         )
         observer.setAsync(false)
-        observer.setUpdateHandler(function (args) {
+        observer.setUpdateHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet,
             ds = this.datasourceName,
             vm = this.pros.vm,
             v3vm = this.pros.v3vm
           let data = vm[ds]
           v3vm.duringDS2Vue[ds] = true
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             if (data.id == rd.getSysId()) {
               extend(data, rd.toMap())
               //objectUtil.extend(data,rd.toMap());2017-06-22 xiedh 只同步更新过的值，防止引发触发其他未更新字段值逻辑
@@ -1218,8 +1304,8 @@ V3Vue.prototype = {
           observer: observer
         })
       }
-      //				for(var i=0,l=this.entities.length;i<l;i++){
-      //					var observer = new CurrentRecordObserver(this.entities[i],this.widgetCode,{"vm":vm,"v3vm":this});
+      //				for(let  i=0,l=this.entities.length;i<l;i++){
+      //					let  observer = new CurrentRecordObserver(this.entities[i],this.widgetCode,{"vm":vm,"v3vm":this});
       //					observer.setWidgetValueHandler(handler);
       //					observer.clearWidgetValueHandler(handler);
       //					observerManager.addObserver({"observer":observer});
@@ -1232,7 +1318,7 @@ V3Vue.prototype = {
           v3vm: this
         })
         observer.setAsync(false)
-        observer.setLoadHandler(function (args) {
+        observer.setLoadHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let isAppend = args.isAppend
           let ds = this.datasourceName
@@ -1247,11 +1333,11 @@ V3Vue.prototype = {
             vm[entityCode].splice(0, vm[entityCode].length)
           }
           let datas = vm[entityCode]
-          let records = []
+          let records: Array<Record<string, any>> = []
           let extraFields = resultSet.datas
             ? v3vm.getExtraFields(resultSet.datas[0], ds)
             : []
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             let map = rd.toMap()
             for (let _i = 0, _len = extraFields.length; _i < _len; _i++) {
               map[extraFields[_i]] = null
@@ -1271,7 +1357,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setInsertHandler(function (args) {
+        observer.setInsertHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1279,9 +1365,9 @@ V3Vue.prototype = {
           let entityCode = v3vm.entityMapping[ds]
           let entityFields = v3vm.windowEntitys[ds]
           let datas = vm[entityCode]
-          let records = []
+          let records: Array<Record<string, any>> = []
           v3vm.duringDS2Vue[ds] = true
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             let nowMap = rd.toMap()
             for (let i = 0, l = entityFields.length; i < l; i++) {
               let attr = entityFields[i]
@@ -1314,7 +1400,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setUpdateHandler(function (args) {
+        observer.setUpdateHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1322,7 +1408,7 @@ V3Vue.prototype = {
           let entityCode = v3vm.entityMapping[ds]
           let datas = vm[entityCode]
           v3vm.duringDS2Vue[ds] = true
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             for (let i = 0, l = datas.length; i < l; i++) {
               let d = datas[i]
               if (d.id == rd.getSysId()) {
@@ -1344,7 +1430,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setRemoveHandler(function (args) {
+        observer.setRemoveHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1353,8 +1439,8 @@ V3Vue.prototype = {
           let datas = vm[entityCode]
           v3vm.duringDS2Vue[ds] = true
           let tmpDatas = []
-          let deleteIds = []
-          resultSet.iterate(function (rd) {
+          let deleteIds: Array<string> = []
+          resultSet.iterate(function (rd: Record<string, any>) {
             deleteIds.push(rd.getSysId())
           })
           for (let i = 0, l = datas.length; i < l; i++) {
@@ -1376,7 +1462,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setCurrentRecordHandler(function (args) {
+        observer.setCurrentRecordHandler(function (args: Record<string, any>) {
           let current = args.currentRecord,
             ds = this.datasourceName,
             vm = this.pros.vm,
@@ -1395,7 +1481,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setSelectRecordHandler(function (args) {
+        observer.setSelectRecordHandler(function (args: Record<string, any>) {
           let records = args.resultSet.toArray(),
             isSelect = args.isSelect,
             ds = this.datasourceName,
@@ -1431,7 +1517,7 @@ V3Vue.prototype = {
           v3vm: this
         })
         observer.setAsync(false)
-        observer.setLoadHandler(function (args) {
+        observer.setLoadHandler(function (args: ReactDOM<string, any>) {
           let resultSet = args.resultSet
           let isAppend = args.isAppend
           let ds = this.datasourceName
@@ -1458,9 +1544,9 @@ V3Vue.prototype = {
           if (!v3vm.treeMapping[ds]['allRecord'])
             v3vm.treeMapping[ds]['allRecord'] = {}
           let allRecord = v3vm.treeMapping[ds]['allRecord']
-          let notHandleRecord = []
-          resultSet.iterate(function (rd) {
-            let singleRecord = {}
+          let notHandleRecord: Array<Record<string, any>> = []
+          resultSet.iterate(function (rd: Record<string, any>) {
+            let singleRecord: Record<string, any> = {}
             let tmp_id = rd.get(idField)
             allRecord[tmp_id] = singleRecord
             singleRecord['id'] = tmp_id
@@ -1502,7 +1588,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setInsertHandler(function (args) {
+        observer.setInsertHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1521,10 +1607,10 @@ V3Vue.prototype = {
           if (!v3vm.treeMapping[ds]['allRecord'])
             v3vm.treeMapping[ds]['allRecord'] = {}
           let allRecord = v3vm.treeMapping[ds]['allRecord']
-          let notHandleRecord = []
+          let notHandleRecord: Array<Record<string, any>> = []
           v3vm.duringDS2Vue[ds] = true
-          resultSet.iterate(function (rd) {
-            let singleRecord = {}
+          resultSet.iterate(function (rd: Record<string, any>) {
+            let singleRecord: Record<string, any> = {}
             let tmp_id = rd.get(idField)
             allRecord[tmp_id] = singleRecord
             singleRecord['id'] = tmp_id
@@ -1573,7 +1659,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setUpdateHandler(function (args) {
+        observer.setUpdateHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1588,7 +1674,7 @@ V3Vue.prototype = {
             v3vm.treeMapping[ds]['allRecord'] = {}
           let allRecord = v3vm.treeMapping[ds]['allRecord']
           v3vm.duringDS2Vue[ds] = true
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             let id = rd.get(idField)
             let record = allRecord[id]
             if (record) extend(record, rd.toMap())
@@ -1605,7 +1691,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setRemoveHandler(function (args) {
+        observer.setRemoveHandler(function (args: Record<string, any>) {
           let resultSet = args.resultSet
           let ds = this.datasourceName
           let vm = this.pros.vm,
@@ -1620,18 +1706,18 @@ V3Vue.prototype = {
             v3vm.treeMapping[ds]['allRecord'] = {}
           let allRecord = v3vm.treeMapping[ds]['allRecord']
           v3vm.duringDS2Vue[ds] = true
-          let tmpDatas = []
-          let deleteIds = []
+          let tmpDatas: Array<Record<string, any>> = []
+          let deleteIds: Array<string> = []
           for (let i = 0, l = datas.length; i < l; i++) {
             let d = datas[i]
             deleteIds.push(d.id)
           }
-          resultSet.iterate(function (rd) {
+          resultSet.iterate(function (rd: Record<string, any>) {
             if (deleteIds.indexOf(rd.getSysId()) == -1) {
               tmpDatas.push(rd)
             }
-            //							for(var i=0,l=datas.length;i<l;i++){
-            //								var d = datas[i];
+            //							for(let  i=0,l=datas.length;i<l;i++){
+            //								let  d = datas[i];
             //								if(d.id==rd.getSysId()){
             //									delete allRecord[d.id];
             //									datas.splice(i,1);
@@ -1652,7 +1738,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setCurrentRecordHandler(function (args) {
+        observer.setCurrentRecordHandler(function (args: Record<string, any>) {
           let current = args.currentRecord,
             ds = this.datasourceName,
             vm = this.pros.vm,
@@ -1671,7 +1757,7 @@ V3Vue.prototype = {
             })(v3vm)
           )
         })
-        observer.setSelectRecordHandler(function (args) {
+        observer.setSelectRecordHandler(function (args: Record<string, any>) {
           let records = args.resultSet.toArray(),
             isSelect = args.isSelect,
             ds = this.datasourceName,
@@ -1710,21 +1796,25 @@ V3Vue.prototype = {
         }
       })(this)
     )
-  },
-  strTrim: function (str) {
+  }
+
+  strTrim(str: string) {
     return str ? str.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '') : str
-  },
-  toNewEntityCode: function (entityCode) {
+  }
+
+  toNewEntityCode(entityCode: string) {
     return entityCode + '_' + new Date().getTime()
-  },
-  _getNewEntityCode: function (pool, entityCode) {
+  }
+
+  _getNewEntityCode(pool: Record<string, any>, entityCode: string) {
     entityCode = this.strTrim(entityCode)
     if (!pool[entityCode]) {
       pool[entityCode] = this.toNewEntityCode(entityCode)
     }
     return pool[entityCode]
-  },
-  getExtraFields: function (data, dsName) {
+  }
+
+  getExtraFields(data: Record<string, any>, dsName: string) {
     //获取数据缺少的字段列表，解决获取规则只获取部分字段的数据时，在自定义div里面使用无法同步数据的问题
     let extraFields = []
     if (data) {
@@ -1740,22 +1830,28 @@ V3Vue.prototype = {
       }
     }
     return extraFields
-  },
-  analyEntity: function (html) {
+  }
+
+  analyEntity(html: string) {
+    const _this = this
     //分析实体
     if (!html) return
     let template = html
-    let entityMapping = {} //普通实体映射新名称
-    let treeMapping = this.treeMapping ? this.treeMapping : {} //属性实体映射新名称
-    //			var entitys = this.windowEntitys;//实体字段信息
+    let entityMapping: Record<string, any> = {} //普通实体映射新名称
+    let treeMapping: Record<string, any> = this.treeMapping
+      ? this.treeMapping
+      : {} //属性实体映射新名称
+    //			let  entitys = this.windowEntitys;//实体字段信息
     let entitys = this.windowEntitys ? this.windowEntitys : []
     let tmpThis = this
     let analyFunc = (function (tmp_this) {
       //分析非 实体.字段和v-for 这两个格式的实体
-      return function (childNode) {
+      return function (childNode: HTMLElement) {
         let components
         let nodeName = childNode.nodeName
+        //@ts-ignore
         if (window._$V3Vue && window._$V3Vue._getComponents) {
+          //@ts-ignore
           components = window._$V3Vue._getComponents(nodeName)
         }
         if (components && components.length > 0) {
@@ -1772,9 +1868,9 @@ V3Vue.prototype = {
               if (attrName) {
                 //绑定实体方式为 :data 或 v-bind:data
                 let entityCode = childNode.getAttribute(attrName)
-                let newEntityCode = this._getNewEntityCode(
+                let newEntityCode = _this._getNewEntityCode(
                   entityMapping,
-                  entityCode
+                  entityCode as string
                 )
                 childNode.setAttribute(attrName, newEntityCode)
                 childNode.setAttribute(':entity-code', "'" + entityCode + "'")
@@ -1784,8 +1880,8 @@ V3Vue.prototype = {
               if (attrName) {
                 //绑定实体方式为 :data 或 v-bind:data
                 let entityCode = childNode.getAttribute(attrName)
-                let newEntityCode = this.toNewEntityCode(entityCode)
-                let newMappingInfo = {
+                let newEntityCode = _this.toNewEntityCode(entityCode as string)
+                let newMappingInfo: Record<string, any> = {
                   newEntityCode: newEntityCode
                 }
                 let treeStructProp = component.getTreeStructProp()
@@ -1811,7 +1907,7 @@ V3Vue.prototype = {
                     title: 'title'
                   }
                 }
-                treeMapping[entityCode] = newMappingInfo
+                entityCode ? (treeMapping[entityCode] = newMappingInfo) : ''
                 childNode.setAttribute(attrName, newEntityCode)
                 childNode.setAttribute(':entity-code', "'" + entityCode + "'")
               }
@@ -1834,7 +1930,7 @@ V3Vue.prototype = {
                   value_field_attr_name != '' &&
                   childNode.hasAttribute(value_field_attr_name)
                 ) {
-                  childNode.setAttribute('___ds___', entityCode)
+                  childNode.setAttribute('___ds___', entityCode as string)
                   let _$fields = []
                   _$fields.push(childNode.getAttribute(value_field_attr_name))
                   //									if(text_field_attr_name != "" && childNode.hasAttribute(text_field_attr_name)){
@@ -1848,7 +1944,11 @@ V3Vue.prototype = {
         }
         let attrName = 'v-for'
         if (childNode.hasAttribute(attrName)) {
-          let expArray = childNode.getAttribute(attrName).split(' in ')
+          let expArray: Array<any> = []
+          if (childNode !== null) {
+            expArray = childNode.getAttribute(attrName).split(' in ')
+          }
+
           let varName = expArray[0],
             entityCode = expArray[1]
           if (entitys[entityCode]) {
@@ -1856,7 +1956,7 @@ V3Vue.prototype = {
               attrName,
               varName +
                 ' in ' +
-                this._getNewEntityCode(entityMapping, entityCode)
+                _this._getNewEntityCode(entityMapping, entityCode)
             )
             childNode.setAttribute(':entity-code', "'" + entityCode + "'")
             childNode.setAttribute(':key', varName + '.id')
@@ -1891,21 +1991,22 @@ V3Vue.prototype = {
     this.processedHtml = _tmplate.substring(5, _tmplate.length - 6)
     this.treeMapping = treeMapping
     this.entityMapping = entityMapping
-  },
-  _extend: function (aim, source) {
+  }
+
+  _extend(aim: Record<string, any>, source: Record<string, any>) {
     for (let attr in source) {
       if (source.hasOwnProperty(attr) && !aim.hasOwnProperty(attr)) {
         aim[attr] = source[attr]
       }
     }
     return aim
-  },
+  }
 
-  clone: function (params) {
+  clone(params: Record<string, any>) {
     return new V3Vue(params ? this._extend(params, this) : this)
-  },
+  }
 
-  _fire: function (params) {
+  _fire(params: Record<string, any>) {
     let eventName = params.eventName,
       args = params.args
     if (this.eventHandlers[eventName]) {
@@ -1915,9 +2016,9 @@ V3Vue.prototype = {
         handler.apply(this, args)
       }
     }
-  },
+  }
 
-  on: function (params) {
+  on(params: Record<string, any>) {
     let eventName = params.eventName,
       handler = params.handler
     let handlers = this.eventHandlers[eventName]
@@ -1926,11 +2027,10 @@ V3Vue.prototype = {
       this.eventHandlers[eventName] = handlers
     }
     handlers.push(handler)
-  },
-
-  Events: {
-    Rendered: 'Rendered'
   }
 }
 
-return V3Vue
+V3Vue.prototype._defaultModuleScript =
+  'let  _$hanleEventFunc$_,sandbox,vdk;exports._$putVdkFunc = function(_vdk){vdk=_vdk;};exports._$putSandbox=function(sb){sandbox=sb};let  getSandbox=function(){return sandbox;};exports._$putHandleEventFunc=function(func){_$hanleEventFunc$_=func;};let  handleEvent=function(){if(_$hanleEventFunc$_)_$hanleEventFunc$_.apply(this,arguments)};'
+
+export default V3Vue

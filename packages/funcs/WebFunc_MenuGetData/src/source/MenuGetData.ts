@@ -1,12 +1,13 @@
-import * as log from 'module'
-import * as operationLib from 'module'
-import * as viewContext from 'module'
+import * as operationLib from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import * as log from '@v-act/vjs.framework.extension.util.logutil'
+import * as viewContext from '@v-act/vjs.framework.extension.platform.init.view'
+const vds = { operationLib, log, viewContext }
 
 export function initModule() {}
 /**
  * 主入口
  */
-const main = function (bindMenuId) {
+const main = function (bindMenuId: string) {
   if (null == bindMenuId || '' == bindMenuId) {
     log.error('[MenuGetData.main]菜单ID为空，请检查配置')
     return null

@@ -1,5 +1,7 @@
-import * as operationLib from 'module'
-import * as viewContext from 'module'
+import * as operationLib from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import * as viewContext from '@v-act/vjs.framework.extension.platform.init.view'
+
+//const vds = { operationLib, viewContext }
 
 export function initModule() {}
 /**
@@ -8,7 +10,11 @@ export function initModule() {}
  * @param queueCode 消息队列编码
  * @param isEnable 是否监听,true:监听,false:停止
  */
-const main = function (serverCode, queueCode, isEnable) {
+const main = function (
+  serverCode: string,
+  queueCode: string,
+  isEnable: boolean
+) {
   if (serverCode == null || serverCode == '') {
     throw new Error('服务器编码不能为空，请检查')
   }
@@ -27,7 +33,6 @@ const main = function (serverCode, queueCode, isEnable) {
   } else {
     throw new Error('ListenJmsQueue函数执行失败：' + result['msg'])
   }
-  return ''
 }
 
 export { main }

@@ -1,1 +1,1 @@
-export * as WindowVMMappingManager from './api/WindowVMMappingManager'
+export * from './api/WindowVMMappingManager'

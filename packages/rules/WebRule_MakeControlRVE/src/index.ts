@@ -41,7 +41,7 @@ const main = function (ruleContext: RuleContext) {
  *	方法工厂
  *	@param type 根据控制类型获取对应方法
  */
-var funcFactory = function (type) {
+var funcFactory = function (type: any) {
   switch (type) {
     case CONTROLTYPE_READONLY:
       return setReadonlyOrWrite
@@ -59,7 +59,7 @@ var funcFactory = function (type) {
  *	@param	destWidgetId 控件id
  *  @param  readonly 是否只读
  */
-var setReadonlyOrWrite = function (destWidgetId, readonly) {
+var setReadonlyOrWrite = function (destWidgetId: any, readonly: any) {
   var isReadOnly = readonly == true || readonly.toLowerCase() == 'true'
   vds.widget.setProperty(destWidgetId, 'ReadOnly', isReadOnly)
 }
@@ -69,7 +69,7 @@ var setReadonlyOrWrite = function (destWidgetId, readonly) {
  *	@param	destWidgetId 控件id
  *  @param  enable 是否使能
  */
-var setDisableOrEnable = function (destWidgetId, enable) {
+var setDisableOrEnable = function (destWidgetId: any, enable: any) {
   var isEnable = enable == true || enable.toLowerCase() == 'true'
   vds.widget.setProperty(destWidgetId, 'Enabled', isEnable)
 }
@@ -79,7 +79,7 @@ var setDisableOrEnable = function (destWidgetId, enable) {
  *	@param	destWidgetId 控件id
  *  @param  show 是否显示
  */
-var setShowOrHide = function (destWidgetId, show) {
+var setShowOrHide = function (destWidgetId: any, show: any) {
   var isShow = show == true || show.toLowerCase() == 'true'
   vds.widget.setProperty(destWidgetId, 'Visible', isShow)
 }

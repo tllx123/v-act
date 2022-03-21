@@ -1,1 +1,1 @@
-export * as DataAdapter from './api/DataAdapter'
+export * from './api/DataAdapter'

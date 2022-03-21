@@ -81,4 +81,4 @@ CommonAjaxChannel.prototype = {
   }
 }
 
-return CommonAjaxChannel
+export default CommonAjaxChannel

@@ -11,7 +11,7 @@ const Scope_Event_Storage_Token = 'ScopeManager_Scope_Event_Storage_Token'
 const scopeStack: string[] = []
 const token = 'WINDOW_INSTANCE_DATASOURCE'
 
-if (window) {
+if (typeof window != 'undefined') {
   let unloadFunc = window.onunload
   window.onunload = function () {
     let storage = _getScopeInstanceStorage()

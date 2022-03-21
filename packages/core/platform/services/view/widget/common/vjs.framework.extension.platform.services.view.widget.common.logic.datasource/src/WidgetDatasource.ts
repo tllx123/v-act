@@ -22,7 +22,7 @@ export function initModule(sb) {}
  * @return {String} 控件绑定的数据源名称
  *
  */
-let getBindDatasourceName = function (widgetId) {
+let getBindDatasourceName = function (widgetId: string) {
   let datasourceName = null
   let datasourceNames = getBindDatasourceNames(widgetId)
   if (datasourceNames.length > 0) {
@@ -49,7 +49,7 @@ let getBindDatasourceName = function (widgetId) {
  * @return {Array} 控件绑定的数据源名称集合
  *
  */
-let getBindDatasourceNames = function (widgetId) {
+let getBindDatasourceNames = function (widgetId: string) {
   let datasourceNames = windowVmManager.getDatasourceNamesByWidgetCode({
     widgetCode: widgetId
   })
@@ -68,7 +68,7 @@ let getBindDatasourceNames = function (widgetId) {
  * @return {Object} 控件绑定的数据源
  *
  */
-let getBindDatasource = function (widgetId, datasourceName) {
+let getBindDatasource = function (widgetId: string, datasourceName: string) {
   let datasourceNames = windowVmManager.getDatasourceNamesByWidgetCode({
     widgetCode: widgetId
   })
@@ -109,7 +109,7 @@ let getBindDatasource = function (widgetId, datasourceName) {
  * @return {Array} 控件绑定的数据源集合
  *
  */
-let getBindDatasources = function (widgetId) {
+let getBindDatasources = function (widgetId: string) {
   let datasourceNames = windowVmManager.getDatasourceNamesByWidgetCode({
     widgetCode: widgetId
   })
@@ -131,7 +131,10 @@ let getBindDatasources = function (widgetId) {
  * @param {String} datasourceName （可选）数据源名称
  * @return {Array} 控件绑定的字段集合
  */
-let getBindDatasourceFields = function (widgetId, datasourceName) {
+let getBindDatasourceFields = function (
+  widgetId: string,
+  datasourceName: string
+) {
   let datasource = null
   let fields = []
   datasource = getBindDatasource(widgetId, datasourceName)
@@ -143,11 +146,11 @@ let getBindDatasourceFields = function (widgetId, datasourceName) {
 }
 
 let addBindDatasourceCurrentRecordEventHandler = function (
-  widgetId,
-  datasourceName,
-  datasourceFields,
-  updateEventHandler,
-  clearEventHandler
+  widgetId: string,
+  datasourceName: string,
+  datasourceFields: any[],
+  updateEventHandler: any,
+  clearEventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -180,10 +183,10 @@ let addBindDatasourceCurrentRecordEventHandler = function (
  * @return {Function} 设置值事件
  */
 let addBindDatasourceCurrentRecordUpdateEventHandler = function (
-  widgetId,
-  datasourceName,
-  datasourceFields,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  datasourceFields: any[],
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -207,10 +210,10 @@ let addBindDatasourceCurrentRecordUpdateEventHandler = function (
 }
 
 let addBindDatasourceCurrentRecordClearEventHandler = function (
-  widgetId,
-  datasourceName,
-  datasourceFields,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  datasourceFields: any[],
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -234,9 +237,9 @@ let addBindDatasourceCurrentRecordClearEventHandler = function (
 }
 
 let addBindDatasourceCurrentEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -255,9 +258,9 @@ let addBindDatasourceCurrentEventHandler = function (
 }
 
 let addBindDatasourceSelectEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -276,9 +279,9 @@ let addBindDatasourceSelectEventHandler = function (
 }
 
 let addBindDatasourceLoadEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -298,9 +301,9 @@ let addBindDatasourceLoadEventHandler = function (
 
 //绑定数据源状态（将要取数据）
 let addBindDatasourceFetchEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -320,9 +323,9 @@ let addBindDatasourceFetchEventHandler = function (
 
 //绑定数据源状态（获取数据之后？）
 let addBindDatasourceFetchedEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -340,9 +343,9 @@ let addBindDatasourceFetchedEventHandler = function (
   })
 }
 let addBindDatasourceUpdateEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -361,9 +364,9 @@ let addBindDatasourceUpdateEventHandler = function (
 }
 
 let addBindDatasourceDeleteEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -382,9 +385,9 @@ let addBindDatasourceDeleteEventHandler = function (
 }
 
 let addBindDatasourceInsertEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
+  widgetId: string,
+  datasourceName: string,
+  eventHandler: any
 ) {
   if (undefined == datasourceName || null == datasourceName)
     datasourceName = getBindDatasourceName(widgetId)
@@ -402,40 +405,20 @@ let addBindDatasourceInsertEventHandler = function (
   })
 }
 
-let addBindDatasourceFetchEventHandler = function (
-  widgetId,
-  datasourceName,
-  eventHandler
-) {
-  if (undefined == datasourceName || null == datasourceName)
-    datasourceName = getBindDatasourceName(widgetId)
-  if (undefined == datasourceName || null == datasourceName) return
-  let datasourceObserver = new DatasourceObserver(
-    datasourceName,
-    widgetId,
-    null
-  )
-  datasourceObserver.setFetchHandler(function (params) {
-    eventHandler(params)
-  })
-  return datasourceObserverManager.addObserver({
-    observer: datasourceObserver
-  })
-}
-
 /**
  * 获取单值控件的值
  *
  * @param {String} widgetId 控件编号
  * @return {String} 控件值
  */
-let getSingleValue = function (widgetId, field) {
-  let datasource = getBindDatasource(widgetId)
+let getSingleValue = function (widgetId: string, field: any) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
   let fields = []
   if (field) {
     fields = [field]
   } else {
-    fields = getBindDatasourceFields(widgetId)
+    fields = getBindDatasourceFields(widgetId, datasourceName)
   }
   let value = null
   if (datasource == null || fields.length < 1) {
@@ -456,9 +439,10 @@ let getSingleValue = function (widgetId, field) {
  * @param {String} widgetId 控件编号
  * @param {String} value 控件值
  */
-let setSingleValue = function (widgetId, value) {
-  let datasource = getBindDatasource(widgetId)
-  let fields = getBindDatasourceFields(widgetId)
+let setSingleValue = function (widgetId: string, value: any) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
+  let fields = getBindDatasourceFields(widgetId, datasourceName)
   if (fields.length > 1)
     throw new Error('接口调用错误，控件【' + widgetId + '】绑定了多个字段！')
   let field = fields[0]
@@ -486,9 +470,10 @@ let setSingleValue = function (widgetId, value) {
  * @param {String} widgetId 控件编号
  * @param {Boolean} onlyCleanSelectedRecord 是否只清除选中记录的值
  */
-let clearValue = function (widgetId, onlyCleanSelectedRecord) {
-  let datasource = getBindDatasource(widgetId)
-  let fields = getBindDatasourceFields(widgetId)
+let clearValue = function (widgetId: string, onlyCleanSelectedRecord: boolean) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
+  let fields = getBindDatasourceFields(widgetId, datasourceName)
   let records = []
   if (onlyCleanSelectedRecord) records = datasource.getSelectedRecords()
   else records = datasource.getAllRecords()
@@ -515,8 +500,9 @@ let clearValue = function (widgetId, onlyCleanSelectedRecord) {
  * @param {String} widgetId 控件编号
  * @param {Array} value 控件值
  */
-let setSingleRecordMultiValue = function (widgetId, value) {
-  let datasource = getBindDatasource(widgetId)
+let setSingleRecordMultiValue = function (widgetId: string, value: any) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
   let currentRecord = datasource.getCurrentRecord()
   if (!currentRecord) {
     currentRecord = datasource.createRecord()
@@ -538,8 +524,9 @@ let setSingleRecordMultiValue = function (widgetId, value) {
  *
  * @param {String} widgetId 控件编号
  */
-let getSingleRecordMultiValue = function (widgetId) {
-  let datasource = getBindDatasource(widgetId)
+let getSingleRecordMultiValue = function (widgetId: string) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
   let currentRecord = datasource.getCurrentRecord()
   return currentRecord.toMap()
 }
@@ -549,7 +536,7 @@ let getSingleRecordMultiValue = function (widgetId) {
  *
  * @param {String} widgetId 控件编号
  */
-let getSingleColumnWidgetDefaultValue = function (widgetId) {
+let getSingleColumnWidgetDefaultValue = function (widgetId: string) {
   let defaultValueScript = widgetContext.get(widgetId, 'DefaultValue')
   let value = ''
   if (defaultValueScript) {
@@ -565,8 +552,9 @@ let getSingleColumnWidgetDefaultValue = function (widgetId) {
   }
 }
 
-let setBaseValue = function (widgetId, records) {
-  let datasource = getBindDatasource(widgetId)
+let setBaseValue = function (widgetId: string, records: any) {
+  var datasourceName = getBindDatasourceName(widgetId)
+  let datasource = getBindDatasource(widgetId, datasourceName)
   datasource.updateRecords({
     records: records
   })

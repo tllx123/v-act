@@ -274,6 +274,7 @@ const main = function (ruleContext: RuleContext) {
         }
       }
 
+      //@ts-ignore
       if (finalResults != null && isAllMatchData && isExistMatchData)
         bussinessReturnValue = true
       else bussinessReturnValue = false
