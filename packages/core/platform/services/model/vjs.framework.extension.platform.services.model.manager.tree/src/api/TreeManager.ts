@@ -8,12 +8,12 @@ import { WindowVMMappingManager as vmManager } from '@v-act/vjs.framework.extens
 
 let __treeViewModelInstanceCache = {}
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-const lookup = function (params) {
+const lookup = function (params: any) {
   let datasourceName = params.datasourceName,
     treeStruct = params.treeStruct
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId: any = scopeManager.getCurrentScopeId()
   let treeType = treeStruct['type']
   if (!treeType) {
     throw new Error('参数传入错误！请检查。')
@@ -91,9 +91,9 @@ const lookup = function (params) {
   return instance
 }
 
-const lookupByName = function (params) {
+const lookupByName = function (params: any) {
   let datasourceName = params.datasourceName
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId: any = scopeManager.getCurrentScopeId()
   let isContain = false
   let instance = []
   let treeViewModelInstances = __treeViewModelInstanceCache[scopeId]

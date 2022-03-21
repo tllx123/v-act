@@ -8,9 +8,12 @@ import * as exception from '@v-act/vjs.framework.extension.platform.services.int
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+//规则主入口(必须有)
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
+
 const vds = {
   component,
   ds,
@@ -23,36 +26,34 @@ const vds = {
   window
 }
 
-//规则主入口(必须有)
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
-  return new Promise<void>(function (resolve, reject) {
+  return new Promise<void>(function (resolve: any, reject) {
     try {
       //获取规则上下文中的规则配置值
-      var inParamsObj = ruleContext.getVplatformInput()
-      var isAsyn = inParamsObj['isAsyn']
-      var itemConfigs = inParamsObj['itemsConfig']
+      var inParamsObj: Record<string, any> = ruleContext.getVplatformInput()
+      var isAsyn: boolean = inParamsObj['isAsyn']
+      var itemConfigs: any[] = inParamsObj['itemsConfig']
       for (var i = 0; i < itemConfigs.length; i++) {
-        var itemConfig = itemConfigs[i]
-        var isType = itemConfig['Istype']
+        var itemConfig: Record<string, any> = itemConfigs[i]
+        var isType: number = itemConfig['Istype']
         //查询：1，表：0
-        var queryConds = itemConfig['dsWhere']
+        var queryConds: null | undefined | string = itemConfig['dsWhere']
         // 过滤条件
-        var entityName = itemConfig['entityName']
+        var entityName: string = itemConfig['entityName']
         //目标DB
-        var itemqueryparam = itemConfig['itemqueryparam']
+        var itemqueryparam: string = itemConfig['itemqueryparam']
         //源数据中的字段
-        var items = itemConfig['items']
+        var items: string = itemConfig['items']
         //高级查询参数值
-        var tableOrQuery = itemConfig['tableOrQuery']
-        var valueFunctions = itemConfig['valueFunctions']
+        var tableOrQuery: any[] = itemConfig['tableOrQuery']
+        var valueFunctions: null | string = itemConfig['valueFunctions']
         //这里要处理常量和表达式的交互
         if (tableOrQuery != null && tableOrQuery.length > 0) {
           for (var index = 0; index < tableOrQuery.length; index++) {
             var columntableOrQuery = tableOrQuery[index]
 
-            var columnName = columntableOrQuery['paramsName']
-            var columnValue = columntableOrQuery['paramsValue']
+            var columnName: string = columntableOrQuery['paramsName']
+            var columnValue: string = columntableOrQuery['paramsValue']
             if (columnName == 'rowSumName' || columnName == 'colSumName') {
               if (!isEmpty(columnValue)) {
                 columnValue = vds.expression.execute(columnValue, {
@@ -71,6 +72,7 @@ const main = function (ruleContext: RuleContext) {
             }
           }
           if (valueFunctions != null) {
+            //@ts-ignore toJson()只传一个参数,但这里传两个
             var entityObject = vds.string.toJson(valueFunctions, false)
             var values = {
               paramsName: 'valueFunctions',
@@ -86,7 +88,7 @@ const main = function (ruleContext: RuleContext) {
         //处理非数据集字段的映射值
         var mappings = getMappings(items, ruleContext)
         // 根据过滤条件获取出源数据源数据
-        var isCustomSqlFind = isType + '' == '1'
+        var isCustomSqlFind: boolean = isType + '' == '1'
         var wrParam = {
           type: isCustomSqlFind
             ? vds.ds.WhereType.Query
@@ -200,7 +202,7 @@ const main = function (ruleContext: RuleContext) {
 }
 
 //判断字符是否为空的方法
-function isEmpty(obj) {
+function isEmpty(obj: string | null) {
   if (typeof obj == 'undefined' || obj == null || obj == '') {
     return true
   } else {
@@ -211,18 +213,21 @@ function isEmpty(obj) {
 /**
  * 获得非数据集字段的映射值
  */
-var getMappings = function (fromMappings, ruleContext) {
-  var returnMappings = []
+var getMappings = function (
+  fromMappings: string | any[],
+  ruleContext: RuleContext
+) {
+  var returnMappings: any[] = []
   if (!fromMappings || fromMappings.length <= 0) {
     return returnMappings
   } else {
     for (var index = 0; index < fromMappings.length; index++) {
-      var fromMapping = fromMappings[index]
-      var type = fromMapping['type']
+      var fromMapping: Record<string, any> = fromMappings[index]
+      var type: string = fromMapping['type']
       type = type.toString()
-      var destName = fromMapping['destName']
-      var sourceName = fromMapping['sourceName']
-      var returnMapping = {}
+      var destName: string = fromMapping['destName']
+      var sourceName: string = fromMapping['sourceName']
+      var returnMapping: Record<string, any> = {}
       returnMapping['type'] = type
       returnMapping['destName'] = destName
       switch (type) {
@@ -233,7 +238,7 @@ var getMappings = function (fromMappings, ruleContext) {
           break
         case 'expression':
           //表达式
-          var sourceName = vds.expression.execute(sourceName, {
+          sourceName = vds.expression.execute(sourceName, {
             ruleContext: ruleContext
           })
           returnMapping['sourceName'] = sourceName
@@ -247,8 +252,15 @@ var getMappings = function (fromMappings, ruleContext) {
   return returnMappings
 }
 
-var getDatasource = function (dsCode, type, methodContext) {
-  var datasource
+var getDatasource = function (
+  dsCode: string,
+  type: string,
+  methodContext: {
+    getVariable: (arg0: string) => boolean
+    getOutput: (arg0: string) => boolean
+  }
+) {
+  var datasource: boolean
   switch (type) {
     case 'windowVariant': //窗体输入
     case 'windowInput':
@@ -275,9 +287,9 @@ var getDatasource = function (dsCode, type, methodContext) {
   return datasource
 }
 
-var genCustomSqlQueryParams = function (params) {
+var genCustomSqlQueryParams = function (params: { [x: string]: any }) {
   // 构建实际查询时需要的参数对象
-  var queryParams = {}
+  var queryParams: Record<string, any> = {}
   if (params) {
     for (var key in params) {
       queryParams[key] = {}
@@ -288,14 +300,14 @@ var genCustomSqlQueryParams = function (params) {
   return queryParams
 }
 
-var getPagingInfoByDataSource = function (entityName) {
-  var types = ['JGDataGrid', 'JGPagination']
-  var widgetCodes = vds.widget.getWidgetCodes(entityName)
+var getPagingInfoByDataSource = function (entityName: string) {
+  var types: string[] = ['JGDataGrid', 'JGPagination']
+  var widgetCodes: any[] = vds.widget.getWidgetCodes(entityName)
   var pageInfo
   if (widgetCodes) {
     for (var i = 0; i < widgetCodes.length; i++) {
-      var widgetCode = widgetCodes[i]
-      var type = vds.widget.getType(widgetCode)
+      var widgetCode: string = widgetCodes[i]
+      var type: string = vds.widget.getType(widgetCode)
       if (types.indexOf(type) != -1) {
         pageInfo = vds.widget.execute(widgetCode, 'getPageInfo', [widgetCode])
         if (pageInfo) {
@@ -313,8 +325,11 @@ var getPagingInfoByDataSource = function (entityName) {
 
 //#region genCustomParams 方法
 
-var genCustomParams = function (paramDefines, ruleContext) {
-  var rs = {}
+var genCustomParams = function (
+  paramDefines: string | any[],
+  ruleContext: RuleContext
+) {
+  var rs: Record<string, any> = {}
   if (paramDefines && paramDefines.length > 0) {
     for (var i = 0; i < paramDefines.length; i++) {
       var define = paramDefines[i]
@@ -346,12 +361,12 @@ var genCustomParams = function (paramDefines, ruleContext) {
  * @param componentControlId 参数来源控件
  */
 var getCustomParamValue = function (
-  queryfieldValue,
-  type,
-  componentControlId,
-  ruleContext
+  queryfieldValue: string,
+  type: string,
+  componentControlId: any,
+  ruleContext: RuleContext
 ) {
-  var returnValue = ''
+  var returnValue: string | boolean | null = ''
 
   switch (vds.string.trim(type + '')) {
     case '1':
@@ -359,9 +374,9 @@ var getCustomParamValue = function (
         vds.log.warn(queryfieldValue + ' 格式必须为表名.字段名')
         break
       }
-      var ds = queryfieldValue.split('.')[0]
-      var fieldName = queryfieldValue.split('.')[1]
-      var record = getCurrentRecord(ds)
+      var ds: string = queryfieldValue.split('.')[0]
+      var fieldName: string = queryfieldValue.split('.')[1]
+      var record: { get: (x: string) => string } = getCurrentRecord(ds)
       returnValue = record.get(fieldName)
       break
     case '2':
@@ -397,8 +412,8 @@ var getCustomParamValue = function (
       var storeType = vds.widget.getStoreType(valueQueryControlID)
       var storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
-      var ds = getDsName(valueQueryControlID)
-      var record = getCurrentRecord(ds)
+      ds = getDsName(valueQueryControlID)
+      record = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
         if (record) {
@@ -458,16 +473,15 @@ var getCustomParamValue = function (
   //return (null == returnValue || undefined == returnValue ? "" : returnValue);
   return undefined == returnValue ? null : returnValue
 }
-var getCurrentRecord = function (ds) {
-  var datasource = vds.ds.lookup(ds)
+var getCurrentRecord = function (ds: string) {
+  var datasource: { getCurrentRecord: () => any } = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 
-var getDsName = function (widgetCode) {
-  var dsNames = vds.widget.getDatasourceCodes(widgetCode)
+var getDsName = function (widgetCode: string) {
+  var dsNames: any[] = vds.widget.getDatasourceCodes(widgetCode)
   return dsNames[0]
 }
 
 //#endregion
-
 export { main }

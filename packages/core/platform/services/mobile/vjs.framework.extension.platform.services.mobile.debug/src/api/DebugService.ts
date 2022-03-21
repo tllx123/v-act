@@ -1,8 +1,9 @@
 import { aop as debugService } from '@v-act/vjs.framework.extension.platform.aop'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 import { ProgressBarUtil as progressBar } from '@v-act/vjs.framework.extension.ui.common.plugin.services.progressbar'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
 /**
  * 开启调试
@@ -12,7 +13,7 @@ export function initModule(sb) {}
  */
 let init = function () {
   if (!isWeiXinFunc()) {
-    let touchCB = function (ev) {
+    let touchCB = function (ev: any) {
       sendRequest()
     }
     loadTouchJS(touchCB)
@@ -20,18 +21,21 @@ let init = function () {
 }
 
 //引入touchjs 绑定长按事件
-function loadTouchJS(callback) {
+function loadTouchJS(callback: Function) {
   let touchjs = ['itop/common/touchjs/touchjs.js']
+  //@ts-ignore
   head.js(touchjs, function () {
     // touchjs实现长按2.5秒，弹出确认框询问是否进入远程调试设置界面
+    //@ts-ignore
     touch.config.holdTime = 2000
+    //@ts-ignore
     touch.on(window, 'hold', $('body'), callback)
   })
 }
 
 //获取服务端是否开启debug模式
 function sendRequest() {
-  let callback = function (res) {
+  let callback = function (res: any) {
     if (res && res.responseText) {
       let obj = $.parseJSON(res.responseText)
       if (obj.data == 'true') {
@@ -41,7 +45,7 @@ function sendRequest() {
           $('body').append(layerHTML)
           $('#debugpage').load(
             'itop/v3/debug/page/debug.html',
-            function (html) {
+            function (html: any) {
               showDebugPage()
               eventBinding()
             }
@@ -87,7 +91,8 @@ function eventBinding() {
     hideDebugPage()
   })
 
-  $('#useit').click(function (ev) {
+  $('#useit').click(function (ev: any) {
+    //@ts-ignore
     let on = document.getElementById('useit').checked
     let serverPath = $('#serverpath').val()
     setLocalStorage('weixin_debug_path', serverPath)
@@ -104,14 +109,15 @@ function eventBinding() {
 function startDebug() {
   progressBar.showProgress('正在连接服务器...')
   let debugHost = $('#serverpath').val()
-  debugService.setRemoteDebugHost(debugHost, function (success) {
+  debugService.setRemoteDebugHost(debugHost, function (success: any) {
     progressBar.hideProgress()
     if (success) {
       alert('已开启远程调试功能')
       debugService.markDebugEnable()
     } else {
       alert('连接失败，请确认服务地址是否正确')
-      document.getElementById('useit').checked = false
+      //@ts-ignore
+      document.getElementById('useit')?.checked = false
     }
   })
 }
@@ -119,6 +125,7 @@ function startDebug() {
 //检查是否处于微信端
 function isWeiXinFunc() {
   let ua = navigator.userAgent.toLowerCase()
+  //@ts-ignore
   if (ua.match(/MicroMessenger/i) == 'micromessenger') {
     return true
   } else {
@@ -127,12 +134,12 @@ function isWeiXinFunc() {
 }
 
 //localstorage存储
-function setLocalStorage(key, value) {
+function setLocalStorage(key: string, value: string) {
   localStorage.setItem(key, value)
 }
 
 //localstorage取值
-function getLocalStorage(key) {
+function getLocalStorage(key: string) {
   return localStorage.getItem(key)
 }
 
