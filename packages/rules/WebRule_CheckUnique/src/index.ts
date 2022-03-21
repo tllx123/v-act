@@ -322,7 +322,8 @@ let getTableRecords = function (
 ) {
   let callback = function (resultData: Array<Record<string, any>>) {
     let isRepeat = false
-    if (vds.object.isArray(resultData) && resultData.length > 0) {
+    //if (vds.object.isArray(resultData) && resultData.length > 0) {
+    if (Array.isArray(resultData) && resultData.length > 0) {
       let ds = resultData[0]
       let records = ds.datas.values
       let tableRepeatRecords = handleOtherCondition(records, tmpNullIn)

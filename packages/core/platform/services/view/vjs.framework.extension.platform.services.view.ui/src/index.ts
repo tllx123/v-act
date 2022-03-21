@@ -1,2 +1,3 @@
-export * from './ZIndex'
-export * from './BackMask'
+export * as ZIndex from './ZIndex'
+export * as BackMask from './BackMask'
+export * as AlertMessage from './AlertMessage'
