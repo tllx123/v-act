@@ -1,30 +1,27 @@
-import * as i18n from '@v-act/vjs.framework.extension.platform.services.integration.vds.i18n'
-import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.logutil'
-import * as $ from '@v-act/vjs.framework.extension.vendor.jquery'
-import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
-import * as stringUtils from '@v-act/vjs.framework.extension.util.string'
-const vds = { i18n, log, $, window, stringUtils }
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as stringUtils } from '@v-act/vjs.framework.extension.util.string'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as backMask from './BackMask'
 import * as zindex from './ZIndex'
 
-var dialogs = [],
-  alertDiv,
-  _dialogIntervalIndex = null,
-  defaultViewTime = 3,
-  currentDialogInfo = null
+const dialogs: any[] = []
+let alertDiv: any,
+  _dialogIntervalIndex: any = null,
+  defaultViewTime: number = 3,
+  currentDialogInfo: any = null
 
 let _inited = false
 
 const _init = function () {
   if (!_inited) {
-    var divId = '___alertMessageDiv'
+    const divId = '___alertMessageDiv'
     //插入DOM到页面
     alertDiv = $('#' + divId)
     if (alertDiv && alertDiv.length == 0) {
       //初始化提示框div
-      var dialogDOM = _generateDiaLog(divId)
+      const dialogDOM = _generateDiaLog(divId)
       $('body').append(dialogDOM)
       alertDiv = $('#' + divId)
       alertDiv.find('#dialogConfirm').click(function () {
@@ -41,7 +38,7 @@ const _init = function () {
   }
 }
 
-var confirmDialog = function (
+const confirmDialog = function (
   title: any,
   content: any,
   onCallback: any,
@@ -51,7 +48,7 @@ var confirmDialog = function (
   _dialogInterval(title, content, 'confirm', onCallback, isEsCapeHtml)
 }
 
-var propmtDialog = function (
+const propmtDialog = function (
   title: any,
   content: any,
   onCallback: any,
@@ -65,17 +62,16 @@ var propmtDialog = function (
   _dialogInterval(title, content, 'prompt', onCallback, isEsCapeHtml)
 }
 
-var _dialogInterval = function (
+const _dialogInterval = function (
   title: any,
   content: any,
   type: any,
   onCallback: any,
   isEsCapeHtml: any
 ) {
-  _init()
   // 对话框队列, 实现对话框按照执行顺序显示
-  var _dialogId = 'dialog_' + _genRamdomNum()
-  var _dialogInfo = {
+  const _dialogId = 'dialog_' + _genRamdomNum()
+  const _dialogInfo = {
     id: _dialogId, //对话框ID
     info: {
       title: title,
@@ -93,7 +89,7 @@ var _dialogInterval = function (
     _dialogIntervalIndex = setInterval(function () {
       try {
         _dialogIntervalHandler()
-      } catch (e) {
+      } catch (e: any) {
         log.error(
           '[AlertMessage._dialogInterval]提示框出现错误！原因：' + e.message
         )
@@ -102,15 +98,14 @@ var _dialogInterval = function (
   }
 }
 
-var _dialogIntervalHandler = function () {
-  _init()
+const _dialogIntervalHandler = function () {
   if (dialogs.length > 0) {
     //队列不为空，且当前没有提示框显示
     if (!currentDialogInfo) {
       //当前没有提示框显示，则显示提示框，否则等待当前提示框显示完毕
       currentDialogInfo = dialogs[0].info
       dialogs.splice(0, 1)
-      var type = currentDialogInfo.type
+      const type = currentDialogInfo.type
       switch (type) {
         case 'confirm':
           _showConfirmDialog()
@@ -127,8 +122,7 @@ var _dialogIntervalHandler = function () {
   }
 }
 
-var _showConfirmDialog = function () {
-  _init()
+const _showConfirmDialog = function () {
   // 遮罩层显示
   backMask.Show()
   //清除初始的隐藏样式
@@ -142,8 +136,7 @@ var _showConfirmDialog = function () {
   _enterKeyPressHandler(alertDiv)
 }
 
-var _enterKeyPressHandler = function (_$div: any) {
-  _init()
+const _enterKeyPressHandler = function (_$div: any) {
   _$div
     .find('#dialogConfirm')
     .removeClass('dialogConfirmUnSelect')
@@ -158,32 +151,40 @@ var _enterKeyPressHandler = function (_$div: any) {
     _$div.find('#dialog_foot_pro_div').is(':visible') ||
     _$div.find('#dialog_foot_div').is(':visible')
   ) {
-    _$div.on('focusin', function (e) {
+    _$div.on('focusin', function (e: any) {
       _$div.off('keydown')
-      _$div.on('keydown', function (e) {
+      _$div.on('keydown', function (e: any) {
         if (e.which === 9 && _$div.find('#dialog_foot_div').is(':visible')) {
           e.preventDefault()
-          var id = this.id
-          var $input = $('#' + id).find('#dialog_foot_div input')
-          $input.each(function (item) {
-            var className = this.className
+          //@ts-ignore
+          const id = this.id
+          const $input = $('#' + id).find('#dialog_foot_div input')
+          $input.each(function (item: any) {
+            //@ts-ignore
+            const className = this.className
             if (className.indexOf('dialogConfirmSelect') != -1) {
+              //@ts-ignore
               $(this).removeClass('dialogConfirmSelect')
+              //@ts-ignore
               $(this).addClass('dialogConfirmUnSelect')
             } else {
+              //@ts-ignore
               $(this).removeClass('dialogConfirmUnSelect')
+              //@ts-ignore
               $(this).addClass('dialogConfirmSelect')
             }
           })
         }
       })
-      _$div.on('keypress', function (e) {
+      _$div.on('keypress', function (e: any) {
         if ((e.which === 13 || e.which == 32) && _$div.is(':focus')) {
           _$div.blur()
           _$div.off('keypress focusin')
           if (
             _$div.find('#dialog_foot_div').is(':visible') &&
+            //@ts-ignore
             $(this).find('input.dialogConfirmSelect').length > 0 &&
+            //@ts-ignore
             $(this).find('input.dialogConfirmSelect')[0].id == 'dialogCancel'
           ) {
             iKnowHandler(true)
@@ -201,11 +202,11 @@ var _enterKeyPressHandler = function (_$div: any) {
 /**
  * 显示确认框
  */
-var _showPromptDialog = function () {
-  _init()
+const _showPromptDialog = function () {
   _showConfirmDialog()
   currentDialogInfo.viewTime = defaultViewTime
   //2017-02-14 liangzc:移动app上面不用显示倒计时
+  //@ts-ignore
   if (window.VJSBridge) {
     currentDialogInfo.timeInterval = setInterval(function () {
       //显示倒计时
@@ -215,7 +216,7 @@ var _showPromptDialog = function () {
       }
     }, 1000)
   } else {
-    var span = alertDiv.find('#dialogIKnow > span')
+    const span = alertDiv.find('#dialogIKnow > span')
     span.html(defaultViewTime)
     currentDialogInfo.timeInterval = setInterval(function () {
       //显示倒计时
@@ -228,33 +229,31 @@ var _showPromptDialog = function () {
   }
 }
 
-var clearDialogInfo = function () {
-  _init()
+const clearDialogInfo = function () {
   alertDiv.removeClass('dialog-show').removeClass('dialogContainer-border')
   backMask.Hide()
-  var result = currentDialogInfo
+  const result = currentDialogInfo
   currentDialogInfo = null
   return result
 }
 
-var confirmHandler = function () {
-  var info = clearDialogInfo()
+const confirmHandler = function () {
+  const info = clearDialogInfo()
   if (info.onCallback) {
     info.onCallback(true)
   }
 }
 
-var cancelHandler = function () {
-  var info = clearDialogInfo()
+const cancelHandler = function () {
+  const info = clearDialogInfo()
   if (info.onCallback) {
     info.onCallback(false)
   }
 }
 
-var iKnowHandler = function (isCancle: boolean) {
-  _init()
-  var info = clearDialogInfo()
-  var _info = info + ''
+const iKnowHandler = function (isCancle: boolean) {
+  const info = clearDialogInfo()
+  const _info = info + ''
   if (_info !== 'null' && _info !== 'undefined') {
     if (info.timeInterval) clearInterval(info.timeInterval)
 
@@ -269,16 +268,15 @@ var iKnowHandler = function (isCancle: boolean) {
 }
 
 // 生成6位随机数
-var _genRamdomNum = function () {
-  var num = ''
-  for (var i = 0; i < 6; i++) num += Math.floor(Math.random() * 10)
+const _genRamdomNum = function () {
+  let num = ''
+  for (let i = 0; i < 6; i++) num += Math.floor(Math.random() * 10)
 
   return num
 }
 
-var _updateDialog = function () {
-  _init()
-  var title = currentDialogInfo.title,
+const _updateDialog = function () {
+  let title = currentDialogInfo.title,
     content = currentDialogInfo.content,
     type = currentDialogInfo.type
   // 更新标题
@@ -296,13 +294,13 @@ var _updateDialog = function () {
     alertDiv.find('#dialog_foot_pro_div').show()
   }
   //重新计算 z-index
-  var newIndex = zindex.getFrontZIndex()
+  let newIndex = zindex.getFrontZIndex()
 
   // 处理进度条已显示出来导致遮盖问题
-  var _loading: any = document.getElementById('_waitingMsgDiv')
+  const _loading: any = document.getElementById('_waitingMsgDiv')
   if (_loading) {
-    var _loadingZIndex = _loading.style.zIndex * 1
-    var _loadingIsShowed = _loading.style.display === 'none' ? false : true
+    const _loadingZIndex = _loading.style.zIndex * 1
+    const _loadingIsShowed = _loading.style.display === 'none' ? false : true
     if (_loadingIsShowed) {
       newIndex = _loadingZIndex > newIndex ? _loadingZIndex * 1 + 100 : newIndex
     }
@@ -311,8 +309,7 @@ var _updateDialog = function () {
   _handleDialogCenter()
 }
 
-var _handleDialogCenter = function () {
-  _init()
+const _handleDialogCenter = function () {
   /*
    * 移动端软键盘弹起，收起时计算错误
    * */
@@ -336,14 +333,15 @@ var _handleDialogCenter = function () {
   }
 }
 
-var _generateDiaLog = function (id: any) {
-  var _left = ''
-  var _right = ''
+const _generateDiaLog = function (id: any) {
+  let _left = ''
+  let _right = ''
+  //@ts-ignore
   if (!window.VJSBridge) {
     _left = '('
     _right = ')'
   }
-  var result =
+  const result =
     '<div id="' +
     id +
     '" tabindex="99999999" class="dialogContainer" style="display:none;">' +
