@@ -3,8 +3,6 @@ import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { MathUtil } from '@v-act/vjs.framework.extension.util.Math'
-import { ParseExpression } from './ParseExpression'
-import { subtract } from '@v-act/vjs.framework.extension.util.math/src/math'
 
 export default class Context {
   private readonly context: any
