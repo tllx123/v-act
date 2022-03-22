@@ -258,10 +258,10 @@ class Window {
     if (funcSet.length > 0) {
       funcSet.forEach((funcCode) => {
         funcImports.push(
-          `const ${ruleCode} = (await import('@v-act/webfunc_${funcCode.toLowerCase()}'))`
+          `const ${funcCode} = (await import('@v-act/webfunc_${funcCode.toLowerCase()}'))`
         )
         funcImports.push('\n')
-        funcDefines.push(`"${ruleCode}":${ruleCode}`)
+        funcDefines.push(`"${funcCode}":${funcCode}`)
         funcDefines.push(',')
       })
       funcImports.pop()

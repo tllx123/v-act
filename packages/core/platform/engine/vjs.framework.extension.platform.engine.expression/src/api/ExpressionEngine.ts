@@ -14,19 +14,25 @@ interface IExecuteParams {
 }
 
 const execute = function (params: IExecuteParams) {
-  let context = params.context,
-    exp = params.expression
+  let { context, expression } = params
+  if (!expression) {
+    throw exceptionFactory.create({
+      type: exceptionFactory.TYPES.Config,
+      exceptionDatas: genExceptionData(),
+      message: '不支持空表达式,请检查相关配置!'
+    })
+  }
 
   // 使用函数执行器
   context = new newContext(context)
-  let funMain = `return ${ParseExpression(exp)}`
+  let funMain = `return  ${ParseExpression(expression)}`
   let result: Function = new Function('context', funMain)
 
   try {
     return result(context)
   } catch (e) {
     throw new Error(
-      '解释表达式【' + exp + '】中的变量出现错误,错误原因：' + e.message
+      '解释表达式【' + expression + '】中的变量出现错误,错误原因：' + e.message
     )
   }
 }

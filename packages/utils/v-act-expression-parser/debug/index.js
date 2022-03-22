@@ -117,6 +117,15 @@ const testPrint = function (exp) {
     },
     printNotEqualSyntax: function (syntax, print) {
       return `${print(syntax.getLeft())}!=${print(syntax.getRight())}`
+    },
+    printSubtractSyntax: function (syntax, print) {
+      return (
+        'context.evaluateSub("' +
+        syntax.getLeft() +
+        '","' +
+        syntax.getRight() +
+        '")'
+      )
     }
   })
 }
@@ -136,7 +145,7 @@ const testPrintAll = function () {
 
 //test()
 //testAll()
-const script = testPrint('CC.JGButton1.LabelText')
+const script = testPrint('4.3-9.2')
 console.log(script)
 // const func = new Function(
 //   { getRulesetInput: function () {}, getRulesetVar: function () {} },
