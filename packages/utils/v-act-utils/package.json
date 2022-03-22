@@ -19,6 +19,7 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "copy:runtime": "mkdirp ./apps/runtime/node_modules/@v-act/utils && cpy . ../../../apps/runtime/node_modules/@v-act/utils",
     "dev": "rollup -wc"
   },
   "dependencies": {

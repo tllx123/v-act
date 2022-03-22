@@ -2,26 +2,31 @@ import * as jsTool from 'module'
 import * as mathUtil from 'module'
 import * as viewModel from 'module'
 
-// 加载mathUtil模块
+import * as record from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 
-export function initModule() {}
+const vds = { jsTool, mathUtil, viewModel, record }
+
 // 主入口(必须有)
 const main = function (
-  srcEntityName,
-  destEntityName,
-  destKeyColumn,
-  destValueColumn
+  srcEntityName: string,
+  destEntityName: string,
+  destKeyColumn: string,
+  destValueColumn: string
 ) {
-  if (mathUtil.isEmpty(srcEntityName)) {
+  //@ts-ignore
+  if (vds.mathUtil.isEmpty(srcEntityName)) {
     throw new Error('源实体名为空，请检查')
   }
-  if (mathUtil.isEmpty(destEntityName)) {
+  //@ts-ignore
+  if (vds.mathUtil.isEmpty(destEntityName)) {
     throw new Error('目标实体为空，请检查')
   }
-  if (mathUtil.isEmpty(destKeyColumn)) {
+  //@ts-ignore
+  if (vds.mathUtil.isEmpty(destKeyColumn)) {
     throw new Error('目标标识字段名为空，请检查')
   }
-  if (mathUtil.isEmpty(destValueColumn)) {
+  //@ts-ignore
+  if (vds.mathUtil.isEmpty(destValueColumn)) {
     throw new Error('目标值字段名为空，请检查')
   }
 
@@ -40,47 +45,55 @@ const main = function (
  *            源字段列与值信息
  */
 let _newRecord = function (
-  srcEntityName,
-  destEntityName,
-  srcKeyColumn,
-  srcValueColumn
+  srcEntityName: string,
+  destEntityName: string,
+  srcKeyColumn: string,
+  srcValueColumn: string
 ) {
-  if (!viewModel.getMetaModule().isDataSourceExist(srcEntityName)) {
+  //@ts-ignore
+  if (!vds.viewModel.getMetaModule().isDataSourceExist(srcEntityName)) {
     throw new Error('来源实体不存在！srcEntityName=' + srcEntityName)
   }
 
   // 源记录集合
-  let srcResult = viewModel.getDataModule().getAllRecordsByDS(srcEntityName)
+  //@ts-ignore
+  let srcResult = vds.viewModel.getDataModule().getAllRecordsByDS(srcEntityName)
 
   if (srcResult == null || srcResult.length == 0) {
     //log.warn("要复制的源实体没有符合条件的记录！srcEntityName=" + srcEntityName);
   }
-
-  if (!viewModel.getMetaModule().isDataSourceExist(destEntityName)) {
+  //@ts-ignore
+  if (!vds.viewModel.getMetaModule().isDataSourceExist(destEntityName)) {
     throw new Error('目标实体不存在！destEntityName=' + destEntityName)
   }
 
   if (srcResult != null && srcResult.length > 0) {
-    record = srcResult[0]
+    vds.record = srcResult[0]
   }
 
   // 目标实体字段
-  let srcFields = viewModel.getMetaModule().getMetadataFieldsByDS(srcEntityName)
+  //@ts-ignore
+  let srcFields: any[] = vds.viewModel
+    .getMetaModule()
+    .getMetadataFieldsByDS(srcEntityName)
 
-  let insertRecords = []
+  let insertRecords: any[] = []
   for (let i = 0; i < srcFields.length; i++) {
-    let srcCode = jsTool.getFieldName(srcFields[i].code)
+    //@ts-ignore
+    let srcCode: string = vds.jsTool.getFieldName(srcFields[i].code)
     if (srcCode.toLowerCase() != 'id') {
-      let insertRecord = viewModel
+      let insertRecord: Record<string, any> = vds.viewModel
+        //@ts-ignore
         .getDataModule()
         .createEmptyRecordByDS(destEntityName, true)
       insertRecord.set(srcKeyColumn, srcCode)
-      insertRecord.set(srcValueColumn, record.get(srcCode))
+      //@ts-ignore
+      insertRecord.set(srcValueColumn, vds.record.get(srcCode))
       insertRecords.push(insertRecord)
     }
   }
-
-  viewModel.getDataModule().insertByDS(destEntityName, insertRecords)
+  //@ts-ignore
+  vds.viewModel.getDataModule().insertByDS(destEntityName, insertRecords)
 }
 
 export { main }

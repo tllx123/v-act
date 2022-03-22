@@ -1,7 +1,5 @@
 import * as widgetAction from './WidgetAction'
 
-export function initModule(sb) {}
-
 let set = function (widgetId: any, propertyName: string) {
   let actionName = 'set' + propertyName
   return widgetAction.executeWidgetAction(widgetId, actionName)

@@ -1,23 +1,23 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
 const openVideoPlayer = function (
-  videoPath,
-  fileName,
-  successCallback,
-  failCallback
+  videoPath: string,
+  fileName: string,
+  successCallback: any,
+  failCallback: any
 ) {
   instance.openVideoPlayer(videoPath, fileName, successCallback, failCallback)
 }
 
 const openVideoPlayerByFileId = function (
-  fileId,
-  fileName,
-  successCallback,
-  failCallback
+  fileId: string,
+  fileName: string,
+  successCallback: any,
+  failCallback: any
 ) {
   instance.openVideoPlayerByFileId(
     fileId,
@@ -31,18 +31,22 @@ const getMediaObj = function () {
   return instance.getMediaObj()
 }
 
-const getFileLocalPathById = function (fileID, fileName) {
+const getFileLocalPathById = function (fileID: string, fileName: string) {
   let filePath = ''
+  //@ts-ignore
   if (window.GlobalVariables) {
     let localFiles = window.localStorage.getItem('download_file_' + fileID)
     if (localFiles) {
+      //@ts-ignore
       if (cordova.platformId == 'android') {
+        //@ts-ignore
         filePath =
           cordova.file.externalRootDirectory +
           'path/to/downloads/' +
           fileID +
           fileName.substring(fileName.lastIndexOf('.'), fileName.length) //Android版本地存放地址
       } else {
+        //@ts-ignore
         filePath =
           cordova.file.documentsDirectory +
           '/path/to/downloads/' +
@@ -58,9 +62,9 @@ const getFileLocalPathById = function (fileID, fileName) {
 }
 
 export {
-  putInstance,
+  getFileLocalPathById,
+  getMediaObj,
   openVideoPlayer,
   openVideoPlayerByFileId,
-  getMediaObj,
-  getFileLocalPathById
+  putInstance
 }

@@ -1,4 +1,4 @@
-const checkFileIsExist = function (fileID) {
+const checkFileIsExist = function (fileID: string) {
   let localFiles = window.localStorage.getItem('download_file_' + fileID)
   if (localFiles) {
     return true
@@ -6,14 +6,14 @@ const checkFileIsExist = function (fileID) {
   return false
 }
 
-const setLocalFlag = function (fileID) {
+const setLocalFlag = function (fileID: string) {
   let localFiles = window.localStorage.getItem('download_file_' + fileID)
   if (!localFiles) {
     window.localStorage.setItem('download_file_' + fileID, true)
   }
 }
 
-function unique(arr) {
+function unique(arr: any[]) {
   let n = []
   for (let i = 0; i < arr.length; i++) {
     if (n.indexOf(arr[i]) == -1) n.push(arr[i])
@@ -21,12 +21,4 @@ function unique(arr) {
   return n
 }
 
-export {
-  fileOpen,
-  putInstance,
-  filetransferUpload,
-  filetransferDownload,
-  supportOnProgress,
-  checkFileIsExist,
-  setLocalFlag
-}
+export { checkFileIsExist, setLocalFlag, unique }

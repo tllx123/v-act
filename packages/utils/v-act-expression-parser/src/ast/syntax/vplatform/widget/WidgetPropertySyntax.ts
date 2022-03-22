@@ -1,7 +1,7 @@
+import { DotToken, Token } from '@v-act/tokenizer'
+
 import Position from '../../../Position'
 import SyntaxParseContext from '../../../SyntaxParseContext'
-import { DotToken } from '@v-act/tokenizer'
-import { Token } from '@v-act/tokenizer'
 import { getVarIdentifierTokens } from '../../../utils/TokenUtils'
 import Syntax from '../../Syntax'
 
@@ -44,7 +44,7 @@ class WidgetPropertySyntax extends Syntax {
     let widgetCodeTokens = getVarIdentifierTokens(index + 1, <Token[]>tokens)
     let widgetCode = widgetCodeTokens.join('')
     let propertyCodeTokens = getVarIdentifierTokens(
-      index + 1 + widgetCodeTokens.length,
+      index + 2 + widgetCodeTokens.length,
       <Token[]>tokens
     )
     let propertyCode = propertyCodeTokens.join('')

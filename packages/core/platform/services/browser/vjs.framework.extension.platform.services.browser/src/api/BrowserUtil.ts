@@ -6,17 +6,17 @@ import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.pla
 /**
  * 关闭窗口
  */
-const closeWindow = function (params) {
+const closeWindow = function (params: Record<string, any>) {
   //是否确定退出
-  var isConfirmExit = params && !!params.isConfirmExit
-  var returnValues = {}
+  let isConfirmExit = params && !!params.isConfirmExit
+  let returnValues = {}
   try {
-    var values = wParamManager.getOutputs()
+    let values = wParamManager.getOutputs()
     for (var key in values) {
       if (!values.hasOwnProperty(key)) {
         continue
       }
-      var value = values[key]
+      let value = values[key]
       if (datasourceFactory.isDatasource(value)) {
         returnValues[key] = value.serialize()
       } else {
@@ -24,7 +24,7 @@ const closeWindow = function (params) {
       }
     }
   } catch (e) {}
-  var windowUtil = _getWindowService()
+  let windowUtil: Record<string, any> = _getWindowService()
   windowUtil.closeWindowTab()
   //模态方式打开链接地址监听这个
   eventManager.fireCrossDomainEvent({
@@ -50,7 +50,7 @@ const closeWindow = function (params) {
   })
 }
 
-var _getWindowService = function () {
+const _getWindowService = function () {
   return _getService(
     'vjs.framework.extension.platform.services.domain.browser.Window'
   )
@@ -60,17 +60,18 @@ var _getWindowService = function () {
  * 根据体系获取对应服务
  * 未指定体系则获取未定义体系的vjs
  */
-var _getService = function (serviceName) {
-  var mobileSerType = 'bootstrap_mobile',
+const _getService = function (serviceName: string) {
+  let mobileSerType = 'bootstrap_mobile',
     widgetSeries = scopeManager.getProperty('type'),
-    widgetSeriesType = {
+    widgetSeriesType: Record<string, any> = {
       type: widgetSeries
     }
 
   // bootstrap 和 smartclient 体系下的 vjs.framework.extension.platform.services.domain.browser.Window 未在pom文件指定体系
-  if (widgetSeries !== mobileSerType) widgetSeriesType = ''
+  if (widgetSeries !== mobileSerType) widgetSeriesType = {}
 
-  var service = sandbox.getService(serviceName, widgetSeriesType)
+  //let service = sandbox.getService(serviceName, widgetSeriesType)
+  let service = null
 
   if (service == null)
     throw Error(

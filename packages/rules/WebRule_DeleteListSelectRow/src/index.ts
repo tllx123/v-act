@@ -5,21 +5,22 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 const vds = { ds, exception, expression }
 
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var deleteParams = ruleContext.getVplatformInput()
-      var dsName = deleteParams['TableName']
-      var condition = deleteParams['Condition']
+      var deleteParams: Record<string, any> = ruleContext.getVplatformInput()
+      var dsName: string = deleteParams['TableName']
+      var condition: string = deleteParams['Condition']
       //删除方式，0表示删除当前选中记录,1表示删除指定条件记录(条件为空时删除所有的)，如果删除方式为空,默认为删除当前选中记录
-      var deleteType = deleteParams['deleteType']
-      var entityType = deleteParams['EntityType']
+      var deleteType: string = deleteParams['deleteType']
+      var entityType: string = deleteParams['EntityType']
       //根据类型获取数据源
-      var datasource = getDataSource(dsName, entityType, ruleContext)
-      var removeIds = getRemoveIds(
+      var datasource: any = getDataSource(dsName, entityType, ruleContext)
+      var removeIds: undefined | null | any[] = getRemoveIds(
         datasource,
         condition,
         deleteType,
@@ -43,14 +44,24 @@ const main = function (ruleContext: RuleContext) {
  * @param deleteType 删除方式
  * @param deleteType 规则上下文
  */
-var getRemoveIds = function (datasource, condition, deleteType, ruleContext) {
+var getRemoveIds = function (
+  datasource: {
+    getSelectedRecords: () => { toArray: () => any[] }
+    getAllRecords: () => { toArray: () => any[] }
+  },
+  condition: string | null,
+  deleteType: string | number | null,
+  ruleContext: RuleContext
+) {
   //删除方式，0表示删除当前选中记录,1表示删除指定条件记录(条件为空时删除所有的),如果删除方式为空，默认为删除当前选中记录
   if (deleteType == null) deleteType = '0'
 
-  var removeIds = []
+  var removeIds: any[] = []
   //0表示删除当前选中记录
   if (deleteType == '0' || deleteType == 0) {
-    var retRecords = datasource.getSelectedRecords().toArray()
+    var retRecords: undefined | null | any[] = datasource
+      .getSelectedRecords()
+      .toArray()
     // 取选中行
     // 遍历数据取主键id
     if (
@@ -64,17 +75,17 @@ var getRemoveIds = function (datasource, condition, deleteType, ruleContext) {
     }
   } else if (deleteType == '1' || deleteType == 1) {
     //1表示删除指定条件记录
-    var records = datasource.getAllRecords().toArray()
+    var records: any[] | undefined | null = datasource.getAllRecords().toArray()
     if (undefined != records && null != records && records.length > 0) {
       for (var index = 0; index < records.length; index++) {
-        var record = records[index]
-        var id = record.getSysId()
+        var record: { getSysId: () => string } = records[index]
+        var id: string = record.getSysId()
         //条件为空时删除所有的
         if (condition == null || condition.length == 0) {
           removeIds.push(id)
           continue
         }
-        var ret = vds.expression.execute(condition, {
+        var ret: boolean = vds.expression.execute(condition, {
           ruleContext: ruleContext,
           records: [record]
         })
@@ -97,7 +108,11 @@ var getRemoveIds = function (datasource, condition, deleteType, ruleContext) {
  * @param entityType 实体类型
  * @param ruleContext 规则上下文
  */
-var getDataSource = function (dsName, entityType, ruleContext) {
+var getDataSource = function (
+  dsName: string,
+  entityType: string | undefined,
+  ruleContext: RuleContext
+) {
   var datasource = null
   if (undefined == entityType || entityType == 'window') {
     datasource = vds.ds.lookup(dsName)

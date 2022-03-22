@@ -19,14 +19,14 @@ import * as window from '@v-act/vjs.framework.extension.platform.services.integr
 /**
  * 校验不为空
  */
-var isNotEmpty = function (str) {
+var isNotEmpty = function (str: boolean) {
   return !vds.string.isEmpty(str)
 }
 
 /**
  * 校验是否数字
  */
-var isNum = function (arg1) {
+var isNum = function (arg1: any) {
   var re = /^(\+|-)?\d+(?:\.\d+)?$/
   return re.test(arg1)
 }
@@ -34,14 +34,14 @@ var isNum = function (arg1) {
 /**
  * 校验是否数字
  */
-var judgeNumExt = function (num) {
+var judgeNumExt = function (num: string) {
   return isNum(num)
 }
 
 /**
  * 校验身份证号码（15位/18位）
  */
-function isIdCardNo(idCardNum) {
+function isIdCardNo(idCardNum: any) {
   var aCity = {
     11: vds.i18n.get('北京', '城市名称'),
     12: vds.i18n.get('天津', '城市名称'),
@@ -95,13 +95,14 @@ function isIdCardNo(idCardNum) {
   var len = idCardNum.length
   if (len == 15) {
     var re = new RegExp(/^(\d{2})(\d{4})(\d{2})(\d{2})(\d{2})(\d{3})$/)
-    var arrSplit = idCardNum.match(re)
+    var arrSplit: any | null = idCardNum.match(re)
     if (aCity[parseInt(arrSplit[1])] == null) {
       vds.log.error('15位身份证号码中存在非法地区，请检查')
       return false
     }
     //检查生日日期是否正确
-    var dtmBirth = new Date(
+    var dtmBirth: Record<string, any>
+    dtmBirth = new Date(
       '19' + arrSplit[3] + '/' + arrSplit[4] + '/' + arrSplit[5]
     )
     var bGoodDay =
@@ -115,13 +116,14 @@ function isIdCardNo(idCardNum) {
   }
   if (len == 18) {
     var re = new RegExp(/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/)
-    var arrSplit = idCardNum.match(re)
+    var arrSplit: any = idCardNum.match(re)
     if (aCity[parseInt(arrSplit[1])] == null) {
       vds.log.error('18位身份证号码中存在非法地区，请检查')
       return false
     }
     //检查生日日期是否正确
-    var dtmBirth = new Date(arrSplit[3] + '/' + arrSplit[4] + '/' + arrSplit[5])
+
+    dtmBirth = new Date(arrSplit[3] + '/' + arrSplit[4] + '/' + arrSplit[5])
     var bGoodDay =
       dtmBirth.getFullYear() == Number(arrSplit[3]) &&
       dtmBirth.getMonth() + 1 == Number(arrSplit[4]) &&
@@ -182,14 +184,14 @@ function isIdCardNo(idCardNum) {
 /**
  * 校验日期
  */
-var checkDate = function (dateStr) {
+var checkDate = function (dateStr: string | null) {
   var reg =
     /^(\d{1,4})[-\/](\d{1,2})[-\/](\d{1,2})( (\d{1,2}):(\d{1,2}):(\d{1,2}))?$/
   if (dateStr == null) {
     vds.log.error('日期存在空值')
     return false
   }
-  var r = dateStr.match(reg)
+  var r: any = dateStr.match(reg)
   if (r == null) {
     return false
   } else {
@@ -218,15 +220,15 @@ var checkDate = function (dateStr) {
 /**
  * 长度校验
  */
-var limit = function (str, parameter) {
-  var params = parameter.split(',')
+var limit = function (str: string | null, parameter: string) {
+  var params: any[] = parameter.split(',')
   if (params.length != 3) {
     vds.log.error('输入字符长度限制,参数必须为3个并以逗号隔开，请检查')
     return false
   }
-  var min = params[0]
-  var max = params[1]
-  var byByte = params[2]
+  var min: any = params[0]
+  var max: any = params[1]
+  var byByte: any = params[2]
   if (!isNum(min) || !isNum(max) || !isNum(byByte)) {
     vds.log.error('输入字符长度限制,参数必须全部为数字')
     return false
@@ -258,7 +260,7 @@ var limit = function (str, parameter) {
 /**
  * 数值区间校验
  */
-var checkNum = function (num, parameter) {
+var checkNum = function (num: string | Number, parameter: string) {
   if (!isNum(num)) {
     vds.log.error(
       '判断输入数值是否在(n, m)区间,校验内容[' + num + ']必须为数字'
@@ -272,8 +274,8 @@ var checkNum = function (num, parameter) {
     )
     return false
   }
-  var min = params[0]
-  var max = params[1]
+  var min: any = params[0]
+  var max: any = params[1]
   if (!isNum(min) || !isNum(max)) {
     vds.log.error('判断输入数值是否在(n, m)区间,参数必须全部为数字')
     return false
@@ -292,7 +294,7 @@ var checkNum = function (num, parameter) {
 /**
  * 正则表达式校验
  */
-var checkRegularExp = function (val, regularExp) {
+var checkRegularExp = function (val: string, regularExp: string) {
   try {
     var reg = new RegExp(eval('/' + regularExp + '/'))
     var bool = reg.test(val)
@@ -342,32 +344,37 @@ const vds = {
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var expressType
-      var checkResult = true
-      var userConfirm = true
-      var inParams = ruleContext.getVplatformInput()
+      var expressType: boolean
+      var checkResult: boolean = true
+      var userConfirm: boolean = true
+      var inParams: Record<string, any> = ruleContext.getVplatformInput()
 
-      var messageType = inParams['messageType']
-      var checkData = inParams['checkData']
-      var finalMessage = ''
-      var entityErrorMsg = [] //全部实体校验错误信息
+      var messageType: number = inParams['messageType']
+      var checkData: any[] = inParams['checkData']
+      var finalMessage: string = ''
+      // var entityErrorMsg = [] //全部实体校验错误信息 没有用到屏蔽
       for (var i = 0; i < checkData.length; i++) {
-        var checkItem = checkData[i]
-        var checkType = checkItem['checkType'] //校验类型
-        var dataSource = checkItem['dataSource'] //数值
-        var dataType = checkItem['dataType'] //数据来源
-        var message = checkItem['message'] //消息提示
+        var checkItem: Record<string, any> = checkData[i]
+        var checkType: number = checkItem['checkType'] //校验类型
+        var dataSource: string = checkItem['dataSource'] //数值
+        var dataType: string = checkItem['dataType'] //数据来源
+        var message: string = checkItem['message'] //消息提示
         if (null != message && '' != message) {
           message = vds.expression.execute(message, {
             ruleContext: ruleContext
           })
         }
-        var parameter = checkItem['parameter'] //参数
-        var singleEntityError = [] //单个实体校验错误信息
+        var parameter: string = checkItem['parameter'] //参数
+        var singleEntityError: any[] = [] //单个实体校验错误信息
         if (dataType == 'expression') {
           expressType = true
-          var currValue = getValueByType(dataType, dataSource, ruleContext)
-          var reg = regs[checkType]
+          // var currValue
+          var currValue: string = getValueByType(
+            dataType,
+            dataSource,
+            ruleContext
+          )
+          var reg: Record<string, any> = regs[checkType]
           //数字类型校验位空格 直接提示错误
           if (
             checkType == 6 &&
@@ -389,16 +396,16 @@ const main = function (ruleContext: RuleContext) {
           }
         } else if (dataType == 'entityfield') {
           expressType = false
-          var dbCode = dataSource.split('.')[0]
-          var fieldCode = dataSource.split('.')[1]
+          var dbCode: string = dataSource.split('.')[0]
+          var fieldCode: string = dataSource.split('.')[1]
           var dataSourceObj = GetDataSource(dbCode, ruleContext)
-          var isAddMsg = false //是否已经添加了错误信息
+          var isAddMsg: boolean = false //是否已经添加了错误信息
           if (dataSourceObj) {
-            var datas = dataSourceObj.getAllRecords().toArray()
+            var datas: any[] = dataSourceObj.getAllRecords().toArray()
             if (datas && datas.length > 0) {
               for (var j = 0; j < datas.length; j++) {
-                var currValue = datas[j].get(fieldCode)
-                var reg = regs[checkType]
+                currValue = datas[j].get(fieldCode)
+                reg = regs[checkType]
                 //数字类型校验位空格 直接提示错误
                 if (
                   checkType == 6 &&
@@ -456,7 +463,7 @@ const main = function (ruleContext: RuleContext) {
         }
       }
 
-      var callback = function (val) {
+      var callback: any = function (val: boolean) {
         userConfirm = typeof val == 'boolean' ? val : userConfirm
         setBusinessRuleResult(ruleContext, checkResult, userConfirm)
         resolve()
@@ -471,6 +478,7 @@ const main = function (ruleContext: RuleContext) {
         } else {
           if (messageType == 1) {
             //提示，继续执行
+            //@ts-ignore
             var promise = vds.message.info(finalMessage)
             promise.then(callback)
           } else if (messageType == 2) {
@@ -500,19 +508,27 @@ const main = function (ruleContext: RuleContext) {
 /**
  * 设置业务返回结果
  */
-function setBusinessRuleResult(ruleContext, result, userConfirm) {
+function setBusinessRuleResult(
+  ruleContext: RuleContext,
+  result: boolean,
+  userConfirm: boolean
+) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isValidateOK', result)
     ruleContext.setResult('confirm', userConfirm)
   }
 }
 
-var getValueByType = function (dataType, dataSource, ruleContext) {
-  var result = ''
+var getValueByType = function (
+  dataType: string,
+  dataSource: string,
+  ruleContext: RuleContext
+) {
+  var result: string = ''
   switch (dataType) {
     case '1': //界面实体
-      var dsName = dataSource.substring(0, dataSource.indexOf('.'))
-      var colName = dataSource.substring(
+      var dsName: string = dataSource.substring(0, dataSource.indexOf('.'))
+      var colName: string = dataSource.substring(
         dataSource.indexOf('.') + 1,
         dataSource.length
       )
@@ -520,27 +536,35 @@ var getValueByType = function (dataType, dataSource, ruleContext) {
       var dataSource = vds.ds.lookup({
         datasourceName: dsName
       })
-      var selectedValues = dataSource.getCurrentRecord()
+
+      var selectedValues: { get: (x: string) => string } =
+        dataSource.getCurrentRecord()
       if (selectedValues) {
         result = selectedValues.get(colName)
       }
       break
     case '2': //控件
-      var controlInfo = dataSource.split('.')
-      var valueQueryControlID = controlInfo[0]
-      var propertyCode = controlInfo[1]
-      var widgetType = vds.widget.getProperty(valueQueryControlID, 'widgetType')
-      var storeType = vds.widget.getStoreType(widgetType)
+      var controlInfo: string[] = dataSource.split('.')
+      var valueQueryControlID: string = controlInfo[0]
+      var propertyCode: string = controlInfo[1]
+      var widgetType: string = vds.widget.getProperty(
+        valueQueryControlID,
+        'widgetType'
+      )
+      var storeType: string = vds.widget.getStoreType(widgetType)
       if (vds.widget.StoreType.Set == storeType) {
         //该规则不会传入集合控件ID
       } else if (vds.widget.StoreType.SingleRecordMultiValue == storeType) {
         // 单记录多值控件，按照控件属性名字取得关联的标识，再进行取值
         //	var multiValue = viewModel.getDataModule().getSingleRecordMultiValue(valueQueryControlID);
-        var dsNames = vds.widget.getDatasourceCodes(valueQueryControlID)
-        var dsName = dsNames[0]
-        var dataSource = vds.ds.lookup(dsName)
-        var multiValue = dataSource.getCurrentRecord()
-        var refField = vds.widget.getProperty(valueQueryControlID, propertyCode)
+        var dsNames: any[] = vds.widget.getDatasourceCodes(valueQueryControlID)
+        var dsName: string = dsNames[0]
+        var dataSource: string = vds.ds.lookup(dsName)
+        var multiValue: string = dataSource.getCurrentRecord()
+        var refField: string = vds.widget.getProperty(
+          valueQueryControlID,
+          propertyCode
+        )
         result = multiValue[refField]
         break
       } else if (vds.widget.StoreType.SingleRecord == storeType) {
@@ -567,7 +591,7 @@ var getValueByType = function (dataType, dataSource, ruleContext) {
  * dataSourceName 数据源名称
  * routeContext 路由上下文
  * */
-function GetDataSource(dataSourceName, ruleContext) {
+function GetDataSource(dataSourceName: string, ruleContext: RuleContext) {
   var dsName = dataSourceName
   var datasource = null
   if (dsName != null && dsName != '') {

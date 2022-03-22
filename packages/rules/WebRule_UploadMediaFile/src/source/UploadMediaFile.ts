@@ -11,10 +11,8 @@ import {
 } from '@v-act/vjs.framework.extension.platform.interface.route'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import {
-  FileTransfer as FileTransferService,
-  Mediacapture as MediacaptureService
-} from '@v-act/vjs.framework.extension.platform.services.native.mobile'
+import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer'
+import { Mediacapture as MediacaptureService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.mediacapture'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 const main = function (ruleContext: RuleContext) {

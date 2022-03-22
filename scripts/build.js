@@ -112,7 +112,10 @@ export async function viteBuild(scopes, copyToPath, watch) {
       '@v-act/widget-context',
       '@v-act/widget-utils',
       '@v-act/component-schema-utils',
-      '@v-act/window-schema-utils'
+      '@v-act/window-schema-utils',
+      '@v-act/expression-parser',
+      '@v-act/tokonizer',
+      '@v-act/xml-parser'
     ]).forEach((pkg) => {
       const distDir = path.resolve(`${copyToPath}/node_modules/${pkg.name}/`)
 

@@ -1,8 +1,9 @@
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-export function initModule(sBox) {}
+// export function initModule(sBox) {}
 
-const fileOpen = function (DOMID, fileID, fileName) {
+const fileOpen = function (DOMID: string, fileID: string, fileName: string) {
   if (!fileName) {
     dialogUtil.propmtDialog(
       '打开文件失败！文件名不存在，请检查文件名是否正确！',
@@ -40,9 +41,12 @@ const fileOpen = function (DOMID, fileID, fileName) {
  * @param fileID 文件ID
  * @param fileName 文件名称（如 demo.doc）
  */
-function readMSOffice(DOMID, fileID, fileName) {
+function readMSOffice(DOMID: string, fileID: string, fileName: string) {
+  //@ts-ignore
   if (window.GlobalVariables) {
+    //@ts-ignore
     if (window.device && window.device.platform == 'iOS') {
+      //@ts-ignore
       let filePath =
         cordova.file.documentsDirectory +
         '/path/to/downloads/' +
@@ -87,16 +91,19 @@ function readMSOffice(DOMID, fileID, fileName) {
  * @param fileID 文件ID
  * @param fileName 文件名称（如 demo.pdf）
  */
-function readPDF(DOMID, fileID, fileName) {
+function readPDF(DOMID: string, fileID: string, fileName?: string) {
   let url =
     'module-operation!executeOperation?operation=FileDown&token=%7B%22data%22%3A%7B%22dataId%22%3A%22' +
     fileID +
     '%22%7D%7D'
+  //@ts-ignore
   if (window.GlobalVariables) {
+    //@ts-ignore
     let host = window.GlobalVariables.getServerUrl()
     url = host + '/' + url
   }
   url = window.encodeURIComponent(url)
+  //@ts-ignore
   let html =
     '<iframe src="' +
     host +

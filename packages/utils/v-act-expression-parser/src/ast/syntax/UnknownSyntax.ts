@@ -1,6 +1,7 @@
+import { Token } from '@v-act/tokenizer'
+
 import Position from '../Position'
 import SyntaxParseContext from '../SyntaxParseContext'
-import { Token } from '@v-act/tokenizer'
 import Syntax from './Syntax'
 
 class UnknownSyntax extends Syntax {
@@ -57,15 +58,7 @@ class UnknownSyntax extends Syntax {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
     if (visitor && visitor.visitUnknownSyntax) {
-      return visitor.visitUnknownSyntax(this, (syntax) => syntax.visit())
-    } else {
-      const script: string[] = []
-      if (this.tokens) {
-        this.tokens.forEach((token) => {
-          script.push(token.toString())
-        })
-      }
-      return script.join('')
+      throw Error('当前表达式解析错误！')
     }
   }
 }

@@ -1,6 +1,6 @@
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let instance
+let instance: any
 let VJSNAME = 'VJS[ImageTransfer]：'
 
 let IMGFROMAt = {
@@ -16,19 +16,26 @@ let IMGFROMAt = {
   }
 }
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const getImage = function (url, successCB, errorCB, opation) {
+const getImage = function (
+  url: string,
+  successCB: any,
+  errorCB: any,
+  opation: any
+) {
   if (
+    //@ts-ignore
     window.cordova &&
     window.cordova.platformId == 'ios' &&
     window.cordova.plugins.imageTransfer
   ) {
     if (!opation) {
+      //@ts-ignore
       opation = cordova.plugins.imageTransfer.CONSTANTS.SDWebImageRetryFailed
     }
     let secondError = function () {
@@ -50,6 +57,7 @@ const getImage = function (url, successCB, errorCB, opation) {
     //				successCB(url);
     //			}
   } else if (
+    //@ts-ignore
     window.cordova &&
     window.cordova.platformId == 'android' &&
     window.cordova.plugins.imageTransfer
@@ -85,14 +93,14 @@ const getImage = function (url, successCB, errorCB, opation) {
 }
 
 //将文件服务地址转换为七牛地址
-function parse2QiniuURL(url) {
+function parse2QiniuURL(url: string) {
   let token = getParamByURL('token', url)
   let fileId = ''
   let src = ''
   if (token) {
     let deCodeToken = decodeURIComponent(token)
     let tokenObject = JSON.parse(deCodeToken)
-    let fileId = tokenObject.data.dataId
+    fileId = tokenObject.data.dataId
   }
   if (fileId) {
     let QniuImgFormat =
@@ -102,11 +110,11 @@ function parse2QiniuURL(url) {
   return src
 }
 
-function getParamByURL(paramName, url) {
+function getParamByURL(paramName: string, url: string) {
   let reg = new RegExp('(^|&)' + paramName + '=([^&]*)(&|$)', 'i')
   let r = url.match(reg)
   if (r != null) return unescape(r[2])
   return null
 }
 
-export { getImage, putInstance }
+export { getImage, parse2QiniuURL, putInstance }

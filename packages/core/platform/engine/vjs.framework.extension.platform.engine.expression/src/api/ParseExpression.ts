@@ -1,31 +1,8 @@
-const data = require('./data')
-const parser = require('../dist/index')
-const testAll = function () {
-  const exps = data.getExps()
-  let startTime = new Date().getTime()
-  for (let i = 0, l = exps.length; i < l; i++) {
-    let exp = exps[i]
-    let syntax = parser.parse(exp)
-    let exp1 = syntax.toString()
-    if (exp1 !== exp) {
-      console.log(`表达式解析错误，原始表达式：${exp}，解析后结果：${exp1}`)
-    }
-  }
-  let endTime = new Date().getTime()
-  console.log(`表达式个数：${exps.length}，总耗时：${endTime - startTime}毫秒`)
-}
+import * as parser from '@v-act/expression-parser'
 
-const test = function () {
-  let startTime = new Date().getTime()
-  let exp = 'ConcatStr(BC.JGAddress1.Value,"test")'
+const ParseExpression = function (exp: string) {
   let syntax = parser.parse(exp)
-  let endTime = new Date().getTime()
-  console.log(`表达式解析完成，总耗时：${endTime - startTime}毫秒`)
-  console.log(syntax.visit())
-}
 
-const testPrint = function (exp) {
-  const syntax = parser.parse(exp)
   return parser.print(syntax, {
     printComponentVarSyntax: function (syntax, print) {
       return 'context.getComponontVar("' + syntax.getCode() + '")'
@@ -53,6 +30,8 @@ const testPrint = function (exp) {
     },
     printFunctionSyntax: function (syntax, print) {
       const script = ['context.executeFunction("']
+      script.push('"')
+      script.push(',')
       script.push(syntax.getCode())
       script.push('"')
       script.push(',')
@@ -121,26 +100,4 @@ const testPrint = function (exp) {
   })
 }
 
-const testPrintAll = function () {
-  const exps = data.getExps()
-  let startTime = new Date().getTime()
-  for (let i = 0, l = exps.length; i < l; i++) {
-    let exp = exps[i]
-    let exp1 = testPrint(exp)
-    console.log(`表达式转换，原始表达式：${exp}`)
-    console.log(`转换后结果：${exp1}`)
-  }
-  let endTime = new Date().getTime()
-  console.log(`表达式个数：${exps.length}，总耗时：${endTime - startTime}毫秒`)
-}
-
-//test()
-//testAll()
-const script = testPrint('CC.JGButton1.LabelText')
-console.log(script)
-// const func = new Function(
-//   { getRulesetInput: function () {}, getRulesetVar: function () {} },
-//   'return ' + script
-// )
-// testPrintAll()
-//console.log(testPrint("IsEmpty(BR_VAR_PARENT.applicationId)||IsEmpty(BR_VAR_PARENT.bizWindow)"))
+export { ParseExpression }

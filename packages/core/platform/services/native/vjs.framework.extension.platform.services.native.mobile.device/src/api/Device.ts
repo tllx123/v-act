@@ -1,6 +1,6 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
@@ -25,10 +25,10 @@ const getDeviceManufacturer = function () {
 }
 
 export {
-  putInstance,
+  getDeviceManufacturer,
+  getDeviceModel,
   getDevicePlatform,
   getDevicePlatformVersion,
-  getDeviceModel,
   getDeviceUUIDl,
-  getDeviceManufacturer
+  putInstance
 }

@@ -9,16 +9,16 @@ export function initModule() {}
 /**
  * 解析less内容，生成css
  * */
-let render = function (params) {
+let render = function (params: IRenderParam): IResult | {} {
   let start = new Date().getTime()
-  let result = {}
+  let result: IResult = {}
   if (
     params &&
     (params.less || (params.templates && params.templates.length > 0))
   ) {
     let lessStr = params.less || '',
       templates = params.templates
-    let lessConfig = rpxPlugins.getLessPlugin() || {}
+    let lessConfig: ILessConfig = rpxPlugins.getLessPlugin() || {}
     if (templates) {
       let script = []
       let templateCfg = {}
@@ -44,13 +44,17 @@ let render = function (params) {
       newVDeepSelector = '.V_' + params.scopeId
       lessStr += ';' + name + ':' + newVDeepSelector + ';'
     }
+    //@ts-ignore
     less.render(lessStr, lessConfig, function (_e, _css, _template) {
-      let cb = function (e, css, template) {
+      let cb = function (e: any, css: { css: any }, template: any): void {
         let end = new Date().getTime()
         let time = end - start
+        //@ts-ignore
         if (!window.styleParseTime) {
+          //@ts-ignore
           window.styleParseTime = time
         } else {
+          //@ts-ignore
           window.styleParseTime += time
         }
         if (e) {
@@ -69,6 +73,7 @@ let render = function (params) {
         let sourceCss = _css && _css.css ? _css.css : ''
         let cssScopedConfig =
           cssScopedPlugins.getLessPlugin(params.scopeId, newVDeepSelector) || {}
+        //@ts-ignore
         less.render(sourceCss, cssScopedConfig, cb)
       } else {
         cb(_e, _css, _template)
@@ -78,4 +83,4 @@ let render = function (params) {
   return result
 }
 
-export { getLessPlugin, getLessPlugin, render }
+export { render }
