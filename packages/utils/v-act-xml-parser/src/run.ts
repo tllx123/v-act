@@ -126,34 +126,52 @@ export const run = (resources: XMLElementObj[]): Function => {
     },
     routeRuntime: any
   ) {
-    let x = 0
+    // let x = 0
+    //
+    // function runFun(code: string) {
+    //   return new Promise<void>(function (resolve) {
+    //     ruleEngine.executeWithRouteCallback(
+    //       {
+    //         ruleCode: code,
+    //         routeContext: routeRuntime
+    //       },
+    //       resolve()
+    //     )
+    //   })
+    // }
+    //
+    // function loopArray(runFun: Function, code: string) {
+    //   runFun(code).then(() => {
+    //     x++
+    //     if (x < codes.length) {
+    //       if (routeRuntime.isInterrupted()) {
+    //         routeRuntime.fireRouteCallBack()
+    //         return
+    //       }
+    //       loopArray(runFun, codes[x])
+    //     }
+    //   })
+    // }
+    //
+    // loopArray(runFun, codes[0])
 
-    function runFun(code: string) {
-      return new Promise<void>(function (resolve) {
-        ruleEngine.executeWithRouteCallback(
-          {
-            ruleCode: code,
-            routeContext: routeRuntime
-          },
-          resolve()
-        )
-      })
-    }
-
-    function loopArray(runFun: Function, code: string) {
-      runFun(code).then(() => {
-        x++
-        if (x < codes.length) {
-          if (routeRuntime.isInterrupted()) {
-            routeRuntime.fireRouteCallBack()
-            return
-          }
-          loopArray(runFun, codes[x])
+    function runFun(index: number) {
+      if (routeRuntime.isInterrupted()) {
+        routeRuntime.fireRouteCallBack()
+        return
+      }
+      ruleEngine.executeWithRouteCallback(
+        {
+          ruleCode: codes[index],
+          routeContext: routeRuntime
+        },
+        function () {
+          index++
+          if (index < codes.length) runFun(index)
         }
-      })
+      )
     }
-
-    loopArray(runFun, codes[0])
+    runFun(0)
   }
 
   return returnFun
