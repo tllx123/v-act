@@ -1,36 +1,22 @@
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { ExpressionContext as ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { BaseVarOperation as baseVarOperation } from '@v-act/vjs.framework.extension.platform.services.window.variable.operation'
-import { EntityVarOperation as entityVarOperation } from '@v-act/vjs.framework.extension.platform.services.window.variable.operation'
+import {
+  BaseVarOperation as baseVarOperation,
+  EntityVarOperation as entityVarOperation
+} from '@v-act/vjs.framework.extension.platform.services.window.variable.operation'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil } from '@v-act/vjs.framework.extension.util.string'
 
 import RuleContext from './RuleContext'
 
 export function _getMainFunc(funStr: string) {
-  if (funStr) {
-    var namespaces = funStr.split('.')
-    var caller = window
-    var func = window
-    while (namespaces.length > 0) {
-      var namespace = namespaces.splice(0, 1)
-      func = func[namespace]
-      if (namespaces.length > 0) {
-        caller = func
-      }
-      if (!func) {
-        return null
-      }
-    }
-    return {
-      caller: caller,
-      func: func
-    }
-  }
-  return null
+  return StringUtil.getNamespaceDef(funStr)
 }
 
 var VarType = {

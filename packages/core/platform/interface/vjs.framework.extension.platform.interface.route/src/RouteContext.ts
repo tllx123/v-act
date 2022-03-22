@@ -3,7 +3,10 @@ import { RuleEngine as ruleEngine } from '@v-act/vjs.framework.extension.platfor
 import { AsyncFacotory as asyncFactory } from '@v-act/vjs.framework.extension.platform.interface.async'
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
+  ExceptionFactory as factory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
 import {
   ParamConfig,
   RouteConfig
