@@ -92,7 +92,7 @@ export const run = (resources: XMLElementObj[]): Function => {
   }
   ForInObj(resources, executionRules)
 
-  let returnFun = function (
+  let returnFun = async function (
     ruleEngine: {
       executeWithRouteCallback: (config: {
         ruleCode: string
@@ -107,7 +107,7 @@ export const run = (resources: XMLElementObj[]): Function => {
         break
       }
 
-      ruleEngine.executeWithRouteCallback({
+      await ruleEngine.executeWithRouteCallback({
         ruleCode: code,
         routeContext: routeRuntime
       })
