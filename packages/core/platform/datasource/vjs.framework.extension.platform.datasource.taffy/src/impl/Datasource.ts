@@ -7,7 +7,7 @@ import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.arra
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import * as taffy from './TaffyDB'
 import { Metadata } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
-
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 interface obj {
   [key: string]: any
 }
@@ -307,6 +307,16 @@ class Datasource {
       }
     }
     this.db._insert(toInserted, index)
+
+    const windowScope = scopeManager.getWindowScope()
+    const operations = windowScope.get('currentWindowHandler')
+    const code = this.metadata.getCode()
+    let paramsTemp = {
+      code: code,
+      records: toInserted
+    }
+    operations.insert(paramsTemp)
+
     let resultSet = this._r2rs(toInserted)
     this._fireEvent({
       eventName: this.Events.INSERT,
@@ -363,6 +373,16 @@ class Datasource {
     let resultSet = this._r2rs(updated)
     if (updated.length > 0) {
       let oDatas = this.db._update(updated)
+
+      const windowScope = scopeManager.getWindowScope()
+      const operations = windowScope.get('currentWindowHandler')
+      const code = this.metadata.getCode()
+      let paramsTemp = {
+        code: code,
+        records: updated
+      }
+      operations.update(paramsTemp)
+
       let rs = new ResultSet(this.metadata, oDatas)
       this._fireEvent({
         eventName: this.Events.UPDATE,
@@ -437,6 +457,14 @@ class Datasource {
       } else {
         this.db._remove(ids)
       }
+
+      const windowScope = scopeManager.getWindowScope()
+      const operations = windowScope.get('currentWindowHandler')
+      const code = this.metadata.getCode()
+      let paramsTemp = {
+        code: code
+      }
+      operations.clearDataFunc(paramsTemp)
     }
     this._removeRecords(datas, null, true)
     this.reset()
