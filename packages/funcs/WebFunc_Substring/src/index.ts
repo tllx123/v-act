@@ -1,3 +1,4 @@
+import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
 /**
  *	从字符串指定索引位置开始提取指定长度的该字符串的子链
  *  代码示例:Substring('abcd',1,2) 返回值为'bc'
@@ -7,10 +8,10 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as number from '@v-act/vjs.framework.extension.platform.services.integration.vds.number'
+
 const vds = { object, string, number }
 
-const main = function (arg1, arg2, arg3) {
+const main = function (arg1: any, arg2: any, arg3: any) {
   if (vds.object.isUndefOrNull(arg1)) return ''
 
   arg1 = String(arg1)
