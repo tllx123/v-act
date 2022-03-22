@@ -2,7 +2,7 @@ import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.pa
 import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-import { MathUtil } from '@v-act/vjs.framework.extension.util.Math'
+import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 export default class Context {
   private readonly context: any
