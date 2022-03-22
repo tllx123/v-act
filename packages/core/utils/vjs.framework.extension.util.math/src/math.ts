@@ -33,8 +33,6 @@ let add = function (arg1: argType, arg2: argType) {
 let subtract = function (arg1: argType, arg2: argType) {
   let a1 = new BigDecimal(processValue(arg1))
   let a2 = new BigDecimal(processValue(arg2))
-  console.log(a1, a2)
-  console.log(a1.sub(a2))
   return a1.sub(a2).toString()
 }
 
