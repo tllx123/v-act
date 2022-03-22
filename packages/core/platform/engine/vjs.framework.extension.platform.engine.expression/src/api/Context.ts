@@ -71,18 +71,9 @@ export default class Context {
    * 函数运行
    * */
   executeFunction(functionName: string, ...args: any[]) {
-    let argList = []
-    for (let i = 0; i < args.length; i++) {
-      let funMain = `return  ${ParseExpression(args[i])}`
-      let result: Function = new Function('context', funMain)
-
-      let res = result(this)
-      argList.push(res)
-    }
-
     return FunctionEngine.execute({
       functionName: functionName,
-      context: new FunctionContext(argList, this.routeContext)
+      context: new FunctionContext([...args], this.routeContext)
     })
   }
 
@@ -192,7 +183,7 @@ export default class Context {
     return this.routeContext.getVariable(entityName)
   }
   getString(string: string) {
-    return '"' + string + '"'
+    return string
   }
 
   getNumber(v: string) {

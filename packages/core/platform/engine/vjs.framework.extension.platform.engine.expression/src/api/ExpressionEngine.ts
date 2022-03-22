@@ -87,37 +87,4 @@ let genExceptionData = function (exp) {
   ]
 }
 
-const parseMethods = function (params: IExecuteParams) {
-  let context = params.context,
-    exp = params.expression
-
-  let ctx = new formulaEngine.Map()
-  context = new newContext(context)
-  ctx.put('expressionContext', context)
-
-  if (!exp) {
-    let error = exceptionFactory.create({
-      type: exceptionFactory.TYPES.Config,
-      exceptionDatas: genExceptionData(),
-      message: '不支持空表达式,请检查相关配置!'
-    })
-    throw error
-  }
-
-  let result: Function = new Function(
-    'context',
-    `return ${ParseExpression(exp)}`
-  )
-
-  return function () {
-    try {
-      return result(context)
-    } catch (e) {
-      throw new Error(
-        '解释表达式【' + exp + '】中的变量出现错误,错误原因：' + e.message
-      )
-    }
-  }
-}
-
-export { execute, parseMethods, parseVars }
+export { execute, parseVars }
