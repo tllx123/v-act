@@ -1,3 +1,4 @@
+import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
 /**
  *	求浮点数的整数部分
  *  代码示例:Truncate(1.99)返回值为1
@@ -6,10 +7,10 @@
  *  返回值为整数
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as math from '@v-act/vjs.framework.extension.platform.services.integration.vds.math'
+
 const vds = { object, math }
 
-const main = function (arg) {
+const main = function (arg: any) {
   if (vds.object.isUndefOrNull(arg))
     throw new Error('求浮点数的整数部分参数为空，请检查')
   if (!vds.object.isNumber(arg))

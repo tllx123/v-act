@@ -3,9 +3,10 @@
  *
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { object }
 
-var toAscii = function (data) {
+var toAscii = function (data: any) {
   if (vds.object.isUndefOrNull(data)) return ''
 
   var code = data.match(/&#(\d+);/g)
@@ -18,7 +19,7 @@ var toAscii = function (data) {
   }
   return retVal
 }
-const main = function (arg1) {
+const main = function (arg1: any) {
   if (vds.object.isUndefOrNull(arg1)) return ''
 
   arg1 = String(arg1)

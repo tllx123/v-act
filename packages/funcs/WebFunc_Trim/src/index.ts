@@ -9,7 +9,7 @@
  *  返回值为字符串类型
  *
  */
-const main = function (param1, param2) {
+const main = function (param1?: string, param2?: string | boolean) {
   if (!param2) {
     param2 = ''
   }

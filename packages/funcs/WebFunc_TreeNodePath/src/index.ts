@@ -1,20 +1,31 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 /**
  *  weicd
  *
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
-const vds = { object, ds, exception, tree }
 
-const main = function (dsName, fieldName, spliter, treeStructCfgStr) {
-  dsName = vds.object.isUndefOrNull(dsName) ? null : dsName
-  fieldName = vds.object.isUndefOrNull(fieldName) ? null : fieldName
-  spliter = vds.object.isUndefOrNull(spliter) ? null : spliter
-  treeStructCfgStr = vds.object.isUndefOrNull(treeStructCfgStr)
-    ? null
-    : treeStructCfgStr
+const vds = { object, ds, exception, tree, log }
+
+const main = function (
+  dsName: string,
+  fieldName: string,
+  spliter: string,
+  treeStructCfgStr: string
+) {
+  if (vds.object.isUndefOrNull(dsName)) {
+    throw Error('未传递实体名称，函数执行失败！')
+  }
+  if (vds.object.isUndefOrNull(fieldName)) {
+    throw Error('未传递字段名称，函数执行失败！')
+  }
+  let spliter1 = vds.object.isUndefOrNull(spliter) ? null : spliter
+  if (vds.object.isUndefOrNull(treeStructCfgStr)) {
+    throw Error('未传递树形结构定义，函数执行失败！')
+  }
 
   var treeStructCfgObj = parseCfgObj(treeStructCfgStr)
   //树类型，1=层级码，2=左右树, 3=编码树
@@ -99,35 +110,36 @@ const main = function (dsName, fieldName, spliter, treeStructCfgStr) {
     )
   }
 
-  if (!spliter) {
-    spliter = '/'
+  if (!spliter1) {
+    spliter1 = '/'
   }
   var datasource = vds.ds.lookup(dsName)
   var selected = datasource.getCurrentRecord()
-  var retValue = []
   if (selected) {
-    var pathArray
     var tree = vds.tree.lookup(dsName, treeStruct)
     fieldName = _getFieldName(fieldName)
+    if (!tree) {
+      throw Error('未找到实体定义，实体编号：' + dsName)
+    }
     var node = tree.getNodeById(selected.getSysId())
-    pathArray = getTreeNodePath(
+    let pathArray = getTreeNodePath(
       {
         node: node,
         fieldCode: fieldName
       },
       tree
     )
-    retValue = pathArray.reverse().join(spliter)
-    return retValue
+    //@ts-ignore
+    return pathArray.reverse().join(spliter1)
   } else {
     return ''
   }
 }
 
-var getTreeNodePath = function (params, tree) {
+var getTreeNodePath = function (params: any, tree: any) {
   var node = params.node,
     fieldName = params.fieldCode
-  var retValue = []
+  var retValue: string[] = []
   if (node) {
     var isID = false
     if (fieldName.indexOf('.') != -1) {
@@ -159,7 +171,7 @@ var getTreeNodePath = function (params, tree) {
   return retValue
 }
 
-var getPropertyValue = function (obj, propertyName) {
+var getPropertyValue = function (obj: object, propertyName: string) {
   if (obj == null || propertyName == null || propertyName == '') return null
   for (var propName in obj) {
     if (propName.toLocaleLowerCase() == propertyName.toLocaleLowerCase())
@@ -168,7 +180,7 @@ var getPropertyValue = function (obj, propertyName) {
   return null
 }
 
-var parseCfgObj = function (cfgStr) {
+var parseCfgObj = function (cfgStr: string) {
   //"type:1,pidField:PID,treeCodeField:InnerCode,orderField:orderNo,isLeafField:isLeaf,busiFilterField:myBusiField"
   if (
     vds.object.isUndefOrNull(cfgStr) ||
@@ -203,7 +215,7 @@ var parseCfgObj = function (cfgStr) {
   return cfgObj
 }
 
-var _getFieldName = function (fieldName) {
+var _getFieldName = function (fieldName: string) {
   var retvalue = fieldName
   if (fieldName.indexOf('.') != -1) {
     var fieldNames = fieldName.split('.')

@@ -39,6 +39,24 @@ cd 到 apps/runtime 目录下，执行以下命令：
 npm run v3:start
 ```
 
+## 预览开发系统窗体
+
+### 部署构件
+
+打包一个最新本地开发系统，在开发系统中新建构件，配置普通窗体。右键构件部署到本地，目录选择 apps/runtime/v3dev,如果 v3dev 目录不存在，请新建目录。
+
+### 预览窗体
+
+在浏览器中输入地址：
+
+```js
+http://localhost:port/componentCode/windowCode
+```
+
+port：服务端口号，在服务启动后，控制台有输出端口号信息，也可在 apps/runtime/metadata.json 文件的 previewPort 属性中获取。
+componentCode：构件编号
+windowCode：窗体编号
+
 ## 调试 vjs
 
 当预览后发现 vjs 构件问题，可以在 v-act 根目录下，执行以下命令：

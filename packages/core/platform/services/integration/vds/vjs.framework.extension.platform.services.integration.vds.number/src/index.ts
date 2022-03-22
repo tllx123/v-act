@@ -8,18 +8,8 @@
  * vds.import("vds.number.*");
  * vds.number.isInteger(521.54);//false
  */
-window.vds = window.vds || {}
-window.vds.number = window.vds.number || {}
 
-var number = window.vds.number
-
-exports = number
-
-var mathUtil
-
-export function initModule(sb) {
-  mathUtil = sb.getService('vjs.framework.extension.util.Math')
-}
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 /**
  * 判断是否无穷数
@@ -28,7 +18,7 @@ export function initModule(sb) {
  * @example
  * vds.number.isInfinity(12);//false
  */
-export function isInfinity(num) {
+export function isInfinity(num: any) {
   return mathUtil.isInfinity(num)
 }
 
@@ -40,7 +30,7 @@ export function isInfinity(num) {
  * vds.number.isInteger(12);//true
  * vds.number.isInteger("34");//true
  */
-export function isInteger(num) {
+export function isInteger(num: any) {
   return mathUtil.judgeInt(num)
 }
 
@@ -54,7 +44,7 @@ export function isInteger(num) {
  * vds.number.toFixed(123.3345,3);//123.335
  * vds.number.toFixed(23.452,2);//23.45
  */
-export function toFixed(num, precision) {
+export function toFixed(num: number, precision: number) {
   return mathUtil.toDecimal(num, precision)
 }
 
@@ -67,6 +57,6 @@ export function toFixed(num, precision) {
  * vds.number.toFloorFixed(123.3345,3);//123.334
  * vds.number.toFixed(23.452,2);//23.45
  */
-export function toFloorFixed(num, precision) {
+export function toFloorFixed(num: number, precision: number) {
   return mathUtil.toDecimalExt(num, precision)
 }

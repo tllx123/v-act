@@ -1,3 +1,6 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 /**
  * 获取表的一列数据并且返回汇总值
  * @author tianwc
@@ -6,12 +9,10 @@
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+
 const vds = { object, string, ds, exception, expression }
 
-const main = function (dsName, columnName) {
+const main = function (dsName: string, columnName: string) {
   if (dsName == null)
     throw vds.exception.newConfigException('实体名称不允许为空，请检查')
   if (columnName == null)
@@ -53,7 +54,7 @@ const main = function (dsName, columnName) {
   }
   return resultValue
 }
-var calculatorSum = function (num1, num2) {
+var calculatorSum = function (num1: number, num2: number) {
   var multiplier1 = multiplier(num1) * 1,
     multiplier2 = multiplier(num2) * 1,
     multiplierTmp = multiplier1 > multiplier2 ? multiplier1 : multiplier2
@@ -61,13 +62,13 @@ var calculatorSum = function (num1, num2) {
   return (num1 * multiplierTmp + num2 * multiplierTmp) / multiplierTmp
 }
 
-var multiplier = function (num) {
-  num = Number(num) + ''
-  var position = num.indexOf('.') + 1,
-    len = num.length
+var multiplier = function (num: number) {
+  let num1 = Number(num) + ''
+  var position = num1.indexOf('.') + 1,
+    len = num1.length
   for (var result = '1', tmpLen = len - position, i = 0; i < tmpLen; i++) {
     result += '0'
   }
-  return result
+  return Number(result)
 }
 export { main }

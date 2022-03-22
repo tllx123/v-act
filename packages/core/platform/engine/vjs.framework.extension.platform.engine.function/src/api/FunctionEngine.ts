@@ -1,13 +1,12 @@
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let sb
-
-const initModule = function (sandbox) {
-  sb = sandbox
-}
-
-const execute = function (params) {
+const execute = function (params: {
+  functionName: string
+  context?: FunctionContext
+  args?: any[]
+}) {
   let functionName = params.functionName,
     context = params.context,
     args = params.args
@@ -37,7 +36,7 @@ const execute = function (params) {
     // 返回函数执行结果
     try {
       return mainFunc.apply(this, mainFuncArgs)
-    } catch (e) {
+    } catch (e: any) {
       if (exceptionFactory.isException(e)) {
         //属于平台异常对象就直接抛出，如：函数调用后台报错
         throw e
@@ -75,7 +74,7 @@ const execute = function (params) {
   }
 }
 
-let genExceptionData = function (args, functionName) {
+let genExceptionData = function (args: any, functionName: string) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode()
   let windowCode = scopeManager.isWindowScope(scope.getInstanceId())
@@ -105,4 +104,4 @@ let genExceptionData = function (args, functionName) {
   ]
 }
 
-export { initModule, execute }
+export { execute }

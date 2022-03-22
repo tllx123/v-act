@@ -1,2 +1,4 @@
-export * as Operation from './api/Operation'
-export * as Request from './api/Request'
+import Operation from './api/Operation'
+import Request from './api/Request'
+
+export { Operation, Request }

@@ -314,28 +314,33 @@ class Window {
   }
 
   getFuncSet() {
-    const funcSet = []
-    if (this.obj.expressions && this.obj.expressions.expression) {
-      let expressionList = this.obj.expressions.expression
-      expressionList = Array.isArray(expressionList)
-        ? expressionList
-        : [expressionList]
-      expressionList.forEach((expression) => {
-        const attrs = expression.$
-        if (attrs && attrs.content && attrs.type == 'client') {
-          const exp = attrs.content
-          const funcs = expresion.getFuncs(exp)
-          if (funcs && funcs.length > 0) {
-            funcs.forEach((func) => {
-              if (funcSet.indexOf(func) == -1) {
-                funcSet.push(func)
-              }
-            })
+    try {
+      const funcSet = []
+      if (this.obj.expressions && this.obj.expressions.expression) {
+        let expressionList = this.obj.expressions.expression
+        expressionList = Array.isArray(expressionList)
+          ? expressionList
+          : [expressionList]
+        expressionList.forEach((expression) => {
+          const attrs = expression.$
+          if (attrs && attrs.content && attrs.type == 'client') {
+            const exp = attrs.content
+            const funcs = expresion.getFuncs(exp)
+            if (funcs && funcs.length > 0) {
+              funcs.forEach((func) => {
+                if (funcSet.indexOf(func) == -1) {
+                  funcSet.push(func)
+                }
+              })
+            }
           }
-        }
-      })
+        })
+      }
+      return funcSet
+    } catch (e) {
+      return []
+      //throw Error(`解析窗体表达式出现错误，构件编号：${this.componentCode}，窗体编号：${this.windowCode},详细信息：\n${e.message}`);
     }
-    return funcSet
   }
 }
 
