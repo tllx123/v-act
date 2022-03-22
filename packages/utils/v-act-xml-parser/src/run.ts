@@ -92,26 +92,68 @@ export const run = (resources: XMLElementObj[]): Function => {
   }
   ForInObj(resources, executionRules)
 
-  let returnFun = async function (
+  // let returnFun = async function (
+  //   ruleEngine: {
+  //     executeWithRouteCallback: (config: {
+  //       ruleCode: string
+  //       routeContext: any
+  //     }) => void
+  //   },
+  //   routeRuntime: any
+  // ) {
+  //   for (let code of codes) {
+  //     if (routeRuntime.isInterrupted()) {
+  //       routeRuntime.fireRouteCallBack()
+  //       break
+  //     }
+  //
+  //     await ruleEngine.executeWithRouteCallback({
+  //       ruleCode: code,
+  //       routeContext: routeRuntime
+  //     })
+  //   }
+  // }
+
+  let returnFun = function (
     ruleEngine: {
-      executeWithRouteCallback: (config: {
-        ruleCode: string
-        routeContext: any
-      }) => void
+      executeWithRouteCallback: (
+        config: {
+          ruleCode: string
+          routeContext: any
+        },
+        func: any
+      ) => void
     },
     routeRuntime: any
   ) {
-    for (let code of codes) {
-      if (routeRuntime.isInterrupted()) {
-        routeRuntime.fireRouteCallBack()
-        break
-      }
+    let x = 0
 
-      await ruleEngine.executeWithRouteCallback({
-        ruleCode: code,
-        routeContext: routeRuntime
+    function runFun(code: string) {
+      return new Promise<void>(function (resolve) {
+        ruleEngine.executeWithRouteCallback(
+          {
+            ruleCode: code,
+            routeContext: routeRuntime
+          },
+          resolve()
+        )
       })
     }
+
+    function loopArray(runFun: Function, code: string) {
+      runFun(code).then(() => {
+        x++
+        if (x < codes.length) {
+          if (routeRuntime.isInterrupted()) {
+            routeRuntime.fireRouteCallBack()
+            return
+          }
+          loopArray(runFun, codes[x])
+        }
+      })
+    }
+
+    loopArray(runFun, codes[0])
   }
 
   return returnFun
