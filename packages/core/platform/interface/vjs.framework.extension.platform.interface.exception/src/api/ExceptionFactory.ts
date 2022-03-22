@@ -37,9 +37,10 @@ const TYPES = {
 }
 
 const create = function (params: {
-  error: Error
+  error?: any
   message?: string
   msg?: string
+  type?: string
   exceptionDatas: Array<any>
 }) {
   let e = params.error
