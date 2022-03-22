@@ -1,8 +1,8 @@
-import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-import { MathUtil } from '@v-act/vjs.framework.extension.util.Math'
+import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 export default class Context {
   private readonly context: any
@@ -71,7 +71,7 @@ export default class Context {
   executeFunction(functionName: string, ...args: any[]) {
     return FunctionEngine.execute({
       functionName: functionName,
-      context: new FunctionContext([...args], this.routeContext)
+      context: new FunctionContext(args, this.routeContext)
     })
   }
 

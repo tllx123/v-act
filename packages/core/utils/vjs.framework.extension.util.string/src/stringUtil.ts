@@ -349,30 +349,61 @@ const escapeHtml = function (str: string) {
   })
 }
 
+const getNamespaceDef = function (namespaceStr?: string) {
+  if (namespaceStr) {
+    const namespaces = namespaceStr.split('.')
+    let caller = window
+    let func: any = window
+    while (namespaces.length > 0) {
+      const name = namespaces.splice(0, 1)[0]
+      func = func[name]
+      if (namespaces.length > 0) {
+        caller = func
+      }
+      if (!func) {
+        return null
+      }
+    }
+    return {
+      caller: caller,
+      func: func
+    }
+  }
+  return null
+}
+
 export {
   anchor,
   big,
-  escapeHtml,
   blink,
   bold,
   charAt,
   charCodeAt,
   concat,
+  endsWith,
+  escapeHtml,
   fixed,
   fontcolor,
   fontsize,
   fromCharCode,
+  getNamespaceDef,
   indexOf,
+  isEmpty,
+  isInArray,
   italics,
   lastIndexOf,
   link,
   localeCompare,
+  ltrim,
   match,
   replace,
+  replaceByIndex,
+  rtrim,
   search,
   slice,
   small,
   split,
+  startsWith,
   strike,
   sub,
   substr,
@@ -380,14 +411,7 @@ export {
   sup,
   toLocaleLowerCase,
   toLocaleUpperCase,
-  toUpperCase,
   toLowerCase,
-  rtrim,
-  ltrim,
-  trim,
-  isEmpty,
-  isInArray,
-  startsWith,
-  endsWith,
-  replaceByIndex
+  toUpperCase,
+  trim
 }

@@ -3,10 +3,19 @@ import * as formulaEngine from 'module'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
+import newContext from './Context'
 import * as ExpressionContext from './ExpressionContext'
 import { ParseExpression } from './ParseExpression'
 
-import newContext from './Context'
+let _threadFunContext = null
+
+export function _setThreadFunContext(ctx: any) {
+  _threadFunContext = ctx
+}
+
+export function _clearThreadFunContext() {
+  _threadFunContext = null
+}
 
 interface IExecuteParams {
   context: any
