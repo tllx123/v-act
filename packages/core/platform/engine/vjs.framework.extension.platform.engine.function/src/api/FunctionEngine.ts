@@ -36,7 +36,7 @@ const execute = function (params: {
     // 返回函数执行结果
     try {
       return mainFunc.apply(this, mainFuncArgs)
-    } catch (e) {
+    } catch (e: any) {
       if (exceptionFactory.isException(e)) {
         //属于平台异常对象就直接抛出，如：函数调用后台报错
         throw e

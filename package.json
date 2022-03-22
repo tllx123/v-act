@@ -7,6 +7,7 @@
     "packages/**"
   ],
   "scripts": {
+    "build:framework": "node scripts/index.js build -s @v-act/expression-parser -s @v-act/tokenizer -s @v-act/xml-parser --cp ./apps/runtime",
     "build:rule": "node scripts/index.js build -s @v-act/webrule_*",
     "build:vjs": "node scripts/index.js build -s @v-act/vjs*",
     "build:widgets": "node -max_old_space_size=4096 scripts/index.js build -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
@@ -19,7 +20,7 @@
     "dev: widgetContext": "node scripts/index.js build -w -s @v-act/widget-context --cp ./apps/runtime",
     "dev: widgetUtils": "node scripts/index.js build -w -s @v-act/widget-utils --cp ./apps/runtime",
     "dev: widgets": "node scripts/index.js dev -s @v-act/widgets-dev",
-    "init:runtime": "npm run clean:runtime && npm run copy:framework && npm run build:widgets && npm run build:rule && npm run build:vjs",
+    "init:runtime": "npm run clean:runtime && build:framework && npm run copy:framework && npm run build:widgets && npm run build:rule && npm run build:vjs",
     "prepare": "husky install && node scripts/index.js env",
     "sync: widgets": "node scripts/index.js sync -s @v-act/jg* -s @v-act/iproto* --cp ./apps/runtime",
     "sync:framework": "node scripts/index.js build -s @v-act/schema-types -s @v-act/widget-context -s @v-act/widget-utils -s @v-act/component-schema-utils -s @v-act/window-schema-utils -s @v-act/expression-parser -s @v-act/utils -s @v-act/xml-parser --cp ./apps/runtime",
