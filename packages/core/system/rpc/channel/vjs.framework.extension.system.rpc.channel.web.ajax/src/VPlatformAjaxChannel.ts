@@ -5,10 +5,7 @@ import {
 import { Environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import {
-  AbstractChannel,
-  Manager as channelManager
-} from '@v-act/vjs.framework.extension.system.rpc.channel'
+import AbstractChannel from './spi/AbstractChannel'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
