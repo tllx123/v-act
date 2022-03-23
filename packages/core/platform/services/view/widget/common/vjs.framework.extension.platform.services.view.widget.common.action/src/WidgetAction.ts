@@ -94,7 +94,11 @@ let getComponentActionHandler = function () {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeWidgetAction = function (widgetId: any, actionName: any) {
+let executeWidgetAction = function (
+  widgetId: any,
+  actionName: any,
+  ...args: any[]
+) {
   let scope = scopeManager.getChildWindowScope()
   let scopeId = scope ? scope.getInstanceId() : scopeManager.getCurrentScopeId()
   return scopeManager
