@@ -845,4 +845,4 @@ CryptoJS.lib.Cipher ||
   u.AES = p._createHelper(d)
 })()
 
-export { vcookie, CryptoJS }
+export { CryptoJS }
