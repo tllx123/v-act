@@ -16,7 +16,7 @@ class Contract {
    * @param {Object} pName
    * @param {Object} value
    */
-  setHeader(pName:string, value:any) {
+  setHeader(pName: string, value: any) {
     //@ts-ignore
     this.headers[pName] = value
   }
@@ -24,7 +24,7 @@ class Contract {
    *批量设置头信息
    * @param {Object} data
    */
-  setHeaders(data:any) {
+  setHeaders(data: any) {
     if (data) {
       for (let attr in data) {
         if (data.hasOwnProperty(attr)) {
@@ -37,22 +37,22 @@ class Contract {
    *生成请求数据
    * @param {Object} operation
    */
-  generate(operation:any) {}
+  generate(operation: any) {}
   /**
    *序列化请求数据（对请求数据进行加工）
    */
-  serializeRequest(data:any) {
+  serializeRequest(data: any) {
     return encodeURIComponent(jsonUtil.obj2json(data))
   }
   /**
    * 结构化返回值
    * @param {Object} responseData
    */
-  deserializeResponse(responseData:any) {
+  deserializeResponse(responseData: any) {
     return responseData
   }
 }
 
-manager.injectCurrentContract(Contract, null)
+//manager.injectCurrentContract(Contract, null)
 
 export default Contract

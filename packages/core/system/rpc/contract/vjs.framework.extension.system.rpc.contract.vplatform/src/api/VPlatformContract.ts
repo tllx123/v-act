@@ -6,36 +6,36 @@ import Contract from './Contract'
  * @class VPlatformContract
  * @desc v平台前后端请求协议
  */
-class VPlatformContract extends Contract{
-  componentCode:string|null = null
-  windowCode:string|null = null
-  scopeId:string|null = null
-  headers:{[code:string]:any} = {}
- 
+class VPlatformContract extends Contract {
+  componentCode: string | null = null
+  windowCode: string | null = null
+  scopeId: string | null = null
+  headers: { [code: string]: any } = {}
+
   /**
    * 设置构件编号
    */
-  setComponentCode(componentCode:string) {
+  setComponentCode(componentCode: string) {
     this.componentCode = componentCode
   }
 
   /**
    * 设置窗体编号
    */
-  setWindowCode(windowCode:string) {
+  setWindowCode(windowCode: string) {
     this.windowCode = windowCode
   }
   /**
    * 设置域id
    */
-  setScopeId(scopeId:string) {
+  setScopeId(scopeId: string) {
     this.scopeId = scopeId
   }
   /**
    *生成请求数据
    * @param {Object} operation
    */
-  generate(request:any) {
+  generate(request: any) {
     let operation = request.getOperations()[0]
     this.setHeader('ajaxRequest', true)
     this.setHeader('operation', operation.getOperation())
@@ -44,7 +44,7 @@ class VPlatformContract extends Contract{
     if (transactionId != null && typeof transactionId != 'undefined') {
       this.setHeader('transaction_id', transactionId)
     }
-    let data:{[code:string]:any} = {}
+    let data: { [code: string]: any } = {}
     for (let attr in this.headers) {
       if (this.headers.hasOwnProperty(attr)) {
         data[attr] = this.headers[attr]
@@ -60,7 +60,5 @@ class VPlatformContract extends Contract{
     return data
   }
 }
-
-manager.injectCurrentContract(VPlatformContract, 'vPlatform')
 
 export default VPlatformContract
