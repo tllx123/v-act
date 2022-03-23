@@ -1,9 +1,9 @@
 import '../styles/globals.css'
+import '../styles/iconfont/iconfont.css'
 import 'antd/dist/antd.css'
 
-import { useEffect } from 'react'
 import App from 'next/app'
-import { ServerStyleSheets } from '@material-ui/styles'
+
 import { createTheme, ThemeProvider } from '@v-act/styles'
 
 import PageManager from '../src/components/PageManager'

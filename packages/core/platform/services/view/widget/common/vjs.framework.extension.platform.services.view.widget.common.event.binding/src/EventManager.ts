@@ -1,10 +1,6 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { EventManager as oldEventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 
-let sb
-
-export function initModule(sb) {}
-
 let pool: { [code: string]: any } = {}
 let setPool = function (key: any, millisecond: any) {
   if (!pool.key) {
@@ -37,9 +33,9 @@ let isExistNow = function (key: any) {
 let fireEvent = function (
   widgetCode: string,
   eventName: string,
-  millisecond: number,
-  success: any,
-  fail: any
+  millisecond?: number,
+  success?: (...args: any[]) => any,
+  fail?: (...args: any[]) => any
 ) {
   let scopeId = scopeManager.getCurrentScopeId()
   let key = scopeId + '_' + widgetCode
@@ -124,4 +120,4 @@ let handleKeyDown = function (
   }
 }
 
-export { handleKeyDown, fireEvent, fireFunc }
+export { fireEvent, fireFunc, handleKeyDown }

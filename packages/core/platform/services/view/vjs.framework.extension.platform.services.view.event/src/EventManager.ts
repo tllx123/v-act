@@ -5,14 +5,15 @@ import {
 } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as RightClickEventHandler from './RightClickEventHandler'
 
 let SCOPE_STORAGE_TOKEN = 'EVENTMANAGER_STORAGE'
 
-let platformEventStorage
-
-export function initModule(sb) {}
+let platformEventStorage = storageManager.newInstance(storageManager.TYPES.MAP)
 
 /**
  * 增加事件处理器
@@ -37,7 +38,7 @@ let addEventHandler = function (widgetId, eventName, handler) {
   }
 }
 
-let _remove = function (a, index) {
+let _remove = function (a: any[], index: number) {
   for (let i = index, l = a.length; i < l; i++) {
     a[i] = a[i + 1]
   }
@@ -67,13 +68,33 @@ let removeEventHandler = function (widgetId, eventName, handler) {
 let removeAllEventHandler = function (widgetId) {}
 
 /**
+ * 触发平台控件事件前事件
+ * */
+var firePlatformWidgetEventBefore = function (eventName, widgetId) {
+  //控件的子控件点击需要找代理ID
+  var code = widgetId
+  var proxyWidgetId = widgetAction.getProxyWidgetId(widgetId)
+  if (proxyWidgetId) {
+    code = proxyWidgetId
+  }
+  var widgetObj = widgetContext.get(code, 'widgetObj')
+  //统一控件的平台事件前
+  if (widgetObj && typeof widgetObj.firePlatformEventBefore == 'function') {
+    widgetObj.firePlatformEventBefore(eventName, code, widgetId)
+  }
+}
+/*
  * 执行事件
  */
 let fireDynamicWidgetEvent = function (eventName, success, fail) {
   let scopeId = scopeManager.getCurrentScopeId()
   return function (widgetId) {
     scopeManager.openScope(scopeId)
+    //统一控件的平台事件后
+    var sucFunc = getPlatformWidgetEventAfter(widgetId, eventName, success)
+    var failFunc = getPlatformWidgetEventAfter(widgetId, eventName, fail)
     try {
+      firePlatformWidgetEventBefore(eventName, widgetId)
       let called = false
       let key = scopeId + '_' + widgetId
       let poolInScope = getPoolInScope()
@@ -111,6 +132,13 @@ let fireDynamicWidgetEvent = function (eventName, success, fail) {
         }
       }
     } catch (e) {
+      if (exceptionFactory.isException(e)) {
+        if (typeof e.setModalClosedHandler == 'function') {
+          e.setModalClosedHandler(failFunc)
+        } else {
+          failFunc()
+        }
+      }
       exceptionHandler.handle(e)
     } finally {
       scopeManager.closeScope()
@@ -129,13 +157,101 @@ let _fire = function (fn, _this, args) {
 }
 
 /**
+ * 获取控件的平台事件后的事件
+ * */
+var getPlatformWidgetEventAfter = function (widgetCode, eventName, func) {
+  var callback = scopeManager.createScopeHandler({
+    handler: (function (code, name, cb) {
+      return function (param, func) {
+        //如果参数一是异常对象，则参数二是默认的异常处理方法
+        var afterFunc = scopeManager.createScopeHandler({
+          handler: function () {
+            var pwCode = code
+            var proxyWidgetId = widgetAction.getProxyWidgetId(code)
+            if (proxyWidgetId) {
+              pwCode = proxyWidgetId
+            }
+            var widgetObj = widgetContext.get(pwCode, 'widgetObj')
+            //统一触发平台事件后
+            if (
+              widgetObj &&
+              typeof widgetObj.firePlatformEventAfter == 'function'
+            ) {
+              widgetObj.firePlatformEventAfter(eventName, pwCode, code)
+            }
+          }
+        })
+        if (typeof cb == 'function') {
+          //先执行平台事件后，再触发外部事件
+          afterFunc()
+          cb.apply(this, arguments)
+        } else {
+          //如果是异常，则在异常弹框后才执行平台事件后。如果非异常，则直接执行平台事件后
+          if (exceptionFactory.isException(param)) {
+            if (typeof param.setModalClosedHandler == 'function') {
+              param.setModalClosedHandler(afterFunc)
+            }
+            if (param.isTiped) {
+              //如果已经提示过的异常，直接执行回调
+              if (!param._isLog) {
+                param._isLog = true //标记已经打印过日志的异常，后台返回的异常，调用父级路由存在异常多次被处理的情况
+                var detailMsg = param.getDetailMessage()
+                var msgs = []
+                for (var i = 0, len = detailMsg.length; i < len; i++) {
+                  var msg = detailMsg[i]
+                  msgs.push(msg.name + ': ' + msg.value)
+                }
+                logUtil.error('\n' + msgs.join('\n'))
+              }
+              afterFunc()
+              return
+            } else {
+              param._isLog = true
+            }
+          }
+          if (typeof func == 'function') {
+            //非正常异常对象支持第二个参数为错误弹框关闭回调
+            func.apply(this, [param, afterFunc])
+          } else {
+            afterFunc()
+          }
+        }
+      }
+    })(widgetCode, eventName, func)
+  })
+  return callback
+}
+/**
  * 执行事件
+ * @param {String} widgetCode 控件编号
+ * @param {String} eventName  事件名称
+ * @param {Function} success  事件触发成功回调
+ * @param {Function} fail	  事件触发失败回调
  */
 let fireEvent = function (widgetId, eventName, success, fail) {
   let scopeId = scopeManager.getCurrentScopeId()
+  var winScope = scopeManager.getWindowScope()
   let key = scopeId + '_' + widgetId
+  //统一控件的平台事件后
+  var sucFunc = getPlatformWidgetEventAfter(widgetId, eventName, success)
+  var failFunc = getPlatformWidgetEventAfter(widgetId, eventName, fail)
   return function () {
+    //        	//窗体设计器里不需要执行事件
+    if (
+      window._v3Platform &&
+      typeof window._v3Platform.SkipFormLoad == 'function' &&
+      window._v3Platform.SkipFormLoad() &&
+      eventName != 'OnResize'
+    ) {
+      if (
+        !winScope ||
+        !inWhiteRoster(winScope.getComponentCode(), winScope.getWindowCode())
+      )
+        return
+    }
     scopeManager.openScope(scopeId)
+    //统一控件的平台事件前
+    firePlatformWidgetEventBefore(eventName, widgetId)
     try {
       let called = false
       let poolInScope = getPoolInScope()
@@ -144,15 +260,24 @@ let fireEvent = function (widgetId, eventName, success, fail) {
         if (widgetHandlers) {
           let handlers = widgetHandlers[eventName]
           if (handlers) {
-            let args = Array.prototype.slice.call(arguments)
-            if (success)
-              args.push(_createCallback(callbackFactory.Types.Success, success))
-            if (fail)
-              args.push(_createCallback(callbackFactory.Types.Fail, fail))
-
-            for (let j = 0, l = handlers.length; j < l; j++) {
+            var args = Array.prototype.slice.call(arguments)
+            if (sucFunc)
+              args.push(_createCallback(callbackFactory.Types.Success, sucFunc))
+            if (failFunc)
+              args.push(_createCallback(callbackFactory.Types.Fail, failFunc))
+            if (event || window.event) {
+              var event = event || window.event
+              args.push({
+                isPrimitive: false,
+                Shift: event.shiftKey,
+                Alt: event.altKey,
+                Ctrl: event.ctrlKey,
+                KeyCode: event.keyCode
+              })
+            }
+            for (var j = 0, l = handlers.length; j < l; j++) {
               called = true
-              let handler = handlers[j]
+              var handler = handlers[j]
               handler.apply(this, args)
             }
           }
@@ -173,7 +298,8 @@ let fireEvent = function (widgetId, eventName, success, fail) {
         }
       }
     } catch (e) {
-      exceptionHandler.handle(e)
+      failFunc.apply(this, [e, exceptionHandler.handle])
+      //                exceptionHandler.handle(e);
     } finally {
       scopeManager.closeScope()
     }
@@ -181,6 +307,7 @@ let fireEvent = function (widgetId, eventName, success, fail) {
 }
 
 /**
+ * @private
  * 判断事件是否存在
  * @param String widgetId 控件编码
  * @param String eventName 事件名称
@@ -355,10 +482,55 @@ const hasPlatformEventHandler = function (eventName) {
 let PlatformEvents = {
   WindowRightClick: '_$WindowRightClick'
 }
-
+/**
+ * 添加白名单
+ * @param	{Object}	params
+ * {
+ * 	componentCode:'构件编码',
+ * 	windowCode:'窗体编码'
+ * }
+ * */
+var addWhiteRoster = function (params) {
+  var componentCode = params.componentCode
+  var windowCode = params.windowCode
+  if (componentCode && windowCode) {
+    eventWhiteList.push(componentCode + '$_$' + windowCode)
+  }
+}
+/**
+ * 删除白名单
+ * @param	{Object}	params
+ * {
+ * 	componentCode:'构件编码',
+ * 	windowCode:'窗体编码'
+ * }
+ * */
+var removeWhiteRoster = function (params) {
+  var componentCode = params.componentCode
+  var windowCode = params.windowCode
+  if (componentCode && windowCode) {
+    var index = eventWhiteList[componentCode + '$_$' + windowCode]
+    if (index != -1) {
+      eventWhiteList.splice(index, 1)
+    }
+  }
+}
+/**
+ * 判断窗体是否在白名单
+ * @param	{String}	componentCode
+ * @param	{String}	windowCode
+ * */
+var inWhiteRoster = function (componentCode, windowCode) {
+  if (componentCode && windowCode) {
+    var index = eventWhiteList.indexOf(componentCode + '$_$' + windowCode)
+    return index != -1
+  }
+  return false
+}
 export {
   addEventHandler,
   addPlatformEventHandler,
+  addWhiteRoster,
   existEvent,
   fireDynamicWidgetEvent,
   fireEvent,
@@ -366,5 +538,6 @@ export {
   hasPlatformEventHandler,
   PlatformEvents,
   removeAllEventHandler,
-  removeEventHandler
+  removeEventHandler,
+  removeWhiteRoster
 }
