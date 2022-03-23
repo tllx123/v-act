@@ -1,23 +1,25 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
 /**
  * 判断指定的数据源是否发生变化
  */
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-import * as message from '@v-act/vjs.framework.extension.platform.services.integration.vds.message'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
 const vds = { object, exception, expression, message, ds }
 
-var SHOWTYPE_CONFIRM = '1' // 1:询问（确定/取消），根据用户选择继续或终止
-import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+const SHOWTYPE_CONFIRM = '1' // 1:询问（确定/取消），根据用户选择继续或终止
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var inParamsObj = ruleContext.getVplatformInput()
-      var showType = inParamsObj['showType'] // 0为不询问（直接返回改变状态T/F），1为询问（确定/取消）
-      var simpleChinesePrompt = inParamsObj['simpleChinesePrompt'] // 简体中文内容
-      var simpleChinesetype = inParamsObj['simpleChinesetype'] // 简体中文内容类型:0为字符串，1为表达式
-      var tableNames = inParamsObj['tablesName'] // 数据源数组
+      const inParamsObj = ruleContext.getVplatformInput()
+      const showType = inParamsObj['showType'] // 0为不询问（直接返回改变状态T/F），1为询问（确定/取消）
+      const simpleChinesePrompt = inParamsObj['simpleChinesePrompt'] // 简体中文内容
+      const simpleChinesetype = inParamsObj['simpleChinesetype'] // 简体中文内容类型:0为字符串，1为表达式
+      const tableNames = inParamsObj['tablesName'] // 数据源数组
       if (
         tableNames == null ||
         tableNames == undefined ||
@@ -27,26 +29,26 @@ const main = function (ruleContext: RuleContext) {
         return
       }
       // 遍历数据源判断是否有数据更改
-      var isChanged = false
-      var userConfirm = true
-      for (var index = 0; index < tableNames.length; index++) {
-        var result = hasChanged(tableNames[index])
+      let isChanged = false
+      let userConfirm = true
+      for (let index = 0; index < tableNames.length; index++) {
+        const result = hasChanged(tableNames[index])
         if (result) {
           isChanged = true
           break
         }
       }
-      var callback = function (val) {
+      const callback = function (val: string | boolean) {
         userConfirm = typeof val == 'boolean' ? val : userConfirm
         setBusinessRuleResult(ruleContext, isChanged, userConfirm)
         resolve()
       }
       //当数据已改变、并且需要提示信息的时候，处理下提示信息
       if (isChanged == true && SHOWTYPE_CONFIRM == showType) {
-        var message = simpleChinesePrompt //提示信息(目前只取简体中文);
-        var messageType = simpleChinesetype //提示信息类型0代表非表达式，1代表表达式
+        let message = simpleChinesePrompt //提示信息(目前只取简体中文);
+        const messageType = simpleChinesetype //提示信息类型0代表非表达式，1代表表达式
         if (message != null && '1' == messageType) {
-          var message = vds.expression.execute(message, {
+          message = vds.expression.execute(message, {
             ruleContext: ruleContext
           })
         }
@@ -68,7 +70,8 @@ const main = function (ruleContext: RuleContext) {
         ) {
           message = message.substring(0, message.length - 1)
         }
-        var promise = vds.message.confirm(message)
+        const promise = vds.message.confirm(message)
+        //@ts-ignore
         promise.then(callback).catch(reject)
       } else {
         setBusinessRuleResult(ruleContext, isChanged, userConfirm)
@@ -97,9 +100,9 @@ function setBusinessRuleResult(ruleContext, result, userConfirm) {
  * @returns {Boolean}
  *
  */
-var hasChanged = function (datasourceName) {
-  var datasource = vds.ds.lookup(datasourceName)
-  var rds = datasource.getInsertedRecords() //获取新增记录
+const hasChanged = function (datasourceName) {
+  const datasource = vds.ds.lookup(datasourceName)
+  let rds = datasource.getInsertedRecords() //获取新增记录
   if (rds.size() > 0) {
     return true
   }
