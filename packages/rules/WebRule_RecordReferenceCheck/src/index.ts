@@ -12,7 +12,13 @@
  * @return true 记录没有被引用
  * @return false 记录被其他表引用
  */
-vds.import('vds.ds.*', 'vds.exception.*', 'vds.string.*', 'vds.rpc.*')
+//vds.import('vds.ds.*', 'vds.exception.*', 'vds.string.*', 'vds.rpc.*')
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+
+const vds = { rpc, exception, string, ds }
 /**
  * 规则入口
  */
@@ -35,11 +41,11 @@ const main = function (ruleContext: RuleContext) {
       }
       var methodContext = ruleContext.getMethodContext()
 
-      var params = {
+      var params: { [code: string]: any } = {
         rowValues: [],
         condition: '',
         parameters: {},
-        checkTable:''
+        checkTable: ''
       }
       // 构建查询条件
       var wrParam = {
@@ -50,7 +56,7 @@ const main = function (ruleContext: RuleContext) {
       var orConds = []
       var sourceField = inParamObj.sourceField.split('.')[1]
       for (var i = 0; i < rows.length; i++) {
-        var value = rows[i].get(sourceField)
+        let value: any = rows[i].get(sourceField)
         // 跳过空值不检查
         if (value != null) {
           params.rowValues.push(value)
@@ -73,13 +79,13 @@ const main = function (ruleContext: RuleContext) {
         setResult(ruleContext, false)
         resolve()
       } else {
-        var callback = function (responseObj:{Success:boolean}) {
+        var callback = function (responseObj: { Success: boolean }) {
           var result = responseObj.Success
           setResult(ruleContext, result)
           resolve()
           return true
         }
-        var errorCallback = function (responseObj:{Success:boolean}) {
+        var errorCallback = function (responseObj: { Success: boolean }) {
           var result = responseObj.Success
           reject(
             vds.exception.newSystemException('记录引用检查执行异常！' + result)
@@ -116,7 +122,7 @@ const main = function (ruleContext: RuleContext) {
     }
   })
 }
-var getSelectedAndCurrentRecords = function (dsName:string) {
+var getSelectedAndCurrentRecords = function (dsName: string) {
   var datasource = vds.ds.lookup(dsName)
   if (!datasource) {
     throw vds.exception.newConfigException(
@@ -143,7 +149,7 @@ var getSelectedAndCurrentRecords = function (dsName:string) {
  * @param {RuleContext} ruleContext 规则上下文
  * @param {Any} value 值
  */
-var setResult = function (ruleContext:RuleContext, value:any) {
+var setResult = function (ruleContext: RuleContext, value: any) {
   if (ruleContext.setResult) {
     ruleContext.setResult('isReferenced', value)
   }
