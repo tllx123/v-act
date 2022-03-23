@@ -12,47 +12,31 @@ import {
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let objectUtil
 
-let VPlatformAjaxChannel = function () {
-  AbstractChannel.apply(this, arguments)
-  let contextPath = Environment.getContextPath()
-  if (contextPath) {
-    //@ts-ignore
-    this.url = contextPath + '/module-operation!executeOperation'
-  } else {
-    //@ts-ignore
-    this.url = 'module-operation!executeOperation'
-  }
-  //@ts-ignore
-  this.count = 0
-  //@ts-ignore
-  this.requestParams = null
-  //@ts-ignore
-  this.contractParams = null
-}
+class VPlatformAjaxChannel extends AbstractChannel {
+  contextPath
+  url
+  count
+  requestParams: any
+  contractParams: any
 
-VPlatformAjaxChannel.prototype = {
-  initModule: function (sb:any) {
-    objectUtil = sb.util.object
-    var initFunc = AbstractChannel.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
+  constructor() {
+    super()
+    this.contextPath = Environment.getContextPath()
+    if (this.contextPath) {
+      this.url = this.contextPath + '/module-operation!executeOperation'
+    } else {
+      this.url = 'module-operation!executeOperation'
     }
-    var prototype = Object.create(AbstractChannel.prototype)
-    prototype.constructor = VPlatformAjaxChannel
-    objectUtil.extend(prototype, VPlatformAjaxChannel.prototype)
-    VPlatformAjaxChannel.prototype = prototype
-    channelManager.injectCurrentChannel(VPlatformAjaxChannel, 'vPlatform')
-  },
+    this.count = 0
+    this.requestParams = null
+    this.contractParams = null
+  }
 
-  /**
-   * //TODO 默认构建jquery请求
-   * @param {Object} url
-   */
-  buildRequest: function (request:any, contract:any) {
+  buildRequest(request: any, contract: any) {
     this.requestParams = request
     this.contractParams = contract
     let data = contract.generate(request)
@@ -63,7 +47,7 @@ VPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, request, contract) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           //@ts-ignore
           window.head = headNamespace
           var result = channel.processResponse(res, status)
@@ -124,7 +108,7 @@ VPlatformAjaxChannel.prototype = {
       data: data,
       //timeout: this.getTimeout(),
       complete: (function (tId) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           taskManager.execTaskById(tId, [res, status])
         }
       })(taskId),
@@ -140,9 +124,9 @@ VPlatformAjaxChannel.prototype = {
       throw new Error('未识别异常，请联系系统管理员处理')
     }
     return body
-  },
+  }
 
-  processResponse: function (res:any, status:any) {
+  processResponse(res: any, status: any) {
     if (status === 'success' || status === 'notmodified') {
       this.count = 0
       return eval('(' + res.responseText + ')')
@@ -190,9 +174,9 @@ VPlatformAjaxChannel.prototype = {
         msg: msg
       }
     }
-  },
+  }
 
-  request: function (request:any, contract:any) {
+  request(request: any, contract: any) {
     let ajax
     if ($) {
       ajax = $.ajax
@@ -224,9 +208,9 @@ VPlatformAjaxChannel.prototype = {
     } finally {
       scopeManager.closeScope()
     }
-  },
+  }
 
-  log: function (msg:string) {
+  log(msg: string) {
     if (logUtil) logUtil.log(msg)
   }
 }

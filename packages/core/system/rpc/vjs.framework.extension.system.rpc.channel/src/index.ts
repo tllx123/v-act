@@ -1,2 +1,4 @@
 export * as Manager from './api/Manager'
-export * as AbstractChannel from './spi/AbstractChannel'
+import AbstractChannel from './spi/AbstractChannel'
+
+export { AbstractChannel }
