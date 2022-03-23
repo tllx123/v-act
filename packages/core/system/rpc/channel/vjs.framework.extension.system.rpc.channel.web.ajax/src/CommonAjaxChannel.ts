@@ -1,4 +1,4 @@
-import { AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
+import AbstractChannel from './spi/AbstractChannel'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 let objectUtil: any, cUtils: any
