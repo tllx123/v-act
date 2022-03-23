@@ -92,69 +92,18 @@ export const run = (resources: XMLElementObj[]): Function => {
   }
   ForInObj(resources, executionRules)
 
-  // let returnFun = async function (
-  //   ruleEngine: {
-  //     executeWithRouteCallback: (config: {
-  //       ruleCode: string
-  //       routeContext: any
-  //     }) => void
-  //   },
-  //   routeRuntime: any
-  // ) {
-  //   for (let code of codes) {
-  //     if (routeRuntime.isInterrupted()) {
-  //       routeRuntime.fireRouteCallBack()
-  //       break
-  //     }
-  //
-  //     await ruleEngine.executeWithRouteCallback({
-  //       ruleCode: code,
-  //       routeContext: routeRuntime
-  //     })
-  //   }
-  // }
-
-  let returnFun = function (
+  return function (
     ruleEngine: {
       executeWithRouteCallback: (
         config: {
           ruleCode: string
           routeContext: any
         },
-        func: any
-      ) => void
+        func: (index: number) => any
+      ) => any
     },
     routeRuntime: any
   ) {
-    // let x = 0
-    //
-    // function runFun(code: string) {
-    //   return new Promise<void>(function (resolve) {
-    //     ruleEngine.executeWithRouteCallback(
-    //       {
-    //         ruleCode: code,
-    //         routeContext: routeRuntime
-    //       },
-    //       resolve()
-    //     )
-    //   })
-    // }
-    //
-    // function loopArray(runFun: Function, code: string) {
-    //   runFun(code).then(() => {
-    //     x++
-    //     if (x < codes.length) {
-    //       if (routeRuntime.isInterrupted()) {
-    //         routeRuntime.fireRouteCallBack()
-    //         return
-    //       }
-    //       loopArray(runFun, codes[x])
-    //     }
-    //   })
-    // }
-    //
-    // loopArray(runFun, codes[0])
-
     function runFun(index: number) {
       if (routeRuntime.isInterrupted()) {
         routeRuntime.fireRouteCallBack()
@@ -167,12 +116,11 @@ export const run = (resources: XMLElementObj[]): Function => {
         },
         function () {
           index++
-          if (index < codes.length) runFun(index)
+          if (index < codes.length) return runFun(index)
         }
       )
     }
-    runFun(0)
-  }
 
-  return returnFun
+    return runFun(0)
+  }
 }
