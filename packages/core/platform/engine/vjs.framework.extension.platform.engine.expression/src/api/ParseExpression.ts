@@ -51,7 +51,7 @@ const ParseExpression = function (exp: string) {
     },
     printRuleBusinessResultSyntax: function (syntax, print) {
       return (
-        'context.getRuleBusinessResult(' +
+        'context.getRuleBusinessResult("' +
         syntax.getInstanceCode() +
         '","' +
         syntax.getResultCode() +

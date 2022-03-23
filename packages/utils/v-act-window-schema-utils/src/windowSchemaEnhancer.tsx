@@ -231,10 +231,7 @@ const _enhanceControl = function (
 
           const handler = commonEventManager.fireEvent(
             controlCode,
-            triggerEvent,
-            instanceId,
-            () => {},
-            () => {}
+            triggerEvent
           )
           controlEvents.push({
             code: triggerEvent,
