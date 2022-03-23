@@ -17,6 +17,8 @@
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+const vds = { widget }
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
