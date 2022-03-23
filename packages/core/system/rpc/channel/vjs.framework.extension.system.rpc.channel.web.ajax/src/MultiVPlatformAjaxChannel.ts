@@ -6,36 +6,15 @@ import { Environment } from '@v-act/vjs.framework.extension.platform.interface.e
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
-import {
-  AbstractChannel,
-  Manager as channelManager
-} from '@v-act/vjs.framework.extension.system.rpc.channel'
+import AbstractChannel from './spi/AbstractChannel'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let objectUtil:any
+let objectUtil: any
 
-let MultiVPlatformAjaxChannel = function () {
-  AbstractChannel.apply(this, arguments)
-  let contextPath = Environment.getContextPath()
-  if (contextPath) {
-    //@ts-ignore
-    this.url = contextPath + '/module-operation!executeMultiOperation'
-  } else {
-    //@ts-ignore
-    this.url = 'module-operation!executeMultiOperation'
-  }
-  //@ts-ignore
-  this.count = 0
-  //@ts-ignore
-  this.requestParams = null
-  //@ts-ignore
-  this.contractParams = null
-}
-
-let _genExceptionFromResult = function (result:any) {
+let _genExceptionFromResult = function (result: any) {
   let exception
   if (
     typeof result == 'object' &&
@@ -46,7 +25,7 @@ let _genExceptionFromResult = function (result:any) {
   return exception
 }
 
-let _log = function (res:any, status:any, requestInfo:any) {
+let _log = function (res: any, status: any, requestInfo: any) {
   if (requestInfo) {
     let params = {
       request: requestInfo.request,
@@ -58,28 +37,27 @@ let _log = function (res:any, status:any, requestInfo:any) {
   }
 }
 
-MultiVPlatformAjaxChannel.prototype = {
-  initModule: function (sb:any) {
-    objectUtil = sb.util.object
-    var initFunc = AbstractChannel.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    var prototype = Object.create(AbstractChannel.prototype)
-    prototype.constructor = MultiVPlatformAjaxChannel
-    objectUtil.extend(prototype, MultiVPlatformAjaxChannel.prototype)
-    MultiVPlatformAjaxChannel.prototype = prototype
-    channelManager.injectCurrentChannel(
-      MultiVPlatformAjaxChannel,
-      'multiVPlatform'
-    )
-  },
+class MultiVPlatformAjaxChannel extends AbstractChannel {
+  contextPath: any
+  url
+  count = 0
+  requestParams = null
+  contractParams = null
 
-  /**
-   * //TODO 默认构建jquery请求
-   * @param {Object} url
-   */
-  buildRequest: function (request:any, contract:any) {
+  constructor() {
+    super()
+    this.contextPath = Environment.getContextPath()
+    if (this.contextPath) {
+      this.url = this.contextPath + '/module-operation!executeMultiOperation'
+    } else {
+      this.url = 'module-operation!executeMultiOperation'
+    }
+    this.count = 0
+    this.requestParams = null
+    this.contractParams = null
+  }
+
+  buildRequest(request: any, contract: any) {
     this.requestParams = request
     this.contractParams = contract
     let operations = request.getOperations()
@@ -91,7 +69,7 @@ MultiVPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, operations, contract, request) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           //@ts-ignore
           window.head = headNamespace
           var results = channel.processResponse(res, status, {
@@ -157,7 +135,7 @@ MultiVPlatformAjaxChannel.prototype = {
       data: data,
       //timeout : this.getTimeout(),
       complete: (function (tId) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           taskManager.execTaskById(tId, [res, status])
         }
       })(taskId),
@@ -173,9 +151,9 @@ MultiVPlatformAjaxChannel.prototype = {
       throw new Error('未识别异常，请联系系统管理员处理')
     }
     return body
-  },
+  }
 
-  processResponse: function (res:any, status:any, requestInfo:any) {
+  processResponse(res: any, status: any, requestInfo: any) {
     if (status === 'success' || status === 'notmodified') {
       this.count = 0
       return eval('(' + res.responseText + ')')
@@ -207,7 +185,7 @@ MultiVPlatformAjaxChannel.prototype = {
       }
     } else {
       if (requestInfo) {
-        let params = {
+        let params: { [code: string]: any } = {
           request: requestInfo.request,
           contract: requestInfo.contract,
           response: res,
@@ -240,9 +218,8 @@ MultiVPlatformAjaxChannel.prototype = {
         msg: msg
       }
     }
-  },
-
-  request: function (request:any, contract:any) {
+  }
+  request(request: any, contract: any) {
     let ajax
     if ($) {
       ajax = $.ajax
@@ -269,11 +246,10 @@ MultiVPlatformAjaxChannel.prototype = {
       }
       ajax(rq)
     }
-  },
+  }
 
-  log: function (msg:string) {
+  log(msg: any) {
     if (logUtil) logUtil.log(msg)
   }
 }
-
 export default MultiVPlatformAjaxChannel

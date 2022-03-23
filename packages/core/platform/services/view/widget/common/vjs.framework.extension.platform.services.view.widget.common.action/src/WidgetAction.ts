@@ -1,4 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Permission as permission } from '@v-act/vjs.framework.extension.platform.services.view.permission'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { WidgetRelation as widgetRelation } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.relation'
 
@@ -93,7 +94,11 @@ let getComponentActionHandler = function () {
  * @widgetId 控件编号
  * @actionName 控件接口名
  */
-let executeWidgetAction = function (widgetId: any, actionName: any) {
+let executeWidgetAction = function (
+  widgetId: any,
+  actionName: any,
+  ...args: any[]
+) {
   let scope = scopeManager.getChildWindowScope()
   let scopeId = scope ? scope.getInstanceId() : scopeManager.getCurrentScopeId()
   return scopeManager
@@ -102,9 +107,6 @@ let executeWidgetAction = function (widgetId: any, actionName: any) {
       handler: function () {
         var widgetType = widgetContext.getType(widgetId)
         var hasPermission = true
-        var permission = sb.getService(
-          'vjs.framework.extension.platform.services.view.permission.Permission'
-        )
         if (permission) {
           hasPermission = permission.hasPermission(widgetId, actionName)
         }

@@ -1,12 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
-import * as scopeManager from '@v-act/vjs.framework.extension.platform.interface.scope'
-scopeManager.default.ScopeManager.createWindowScope({
-  componentCode: 'test',
-  windowCode: 'form3',
-  series: 'smartclient'
-})
+import * as mod from '@v-act/vjs.framework.extension.system.rpc.channel.web.ajax'
+mod.CommonAjaxChannel
 
 const convertWebFuncs = function () {
   const desDir = 'D:\\Workspace\\github\\v-act\\packages\\funcs'

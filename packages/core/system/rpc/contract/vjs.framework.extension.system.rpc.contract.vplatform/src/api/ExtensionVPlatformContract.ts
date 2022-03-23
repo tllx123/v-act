@@ -9,10 +9,10 @@ import Contract from './Contract'
  * @desc v平台前后端请求协议
  */
 class ExtensionVPlatformContract extends Contract {
-  componentCode:string|null = null
-  windowCode:string|null = null
-  scopeId:string|null = null
-  headers:{[code:string]:any} = {}
+  componentCode: string | null = null
+  windowCode: string | null = null
+  scopeId: string | null = null
+  headers: { [code: string]: any } = {}
   constructor() {
     super()
     this.componentCode = null
@@ -23,27 +23,27 @@ class ExtensionVPlatformContract extends Contract {
   /**
    * 设置构件编号
    */
-  setComponentCode(componentCode:string) {
+  setComponentCode(componentCode: string) {
     this.componentCode = componentCode
   }
 
   /**
    * 设置窗体编号
    */
-  setWindowCode(windowCode:string) {
+  setWindowCode(windowCode: string) {
     this.windowCode = windowCode
   }
   /**
    * 设置域id
    */
-  setScopeId(scopeId:string) {
+  setScopeId(scopeId: string) {
     this.scopeId = scopeId
   }
   /**
    *生成请求数据
    * @param {Object} operation
    */
-  generate(request:any) {
+  generate(request: any) {
     let operation = request.getOperations()[0]
     this.setHeader('ajaxRequest', true)
     this.setHeader('operation', operation.getOperation())
@@ -56,7 +56,7 @@ class ExtensionVPlatformContract extends Contract {
     if (transactionId != null && typeof transactionId != 'undefined') {
       this.setHeader('transaction_id', transactionId)
     }
-    let data:{[code:string]:any} = {}
+    let data: { [code: string]: any } = {}
     for (let attr in this.headers) {
       if (this.headers.hasOwnProperty(attr)) {
         data[attr] = this.headers[attr]
@@ -65,14 +65,14 @@ class ExtensionVPlatformContract extends Contract {
     let params = operation.getParams()
     let extensionParams = params['params']
     //参数数组转为object
-    let sandParams:{[code:string]:any} = {}
+    let sandParams: { [code: string]: any } = {}
     if (extensionParams && extensionParams.length > 0) {
       for (let i = 0, param; (param = extensionParams[i]); i++) {
         if (
           param.paramType === 'entity' ||
           datasourceFactory.isDatasource(param.paramValue)
         ) {
-          let value:{[code:string]:any} = {}
+          let value: { [code: string]: any } = {}
           let dataSource = param.paramValue
           let metadata = dataSource.getMetadata()
           let dataSourceName = metadata.getDatasourceName()
@@ -97,8 +97,8 @@ class ExtensionVPlatformContract extends Contract {
    * 结构化返回值
    * @param {Object} responseData
    */
-  deserializeResponse(responseData:any) {
-    let output:{[code:string]:any} = {}
+  deserializeResponse(responseData: any) {
+    let output: { [code: string]: any } = {}
     if (responseData.success == true) {
       if (responseData && responseData.data && responseData.data.result) {
         let result = responseData.data.result
@@ -120,8 +120,8 @@ class ExtensionVPlatformContract extends Contract {
   /**
    *生成提交数据集合
    */
-  _genDatas(dataSource:any) {
-    let records = {recordCount:null,values:{}}
+  _genDatas(dataSource: any) {
+    let records = { recordCount: null, values: {} }
     let resultSet = dataSource.getAllRecords()
     records.recordCount = resultSet.size()
     let list = []
@@ -136,11 +136,11 @@ class ExtensionVPlatformContract extends Contract {
   /**
    *生成元数据
    */
-  _genMetadata(dataSource:any) {
+  _genMetadata(dataSource: any) {
     let metadata = dataSource.getMetadata()
     dataSource = metadata.getDatasourceName()
-    let metadataValue:{[code:string]:any} = {}
-    let model:{[code:string]:any} = {}
+    let metadataValue: { [code: string]: any } = {}
+    let model: { [code: string]: any } = {}
     model.object = dataSource
     let fields = metadata.getFields()
     let fieldArray = []
@@ -155,6 +155,6 @@ class ExtensionVPlatformContract extends Contract {
   }
 }
 
-manager.injectCurrentContract(ExtensionVPlatformContract, 'extensionVPlatform')
+//manager.injectCurrentContract(ExtensionVPlatformContract, 'extensionVPlatform')
 
 export default ExtensionVPlatformContract

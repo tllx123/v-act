@@ -137,7 +137,7 @@ const isLogin = function () {
 }
 
 const parseCssStr = function (css: string) {
-  if (css) {
+  if (css && typeof document != 'undefined') {
     let wrapDiv = document.getElementById('_$styleWrapDiv')
     if (!wrapDiv) {
       wrapDiv = document.createElement('div')
