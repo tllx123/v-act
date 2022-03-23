@@ -12,7 +12,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let objectUtil: any
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
 
 let _genExceptionFromResult = function (result: any) {
   let exception
@@ -229,8 +229,8 @@ class MultiVPlatformAjaxChannel extends AbstractChannel {
       for (let i = 0, l = operations.length; i < l; i++) {
         let func = operations[i].getBeforeRequest()
         if (typeof func === 'function') {
-          //func.call(operation)
-          throw new Error('未识别异常，请联系系统管理员处理')
+          func.call(request)
+          //throw new Error('未识别异常，请联系系统管理员处理')
         }
       }
       let rq = this.buildRequest(request, contract)

@@ -1,7 +1,7 @@
 import AbstractChannel from './spi/AbstractChannel'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
-
-let objectUtil: any, cUtils: any
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
+let cUtils: any
 
 class CommonAjaxChannel extends AbstractChannel {
   buildRequest(request: any, contract: any) {

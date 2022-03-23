@@ -11,8 +11,6 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 import * as generateRequestIdenUtil from './util/GenerateRequestIdenUtil'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let objectUtil
-
 class VPlatformAjaxChannel extends AbstractChannel {
   contextPath
   url
