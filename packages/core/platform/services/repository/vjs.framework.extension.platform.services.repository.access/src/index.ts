@@ -1,2 +1,4 @@
-export * as DataAccessObject from './api/object/DataAccessObject'
-export * as DataSerializer from './api/serializer/DataSerializer'
+import DataAccessObject from './api/object/DataAccessObject'
+import DataSerializer from './api/serializer/DataSerializer'
+
+export { DataAccessObject, DataSerializer }
