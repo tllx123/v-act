@@ -4,7 +4,7 @@ const init = function (params) {
   PLATFORM_POOL[params.vjsName] = params.items
 }
 
-const get = function (params) {
+const get = function (params, detail?: string) {
   if (params && params.defaultVal) {
     let vjsPool = PLATFORM_POOL[params.vjsName]
     if (vjsPool) {

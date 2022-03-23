@@ -1,59 +1,61 @@
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 /**
  *
  */
 //规则主入口(必须有)
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
-import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-const vds = { object, ds, exception, string, rpc }
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+
+const vds = { object, ds, exception, string, rpc, expression }
 
 const main = function () {
   if (vds.object.isUndefOrNull(arguments) || arguments.length <= 0) {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       '[VConvertEntityToXML.main]执行失败，必须配置至少一个参数作为表名'
     )
     throw exception
   }
 
-  var tableDataMap = {}
-  for (var i = 0; i < arguments.length; i++) {
-    var tableName = arguments[i]
-    var db = GetDataSource(tableName) //获取对应的数据源
+  const tableDataMap = {}
+  for (let i = 0; i < arguments.length; i++) {
+    const tableName = arguments[i]
+    const db = GetDataSource(tableName) //获取对应的数据源
 
-    var dbSeriallize = db.serialize()
+    const dbSeriallize = db.serialize()
     tableDataMap[tableName] = dbSeriallize
   }
 
-  var jsonStr = vds.string.toJson(tableDataMap)
+  let jsonStr = vds.string.toJson(tableDataMap)
   jsonStr = encodeURIComponent(jsonStr)
 
-  var expression = 'VConvertEntityToXML("' + jsonStr + '")'
-  var result
+  const expression = 'VConvertEntityToXML("' + jsonStr + '")'
+  let result = { success: false, data: { result: false } }
   vds.rpc.callCommandSync('WebExecuteFormulaExpression', null, {
     isOperation: true,
     operationParam: {
       expression: expression
     },
-    success: function (rs) {
+    success: function (rs: { success: boolean; data: { result: any } }) {
       result = rs
     }
   })
   if (result && result.success == true) {
     return result.data.result
   } else {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       '[VConvertEntityToXML.main]解析实体数据失败，result=' + result
     )
     throw exception
   }
 }
 
-var GetDataSource = function (ds) {
+const GetDataSource = function (ds: string) {
   //获取数据源
-  var dsName = ds
-  var datasource = null
+  const dsName = ds
+  let datasource = null
   if (vds.ds.isDatasource(dsName)) {
     datasource = dsName
   } else {
@@ -64,7 +66,7 @@ var GetDataSource = function (ds) {
     }
   }
   if (!datasource) {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       '找不到函数VConvertEntityToXML参数中的实体！'
     )
     throw exception
