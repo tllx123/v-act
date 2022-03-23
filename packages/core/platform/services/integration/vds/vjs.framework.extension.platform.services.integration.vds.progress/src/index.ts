@@ -8,30 +8,8 @@
  * vds.import("vds.progress.*");
  * vds.progress.show();
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var progress = vds.progress
-if (!progress) {
-  progress = {}
-  vds.progress = progress
-}
-
-exports = progress
-
-var sandbox, progressBarUtil, scopeManager
-
-export function initModule(sBox) {
-  sandbox = sBox
-  progressBarUtil = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.progressbar.ProgressBarUtil'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-}
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { ProgressBarUtil as progressBarUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.progressbar'
 
 /**
  * 显示进度条
@@ -48,7 +26,7 @@ export function initModule(sBox) {
  *  "global":false
  * });
  * */
-export function show(msg, params) {
+export function show(msg: string | undefined, params: Record<string, any>) {
   if (!msg) {
     return
   }
@@ -64,12 +42,7 @@ export function show(msg, params) {
       progressBarUtil.showProgress(_msg, isGlobal)
     }
   })(msg, global)
-  var fun = scopeManager.createScopeHandler({
-    scopeId: currentScopeId,
-    handler: function () {
-      progressBarUtil.hideProgress(isG)
-    }
-  })
+
   winScope.on(
     scopeManager.EVENTS.DESTROY,
     (function (sId, isG) {
@@ -111,7 +84,7 @@ export function show(msg, params) {
  *  "global":false
  * });
  * */
-export function hide(params) {
+export function hide(params: Record<string, any>) {
   var global = params && params.global === false ? false : true
   var winScope = scopeManager.getWindowScope()
   if (!winScope) {
@@ -125,5 +98,3 @@ export function hide(params) {
     }
   })(global)
 }
-
-module.exports = exports
