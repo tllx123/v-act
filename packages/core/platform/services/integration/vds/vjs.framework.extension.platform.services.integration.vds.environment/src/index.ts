@@ -55,5 +55,3 @@ export function parseCss(css: string | null) {
     environmentUtil.parseCssStr(css)
   }
 }
-
-module.exports = exports
