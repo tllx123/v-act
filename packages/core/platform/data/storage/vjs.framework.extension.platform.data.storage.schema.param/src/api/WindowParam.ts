@@ -5,7 +5,7 @@ let token = 'WindowParam_Token_Key',
   input_param_token = 'WindowParam_Input_Token_Key',
   output_param_token = 'WindowParam_Output_Token_Key'
 
-let getWindowStorage = function (depth, isCreate) {
+let getWindowStorage = function (depth: any, isCreate: boolean) {
   let rs,
     s = storageManager.get(storageManager.TYPES.MAP, token)
   for (let i = 0, key; (key = depth[i]); i++) {
@@ -22,26 +22,42 @@ let getWindowStorage = function (depth, isCreate) {
   return rs
 }
 
-let addWindowDefines = function (componentCode, windowCode, domain, defines) {
+let addWindowDefines = function (
+  componentCode: string,
+  windowCode: string,
+  domain: string,
+  defines: any
+) {
   let wStorage = getWindowStorage([componentCode, windowCode, domain], true)
   let params = ParamConfigFactory.unSerialize(defines)
   if (params) {
-    sandbox.util.collections.each(params, function (param) {
+    // @ts-ignore
+    sandbox.util.collections.each(params, function (param: any) {
       wStorage.put(param.getCode(), param)
     })
   }
 }
 
-let getWindowDefine = function (componentCode, windowCode, domain, code) {
+let getWindowDefine = function (
+  componentCod: string,
+  windowCode: string,
+  domain: string,
+  code: string
+) {
+  // @ts-ignore
   let wStorage = getWindowStorage([componentCode, windowCode, domain], false)
   return wStorage ? wStorage.get(code) : null
 }
 
-let getAllDefines = function (componentCode, windowCode, domain) {
+let getAllDefines = function (
+  componentCode: string,
+  windowCode: string,
+  domain: string
+) {
   let wStorage = getWindowStorage([componentCode, windowCode, domain], false)
-  let defines = []
+  let defines: any = []
   if (wStorage) {
-    wStorage.iterate(function (code, define) {
+    wStorage.iterate(function (code: string, define: any) {
       defines.push(define)
     })
   }
@@ -51,7 +67,7 @@ let getAllDefines = function (componentCode, windowCode, domain) {
 const addInputDefines = function (
   componentCode: string,
   windowCode: string,
-  defines
+  defines: any
 ) {
   addWindowDefines(componentCode, windowCode, input_param_token, defines)
 }
@@ -59,7 +75,7 @@ const addInputDefines = function (
 const addOutputDefines = function (
   componentCode: string,
   windowCode: string,
-  defines
+  defines: any
 ) {
   addWindowDefines(componentCode, windowCode, output_param_token, defines)
 }
@@ -89,28 +105,28 @@ const getInputDefines = function (componentCode: string, windowCode: string) {
 }
 
 export {
-  addComponentResource,
+  // addComponentResource,
   addInputDefines,
-  addOptionDefines,
+  // addOptionDefines,
   addOutputDefines,
-  addRuleSetInputs,
-  addVariantDefines,
-  exists,
-  existWindowMapping,
-  getComponentResourcePath,
-  getComponentResourcePaths,
+  // addRuleSetInputs,
+  // addVariantDefines,
+  // exists,
+  // existWindowMapping,
+  // getComponentResourcePath,
+  // getComponentResourcePaths,
   getInputDefine,
   getInputDefines,
-  getMetadata,
-  getOptionDefine,
-  getOptionDefines,
+  // getMetadata,
+  // getOptionDefine,
+  // getOptionDefines,
   getOutputDefine,
-  getOutputDefines,
-  getRuleSetInput,
-  getRuleSetInputs,
-  getVariantDefine,
-  getVariantDefines,
-  getWindowMapping,
-  initWindowMapping,
-  registerMetadata
+  getOutputDefines
+  // getRuleSetInput,
+  // getRuleSetInputs,
+  // getVariantDefine,
+  // getVariantDefines,
+  // getWindowMapping,
+  // initWindowMapping,
+  // registerMetadata
 }
