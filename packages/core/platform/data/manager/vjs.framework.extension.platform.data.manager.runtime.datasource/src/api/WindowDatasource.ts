@@ -57,11 +57,12 @@ const init = function () {
  * @param datasource
  *            {Object} 数据源实例
  */
-let _initDefaultValueGenerator = function (datasource) {
+let _initDefaultValueGenerator = function (datasource: any) {
   let metadata = datasource.getMetadata()
   let datasourceName = metadata.getDatasourceName()
   let fields = metadata.getFields()
   for (let i = 0; i < fields.length; i++) {
+    // @ts-ignore
     fields[i].setDefaultValueGenerator(
       new DefaultValueGenerator(datasourceName, fields[i].getCode())
     )
@@ -87,6 +88,7 @@ const initDefaultDatas = function () {
         datasourceName: ds
       })
       if (isVirtualDatasource == true) {
+        // @ts-ignore
         let virtualDatasource = this.lookup({
           datasourceName: ds
         })
@@ -99,7 +101,7 @@ const initDefaultDatas = function () {
   }
 }
 
-const lookup = function (params) {
+const lookup = function (params: any) {
   let dsName = params.datasourceName
   let datasource = windowMappingManager.getDataSource(dsName)
   //		var windowScope = scopeManager.getScope();
@@ -141,7 +143,7 @@ const lookup = function (params) {
   return datasource ? datasource : null
 }
 
-const register = function (params) {
+const register = function (params: any) {
   let windowScope = scopeManager.getScope()
   let storage = windowScope.has(token)
     ? windowScope.get(token)
@@ -150,7 +152,7 @@ const register = function (params) {
   windowScope.set(token, storage)
 }
 
-const unRegister = function (params) {
+const unRegister = function (params: any) {
   let dsName = params.datasourceName
   let windowScope = scopeManager.getScope()
   if (windowScope.has(token)) {
@@ -159,7 +161,7 @@ const unRegister = function (params) {
   }
 }
 
-const exists = function (params) {
+const exists = function (params: any) {
   let dsName = params.datasourceName
   let windowScope = scopeManager.getScope()
   if (windowScope.has(token)) {
@@ -171,10 +173,10 @@ const exists = function (params) {
 
 const getAll = function () {
   let windowScope = scopeManager.getScope()
-  let result = []
+  let result: any = []
   if (windowScope.has(token)) {
     let storage = windowScope.get(token)
-    storage.iterate(function (key, val) {
+    storage.iterate(function (key: any, val: any) {
       result.push(val)
     })
   }
