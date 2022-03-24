@@ -180,7 +180,7 @@ const _render = function (params) {
   SmartClientUtil.renderComponentById(componentCode, windowCode, inputParams, {
     scopeId: newScopeId,
     inited: params.aops ? params.aops.inited : null,
-    rendered: function (component, scopeId) {
+    rendered: function (scopeId) {
       const container = new WindowContainer({
         scopeId: newScopeId,
         componentCode: componentCode,
@@ -218,7 +218,7 @@ const _render = function (params) {
       }
       //_addRenderInfo(params);
       if (params.aops && params.aops.rendered) {
-        params.aops.rendered(component, scopeId)
+        params.aops.rendered(scopeId)
       }
     },
     completed: params.aops ? params.aops.completed : null,

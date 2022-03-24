@@ -7,6 +7,7 @@ interface PageManagerProperty {
   page: any
   level?: number
   url?: string
+  title?: string
   children?: JSX.Element
 }
 
@@ -30,23 +31,23 @@ const getTitleFromUrl = function (url?: string | null) {
 }
 
 export default function PageManager(props: PageManagerProperty) {
-  let { page, level, url } = props
+  let { page, level, url, title } = props
   const [stack, setStack] = useState(() => {
-    return [{ page, level: 0, url: null }]
+    return [{ page, level: 0, url: null, title: '' }]
   })
   if (stack[0].page === page) {
     level = 0
   }
   useEffect(() => {
     setStack((prevStack) => {
-      return [...prevStack.slice(0, level), { page, url, level: undefined }]
+      return [...prevStack.slice(0, level), { page, url, level, title }]
     })
-  }, [page, level, url])
+  }, [page, level, url, title])
 
   const topLevel = stack.length - 1
   return stack.map((entry, thisLevel) => {
-    const { page, url } = entry
-    const title = decodeURIComponent(getTitleFromUrl(url))
+    const { page, url, title } = entry
+    //const title = decodeURIComponent(getTitleFromUrl(url))
     const key = `${thisLevel}:${url}`
     return (
       <PageStackProvider key={key} thisLevel={thisLevel} topLevel={topLevel}>
