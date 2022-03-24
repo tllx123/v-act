@@ -8,11 +8,11 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 
 import * as componentUtil from './BootstrapUtil'
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -31,11 +31,11 @@ export function initModule(sb:any) {
  * refComponents:{}
  */
 let execute = function (
-  componentCode:string,
-  windowCode:string,
-  inputParam:any,
-  paramCfg:any,
-  languageCode:string
+  componentCode: string,
+  windowCode: string,
+  inputParam: any,
+  paramCfg: any,
+  languageCode: string
 ) {
   let runningMode = paramCfg.runningMode
   let debug = paramCfg.debug
@@ -50,9 +50,9 @@ let execute = function (
   environment.setContextPath(contextPath)
   environment.setDebugPort(paramCfg.debugPort)
   //environment.setPlatformType(platformType);
-  let callbackCfg = function (component:any, scopeId:string) {
+  let callbackCfg = function (component: any, scopeId: string) {
     //if (first_window_scopeId != scopeId) {
-     // $('body').append(component)
+    // $('body').append(component)
     //}
     throw new Error('未识别异常，请联系系统管理员处理')
     let _title = ScopeManager.getWindowScope().getTitle()
@@ -108,7 +108,7 @@ let execute = function (
         'vjs.framework.extension.platform.init.view.schema.component.' +
           componentCode
       ],
-      function (bundles:any) {
+      function (bundles: any) {
         componentUtil.prepareComponent(
           componentCode,
           windowCode,
@@ -154,7 +154,7 @@ let execute = function (
     })
   }
   ScopeManager.openScope(scopeId)
-  let setTitle = function (newTitle:string) {
+  let setTitle = function (newTitle: string) {
     if (newTitle) document.title = newTitle
   }
   let _title = ScopeManager.getWindowScope().getTitle()
@@ -185,13 +185,14 @@ let execute = function (
     scopeId,
     callbackCfg,
     refComponents,
-    function (exception:any) {
+    function (exception: any) {
       let progressbar = sandbox.getService(
         'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'
       )
       progressbar.hideProgress()
       exceptionHandler.handle(exception)
-    },null
+    },
+    null
   )
   let progressbar = sandbox.getService(
     'vjs.framework.extension.ui.common.plugin.services.progressbar.ProgressBarUtil'

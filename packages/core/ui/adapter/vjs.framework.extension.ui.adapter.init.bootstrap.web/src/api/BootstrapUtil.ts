@@ -10,13 +10,13 @@ import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.
 import { WindowRuntimeManager as runtimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
-let _allRight = function (pool:any) {
+let _allRight = function (pool: any) {
   let flag = true
   for (let key in pool) {
     if (!pool[key]) {
@@ -27,7 +27,7 @@ let _allRight = function (pool:any) {
   return flag
 }
 
-let _fireFunc = function (func:any, self:any, args:any) {
+let _fireFunc = function (func: any, self: any, args: any) {
   if (typeof func == 'function') {
     func.apply(self, args)
   }
@@ -51,8 +51,8 @@ let _fireFunc = function (func:any, self:any, args:any) {
 let renderComponentById = function (
   componentCode,
   windowCode,
-  inputParam:any,
-  cfg:any
+  inputParam: any,
+  cfg: any
 ) {
   let scopeId
   if (cfg && cfg.scopeId) {
@@ -66,7 +66,10 @@ let renderComponentById = function (
       series: 'bootstrap'
     })
   }
-  let renderedCallback:any, initedCallback:any, refComponentCfg:any, errorFunc
+  let renderedCallback: any,
+    initedCallback: any,
+    refComponentCfg: any,
+    errorFunc
   if (cfg) {
     renderedCallback = cfg.rendered
     initedCallback = cfg.inited
@@ -94,7 +97,7 @@ let renderComponentById = function (
           _fireFunc(initedCallback, this, [component, scopeId])
         },
         refComponentCfg,
-        function (exception:any) {
+        function (exception: any) {
           exception.handle()
         },
         null
@@ -129,10 +132,10 @@ let renderComponent = function (
   componentCode,
   windowCode,
   scopeId,
-  func:any,
-  variables:any,
-  errorFunc:any,
-  fromPage:any
+  func: any,
+  variables: any,
+  errorFunc: any,
+  fromPage: any
 ) {
   ScopeManager.openScope(scopeId) //防止请求回调用需要用到窗体域信息
   let tmpUUID = 'WINLOAD_' + uuidUtil.generate()
@@ -222,14 +225,14 @@ let renderComponent = function (
       errorFunc(exception)
     })
 }
-let _genRenderComponentCallback = function (params:any) {
+let _genRenderComponentCallback = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     scopeId = params.scopeId,
     func = params.func,
     uuid = params.tmpUUID,
     error = params.error
-  return function (viewLib:any) {
+  return function (viewLib: any) {
     eventManager.fire({
       event: eventManager.Events.AfterWindowLoad,
       args: [scopeId, uuid]
@@ -282,7 +285,7 @@ let _genRenderComponentCallback = function (params:any) {
  * @param {String} comCode 来源窗体信息列表
  * recurssion
  * */
-function getSource(comCode, winCode, infos:any) {
+function getSource(comCode, winCode, infos: any) {
   infos.push({
     componentCode: comCode,
     windowCode: winCode
@@ -335,11 +338,11 @@ let prepareComponent = function (
   newComponentCode,
   newWindowCode,
   scopeId,
-  inputParam:any,
-  func:any,
-  variables:any,
-  errorFunc:any,
-  deps:any
+  inputParam: any,
+  func: any,
+  variables: any,
+  errorFunc: any,
+  deps: any
 ) {
   let componentCode = newComponentCode
   let windowCode = newWindowCode
@@ -441,7 +444,7 @@ let prepareComponent = function (
     .done(function () {
       TaskManager.execTaskById(taskId, [])
     })
-    .fail(function (dependencyLib:any) {
+    .fail(function (dependencyLib: any) {
       let exception = exceptionFactory.create({
         message: dependencyLib.message,
         type: dependencyLib.type,
@@ -450,7 +453,7 @@ let prepareComponent = function (
       errorFunc(exception)
     })
 }
-let _genPrepareComponentCallback = function (params:any) {
+let _genPrepareComponentCallback = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     scopeId = params.scopeId,
@@ -486,14 +489,14 @@ let _handleError = function (
   componentCode,
   windowCode,
   moduleName,
-  error:any
+  error: any
 ) {
   let hasError = _hasError(resultJson)
   if (hasError) {
     let handler = function () {
       seajs.use(
         ['system/exception/ExceptionFactory'],
-        function (ExceptionFactory:any) {
+        function (ExceptionFactory: any) {
           let exception,
             msg = ''
           if (resultJson) {
@@ -530,7 +533,7 @@ let _handleError = function (
     if (window.$) {
       handler()
     } else {
-      seajs.use('plugin/allforsmartclientext', function (ext:any) {
+      seajs.use('plugin/allforsmartclientext', function (ext: any) {
         handler()
       })
     }
@@ -538,7 +541,7 @@ let _handleError = function (
   return hasError
 }
 
-let _hasError = function (resultJson:any) {
+let _hasError = function (resultJson: any) {
   return (
     !resultJson ||
     (resultJson.hasOwnProperty('__$isErrorModule') &&
@@ -568,8 +571,8 @@ let renderComponentToElement = function (
   componentCode,
   windowCode,
   inputParam,
-  htmlEle:any,
-  cfg:any
+  htmlEle: any,
+  cfg: any
 ) {
   let renderedFunction = null
   let inited = null
@@ -607,11 +610,11 @@ let renderComponentToElement = function (
  *设置运行模式
  * @param {Object} mode
  */
-let setRunningMode = function (mode:any) {
+let setRunningMode = function (mode: any) {
   this.runningMode = mode
 }
 
-let renderWindows = function (windowsCfg:any, config:any) {
+let renderWindows = function (windowsCfg: any, config: any) {
   let renderVJSCfgs = []
   let initVJSCfgs = []
   let renderedPool = {} //viewLib中用headjs加载js与css，当第二次执行这个接口时，会造成init在前，render在后

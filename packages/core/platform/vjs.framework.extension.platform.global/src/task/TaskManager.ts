@@ -2,7 +2,7 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let TaskManager:any = function () {
+let TaskManager: any = function () {
   //任务列表
   //@ts-ignore
   this.taskList = []
@@ -41,7 +41,7 @@ TaskManager.prototype.execTask = function () {
   this.reset()
 }
 
-TaskManager.prototype.execTaskById = function (taskId:string, args:any) {
+TaskManager.prototype.execTaskById = function (taskId: string, args: any) {
   for (let i = 0, task; (task = this.taskList[i]); i++) {
     if (taskId === task.getTaskId()) {
       arrayUtil.remove(this.taskList, task)
@@ -52,7 +52,7 @@ TaskManager.prototype.execTaskById = function (taskId:string, args:any) {
   }
 }
 
-TaskManager.prototype.addTask = function (task:any) {
+TaskManager.prototype.addTask = function (task: any) {
   this.taskList.push(task)
 }
 
@@ -68,7 +68,7 @@ TaskManager.prototype.reset = function () {
   this.intervalIndex = null
 }
 
-TaskManager.prototype.exist = function (taskId:string) {
+TaskManager.prototype.exist = function (taskId: string) {
   let falg = false
   for (let i = 0, task; (task = this.taskList[i]); i++) {
     if (taskId === task.getTaskId()) {
@@ -81,7 +81,7 @@ TaskManager.prototype.exist = function (taskId:string) {
 
 let singlton = new TaskManager()
 
-const addTask = function (task:any) {
+const addTask = function (task: any) {
   let scopeId = task.scopeId
   let taskId = uuid.generate()
   if (!scopeId || !scopeManager.isDestroy(scopeId)) {
@@ -92,15 +92,15 @@ const addTask = function (task:any) {
   return taskId
 }
 
-const execTaskById = function (taskId:string, args:any) {
+const execTaskById = function (taskId: string, args: any) {
   return singlton.execTaskById(taskId, args)
 }
 
-const exists = function (taskId:string) {
+const exists = function (taskId: string) {
   return singlton.exist(taskId)
 }
 
-const removeById = function (taskId:string) {
+const removeById = function (taskId: string) {
   for (let task, i = 0; (task = singlton.taskList[i]); i++) {
     if (task.getTaskId() == taskId) {
       arrayUtil.remove(singlton.taskList, task)
@@ -110,7 +110,7 @@ const removeById = function (taskId:string) {
   return false
 }
 
-const removeByFilter = function (filter:any) {
+const removeByFilter = function (filter: any) {
   for (let task, i = 0; (task = singlton.taskList[i]); i++) {
     if (task.isMatch(filter)) {
       arrayUtil.remove(singlton.taskList, task)
@@ -145,6 +145,6 @@ export {
   //markForComponentInited,
   //markForComponentLoaded,
   removeByFilter,
-  removeById,
+  removeById
   //setComponentType
 }

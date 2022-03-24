@@ -128,7 +128,7 @@ class FunctionSyntax extends Syntax {
     let argTokens = splitArgTokens(index, rightParenTokenIndex, <Token[]>tokens)
     let args: Syntax[] = []
     argTokens.forEach((argToken) => {
-      args.push(parseToSyntax(argToken))
+      args.push(parseToSyntax(argToken, context))
     })
     let position = new Position()
     position.parseStartToken(<Token>tokens[startIndex])

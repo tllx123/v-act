@@ -4,7 +4,7 @@ import {
   WindowParam as windowParam
 } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
-let _iterate = function (obj:any, fn:any) {
+let _iterate = function (obj: any, fn: any) {
   if (obj) {
     for (let key in obj) {
       if (obj.hasOwnProperty(key)) {
@@ -14,8 +14,8 @@ let _iterate = function (obj:any, fn:any) {
   }
 }
 
-let _setVal = function (data:any, getFn:any, setFn:any) {
-  _iterate(data, function (key:any, config:any) {
+let _setVal = function (data: any, getFn: any, setFn: any) {
+  _iterate(data, function (key: any, config: any) {
     let type = config.config.type
     if (type == 'entity') {
       let ds = getFn(key)
@@ -26,7 +26,7 @@ let _setVal = function (data:any, getFn:any, setFn:any) {
   })
 }
 
-let _updateDS = function (ds:any, config:any) {
+let _updateDS = function (ds: any, config: any) {
   let datas = config.datas
   for (let i = 0, l = datas.length; i < l; i++) {
     let dt = datas[i]
@@ -46,86 +46,86 @@ let _updateDS = function (ds:any, config:any) {
   }
 }
 
-let _updateComponentVars = function (data:any) {
+let _updateComponentVars = function (data: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return componentParam.getVariant({ code: code })
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       componentParam.setVariant({ code: code, value: val })
     }
   )
 }
 
-let _udpateWindowVars = function (data:any) {
+let _udpateWindowVars = function (data: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return windowParam.getInput({ code: code })
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       windowParam.setInput({ code: code, value: val })
     }
   )
 }
 
-let _updateWindowOuts = function (data:any) {
+let _updateWindowOuts = function (data: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return windowParam.getOutput({ code: code })
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       windowParam.setOutput({ code: code, value: val })
     }
   )
 }
 
-let _updateRouteVars = function (data:any, rctx:any) {
+let _updateRouteVars = function (data: any, rctx: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return rctx.getVariable(code)
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       rctx.setVariable(code, val)
     }
   )
 }
 
-let _updateRouteIns = function (data:any, rctx:any) {
+let _updateRouteIns = function (data: any, rctx: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return rctx.getInputParam(code)
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       rctx.setInputParam(code, val)
     }
   )
 }
 
-let _updateRouteOuts = function (data:any, rctx:any) {
+let _updateRouteOuts = function (data: any, rctx: any) {
   _setVal(
     data,
-    function (code:string) {
+    function (code: string) {
       return rctx.getOutPutParam(code)
     },
-    function (code:string, val:any) {
+    function (code: string, val: any) {
       rctx.setOutputParam(code, val)
     }
   )
 }
 
-let _updateEntities = function (entities:any) {
-  _iterate(entities, function (name:string, config:any) {
+let _updateEntities = function (entities: any) {
+  _iterate(entities, function (name: string, config: any) {
     let ds = windowDatasource.lookup({ datasourceName: name })
     _updateDS(ds, config)
   })
 }
 
-const update = function (data:any, routeContext:any) {
+const update = function (data: any, routeContext: any) {
   _updateComponentVars(data.componentVariants)
   _udpateWindowVars(data.windowVariants)
   _updateWindowOuts(data.windowOutputs)

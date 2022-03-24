@@ -94,7 +94,7 @@ class BracketSyntax extends Syntax {
       return result.syntax
     } else if (result.rightParenToken && result.endIndex) {
       let rightParenToken = result.rightParenToken
-      let body = parseToSyntax(result.bodyTokens)
+      let body = parseToSyntax(result.bodyTokens, context)
       let position = new Position()
       position.parseStartToken(<Token>leftParenToken)
       position.parseEndToken(rightParenToken)

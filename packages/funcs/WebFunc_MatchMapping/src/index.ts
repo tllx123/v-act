@@ -1,1 +1,1 @@
-export * from './source/MatchMapping'
+export * as MatchMapping from './source/MatchMapping'

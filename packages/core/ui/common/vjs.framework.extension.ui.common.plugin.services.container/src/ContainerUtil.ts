@@ -1,6 +1,6 @@
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -8,10 +8,10 @@ export function initModule(sb:any) {
  * 更新容器信息
  */
 let updateContainerInfo = function (
-  tabContentCode:string,
-  scopeId:string,
-  componentCode:string,
-  windowCode:string
+  tabContentCode: string,
+  scopeId: string,
+  componentCode: string,
+  windowCode: string
 ) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
@@ -24,7 +24,7 @@ let updateContainerInfo = function (
 /**
  * 获取容器内部域ID
  */
-let getContainerScopeId = function (tabContentCode:string) {
+let getContainerScopeId = function (tabContentCode: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -34,7 +34,7 @@ let getContainerScopeId = function (tabContentCode:string) {
 /**
  * 获取容器内部窗体Code
  */
-let getContainerWindowCode = function (tabContentCode:string) {
+let getContainerWindowCode = function (tabContentCode: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -45,7 +45,7 @@ let getContainerWindowCode = function (tabContentCode:string) {
  * 存放父容器的信息
  * {scopeId:"",containerCode:""}
  */
-let setParentContainerInfo = function (windowCode:string, obj:any) {
+let setParentContainerInfo = function (windowCode: string, obj: any) {
   if (windowCode == null || windowCode == undefined) {
     //windowCode = viewContext.getModuleId()
     throw new Error('未识别异常，请联系系统管理员处理')
@@ -60,7 +60,7 @@ let setParentContainerInfo = function (windowCode:string, obj:any) {
  * 获取父容器的信息
  * {scopeId:"",containerCode:""}
  */
-let getParentContainerInfo = function (windowCode:string) {
+let getParentContainerInfo = function (windowCode: string) {
   if (windowCode == null || windowCode == undefined) {
     //windowCode = viewContext.getModuleId()
     throw new Error('未识别异常，请联系系统管理员处理')
@@ -73,9 +73,9 @@ let getParentContainerInfo = function (windowCode:string) {
 
 export {
   //register,
- // unregister,
- // getParent,
- // getChild,
+  // unregister,
+  // getParent,
+  // getChild,
   //getChildComponent,
   updateContainerInfo,
   getContainerScopeId,

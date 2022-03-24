@@ -1,17 +1,17 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
-import  Transaction from './Transaction'
+import Transaction from './Transaction'
 import * as transactionInstancePool from './TransactionInstancePool'
 
 let collectionUtil
 let registered = false
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   collectionUtil = sb.util.collections
 }
 
-const remove = function (transactionId:string) {
+const remove = function (transactionId: string) {
   transactionInstancePool.remove(transactionId)
 }
 
@@ -47,28 +47,28 @@ const newTransaction = function () {
   return transactionId
 }
 
-const doBegin = function (transactionId:string, args:any) {
+const doBegin = function (transactionId: string, args: any) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     transaction.doBegin(args)
   }
 }
 
-const doCommit = function (transactionId:string, args:any) {
+const doCommit = function (transactionId: string, args: any) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     transaction.doCommit(args)
   }
 }
 
-const doRollback = function (transactionId:string, args:any) {
+const doRollback = function (transactionId: string, args: any) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     transaction.doRollback(args)
   }
 }
 
-const isBegined = function (transactionId:string) {
+const isBegined = function (transactionId: string) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     return transaction.isBegined()
@@ -76,7 +76,7 @@ const isBegined = function (transactionId:string) {
   return false
 }
 
-const isCommited = function (transactionId:string) {
+const isCommited = function (transactionId: string) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     return transaction.isCommited()
@@ -84,7 +84,7 @@ const isCommited = function (transactionId:string) {
   return false
 }
 
-const isRollbacked = function (transactionId:string) {
+const isRollbacked = function (transactionId: string) {
   let transaction = transactionInstancePool.get(transactionId)
   if (transaction) {
     return transaction.isRollbacked()

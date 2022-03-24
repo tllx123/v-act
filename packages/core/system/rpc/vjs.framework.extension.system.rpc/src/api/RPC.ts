@@ -92,7 +92,7 @@ const invokeExtensibleOperation = function (config: any) {
 
 const request = function (request: any) {
   let type = 'multiVPlatform'
-  return rq(request, type, type,null)
+  return rq(request, type, type, null)
 }
 
 const orginalRequest = function (config: any) {

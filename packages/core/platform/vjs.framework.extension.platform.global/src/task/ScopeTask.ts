@@ -2,7 +2,12 @@ import * as TaskManager from './TaskManager'
 
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let ScopeTask:any = function (scopeId:string, isAutoExe:boolean, handler:any, props:any) {
+let ScopeTask: any = function (
+  scopeId: string,
+  isAutoExe: boolean,
+  handler: any,
+  props: any
+) {
   //@ts-ignore
   this.scopeId = scopeId
   //@ts-ignore
@@ -57,7 +62,7 @@ ScopeTask.prototype = {
    * 设置任务id
    * @param {String} 任务id
    */
-  setTaskId: function (taskId:string) {
+  setTaskId: function (taskId: string) {
     this.id = taskId
   },
 
@@ -72,7 +77,7 @@ ScopeTask.prototype = {
    * 根据属性值判断任务是否匹配
    * @param {Object} properties
    */
-  isMatch: function (properties:any) {
+  isMatch: function (properties: any) {
     let scopeId = properties.scopeId
     return this.scopeId == scopeId
   }

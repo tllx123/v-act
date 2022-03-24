@@ -1,7 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-
-
 const getComponentCode = function () {
   let scope = scopeManager.getScope()
   return scope.getComponentCode()
@@ -13,7 +11,7 @@ const getWindowCode = function () {
 }
 
 const isWindowScope = function () {
-  let scopeId:any = scopeManager.getCurrentScopeId()
+  let scopeId: any = scopeManager.getCurrentScopeId()
   return scopeManager.isWindowScope(scopeId)
 }
 
@@ -28,7 +26,7 @@ export {
   //init,
   //isDebugger,
   //isInited,
-  isWindowScope,
+  isWindowScope
   //remove,
   //update
 }

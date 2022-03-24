@@ -752,7 +752,7 @@ const ExtraConditionNode = function (routeContext) {
       if (returnValue == '' || returnValue == null) {
         return returnValue
       }
-      let tempArray:any = []
+      let tempArray: any = []
       if (arrayUtil.isArray(returnValue)) {
         tempArray = returnValue
       } else {

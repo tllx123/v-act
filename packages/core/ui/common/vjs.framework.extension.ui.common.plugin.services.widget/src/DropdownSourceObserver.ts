@@ -32,40 +32,39 @@ import * as log from '@v-act/vjs.framework.extension.platform.services.integrati
  * vjs名称：vjs.framework.extension.ui.common.plugin.services.widget<br/>
  * vjs服务名称：vjs.framework.extension.ui.common.plugin.services.widget.DropdownSourceObserver<br/>
  */
-class DropdownSourceObserver{
+class DropdownSourceObserver {
   scopeId
   widgetId
   dropDownSource
   textField
   valueField
-  handler 
+  handler
   count
   descInfoSeparator
-  saveColumn:any
-  showColumn:any
+  saveColumn: any
+  showColumn: any
   defaultValue = []
- 
 
-  constructor(params:any){
-  this.scopeId = params.scopeId
-  this.widgetId = params.widgetId
-  this.dropDownSource = params.dataSource
-  this.textField = params.textField
-  this.valueField = params.valueField
-  this.handler = params.handler
-  this.count = 0
-  //@ts-ignore
-  this.descInfoSeparator = window.v3PlatformSCSkin.dictBoxSeparator
-  if (this.scopeId) {
-    scopeManager.openScope(this.scopeId)
-    this.getDropdownSourceData()
-    scopeManager.closeScope()
-  } else {
-    this.getDropdownSourceData()
-  }
+  constructor(params: any) {
+    this.scopeId = params.scopeId
+    this.widgetId = params.widgetId
+    this.dropDownSource = params.dataSource
+    this.textField = params.textField
+    this.valueField = params.valueField
+    this.handler = params.handler
+    this.count = 0
+    //@ts-ignore
+    this.descInfoSeparator = window.v3PlatformSCSkin.dictBoxSeparator
+    if (this.scopeId) {
+      scopeManager.openScope(this.scopeId)
+      this.getDropdownSourceData()
+      scopeManager.closeScope()
+    } else {
+      this.getDropdownSourceData()
+    }
   }
 
-  genwhereRestrict (dataSourceSetting:any) {
+  genwhereRestrict(dataSourceSetting: any) {
     var config = dataSourceSetting['DataConfig']
     var Condition = config['Condition']
     var wr = whereRestrict.init()
@@ -133,8 +132,8 @@ class DropdownSourceObserver{
 
     return wr
   }
- 
-  genTableQueryConfig(dataSourceSetting:any, whereRestrict:any) {
+
+  genTableQueryConfig(dataSourceSetting: any, whereRestrict: any) {
     var config = dataSourceSetting['DataConfig']
     var SourceID = config['SourceID']
     var SourceName = config['SourceName']
@@ -155,7 +154,7 @@ class DropdownSourceObserver{
       }
       return requestCfg
     } else if (SourceType == 'Query') {
-      let requestCfg:{[code:string]:any} = {
+      let requestCfg: { [code: string]: any } = {
         queryType: 'QUERY',
         queryDS: SourceName,
         whereRestrict: whereRestrict,
@@ -165,14 +164,14 @@ class DropdownSourceObserver{
       return requestCfg
     }
   }
-  genTableQueryData (
-    result:any,
-    dataSourceSetting:any,
-    valueField:any,
-    textField:any,
-    widgetId:any,
-    descField:any,
-    isRealTable:any
+  genTableQueryData(
+    result: any,
+    dataSourceSetting: any,
+    valueField: any,
+    textField: any,
+    widgetId: any,
+    descField: any,
+    isRealTable: any
   ) {
     var datas = []
     var config = dataSourceSetting['DataConfig']
@@ -203,14 +202,14 @@ class DropdownSourceObserver{
     )
     return datas
   }
-  getTableQueryData (
-    result:any,
-    valueField:any,
-    textField:any,
-    saveColumn:any,
-    showColumn:any,
-    config:any,
-    descField:any
+  getTableQueryData(
+    result: any,
+    valueField: any,
+    textField: any,
+    saveColumn: any,
+    showColumn: any,
+    config: any,
+    descField: any
   ) {
     var datas = []
     var firstRecord = result[0].datas.values[0]
@@ -260,7 +259,7 @@ class DropdownSourceObserver{
     // 循环记录，构建其初始化数据格式
     for (var i = 0; i < result[0].datas.values.length; i++) {
       var resultData = result[0].datas.values[i]
-      let data:{[code:string]:any} = {}
+      let data: { [code: string]: any } = {}
 
       data[valueField] = resultData[saveColumn]
       if (resultData[showColumn] != null) {
@@ -287,13 +286,13 @@ class DropdownSourceObserver{
     }
     return datas
   }
-  genTableQuery (
-    dataSourceSetting:any,
-    whereRestrict:any,
-    valueField:any,
-    textField:any,
-    widgetId:any,
-    descField:any
+  genTableQuery(
+    dataSourceSetting: any,
+    whereRestrict: any,
+    valueField: any,
+    textField: any,
+    widgetId: any,
+    descField: any
   ) {
     var requestCfg = this.genTableQueryConfig(dataSourceSetting, whereRestrict)
     var results = dropDownSourceUtil.getDataSourceFindDatas([requestCfg])
@@ -307,7 +306,12 @@ class DropdownSourceObserver{
       true
     )
   }
-  _doReturnResult (widgetId:any, dropDownSource:any, resultMap:any, descField:any) {
+  _doReturnResult(
+    widgetId: any,
+    dropDownSource: any,
+    resultMap: any,
+    descField: any
+  ) {
     //处理请求结果
     if (dropDownSource != undefined) {
       var dataSourceSetting = dropDownSource['DataSourceSetting']
@@ -383,14 +387,14 @@ class DropdownSourceObserver{
       widgetProperty.set(widgetId, 'DropDownSource', dropDownSource)
     }
   }
-  getApiData (
-    dataSourceSetting:any,
-    dropDownSource:any,
-    dataSourceType:any,
-    widgetId:any,
-    valueField:any,
-    textField:any,
-    descField:any
+  getApiData(
+    dataSourceSetting: any,
+    dropDownSource: any,
+    dataSourceType: any,
+    widgetId: any,
+    valueField: any,
+    textField: any,
+    descField: any
   ) {
     var apiOutputVar = dataSourceSetting.DataConfig.ApiOutputVar
     var invokeApiParams = dataSourceSetting.DataConfig.InvokeApiParams
@@ -416,11 +420,11 @@ class DropdownSourceObserver{
             var observer = new CurrentRecordObserver(entityName, '', {}, [
               fieldName
             ])
-            observer.setWidgetValueHandler(function (record:any) {
+            observer.setWidgetValueHandler(function (record: any) {
               _this.getDropdownSourceData()
               _this.count++
             })
-            observer.clearWidgetValueHandler(function (record:any) {
+            observer.clearWidgetValueHandler(function (record: any) {
               _this.getDropdownSourceData()
               _this.count++
             })
@@ -448,7 +452,7 @@ class DropdownSourceObserver{
       componentCode: componentCode,
       apiCode: apiCode,
       param: params,
-      afterResponse: function (data:any) {
+      afterResponse: function (data: any) {
         var uiDatas = data[apiOutputVar]
         if (descField) {
           for (var i = 0; i < uiDatas.length; i++) {
@@ -475,7 +479,7 @@ class DropdownSourceObserver{
         }
         _this.getDataAndDoHandler()
       },
-      error: function (e:{status:number,message:string,msg:string}) {
+      error: function (e: { status: number; message: string; msg: string }) {
         //					alert('调用api失败，失败原因：' + e.message);
         //					throw new Error("调用api失败，失败原因：" + (e.message ? e.message : e.msg));
         var last = '失败原因：'
@@ -510,7 +514,7 @@ class DropdownSourceObserver{
       this.getDataAndDoHandler()
     }
   }
-  getDataAndDoHandler () {
+  getDataAndDoHandler() {
     var data = this.getData()
     var itemDatas = this.getItemData(data)
     var results = this.dataToValueMap(itemDatas)
@@ -523,7 +527,7 @@ class DropdownSourceObserver{
       results.descInfo
     )
   }
-  getSource(widgetId:string, dropDownSource:any) {
+  getSource(widgetId: string, dropDownSource: any) {
     var _this = this
     if (dropDownSource != undefined && dropDownSource != '') {
       if (typeof dropDownSource !== 'object') {
@@ -533,7 +537,7 @@ class DropdownSourceObserver{
       var dataSourceSetting = dropDownSource['DataSourceSetting']
       if (dataSourceSetting) {
         var dataSourceType = dataSourceSetting['DataSourceType']
-        var requestCfg:any = ''
+        var requestCfg: any = ''
         if (dataSourceType == 'SQL') {
           requestCfg = dropDownSourceUtil.genSQLConfig(dataSourceSetting)
           requestCfg.widgetId = widgetId
@@ -558,7 +562,7 @@ class DropdownSourceObserver{
         }
         if (requestCfg != '') {
           var operation = new Operation()
-          var selectData:any = dropDownSourceUtil.doRequestCfg(requestCfg)
+          var selectData: any = dropDownSourceUtil.doRequestCfg(requestCfg)
 
           if (descInfo) {
             if (selectData.field) {
@@ -587,7 +591,7 @@ class DropdownSourceObserver{
           operation.addParam('selectDatas', [selectData])
           operation.setAfterResponse(
             (function (widgetId, dropDownSource, selectData) {
-              return function (result:any) {
+              return function (result: any) {
                 if (result.success == true) {
                   var dsLoadConditionMap =
                     dropDownSourceUtil.doDataSourceLoadConditionMap([
@@ -622,7 +626,7 @@ class DropdownSourceObserver{
       }
     }
   }
-  getData () {
+  getData() {
     var data = this.dropDownSource
     var datas
     if (typeof data !== 'object') {
@@ -640,7 +644,7 @@ class DropdownSourceObserver{
         var IsWhereRestrict = data['IsWhereRestrict']
         var subTitle = dataSourceSetting.DataConfig.SubTitle
         var isTree = dataSourceSetting.DataConfig.IsTree
-        var descField:string
+        var descField: string
         if (subTitle && isTree) {
           descField = dataSourceSetting.DataConfig.SubTitle.Titles
         } else if (subTitle && !isTree) {
@@ -724,7 +728,7 @@ class DropdownSourceObserver{
             datasourceName: entityName
           })
           var rs = entity.getAllRecords()
-          rs.iterate(function (rd:any) {
+          rs.iterate(function (rd: any) {
             var temp = {}
             var idColumn = rd.get(saveColumn)
             var textColumn = rd.get(showColumn)
@@ -744,13 +748,13 @@ class DropdownSourceObserver{
     }
     return datas
   }
-  resultSetToValueMap (datas:any) {
+  resultSetToValueMap(datas: any) {
     var valueMap = {},
       defaultValue = null,
       showColumn = this.showColumn,
       saveColumn = this.saveColumn,
-      keys:any = []
-    datas.forEach(function (record:[]) {
+      keys: any = []
+    datas.forEach(function (record: []) {
       var key = record[saveColumn]
       keys.push(key)
       valueMap[key] = record[showColumn]
@@ -764,14 +768,14 @@ class DropdownSourceObserver{
       defaultValue: defaultValue
     }
   }
-  dataToValueMap (data:{}[]) {
-    var keys:any = []
+  dataToValueMap(data: {}[]) {
+    var keys: any = []
     var valueMap = {}
     this.defaultValue = []
-    var descInfo:{[code:string]:any} = {}
+    var descInfo: { [code: string]: any } = {}
     if (data) {
       for (i = 0; i < data.length; i++) {
-        var itemObj:any = data[i]
+        var itemObj: any = data[i]
         var itemText = itemObj[this.textField]
         var itemVal = itemObj[this.valueField]
         var itemDesc = itemObj.descInfo
@@ -790,7 +794,7 @@ class DropdownSourceObserver{
       descInfo: descInfo
     }
   }
-  listenDataSourceUpdate (widgetId:string, datas:any) {
+  listenDataSourceUpdate(widgetId: string, datas: any) {
     var _this = this
     var data = datas
     var dropDownSource = this.dropDownSource
@@ -809,31 +813,31 @@ class DropdownSourceObserver{
         //DB加载
         dataSourceUtil.addDatasourceLoadEventHandler(
           entityName,
-          function (params:any) {
+          function (params: any) {
             _this.updateHandler(params, data)
           }
         )
         //DB新增
         dataSourceUtil.addDatasourceInsertEventHandler(
           entityName,
-          function (params:any) {
+          function (params: any) {
             _this.updateHandler(params, data)
           }
         )
         //DB删除
         dataSourceUtil.addDatasourceDeleteEventHandler(
           entityName,
-          function (params:any) {
+          function (params: any) {
             _this.updateHandler(params, data)
           }
         )
       }
     }
   }
-  updateHandler (params:any, data:any) {
+  updateHandler(params: any, data: any) {
     var resultSet = params.datasource.getAllRecords()
     var records = []
-    resultSet.iterate(function (record:any) {
+    resultSet.iterate(function (record: any) {
       records.push(record.toMap())
     })
     for (var i = 0; i < data.length; i++) {
@@ -859,13 +863,13 @@ class DropdownSourceObserver{
       keys: result.keys
     })
   }
-  getItemData (data:{}[]) {
+  getItemData(data: {}[]) {
     var itemData = []
     for (var i = 0; i < data.length; i++) {
       var temp = {}
       var valueMap = data[i]
       var idColumn = valueMap['id']
-      var valueColumn:string = valueMap[this.saveColumn]
+      var valueColumn: string = valueMap[this.saveColumn]
       var textColumn = valueMap[this.showColumn]
       if (typeof valueColumn == 'string' && valueColumn.indexOf(',') != -1) {
         valueColumn = valueColumn.split(',')[0]
@@ -878,9 +882,6 @@ class DropdownSourceObserver{
       itemData.push(temp)
     }
     return itemData
-  
-
-  
-}
+  }
 }
 export default DropdownSourceObserver

@@ -1,4 +1,4 @@
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.resourcepackage'
   )
@@ -9,43 +9,43 @@ let resourcePackagePool = {}
 
 let resourceWindowPool = {}
 
-let getValidLanguage = function (componentCode:string, resourceCode:string) {
+let getValidLanguage = function (componentCode: string, resourceCode: string) {
   return resourceCode
 }
 
 let setWindowCurrentResourceCode = function (
-  resourceCode:string,
-  scopeId:string,
-  componentCode:string
+  resourceCode: string,
+  scopeId: string,
+  componentCode: string
 ) {}
 
-let getWindowCurrentResourceCode = function (scopeId:string) {
+let getWindowCurrentResourceCode = function (scopeId: string) {
   return ''
 }
 
 let curResourcePackageCode
 
-let getResourceItem = function (resourceCode:string, resourceType:string) {
+let getResourceItem = function (resourceCode: string, resourceType: string) {
   return ''
 }
 
-let getResourceItems = function (componentCode:string, resourceType:string) {
+let getResourceItems = function (componentCode: string, resourceType: string) {
   return ''
 }
 
-let getLanguageItem = function (resourceCode:string) {
+let getLanguageItem = function (resourceCode: string) {
   return ''
 }
 
-let getLanguageItems = function (componentCode:string) {
+let getLanguageItems = function (componentCode: string) {
   return ''
 }
 
-let getResItem = function (resourceCode:string) {
+let getResItem = function (resourceCode: string) {
   return ''
 }
 
-let setResourcePool = function (pool:any, type:any) {}
+let setResourcePool = function (pool: any, type: any) {}
 
 export {
   getResItem,

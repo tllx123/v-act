@@ -1,13 +1,13 @@
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
 /**
  * 处理控件键盘按下事件
  */
-let handleKeyDown = function (widgetCode:string, eventName:string) {
+let handleKeyDown = function (widgetCode: string, eventName: string) {
   let eventManager = sandbox.getService(
     'vjs.framework.extension.platform.services.view.event.EventManager'
   )
@@ -20,7 +20,7 @@ let handleKeyDown = function (widgetCode:string, eventName:string) {
     }
     let eventArgs = {
       isPrimitive: false,
-      KeyCode:''
+      KeyCode: ''
     }
     //@ts-ignore
     eventArgs.KeyCode = event.keyCode

@@ -23,6 +23,7 @@ const widgetDefines: {
   }
 } = {{@ controlDefines}};
 widgetDefines.JGSpacer = JGSpacer1;
+
 widgetDefines.JGGroupPanel = JGGroupPanel1;
 widgetDefines.JGComponent = JGComponent1;
 widgetDefines.JGContext = JGContext1;
@@ -40,6 +41,13 @@ function Index(){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
+    const context = useContext()
+    const entityOperation = {
+        "insert": context.insertDataFunc,
+        "update": context.updateDataFunc,
+        "remove": context.removeDataFunc,
+        "clear": context.clearDataFunc,
+    };
     const instanceId = scopeManager.createWindowScope({componentCode:"{{@ componentCode}}",windowCode:"{{@ windowCode}}",series:"smartclient"});
     useEffect(async ()=>{
       try{
@@ -132,6 +140,7 @@ function Index(){
                 })
               }
             )
+            windowScope.set('dataSourceHandler',entityOperation)
           }
         });
       }catch(e){

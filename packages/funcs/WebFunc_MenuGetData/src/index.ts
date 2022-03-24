@@ -1,1 +1,1 @@
-export * from './source/MenuGetData'
+export * as MenuGetData from './source/MenuGetData'

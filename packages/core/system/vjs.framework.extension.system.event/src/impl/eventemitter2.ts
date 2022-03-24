@@ -24,7 +24,7 @@ function init() {
   }
 }
 
-function configure(conf:any) {
+function configure(conf: any) {
   if (conf) {
     //@ts-ignore
     this._conf = conf
@@ -44,7 +44,7 @@ function configure(conf:any) {
   }
 }
 
-function EventEmitter(conf:any) {
+function EventEmitter(conf: any) {
   //@ts-ignore
   this._events = {}
   //@ts-ignore
@@ -58,17 +58,17 @@ function EventEmitter(conf:any) {
 // It has zero elements if no any matches found and one or more
 // elements (leafs) if there are matches
 //
-function searchListenerTree(handlers:any, type:any, tree:any, i:number) {
+function searchListenerTree(handlers: any, type: any, tree: any, i: number) {
   if (!tree) {
     return []
   }
-  var listeners:any = [],
+  var listeners: any = [],
     leaf,
     len,
     branch,
     xTree,
     xxTree,
-    isolatedBranch:any,
+    isolatedBranch: any,
     endReached,
     typeLength = type.length,
     currentType = type[i],
@@ -188,7 +188,7 @@ function searchListenerTree(handlers:any, type:any, tree:any, i:number) {
   return listeners
 }
 
-function growListenerTree(type:any, listener:any) {
+function growListenerTree(type: any, listener: any) {
   //@ts-ignore
   type = typeof type === 'string' ? type.split(this.delimiter) : type.slice()
 
@@ -263,7 +263,7 @@ function growListenerTree(type:any, listener:any) {
 
 EventEmitter.prototype.delimiter = '.'
 
-EventEmitter.prototype.setMaxListeners = function (n:any) {
+EventEmitter.prototype.setMaxListeners = function (n: any) {
   this._events || init.call(this)
   this._events.maxListeners = n
   if (!this._conf) this._conf = {}
@@ -272,12 +272,12 @@ EventEmitter.prototype.setMaxListeners = function (n:any) {
 
 EventEmitter.prototype.event = ''
 
-EventEmitter.prototype.once = function (event:any, fn:any) {
+EventEmitter.prototype.once = function (event: any, fn: any) {
   this.many(event, 1, fn)
   return this
 }
 
-EventEmitter.prototype.many = function (event:any, ttl:any, fn:any) {
+EventEmitter.prototype.many = function (event: any, ttl: any, fn: any) {
   var self = this
 
   if (typeof fn !== 'function') {
@@ -337,7 +337,7 @@ EventEmitter.prototype.emit = function () {
     }
   }
 
-  var handler:any
+  var handler: any
 
   if (this.wildcard) {
     handler = []
@@ -385,7 +385,7 @@ EventEmitter.prototype.emit = function () {
   }
 }
 
-EventEmitter.prototype.on = function (type:any, listener:any) {
+EventEmitter.prototype.on = function (type: any, listener: any) {
   if (typeof type === 'function') {
     this.onAny(type)
     return this
@@ -446,7 +446,7 @@ EventEmitter.prototype.on = function (type:any, listener:any) {
   return this
 }
 
-EventEmitter.prototype.onAny = function (fn:any) {
+EventEmitter.prototype.onAny = function (fn: any) {
   if (typeof fn !== 'function') {
     throw new Error('onAny only accepts instances of Function')
   }
@@ -462,7 +462,7 @@ EventEmitter.prototype.onAny = function (fn:any) {
 
 EventEmitter.prototype.addListener = EventEmitter.prototype.on
 
-EventEmitter.prototype.off = function (type:any, listener:any) {
+EventEmitter.prototype.off = function (type: any, listener: any) {
   if (typeof listener !== 'function') {
     throw new Error('removeListener only takes instances of Function')
   }
@@ -532,7 +532,7 @@ EventEmitter.prototype.off = function (type:any, listener:any) {
   return this
 }
 
-EventEmitter.prototype.offAny = function (fn:string) {
+EventEmitter.prototype.offAny = function (fn: string) {
   var i = 0,
     l = 0,
     fns
@@ -552,7 +552,7 @@ EventEmitter.prototype.offAny = function (fn:string) {
 
 EventEmitter.prototype.removeListener = EventEmitter.prototype.off
 
-EventEmitter.prototype.removeAllListeners = function (type:any) {
+EventEmitter.prototype.removeAllListeners = function (type: any) {
   if (arguments.length === 0) {
     !this._events || init.call(this)
     return this
@@ -574,9 +574,9 @@ EventEmitter.prototype.removeAllListeners = function (type:any) {
   return this
 }
 
-EventEmitter.prototype.listeners = function (type:any) {
+EventEmitter.prototype.listeners = function (type: any) {
   if (this.wildcard) {
-    var handlers:any = []
+    var handlers: any = []
     var ns =
       typeof type === 'string' ? type.split(this.delimiter) : type.slice()
     searchListenerTree.call(this, handlers, ns, this.listenerTree, 0)

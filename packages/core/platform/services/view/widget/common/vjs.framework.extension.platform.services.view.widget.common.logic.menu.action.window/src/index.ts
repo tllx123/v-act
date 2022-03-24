@@ -1,1 +1,1 @@
-export * from './WindowMenuEvent'
+export * as WindowMenuEvent from './WindowMenuEvent'

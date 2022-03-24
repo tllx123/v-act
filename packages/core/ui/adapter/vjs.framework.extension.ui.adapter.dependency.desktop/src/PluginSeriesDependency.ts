@@ -1,15 +1,15 @@
-import {Dependency as dependency} from '@v-act/vjs.framework.extension.ui.adapter.dependency'
+import { Dependency as dependency } from '@v-act/vjs.framework.extension.ui.adapter.dependency'
 
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 dependency.putInstance(this)
 
 const loadDependencyLib = function (
-  componentCode:string,
-  windowCode:string,
-  sandbox:any,
-  scopeId:string,
-  callback:any
+  componentCode: string,
+  windowCode: string,
+  sandbox: any,
+  scopeId: string,
+  callback: any
 ) {
   if (typeof callback == 'function') {
     scopeId = scopeId || ScopeManager.createScope()
@@ -20,7 +20,7 @@ const loadDependencyLib = function (
   }
 }
 
-const loadDependencyLibs = function (wins:any, callback:any) {
+const loadDependencyLibs = function (wins: any, callback: any) {
   if (typeof callback == 'function') {
     callback('smartclient', wins)
   }

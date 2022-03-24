@@ -1,1 +1,1 @@
-export * from './MaxLengthUtil'
+export * as MaxLengthUtil from './MaxLengthUtil'

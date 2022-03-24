@@ -31,7 +31,6 @@ import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 import { plupload } from '@v-act/vjs.framework.extension.vendor.plupload'
 
 import RuleContext from '../../vjs.framework.extension.platform.services.integration.vds.rule/src/RuleContext'
-
 ;('vjs.framework.extension.util.DataValidateUtil')
 
 /**

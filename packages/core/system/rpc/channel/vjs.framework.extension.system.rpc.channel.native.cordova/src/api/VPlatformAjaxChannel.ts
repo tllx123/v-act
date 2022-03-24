@@ -21,7 +21,7 @@ let VPlatformAjaxChannel = function () {
 }
 
 VPlatformAjaxChannel.prototype = {
-  initModule: function (sb:any) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -38,7 +38,7 @@ VPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request:any, contract:any) {
+  buildRequest: function (request: any, contract: any) {
     let data = contract.generate(request)
     let operation = request.getOperations()[0]
     this.url += '?componentCode=' + operation.getComponentCode()
@@ -56,7 +56,7 @@ VPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, request, contract) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           //更新sessionId
           if (res.JSESSIONID) {
             //@ts-ignore
@@ -90,7 +90,7 @@ VPlatformAjaxChannel.prototype = {
       })(this, request, contract)
     )
     let taskId = taskManager.addTask(scopeTask)
-    let callback = function (res:any, status:any) {
+    let callback = function (res: any, status: any) {
       taskManager.execTaskById(taskId, [res, status])
     }
     let timeout = 60 * 60 * 24 //如果没设置超时
@@ -108,7 +108,7 @@ VPlatformAjaxChannel.prototype = {
     return [this.url, this.type, data, config, callback]
   },
 
-  processResponse: function (res:any, status:any) {
+  processResponse: function (res: any, status: any) {
     if (status === 'success' || status === 'notmodified') {
       return eval('(' + res.responseText + ')')
     } else {
@@ -120,7 +120,7 @@ VPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request:any, contract:any) {
+  request: function (request: any, contract: any) {
     let operations = request.getOperations()
     let operation = operations[0] //单重请求，只有一个operation
     let func = operation.getBeforeRequest()

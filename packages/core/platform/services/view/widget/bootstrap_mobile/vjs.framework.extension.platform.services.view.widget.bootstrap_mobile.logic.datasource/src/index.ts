@@ -1,1 +1,1 @@
-export * from './DatasyncUtil'
+export * as DatasyncUtil from './DatasyncUtil'

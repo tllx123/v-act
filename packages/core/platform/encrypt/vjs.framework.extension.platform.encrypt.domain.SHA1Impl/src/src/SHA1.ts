@@ -1,5 +1,5 @@
-let hexcase = 0 /* hex output format. 0 - lowercase; 1 - uppercase */
-let chrsz = 8 /* bits per input character. 8 - ASCII; 16 - Unicode */
+var hexcase = 0 /* hex output format. 0 - lowercase; 1 - uppercase */
+var chrsz = 8 /* bits per input character. 8 - ASCII; 16 - Unicode */
 /*
  *
  * The main function to calculate message digest
@@ -24,43 +24,43 @@ function sha1_vm_test() {
  *
  */
 function core_sha1(blockArray) {
-  let x = blockArray // append padding
-  let w = Array(80)
+  var x = blockArray // append padding
+  var w = Array(80)
 
-  let a = 1732584193
+  var a = 1732584193
 
-  let b = -271733879
+  var b = -271733879
 
-  let c = -1732584194
+  var c = -1732584194
 
-  let d = 271733878
+  var d = 271733878
 
-  let e = -1009589776
+  var e = -1009589776
 
   for (
-    let i = 0;
+    var i = 0;
     i < x.length;
     i += 16 // 每次处理512位 16*32
   ) {
-    let olda = a
+    var olda = a
 
-    let oldb = b
+    var oldb = b
 
-    let oldc = c
+    var oldc = c
 
-    let oldd = d
+    var oldd = d
 
-    let olde = e
+    var olde = e
 
     for (
-      let j = 0;
+      var j = 0;
       j < 80;
       j++ // 对每个512位进行80步操作
     ) {
       if (j < 16) w[j] = x[i + j]
       else w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1)
 
-      let t = safe_add(
+      var t = safe_add(
         safe_add(rol(a, 5), sha1_ft(j, b, c, d)),
         safe_add(safe_add(e, w[j]), sha1_kt(j))
       )
@@ -92,7 +92,7 @@ function core_sha1(blockArray) {
 
 /*
  *
- * Perform the appropriate triplet combination function for the current
+ * Perform the appropriate tripvar combination function for the current
  * iteration
  *
  * 返回对应F函数的值
@@ -135,9 +135,9 @@ function sha1_kt(t) {
  *
  */
 function safe_add(x, y) {
-  let lsw = (x & 0xffff) + (y & 0xffff)
+  var lsw = (x & 0xffff) + (y & 0xffff)
 
-  let msw = (x >> 16) + (y >> 16) + (lsw >> 16)
+  var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
 
   return (msw << 16) | (lsw & 0xffff)
 }
@@ -161,10 +161,10 @@ function rol(num, cnt) {
  *
  */
 function AlignSHA1(str) {
-  let nblk = ((str.length + 8) >> 6) + 1,
+  var nblk = ((str.length + 8) >> 6) + 1,
     blks = new Array(nblk * 16)
 
-  for (let i = 0; i < nblk * 16; i++) blks[i] = 0
+  for (var i = 0; i < nblk * 16; i++) blks[i] = 0
 
   for (i = 0; i < str.length; i++)
     blks[i >> 2] |= str.charCodeAt(i) << (24 - (i & 3) * 8)
@@ -182,11 +182,11 @@ function AlignSHA1(str) {
  *
  */
 function binb2hex(binarray) {
-  let hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
+  var hex_tab = hexcase ? '0123456789ABCDEF' : '0123456789abcdef'
 
-  let str = ''
+  var str = ''
 
-  for (let i = 0; i < binarray.length * 4; i++) {
+  for (var i = 0; i < binarray.length * 4; i++) {
     str +=
       hex_tab.charAt((binarray[i >> 2] >> ((3 - (i % 4)) * 8 + 4)) & 0xf) +
       hex_tab.charAt((binarray[i >> 2] >> ((3 - (i % 4)) * 8)) & 0xf)
@@ -201,7 +201,7 @@ function binb2hex(binarray) {
  *
  */
 function calcDigest() {
-  let digestM = hex_sha1(document.SHAForm.SourceMessage.value)
+  var digestM = hex_sha1(document.SHAForm.SourceMessage.value)
 
   document.SHAForm.MessageDigest.value = digestM
 }

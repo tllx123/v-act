@@ -1,1 +1,1 @@
-export * from './GetPosition'
+export * as GetPosition from './GetPosition'

@@ -1,1 +1,1 @@
-export * from './RulesetMenuEvent'
+export * as RulesetMenuEvent from './RulesetMenuEvent'

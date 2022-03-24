@@ -1,6 +1,5 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-
 /**
  * 从线程变量获取窗体唯一标识
  */

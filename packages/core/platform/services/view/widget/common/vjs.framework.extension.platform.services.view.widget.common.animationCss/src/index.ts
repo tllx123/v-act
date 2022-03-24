@@ -1,1 +1,1 @@
-export * from './SetAnimationCss'
+export * as SetAnimationCss from './SetAnimationCss'

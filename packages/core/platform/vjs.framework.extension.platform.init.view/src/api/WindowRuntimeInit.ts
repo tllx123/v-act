@@ -30,27 +30,37 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 const token = 'WINDOW_VIEW_INIT_EVENT'
 const storage = storageManager.get(storageManager.TYPES.MAP, token)
 
-let _fire = function (componentCode:string, windowCode:string, eventName:string, args:any) {
+let _fire = function (
+  componentCode: string,
+  windowCode: string,
+  eventName: string,
+  args: any
+) {
   _fireSchemaHandler(componentCode, windowCode, eventName, args)
   _fireInstanceHandler(componentCode, windowCode, eventName, args)
 }
 
-let _fireSchemaHandler = function (componentCode:string, windowCode:string, eventName:string, args:any) {
+let _fireSchemaHandler = function (
+  componentCode: string,
+  windowCode: string,
+  eventName: string,
+  args: any
+) {
   let storage = getSchemaStorage([componentCode, windowCode], true)
   _fireHandler(storage, eventName, args)
 }
 
 let _fireInstanceHandler = function (
-  componentCode:string,
-  windowCode:string,
-  eventName:string,
-  args:any
+  componentCode: string,
+  windowCode: string,
+  eventName: string,
+  args: any
 ) {
   let storage = getInstanceStorage()
   _fireHandler(storage, eventName, args)
 }
 
-let _fireHandler = function (storage:any, eventName:string, args:any) {
+let _fireHandler = function (storage: any, eventName: string, args: any) {
   if (storage.containsKey(eventName)) {
     let even = eventManager.getInstance(token)
     let ids = storage.get(eventName)
@@ -60,10 +70,10 @@ let _fireHandler = function (storage:any, eventName:string, args:any) {
     }
   }
 }
-function _fireSourceWindowEvent(scopeId:string, handler:any, _this:any) {
+function _fireSourceWindowEvent(scopeId: string, handler: any, _this: any) {
   let sId = scopeId ? scopeId : scopeManager.getCurrentScopeId()
   //初始化默认数据
-  let initDefaultDatasFun = function (scopeId:any) {
+  let initDefaultDatasFun = function (scopeId: any) {
     let _scope = scopeManager.getScope(scopeId)
     let _extendId = _scope.getExtendId()
     if (_extendId) {
@@ -81,7 +91,11 @@ function _fireSourceWindowEvent(scopeId:string, handler:any, _this:any) {
  * 添加水印操作
  * @param	{}
  * */
-let addWaterMarkOperation = function (scopeId:string, componentCode:string, windowCode:string) {
+let addWaterMarkOperation = function (
+  scopeId: string,
+  componentCode: string,
+  windowCode: string
+) {
   //移动窗体不支持水印
   if (scopeManager.getScope(scopeId).getSeries() == 'bootstrap_mobile') {
     return
@@ -119,7 +133,7 @@ let addWaterMarkOperation = function (scopeId:string, componentCode:string, wind
   operation.setComponentCode(componentCode)
   operation.setWindowCode(windowCode)
   operation.setOperation(operationName)
-  operation.setAfterResponse(function (datas:any) {
+  operation.setAfterResponse(function (datas: any) {
     if (datas.success && datas.data.hasWaterMark) {
       let nowScope = scopeManager.getScope(scopeId)
       nowScope.setWaterMark(true)
@@ -180,7 +194,7 @@ let addWaterMarkOperation = function (scopeId:string, componentCode:string, wind
  * 		"initView" : {Boolean} 是否初始化视图 默认true
  * }
  */
-const init = function (params:any) {
+const init = function (params: any) {
   //TODO
   //注册log
   scopeManager.openScope(params.scopeId)
@@ -190,19 +204,23 @@ const init = function (params:any) {
   let scopeId = params.scopeId
   try {
     let even = eventManager.getInstance(token)
-    _fire(componentCode, windowCode, Events.onContextLoad,null)
-    _fireSourceWindowEvent(scopeId, function (currentScope:any) {
-      _fire(
-        currentScope.getComponentCode(),
-        currentScope.getWindowCode(),
-        Events.initWindowContext
-        ,null
-      )
-    },null)
+    _fire(componentCode, windowCode, Events.onContextLoad, null)
+    _fireSourceWindowEvent(
+      scopeId,
+      function (currentScope: any) {
+        _fire(
+          currentScope.getComponentCode(),
+          currentScope.getWindowCode(),
+          Events.initWindowContext,
+          null
+        )
+      },
+      null
+    )
     //			_fire(componentCode,windowCode,exports.Events.initWindowContext);
     if (isInitView) {
-      _fire(componentCode, windowCode, Events.initWidgetContext,null)
-      _fire(componentCode, windowCode, Events.bindWidgetEvent,null)
+      _fire(componentCode, windowCode, Events.initWidgetContext, null)
+      _fire(componentCode, windowCode, Events.bindWidgetEvent, null)
     }
     //初始化窗体入參
     //			windowParam.initInputs(params.inputParam);
@@ -212,7 +230,8 @@ const init = function (params:any) {
         return function () {
           windowParam.initInputs(_inputParam)
         }
-      })(params.inputParam),null
+      })(params.inputParam),
+      null
     )
     //实例化数据源
     _fireSourceWindowEvent(scopeId, windowDatasource.init, windowDatasource)
@@ -225,74 +244,79 @@ const init = function (params:any) {
     _fireSourceWindowEvent(scopeId, datasourceBind.bind, datasourceBind)
     //			datasourceBind.bind();
     if (isInitView) {
-      _fire(componentCode, windowCode, Events.initWindowData,null)
-      _fire(componentCode, windowCode, Events.initWidgetData,null)
-      _fire(componentCode, windowCode, Events.onBindData,null)
+      _fire(componentCode, windowCode, Events.initWindowData, null)
+      _fire(componentCode, windowCode, Events.initWidgetData, null)
+      _fire(componentCode, windowCode, Events.onBindData, null)
     }
-    _fireSourceWindowEvent(scopeId, function (currentScope:any) {
-      let currentComponentCode = currentScope.getComponentCode()
-      let currentWindowCode = currentScope.getWindowCode()
-      let formLoadedHandler = eventManagerService.fireEvent(
-        currentWindowCode,
-        'FormLoadedAction'
-        ,null
-        ,null
-      )
-      // 窗体加载事件(加入窗体加载完成后事件)
-      let _this = this
-      registerHandler({
-        eventName: Events.windowLoaded,
-        handler: eventManagerService.fireEvent(
+    _fireSourceWindowEvent(
+      scopeId,
+      function (currentScope: any) {
+        let currentComponentCode = currentScope.getComponentCode()
+        let currentWindowCode = currentScope.getWindowCode()
+        let formLoadedHandler = eventManagerService.fireEvent(
           currentWindowCode,
-          'FormLoadAction',
-          (function (handler, winScope) {
-            return function () {
-              if (typeof handler == 'function') {
-                handler()
-              }
-              var componentCode = winScope.getComponentCode()
-              var windowScope = winScope.getWindowCode()
-              _fire(componentCode, windowScope, Events.windowInited, winScope)
-            }
-          })(formLoadedHandler, currentScope)
+          'FormLoadedAction',
+          null,
+          null
         )
-      })
-    },null)
-    _fire(componentCode, windowCode, Events.initWindowEvent,null)
-    if (isInitView) _fire(componentCode, windowCode, Events.initWidgetEvent,null)
+        // 窗体加载事件(加入窗体加载完成后事件)
+        let _this = this
+        registerHandler({
+          eventName: Events.windowLoaded,
+          handler: eventManagerService.fireEvent(
+            currentWindowCode,
+            'FormLoadAction',
+            (function (handler, winScope) {
+              return function () {
+                if (typeof handler == 'function') {
+                  handler()
+                }
+                var componentCode = winScope.getComponentCode()
+                var windowScope = winScope.getWindowCode()
+                _fire(componentCode, windowScope, Events.windowInited, winScope)
+              }
+            })(formLoadedHandler, currentScope)
+          )
+        })
+      },
+      null
+    )
+    _fire(componentCode, windowCode, Events.initWindowEvent, null)
     if (isInitView)
-      _fire(componentCode, windowCode, Events.bindWidgetDatasource,null)
+      _fire(componentCode, windowCode, Events.initWidgetEvent, null)
+    if (isInitView)
+      _fire(componentCode, windowCode, Events.bindWidgetDatasource, null)
     //Task20210113137 注册窗体关闭后事件  因为在schema里，调用控件的initEvent比添加事件处理器要早，控件initEvent里无法判断是否存在事件，考虑不能重新发布，暂不调整顺序
     if (eventManagerService.existEvent(windowCode, 'FormClosingAction')) {
       var tmpBeforeFormClosing = eventManagerService.fireEvent(
         windowCode,
-        'FormClosingAction'
-        ,null
-        ,null
+        'FormClosingAction',
+        null,
+        null
       )
       scopeManager.getWindowScope().onBeforeClose(tmpBeforeFormClosing)
     }
     //			_fireSourceWindowEvent(params.scopeId,function(currentScope){
     //				_fire(currentScope.getComponentCode(),currentScope.getWindowCode(),exports.Events.bindWidgetDatasource);
     //			});
-    _fire(componentCode, windowCode, Events.onBindRule,null)
+    _fire(componentCode, windowCode, Events.onBindRule, null)
     //TODO 添加水印操作
     //addWaterMarkOperation(scopeId, componentCode, windowCode)
-    _fire(componentCode, windowCode, Events.onMultiRequest,null)
+    _fire(componentCode, windowCode, Events.onMultiRequest, null)
     componentParam.initVariant()
 
     var successCB = (function () {
       return function () {
         //TODO后续逻辑作为applyMultRequest成功回掉
-        _fire(componentCode, windowCode, Events.dataInitLoad,null)
-        _fire(componentCode, windowCode, Events.beforeDataLoad,null)
+        _fire(componentCode, windowCode, Events.dataInitLoad, null)
+        _fire(componentCode, windowCode, Events.beforeDataLoad, null)
         //初始化默认数据
         _fireSourceWindowEvent(
           params.scopeId,
           windowDatasource.initDefaultDatas,
           windowDatasource
         )
-        _fire(componentCode, windowCode, Events.onDataLoad,null)
+        _fire(componentCode, windowCode, Events.onDataLoad, null)
         runtimeManager.cleanWindowInfo(componentCode, windowCode)
         //窗体加载事件前,先触发成功回调
         _callFunction(params.beforeFormLoad, [])
@@ -320,7 +344,7 @@ const init = function (params:any) {
               ? params.scopeId
               : scopeManager.getCurrentScopeId()
             //初始化默认数据
-            var initDefaultDatasFun = function (scopeId:string, handler:any) {
+            var initDefaultDatasFun = function (scopeId: string, handler: any) {
               var _scope = scopeManager.getScope(scopeId)
               var _extendId = _scope.getExtendId()
               var func = scopeManager.createScopeHandler({
@@ -328,19 +352,19 @@ const init = function (params:any) {
                 handler: handler
               })
               if (_extendId) {
-                initDefaultDatasFun(_extendId, function (scope:any) {
+                initDefaultDatasFun(_extendId, function (scope: any) {
                   registerHandler({
                     eventName: Events.windowInited,
                     handler: func
                   })
                   var cCode = scope.getComponentCode()
                   var wCode = scope.getWindowCode()
-                  _fire(cCode, wCode, Events.afterDataLoad,null)
+                  _fire(cCode, wCode, Events.afterDataLoad, null)
                   //标志窗体渲染完成
                   scope.markRendered && scope.markRendered()
                   // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
                   //									if(!scope.isViewonly()){//由eventManager统一屏蔽
-                  _fire(cCode, wCode, Events.windowLoaded,null)
+                  _fire(cCode, wCode, Events.windowLoaded, null)
                   //									}
                 })
               } else {
@@ -352,12 +376,12 @@ const init = function (params:any) {
               var scope = scopeManager.getScope()
               var cCode = scope.getComponentCode()
               var wCode = scope.getWindowCode()
-              _fire(cCode, wCode, Events.afterDataLoad,null)
+              _fire(cCode, wCode, Events.afterDataLoad, null)
               //标志窗体渲染完成
               scope.markRendered && scope.markRendered()
               // 为了保证触发窗体加载事件的时候，窗体内的控件都渲染完成，所以窗体的加载事件由windowInited来触发
               //							if(!scope.isViewonly()){//由eventManager统一屏蔽
-              _fire(cCode, wCode, Events.windowLoaded,null)
+              _fire(cCode, wCode, Events.windowLoaded, null)
               //							}
               //							_fire(cCode,wCode,exports.Events.windowInited);
             }
@@ -369,14 +393,14 @@ const init = function (params:any) {
       }
     })()
 
-    var failCB = function (e:any) {
+    var failCB = function (e: any) {
       _callFunction(params.error || exceptionHandler.handle, [e])
     }
     /*var operations = scopeManager.createScopeHandler({ TODO 暂不处理
       scopeId: scopeId,
       handler: pageRequestUtils.getSchemaRequire
     })()*/
-    var operations:any = []
+    var operations: any = []
     var type = environment.getPlatformType()
     if (type == 'DesignSchema' || !operations || operations.length == 0) {
       try {
@@ -408,7 +432,7 @@ const init = function (params:any) {
   }
 }
 
-let _callFunction = function (fun:any, args:any) {
+let _callFunction = function (fun: any, args: any) {
   if (typeof fun == 'function') {
     //@ts-ignore
     fun.apply(this, args)
@@ -442,7 +466,7 @@ const Events = {
   bindWidgetDatasource: 'bindWidgetDatasource' //onBindData后
 }
 
-let getSchemaStorage = function (depth:any, isCreate:boolean) {
+let getSchemaStorage = function (depth: any, isCreate: boolean) {
   let rs,
     s = storage
   for (let i = 0, key; (key = depth[i]); i++) {
@@ -468,7 +492,11 @@ let getInstanceStorage = function () {
   return storage
 }
 
-let _registerToManager = function (storage:any, eventName:string, handler:any) {
+let _registerToManager = function (
+  storage: any,
+  eventName: string,
+  handler: any
+) {
   let id = uuid.generate()
   let ids = storage.containsKey(eventName) ? storage.get(eventName) : []
   ids.push(id)
@@ -477,7 +505,7 @@ let _registerToManager = function (storage:any, eventName:string, handler:any) {
   even.on(id, handler)
 }
 
-const registerSchemaHandler = function (params:any) {
+const registerSchemaHandler = function (params: any) {
   let storage = getSchemaStorage(
     [params.componentCode, params.windowCode],
     true
@@ -485,14 +513,14 @@ const registerSchemaHandler = function (params:any) {
   _registerToManager(storage, params.eventName, params.handler)
 }
 
-const registerHandler = function (params:any) {
+const registerHandler = function (params: any) {
   let storage = getInstanceStorage()
   _registerToManager(storage, params.eventName, params.handler)
 }
 
 let RUNTIME_OPERATION_KEY = 'RUNTIME_OPERATION_KEY'
 
-let _registerVariableToManager = function (storage:any, operation:any) {
+let _registerVariableToManager = function (storage: any, operation: any) {
   let operations = storage.containsKey(RUNTIME_OPERATION_KEY)
     ? storage.get(RUNTIME_OPERATION_KEY)
     : []
@@ -500,12 +528,12 @@ let _registerVariableToManager = function (storage:any, operation:any) {
   storage.put(RUNTIME_OPERATION_KEY, operations)
 }
 
-const registerVariableHandler = function (params:any) {
+const registerVariableHandler = function (params: any) {
   let storage = getInstanceStorage()
   _registerVariableToManager(storage, params.operation)
 }
 
-let applyMultRequest = function (success:any, error:any) {
+let applyMultRequest = function (success: any, error: any) {
   let type = environment.getPlatformType()
   let storage = getInstanceStorage()
   //取出所有operation
@@ -524,7 +552,7 @@ let applyMultRequest = function (success:any, error:any) {
   }
 }
 
-const hasPermission = function (params:any) {
+const hasPermission = function (params: any) {
   let result = { hasPerm: true }
   /*var operation = new Operation();
     operation.setOperation("WinPerm");
@@ -543,7 +571,7 @@ const hasPermission = function (params:any) {
     operationName: 'WinPerm',
     isAsync: false,
     afterResponse: (function (rslt) {
-      return function (rs:any) {
+      return function (rs: any) {
         rslt.hasPerm = rs.data.hasPermis
       }
     })(result)
@@ -557,10 +585,10 @@ export {
   //fireEventFunc,
   hasPermission,
   init,
- // initAppSchema,
+  // initAppSchema,
   //initComponentSchema,
   //initWindowRuntime,
- // initWindowSchema,
+  // initWindowSchema,
   registerHandler,
   registerSchemaHandler,
   registerVariableHandler

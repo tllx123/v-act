@@ -11,7 +11,7 @@ import {
   Manager as channelManager
 } from '@v-act/vjs.framework.extension.system.rpc.channel'
 
-let objectUtil:any
+let objectUtil: any
 
 let MultiVPlatformAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
@@ -25,7 +25,7 @@ let MultiVPlatformAjaxChannel = function () {
   }
 }
 
-let _genExceptionFromResult = function (result:any) {
+let _genExceptionFromResult = function (result: any) {
   let exception
   if (
     typeof result == 'object' &&
@@ -36,7 +36,7 @@ let _genExceptionFromResult = function (result:any) {
   return exception
 }
 
-let _log = function (res:any, status:any, requestInfo:any) {
+let _log = function (res: any, status: any, requestInfo: any) {
   if (requestInfo) {
     let params = {
       request: requestInfo.request,
@@ -49,7 +49,7 @@ let _log = function (res:any, status:any, requestInfo:any) {
 }
 
 MultiVPlatformAjaxChannel.prototype = {
-  initModule: function (sb:any) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     var initFunc = AbstractChannel.prototype.initModule
     if (initFunc) {
@@ -69,7 +69,7 @@ MultiVPlatformAjaxChannel.prototype = {
    * //TODO 默认构建jquery请求
    * @param {Object} url
    */
-  buildRequest: function (request:any, contract:any) {
+  buildRequest: function (request: any, contract: any) {
     //@ts-ignore
     if (window.GlobalVariables) {
       //@ts-ignore
@@ -82,7 +82,7 @@ MultiVPlatformAjaxChannel.prototype = {
       scopeId,
       false,
       (function (channel, operations, contract, request) {
-        return function (res:any, status:any) {
+        return function (res: any, status: any) {
           //更新sessionId
           if (res.JSESSIONID) {
             //@ts-ignore
@@ -125,7 +125,7 @@ MultiVPlatformAjaxChannel.prototype = {
       })(this, operations, contract, request)
     )
     let taskId = taskManager.addTask(scopeTask)
-    let callback = function (res:any, status:any) {
+    let callback = function (res: any, status: any) {
       taskManager.execTaskById(taskId, [res, status])
     }
     let timeout = 60 * 60 * 24 //如果没设置超时
@@ -143,7 +143,7 @@ MultiVPlatformAjaxChannel.prototype = {
     return [this.url, this.type, data, config, callback]
   },
 
-  processResponse: function (res:any, status:any, requestInfo:any) {
+  processResponse: function (res: any, status: any, requestInfo: any) {
     if (status === 'success' || status === 'notmodified') {
       return eval('(' + res.responseText + ')')
     } else if (status === 'timeout') {
@@ -179,7 +179,7 @@ MultiVPlatformAjaxChannel.prototype = {
     }
   },
 
-  request: function (request:any, contract:any) {
+  request: function (request: any, contract: any) {
     let operations = request.getOperations()
     if (operations && operations.length > 0) {
       for (let i = 0, l = operations.length; i < l; i++) {
@@ -191,7 +191,7 @@ MultiVPlatformAjaxChannel.prototype = {
       }
       let args = this.buildRequest(request, contract)
       let func =
-      //@ts-ignore
+        //@ts-ignore
         window.VJSBridge.plugins.vplatform.RPC.httprequestplugin.execute
       func.apply(this, args)
     }
