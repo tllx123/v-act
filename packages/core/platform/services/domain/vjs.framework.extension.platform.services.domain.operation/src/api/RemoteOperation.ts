@@ -6,9 +6,7 @@ import {
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { RemoteOperation as remoteOperation } from '@v-act/vjs.framework.extension.platform.services.operation.remote.base'
 
-export function initModule(sb) {}
-
-const request = function (params) {
+const request = function (params: Record<string, any>) {
   let operation = new Operation()
   let scope = scopeManager.getWindowScope()
   let componentCode = params.hasOwnProperty('componentCode')
@@ -31,11 +29,14 @@ const request = function (params) {
   remoteOperation.request({ request: request })
 }
 
-let findExpVar = function (exp) {
-  return expEngine.parseVars({ expression: exp })
+let findExpVar = function (exp: any) {
+  return expEngine.parseVars({
+    expression: exp,
+    context: undefined
+  })
 }
 
-const evalExpression = function (params) {
+const evalExpression = function (params: Record<string, any>) {
   let operation = new Operation()
   let scope = scopeManager.getWindowScope()
   let componentCode = params.hasOwnProperty('componentCode')
@@ -49,7 +50,7 @@ const evalExpression = function (params) {
   operation.setOperation('WebExecuteFormulaExpression')
   //operation.setTransactionId(params.transactionId);
   let result
-  let cb = function (rs) {
+  let cb = function (rs: any) {
     result = rs
   }
   operation.setAfterResponse(cb)

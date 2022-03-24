@@ -1,8 +1,4 @@
-export function initModule(sb) {
-  //		var Window = sb.getService("vjs.framework.extension.platform.services.domain.browser.Window");
-  //		Window.putInstance(exports);
-}
-
+//@ts-nocheck
 /**
  * 隐藏右上角菜单接口
  */
@@ -152,11 +148,11 @@ let showAllNonBaseMenuItem = function (params) {
 }
 
 export {
-  hideOptionMenu,
-  showOptionMenu,
   closeWindowTab,
-  hideMenuItems,
-  showMenuItems,
   hideAllNonBaseMenuItem,
-  showAllNonBaseMenuItem
+  hideMenuItems,
+  hideOptionMenu,
+  showAllNonBaseMenuItem,
+  showMenuItems,
+  showOptionMenu
 }
