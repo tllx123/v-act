@@ -1,1 +1,1 @@
-export * from './api/BarCodeScanning'
+export * as BarCodeScanning from './api/BarCodeScanning'

@@ -1,1 +1,1 @@
-export * from './dynamicColumnUtil'
+export * as dynamicColumnUtil from './dynamicColumnUtil'

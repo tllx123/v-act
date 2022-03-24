@@ -1,1 +1,1 @@
-export * from './source/ListenJmsQueue'
+export * as ListenJmsQueue from './source/ListenJmsQueue'

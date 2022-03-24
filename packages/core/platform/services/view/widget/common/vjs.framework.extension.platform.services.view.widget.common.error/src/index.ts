@@ -1,1 +1,1 @@
-export * from './ErrorUtil'
+export * as ErrorUtil from './ErrorUtil'

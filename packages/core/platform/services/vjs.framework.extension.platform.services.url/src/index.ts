@@ -1,1 +1,1 @@
-export * from './RebuildUrl'
+export * as RebuildUrl from './RebuildUrl'

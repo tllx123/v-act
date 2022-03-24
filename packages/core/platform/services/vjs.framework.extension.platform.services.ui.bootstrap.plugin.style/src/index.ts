@@ -1,1 +1,1 @@
-export * from './EnabledUtil'
+export * as EnabledUtil from './EnabledUtil'

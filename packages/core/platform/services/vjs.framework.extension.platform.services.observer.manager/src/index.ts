@@ -1,1 +1,1 @@
-export * from './api/DatasourceObserverManager'
+export * as DatasourceObserverManager from './api/DatasourceObserverManager'

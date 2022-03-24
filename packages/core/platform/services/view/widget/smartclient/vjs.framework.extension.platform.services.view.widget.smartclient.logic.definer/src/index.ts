@@ -1,1 +1,1 @@
-export * from './DefinerUtil'
+export * as DefinerUtil from './DefinerUtil'

@@ -1,1 +1,1 @@
-export * from './DcsService'
+export * as DcsService from './DcsService'

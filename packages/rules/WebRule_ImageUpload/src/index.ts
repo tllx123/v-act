@@ -1,1 +1,1 @@
-export * from './source/ImageUpload'
+export * as ImageUpload from './source/ImageUpload'

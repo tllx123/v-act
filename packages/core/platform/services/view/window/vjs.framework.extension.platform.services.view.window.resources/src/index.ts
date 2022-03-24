@@ -1,1 +1,1 @@
-export * from './WindowResource'
+export * as WindowResource from './WindowResource'

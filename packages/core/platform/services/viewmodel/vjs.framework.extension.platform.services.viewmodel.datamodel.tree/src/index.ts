@@ -1,1 +1,1 @@
-export * from './impl/TreeDataModel'
+export * as TreeDataModel from './impl/TreeDataModel'
