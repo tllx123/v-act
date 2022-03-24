@@ -240,9 +240,9 @@ export function dialogWindow(componentCode, windowCode, params) {
         componentCode,
         windowCode,
         params.title,
-        handleInputParams(params.inputParams)
+        handleInputParams(params.inputParams),
+        resolve
       )
-      resolve()
     } else {
       reject(Error('未找到模态打开窗体处理方法！'))
     }

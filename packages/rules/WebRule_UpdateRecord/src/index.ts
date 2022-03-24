@@ -1,4 +1,5 @@
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 /**
  *	保存前端实体到数据库
@@ -10,20 +11,20 @@ import * as rpc from '@v-act/vjs.framework.extension.platform.services.integrati
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import * as tree from '@v-act/vjs.framework.extension.platform.services.integration.vds.tree'
 
-const vds = { rpc, ds, expression, tree }
+const vds = { rpc, ds, expression, tree, exception }
 
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var paramsJson = ruleContext.getVplatformInput()
-      var treeStructMapArray = paramsJson['treeStruct']
-      var treeMap = {}
+      const paramsJson = ruleContext.getVplatformInput()
+      const treeStructMapArray = paramsJson['treeStruct']
+      const treeMap = {}
       if (treeStructMapArray instanceof Array) {
-        for (var i = 0, len = treeStructMapArray.length; i < len; i++) {
-          var treeStruct = treeStructMapArray[i]
-          var entityName = treeStruct['tableName']
+        for (let i = 0, len = treeStructMapArray.length; i < len; i++) {
+          const treeStruct = treeStructMapArray[i]
+          const entityName = treeStruct['tableName']
           if (entityName) {
-            var struct = vds.tree.createTreeStruct(
+            const struct = vds.tree.createTreeStruct(
               entityName,
               treeStruct['pidField'],
               treeStruct['orderField'],
@@ -35,23 +36,23 @@ const main = function (ruleContext: RuleContext) {
           }
         }
       }
-      var dataSourceMappings = paramsJson ? paramsJson['dataSourceMap'] : null
-      var configs = []
+      const dataSourceMappings = paramsJson ? paramsJson['dataSourceMap'] : null
+      const configs = []
       if (undefined != dataSourceMappings && null != dataSourceMappings) {
-        for (var i = 0; i < dataSourceMappings.length; i++) {
-          var dataSourceMapping = dataSourceMappings[i]
+        for (let i = 0; i < dataSourceMappings.length; i++) {
+          const dataSourceMapping = dataSourceMappings[i]
           //是否保存所有，否则只保存改变的数据，为布尔值，如果是旧规则值为undefined
-          var isSaveAll = dataSourceMapping['isSaveAll']
+          let isSaveAll = dataSourceMapping['isSaveAll']
           //兼容旧规则处理，默认为true
           if (isSaveAll == null || isSaveAll == undefined) {
             isSaveAll = true
           }
           //源数据源（可能为内存表、查询或物理表）
-          var dataSourceName = dataSourceMapping['dataSource']
-          var dataSourceNameType = dataSourceMapping['dataSourceType'] //获取实体类型
+          const dataSourceName = dataSourceMapping['dataSource']
+          const dataSourceNameType = dataSourceMapping['dataSourceType'] //获取实体类型
           if (null != dataSourceName) {
             /*给实体添加前缀*/
-            var datasource = getDatasouce(
+            const datasource = getDatasouce(
               dataSourceName,
               dataSourceNameType,
               ruleContext
@@ -61,20 +62,20 @@ const main = function (ruleContext: RuleContext) {
                 '实体【' + dataSourceName + '】不存在，请检查配置.'
               )
             }
-            var newFieldMappings = []
-            var fileMappings = dataSourceMapping['dataMap']
+            const newFieldMappings = []
+            const fileMappings = dataSourceMapping['dataMap']
             if (fileMappings instanceof Array) {
-              for (var j = 0, len = fileMappings.length; j < len; j++) {
-                var map = fileMappings[j]
-                var field = map.colName
+              for (let j = 0, len = fileMappings.length; j < len; j++) {
+                const map = fileMappings[j]
+                let field = map.colName
                 if (field.indexOf('.') != -1) {
                   field = field.split('.')[1]
                 }
-                var value = map.colValue
+                const value = map.colValue
                 // if(value.indexOf(".") !=-1){//表达式不能切[entity].[code]
                 // 	value = value.split(".")[1];
                 // }
-                var type = map.valueType
+                let type = map.valueType
                 if (type == 'entityField') {
                   type = 'field'
                 } else {
@@ -87,8 +88,8 @@ const main = function (ruleContext: RuleContext) {
                 })
               }
             }
-            var tableCode = dataSourceMapping['destTab']
-            var config = {
+            const tableCode = dataSourceMapping['destTab']
+            const config = {
               entity: datasource,
               tableCode: tableCode,
               fieldMappings: newFieldMappings,
@@ -104,10 +105,11 @@ const main = function (ruleContext: RuleContext) {
         }
       }
       if (configs.length > 0) {
-        var promise = vds.rpc.saveData(configs, ruleContext, {
+        const promise = vds.rpc.saveData(configs, ruleContext, {
           isAsync: true,
           ruleContext: ruleContext
         })
+        //@ts-ignore
         promise.then(resolve).catch(reject)
       } else {
         resolve()
@@ -124,9 +126,13 @@ const main = function (ruleContext: RuleContext) {
  * @param {@link RuleContext} ruleContext 规则上下文
  * @return {@link Datasource}
  */
-function getDatasouce(entityName, entityType, ruleContext) {
-  var dbName = entityName
-  var type = ''
+function getDatasouce(
+  entityName: string,
+  entityType: string,
+  ruleContext: RuleContext
+) {
+  let dbName = entityName
+  let type = ''
   if (entityType == 'ruleSetOutput') {
     //方法输出
     type = 'BR_OUT_PARENT.'

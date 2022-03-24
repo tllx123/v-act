@@ -1374,6 +1374,9 @@
       ],
       "@v-act/vjs.framework.extension.vendor.underscore": [
         "packages/core/vendor/vjs.framework.extension.vendor.underscore/src"
+      ],
+      "@v-act/vjs.framework.extension.vendor.plupload": [
+        "packages/core/vendor/vjs.framework.extension.vendor.plupload/src"
       ]
     }
   }
