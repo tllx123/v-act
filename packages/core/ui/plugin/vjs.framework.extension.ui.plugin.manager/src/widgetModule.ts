@@ -1,7 +1,7 @@
-let sb:any
-let seriesService:any
+let sb: any
+let seriesService: any
 
-export function initModule(sandbox:any) {
+export function initModule(sandbox: any) {
   sb = sandbox
   if (sandbox) {
     seriesService = sb.getService(
@@ -11,14 +11,14 @@ export function initModule(sandbox:any) {
 }
 
 // var widgetLib = {};
-let set = function (type:string, widget:any) {
+let set = function (type: string, widget: any) {
   // widgetLib[type] = widget;
 }
 
 /**
  * 获取控件的渲染服务
  */
-let get = function (type:string) {
+let get = function (type: string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.render.' + type
@@ -30,7 +30,7 @@ let get = function (type:string) {
 /**
  * 获取控件的action服务
  */
-let getAction = function (type:string) {
+let getAction = function (type: string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.action.' + type + 'Action'
@@ -39,7 +39,7 @@ let getAction = function (type:string) {
   })
 }
 
-let getInit = function (type:string) {
+let getInit = function (type: string) {
   let seriesType = seriesService.getSeries()
   let serviceName =
     'vjs.framework.extension.ui.plugin.' + type + '.init.' + type + 'Init'
@@ -57,9 +57,9 @@ export {
   //getAll,
   getInit,
   //Hide,
- // put,
+  // put,
   //putAll,
   //removeAllEventHandler,
-  set,
- // Show
+  set
+  // Show
 }

@@ -1,3 +1,5 @@
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 let modalHtml =
   '<div style="width:100%;height:100%;left:0;top:0;">' +
   '<div style="text-align:center;position:absolute;top:50%;-webkit-transform:translateY(-55%);transform:translateY(-55%);left:0;width:100%;">' +
@@ -20,13 +22,17 @@ let containerHtml =
   '</div>' +
   '</div>'
 
-const handleDuringModal = function (params) {
+const handleDuringModal = function (params: any) {
   let el = $(modalHtml)
   let target = el.find('#refresh')
   _handle(params, el, target)
 }
 
-let _handle = function (params, el, target) {
+let _handle = function (
+  params: Record<string, any>,
+  el: any,
+  target: Record<string, any>
+) {
   let parent = params.parentEl,
     reloadFunc = params.reload
   if (reloadFunc) {
@@ -37,9 +43,9 @@ let _handle = function (params, el, target) {
   $(parent).html(el)
 }
 
-const handleDuringContainer = function (params) {
+const handleDuringContainer = function (params: Record<string, any>) {
   let el = $(containerHtml)
   _handle(params, el, el)
 }
 
-export { handleDuringModal, handleDuringContainer }
+export { handleDuringContainer, handleDuringModal }

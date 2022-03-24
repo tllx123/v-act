@@ -1,7 +1,7 @@
 let AsyncBuilder = function () {}
 AsyncBuilder.prototype = {
-  Start: function (_this, task) {
-    task.next(_this, function (type, value, target) {
+  Start: function (_this: any, task: any) {
+    task.next(_this, function (type: any, value: any, target: any) {
       if (type == 'normal' || type == 'return') {
       } else if (type == 'throw') {
       } else {
@@ -9,9 +9,9 @@ AsyncBuilder.prototype = {
       }
     })
   },
-  Bind: function (task, generator) {
+  Bind: function (task: any, generator: any) {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         var onComplete = function () {
           // if (this.error) {
           //     callback("throw", this.error);
@@ -36,9 +36,9 @@ AsyncBuilder.prototype = {
       }
     }
   },
-  Delay: function (generator) {
+  Delay: function (generator: any) {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         //try {
         var step = generator.call(_this)
         step.next(_this, callback)
@@ -48,10 +48,10 @@ AsyncBuilder.prototype = {
       }
     }
   },
-  Combine: function (s1, s2) {
+  Combine: function (s1: any, s2: any) {
     return {
-      next: function (_this, callback) {
-        s1.next(_this, function (type, value, target) {
+      next: function (_this: any, callback: any) {
+        s1.next(_this, function (type: any, value: any, target: any) {
           if (type == 'normal') {
             //try {
             s2.next(_this, callback)
@@ -65,52 +65,52 @@ AsyncBuilder.prototype = {
       }
     }
   },
-  Return: function (result) {
+  Return: function (result: any) {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         callback('return', result)
       }
     }
   },
   Normal: function () {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         callback('normal')
       }
     }
   },
   Break: function () {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         callback('break')
       }
     }
   },
   Continue: function () {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         callback('continue')
       }
     }
   },
-  Throw: function (ex) {
+  Throw: function (ex: any) {
     return {
-      next: function (_this, callback) {
+      next: function (_this: any, callback: any) {
         callback('throw', ex)
       }
     }
   },
-  For: function (condition, update, body) {
+  For: function (condition: any, update: any, body: any) {
     return {
-      next: function (_this, callback) {
-        var loop = function (skipUpdate) {
+      next: function (_this: any, callback: any) {
+        var loop = function (skipUpdate: any) {
           try {
             if (update && !skipUpdate) {
               update.call(_this)
             }
 
             if (!condition || condition.call(_this)) {
-              body.next(_this, function (type, value, target) {
+              body.next(_this, function (type: any, value: any, target: any) {
                 if (type == 'normal' || type == 'continue') {
                   loop(false)
                 } else if (type == 'throw' || type == 'return') {
@@ -133,17 +133,21 @@ AsyncBuilder.prototype = {
       }
     }
   },
-  Try: function (tryTask, catchGenerator, finallyStep) {
+  Try: function (tryTask: any, catchGenerator: any, finallyStep: any) {
     return {
-      next: function (_this, callback) {
-        tryTask.next(_this, function (type, value, target) {
+      next: function (_this: any, callback: any) {
+        tryTask.next(_this, function (type: any, value: any, target: any) {
           if (type != 'throw' || !catchGenerator) {
             if (!finallyStep) {
               callback(type, value, target)
             } else {
               finallyStep.next(
                 _this,
-                function (finallyType, finallyValue, finallyTarget) {
+                function (
+                  finallyType: any,
+                  finallyValue: any,
+                  finallyTarget: any
+                ) {
                   if (finallyType == 'normal') {
                     callback(type, value, target)
                   } else {
@@ -161,7 +165,11 @@ AsyncBuilder.prototype = {
                 if (finallyStep) {
                   finallyStep.next(
                     _this,
-                    function (finallyType, finallyValue, finallyTarget) {
+                    function (
+                      finallyType: any,
+                      finallyValue: any,
+                      finallyTarget: any
+                    ) {
                       if (finallyType == 'normal') {
                         callback('throw', ex)
                       } else {
@@ -176,12 +184,16 @@ AsyncBuilder.prototype = {
               if (catchTask) {
                 catchTask.next(
                   _this,
-                  function (catchType, catchValue, catchTarget) {
+                  function (catchType: any, catchValue: any, catchTarget: any) {
                     if (catchType == 'throw') {
                       if (finallyStep) {
                         finallyStep.next(
                           _this,
-                          function (finallyType, finallyValue, finallyTarget) {
+                          function (
+                            finallyType: any,
+                            finallyValue: any,
+                            finallyTarget: any
+                          ) {
                             if (finallyType == 'normal') {
                               callback(catchType, catchValue, catchTarget)
                             } else {
@@ -196,7 +208,11 @@ AsyncBuilder.prototype = {
                       if (finallyStep) {
                         finallyStep.next(
                           _this,
-                          function (finallyType, finallyValue, finallyTarget) {
+                          function (
+                            finallyType: any,
+                            finallyValue: any,
+                            finallyTarget: any
+                          ) {
                             if (finallyType == 'normal') {
                               callback(catchType, catchValue, catchTarget)
                             } else {
@@ -214,7 +230,11 @@ AsyncBuilder.prototype = {
             } else {
               finallyStep.next(
                 _this,
-                function (finallyType, finallyValue, finallyTarget) {
+                function (
+                  finallyType: any,
+                  finallyValue: any,
+                  finallyTarget: any
+                ) {
                   if (finallyType == 'normal') {
                     callback(type, value, target)
                   } else {

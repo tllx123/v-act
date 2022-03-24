@@ -8,7 +8,7 @@ let Manager = function () {
 }
 
 Manager.prototype = {
-  remove: function (rq:any) {
+  remove: function (rq: any) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request === rq) {
         arrayUtil.remove(this.requestList, request)
@@ -18,7 +18,7 @@ Manager.prototype = {
     }
   },
 
-  get: function (id:string) {
+  get: function (id: string) {
     for (let i = 0, request; (request = this.requestList[i]); i++) {
       if (request.getId() == id) {
         return request
@@ -27,16 +27,16 @@ Manager.prototype = {
     return null
   },
 
-  addRequest: function (request:any) {
+  addRequest: function (request: any) {
     this.requestList.push(request)
   }
 }
 
 let singlton = new Manager()
 
-export function initModule(sBox:any) {}
+export function initModule(sBox: any) {}
 
-const addRequest = function (request:any) {
+const addRequest = function (request: any) {
   let taskId = uuid.generate()
   request.setId(taskId)
   singlton.addRequest(request)
@@ -44,7 +44,7 @@ const addRequest = function (request:any) {
   return taskId
 }
 
-const remove = function (instanceId:string) {
+const remove = function (instanceId: string) {
   let rq = singlton.get(instanceId)
   if (rq) {
     rq.stop()
@@ -60,6 +60,6 @@ export {
   //init,
   //isDebugger,
   //isInited,
-  remove,
+  remove
   //update
 }

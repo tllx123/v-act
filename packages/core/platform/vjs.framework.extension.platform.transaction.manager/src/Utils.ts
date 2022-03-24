@@ -6,19 +6,19 @@ let TRANSACTION_BEGIN = 'transaction_begin'
 let TRANSACTION_COMMIT = 'transaction_commit'
 let TRANSACTION_ROLLBACK = 'transaction_rollback'
 
-const commit = function (params:any) {
+const commit = function (params: any) {
   params.transactionType = TRANSACTION_COMMIT
   //@ts-ignore
   return this.rpc(params)
 }
 
-const begin = function (params:any) {
+const begin = function (params: any) {
   params.transactionType = TRANSACTION_BEGIN
   //@ts-ignore
   return this.rpc(params)
 }
 
-const rollback = function (params:any) {
+const rollback = function (params: any) {
   params.transactionType = TRANSACTION_ROLLBACK
   //@ts-ignore
   return this.rpc(params)

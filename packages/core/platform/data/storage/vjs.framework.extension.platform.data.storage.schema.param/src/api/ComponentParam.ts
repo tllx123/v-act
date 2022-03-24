@@ -15,7 +15,7 @@ let tokenPrefix = 'COMPONENT_SCHEMA_PARAM',
  * @param {String} domain 领域
  * @return String
  */
-const generateToken = function (componentCode, domain) {
+const generateToken = function (componentCode: string, domain: string) {
   return tokenPrefix + componentCode + '_' + domain
 }
 
@@ -25,7 +25,7 @@ const generateToken = function (componentCode, domain) {
  * @param {String} domain 领域
  * @return {Storage}
  */
-let getComponentStorage = function (componentCode, domain) {
+let getComponentStorage = function (componentCode: string, domain: string) {
   let token = generateToken(componentCode, domain)
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
@@ -33,11 +33,16 @@ let getComponentStorage = function (componentCode, domain) {
 /**
  * 添加参数信息到数据仓库中(如构件变量、常量等)
  */
-let addParamsToStorage = function (componentCode, domain, configs) {
+let addParamsToStorage = function (
+  componentCode: string,
+  domain: string,
+  configs: any
+) {
   let params = ParamConfigFactory.unSerialize(configs)
   if (params) {
     let storage = getComponentStorage(componentCode, domain)
-    sandbox.util.collections.each(params, function (param) {
+    // @ts-ignore
+    sandbox.util.collections.each(params, function (param: any) {
       storage.put(param.getCode(), param)
     })
   }
@@ -50,7 +55,11 @@ let addParamsToStorage = function (componentCode, domain, configs) {
  * @param {String} key
  * @return Object
  */
-let getStorageValue = function (componentCode, domain, key) {
+let getStorageValue = function (
+  componentCode: string,
+  domain: string,
+  key: any
+) {
   let token = generateToken(componentCode, domain)
   if (StorageManager.exists(StorageManager.TYPES.MAP, token)) {
     let storage = StorageManager.get(StorageManager.TYPES.MAP, token)
@@ -59,19 +68,23 @@ let getStorageValue = function (componentCode, domain, key) {
   return null
 }
 
-let getStorageValues = function (componentCode, domain) {
-  let result = []
+let getStorageValues = function (componentCode: string, domain: string) {
+  let result: any = []
   let token = generateToken(componentCode, domain)
   if (StorageManager.exists(StorageManager.TYPES.MAP, token)) {
     let storage = StorageManager.get(StorageManager.TYPES.MAP, token)
-    storage.iterate(function (k, v) {
+    storage.iterate(function (k: any, v: any) {
       result.push(v)
     })
   }
   return result
 }
 
-let getParamFromStorage = function (componentCode, domain, code) {
+let getParamFromStorage = function (
+  componentCode: string,
+  domain: string,
+  code: string
+) {
   let value = getStorageValue(componentCode, domain, code)
   if (value) {
     return value
@@ -84,15 +97,15 @@ let getParamFromStorage = function (componentCode, domain, code) {
   )
 }
 
-const addVariantDefines = function (componentCode, variants) {
+const addVariantDefines = function (componentCode: string, variants: any) {
   addParamsToStorage(componentCode, COMPONENT_VARIANT_INFO_KEY, variants)
 }
 
-const addOptionDefines = function (componentCode, options) {
+const addOptionDefines = function (componentCode: string, options: any) {
   addParamsToStorage(componentCode, COMPONENT_OPTION_INFO_KEY, options)
 }
 
-const getVariantDefine = function (componentCode, variantCode) {
+const getVariantDefine = function (componentCode: string, variantCode: string) {
   return getParamFromStorage(
     componentCode,
     COMPONENT_VARIANT_INFO_KEY,
@@ -100,11 +113,11 @@ const getVariantDefine = function (componentCode, variantCode) {
   )
 }
 
-const getVariantDefines = function (componentCode) {
+const getVariantDefines = function (componentCode: string) {
   return getStorageValues(componentCode, COMPONENT_VARIANT_INFO_KEY)
 }
 
-const getOptionDefine = function (componentCode, optionCode) {
+const getOptionDefine = function (componentCode: string, optionCode: string) {
   return getParamFromStorage(
     componentCode,
     COMPONENT_OPTION_INFO_KEY,
@@ -112,11 +125,11 @@ const getOptionDefine = function (componentCode, optionCode) {
   )
 }
 
-const getOptionDefines = function (componentCode) {
+const getOptionDefines = function (componentCode: string) {
   return getStorageValues(componentCode, COMPONENT_OPTION_INFO_KEY)
 }
 
-let getComponentMetaStorage = function (componentCode) {
+let getComponentMetaStorage = function (componentCode: string) {
   let storage = StorageManager.get(
     StorageManager.TYPES.MAP,
     componentMetadataToken
@@ -133,7 +146,7 @@ let getComponentMetaStorage = function (componentCode) {
 /**
  * 判断是否包含metadata信息
  * */
-let hasComponentMetadata = function (componentCode) {
+let hasComponentMetadata = function (componentCode: string) {
   let storage = StorageManager.get(
     StorageManager.TYPES.MAP,
     componentMetadataToken
@@ -144,7 +157,11 @@ let hasComponentMetadata = function (componentCode) {
   return true
 }
 
-const registerMetadata = function (componentCode, domain, data) {
+const registerMetadata = function (
+  componentCode: string,
+  domain: string,
+  data: any
+) {
   if (componentCode && domain) {
     let componentInfos = getComponentMetaStorage(componentCode)
     componentInfos[domain] = data
@@ -154,7 +171,7 @@ const registerMetadata = function (componentCode, domain, data) {
 /**
  * 默认的metadata回调
  * */
-let defaultMetadataCallback = function (dtd, value) {
+let defaultMetadataCallback = function (dtd: any, value: any) {
   setTimeout(
     (function (_dtd, _value) {
       return function () {
@@ -165,7 +182,8 @@ let defaultMetadataCallback = function (dtd, value) {
   )
 }
 
-const getMetadata = function (componentCode, domain) {
+const getMetadata = function (componentCode: string, domain: string) {
+  // @ts-ignore
   let dtd = $.Deferred()
   let value
   if (componentCode && domain) {
@@ -174,6 +192,7 @@ const getMetadata = function (componentCode, domain) {
       value = componentInfos[domain]
       defaultMetadataCallback(dtd, value)
     } else {
+      // @ts-ignore
       let cb = scopeManager.createScopeHandler({
         handler: (function (_dtd, _domain) {
           return function () {
@@ -195,13 +214,13 @@ const getMetadata = function (componentCode, domain) {
 }
 
 export {
-  addRuleSetInputs,
-  getRuleSetInputs,
-  exists,
-  getRuleSetInput,
-  initWindowMapping,
-  getWindowMapping,
-  existWindowMapping,
+  // addRuleSetInputs,
+  // getRuleSetInputs,
+  // exists,
+  // getRuleSetInput,
+  // initWindowMapping,
+  // getWindowMapping,
+  // existWindowMapping,
   addVariantDefines,
   addOptionDefines,
   getVariantDefine,

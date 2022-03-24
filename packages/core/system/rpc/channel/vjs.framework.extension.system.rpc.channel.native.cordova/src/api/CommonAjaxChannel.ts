@@ -1,13 +1,13 @@
 import { AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
 
-let objectUtil:any, cUtils:any
+let objectUtil: any, cUtils: any
 
 let CommonAjaxChannel = function () {
   AbstractChannel.apply(this, arguments)
 }
 
 CommonAjaxChannel.prototype = {
-  initModule: function (sb:any) {
+  initModule: function (sb: any) {
     objectUtil = sb.util.object
     cUtils = sb.util.collections
     var initFunc = AbstractChannel.prototype.initModule
@@ -24,14 +24,14 @@ CommonAjaxChannel.prototype = {
     channelManager.injectCurrentChannel(CommonAjaxChannel, 'common')
     channelManager.injectCurrentChannel(CommonAjaxChannel, 'crossDomain')
   },
-  buildRequest: function (request:any, contract:any) {
+  buildRequest: function (request: any, contract: any) {
     let data = {}
     let operations = request.getOperations()
-    cUtils.each(operations, function (op:any) {
+    cUtils.each(operations, function (op: any) {
       objectUtil.extend(data, op.getParams())
     })
     let host = request.getHost()
-    let callback = function (res:any, status:string) {
+    let callback = function (res: any, status: string) {
       //更新sessionId
       if (res.JSESSIONID) {
         //@ts-ignore
@@ -44,7 +44,7 @@ CommonAjaxChannel.prototype = {
       }
       if (status === 'success' || status === 'notmodified') {
         let operations = request.getOperations()
-        cUtils.each(operations, function (op:any) {
+        cUtils.each(operations, function (op: any) {
           op.callAfterResponse(res, status)
         })
         request.callSuccessCallback(res, status)
@@ -66,9 +66,9 @@ CommonAjaxChannel.prototype = {
     return [host, this.type, data, config, callback]
   },
 
-  request: function (request:any, contract:any) {
+  request: function (request: any, contract: any) {
     let operations = request.getOperations()
-    cUtils.each(operations, function (op:any) {
+    cUtils.each(operations, function (op: any) {
       let func = op.getBeforeRequest()
       if (typeof func === 'function') {
         func.call(request)

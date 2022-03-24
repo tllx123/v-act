@@ -4,7 +4,7 @@ let token = 'Platform_Component_Pack_Data'
 let sandbox
 let loadedIconCodes = []
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   if (sb) {
     sandbox = sb
   }
@@ -13,7 +13,7 @@ let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
 
-const init = function (datas:any) {
+const init = function (datas: any) {
   if (datas) {
     let storage = getStorage()
     for (let code in datas) {
@@ -24,7 +24,10 @@ const init = function (datas:any) {
   }
 }
 
-const existMapping = function (params:{componentCode:string,code:string}) {
+const existMapping = function (params: {
+  componentCode: string
+  code: string
+}) {
   let storage = getStorage()
   let componentCode = params.componentCode
   let code = params.code
@@ -35,7 +38,7 @@ const existMapping = function (params:{componentCode:string,code:string}) {
   return false
 }
 
-const getMapping = function (params:{componentCode:string,code:string}) {
+const getMapping = function (params: { componentCode: string; code: string }) {
   let storage = getStorage()
   let componentCode = params.componentCode
   let code = params.code
@@ -47,25 +50,25 @@ const getMapping = function (params:{componentCode:string,code:string}) {
 }
 
 export {
- // addRuleSetInputs,
+  // addRuleSetInputs,
   //getRuleSetInputs,
- // exists,
- // getRuleSetInput,
- // isAppConfigInfoLoaded,
- // markAppConfigInfoLoaded,
- // addComponentRouteInfo,
- // getRouteConfig,
- // addComponentVariantDefines,
- // getComponentVariantDefine,
- // addComponentOptionDefines,
- //getComponentOptionDefine,
- // destroy,
- // componentIsLoaded,
- // markForComponentLoaded,
- // componentIsInited,
- // markForComponentInited,
- // setComponentType,
- // getComponentType,
+  // exists,
+  // getRuleSetInput,
+  // isAppConfigInfoLoaded,
+  // markAppConfigInfoLoaded,
+  // addComponentRouteInfo,
+  // getRouteConfig,
+  // addComponentVariantDefines,
+  // getComponentVariantDefine,
+  // addComponentOptionDefines,
+  //getComponentOptionDefine,
+  // destroy,
+  // componentIsLoaded,
+  // markForComponentLoaded,
+  // componentIsInited,
+  // markForComponentInited,
+  // setComponentType,
+  // getComponentType,
   init,
   existMapping,
   getMapping

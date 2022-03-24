@@ -11,7 +11,7 @@ let STATUS_ROLLEDBACK = 'ROLLEDBACK'
 let STATUS_NO_TRANSACTION = 'NO_TRANSACTION'
 let STATUS_COMMITTED = 'COMMITTED'
 
-class Transaction{
+class Transaction {
   //@ts-ignore
   componentCode
   //@ts-ignore
@@ -23,17 +23,17 @@ class Transaction{
   //@ts-ignore
   transactionStatus = STATUS_NO_TRANSACTION
 
-  constructor(transactionId:string){
-    this.transactionId = transactionId;
+  constructor(transactionId: string) {
+    this.transactionId = transactionId
   }
 
-  doBegin (args:any) {
+  doBegin(args: any) {
     //事务如果已开启,则无需重新开启
     if (this.transactionStatus != STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error:any) {
+        let errorCB = function (error: any) {
           log.error(
             '[Transaction._doTransAction]开启事件失败！,transactionId:' +
               instance.transactionId +
@@ -49,13 +49,13 @@ class Transaction{
     }
   }
 
-  doCommit(args:any) {
+  doCommit(args: any) {
     //事务已开启情况下才需要提交事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error:any) {
+        let errorCB = function (error: any) {
           log.error(
             '[Transaction._doTransAction]提交事件失败！,transactionId:' +
               instance.transactionId +
@@ -70,13 +70,13 @@ class Transaction{
       utils.commit(params)
     }
   }
-  doRollback (args:any) {
+  doRollback(args: any) {
     //事务已开启情况下才需要回滚事务
     if (this.transactionStatus == STATUS_ACTIVE) {
       if (!args) {
         args = {}
         let instance = this
-        let errorCB = function (error:any) {
+        let errorCB = function (error: any) {
           log.error(
             '[Transaction._doTransAction]回滚事件失败！将尝试进行回滚！,transactionId:' +
               instance.transactionId +
@@ -97,7 +97,7 @@ class Transaction{
       utils.rollback(params)
     }
   }
-  _genParams (successStatus:any, args:any) {
+  _genParams(successStatus: any, args: any) {
     let scope = scopeManager.getWindowScope()
     let componentCode = scope.getComponentCode()
     let successFunc = args.success
@@ -115,34 +115,34 @@ class Transaction{
     })(this, successStatus, successFunc)
     return params
   }
-  isBegined () {
+  isBegined() {
     return this.transactionStatus == STATUS_ACTIVE
   }
-  isCommited () {
+  isCommited() {
     return this.transactionStatus == STATUS_COMMITTED
   }
-  isRollbacked () {
+  isRollbacked() {
     return this.transactionStatus == STATUS_ROLLEDBACK
   }
-  markRollback () {
+  markRollback() {
     this.transactionStatus = STATUS_ROLLEDBACK
   }
-  getTransactionId () {
+  getTransactionId() {
     return this.transactionId
   }
-  getTransactionStatus () {
+  getTransactionStatus() {
     return this.transactionStatus
   }
-  setScopeId (scopeId:string) {
+  setScopeId(scopeId: string) {
     this.scopeId = scopeId
   }
-  getScopeId () {
+  getScopeId() {
     return this.scopeId
   }
-  setComponentCode (componentCode:string) {
+  setComponentCode(componentCode: string) {
     this.componentCode = componentCode
   }
-  getComponentCode () {
+  getComponentCode() {
     return this.componentCode
   }
 }

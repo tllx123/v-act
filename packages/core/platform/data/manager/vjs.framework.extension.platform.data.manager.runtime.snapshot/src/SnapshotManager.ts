@@ -3,7 +3,7 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 
 import * as snapshotFactory from './SnapshotFactory'
 
-let stack = [],
+let stack: any = [],
   token = 'WINDOW_RUNTIME_SNAPSHOT'
 
 let _getStorage = function () {
@@ -33,7 +33,7 @@ const takeSnapshot = function () {
   return null
 }
 
-const begine = function (snapshotId) {
+const begine = function (snapshotId: string) {
   stack.push(snapshotId)
 }
 
@@ -43,7 +43,7 @@ const end = function () {
   }
 }
 
-const clear = function (snapshotId) {
+const clear = function (snapshotId: string) {
   let storage = _getStorage()
   if (storage) {
     storage.remove(snapshotId)
@@ -59,4 +59,4 @@ const getCurrentSnapshot = function () {
   return null
 }
 
-export { begine, clear, create, end, getCurrentSnapshot, takeSnapshot }
+export { begine, clear, end, getCurrentSnapshot, takeSnapshot }

@@ -19,7 +19,7 @@ import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
  * @example
  * vds.math.acos(0.5)//60
  */
-export function acos(arg) {
+export function acos(arg: string | number) {
   return mathUtil.acos(arg)
 }
 
@@ -33,7 +33,7 @@ export function acos(arg) {
  * vds.math.add(123,125);//248
  * vds.math.add("12",45);//57
  */
-export function add(arg1, arg2) {
+export function add(arg1: string | number, arg2: string | number) {
   return mathUtil.add(arg1, arg2)
 }
 
@@ -45,7 +45,7 @@ export function add(arg1, arg2) {
  * @example
  * vds.math.asin(0.5);//30
  */
-export function asin(arg) {
+export function asin(arg: string | number) {
   return mathUtil.asin(arg)
 }
 
@@ -56,7 +56,7 @@ export function asin(arg) {
  * @example
  * vds.math.atan(1)//45
  */
-export function atan(arg) {
+export function atan(arg: string | number) {
   return mathUtil.atan(arg)
 }
 
@@ -69,7 +69,7 @@ export function atan(arg) {
  * vds.math.ceil(0.60)//1
  * vds.math.ceil(0.40)//1
  */
-export function ceil(arg) {
+export function ceil(arg: string | number) {
   return mathUtil.ceil(arg)
 }
 
@@ -81,7 +81,7 @@ export function ceil(arg) {
  * @example
  * vds.math.cos(60)//0.5
  */
-export function cos(arg) {
+export function cos(arg: string | number) {
   return mathUtil.cos(arg)
 }
 
@@ -97,7 +97,11 @@ export function cos(arg) {
  * vds.math.divide(123,13,3);//9.462
  * vds.math.divide(3.1,2,1);//1.6
  */
-export function divide(arg1, arg2, arg3) {
+export function divide(
+  arg1: number,
+  arg2: number,
+  arg3: string | number | undefined
+) {
   return mathUtil.divide(arg1, arg2, arg3)
 }
 
@@ -110,7 +114,7 @@ export function divide(arg1, arg2, arg3) {
  * @example
  * vds.math.divrem(54,8);//6
  */
-export function divrem(arg1, arg2) {
+export function divrem(arg1: string | number, arg2: string | number) {
   return mathUtil.divrem(arg1, arg2)
 }
 
@@ -132,7 +136,7 @@ export function e() {
  * @example
  * vds.math.exp(1);//2.718281828459045
  */
-export function exp(arg) {
+export function exp(arg: string | number) {
   return mathUtil.exp(arg)
 }
 
@@ -145,7 +149,7 @@ export function exp(arg) {
  * vds.math.floor(0.60);//0
  * vds.math.floor(-5.9);//-6
  */
-export function floor(arg) {
+export function floor(arg: string | number) {
   return mathUtil.floor(arg)
 }
 
@@ -158,7 +162,7 @@ export function floor(arg) {
  * vds.math.log(2.7183)//1.0000066849139877
  * vds.math.log(-1)//NaN
  */
-export function log(arg) {
+export function log(arg: string | number) {
   return mathUtil.log(arg)
 }
 
@@ -172,7 +176,7 @@ export function log(arg) {
  * vds.math.max(1,4);//4
  * vds.math.max(0,44);//44
  */
-export function max(arg1, arg2) {
+export function max(arg1: string | number, arg2: string | number) {
   return mathUtil.max(arg1, arg2)
 }
 
@@ -186,7 +190,7 @@ export function max(arg1, arg2) {
  * vds.math.min(34,346);//34
  * vds.math.min(-4,5);//-4
  */
-export function min(arg1, arg2) {
+export function min(arg1: string | number, arg2: string | number) {
   return mathUtil.min(arg1, arg2)
 }
 
@@ -200,7 +204,7 @@ export function min(arg1, arg2) {
  * vds.math.multiply(2,4);//8
  * vds.math.multiply(2.1.5);//3
  */
-export function multiply(arg1, arg2) {
+export function multiply(arg1: string | number, arg2: string | number) {
   return mathUtil.multiply(arg1, arg2)
 }
 
@@ -223,7 +227,7 @@ export function pi() {
  * vds.math.pow(0,0)//1
  * vds.math.pow(-2,4)//16
  */
-export function pow(arg1, arg2) {
+export function pow(arg1: string | number, arg2: string | number) {
   return mathUtil.pow(arg1, arg2)
 }
 
@@ -246,7 +250,7 @@ export function random() {
  * @example
  * vds.math.remainder(234.34,35);//24.34
  */
-export function remainder(arg1, arg2) {
+export function remainder(arg1: string | number, arg2: string | number) {
   return mathUtil.getRemainder(arg1, arg2)
 }
 
@@ -259,7 +263,7 @@ export function remainder(arg1, arg2) {
  * vds.math.round(0.6);//1
  * vds.math.round(-4.6);//-5
  */
-export function round(arg1) {
+export function round(arg1: string | number) {
   return mathUtil.round(arg1)
 }
 
@@ -273,7 +277,7 @@ export function round(arg1) {
  * vds.math.sign(-23);//-1
  * vds.math.sign(0);//0
  */
-export function sign(arg) {
+export function sign(arg: number) {
   return mathUtil.sign(arg)
 }
 
@@ -287,7 +291,7 @@ export function sign(arg) {
  * vds.math.sin(0);//0
  * vds.math.sin(vds.math.pi()/2);//1
  */
-export function sin(arg) {
+export function sin(arg: number) {
   return mathUtil.sin(arg)
 }
 
@@ -301,7 +305,7 @@ export function sin(arg) {
  * vds.math.sqrt(0.64);//0.8
  * vds.math.sqrt(-9);//NaN
  */
-export function sqrt(arg) {
+export function sqrt(arg: number) {
   return mathUtil.sqrt(arg)
 }
 
@@ -314,7 +318,7 @@ export function sqrt(arg) {
  * vds.math.subtract(12,3);//9
  * vds.math.subtract("33",3);//30
  */
-export function subtract(arg1, arg2) {
+export function subtract(arg1: string | number, arg2: string | number) {
   return mathUtil.subtract(arg1, arg2)
 }
 
@@ -326,7 +330,7 @@ export function subtract(arg1, arg2) {
  * vds.math.tan(0.50);//0.5463024898437905
  * vds.math.tan(-5);//3.380515006246586
  */
-export function tan(arg) {
+export function tan(arg: number) {
   return mathUtil.tan(arg)
 }
 
@@ -337,6 +341,6 @@ export function tan(arg) {
  * @example
  * vds.math.truncate(345.4);//345
  */
-export function truncate(arg) {
+export function truncate(arg: string | number) {
   return mathUtil.truncate(arg)
 }

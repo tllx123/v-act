@@ -3,7 +3,7 @@ import * as rendererUtil from 'module'
 
 let sandbox
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -13,7 +13,10 @@ export function initModule(sb:any) {
  * @widgetId 控件id
  * @functionName 执行函数名，可传入文本或文本数组
  */
-let executeSubWidgetsAction = function (widgetId:string, functionName:string) {
+let executeSubWidgetsAction = function (
+  widgetId: string,
+  functionName: string
+) {
   let subWidgetIds = rendererUtil.getChildWidgetIds(widgetId, false)
   for (let i = 0; i < subWidgetIds.length; i++) {
     let subWidgetId = subWidgetIds[i]

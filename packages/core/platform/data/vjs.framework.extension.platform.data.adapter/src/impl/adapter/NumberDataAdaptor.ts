@@ -2,13 +2,13 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 let sandbox
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
-const adapt = function (params) {
+const adapt = function (params: any) {
   let value = params.value,
-    precision = params.precision
+    precision: any = params.precision
   //值如果为null则退出
   if (value == null) {
     return value
@@ -21,7 +21,7 @@ const adapt = function (params) {
     )
     return null
   }
-  if (typeof precision == 'undefine' || precision == -1 || precision == null) {
+  if (typeof precision == 'undefined' || precision == -1 || precision == null) {
     return parseFloat(temp)
   }
   if (temp != null) {
@@ -32,4 +32,4 @@ const adapt = function (params) {
   return temp
 }
 
-export { adapt, init }
+export { adapt }

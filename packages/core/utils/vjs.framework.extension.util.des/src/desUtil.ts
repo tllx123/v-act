@@ -1,3 +1,5 @@
+import { MD5 } from 'crypto-js'
+
 //des加解密函数
 //key：加密用的密钥
 //message：需要加密的字符串
@@ -1170,4 +1172,13 @@ function decrypt(keyStr: string, str: string): string {
   return des(keyStr, encryptStr, 0, 0)
 }
 
-export { encrypt, decrypt }
+/**
+ * 转换成md5
+ * @param content 字符串内容
+ * @returns String
+ */
+const toMD5 = function (content: string): string {
+  return MD5(content).toString()
+}
+
+export { encrypt, decrypt, toMD5 }

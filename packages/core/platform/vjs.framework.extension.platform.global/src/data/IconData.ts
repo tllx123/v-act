@@ -1,13 +1,13 @@
 import { StorageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 let token = 'Platform_Icon_Data'
-let loadedIconCodes:any = []
+let loadedIconCodes: any = []
 
 let getStorage = function () {
   return StorageManager.get(StorageManager.TYPES.MAP, token)
 }
 
-const init = function (datas:any) {
+const init = function (datas: any) {
   if (datas) {
     let storage = getStorage()
     for (let code in datas) {
@@ -18,13 +18,13 @@ const init = function (datas:any) {
   }
 }
 
-let exeFunc = function (func:any) {
+let exeFunc = function (func: any) {
   if (typeof func == 'function') {
     func()
   }
 }
 
-const loadIcons = function (params:any) {
+const loadIcons = function (params: any) {
   let iconCodes = params.iconCodes,
     callback = params.callback
   if (iconCodes && iconCodes.length > 0) {
@@ -82,7 +82,7 @@ export {
   //getRuleSetInputs,
   init,
   //isAppConfigInfoLoaded,
-  loadIcons,
+  loadIcons
   //markAppConfigInfoLoaded,
   //markForComponentInited,
   //markForComponentLoaded,

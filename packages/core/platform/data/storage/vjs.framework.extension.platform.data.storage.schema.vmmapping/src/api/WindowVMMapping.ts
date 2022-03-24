@@ -36,12 +36,16 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
  * } 
  */
 
-let keys,
-  each,
+let keys: any,
+  each: any,
   token = 'WindowVMMapping_Token_Key',
   token_window_vm = 'WindowVMMapping_Token_Window_Vm'
 
-let getWindowStorage = function (componentCode, windowCode, isCreate) {
+let getWindowStorage = function (
+  componentCode: string,
+  windowCode: string,
+  isCreate: boolean
+) {
   let rs,
     s = storageManager.get(storageManager.TYPES.MAP, token),
     depth = [componentCode, windowCode]
@@ -57,7 +61,7 @@ let getWindowStorage = function (componentCode, windowCode, isCreate) {
   return rs
 }
 
-let getWidgets = function (componentCode, windowCode) {
+let getWidgets = function (componentCode: string, windowCode: string) {
   let wStorage = getWindowStorage(componentCode, windowCode, false)
   if (wStorage) {
     let vm = wStorage.get(token_window_vm)
@@ -68,39 +72,51 @@ let getWidgets = function (componentCode, windowCode) {
   return null
 }
 
-let iterateFromWidgetMp = function (code, widgetMp, callback) {
+let iterateFromWidgetMp = function (
+  code: string,
+  widgetMp: any,
+  callback: any
+) {
   let items = widgetMp.mappingItems
   if (items) {
-    each(items, function (item) {
+    each(items, function (item: any) {
       callback(code, item)
     })
   }
 }
 
-let iterateMappingItem = function (componentCode, windowCode, callback) {
+let iterateMappingItem = function (
+  componentCode: string,
+  windowCode: string,
+  callback: any
+) {
   let widgets = getWidgets(componentCode, windowCode)
   if (!widgets) return
   let widgetCodes = keys(widgets)
-  each(widgetCodes, function (code) {
+  each(widgetCodes, function (code: string) {
     iterateFromWidgetMp(code, widgets[code], callback)
   })
 }
 
-let iterateFieldMappingItem = function (dsItem, callback) {
+let iterateFieldMappingItem = function (dsItem: any, callback: any) {
   let mappingItems = dsItem.mappingItem
   if (mappingItems) {
-    each(mappingItems, function (item) {
+    each(mappingItems, function (item: any) {
       callback(item)
     })
   }
 }
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   keys = sb.util.object.keys
   each = sb.util.collections.each
 }
 
-const addVMMapping = function (componentCode, windowCode, vmmapping) {
+const addVMMapping = function (
+  componentCode: string,
+  windowCode: string,
+  vmmapping: any
+) {
   let wStorage = getWindowStorage(componentCode, windowCode, true)
   wStorage.put(token_window_vm, vmmapping)
 }
@@ -114,7 +130,7 @@ let _getDatasourceFromWindowProperty = function () {
     for (let i = 0, l = entitys.length; i < l; i++) {
       let entity = entitys[i]
       let entityCode = entity.code
-      let initMetaFields = []
+      let initMetaFields: any = []
       dsCfg[entity.code] = {
         tables: entityCode,
         whereClause: '',
@@ -151,7 +167,7 @@ let _getDatasourceFromWindowProperty = function () {
   return null
 }
 
-const getVMMapping = function (componentCode, windowCode) {
+const getVMMapping = function (componentCode: string, windowCode: string) {
   let windowScope = scopeManager.getWindowScope()
   windowCode = windowScope.getWindowCode()
   let version = widgetContext.get(windowCode, 'version')
@@ -159,6 +175,7 @@ const getVMMapping = function (componentCode, windowCode) {
   if (!wStorage || !wStorage.get(token_window_vm)) {
     if (version == '4') {
       let dsCfg = _getDatasourceFromWindowProperty()
+      // @ts-ignore
       this.addVMMapping(componentCode, windowCode, { dataSources: dsCfg })
       wStorage = getWindowStorage(componentCode, windowCode, false)
     }
@@ -167,140 +184,163 @@ const getVMMapping = function (componentCode, windowCode) {
 }
 
 const getWidgetCodesByDatasourceName = function (
-  componentCode,
-  windowCode,
-  datasourceName
+  componentCode: string,
+  windowCode: string,
+  datasourceName: string
 ) {
-  let widgetCodes = []
-  iterateMappingItem(componentCode, windowCode, function (code, item) {
-    if (datasourceName == item.dataSource) {
-      widgetCodes.push(code)
+  let widgetCodes: any = []
+  iterateMappingItem(
+    componentCode,
+    windowCode,
+    function (code: string, item: any) {
+      if (datasourceName == item.dataSource) {
+        widgetCodes.push(code)
+      }
     }
-  })
+  )
   return widgetCodes
 }
 
 const getWidgetCodesByField = function (
-  componentCode,
-  windowCode,
-  datasourceName,
-  fieldCode
+  componentCode: string,
+  windowCode: string,
+  datasourceName: string,
+  fieldCode: string
 ) {
-  let widgetCodes = []
-  iterateMappingItem(componentCode, windowCode, function (code, item) {
-    if (datasourceName == item.dataSource) {
-      iterateFieldMappingItem(item, function (mappingItem) {
-        if (mappingItem.refField == fieldCode) {
-          widgetCodes.push(code)
-        } else if (
-          mappingItem.refIdColField &&
-          mappingItem.refIdColField == fieldCode
-        ) {
-          widgetCodes.push(code)
-        }
-      })
+  let widgetCodes: any = []
+  iterateMappingItem(
+    componentCode,
+    windowCode,
+    function (code: string, item: any) {
+      if (datasourceName == item.dataSource) {
+        iterateFieldMappingItem(item, function (mappingItem: any) {
+          if (mappingItem.refField == fieldCode) {
+            widgetCodes.push(code)
+          } else if (
+            mappingItem.refIdColField &&
+            mappingItem.refIdColField == fieldCode
+          ) {
+            widgetCodes.push(code)
+          }
+        })
+      }
     }
-  })
+  )
   return widgetCodes
 }
 
 const getDatasourceNameByWidgetCode = function (
-  componentCode,
-  windowCode,
-  widgetCode
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string
 ) {
   let datasources = {}
   let widgets = getWidgets(componentCode, windowCode)
   if (widgets && widgets[widgetCode]) {
-    iterateFromWidgetMp(widgetCode, widgets[widgetCode], function (code, item) {
-      datasources[item.dataSource] = true
-    })
+    iterateFromWidgetMp(
+      widgetCode,
+      widgets[widgetCode],
+      function (code: string, item: any) {
+        datasources[item.dataSource] = true
+      }
+    )
   }
   return keys(datasources)
 }
 
 const getFieldCodesByWidgetCode = function (
-  componentCode,
-  windowCode,
-  widgetCode,
-  datasourceName
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string,
+  datasourceName: string
 ) {
-  let fieldCodes = []
+  let fieldCodes: any = []
   let widgets = getWidgets(componentCode, windowCode)
   if (widgets) {
     if (!widgets[widgetCode]) {
       //当前验证场景：打开窗体返回值给控件赋值
       throw new Error(
         '控件【' + widgetCode + '】不存在，请检查配置.',
-        undefined,
-        undefined,
+        // @ts-ignore
         exceptionFactory.TYPES.Config
       )
     }
-    iterateFromWidgetMp(widgetCode, widgets[widgetCode], function (code, item) {
-      iterateFieldMappingItem(item, function (mappingItem) {
-        if (mappingItem.refField)
-          //弹出选择只绑定显示字段会报错Task20201109080
-          fieldCodes.push(mappingItem.refField)
-      })
-    })
+    iterateFromWidgetMp(
+      widgetCode,
+      widgets[widgetCode],
+      function (code: string, item: any) {
+        iterateFieldMappingItem(item, function (mappingItem: any) {
+          if (mappingItem.refField)
+            //弹出选择只绑定显示字段会报错Task20201109080
+            fieldCodes.push(mappingItem.refField)
+        })
+      }
+    )
   }
   return fieldCodes
 }
 
 const getFieldCodeByPropertyCode = function (
-  componentCode,
-  windowCode,
-  widgetCode,
-  propertyCode
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string,
+  propertyCode: string
 ) {
   let fieldCode = null
   let widgets = getWidgets(componentCode, windowCode)
   if (widgets) {
-    iterateFromWidgetMp(widgetCode, widgets[widgetCode], function (code, item) {
-      iterateFieldMappingItem(item, function (mappingItem) {
-        if (mappingItem.field == propertyCode) {
-          fieldCode = mappingItem.refField
-        }
-      })
-    })
+    iterateFromWidgetMp(
+      widgetCode,
+      widgets[widgetCode],
+      function (code: string, item: any) {
+        iterateFieldMappingItem(item, function (mappingItem: any) {
+          if (mappingItem.field == propertyCode) {
+            fieldCode = mappingItem.refField
+          }
+        })
+      }
+    )
   }
   return fieldCode
 }
 
 const getPropertyCodeByFieldCode = function (
-  componentCode,
-  windowCode,
-  widgetCode,
-  fieldCode
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string,
+  fieldCode: string
 ) {
-  let propertyCode = null
+  let propertyCode: any = null
   let widgets = getWidgets(componentCode, windowCode)
   if (widgets) {
-    iterateFromWidgetMp(widgetCode, widgets[widgetCode], function (code, item) {
-      iterateFieldMappingItem(item, function (mappingItem) {
-        let refField = mappingItem.refField
-        let field = mappingItem.field
-        if (refField == fieldCode) {
-          //存在多个匹配的Task20191230144
-          if (
-            null == propertyCode ||
-            (null != field && field.indexOf(widgetCode) == -1)
-          ) {
-            propertyCode = mappingItem.field
+    iterateFromWidgetMp(
+      widgetCode,
+      widgets[widgetCode],
+      function (code: string, item: any) {
+        iterateFieldMappingItem(item, function (mappingItem: any) {
+          let refField = mappingItem.refField
+          let field = mappingItem.field
+          if (refField == fieldCode) {
+            //存在多个匹配的Task20191230144
+            if (
+              null == propertyCode ||
+              (null != field && field.indexOf(widgetCode) == -1)
+            ) {
+              propertyCode = mappingItem.field
+            }
           }
-        }
-      })
-    })
+        })
+      }
+    )
   }
   return propertyCode
 }
 
 const resetToDefault = function (
-  componentCode,
-  windowCode,
-  widgetCode,
-  datasourceName
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string,
+  datasourceName: string
 ) {
   let widgets = getWidgets(componentCode, windowCode)
   let widget = widgets[widgetCode]
@@ -345,10 +385,10 @@ const resetToDefault = function (
 }
 
 const removeVMapping = function (
-  componentCode,
-  windowCode,
-  widgetCode,
-  datasourceName
+  componentCode: string,
+  windowCode: string,
+  widgetCode: string,
+  datasourceName: string
 ) {
   let widgets = getWidgets(componentCode, windowCode)
   let widget = widgets[widgetCode]

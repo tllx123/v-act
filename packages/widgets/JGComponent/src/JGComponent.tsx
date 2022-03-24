@@ -29,17 +29,18 @@ const JGComponentRoot = styled(Box, {
 
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
-    const [propsChildren, setPropsChildren] = useState(inProps.children)
-    const [refresh, setRefresh] = useState(false)
-
-    useEffect(() => {
-      console.log('effect', propsChildren)
-      refresh && setRefresh(false)
-    }, [refresh])
-
+    const [propsChildren, setPropsChildren] = useState(
+      Object.assign({}, inProps.children)
+    )
     const context = useContext()
     context.entities = inProps.entities
 
+    /**
+     * 为全局暴露一个接口更改组件属性
+     * @param String pageCode 页面code值
+     * @param String componentCode 组件code值
+     * @param String properties 更改属性
+     * */
     window.changeComponentByProperties = (
       pageCode: string,
       componentCode: string,
@@ -74,12 +75,23 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 
       // 查找组件
       const iteratorControls = (controls: any, componentCode: string) => {
+        if (!controls || controls == []) return false
         if (Array.isArray(controls)) {
+          let target
           for (let key in controls) {
-            return controls[key].properties.code === componentCode
-              ? controls[key]
-              : iteratorComponent(controls[key].controls, componentCode)
+            if (controls[key].properties.code === componentCode) {
+              target = controls[key]
+            }
           }
+          if (!target) {
+            for (let key in controls) {
+              let t = iteratorComponent(controls[key].controls, componentCode)
+              if (t) {
+                return target
+              }
+            }
+          }
+          return target
         } else {
           return controls.properties.code === componentCode
             ? controls
@@ -92,34 +104,26 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
           inProps.children.props.children,
           pageCode
         )
+        targetPage = Object.assign({}, targetPage)
+
         let targetComponent = iteratorControls(
           targetPage.controls,
           componentCode
         )
 
         if (targetComponent) {
-          targetComponent.properties = properties
+          // if (properties.code) throw new Error('不允许更改code值')
+          targetComponent.properties = Object.assign(
+            targetComponent.properties,
+            properties
+          )
         }
 
         const newPropsChildren = Object.assign({}, inProps.children)
-        console.log('浅拷贝修改后', newPropsChildren)
 
-        function deepClone<T>(obj: T): T {
-          let objClone = Array.isArray(obj) ? [] : {}
-          if (obj && typeof obj === 'object') {
-            for (let key in obj) {
-              if (obj[key] && typeof obj[key] === 'object') {
-                objClone[key] = deepClone(obj[key])
-              } else {
-                objClone[key] = obj[key]
-              }
-            }
-          }
-          return objClone
-        }
-
-        setPropsChildren(deepClone(newPropsChildren))
-        setRefresh(true)
+        // 设置props为空，解决组件不刷新问题
+        setPropsChildren(null)
+        setPropsChildren(newPropsChildren)
       }
     }
 

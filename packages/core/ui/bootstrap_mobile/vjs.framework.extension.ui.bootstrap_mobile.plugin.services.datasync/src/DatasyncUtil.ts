@@ -1,12 +1,12 @@
 import * as viewModel from '@v-act/vjs.framework.extension.platform.services.viewModel'
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
-let sandbox:any
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
-let _setInputValue = function (widgetId:string, record:any) {
+let _setInputValue = function (widgetId: string, record: any) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -23,7 +23,7 @@ let _setInputValue = function (widgetId:string, record:any) {
 /**
  * 清除控件值
  */
-let _clearInputValue = function (widgetId:string) {
+let _clearInputValue = function (widgetId: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -31,7 +31,7 @@ let _clearInputValue = function (widgetId:string) {
   $('#' + globalCode).val('')
 }
 
-let _setHtmlValue = function (widgetId:string, record:any) {
+let _setHtmlValue = function (widgetId: string, record: any) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -46,7 +46,7 @@ let _setHtmlValue = function (widgetId:string, record:any) {
 /**
  * 获取refield，只能获取单行单值的类型的
  */
-let _getRefieldByWidgetCode = function (widgetCode:string) {
+let _getRefieldByWidgetCode = function (widgetCode: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -56,7 +56,7 @@ let _getRefieldByWidgetCode = function (widgetCode:string) {
 /**
  * 清除控件值
  */
-let _clearHtmlValue = function (widgetId:string) {
+let _clearHtmlValue = function (widgetId: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )
@@ -67,7 +67,7 @@ let _clearHtmlValue = function (widgetId:string) {
 /**
  * 获取真实的值
  */
-let getValueFromValueAccessor = function (valueAccessor:any) {
+let getValueFromValueAccessor = function (valueAccessor: any) {
   let valueData = valueAccessor
   if (!valueData) {
     throw new Error('待更新值数据结构不能为空')
@@ -79,7 +79,11 @@ let getValueFromValueAccessor = function (valueAccessor:any) {
   return valueObj['values']
 }
 
-let updateInput = function (widgetType:string, widgetId:string, valueAccessor:any) {
+let updateInput = function (
+  widgetType: string,
+  widgetId: string,
+  valueAccessor: any
+) {
   let values = getValueFromValueAccessor(valueAccessor)
   let actionType = valueAccessor.getAction()
   let constModule = viewModel.getConstModule()
@@ -106,7 +110,11 @@ let updateInput = function (widgetType:string, widgetId:string, valueAccessor:an
   }
 }
 
-let updateHtml = function (widgetType:string, widgetId:string, valueAccessor:any) {
+let updateHtml = function (
+  widgetType: string,
+  widgetId: string,
+  valueAccessor: any
+) {
   let values = getValueFromValueAccessor(valueAccessor)
   let actionType = valueAccessor.getAction()
   let constModule = viewModel.getConstModule()
@@ -136,7 +144,7 @@ let updateHtml = function (widgetType:string, widgetId:string, valueAccessor:any
 /**
  * 注册DB更新事件
  */
-let initInput = function (widgetCode:string) {
+let initInput = function (widgetCode: string) {
   let widgetContext = sandbox.getService(
     'vjs.framework.extension.widget.manager.widgetContext'
   )

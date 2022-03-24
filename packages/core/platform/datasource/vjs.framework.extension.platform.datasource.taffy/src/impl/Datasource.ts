@@ -1,90 +1,118 @@
+// @ts-ignore
 import {
   Record as nRecord,
   ResultSet
 } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
-
 import * as taffy from './TaffyDB'
-
-let each, find, contains, objectUtil, arrays, remove
+import { Metadata } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+interface obj {
+  [key: string]: any
+}
 
 let primaryKey = 'id'
-
-const initModule = function (sb) {
-  each = sb.util.collections.each
-  find = sb.util.collections.find
-  contains = sb.util.collections.contains
-  objectUtil = sb.util.object
-  arrays = sb.util.arrays
-  remove = arrayUtil.remove
+const initModule = function (sb: any) {
+  let each: () => void = sb.util.collections.each
+  let find: () => void = sb.util.collections.find
+  let contains: () => void = sb.util.collections.contains
+  let objectUtil: () => void = sb.util.object
+  let arrays: () => void = sb.util.arrays
+  let remove = arrayUtil.remove
 }
 
-let Datasource = function (metadata) {
-  this.metadata = metadata
-  this.ds = null
-  this.metadataJson = null
-  this.db = taffy.DB()
-  this.isMultipleSel = false
-  this.isDefaultSel = true
-  this.dataAmount = 0
-  this._eventPool = {}
-  this.insertIds = []
-  this.updateIds = []
-  this.deleteDatas = []
-  this.selectIds = []
-  this.currentId = null
-  this.dataAccessObject = null
-  this.snapshotHandler = null
-}
+class Datasource {
+  constructor(
+    public indexData: obj = {},
+    public datas: Array<any> = [],
+    public primaryKey = 'id',
+    // @ts-ignore
+    public metadata?: Metadata,
+    public ds: any = null,
+    public metadataJson = null,
+    public db = taffy.DB(),
+    public isMultipleSel: boolean = false,
+    public isDefaultSel: boolean = true,
+    public dataAmount = 0,
+    public _eventPool = {},
+    public insertIds: string[] = [],
+    public updateIds: string[] = [],
+    public deleteDatas = [],
+    public selectIds: string[] = [],
+    public currentId?: string,
+    public dataAccessObject = null,
+    public snapshotHandler: () => void = () => {},
+    public bindWidgets = null,
+    public _snapshotManager = null,
+    public Events = {
+      /**加载事件*/
+      LOAD: 'LOAD',
+      /**新增事件*/
+      INSERT: 'INSERT',
+      /**更新事件*/
+      UPDATE: 'UPDATE',
+      /**删除事件*/
+      DELETE: 'DELETE',
+      /**当前行切换事件*/
+      CURRENT: 'CURRENT',
+      /**记录选择事件*/
+      SELECT: 'SELECT',
+      /**获取数据事件*/
+      FETCH: 'FETCH',
+      /**获取数据后事件*/
+      FETCHED: 'FETCHED',
+      /**
+       *@private
+       * 记录处理事件
+       * */
+      RECORDPROCESS: 'RECORDPROCESS'
+    },
+    public Position = {
+      /**前*/
+      BEFORE: 'BEFORE',
+      /**后*/
+      AFTER: 'AFTER',
+      /**最前*/
+      TOP: 'TOP',
+      /**最后*/
+      BOTTOM: 'BOTTOM'
+    }
+  ) {
+    return this
+  }
 
-Datasource.prototype = {
-  _putSnapshotHandler: function (handler) {
+  _putSnapshotHandler(handler: any) {
     this.snapshotHandler = handler
-  },
+  }
 
-  _putDatasource: function (ds) {
+  _putDatasource(ds: any) {
     this.ds = ds
-  },
+  }
 
-  _getSnapshot: function () {
+  _getSnapshot() {
     return this.snapshotHandler ? this.snapshotHandler() : null
-  },
+  }
 
-  _r2rs: function (records) {
+  _r2rs(records: any) {
     return new ResultSet(this.metadata, records)
-  },
+  }
 
-  _ids2rs: function (ids) {
-    let datas = [],
+  _ids2rs(ids: string[]) {
+    let datas: any[] = [],
       _this = this
-    each(ids, function (id) {
+    ids.some((id: string) => {
       datas.push(_this.db._getById(id))
     })
     let rs = new ResultSet(this.metadata, datas)
     return rs
-  },
+  }
 
-  /**
-   *获取数据源元数据信息
-   * @return {@link Metadata}
-   */
-  getMetadata: function () {
+  getMetadata() {
     return this.metadata
-  },
+  }
 
-  /**
-   *加载数据
-   * @param {Object} params 参数信息
-   * {
-   * 		datas : Array<Object> 加载数据
-   * 		dataAmount : Number 记录总数
-   * 		isAppend : Boolean 以添加的方式加载数据
-   * }
-   * @example datasource.load({"datas":[{"field1":"a","field2":"b"},{"field1":"a1","field2":"b2"}],"isAppend":true})
-   * @return {@link ResultSet}
-   */
-  load: function (params) {
+  load(params: any) {
     let datas = this._processLoadDatas(params.datas)
     let dataAmount = params.hasOwnProperty('dataAmount')
       ? params.dataAmount
@@ -100,15 +128,16 @@ Datasource.prototype = {
       this.updateIds = []
       this.deleteDatas = []
       this.selectIds = []
-      let snapshot = this._getSnapshot()
+      let snapshot: any = this._getSnapshot()
       if (snapshot) {
         snapshot.clearCurrentRecord()
       }
+      // @ts-ignore
       this.currentId = null
     }
     let rs = new ResultSet(this.metadata, datas)
     let _this = this
-    rs.iterate(function (record, i) {
+    rs.iterate(function (record: any, i: any) {
       _this._fireEvent({
         eventName: _this.Events.RECORDPROCESS,
         eventType: _this.Events.LOAD,
@@ -135,9 +164,9 @@ Datasource.prototype = {
       this._defaultSelectFirstRecord()
     }
     return rs
-  },
+  }
 
-  _fireEvent: function (params) {
+  _fireEvent(params: any) {
     let handlers = []
     let eName = params.eventName
     if (eName == this.Events.RECORDPROCESS) {
@@ -148,13 +177,14 @@ Datasource.prototype = {
     for (let i = 0; i < handlers.length; i++) {
       handlers[i].call(this, params)
     }
-  },
-  _fireRecordProcessEvent: function (params) {
+  }
+
+  _fireRecordProcessEvent(params: any) {
     let handlers = []
     let eName = params.eventName
     let ePool = this._eventPool[eName]
     if (ePool) {
-      let eHandlers = []
+      let eHandlers: any = []
       let fieldCode = params.fieldCode
       if (fieldCode) {
         // 指定触发某个或多个字段的事件
@@ -180,12 +210,14 @@ Datasource.prototype = {
       }
     }
     return handlers
-  },
-  _processLoadDatas: function (datas) {
+  }
+
+  _processLoadDatas(datas: any) {
     //处理加载数据,如果加载数据不存在id值,则补全
     if (datas) {
-      let rs = []
-      each(datas, function (data) {
+      let rs: any = []
+      // @ts-ignore
+      each(datas, function (data: any) {
         if (!data.hasOwnProperty(primaryKey)) {
           data[primaryKey] = uuid.generate()
         }
@@ -194,9 +226,9 @@ Datasource.prototype = {
       datas = rs
     }
     return datas
-  },
+  }
 
-  _defaultSelectFirstRecord: function () {
+  _defaultSelectFirstRecord() {
     // 如果DB没有标识为不默认选中记录，则不执行
     let currentRecord = this.getCurrentRecord()
     if (currentRecord) {
@@ -212,26 +244,9 @@ Datasource.prototype = {
       }
       this.setCurrentRecord({ record: firstRecord })
     }
-  },
+  }
 
-  /**
-   *新增记录
-   * @param {Object} params 参数信息
-   * {
-   * 		records : Array<{@link Record}> 新增记录,
-   * 		"position": {@link Datasource#Position|Position} 新增记录位置信息
-   * 		resetCurrent: Boolean 重新设置当前行,默认值为true
-   * }
-   * @example
-   *  var datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
-   *  var datasource = datasourceFactory.create(metadata);
-   *  datasource.insertRecords({
-   * 		"records":[...]
-   * 		"position" : datasource.Position.BOTTOM
-   * });
-   * @return {@link ResultSet}
-   */
-  insertRecords: function (params) {
+  insertRecords(params: any) {
     let records = params.records
     if (records.length == 0) {
       //空数据直接返回Task20210621022
@@ -240,9 +255,10 @@ Datasource.prototype = {
     let position = params.position ? params.position : this.Position.BOTTOM
     let resetCurrent =
       typeof params.resetCurrent == 'boolean' ? params.resetCurrent : true
-    let toInserted = []
+    let toInserted: any = []
     let _this = this
-    each(records, function (record) {
+    // @ts-ignore
+    each(records, function (record: any) {
       let id = record.getSysId()
       if (_this.getRecordById(id)) {
         throw Error(
@@ -270,10 +286,10 @@ Datasource.prototype = {
       if (rs.isEmpty()) {
         index = -1
       } else {
-        let min = null,
-          max = null
+        let min: any = null,
+          max: any = null
         let db = this
-        rs.iterate(function (rd) {
+        rs.iterate(function (rd: any) {
           let id = rd.getSysId()
           let i = db.getIndexById(id)
           if (min == null || i < min) {
@@ -291,6 +307,16 @@ Datasource.prototype = {
       }
     }
     this.db._insert(toInserted, index)
+
+    const windowScope = scopeManager.getWindowScope()
+    const operations = windowScope.get('dataSourceHandler')
+    const code = this.metadata.getCode()
+    let paramsTemp = {
+      code: code,
+      records: toInserted
+    }
+    operations.insert(paramsTemp)
+
     let resultSet = this._r2rs(toInserted)
     this._fireEvent({
       eventName: this.Events.INSERT,
@@ -299,6 +325,7 @@ Datasource.prototype = {
       position: position
     })
     let currentId = this.currentId
+    // @ts-ignore
     let current = find(toInserted, function (record) {
       return record.getSysId() == currentId
     })
@@ -313,25 +340,20 @@ Datasource.prototype = {
       toInserted[0].setChangedData(null)
     }
     return resultSet
-  },
+  }
 
-  /**
-   *更新记录
-   * @param {Object} params 参数信息
-   * {
-   * 		records : Array<{@link Record}> 新增记录
-   * }
-   * @return {@link ResultSet}
-   */
-  updateRecords: function (params) {
+  updateRecords(params: any) {
     let records = params.records
-    let updated = []
+    let updated: any = []
     let ds = this
-    each(records, function (record) {
+    // @ts-ignore
+    each(records, function (record: any) {
       let diffData = record.getDiff()
+      // @ts-ignore
       if (diffData && !objectUtil.isEmpty(diffData)) {
         updated.push(record)
         let id = record.getSysId()
+        // @ts-ignore
         if (!(contains(ds.updateIds, id) || contains(ds.insertIds, id))) {
           ds.updateIds.push(id)
         }
@@ -351,6 +373,16 @@ Datasource.prototype = {
     let resultSet = this._r2rs(updated)
     if (updated.length > 0) {
       let oDatas = this.db._update(updated)
+
+      const windowScope = scopeManager.getWindowScope()
+      const operations = windowScope.get('dataSourceHandler')
+      const code = this.metadata.getCode()
+      let paramsTemp = {
+        code: code,
+        records: updated
+      }
+      operations.update(paramsTemp)
+
       let rs = new ResultSet(this.metadata, oDatas)
       this._fireEvent({
         eventName: this.Events.UPDATE,
@@ -360,35 +392,42 @@ Datasource.prototype = {
       })
     }
     return resultSet
-  },
+  }
 
-  /**
-   * 根据主键值移除记录
-   * @param {Object} params 参数信息
-   * {
-   * 		ids : Array<String> 主键值集合
-   * }
-   * @return {@link ResultSet}
-   */
-  removeRecordByIds: function (params) {
-    let ids = params.ids
-    let nextRecordId = this.db.getNextRecordId(ids)
-    let datas = this.db._remove(ids)
-    return this._removeRecords(datas, nextRecordId)
-  },
+  removeRecordByIds(params: any) {
+    let ids: any = params.ids
+    let nextRecordId: any = this.db.getNextRecordId()
+    let datas: any = this.db._remove(ids)
+    return this._removeRecords(datas, nextRecordId, false)
+  }
 
-  _removeRecords: function (datas, nextRecordId, isClear) {
+  _removeRecords(datas: any, nextRecordId: any, isClear: any) {
     let ds = this
-    let deleted = []
-    each(datas, function (data) {
+    let deleted: any = []
+    // @ts-ignore
+    each(datas, function (data: any) {
       let id = data['id']
+      // @ts-ignore
       if (!remove(ds.insertIds, id)) {
         deleted.push(data)
       }
+      // @ts-ignore
       remove(ds.updateIds, id)
+      // @ts-ignore
       remove(ds.selectIds, id)
     })
+
     this.deleteDatas = this.deleteDatas.concat(deleted)
+
+    const windowScope = scopeManager.getWindowScope()
+    const operations = windowScope.get('dataSourceHandler')
+    const code = this.metadata.getCode()
+    let paramsTemp = {
+      code: code,
+      records: this.deleteDatas
+    }
+    operations.remove(paramsTemp)
+
     let rs = new ResultSet(this.metadata, datas)
     if (datas.length > 0) {
       this._fireEvent({
@@ -407,14 +446,10 @@ Datasource.prototype = {
         this.setCurrentRecord({ record: record })
       }
     }
-
     return rs
-  },
+  }
 
-  /**
-   * 清空数据源记录 ,只清空记录
-   */
-  clear: function () {
+  clear() {
     let datas = this.db._getAll()
     if (datas.length > 0) {
       let ids = [],
@@ -426,83 +461,76 @@ Datasource.prototype = {
       }
       datas = temp
       //sc数据源获取所有数据时,返回引用值,删除时会同步删除数组中的数据
-      if (this.db._clear) {
+      if (this.db.hasOwnProperty('_clear')) {
+        // @ts-ignore
         this.db._clear()
       } else {
         this.db._remove(ids)
       }
+
+      const windowScope = scopeManager.getWindowScope()
+      const operations = windowScope.get('dataSourceHandler')
+      const code = this.metadata.getCode()
+      let paramsTemp = {
+        code: code
+      }
+      operations.clear(paramsTemp)
     }
     this._removeRecords(datas, null, true)
     this.reset()
     this.selectIds = []
     let snapshot = this._getSnapshot()
     if (snapshot) {
+      // @ts-ignore
       snapshot.clearCurrentRecord()
     }
+    // @ts-ignore
     this.currentId = null
-  },
-  /**
-   *清楚已删除数据
-   */
-  clearRemoveDatas: function () {
-    this.deleteDatas = []
-  },
+  }
 
-  reset: function () {
+  clearRemoveDatas() {
+    this.deleteDatas = []
+  }
+
+  reset() {
     this.insertIds = []
     this.updateIds = []
     this.deleteDatas = []
     //this.db._clearData();
-  },
+  }
 
-  /**
-   * 根据数据源创建一条记录
-   * @return {@link Record}
-   */
-  createRecord: function () {
+  createRecord() {
     let metadata = this.getMetadata()
+    // @ts-ignore
     let record = new nRecord(metadata, null)
     record.set(primaryKey, uuid.generate())
     return record
-  },
+  }
 
-  /**
-   * 根据主键值获取记录
-   * @param {String} id 主键值
-   * @return {@link Record}
-   */
-  getRecordById: function (id) {
+  getRecordById(id: string) {
     let data = this.db._getById(id)
+    // @ts-ignore
     return data != null ? new nRecord(this.metadata, data) : null
-  },
+  }
 
-  /**
-   * 根据下标顺序获取记录
-   * @param  {Number} index 记录下标(下标从0开始)
-   * @return {@link Record}
-   */
-  getRecordByIndex: function (index) {
+  getRecordByIndex(index: number) {
     let data = this.db._getByIndex(index)
+    // @ts-ignore
     return data ? new nRecord(this.metadata, data) : null
-  },
+  }
 
-  /**
-   * 获取所有记录
-   * @return {@link ResultSet}
-   */
-  getAllRecords: function () {
+  getAllRecords() {
     let datas = this.db._getAll()
     return new ResultSet(this.metadata, datas)
-  },
-  /**
-   * 是否为空数据源
-   * @return Boolean
-   */
-  isEmpty: function () {
-    return this.db.isEmpty()
-  },
+  }
 
-  _getModifyRecords: function (state) {
+  isEmpty() {
+    // @ts-ignore
+    return this.db.isEmpty()
+  }
+
+  _getModifyRecords(state: any) {
+    // @ts-ignore
     let records = this.db.getChangedData(state)
     let datas = []
     if (records && records.length > 0) {
@@ -511,45 +539,31 @@ Datasource.prototype = {
       }
     }
     return new ResultSet(this.metadata, datas)
-  },
+  }
 
-  _getDatasById: function (ids) {
-    let datas = []
+  _getDatasById(ids: any) {
+    let datas: any = []
     let ds = this
-    each(ids, function (id) {
+    // @ts-ignore
+    each(ids, function (id: any) {
       datas.push(ds.db._getById(id))
     })
     return new ResultSet(this.metadata, datas)
-  },
+  }
 
-  /**
-   * 获取新增记录
-   * @return {@link ResultSet}
-   */
-  getInsertedRecords: function () {
+  getInsertedRecords() {
     return this._getDatasById(this.insertIds)
-  },
+  }
 
-  /**
-   * 获取更新记录
-   * @return {@link ResultSet}
-   */
-  getUpdatedRecords: function () {
+  getUpdatedRecords() {
     return this._getDatasById(this.updateIds)
-  },
+  }
 
-  /**
-   * 获取已删除记录
-   * @return {@link ResultSet}
-   */
-  getDeletedRecords: function () {
+  getDeletedRecords() {
     return new ResultSet(this.metadata, this.deleteDatas)
-  },
-  /**
-   * 获取数据源中所有已选中记录
-   * @return {@link ResultSet}
-   */
-  getSelectedRecords: function () {
+  }
+
+  getSelectedRecords() {
     if (!this.isMultipleSelect()) {
       //如果为单选db，则跟当前行同步，加入快照功能 xiedh 2016-09-18
       let rd = this.getCurrentRecord()
@@ -557,57 +571,38 @@ Datasource.prototype = {
       return this._r2rs(datas)
     }
     return this._getDatasById(this.selectIds)
-  },
-  _hasCurrentRecord: function () {
+  }
+
+  _hasCurrentRecord() {
     let currentId = this._getCurrentRecordId()
     return currentId !== null && currentId !== undefined
-  },
+  }
 
-  _getCurrentRecordId: function () {
+  _getCurrentRecordId() {
     let snapshot = this._getSnapshot()
+    // @ts-ignore
     return snapshot ? snapshot.getCurrentId() : this.currentId
-  },
-  /**
-   * 获取数据源中当前行记录
-   * @return {@link Record}
-   */
-  getCurrentRecord: function () {
-    return this.getRecordById(this._getCurrentRecordId())
-  },
+  }
 
-  /**
-   * 是否为已选中记录
-   * @param {Object} params 参数信息
-   * {
-   * 		record : {@link Record} 记录
-   * }
-   * @return Boolean
-   * @see
-   * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
-   */
-  isSelectedRecord: function (params) {
+  getCurrentRecord() {
+    return this.getRecordById(this._getCurrentRecordId())
+  }
+
+  isSelectedRecord(params: any) {
     let record = params.record
     if (record) {
       let selectedIds = this.selectIds
+      // @ts-ignore
       return contains(selectedIds, record.getSysId())
     }
     return false
-  },
+  }
 
-  /**
-   * 是否为已当前行记录
-   * @param {Object} params 参数信息
-   * {
-   * 		record : {@link Record} 记录
-   * }
-   * @return Boolean
-   * @see
-   * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
-   */
-  isCurrentRecord: function (params) {
+  isCurrentRecord(params: any) {
     let snapshot = this._getSnapshot()
     if (snapshot) {
       //TODO
+      // @ts-ignore
       return snapshot.isCurrentRecord(params)
     }
     let record = params.record
@@ -616,20 +611,16 @@ Datasource.prototype = {
       return id == record.get('id')
     }
     return false
-  },
-  /**
-   * 记录是否已删除
-   * @param {Object} params 参数信息
-   * {
-   * 	 "record" :　{@link Record} 记录
-   * }
-   */
-  isDeletedRecord: function (params) {
+  }
+
+  isDeletedRecord(params: any) {
     let record = params.record
     let datas = this.deleteDatas
     let metadata = this.getMetadata()
     let flag = false
-    each(datas, function (data) {
+    // @ts-ignore
+    each(datas, function (data: any) {
+      // @ts-ignore
       let rd = new nRecord(metadata, data)
       if (rd.getSysId() == record.getSysId()) {
         flag = true
@@ -637,40 +628,21 @@ Datasource.prototype = {
       }
     })
     return flag
-  },
+  }
 
-  /**
-   * 获取前台实体与之关联的后台数据源信息
-   * @return DataAccessor
-   */
-  getDataAccessor: function () {
+  getDataAccessor() {
     return this.dataAccessObject
-  },
+  }
 
-  /**
-   * 设置前台实体与之关联的后台数据源信息
-   * @param {Object} params 参数信息
-   * {
-   * 		accessor : DataAccessor
-   * }
-   */
-  setDataAccessor: function (params) {
+  setDataAccessor(params: any) {
     this.dataAccessObject = params.accessor
-  },
+  }
 
-  /**
-   * 更新选中记录(只选中给出的记录，其他已选中的记录将被取消选中)
-   * @param {Object} params 参数信息
-   * {
-   * 		ids : Array<String> 记录id集合
-   *      records : Array<{@link Record}> 记录集合
-   * }
-   */
-  updateSelectedRecords: function (params) {
+  updateSelectedRecords(params: any) {
     let rds = params.records,
       ids = params.ids,
       selectedIds = this.selectIds
-    let iter = []
+    let iter: any = []
     if (rds) {
       iter = iter.concat(rds)
     }
@@ -681,7 +653,7 @@ Datasource.prototype = {
       //单选
       if (iter.length == 0) {
         let currentId
-        let snapshot = this._getSnapshot()
+        let snapshot: any = this._getSnapshot()
         if (snapshot) {
           let record = snapshot.getCurrentRecord()
           currentId = record.getSysId()
@@ -690,6 +662,7 @@ Datasource.prototype = {
         }
         if (currentId != null) {
           let rd = this.getRecordById(currentId)
+          // @ts-ignore
           this.currentId = null
           if (snapshot) {
             snapshot.clearCurrentRecord()
@@ -704,13 +677,15 @@ Datasource.prototype = {
         }
       } else {
         let rd = iter[iter.length - 1],
-          unSelected = []
+          unSelected: any = []
+        // @ts-ignore
         rd = rd instanceof nRecord ? rd : this.getRecordById(rd)
         this.setCurrentRecord({ record: rd })
         let id = rd.getSysId()
         let isSel = false
         let db = this
-        each(selectedIds, function (selectedId) {
+        // @ts-ignore
+        each(selectedIds, function (selectedId: any) {
           if (selectedId == id) {
             isSel = true
           } else {
@@ -738,11 +713,15 @@ Datasource.prototype = {
         }
       }
     } else {
-      each(iter, function (record, index) {
+      // @ts-ignore
+      each(iter, function (record: any, index: any) {
+        // @ts-ignore
         let id = record instanceof nRecord ? record.getSysId() : record
         iter[index] = id
       })
+      // @ts-ignore
       let toSel = arrays.difference(iter, selectedIds),
+        // @ts-ignore
         unSel = arrays.difference(selectedIds, iter)
       this.selectIds = iter
       if (unSel && unSel.length > 0) {
@@ -762,35 +741,25 @@ Datasource.prototype = {
         })
       }
     }
-  },
+  }
 
-  /**
-   * 选中数据源记录
-   * 如果数据源为单选，则选中最后一条
-   * 如果没有选中记录，则直接返回空结果集
-   * @param {Object} params 参数信息
-   * {
-   * 		records : Array<{@link Record}> 记录数组
-   * 		isSelect : Boolean 选中/取消选中
-   * }
-   * @return {@link ResultSet}
-   */
-  selectRecords: function (params) {
+  selectRecords(params: any) {
     let records = params.records,
       isSelect = params.isSelect,
       selectRecords = []
     if (records.length < 1) {
       return this._r2rs([])
     }
-    let selectedIds = this.selectIds
+    let selectedIds: any = this.selectIds
     if (isSelect && !this.isMultipleSelect()) {
-      let unSelected = []
+      let unSelected: any = []
       let record = records[records.length - 1]
       this.setCurrentRecord({ record: record })
       let id = record.getSysId()
       let isSel = false
       let db = this
-      each(selectedIds, function (selectedId) {
+      // @ts-ignore
+      each(selectedIds, function (selectedId: any) {
         if (selectedId == id) {
           isSel = true
         } else {
@@ -811,13 +780,17 @@ Datasource.prototype = {
         })
       }
     } else {
-      each(records, function (record) {
+      // @ts-ignore
+      each(records, function (record: any) {
         let id = record.getSysId()
+        // @ts-ignore
         if (isSelect && !contains(selectedIds, id)) {
           //选中记录
           selectedIds.push(id)
           selectRecords.push(record)
+          // @ts-ignore
         } else if (!isSelect && contains(selectedIds, id)) {
+          // @ts-ignore
           remove(selectedIds, id)
           selectRecords.push(record)
         }
@@ -833,17 +806,10 @@ Datasource.prototype = {
       })
     }
     return rs
-  },
+  }
 
-  /**
-   *设置当前行
-   * @param {Object} params 参数信息
-   * {
-   * 		record : {@link Record} 记录
-   * }
-   */
-  setCurrentRecord: function (params) {
-    let snapshot = this._getSnapshot()
+  setCurrentRecord(params: any) {
+    let snapshot: any = this._getSnapshot()
     if (snapshot) {
       //TODO
       snapshot.setCurrentRecord(params)
@@ -852,6 +818,7 @@ Datasource.prototype = {
     if (record) {
       let id = record.getSysId()
       if (this.currentId != id) {
+        // @ts-ignore
         let preRecord = this.getRecordById(this.currentId)
         this.currentId = id
         if (!this.isMultipleSelect()) {
@@ -867,65 +834,9 @@ Datasource.prototype = {
         })
       }
     }
-  },
-  /**
-   * 事件名称枚举
-   * @enum {String}
-   */
-  Events: {
-    /**加载事件*/
-    LOAD: 'LOAD',
-    /**新增事件*/
-    INSERT: 'INSERT',
-    /**更新事件*/
-    UPDATE: 'UPDATE',
-    /**删除事件*/
-    DELETE: 'DELETE',
-    /**当前行切换事件*/
-    CURRENT: 'CURRENT',
-    /**记录选择事件*/
-    SELECT: 'SELECT',
-    /**获取数据事件*/
-    FETCH: 'FETCH',
-    /**获取数据后事件*/
-    FETCHED: 'FETCHED',
-    /**
-     *@private
-     * 记录处理事件
-     * */
-    RECORDPROCESS: 'RECORDPROCESS'
-  },
-  /**
-   * 数据位置枚举
-   * @enum {String}
-   */
-  Position: {
-    /**前*/
-    BEFORE: 'BEFORE',
-    /**后*/
-    AFTER: 'AFTER',
-    /**最前*/
-    TOP: 'TOP',
-    /**最后*/
-    BOTTOM: 'BOTTOM'
-  },
-  /**
-   * 注册事件回调
-   * @param {Object} params 参数信息
-   * {
-   * 		"eventName" : {@link Datasource#Events|Events} 事件名称,
-   * 		"fieldCode" : String 字段编码,
-   * 		"handler" : Function 回调
-   * }
-   * @example
-   *  var datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
-   *  var datasource = datasourceFactory.create(metadata);
-   *  datasource.on({
-   * 		"eventName":datasource.Events.Load
-   * 		"handler" : function(){alert("loaded@");}
-   * });
-   */
-  on: function (params) {
+  }
+
+  on(params: any) {
     let eName = params.eventName
     let handler = params.handler
     let handlers = []
@@ -942,16 +853,12 @@ Datasource.prototype = {
       handlers.push(handler)
       this._eventPool[eName] = handlers
     }
-  },
+  }
 
-  /**
-   * 是否为多选
-   * @return Boolean
-   */
-  isMultipleSelect: function () {
+  isMultipleSelect() {
     return this.isMultipleSel
-  },
-  _selectionChangedDeal: function () {
+  }
+  _selectionChangedDeal() {
     //标记当前行为选中状态
     if (this.currentId && this.currentId != '') {
       if (this.selectIds.indexOf(this.currentId) == -1) {
@@ -964,30 +871,30 @@ Datasource.prototype = {
         datasource: this.ds
       })
     }
-  },
+  }
   /**
    * 标记数据源为多选
    */
-  markMultipleSelect: function () {
+  markMultipleSelect() {
     if (!this.isMultipleSel) {
       this.isMultipleSel = true
       this._selectionChangedDeal()
     }
-  },
+  }
   /**
    * 标记数据源为单选
    */
-  markMultipleSingle: function () {
+  markMultipleSingle() {
     this.isMultipleSel = false
     this._selectionChangedDeal()
-  },
+  }
   /**
    * 是否默认选中记录
    * @return Boolean
    */
-  isDefaultSelect: function () {
+  isDefaultSelect() {
     return this.isDefaultSel
-  },
+  }
   /**
    * 设置是否默认选中
    * @param {Object} params 参数信息
@@ -995,58 +902,34 @@ Datasource.prototype = {
    * 		"defaultSel" : Boolean 是否默认选中
    * }
    */
-  setDefaultSelect: function (params) {
+  setDefaultSelect(params: any) {
     this.isDefaultSel = params.defaultSel
-  },
-  /**
-   * 数据源序列化
-   * @return Object
-   * @example
-   * 输出格式
-   * {
-   * 		"datas":{
-   * 			"recordCount": {Integer} 数据源记录数
-   * 			"values":{Array} 数据源记录集合
-   * 		}，
-   * 		"metadata":{
-   * 			"model":[{
-   * 				"datasource":{String} 数据源名称
-   * 				"fields":[{
-   * 					"code":编码,
-   *  				"name":名称,
-   *  				"length":长度,
-   *  				"type":类型,
-   *  				"defaultValue":默认值,
-   *  				"precision":精度
-   * 				}...]
-   * 			}]
-   * 		}
-   * }
-   */
-  serialize: function () {
-    let rs = { metadata: this.metadata.serialize() }
+  }
+
+  serialize() {
+    let rs: any = { metadata: this.metadata.serialize() }
     let set = this.getAllRecords()
-    let values = []
-    set.iterate(function (record) {
+    let values: any = []
+    set.iterate(function (record: any) {
       //过滤字段,剔除非数据源中的字段
       values.push(record.toMap())
     })
     let datas = { values: values, recordCount: this.dataAmount }
     rs['datas'] = datas
     return rs
-  },
+  }
   /**
    * 标记数据源将要取数据
    */
-  markWillToFecth: function () {
+  markWillToFecth() {
     this._fireEvent({ eventName: this.Events.FETCH, datasource: this.ds })
-  },
+  }
   /**
    * 标记数据已加载过
    */
-  markFecthed: function () {
+  markFecthed() {
     this._fireEvent({ eventName: this.Events.FETCHED, datasource: this.ds })
-  },
+  }
   /**
    * 查询记录
    * @param {Object} params 参数信息
@@ -1055,62 +938,67 @@ Datasource.prototype = {
    * }
    * @return {@link ResultSet}
    */
-  queryRecord: function (params) {
+  queryRecord(params: any) {
     let datas = this.db._query(params.criteria)
     return new ResultSet(this.metadata, datas)
-  },
+  }
   /**
    * 获取db数据量
    * @return Integer
    */
-  getDataAmount: function () {
+  getDataAmount() {
     return this.dataAmount
-  },
+  }
 
-  getOrginalDatasource: function () {
+  getOrginalDatasource() {
     return this.db
-  },
+  }
 
   /**
    * 根据id获取数据下标值,如果记录不存在,则返回-1
    * @param {String} id 记录id值
    * @return Integer
    */
-  getIndexById: function (id) {
+  getIndexById(id: string) {
     return this.db._getIndex(id)
-  },
+  }
 
   /**
    * 获取当前实体数据量
    */
-  getCurrentDataAmount: function () {
+  getCurrentDataAmount() {
     let rs = this.getAllRecords()
     return rs.size()
-  },
-  destroy: function () {
+  }
+
+  destroy() {
     if (this.bindWidgets) {
       this.bindWidgets = null
     }
+    // @ts-ignore
     this.Super('destroy', arguments)
   }
-}
 
-Datasource.Events = Datasource.prototype.Events
+  _putSnapshotManager(manager: any) {
+    this._snapshotManager = manager
+  }
 
-Datasource.Position = Datasource.prototype.Position
+  DB() {
+    return new Datasource()
+  }
 
-Datasource._putSnapshotManager = function (manager) {
-  //TODO
-  Datasource.prototype._snapshotManager = manager
+  getConstructor() {
+    return Datasource
+  }
 }
 
 const DB = function () {
   return new Datasource()
 }
 
-const unSerialize = function (input) {}
+const unSerialize = function () {}
 
-const isDB = function (db) {
+const isDB = function (db: any) {
   return db instanceof Datasource
 }
 
@@ -1118,4 +1006,4 @@ const getConstructor = function () {
   return Datasource
 }
 
-export { DB, getConstructor, initModule, isDB, unSerialize }
+export { DB, getConstructor, isDB, initModule, unSerialize }

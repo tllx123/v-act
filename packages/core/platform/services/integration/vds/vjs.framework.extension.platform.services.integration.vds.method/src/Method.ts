@@ -4,7 +4,7 @@
  * @alias Method
  * @catalog 工具方法/方法定义
  */
-var Method = function (method) {
+var Method = function (this: any, method: any) {
   this.method = method
 }
 Method.prototype = {
@@ -22,7 +22,7 @@ Method.prototype = {
    * @param {String} inputCode 变量编码
    * @returns {@link ParamConfig} 参数对象
    * */
-  getInput: function (inputCode) {
+  getInput: function (inputCode: any) {
     return this._get().getInput(inputCode)
   }
 }

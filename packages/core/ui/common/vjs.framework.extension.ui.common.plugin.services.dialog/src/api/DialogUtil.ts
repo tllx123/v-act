@@ -1,6 +1,6 @@
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -22,7 +22,11 @@ let _getDialogService = function () {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   let result = dialog.confirmDialog(content, responseCallBackFunc, isUseDefault)
   return result
@@ -32,7 +36,11 @@ let confirmDialog = function (content:string, responseCallBackFunc:any, isUseDef
  *
  * @content 确认信息的内容
  */
-let propmtDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let propmtDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   dialog.propmtDialog(content, responseCallBackFunc, isUseDefault)
 }
@@ -41,7 +49,11 @@ let propmtDialog = function (content:string, responseCallBackFunc:any, isUseDefa
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   dialog.errorDialog(content, responseCallBackFunc, isUseDefault)
 }
@@ -50,7 +62,11 @@ let errorDialog = function (content:string, responseCallBackFunc:any, isUseDefau
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   dialog.warnDialog(content, responseCallBackFunc, isUseDefault)
 }
@@ -59,7 +75,11 @@ let warnDialog = function (content:string, responseCallBackFunc:any, isUseDefaul
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let dialog = _getDialogService()
   dialog.infoDialog(content, responseCallBackFunc, isUseDefault)
 }

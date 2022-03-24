@@ -102,7 +102,6 @@ export default class Field {
 
   /**
    * 设置默认值生成器
-   *
    * @param {Object}  defaultValueGenerator  默认值生成器
    */
   setDefaultValueGenerator(defaultValueGenerator: DefaultValueGenerator) {
@@ -142,14 +141,6 @@ export default class Field {
    */
 
   serialize() {
-    return {
-      code: this.code,
-      name: this.name,
-      length: this.length,
-      type: this.type,
-      precision: this.precision,
-      defaultValue: this.defaultValue,
-      expression: this.expression
-    }
+    return this
   }
 }

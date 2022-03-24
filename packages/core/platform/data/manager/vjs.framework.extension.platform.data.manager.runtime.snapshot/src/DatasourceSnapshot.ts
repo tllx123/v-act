@@ -1,26 +1,33 @@
 import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-let Snapshot = function (datasource) {
+let Snapshot = function (datasource: any) {
+  // @ts-ignore
   this.datasource = datasource
+  // @ts-ignore
   this.currentId = null
   let record = datasource.getCurrentRecord()
   if (record) {
+    // @ts-ignore
     this.currentId = record.getSysId()
   }
 }
 
-let _dispatcher = function (funcName) {
+let _dispatcher = function (funcName: string) {
   return function () {
+    // @ts-ignore
     let ds = this._getDatasource()
     return ds[funcName].apply(ds, arguments)
   }
 }
 
 Snapshot.prototype = {
-  initModule: function (sb) {
+  initModule: function (sb: any) {
+    // @ts-ignore
     if (Datasource.prototype.initModule) {
+      // @ts-ignore
       Datasource.prototype.initModule.call(this, sb)
     }
+    // @ts-ignore
     var proto = Datasource.prototype
     var snapshotPro = Snapshot.prototype
     for (var attr in proto) {
@@ -63,7 +70,7 @@ Snapshot.prototype = {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isCurrentRecord: function (params) {
+  isCurrentRecord: function (params: any) {
     let record = params.record
     if (record) {
       let id = this.currentId
@@ -79,16 +86,16 @@ Snapshot.prototype = {
    * 		record : {@link Record} 记录
    * }
    */
-  setCurrentRecord: function (params) {
+  setCurrentRecord: function (params: any) {
     let record = params.record
     this.currentId = record.getSysId()
   },
 
-  setCurrentId: function (id) {
+  setCurrentId: function (id: string) {
     this.currentId = id
   },
 
-  isCurrentById: function (id) {
+  isCurrentById: function (id: string) {
     return id == this.currentId
   },
 

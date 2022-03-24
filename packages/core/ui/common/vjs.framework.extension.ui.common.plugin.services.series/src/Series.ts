@@ -1,7 +1,5 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-
-
 let getSeries = function () {
   let series = ScopeManager.getProperty('type')
   if (series == null) {

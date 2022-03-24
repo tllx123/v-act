@@ -5,13 +5,13 @@
     无返回值
  *
  */
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
-const vds = { exception, widget,object }
+const vds = { exception, widget, object }
 
-const main = function (widgetCode:string) {
+const main = function (widgetCode: string) {
   //获取函数传入的参数
   if (vds.object.isUndefOrNull(widgetCode)) {
     const exception = vds.exception.newConfigException(

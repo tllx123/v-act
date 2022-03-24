@@ -1,20 +1,20 @@
-import {$} from '@v-act/vjs.framework.extension.vendor.jquery'
-let sandbox, cssHide:string, topNodeName:string
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+let sandbox, cssHide: string, topNodeName: string
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
   topNodeName = '_topnode'
   // 该 css 定义在 12render-web-bootstrap/.../bootstrap.extra.css
   cssHide = 'v-hide'
 }
 
-let setVisible = function (id:string, state:boolean) {
+let setVisible = function (id: string, state: boolean) {
   let _id = '#' + id
   if (state && state + '' === 'true') _handleShowWidget(_id)
   else _handleHideWidget(_id)
 }
 
-let getVisible = function (id:string) {
+let getVisible = function (id: string) {
   let _id = '#' + id,
     _topNodeId = _id + topNodeName,
     _$idElement = $(_id),
@@ -33,7 +33,7 @@ let getVisible = function (id:string) {
 /**
  * 隐藏控件
  */
-let _handleHideWidget = function (id:string) {
+let _handleHideWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _$idElement = $(id),
     _$topNodeIdElement = $(_topNodeId)
@@ -49,7 +49,7 @@ let _handleHideWidget = function (id:string) {
 /**
  * 显示控件
  */
-let _handleShowWidget = function (id:string) {
+let _handleShowWidget = function (id: string) {
   let _topNodeId = id + topNodeName,
     _$idElement = $(id),
     _$topNodeIdElement = $(_topNodeId)
@@ -62,4 +62,4 @@ let _handleShowWidget = function (id:string) {
   }
 }
 
-export {  setVisible, getVisible }
+export { setVisible, getVisible }

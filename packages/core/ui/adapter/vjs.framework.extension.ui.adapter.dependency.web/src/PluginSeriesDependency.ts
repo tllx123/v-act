@@ -1,9 +1,9 @@
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { WindowRuntimeManager as windowRuntimeManager } from '@v-act/vjs.framework.extension.platform.services.runtime.manager'
 
-let sandbox:any
+let sandbox: any
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
   let dependency = sb.getService(
     'vjs.framework.extension.ui.adapter.dependency'
@@ -12,14 +12,14 @@ export function initModule(sb:any) {
   dependency.putInstance(this)
 }
 
-let genModuleUrl = function (componentCode:string, windowCode:string) {
+let genModuleUrl = function (componentCode: string, windowCode: string) {
   let url = ''
   //@ts-ignore
   if (!window.GlobalVariables) {
     url += 'module-operation!executeOperation?componentCode='
   } else {
     url +=
-    //@ts-ignore
+      //@ts-ignore
       window.GlobalVariables.getServerUrl() +
       '/module-operation!executeOperation?componentCode='
   }
@@ -32,12 +32,12 @@ let genModuleUrl = function (componentCode:string, windowCode:string) {
 }
 
 const loadDependencyLib = function (
-  componentCode:string,
-  windowCode:string,
-  sandbox:any,
-  scopeId:string,
-  callback:any,
-  errorFun:any
+  componentCode: string,
+  windowCode: string,
+  sandbox: any,
+  scopeId: string,
+  callback: any,
+  errorFun: any
 ) {
   let url = genModuleUrl(componentCode, windowCode)
   let wins = [
@@ -47,7 +47,7 @@ const loadDependencyLib = function (
     }
   ]
   //@ts-ignore
-  seajs.use(url, function (dependencyLib:any) {
+  seajs.use(url, function (dependencyLib: any) {
     if (!dependencyLib) {
       let exception = exceptionFactory.create({
         message: '与服务器通信失败，请重试！',
@@ -67,13 +67,13 @@ const loadDependencyLib = function (
   })
 }
 
-const loadDependencyLibs = function (wins:any, cb:any, ef:any) {
+const loadDependencyLibs = function (wins: any, cb: any, ef: any) {
   let callback = cb
   let errorFun = ef
   let success = function () {
     //var seriesInfo = getSeriesInfo(wins);
     //var seriesDependencyLibs = {};
-    let seriesMap:{[code:string]:any} = {}
+    let seriesMap: { [code: string]: any } = {}
     for (let i = 0, l = wins.length; i < l; i++) {
       let win = wins[i]
       let series = windowRuntimeManager.getWindowSeries(win)
@@ -98,7 +98,7 @@ const loadDependencyLibs = function (wins:any, cb:any, ef:any) {
     sandBox.use(seriesDependencyPaths)
     sandbox
       .active()
-      .done(function (sbox:any) {
+      .done(function (sbox: any) {
         /*for (var i = 0; i < seriesInfo.seriesList.length; i++) {
             var winseries = seriesInfo.seriesList[i];
             var dependencyLibPath = "vjs.framework.extension.ui.adapter.dependency." + winseries;
@@ -123,7 +123,7 @@ const loadDependencyLibs = function (wins:any, cb:any, ef:any) {
           )
         }
       })
-      .fail(function (dependencyLib:any) {
+      .fail(function (dependencyLib: any) {
         let exception = exceptionFactory.create({
           message: dependencyLib.message,
           type: dependencyLib.type,

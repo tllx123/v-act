@@ -8,7 +8,7 @@ let Datasource_Token = 'WINDOW_MAPPING_DATASOURCE',
   token = 'WINDOW_INSTANCE_DATASOURCE',
   Ruleset_Token = 'WINDOW_MAPPING_RULESET'
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 /**
  * 获取数据源映射仓库
  */
@@ -54,7 +54,7 @@ const TYPE = {
 
 export { TYPE }
 
-const existMapping = function (params) {
+const existMapping = function (params: any) {
   let scope = scopeManager.getWindowScope()
   let extendId = scope.getExtendId()
   if (null == extendId) {
@@ -91,7 +91,7 @@ const existMapping = function (params) {
   return false
 }
 
-const init = function (params) {
+const init = function (params: any) {
   //格式：构件编号$_$窗体编号
   let key = getKey(params)
   // 处理数据源映射信息
@@ -116,7 +116,7 @@ const init = function (params) {
  * @param {Object} params
  * @returns 存在映射，返回映射的规则编码，不存在，则返回空
  * */
-let _get = function (type, params) {
+let _get = function (type: any, params: any) {
   let result
   let storage
   switch (type) {
@@ -141,7 +141,7 @@ let _get = function (type, params) {
   return result
 }
 
-const getRuleset = function (params) {
+const getRuleset = function (params: any) {
   params.code = params.ruleSetCode
   return _get(TYPE.RULESET, params)
   //		var key = getKey(params);
@@ -154,7 +154,7 @@ const getRuleset = function (params) {
   //		return null;
 }
 
-const getInput = function (params) {
+const getInput = function (params: any) {
   params.code = params.inputCode
   return _get(TYPE.INPUTS, params)
   //		var key = getKey(params);
@@ -167,7 +167,7 @@ const getInput = function (params) {
   //		return null;
 }
 
-const getOutput = function (params) {
+const getOutput = function (params: any) {
   params.code = params.outputCode
   return _get(TYPE.OUTPUTS, params)
   //		var key = getKey(params);
@@ -180,7 +180,7 @@ const getOutput = function (params) {
   //		return null;
 }
 
-const existPropertyMapping = function (params) {
+const existPropertyMapping = function (params: any) {
   let widgetCode = params.widgetCode
   let key = getKey(params)
   let storage = _getControlsStorage()
@@ -196,7 +196,7 @@ const existPropertyMapping = function (params) {
   return false
 }
 
-const getDataSource = function (datasourceName) {
+const getDataSource = function (datasourceName: string): any {
   let dsName = datasourceName
   let scope = scopeManager.getScope()
   //liangzc：处理移动窗体替换后，图片控件更改了图片资源，导致页面打不开的情况，测试过之前的问题【处理窗体替换中控件不绑定实体时给控件赋值无效的问题】，也能通过。
@@ -236,7 +236,7 @@ const getDataSource = function (datasourceName) {
   return null
 }
 
-const getScopeId = function (datasourceName) {
+const getScopeId = function (datasourceName: string): string {
   let dsName = datasourceName
   let scope = scopeManager.getScope()
   let key = scope.getComponentCode() + '$_$' + scope.getWindowCode()
@@ -262,14 +262,14 @@ const getScopeId = function (datasourceName) {
   return scope.getInstanceId()
 }
 
-let put = function (storage, key, value) {
+let put = function (storage: any, key: any, value: any) {
   if (value) {
     storage.put(key, value)
   } else {
     storage.remove(key)
   }
 }
-let findCode = function (infos, refCode) {
+let findCode = function (infos: any, refCode: string) {
   if (infos && infos.length > 0) {
     for (let i = 0, len = infos.length; i < len; i++) {
       let info = infos[i]
@@ -280,7 +280,7 @@ let findCode = function (infos, refCode) {
   }
   return null
 }
-let getKey = function (scope) {
+let getKey = function (scope: any) {
   return scope.componentCode + '$_$' + scope.windowCode
 }
 export {

@@ -1,20 +1,23 @@
 import * as utils from '../util/OperationUtils'
 import * as AbstractOperation from './AbstractOperation'
 
-let objUtils
+let objUtils: any
 
-let Operation = function (params) {
+let Operation = function (params: any) {
+  // @ts-ignore
   AbstractOperation.call(this, params)
 }
 
 Operation.prototype = {
   operationType: 'Update',
 
-  initModule: function (sb) {
+  initModule: function (sb: any) {
+    // @ts-ignore
     var initFunc = AbstractOperation.prototype.initModule
     if (initFunc) {
       initFunc.call(this, sb)
     }
+    // @ts-ignore
     var prototype = Object.create(AbstractOperation.prototype)
     prototype.constructor = Operation
     objUtils = sb.util.object
@@ -22,7 +25,7 @@ Operation.prototype = {
     Operation.prototype = prototype
   },
 
-  _combineResuleSet: function (rs, rs1) {
+  _combineResuleSet: function (rs: any, rs1: any) {
     let iter = rs.iterator()
     let iter1 = rs1.iterator()
     while (iter.hasNext()) {
@@ -42,10 +45,10 @@ Operation.prototype = {
     rs.combine(rs1)
   },
 
-  _combineUpdate: function (operation) {
+  _combineUpdate: function (operation: any) {
     let rs = operation.getParams().resultSet,
       _this = this
-    rs.iterate(function (rd) {
+    rs.iterate(function (rd: any) {
       _this.setRecordPosition(rd, operation.getRecordPosition(rd))
     })
     this._combineResuleSet(this.getParams().resultSet, rs)
@@ -56,15 +59,15 @@ Operation.prototype = {
     operation.markDestroy()
   },
 
-  _combineLoad: function (operation) {
+  _combineLoad: function (operation: any) {
     utils.destroyWhenLoad(this, operation)
   },
 
-  _combineDelete: function (operation) {
+  _combineDelete: function (operation: any) {
     utils.destroyBefore(this, operation)
   },
 
-  _combineInsert: function (operation) {
+  _combineInsert: function (operation: any) {
     utils.opUpdateWhenInsert(operation, this)
   }
 }

@@ -8,7 +8,7 @@ import * as vAsync from '../impl/VAsync'
  */
 export function initModule() {}
 
-let getBuilder = function (builderName) {
+let getBuilder = function (builderName: string) {
   if (builderName === 'vAsync') {
     return vAsync.getInstance()
   }

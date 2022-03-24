@@ -2,7 +2,7 @@ import * as dataAdaptorFactory from '../adapter/DataAdaptorFactory'
 import Field from '../api/Field'
 
 interface params extends Field {
-  [key: string]: any
+  // [key: string]: any
 }
 
 /**

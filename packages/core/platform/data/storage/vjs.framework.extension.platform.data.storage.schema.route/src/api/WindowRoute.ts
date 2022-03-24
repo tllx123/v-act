@@ -4,9 +4,9 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 
 let token = 'WindowRoute_RouteConfig_Key'
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
-let getStorage = function (depth, isCreate) {
+let getStorage = function (depth: any, isCreate: boolean) {
   let rs,
     s = storageManager.get(storageManager.TYPES.MAP, token)
   for (let i = 0, key; (key = depth[i]); i++) {
@@ -21,7 +21,7 @@ let getStorage = function (depth, isCreate) {
   return rs
 }
 
-const addRoute = function (params) {
+const addRoute = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode
   let wStorage = getStorage([componentCode, windowCode], true)
@@ -32,7 +32,10 @@ const addRoute = function (params) {
 /**
  * 替换构件包信息
  * */
-let replaceComponentPackInfo = function (componentCode, windowCode) {
+let replaceComponentPackInfo = function (
+  componentCode: string,
+  windowCode: string
+) {
   let result = null
   let info = {
     componentCode: componentCode,
@@ -52,14 +55,14 @@ let replaceComponentPackInfo = function (componentCode, windowCode) {
   return result
 }
 
-const getRoute = function (params) {
+const getRoute = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode
-  let routeCode = params.routeCode
+  let routeCode: any = params.routeCode
   let iden =
     windowCode && '' != windowCode ? windowCode + '.' + routeCode : routeCode
   //替换构件包映射信息
-  let newInfo = replaceComponentPackInfo(componentCode, iden)
+  let newInfo: any = replaceComponentPackInfo(componentCode, iden)
   if (newInfo) {
     componentCode = newInfo.componentCode
     if (newInfo.funcCode) {
@@ -70,14 +73,14 @@ const getRoute = function (params) {
   return wStorage ? wStorage.get(routeCode) : null
 }
 
-const getRouteByRuleInstanceCode = function (params) {
+const getRouteByRuleInstanceCode = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     ruleCode = params.ruleCode
   let wStorage = getStorage([componentCode, windowCode], false)
   let route = null
   if (wStorage) {
-    wStorage.iterate(function (routeCode, r) {
+    wStorage.iterate(function (routeCode: any, r: any) {
       try {
         let instance = r.getRuleInstance(ruleCode)
         if (instance) {

@@ -4,11 +4,14 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 
 let token = 'ComponentRoute_RouteConfig_Key'
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 /**
  * 替换构件包信息
  * */
-let replaceComponentPackInfo = function (componentCode, windowCode) {
+let replaceComponentPackInfo = function (
+  componentCode: string,
+  windowCode: string
+) {
   let result = null
   let info = {
     componentCode: componentCode,
@@ -28,7 +31,7 @@ let replaceComponentPackInfo = function (componentCode, windowCode) {
   return result
 }
 
-const addRoute = function (params) {
+const addRoute = function (params: any) {
   let componentCode = params.componentCode
   let cStorage
   let storage = storageManager.get(storageManager.TYPES.MAP, token)
@@ -42,11 +45,11 @@ const addRoute = function (params) {
   cStorage.put(routeConfig.getCode(), routeConfig)
 }
 
-const getRoute = function (params) {
+const getRoute = function (params: any) {
   let componentCode = params.componentCode
   let routeCode = params.routeCode
   //替换构件包映射信息
-  let newInfo = replaceComponentPackInfo(componentCode, routeCode)
+  let newInfo: any = replaceComponentPackInfo(componentCode, routeCode)
   if (newInfo) {
     componentCode = newInfo.componentCode
     if (newInfo.funcCode) {

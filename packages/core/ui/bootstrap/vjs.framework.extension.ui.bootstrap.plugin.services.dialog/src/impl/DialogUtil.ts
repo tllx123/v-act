@@ -1,6 +1,6 @@
 let sandbox
 
-export function initModule(sb:any) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -9,7 +9,11 @@ export function initModule(sb:any) {
  *
  * @content 确认信息的内容
  */
-let confirmDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let confirmDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   let result = confirm(content)
   if (typeof responseCallBackFunc == 'function') {
     responseCallBackFunc(result)
@@ -21,7 +25,11 @@ let confirmDialog = function (content:string, responseCallBackFunc:any, isUseDef
  *
  * @content 确认信息的内容
  */
-let propmtDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let propmtDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alert(content)
   if (typeof responseCallBackFunc == 'function') {
     responseCallBackFunc()
@@ -32,7 +40,11 @@ let propmtDialog = function (content:string, responseCallBackFunc:any, isUseDefa
  *
  * @content 确认信息的内容
  */
-let errorDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let errorDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alert(content)
   if (typeof responseCallBackFunc == 'function') {
     responseCallBackFunc()
@@ -43,7 +55,11 @@ let errorDialog = function (content:string, responseCallBackFunc:any, isUseDefau
  *
  * @content 确认信息的内容
  */
-let warnDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let warnDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alert(content)
   if (typeof responseCallBackFunc == 'function') {
     responseCallBackFunc()
@@ -54,7 +70,11 @@ let warnDialog = function (content:string, responseCallBackFunc:any, isUseDefaul
  *
  * @content 确认信息的内容
  */
-let infoDialog = function (content:string, responseCallBackFunc:any, isUseDefault:boolean) {
+let infoDialog = function (
+  content: string,
+  responseCallBackFunc: any,
+  isUseDefault: boolean
+) {
   alert(content)
   if (typeof responseCallBackFunc == 'function') {
     responseCallBackFunc()
