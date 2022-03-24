@@ -8,30 +8,9 @@
  * vds.import("vds.environment.*");
  * vds.environment.getContextPath();
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var environment = vds.environment
-if (!environment) {
-  environment = {}
-  vds.environment = environment
-}
 
-exports = environment
-
-var sandbox, environmentUtil, scopeManager
-
-export function initModule(sBox) {
-  sandbox = sBox
-  environmentUtil = sBox.getService(
-    'vjs.framework.extension.platform.interface.environment.Environment'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-}
+import { Environment as environmentUtil } from '@v-act/vjs.framework.extension.platform.interface.environment'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 /**
  * 获取上下文路径
@@ -71,7 +50,7 @@ export function isMobileWindow() {
  * @example
  * vds.environment.parseCss(".app{color:red;border:1px solid #e5e5e5;}");
  * */
-export function parseCss(css) {
+export function parseCss(css: string | null) {
   if (null != css) {
     environmentUtil.parseCssStr(css)
   }
