@@ -4,7 +4,7 @@ code.google.com/p/crypto-js
 (c) 2009-2013 by Jeff Mott. All rights reserved.
 code.google.com/p/crypto-js/wiki/License
 */
-let CryptoJS =
+var CryptoJS =
   CryptoJS ||
   (function (u, p) {
     var d = {},
@@ -193,16 +193,16 @@ let CryptoJS =
     return d
   })(Math)
 ;(function () {
-  let u = CryptoJS,
+  var u = CryptoJS,
     p = u.lib.WordArray
   u.enc.Base64 = {
     stringify: function (d) {
-      let l = d.words,
+      var l = d.words,
         p = d.sigBytes,
         t = this._map
       d.clamp()
       d = []
-      for (let r = 0; r < p; r += 3)
+      for (var r = 0; r < p; r += 3)
         for (
           var w =
               (((l[r >>> 2] >>> (24 - 8 * (r % 4))) & 255) << 16) |
@@ -217,11 +217,11 @@ let CryptoJS =
       return d.join('')
     },
     parse: function (d) {
-      let l = d.length,
+      var l = d.length,
         s = this._map,
         t = s.charAt(64)
       t && ((t = d.indexOf(t)), -1 != t && (l = t))
-      for (let t = [], r = 0, w = 0; w < l; w++)
+      for (var t = [], r = 0, w = 0; w < l; w++)
         if (w % 4) {
           var v = s.indexOf(d.charAt(w - 1)) << (2 * (w % 4)),
             b = s.indexOf(d.charAt(w)) >>> (6 - 2 * (w % 4))
@@ -251,7 +251,7 @@ let CryptoJS =
     return ((b << j) | (b >>> (32 - j))) + n
   }
   for (
-    let t = CryptoJS,
+    var t = CryptoJS,
       r = t.lib,
       w = r.WordArray,
       v = r.Hasher,
@@ -398,7 +398,7 @@ let CryptoJS =
   t.HmacMD5 = v._createHmacHelper(r)
 })(Math)
 ;(function () {
-  let u = CryptoJS,
+  var u = CryptoJS,
     p = u.lib,
     d = p.Base,
     l = p.WordArray,
@@ -676,7 +676,7 @@ CryptoJS.lib.Cipher ||
   })()
 ;(function () {
   for (
-    let u = CryptoJS,
+    var u = CryptoJS,
       p = u.lib.BlockCipher,
       d = u.algo,
       l = [],
@@ -695,12 +695,12 @@ CryptoJS.lib.Cipher ||
     c++
   )
     a[c] = 128 > c ? c << 1 : (c << 1) ^ 283
-  for (let e = 0, j = 0, c = 0; 256 > c; c++) {
-    let k = j ^ (j << 1) ^ (j << 2) ^ (j << 3) ^ (j << 4),
+  for (var e = 0, j = 0, c = 0; 256 > c; c++) {
+    var k = j ^ (j << 1) ^ (j << 2) ^ (j << 3) ^ (j << 4),
       k = (k >>> 8) ^ (k & 255) ^ 99
     l[e] = k
     s[k] = e
-    let z = a[e],
+    var z = a[e],
       F = a[z],
       G = a[F],
       y = (257 * a[k]) ^ (16843008 * k)
@@ -715,7 +715,7 @@ CryptoJS.lib.Cipher ||
     n[k] = y
     e ? ((e = z ^ a[a[a[G ^ z]]]), (j ^= a[a[j]])) : (e = j = 1)
   }
-  let H = [0, 1, 2, 4, 8, 16, 32, 64, 128, 27, 54],
+  var H = [0, 1, 2, 4, 8, 16, 32, 64, 128, 27, 54],
     d = (d.AES = p.extend({
       _doReset: function () {
         for (
@@ -845,4 +845,4 @@ CryptoJS.lib.Cipher ||
   u.AES = p._createHelper(d)
 })()
 
-export { genHash, CryptoJS }
+export { CryptoJS, genHash }

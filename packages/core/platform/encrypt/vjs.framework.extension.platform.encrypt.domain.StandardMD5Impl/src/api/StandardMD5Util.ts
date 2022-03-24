@@ -1,8 +1,6 @@
-import * as md5 from './src/md5'
+import * as md5 from '../src/md5'
 
-export function initModule(sb) {}
-
-let genHash = function (encryptValue) {
+let genHash = function (encryptValue: string) {
   let result = md5.CryptoJS.MD5(encryptValue)
   return result
 }

@@ -9,51 +9,51 @@ vds.import(
   'vds.log.*',
   'vds.rpc.*'
 )
-const main = function (actionXML) {
+const main = function (actionXML: string) {
   if (vds.object.isUndefOrNull(actionXML) || actionXML == '') {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       '[VRestoreXMLToEntity.main]执行失败，参数1:流程动作XML配置信息为空'
     )
     throw exception
   }
   actionXML = encodeURIComponent(actionXML)
 
-  var expression = 'VRestoreXMLToEntity("' + actionXML + '")'
+  const expression = 'VRestoreXMLToEntity("' + actionXML + '")'
 
-  var result
+  let result = { success: false, data: { result: {} } }
   vds.rpc.callCommandSync('WebExecuteFormulaExpression', null, {
     isOperation: true,
     operationParam: {
       expression: expression
     },
-    success: function (rs) {
+    success: function (rs: { success: boolean; data: { result: any } }) {
       result = rs
     }
   })
 
-  var tableDataMap = null
+  let tableDataMap = null
   if (result && result.success == true) {
     tableDataMap = result.data.result
   } else {
-    var exception = vds.exception.newConfigException(
+    const exception = vds.exception.newConfigException(
       '[VRestoreXMLToEntity.main]解析实体数据失败，result=' + result
     )
     throw exception
   }
 
   if (null != tableDataMap) {
-    for (var tableName in tableDataMap) {
-      var exists = GetDataSource(tableName)
+    for (const tableName in tableDataMap) {
+      const exists = GetDataSource(tableName)
       if (!exists) {
         vds.log.warn(
           '[VRestoreXMLToEntity.main]需要还原的表' + tableName + '不存在'
         )
         continue
       }
-      var tableDatas = tableDataMap[tableName]
+      const tableDatas = tableDataMap[tableName]
 
       //获取记录
-      var loadRecords = createRecords({
+      const loadRecords = createRecords({
         datasourceName: tableName,
         datas: tableDatas
       })
@@ -66,17 +66,20 @@ const main = function (actionXML) {
   }
 }
 //根据xml信息去生成记录数组
-var createRecords = function (params) {
-  var datas = params.datas
+const createRecords = function (params: {
+  datas: any[]
+  datasourceName: string
+}) {
+  const datas = params.datas
   if (datas && datas.length > 0) {
-    var datasource = GetDataSource(params.datasourceName) //获取对应的数据源
+    const datasource = GetDataSource(params.datasourceName) //获取对应的数据源
     if (!datasource) {
       return []
     }
-    var rs = []
-    for (var i = 0, l = datas.length; i < l; i++) {
-      var data = datas[i]
-      var record = datasource.createRecord()
+    const rs = []
+    for (let i = 0, l = datas.length; i < l; i++) {
+      const data = datas[i]
+      const record = datasource.createRecord()
       record.setData(data)
       rs.push(record)
     }
@@ -86,16 +89,20 @@ var createRecords = function (params) {
 }
 
 //将记录加载到实体里面
-var loadRecordsToEntity = function (params) {
-  var records = params.records
+const loadRecordsToEntity = function (params: {
+  records: any[]
+  isAppend?: boolean
+  datasourceName: string
+}) {
+  const records = params.records
   if (records && records.length > 0) {
-    var datas = []
-    var isAppend = params.hasOwnProperty('isAppend') ? params.isAppend : false
-    var datasource = GetDataSource(params.datasourceName) //获取对应的数据源
+    const datas = []
+    const isAppend = params.hasOwnProperty('isAppend') ? params.isAppend : false
+    const datasource = GetDataSource(params.datasourceName) //获取对应的数据源
     if (!datasource) {
       return
     }
-    for (var i = 0, l = records.length; i < l; i++) {
+    for (let i = 0, l = records.length; i < l; i++) {
       datas.push(records[i])
     }
     datasource.loadRecords(datas, {
@@ -104,9 +111,9 @@ var loadRecordsToEntity = function (params) {
   }
 }
 //获取数据源
-var GetDataSource = function (ds) {
-  var dsName = ds
-  var datasource = null
+const GetDataSource = function (ds: string) {
+  const dsName = ds
+  let datasource = null
   if (dsName.indexOf('.') == -1 && dsName.indexOf('@') == -1) {
     datasource = vds.ds.lookup(dsName)
   } else {

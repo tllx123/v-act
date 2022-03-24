@@ -19,9 +19,9 @@ export default class Request {
     isAsync: boolean,
     operations: Record<string, any>,
     success: Function,
-    error: Function,
-    host: string,
-    timeout: number
+    error?: Function,
+    host?: string,
+    timeout?: number
   ) {
     this.async = isAsync
     this.operations = operations

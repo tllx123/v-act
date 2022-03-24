@@ -1,11 +1,16 @@
 /**
  *	进度条显示/隐藏
  */
-vds.import('vds.environment.*', 'vds.expression.*', 'vds.progress.*')
+//vds.import('vds.environment.*', 'vds.expression.*', 'vds.progress.*')
 /**
  * 规则入口
  */
+import * as environment from '@v-act/vjs.framework.extension.platform.services.integration.vds.environment'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as progress from '@v-act/vjs.framework.extension.platform.services.integration.vds.progress'
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+const vds = { environment, expression, progress }
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {

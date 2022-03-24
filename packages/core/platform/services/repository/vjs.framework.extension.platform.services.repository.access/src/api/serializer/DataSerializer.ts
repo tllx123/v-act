@@ -56,4 +56,4 @@ let _genDataProviderObj = function (queryParam) {
   return dataProvider
 }
 
-export { serializer }
+export default { serializer }

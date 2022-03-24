@@ -4,30 +4,30 @@
 //规则主入口(必须有)
 vds.import('vds.ds.*', 'vds.exception.*', 'vds.object.*')
 const main = function (
-  entityCode,
-  keyColumn,
-  valueColumn,
-  recordType,
-  objKeyString
+  entityCode: string,
+  keyColumn: string,
+  valueColumn: string,
+  recordType: number,
+  objKeyString: string
 ) {
-  var records = []
-  var datasource = GetDataSource(entityCode) //获取对应的数据源
+  let records = []
+  const datasource = GetDataSource(entityCode) //获取对应的数据源
 
   if (1 == recordType) records = datasource.getSelectedRecords().toArray()
   // 注意返回值对象有改变
   else records = datasource.getAllRecords().toArray()
 
-  var objKeys = []
+  let objKeys: string[] = []
   if (objKeyString) objKeys = objKeyString.split(',')
 
-  var object = {}
-  for (var i = 0; i < records.length; i++) {
-    var record = records[i]
-    var key = record.get(keyColumn)
-    var value = record.get(valueColumn)
+  const object = {}
+  for (let i = 0; i < records.length; i++) {
+    const record = records[i]
+    const key = record.get(keyColumn)
+    let value = record.get(valueColumn)
     if (value && objKeys && objKeys.length > 0) {
-      for (var j = 0; j < objKeys.length; j++) {
-        var objKey = objKeys[j]
+      for (let j = 0; j < objKeys.length; j++) {
+        const objKey = objKeys[j]
         if (objKey == key) value = vds.object.stringify(value)
       }
     }
@@ -37,10 +37,10 @@ const main = function (
   return vds.string.toJson(object)
 }
 
-var GetDataSource = function (ds) {
+const GetDataSource = function (ds: string) {
   //获取数据源
-  var dsName = ds
-  var datasource = null
+  const dsName = ds
+  let datasource = null
   if (vds.ds.isDatasource(dsName)) {
     datasource = dsName
   } else {

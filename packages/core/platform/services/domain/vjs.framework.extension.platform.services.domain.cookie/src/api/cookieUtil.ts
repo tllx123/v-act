@@ -1,9 +1,7 @@
 import * as aes from '../cryptoJS/aes'
 
-export function initModule() {}
-
 // Use native String.trim function wherever possible
-let trim = function (text) {
+let trim = function (text: string | null) {
   return text == null
     ? ''
     : text.toString().replace(/^\s+/g, '').replace(/\s+$/g, '')
@@ -19,7 +17,7 @@ let trim = function (text) {
  */
 
 //vcookie = function (name, value, options,isNotEncrypt) {
-vcookie = function (params) {
+let vcookie = function (params: Record<string, any>) {
   //des密钥
   let secretKey = 'toonev3'
   //des明文前缀

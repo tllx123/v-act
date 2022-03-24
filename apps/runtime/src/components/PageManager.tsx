@@ -55,7 +55,12 @@ export default function PageManager(props: PageManagerProperty) {
             {page}
           </div>
         ) : (
-          <PageModal title={title}>{page}</PageModal>
+          <PageModal
+            title={title}
+            onClose={typeof window != 'undefined' ? window['__dialog_win_close_cb_' + thisLevel] : undefined}
+          >
+            {page}
+          </PageModal>
         )}
       </PageStackProvider>
     )
