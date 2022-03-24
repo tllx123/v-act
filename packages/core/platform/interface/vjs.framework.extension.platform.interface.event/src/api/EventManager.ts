@@ -8,9 +8,9 @@ import { StorageManager as storageManager } from '@v-act/vjs.framework.extension
 import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-let storage,
+let storage: any,
   token = 'V3_Platform_Services_Event_AOP',
-  crossDomainStorage,
+  crossDomainStorage: any,
   //是否启动监听
   isStartListener = false,
   V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN =
@@ -34,11 +34,11 @@ let _getCrossDomainStorage = function () {
   return crossDomainStorage
 }
 
-const register = function (params) {
+const register = function (params: any) {
   let sg = _getStorage(),
     event = params.event,
     handler = params.handler
-  let handlers
+  let handlers: any
   if (!sg.containsKey(event)) {
     handlers = []
     sg.put(event, handlers)
@@ -48,7 +48,7 @@ const register = function (params) {
   handlers.push(handler)
 }
 
-const fire = function (params) {
+const fire = function (params: any) {
   let event = params.event,
     args = params.args,
     sg = _getStorage()
@@ -56,12 +56,13 @@ const fire = function (params) {
     let handlers = sg.get(event)
     for (let i = 0, l = handlers.length; i < l; i++) {
       let handler = handlers[i]
+      // @ts-ignore
       handler.apply(this, args)
     }
   }
 }
 
-const parseCrossDomainParams = function (event) {
+const parseCrossDomainParams = function (event: any) {
   let params = {
     isVPlatformCrossDomainParam: false,
     params: null
@@ -92,6 +93,7 @@ const parseCrossDomainParams = function (event) {
 }
 
 const startCrossDomainListener = function () {
+  // @ts-ignore
   let handle = scopeManager.createScopeHandler({
     handler: function (e) {
       if (e && e.data) {
@@ -181,16 +183,18 @@ const startCrossDomainListener = function () {
                     newParams.TOONE_IDEN = V3_TOONE_PLATFORM_CROSSDOMAIN_IDEN //平台跨域事件标识
                     var childs = window.frames
                     if (childs && childs.length > 0) {
+                      // @ts-ignore
                       for (var i = 0, len = childs.length; i < len; i++) {
                         window.frames[i].postMessage(newParams, '*')
                       }
                     }
+                    // @ts-ignore
                     var ex = exceptionFactory.create({
                       type: exceptionFactory.TYPES.Unlogin,
                       error: 'Exception',
                       message: '未登录'
                     })
-                    exceptionHandler.handle(ex)
+                    exceptionHandler.handle(ex, null)
                   }
                   break
               }
@@ -241,13 +245,13 @@ const CrossDomainMessageType = {
 
 export { CrossDomainMessageType }
 
-const onCrossDomainEvent = function (params) {
+const onCrossDomainEvent = function (params: any) {
   let eventName = params.eventName
   let handler = params.handler
   if (eventName && typeof handler == 'function') {
     //			console.log("["+window._$index+"]onCrossDomainEvent:"+eventName);
     let cds = _getCrossDomainStorage()
-    let handlers
+    let handlers: any
     if (!cds.containsKey(eventName)) {
       handlers = []
       cds.put(eventName, handlers)
@@ -262,7 +266,7 @@ const onCrossDomainEvent = function (params) {
   }
 }
 
-const unCrossDomainEvent = function (params) {
+const unCrossDomainEvent = function (params: any) {
   let eventName = params.eventName
   let handler = params.handler
   if (eventName && typeof handler == 'function') {
@@ -284,7 +288,7 @@ const unCrossDomainEvent = function (params) {
   }
 }
 
-const fireCrossDomainEvent = function (params) {
+const fireCrossDomainEvent = function (params: any) {
   if (!params) {
     return false
   }
@@ -303,6 +307,7 @@ const fireCrossDomainEvent = function (params) {
       logUtil.warn('跨域处理的事件名称不能为空.')
       return
     } else {
+      // @ts-ignore
       newParams.EVENTNAME = eventName
     }
   }
@@ -355,10 +360,10 @@ const Events = {
 
 export {
   Events,
-  create,
+  // create,
   fire,
   fireCrossDomainEvent,
-  isCallback,
+  // isCallback,
   onCrossDomainEvent,
   register,
   startCrossDomainListener,
