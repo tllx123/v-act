@@ -1,8 +1,6 @@
 import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
-export function initModule(sb) {}
-
-const getSelectedAndCurrentRecords = function (params) {
+const getSelectedAndCurrentRecords = function (params: Record<string, any>) {
   let datasource = dsManager.lookup({ datasourceName: params.datasourceName })
   let rd = datasource.getCurrentRecord()
   let rs = []
@@ -20,7 +18,7 @@ const getSelectedAndCurrentRecords = function (params) {
   return rs
 }
 
-const hasChanged = function (params) {
+const hasChanged = function (params: Record<string, any>) {
   let datasource = dsManager.lookup({ datasourceName: params.datasourceName })
   let rds = datasource.getInsertedRecords()
   if (rds.size() > 0) {
@@ -37,7 +35,7 @@ const hasChanged = function (params) {
   return false
 }
 
-const getFieldName = function (fieldName) {
+const getFieldName = function (fieldName: string) {
   let retvalue = fieldName
   if (fieldName.indexOf('.') != -1) {
     retvalue = fieldName.split('.')[1]
@@ -45,7 +43,7 @@ const getFieldName = function (fieldName) {
   return retvalue
 }
 
-const createRecords = function (params) {
+const createRecords = function (params: Record<string, any>) {
   let datas = params.datas
   if (datas && datas.length > 0) {
     let datasource = dsManager.lookup({ datasourceName: params.datasourceName })
