@@ -9,25 +9,8 @@
  * vds.attachment.preview("7b88f8aff9fb47d48e1b555201963dc9");
  */
 
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var attachment = vds.attachment
-if (!attachment) {
-  attachment = {}
-  vds.attachment = attachment
-}
+import { DcsService as dcs } from '@v-act/vjs.framework.extension.platform.services.dcs'
 
-exports = attachment
-
-var sandbox, dcs
-
-export function initModule(sBox) {
-  sandbox = sBox
-  dcs = sBox.getService('vjs.framework.extension.platform.services.Dcs')
-}
 /**
  * 根据文件id预览文件
  * @param {String} fileId 文件id
@@ -40,7 +23,7 @@ export function initModule(sBox) {
  * 	console.log("预览失败");
  * })
  * */
-export function preview(fileId) {
+export function preview(fileId: string) {
   return new Promise(function (resolve, reject) {
     try {
       if (!fileId) {
@@ -66,7 +49,7 @@ export function preview(fileId) {
  * 	console.log("转换失败");
  * })
  * */
-export function convert(fileId) {
+export function convert(fileId: string) {
   return new Promise(function (resolve, reject) {
     try {
       if (!fileId) {
@@ -79,5 +62,3 @@ export function convert(fileId) {
     }
   })
 }
-
-module.exports = exports
