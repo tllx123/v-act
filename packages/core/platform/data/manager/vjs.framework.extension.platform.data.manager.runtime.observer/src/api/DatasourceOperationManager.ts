@@ -13,9 +13,9 @@ let token = 'WINDOW_INSTANCE_OBSERVER_COMBINE_STORAGE'
 
 let observerTask = {}
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
-let getDatasourceObserver = function (datasourceName) {
+let getDatasourceObserver = function (datasourceName: string) {
   let scope = scopeManager.getWindowScope()
   let storage
   if (scope.has(token)) {
@@ -27,6 +27,7 @@ let getDatasourceObserver = function (datasourceName) {
   if (storage.containsKey(datasourceName)) {
     return storage.get(datasourceName)
   } else {
+    // @ts-ignore
     let observer = new DatasourceObserver(datasourceName)
     storage.put(datasourceName, observer)
     return observer
@@ -36,9 +37,9 @@ let getDatasourceObserver = function (datasourceName) {
 let getAll = function () {
   let scope = scopeManager.getWindowScope()
   let storage = scope.get(token)
-  let rs = []
+  let rs: any = []
   if (storage) {
-    storage.iterate(function (key, val) {
+    storage.iterate(function (key: any, val: any) {
       rs.push(val)
     })
   }
@@ -74,7 +75,7 @@ let addObserverTask = function () {
   }
 }
 
-const addOperation = function (params) {
+const addOperation = function (params: any) {
   let operation = operationFactory.create(params)
   let ds = params.datasource
   let metadata = ds.getMetadata()
@@ -85,10 +86,10 @@ const addOperation = function (params) {
 }
 
 export {
-  _callAsyncObservers,
-  addObserver,
-  addOperation,
-  destroy,
-  fire,
-  getBindedDatasourceNames
+  // _callAsyncObservers,
+  // addObserver,
+  addOperation
+  // destroy,
+  // fire,
+  // getBindedDatasourceNames
 }

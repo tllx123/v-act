@@ -1,5 +1,6 @@
 import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+// @ts-ignore
 import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
@@ -80,7 +81,7 @@ let _getWindowMappingStorage = function () {
   return storageManager.get(storageManager.TYPES.MAP, WindowMappingKey)
 }
 
-const initWindowMapping = function (mappings) {
+const initWindowMapping = function (mappings: any) {
   if (mappings && mappings.length > 0) {
     let _storage = _getWindowMappingStorage()
     //目标树,如果没有_parent节点，则为最底层的父窗体
@@ -103,7 +104,7 @@ const initWindowMapping = function (mappings) {
   }
 }
 
-const addWindowMapping = function (mappings) {
+const addWindowMapping = function (mappings: any) {
   if (mappings && mappings.length > 0) {
     let _storage = _getWindowMappingStorage()
     let exist = _storage.get('source') //已经存在的映射信息
@@ -118,7 +119,7 @@ const addWindowMapping = function (mappings) {
   }
 }
 
-const getWindowMapping = function (sourceWindowInfo) {
+const getWindowMapping = function (sourceWindowInfo: any) {
   //console.log("[getWindowMapping]获取映射关系：" + JSON.stringify(sourceWindowInfo));
   let obj = sourceWindowInfo
   if (check(obj)) {
@@ -172,8 +173,9 @@ const getWindowMapping = function (sourceWindowInfo) {
   return null
 }
 
-const getWindowMappingSync = function (sourceWindowInfo) {
+const getWindowMappingSync = function (sourceWindowInfo: any) {
   //console.log("[getWindowMappingSync]获取映射关系：" + JSON.stringify(sourceWindowInfo));
+  // @ts-ignore
   let dtd = $.Deferred()
   let cb = (function (infos, func, _d) {
     return function () {
@@ -297,11 +299,11 @@ let parseKey = function (key: string) {
     windowCode: result[1]
   }
 }
-let parseMappings = function (mappings) {
+let parseMappings = function (mappings: any) {
   let target = {}
   let source = {}
   if (mappings) {
-    mappings.iterate(function (key, value) {
+    mappings.iterate(function (key: any, value: any) {
       source[key] = value
       let targetKey = getKey(value.componentCode, value.windowCode)
       target[targetKey] = parseKey(key)
@@ -312,7 +314,7 @@ let parseMappings = function (mappings) {
     source: source
   }
 }
-let getData = function (mapping, treeData, type) {
+let getData = function (mapping: any, treeData: any, type: any) {
   let componentCode = mapping[type + 'ComponentCode']
   let windowCode = mapping[type + 'WindowCode']
   let series = mapping[type + 'Series']
@@ -331,10 +333,10 @@ let getData = function (mapping, treeData, type) {
   }
   return result
 }
-function putData(mapping, datas, type) {
-  let baseNode //当前窗体对象
-  let nodeName //父/子节点名称
-  let targetNode //父/子节点对象
+function putData(mapping: any, datas: any, type: any) {
+  let baseNode: any //当前窗体对象
+  let nodeName: any //父/子节点名称
+  let targetNode: any //父/子节点对象
   switch (type) {
     case 'source':
       baseNode = getData(mapping, datas, 'source')
@@ -379,11 +381,11 @@ function putData(mapping, datas, type) {
 /**
  * 将映射关系转成树结构
  * */
-function parseTree(sMaps) {
+function parseTree(sMaps: any) {
   let targetTree = {}
   let sourceTree = {}
   if (sMaps && sMaps.length > 0) {
-    let removeArray = function (nowMappings, newMappings) {
+    let removeArray = function (nowMappings: any, newMappings: any) {
       for (let i = 0, len = nowMappings.length; i < len; i++) {
         let mapping = nowMappings[i]
         if (mapping instanceof Array) {
@@ -393,7 +395,7 @@ function parseTree(sMaps) {
         }
       }
     }
-    let mappings = []
+    let mappings: any = []
     removeArray(sMaps, mappings) //后台生成窗体映射信息时，多嵌套了一层数组Task20200903009
     for (let i = 0, len = mappings.length; i < len; i++) {
       let mapping = mappings[i]
@@ -421,6 +423,6 @@ export {
   getRuleSetInputs,
   getWindowMapping,
   getWindowMappingSync,
-  initModule,
+  // initModule,
   initWindowMapping
 }

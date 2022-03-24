@@ -31,70 +31,105 @@ let _remove = function () {
   }
 }
 
-const markWindowSchemaInited = function (componentCode, windowCode) {
-  _getPool(componentCode, windowCode)['schemaInited'] = true
+const markWindowSchemaInited = function (
+  componentCode: string,
+  windowCode: string
+) {
+  _getPool()['schemaInited'] = true
 }
 
-const isWindowSchemaInited = function (componentCode, windowCode) {
-  return !!_getPool(componentCode, windowCode)['schemaInited']
+const isWindowSchemaInited = function (
+  componentCode: string,
+  windowCode: string
+) {
+  return !!_getPool()['schemaInited']
 }
 
-const hasPermission = function (componentCode, windowCode) {
-  return !!_getPool(componentCode, windowCode)['permission']
+const hasPermission = function (componentCode: string, windowCode: string) {
+  return !!_getPool()['permission']
 }
 
-const markWindowPermission = function (componentCode, windowCode, permission) {
-  _getPool(componentCode, windowCode)['permission'] = permission
+const markWindowPermission = function (
+  componentCode: string,
+  windowCode: string,
+  permission: string
+) {
+  _getPool()['permission'] = permission
 }
 
-const clearWindowPermission = function (componentCode, windowCode) {
-  _remove(componentCode, windowCode, 'permission')
+const clearWindowPermission = function (
+  componentCode: string,
+  windowCode: string
+) {
+  _remove()
 }
 
-const isWindowPermissionInited = function (componentCode, windowCode) {
-  let pool = _getPool(componentCode, windowCode)
+const isWindowPermissionInited = function (
+  componentCode: string,
+  windowCode: string
+) {
+  let pool = _getPool()
   return pool.hasOwnProperty('permission')
 }
 
-const markWidgetPermission = function (componentCode, windowCode, info) {
-  _getPool(componentCode, windowCode)['widgetPermission'] = info
+const markWidgetPermission = function (
+  componentCode: string,
+  windowCode: string,
+  info: any
+) {
+  _getPool()['widgetPermission'] = info
 }
 
-const getWidgetPermission = function (componentCode, windowCode) {
-  return _getPool(componentCode, windowCode, 'widgetPermission')
+const getWidgetPermission = function (
+  componentCode: string,
+  windowCode: string
+) {
+  return _getPool()
 }
 
-const markWidgetPermissionInited = function (componentCode, windowCode) {
-  _getPool(componentCode, windowCode, 'widgetPermission')
+const markWidgetPermissionInited = function (
+  componentCode: string,
+  windowCode: string
+) {
+  _getPool()
 }
 
-const isWidgetPermissionInited = function (componentCode, windowCode) {
-  let pool = _getPool(componentCode, windowCode)
+const isWidgetPermissionInited = function (
+  componentCode: string,
+  windowCode: string
+) {
+  let pool = _getPool()
   return pool.hasOwnProperty('widgetPermission')
 }
 
-const clearWidgetPermission = function (componentCode, windowCode) {
-  _remove(componentCode, windowCode, 'widgetPermission')
+const clearWidgetPermission = function (
+  componentCode: string,
+  windowCode: string
+) {
+  _remove()
 }
 
-const setWindowSeries = function (componentCode, windowCode, series) {
-  _getPool(componentCode, windowCode)['series'] = series
+const setWindowSeries = function (
+  componentCode: string,
+  windowCode: string,
+  series: string
+) {
+  _getPool()['series'] = series
 }
 
-const getWindowSeries = function (componentCode, windowCode) {
-  return _getPool(componentCode, windowCode)['series']
+const getWindowSeries = function (componentCode: string, windowCode: string) {
+  return _getPool()['series']
 }
 
-const isWindowSeriesIntied = function (componentCode, windowCode) {
-  let pool = _getPool(componentCode, windowCode)
+const isWindowSeriesIntied = function (
+  componentCode: string,
+  windowCode: string
+) {
+  let pool = _getPool()
   return pool.hasOwnProperty('series')
 }
 
 export {
-  markAppSchemaInited,
-  isAppSchemaInited,
-  markComponentSchemaInited,
-  isComponentSchemaInited,
   markWindowSchemaInited,
   isWindowSchemaInited,
   hasPermission,

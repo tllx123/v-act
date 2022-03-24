@@ -1,9 +1,9 @@
 import { ObjectUtil as objUtils } from '@v-act/vjs.framework.extension.util.object'
 
-export function combine(aim, source) {
+export function combine(aim: any, source: any) {
   let params = source.getParams()
   let rs = aim.getParams().resultSet
-  params.resultSet.iterate(function (rd) {
+  params.resultSet.iterate(function (rd: any) {
     let id = rd.getSysId()
     aim.setRecordPosition(rd, source.getRecordPosition(rd))
     rs.addRecord(rd)
@@ -11,14 +11,14 @@ export function combine(aim, source) {
   source.markDestroy()
 }
 
-export function destroy(before, after) {
+export function destroy(before: any, after: any) {
   var rs = before.getParams().resultSet,
     opRs = after.getParams().resultSet
-  var remove = [],
-    remove1 = []
-  rs.iterate(function (rd, i) {
+  var remove: any = [],
+    remove1: any = []
+  rs.iterate(function (rd: any, i: any) {
     var id = rd.getSysId()
-    opRs.iterate(function (record, index) {
+    opRs.iterate(function (record: any, index: number) {
       if (
         id == record.getSysId() &&
         after.getRecordPosition(record) > before.getRecordPosition(rd)
@@ -38,13 +38,13 @@ export function destroy(before, after) {
     before.markDestroy()
   }
 }
-export function destroyBefore(before, after) {
+export function destroyBefore(before: any, after: any) {
   var bRs = before.getParams().resultSet,
     aRs = after.getParams().resultSet
-  var remove = []
-  bRs.iterate(function (rd, i) {
+  var remove: any = []
+  bRs.iterate(function (rd: any, i: any) {
     var id = rd.getSysId()
-    aRs.iterate(function (record, index) {
+    aRs.iterate(function (record: any, index: number) {
       if (
         id == record.getSysId() &&
         after.getRecordPosition(record) > before.getRecordPosition(rd)
@@ -60,13 +60,13 @@ export function destroyBefore(before, after) {
   }
 }
 
-export function opUpdateWhenInsert(insert, update) {
+export function opUpdateWhenInsert(insert: any, update: any) {
   let resultSet = update.getParams().resultSet
   let iRs = insert.getParams().resultSet
-  let toRemove = []
-  resultSet.iterate(function (rd, index) {
+  let toRemove: any = []
+  resultSet.iterate(function (rd: any, index: any) {
     let id = rd.getSysId()
-    iRs.iterate(function (record) {
+    iRs.iterate(function (record: any) {
       if (
         record.getSysId() == id &&
         update.getRecordPosition(rd) > insert.getRecordPosition(record)
@@ -87,11 +87,11 @@ export function opUpdateWhenInsert(insert, update) {
   }
 }
 
-export function destroyCurrent(current, operation) {
+export function destroyCurrent(current: any, operation: any) {
   let resultSet = operation.getParams().resultSet
   if (resultSet) {
     let id = current.getParams().currentRecord.getSysId()
-    resultSet.iterate(function (rd, i) {
+    resultSet.iterate(function (rd: any, i: any) {
       if (
         rd.getSysId() == id &&
         operation.getRecordPosition(id) > current.getRecordPosition(id)
@@ -103,15 +103,15 @@ export function destroyCurrent(current, operation) {
   }
 }
 
-export function destroyWhenLoad(operation, load) {
+export function destroyWhenLoad(operation: any, load: any) {
   let params = load.getParams()
   let isAppend = params.isAppend
   if (!isAppend) {
     //如果以覆盖方式加载
     let rs = operation.getParams().resultSet
     if (rs) {
-      let toRemove = []
-      rs.iterate(function (rd, index) {
+      let toRemove: any = []
+      rs.iterate(function (rd: any, index: number) {
         if (operation.getRecordPosition(rd) < load.getOperationPosition()) {
           toRemove.push(index)
         }
@@ -124,15 +124,15 @@ export function destroyWhenLoad(operation, load) {
   }
 }
 
-export function opSelectWhenDelete(select, deleted) {
+export function opSelectWhenDelete(select: any, deleted: any) {
   let rs = deleted.getParams().resultSet,
     sRs = select.getParams().resultSet
   let index = {}
-  rs.iterate(function (rd) {
+  rs.iterate(function (rd: any) {
     index[rd.getSysId()] = rd
   })
-  let toRemove = []
-  sRs.iterate(function (rd, index) {
+  let toRemove: any = []
+  sRs.iterate(function (rd: any, index: any) {
     let id = rd.getSysId()
     if (
       index[id] &&

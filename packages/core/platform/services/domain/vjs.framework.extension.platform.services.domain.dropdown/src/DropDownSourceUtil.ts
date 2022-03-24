@@ -10,16 +10,15 @@ import {
   WhereRestrict
 } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 import { MapUtil as mapUtil } from '@v-act/vjs.framework.extension.util.map'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let sandbox
+let sandbox: Record<string, any>
 
-export function initModule(sb) {
-  sandbox = sb
-}
-
-let genSQLConfig = function (dataSourceSetting) {
+let genSQLConfig = function (dataSourceSetting: Record<string, any>) {
   let config = dataSourceSetting['DataConfig']
   let sql = config['SqlSelect']
   let requestCfg = {
@@ -32,7 +31,7 @@ let genSQLConfig = function (dataSourceSetting) {
   return requestCfg
 }
 
-let genwhereRestrict = function (dataSourceSetting) {
+let genwhereRestrict = function (dataSourceSetting: Record<string, any>) {
   let config = dataSourceSetting['DataConfig']
   let Condition = config['Condition']
   let whereRestrict = WhereRestrict.init()
@@ -104,7 +103,7 @@ let genwhereRestrict = function (dataSourceSetting) {
 let getVMMappingDataSources = function () {
   let componentCode = scopeManager.getScope().getComponentCode()
   let windowCode = scopeManager.getWindowScope().getWindowCode()
-  let result = {
+  let result: Record<string, any> = {
     dataSources: {}
   }
   let requestParams = {
@@ -113,7 +112,7 @@ let getVMMappingDataSources = function () {
     operation: 'VMMappingDataSourcesGetter',
     isAsync: false,
     params: {},
-    success: function (resp) {
+    success: function (resp: Record<string, any>) {
       result = resp ? resp : result
     }
   }
@@ -127,7 +126,7 @@ let getVMMappingDataSources = function () {
  * @param selectDatas 查询体selectData列表
  * @return { dataSource:数据源, loadCondition:{} }
  */
-let _genDataSourceLoadConditionMap = function (selectDatas) {
+let _genDataSourceLoadConditionMap = function (selectDatas: string | any[]) {
   let dataSourceLoadCondition = {}
   if (selectDatas && selectDatas.length > 0) {
     for (let i = 0; i < selectDatas.length; i++) {
@@ -160,8 +159,8 @@ let _genDataSourceLoadConditionMap = function (selectDatas) {
  * @param loadConditionMap 各数据源的加载条件
  */
 let _genResultDatasWithLoadCondition = function (
-  resultDatas,
-  loadConditionMap
+  resultDatas: string | any[],
+  loadConditionMap: Record<string, any>
 ) {
   let newResultDatas = []
   if (typeof resultDatas != 'undefined') {
@@ -176,7 +175,7 @@ let _genResultDatasWithLoadCondition = function (
   return newResultDatas
 }
 
-let getDataSourceFindReqFunc = function (selectData) {
+let getDataSourceFindReqFunc = function (selectData: any | string) {
   let componentCode = scopeManager.getScope().getComponentCode()
   let windowCode = scopeManager.getWindowScope().getWindowCode()
   let operation = new Operation()
@@ -184,7 +183,7 @@ let getDataSourceFindReqFunc = function (selectData) {
   operation.setWindowCode(windowCode)
   operation.setOperation('Find')
   operation.addParam('selectDatas', [selectData])
-  operation.setAfterResponse(function (result) {
+  operation.setAfterResponse(function (result: Record<string, any>) {
     if (result.success != true) {
       throw new Error('获取数据出错')
     } else {
@@ -199,7 +198,9 @@ let getDataSourceFindReqFunc = function (selectData) {
   return operation
 }
 
-let getDataSourceFindDatasBySelectData = function (selectDatas) {
+let getDataSourceFindDatasBySelectData = function (
+  selectDatas: string | any[]
+) {
   let isArray = arrayUtil.isArray(selectDatas)
   if (!isArray) selectDatas = [selectDatas]
   let operations = []
@@ -208,7 +209,7 @@ let getDataSourceFindDatasBySelectData = function (selectDatas) {
     operations.push(getDataSourceFindReqFunc(selectData))
   }
   let results = null
-  let requestSuccess = function (resp) {
+  let requestSuccess = function (resp: any) {
     results = resp
   }
   remoteOperation.request({
@@ -217,7 +218,7 @@ let getDataSourceFindDatasBySelectData = function (selectDatas) {
   return isArray ? results : isArray[0]
 }
 
-let getDataSourceFindDatas = function (requestCfgs) {
+let getDataSourceFindDatas = function (requestCfgs: any) {
   let isArray = arrayUtil.isArray(requestCfgs)
   if (!isArray) requestCfgs = [requestCfgs]
   let selectDatas = []
@@ -285,19 +286,22 @@ let getDataSourceFindDatas = function (requestCfgs) {
 
 // 加载TableQuery数据
 let genTableQuery = function (
-  dataSourceSetting,
-  whereRestrict,
-  valueField,
-  textField
+  dataSourceSetting: any,
+  whereRestrict: any,
+  valueField: any,
+  textField: any
 ) {
   let requestCfg = genTableQueryConfig(dataSourceSetting, whereRestrict)
   let results = getDataSourceFindDatas([requestCfg])
   return genTableQueryData(results[0], dataSourceSetting, valueField, textField)
 }
 
-let genTableQueryConfig = function (dataSourceSetting, whereRestrict) {
+let genTableQueryConfig = function (
+  dataSourceSetting: Record<string, any>,
+  whereRestrict: any
+) {
   let config = dataSourceSetting['DataConfig']
-  let SourceID = config['SourceID']
+  // let SourceID = config['SourceID']
   let SourceName = config['SourceName']
   let SourceType = config['SourceType']
   let SaveColumn = config['SaveColumn']
@@ -327,7 +331,7 @@ let genTableQueryConfig = function (dataSourceSetting, whereRestrict) {
   }
 }
 
-let genCustomSqlQueryParams = function (params) {
+let genCustomSqlQueryParams = function (params: Record<string, any>) {
   // 构建实际查询时需要的参数对象
   let queryParams = {}
   if (params) {
@@ -340,8 +344,13 @@ let genCustomSqlQueryParams = function (params) {
   return queryParams
 }
 
-let genQueryParamItem = function (queryMode, params, recordStart, pageSize) {
-  let queryParam = {}
+let genQueryParamItem = function (
+  queryMode: string | null | undefined,
+  params: Record<string, any>,
+  recordStart: string | null | undefined,
+  pageSize: string | null | undefined
+) {
+  let queryParam: Record<string, any> = {}
   // 查询模式
   if (queryMode != '' && queryMode != null && queryMode != undefined) {
     queryParam.queryMode = queryMode
@@ -366,15 +375,15 @@ let genQueryParamItem = function (queryMode, params, recordStart, pageSize) {
 }
 
 let genCustomQueryParam = function (
-  dataSource,
-  queryFrom,
-  expression,
-  conditionParams,
-  extraCondition,
-  recordStart,
-  pageSize
+  dataSource: string | null,
+  queryFrom: string,
+  expression: any,
+  conditionParams: {},
+  extraCondition: any,
+  recordStart: string | null | undefined,
+  pageSize: string | null | undefined
 ) {
-  let params = {}
+  let params: Record<string, any> = {}
   params.dataSource = dataSource
   params.queryFrom = queryFrom
   params.selectExpression = expression
@@ -384,16 +393,16 @@ let genCustomQueryParam = function (
 }
 
 let genTableQueryParam = function (
-  dataSource,
-  tableNames,
-  fields,
-  condition,
-  orderBy,
-  recordStart,
-  pageSize,
-  valueParamMap
+  dataSource: string | null,
+  tableNames: any[],
+  fields: any[],
+  condition: any,
+  orderBy: any,
+  recordStart: string | null | undefined,
+  pageSize: string | null | undefined,
+  valueParamMap: any
 ) {
-  let params = {}
+  let params: Record<string, any> = {}
   params.dataSource = dataSource
   params.name = tableNames
   params.field = fields
@@ -403,7 +412,7 @@ let genTableQueryParam = function (
   return genQueryParamItem('table', params, recordStart, pageSize)
 }
 
-let doRequestCfg = function (requestCfg) {
+let doRequestCfg = function (requestCfg: any) {
   // 缺省参数时的默认值
   let nullWhere = WhereRestrict.init()
   let defaultCfg = {
@@ -414,10 +423,10 @@ let doRequestCfg = function (requestCfg) {
     pageSize: -1
     //每页记录数，可不提供，默认：-1
   }
-  let cfg = {}
+  let cfg: Record<string, any> = {}
   sandbox.util.object.extend(cfg, defaultCfg, requestCfg)
   let where = cfg.whereRestrict || nullWhere
-  let selectData = ''
+  let selectData: Record<string, any>
   switch (cfg.queryType) {
     case 'SQL':
       var queryParams = genCustomSqlQueryParams(where.toParameters())
@@ -461,7 +470,7 @@ let doRequestCfg = function (requestCfg) {
   return selectData
 }
 
-let doDataSourceLoadConditionMap = function (selectDatas) {
+let doDataSourceLoadConditionMap = function (selectDatas: string | any[]) {
   let dataSourceLoadCondition = {}
   if (selectDatas && selectDatas.length > 0) {
     for (let i = 0; i < selectDatas.length; i++) {
@@ -487,7 +496,10 @@ let doDataSourceLoadConditionMap = function (selectDatas) {
   return dataSourceLoadCondition
 }
 
-let doResultDatasWithLoadCondition = function (resultDatas, loadConditionMap) {
+let doResultDatasWithLoadCondition = function (
+  resultDatas: string | any[],
+  loadConditionMap: Record<string, any>
+) {
   let newResultDatas = []
   if (typeof resultDatas != 'undefined') {
     for (let i = 0; i < resultDatas.length; i++) {
@@ -501,7 +513,11 @@ let doResultDatasWithLoadCondition = function (resultDatas, loadConditionMap) {
   return newResultDatas
 }
 
-let genCustomConst = function (dataSourceSetting, valueField, textField) {
+let genCustomConst = function (
+  dataSourceSetting: Record<string, any>,
+  valueField: string | number,
+  textField: string | number
+) {
   let datas = []
   let dataConfig = dataSourceSetting['DataConfig']
   if (dataConfig && dataConfig.ConstData && dataConfig.ConstData.length > 0) {
@@ -526,7 +542,12 @@ let genCustomConst = function (dataSourceSetting, valueField, textField) {
   return datas
 }
 
-let genSQLData = function (result, dataSourceSetting, valueField, textField) {
+let genSQLData = function (
+  result: string | any[],
+  dataSourceSetting: Record<string, any>,
+  valueField: string | number,
+  textField: string | number
+) {
   let datas = []
   let config = dataSourceSetting['DataConfig']
   let defaultSaveColumn = config['DefaultSaveColumn']
@@ -579,22 +600,22 @@ let genSQLData = function (result, dataSourceSetting, valueField, textField) {
 }
 
 let genTableQueryData = function (
-  result,
-  dataSourceSetting,
-  valueField,
-  textField,
-  widgetId
+  result: string | any[],
+  dataSourceSetting: Record<string, any>,
+  valueField: string | number,
+  textField: string | number
+  // widgetId
 ) {
   let datas = []
   let config = dataSourceSetting['DataConfig']
-  let defaultSaveColumn = config['DefaultSaveColumn']
-  let DefaultShowColumn = config['DefaultShowColumn']
-  let MapTable = config['MapTable']
+  // let defaultSaveColumn = config['DefaultSaveColumn']
+  // let DefaultShowColumn = config['DefaultShowColumn']
+  // let MapTable = config['MapTable']
 
   let saveColumn = config['SaveColumn']
   let showColumn = config['ShowColumn']
-  let SourceName = config['SourceName']
-  let SourceType = config['SourceType']
+  // let SourceName = config['SourceName']
+  // let SourceType = config['SourceType']
   if (result && result.length > 0 && typeof result[0] != 'undefined') {
     // 开发平台配置的字段信息，可能与实际的表字段存在大小写区别，所以这里使用实际的表字段做对比，适配大小写问题
     let firstRecord = result[0].datas.values[0]
@@ -663,10 +684,14 @@ let genTableQueryData = function (
   return datas
 }
 
-let genEntityData = function (dataSourceSetting, valueField, textField) {
+let genEntityData = function (
+  dataSourceSetting: Record<string, any>,
+  valueField: string | number,
+  textField: string | number
+) {
+  let data: any[] = []
   if (dataSourceSetting.DataSourceType == 'Entity') {
     let dataConfig = dataSourceSetting.DataConfig
-    let data = []
     //获取常量记录
     let entityConstData = dataConfig.EntityConstData
     if (entityConstData && entityConstData.ConstData) {
@@ -695,13 +720,13 @@ let genEntityData = function (dataSourceSetting, valueField, textField) {
     let showColumn = dataConfig.ShowColumn
     let saveColumn = dataConfig.SaveColumn
     let isPickListFields = dataConfig.IsPickListFields + '' //是否未多列
-    let pickListFields = dataConfig.PickListFields
+    // let pickListFields = dataConfig.PickListFields
 
     if (entityName) {
       let entity = datasourceUtil.getDatasource(entityName)
       let result = entity.getAllRecords()
       if (!result.isEmpty()) {
-        result.iterate(function (record, i) {
+        result.iterate(function (record: Record<string, any>) {
           let temp = {}
           let valueMap = record.toMap()
 
@@ -723,9 +748,9 @@ let genEntityData = function (dataSourceSetting, valueField, textField) {
   return data
 }
 
-let retData
-let isWhere
-let _initMap = function (map) {
+let retData: Record<string, any>
+let isWhere: Record<string, any>
+let _initMap = function (map: Record<string, any>) {
   if (!map) {
     map = new mapUtil.Map()
   }
@@ -735,9 +760,13 @@ let _initMap = function (map) {
 /**
  * 根据数据来源配置信息获取数据
  */
-let getDataByDataSource = function (dropDownSource, valueField, textField) {
+let getDataByDataSource = function (
+  dropDownSource: string | number,
+  valueField: string | number,
+  textField: string | number
+) {
   //获取需要集中请求的配置
-  let datas = [{}]
+  let datas: any = [{}]
   if (!stringUtil.isEmpty(dropDownSource)) {
     let dataSourceSetting = dropDownSource['DataSourceSetting']
     let dataSourceType = dataSourceSetting['DataSourceType']

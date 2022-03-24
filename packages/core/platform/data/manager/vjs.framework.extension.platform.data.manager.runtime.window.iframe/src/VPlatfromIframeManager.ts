@@ -18,13 +18,13 @@ let Open_Url_Mapping_Storage_Token = 'Open_Url_Mapping_Storage_Token',
     'vplatform_container_iden'
   ],
   //需要执行旧逻辑的域名标识列表
-  OldLogicOrgin = [],
+  OldLogicOrgin: any = [],
   //临时兼容，需要补上处理
   UrlDomMapping = {},
   //是否兼容旧服务的模态
   CompatibleModal = false
 
-const initModule = function (sb) {}
+const initModule = function (sb: any) {}
 
 let getStorage = function () {
   return storageManager.get(
@@ -35,7 +35,7 @@ let getStorage = function () {
 /**
  * 解码token
  * */
-let parseToken = function (token) {
+let parseToken = function (token: string) {
   let result = {}
   try {
     if (null != token) {
@@ -60,7 +60,7 @@ let parseToken = function (token) {
 /**
  * 解析url
  * */
-let parseUrl = function (sourceUrl, targetResult) {
+let parseUrl = function (sourceUrl: string, targetResult: any) {
   let url = sourceUrl
   if (url.indexOf('http') != 0) {
     //没有域名开头
@@ -71,7 +71,7 @@ let parseUrl = function (sourceUrl, targetResult) {
       url = window.location.protocol + '//' + window.location.host + last + url
     }
   }
-  let result = {
+  let result: any = {
     source: url,
     isSaasPortal: false, //判断是否统一门户
     saasCommand: [],
@@ -137,7 +137,7 @@ let parseUrl = function (sourceUrl, targetResult) {
             let code = arr[0]
             if (code == 'token') {
               try {
-                let token = parseToken(arr[1])
+                let token: any = parseToken(arr[1])
                 if (token && token.data && token.data.inputParam) {
                   params[code] = token.data.inputParam
                 }
@@ -177,15 +177,15 @@ let parseUrl = function (sourceUrl, targetResult) {
   return result
 }
 
-const isVPlatformUrl = function (url) {
-  let urlObj = parseUrl(url)
+const isVPlatformUrl = function (url: string) {
+  let urlObj = parseUrl(url, null)
   return isPaltformUrl(urlObj)
 }
 
 /**
  * 判断是否平台的url
  * */
-let isPaltformUrl = function (urlObj) {
+let isPaltformUrl = function (urlObj: any) {
   let pathName = urlObj.pathname
   if ('/module-operation!executeOperation' == pathName) {
     return true
@@ -195,11 +195,13 @@ let isPaltformUrl = function (urlObj) {
 /**
  * 获取dom对象
  * */
-let getDomObj = function (dom) {
+let getDomObj = function (dom: any) {
   let result = dom
   if (typeof dom == 'string') {
+    // @ts-ignore
     result = $('#' + dom)
   } else {
+    // @ts-ignore
     result = $(dom)
     let domId = result.attr('id')
     if (!domId) {
@@ -212,8 +214,8 @@ let getDomObj = function (dom) {
 /**
  * 每个域名生成一个md5作为key
  * */
-let getObjKey = function (urlObj) {
-  let keyArr = [urlObj.origin]
+let getObjKey = function (urlObj: any) {
+  let keyArr: any = [urlObj.origin]
   if (keyArr.isSaasPortal && keyArr.saasCommand) {
     //是统一门户，并且是有command
     let saascommand = keyArr.saasCommand
@@ -232,7 +234,7 @@ let getObjKey = function (urlObj) {
  * @param	{Object}	urlObj
  * @param	{Boolean}	isAddWindowInfo 是否加上窗体信息
  * */
-let getKey = function (urlObj, isAddWindowInfo) {
+let getKey = function (urlObj: any, isAddWindowInfo: any) {
   let keyArr = getObjKey(urlObj)
   if (isAddWindowInfo && urlObj.params) {
     let params = urlObj.params
@@ -244,13 +246,14 @@ let getKey = function (urlObj, isAddWindowInfo) {
     }
   }
   let key = keyArr.join('')
+  // @ts-ignore
   return VMetrix._fn.md5(key)
 }
 /**
  * 判断是否在平台iframe管理打开的首页
  * */
-let isIframeContainerIndex = function (url) {
-  let urlObj = parseUrl(url)
+let isIframeContainerIndex = function (url: string) {
+  let urlObj = parseUrl(url, null)
   if (
     urlObj &&
     urlObj.params &&
@@ -262,12 +265,12 @@ let isIframeContainerIndex = function (url) {
   return false
 }
 
-const handleUrl = function (params) {
+const handleUrl = function (params: any) {
   let url = params.url
-  let urlObj = parseUrl(url)
+  let urlObj = parseUrl(url, null)
 }
 
-const handleScope = function (params) {
+const handleScope = function (params: any) {
   /*let windowScope = params.scope
   let nowPM = vdk.postMsg.getPMIden()
   //注册跨域事件：设置窗体域由模态链接打开
@@ -307,7 +310,7 @@ const handleScope = function (params) {
 /**
  * 打开非平台链接，走旧逻辑
  * */
-let oldLogic = function (params) {
+let oldLogic = function (params: any) {
   let tmpDom = params.dom
   if (tmpDom) {
     //组件容器直接创建iframe打开即可
@@ -325,7 +328,7 @@ let oldLogic = function (params) {
     modalByUrlUtil.createOld(params.oldModalParams)
   }
 }
-let initNewPageCrossDomainEvent = function (params) {
+let initNewPageCrossDomainEvent = function (params: any) {
   //当前页面的vdk标识
   let pmIden = params.pmIden
   let key = params.key
@@ -334,7 +337,7 @@ let initNewPageCrossDomainEvent = function (params) {
   let setChildFunc = params.setChildFunc
     ? params.setChildFunc
     : (function (_key, _win) {
-        return function (params) {
+        return function (params: any) {
           var source = params.MsgEvent.source
           if (source != _win) {
             return
@@ -392,7 +395,7 @@ let initNewPageCrossDomainEvent = function (params) {
       condition: "type=='ResetUrl'"
     },
     handler: (function (_key) {
-      return function (params) {
+      return function (params: any) {
         let childPM = params.childPM
         let newUrl = params.url
         let stroage = getStorage()
@@ -407,7 +410,7 @@ let initNewPageCrossDomainEvent = function (params) {
   let closeModeFunc = params.closeModeFunc
     ? params.closeModeFunc
     : (function (_key) {
-        return function (params) {
+        return function (params: any) {
           var pmIden = params.pmIden
           var stroage = getStorage()
           var domInfo = stroage.get(_key)
@@ -462,7 +465,7 @@ let initNewPageCrossDomainEvent = function (params) {
         condition: "type=='SetTitle'&&parentPM=='" + pmIden + "'"
       },
       handler: (function (titleFunc, _key) {
-        return function (params) {
+        return function (params: any) {
           let title = params.title
           let _sourceTitle = getTitle(_key)
           if (_sourceTitle) {
@@ -480,7 +483,7 @@ let initNewPageCrossDomainEvent = function (params) {
 /**
  * 获取标题
  * */
-let getTitle = function (key) {
+let getTitle = function (key: any) {
   let storage = getStorage()
   if (storage && storage.containsKey(key) && storage.get(key)) {
     let renderParams = storage.get(key).renderParams
@@ -493,7 +496,7 @@ let getTitle = function (key) {
 /**
  * 平台组件容器逻辑
  * */
-let excuteContainerLogic = function (urlObj, params) {
+let excuteContainerLogic = function (urlObj: any, params: any) {
   let dom = getDomObj(params.dom)
   if (dom.length < 1) {
     logUtil.warn('打开url失败. 原因：无法在指定位置添加元素.')
@@ -508,7 +511,7 @@ let excuteContainerLogic = function (urlObj, params) {
   //存储标识
   let domIdKey = 'container_' + domId
   //链接域标识
-  let urlKey = getKey(urlObj)
+  let urlKey = getKey(urlObj, null)
   //窗体标识
   let winKey = getKey(urlObj, true)
   //窗体退出后执行
@@ -537,7 +540,7 @@ let excuteContainerLogic = function (urlObj, params) {
   let domInfo = mappingInfos[urlKey]
   let openToExistIframe = function () {
     let urlParams = urlObj.params
-    let openParams = {
+    let openParams: any = {
       _$urlObj: urlObj
     }
     for (let key in urlParams) {
@@ -567,8 +570,14 @@ let excuteContainerLogic = function (urlObj, params) {
     })
   }
 
-  let setChildFunc = function (_domIdKey, _urlKey, _win, _pmIden, _urlObj) {
-    return function (params) {
+  let setChildFunc = function (
+    _domIdKey: any,
+    _urlKey: any,
+    _win: any,
+    _pmIden: any,
+    _urlObj: any
+  ) {
+    return function (params: any) {
       let source = params.MsgEvent.source
       if (source != _win) {
         return
@@ -601,6 +610,7 @@ let excuteContainerLogic = function (urlObj, params) {
   let createNewIframe = function () {}
   if (!domInfo) {
     //如果当前域之前没有在指定的dom里面打开过或者是等待开启，那就创建一个新的iframe
+    // @ts-ignore
     let pmIden = vdk.postMsg.getPMIden() //当前页面vdk标识
     let stroage = getStorage()
     let iframeId = 'iframe_modal_by_url_' + new Date().getTime()
@@ -611,6 +621,7 @@ let excuteContainerLogic = function (urlObj, params) {
       '" name="' +
       iframeId +
       '" framespacing="0" frameborder="0" height="100%" width="100%" border="0"></iframe>'
+    // @ts-ignore
     dom.append($(iframeDom))
     let tmpChildPM = 'TEMP_' + new Date().getTime()
     let win = window.open(url, iframeId)
@@ -621,13 +632,13 @@ let excuteContainerLogic = function (urlObj, params) {
       setChildFunc: setChildFunc(domIdKey, urlKey, win, pmIden, urlObj)
     })
     let closeWindowCallback = function (
-      _domIdKey,
-      _urlKey,
-      _win,
-      _pmIden,
-      _urlObj
+      _domIdKey: any,
+      _urlKey: any,
+      _win: any,
+      _pmIden: any,
+      _urlObj: any
     ) {
-      return function (params) {
+      return function (params: any) {
         let stroage = getStorage()
         let _domInfos = stroage.get(_domIdKey)[_urlKey]
         let _urlObj = params._urlObj
@@ -675,11 +686,11 @@ let excuteContainerLogic = function (urlObj, params) {
 /**
  * 平台模态逻辑，每个模态框只能存一个iframe，此iframe只能存一个域，打开不同域，需要创建不同模态框,暂不设计成一个模态框里同时存在多个iframe
  * */
-let excuteModalLogic = function (urlObj, params) {
+let excuteModalLogic = function (urlObj: any, params: any) {
   //要打开的链接
   let url = params.url
   //链接域标识
-  let urlKey = getKey(urlObj)
+  let urlKey = getKey(urlObj, false)
   //存储标识
   let domIdKey = 'modal_' + urlKey
   //模态参数
@@ -699,7 +710,7 @@ let excuteModalLogic = function (urlObj, params) {
    * */
   let storage = getStorage()
   //映射信息
-  let mappingInfos
+  let mappingInfos: any
   //是否已经创建模态/iframe
   let exist = false
   if (storage.containsKey(domIdKey)) {
@@ -708,7 +719,12 @@ let excuteModalLogic = function (urlObj, params) {
   } else {
     mappingInfos = {}
   }
-  let callback = function (dom, closeModalFunc, setTitleFunc, renderParams) {
+  let callback = function (
+    dom: any,
+    closeModalFunc: any,
+    setTitleFunc: any,
+    renderParams: any
+  ) {
     dom = getDomObj(dom)
     if (dom.length < 1) {
       logUtil.warn('打开url失败. 原因：无法在指定位置添加元素.')
@@ -716,6 +732,7 @@ let excuteModalLogic = function (urlObj, params) {
     }
     let domId = dom.attr('id')
     if (renderParams) {
+      // @ts-ignore
       $('#' + domId).css('overflow', 'hidden')
       //更新关闭后回调：vds提供的dialog接口，关闭回调每次都不一样，所以不能服用
       if (renderParams.closeCallback != modalCloseCallBack) {
@@ -723,6 +740,7 @@ let excuteModalLogic = function (urlObj, params) {
       }
     }
     let iframeId
+    // @ts-ignore
     let pmIden = vdk.postMsg.getPMIden() //当前页面vdk标识
     let stroage = getStorage()
     if (!exist) {
@@ -734,6 +752,7 @@ let excuteModalLogic = function (urlObj, params) {
         '" name="' +
         iframeId +
         '" framespacing="0" frameborder="0" height="100%" width="100%" border="0"></iframe>'
+      // @ts-ignore
       dom.append($(iframeDom))
       let prefix = '&'
       if (url.indexOf('?') == -1) {
@@ -762,7 +781,7 @@ let excuteModalLogic = function (urlObj, params) {
           isDelete: true
         },
         handler: (function (_win) {
-          return function (params) {
+          return function (params: any) {
             if (params && params.MsgEvent) {
               let source = params.MsgEvent.source
               if (source === _win) {
@@ -784,7 +803,7 @@ let excuteModalLogic = function (urlObj, params) {
           }
         })(win)
       })
-      let domIds = {}
+      let domIds: any = {}
       domIds.domId = tmpChildPM //保存对应子节点的标识
       mappingInfos = {
         domId: domId, //当前域所在的dom的id
@@ -801,7 +820,7 @@ let excuteModalLogic = function (urlObj, params) {
         eventManager.onCrossDomainEvent({
           eventName: eventManager.CrossDomainEvents.ModalWindowClose,
           handler: (function (cf, _k) {
-            return function (params) {
+            return function (params: any) {
               if (OldLogicOrgin.indexOf(_k) != -1) {
                 //已触发另一个事件
                 return
@@ -842,11 +861,13 @@ let excuteModalLogic = function (urlObj, params) {
               modalCloseCallBack()
           }
         } else {
+          // @ts-ignore
           timeoutIndex = setTimeout(iter, 100)
         }
       }
       iter()
     } else {
+      // @ts-ignore
       vdk.postMsg._MODALCLOSECF = modalCloseCallBack
       let mappingInfos = stroage.get(domIdKey)
       //关闭后再次打开需要显示
@@ -858,7 +879,7 @@ let excuteModalLogic = function (urlObj, params) {
         }
       }
       let urlParams = urlObj.params
-      let openParams = {}
+      let openParams: any = {}
       for (let key in urlParams) {
         let value = urlParams[key]
         if (missAtt.indexOf(key) != -1) {
@@ -908,10 +929,12 @@ let excuteModalLogic = function (urlObj, params) {
           condition: "type=='CloseSuccess'"
         },
         handler: (function (callFun) {
-          return function (params) {
+          return function (params: any) {
+            // @ts-ignore
             let global_cb = vdk.postMsg._MODALCLOSECF
             if (typeof global_cb == 'function') {
               global_cb(params)
+              // @ts-ignore
               vdk.postMsg._MODALCLOSECF = null
             } else {
               callFun(params)
@@ -922,7 +945,7 @@ let excuteModalLogic = function (urlObj, params) {
     }
     let closed = (function (sourceUrl, cf, _k) {
       //模态框关闭事件，如果url所在的服务不是最新，需要关闭事件调用，并且标记此服务不能用最新的逻辑处理
-      return function (bodyCode, renderParams) {
+      return function (bodyCode: string, renderParams: any) {
         if (OldLogicOrgin.indexOf(_k) != -1) {
           //已触发另一个事件
           return
@@ -957,6 +980,7 @@ let excuteModalLogic = function (urlObj, params) {
           //关闭所有时，直接隐藏弹框，不需要里面通信，避免出错不执行或者执行多次关闭
           let domIds = info.domIds
           let renderParams = info.renderParams
+          // @ts-ignore
           let pmIden = vdk.postMsg.getPMIden() //当前页面vdk标识
           for (let key in domIds) {
             renderParams.isHide = true
@@ -994,12 +1018,12 @@ let excuteModalLogic = function (urlObj, params) {
   }
 }
 
-const mounted = function (params) {
+const mounted = function (params: any) {
   let url = params.url
   if (!url) {
     return
   }
-  let urlObj = parseUrl(params.url)
+  let urlObj = parseUrl(params.url, null)
   let tmpDom = params.dom
   if (
     !isPaltformUrl(urlObj) ||
@@ -1012,7 +1036,7 @@ const mounted = function (params) {
   }
 
   //url的key
-  let urlKey = getKey(urlObj)
+  let urlKey = getKey(urlObj, null)
   let modalParams = params.modalParams
   //如果模态的话，可以重用模态外框，如果不是模态的话，先判断dom里面有没有创建过iframe
   let isModal = tmpDom == null ? true : false
@@ -1214,17 +1238,17 @@ const mounted = function (params) {
 /**
  * 获取信息
  * */
-let getUrlInfo = function (params) {
+let getUrlInfo = function (params: any) {
   let result
   let url = params.url
   if (!url) {
     return
   }
   let domId = params.domId ? params.domId : UrlDomMapping[url]
-  let urlObj = parseUrl(params.url)
+  let urlObj = parseUrl(params.url, null)
   let stroage = getStorage()
   //是否包含映射信息
-  let key = getKey(urlObj)
+  let key = getKey(urlObj, null)
   //dom信息
   let domInfo
   //子页面的vdk版本
@@ -1259,7 +1283,7 @@ let getUrlInfo = function (params) {
   return result
 }
 
-const active = function (params) {
+const active = function (params: any) {
   //		var url = params.url;
   //		if(!url){
   //			return;
@@ -1285,7 +1309,7 @@ const active = function (params) {
     let domInfo = info.domInfo
 
     let urlParams = urlObj.params
-    let openParams = info.isContainer
+    let openParams: any = info.isContainer
       ? {
           //容器需要传入对象
           _$urlObj: urlObj
@@ -1311,7 +1335,7 @@ const active = function (params) {
   }
 }
 
-const close = function (params) {
+const close = function (params: any) {
   //		var url = params.url;
   //		if(!url){
   //			return;
@@ -1344,7 +1368,7 @@ const close = function (params) {
     let domInfo = info.domInfo
 
     let urlParams = urlObj.params
-    let openParams = info.isContainer
+    let openParams: any = info.isContainer
       ? {
           //容器需要传入对象
           _$urlObj: urlObj

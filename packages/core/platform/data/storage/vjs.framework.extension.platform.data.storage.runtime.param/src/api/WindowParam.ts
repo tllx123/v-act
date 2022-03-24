@@ -8,12 +8,12 @@ let storageToken = 'STORAGE_RUNTIME_PARAM_WINDOWPARAM',
   inputToken = 'RUNTIME_WINDOW_INPUT',
   outputToken = 'RUNTIME_WINDOW_OUTPUT'
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 let _getWindowScope = function () {
   let scope = scopeManager.getWindowScope()
   return scope
 }
-let getStorage = function (depth, isCreate) {
+let getStorage = function (depth: any, isCreate: boolean) {
   let storage
   let scope = scopeManager.getScope()
   if (scope.has(storageToken)) {
@@ -36,13 +36,13 @@ let getStorage = function (depth, isCreate) {
   return rs
 }
 
-let _getDepth = function (depth) {
+let _getDepth = function (depth: any) {
   let scope = _getWindowScope()
   let array = [scope.getComponentCode(), scope.getWindowCode()]
   return array.concat(depth)
 }
 
-let _putCode = function (code, value, fn) {
+let _putCode = function (code: string, value: any, fn: any) {
   let scope = _getWindowScope()
   let define = fn(scope.getComponentCode(), scope.getWindowCode(), code)
   if (define && define.getType() == 'entity') {
@@ -52,12 +52,12 @@ let _putCode = function (code, value, fn) {
   }
 }
 
-let _getCode = function (code, type, scopeId) {
+let _getCode = function (code: string, type: string, scopeId: string) {
   let scope = scopeId
     ? scopeManager.getScope(scopeId)
     : scopeManager.getWindowScope()
   if (code && type) {
-    let params = {
+    let params: any = {
       componentCode: scope.getComponentCode(),
       windowCode: scope.getWindowCode()
     }
@@ -79,16 +79,16 @@ let _getCode = function (code, type, scopeId) {
   return code
 }
 
-const setInput = function (_code, value) {
-  let code = _getCode(_code, 'input')
+const setInput = function (_code: string, value: any) {
+  let code = _getCode(_code, 'input', value)
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   _putCode(code, value, schemaWinParam.getInputDefine)
   storage.put(code, value)
 }
 
-const getInput = function (_code) {
-  let code = _getCode(_code, 'output')
+const getInput = function (_code: string) {
+  let code = _getCode(_code, 'output', '')
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   return storage.get(code)
@@ -100,23 +100,23 @@ const getInputs = function () {
   return storage.getAll()
 }
 
-const existsInput = function (_code) {
-  let code = _getCode(_code, 'input')
+const existsInput = function (_code: string) {
+  let code = _getCode(_code, 'input', '')
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   return storage.containsKey(code)
 }
 
-const setOutput = function (_code, value) {
-  let code = _getCode(_code, 'output')
+const setOutput = function (_code: string, value: any) {
+  let code = _getCode(_code, 'output', '')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   _putCode(code, value, schemaWinParam.getOutputDefine)
   storage.put(code, value)
 }
 
-const getOutput = function (_code) {
-  let code = _getCode(_code, 'output')
+const getOutput = function (_code: string) {
+  let code = _getCode(_code, 'output', '')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   return storage.get(code)
@@ -128,14 +128,14 @@ const getOutputs = function () {
   return storage.getAll()
 }
 
-const existsOutput = function (_code) {
-  let code = _getCode(_code, 'output')
+const existsOutput = function (_code: string) {
+  let code = _getCode(_code, 'output', '')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   return storage.containsKey(code)
 }
 
-const initInputs = function (inputParam) {
+const initInputs = function (inputParam: string) {
   if (inputParam) {
     let variable = inputParam['variable']
     if (variable) {
@@ -152,6 +152,7 @@ const initInputs = function (inputParam) {
         if (define) {
           let type = define.getType()
           if (type == 'entity') {
+            // @ts-ignore
             if (arrayUtil.isArray(val)) {
               //支持实体数据
               let fields = []
@@ -185,19 +186,19 @@ const initInputs = function (inputParam) {
 
 export {
   existsInput,
-  existsOption,
+  // existsOption,
   existsOutput,
-  existsVariant,
+  // existsVariant,
   getInput,
   getInputs,
-  getOption,
+  // getOption,
   getOutput,
   getOutputs,
-  getVariant,
+  // getVariant,
   initInputs,
-  isVariantInited,
-  markVariantInited,
+  // isVariantInited,
+  // markVariantInited,
   setInput,
-  setOutput,
-  setVariant
+  setOutput
+  // setVariant
 }
