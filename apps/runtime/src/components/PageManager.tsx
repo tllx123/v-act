@@ -57,6 +57,7 @@ export default function PageManager(props: PageManagerProperty) {
         ) : (
           <PageModal
             title={title}
+            closeHandlerKey={'__dialog_win_close_handler_' + thisLevel}
             onClose={typeof window != 'undefined' ? window['__dialog_win_close_cb_' + thisLevel] : undefined}
           >
             {page}

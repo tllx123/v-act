@@ -126,8 +126,6 @@ const enhanceWindow = function (
   context: { router: any; stackInfo: any },
   instanceId: string
 ) {
-  debugger
-  console.log('Zona has a test')
   const prototype = win.prototype
   const controlEventMap: { [controlCode: string]: Event[] } = {}
   if (prototype) {

@@ -2,6 +2,7 @@ import React,{useEffect} from 'react';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import {ScopeManager as scopeManager} from '@v-act/vjs.framework.extension.platform.interface.scope';
+import {uuid} from '@v-act/vjs.framework.extension.util.uuid'
 import useStackInfo from '../../../src/components/usePageStackInfo';
 import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
@@ -23,7 +24,6 @@ const widgetDefines: {
   }
 } = {{@ controlDefines}};
 widgetDefines.JGSpacer = JGSpacer1;
-
 widgetDefines.JGGroupPanel = JGGroupPanel1;
 widgetDefines.JGComponent = JGComponent1;
 widgetDefines.JGContext = JGContext1;
@@ -37,21 +37,30 @@ const _getRandomNum = function () {
   return parseInt(random + '')
 }
 
-function Index(){
+function Index(props:{instanceId:string}){
     parse();
     const router = useRouter();
     const stackInfo = useStackInfo();
+        const {instanceId} = props;
+    let windowScope = scopeManager.getScope(instanceId);
+    if(!windowScope){
+      scopeManager.createWindowScope({
+        scopeId:instanceId,
+        componentCode:"{{@ componentCode}}",
+        windowCode:"{{@ windowCode}}",
+        series:"smartclient"
+      });
+      windowScope = scopeManager.getScope(instanceId);
+    }
     const context = useContext()
     const entityOperation = {
         "insert": context.insertDataFunc,
         "update": context.updateDataFunc,
         "remove": context.removeDataFunc,
         "clear": context.clearDataFunc,
-    };
-    const instanceId = scopeManager.createWindowScope({componentCode:"{{@ componentCode}}",windowCode:"{{@ windowCode}}",series:"smartclient"});
+    };    
     useEffect(async ()=>{
       try{
-        debugger
         {{@ ruleImports}}
         {{@ funcImports}}
         const ruleDefines = {{@ ruleDefines}}
@@ -96,20 +105,34 @@ function Index(){
             windowScope.set(
               'dialogWindowHandler',
               (
-                componentCode: string,
-                windowCode: string,
-                title: string,
-                param: { [code: string]: any },
-                callback:(...args:any[])=>any
+                params:{
+                  componentCode: string,
+                  windowCode: string,
+                  title: string,
+                  param: { [code: string]: any },
+                  rendered:(scopeId:string)=>void,
+                  closed:(...args:any[])=>any
+                }
               ) => {
+                const {componentCode,windowCode,title,param,rendered,closed} = params;
                 const callbackId = "__dialog_win_close_cb_"+(thisLevel + 1);
-                window[callbackId] = ()=>{
+                const renderedCallbackId = "__dialog_win_rendered_cb_"+(thisLevel + 1);
+                window[callbackId] = (...args:any[])=>{
                   try{
-                    if(typeof callback == 'function'){
-                      callback();
+                    if(typeof closed == 'function'){
+                      closed(...args);
                     }
                   }finally{
                     delete window[callbackId];
+                  }
+                }
+                window[renderedCallbackId] = (scopeId)=>{
+                  try{
+                    if(typeof rendered == 'function'){
+                      rendered(scopeId);
+                    }
+                  }finally{
+                    delete window[renderedCallbackId];
                   }
                 }
                 router.push({
@@ -141,6 +164,28 @@ function Index(){
               }
             )
             windowScope.set('dataSourceHandler',entityOperation)
+	          windowScope.set('dailogWindowCloseHandler',(...args:any[])=>{
+              const closeHandlerId = "__dialog_win_close_handler_"+thisLevel;
+              const handler = window[closeHandlerId]
+              if(handler){
+                try{
+                  handler(...args);
+                }finally{
+                  delete window[closeHandlerId]
+                }
+              }
+            })
+	          if(router.query){
+              let modal = router.query.modal
+              const rendercb = window["__dialog_win_rendered_cb_"+modal];
+              if(rendercb){
+                try{
+                  rendercb(scopeId)
+                }finally{
+                  delete window["__dialog_win_rendered_cb_"+modal];
+                }
+              }
+            }
           }
         });
       }catch(e){
@@ -154,10 +199,18 @@ function Index(){
               componentCode:"{{@ componentCode}}",
               windowSchema: windowObjs,
               widgetDefines,
+              windowScope,
               context: {router,stackInfo}
             })}
         </React.Fragment>   
     );
 }
 
+export async function getStaticProps() {
+  return {
+    props: {
+      instanceId: uuid.generate()
+    }
+  }
+}
 export default Index;
