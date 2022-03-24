@@ -68,7 +68,7 @@ export async function viteBuild(scopes, copyToPath, watch) {
         rollupOptions: {
           external
         },
-        sourcemap: true,
+        sourcemap: false,
         watch: watch ? {} : undefined
       },
       configFile: false,

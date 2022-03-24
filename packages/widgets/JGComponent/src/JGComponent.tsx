@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 import { Property } from 'csstype'
 
@@ -29,8 +29,102 @@ const JGComponentRoot = styled(Box, {
 
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
+    const [propsChildren, setPropsChildren] = useState(inProps.children)
+    const [refresh, setRefresh] = useState(false)
+
+    useEffect(() => {
+      console.log('effect', propsChildren)
+      refresh && setRefresh(false)
+    }, [refresh])
+
     const context = useContext()
     context.entities = inProps.entities
+
+    window.changeComponentByProperties = (
+      pageCode: string,
+      componentCode: string,
+      properties: any
+    ): any => {
+      if (!inProps.children) {
+        return new Error('页面未设置组件')
+      }
+
+      // 查找页面
+      const iteratorComponent = (
+        childrens: JSX.Element | JSX.Element[],
+        targetCode: string
+      ): any => {
+        if (Array.isArray(childrens)) {
+          for (let key in childrens) {
+            let children = childrens[key]
+            if (!('props' in children)) continue
+
+            return children.props.componentCode &&
+              children.props.componentCode === targetCode
+              ? children.props.control
+              : iteratorComponent(children.props.children, targetCode)
+          }
+        } else {
+          return childrens.props.componentCode &&
+            childrens.props.componentCode === targetCode
+            ? childrens.props.control
+            : iteratorComponent(childrens.props.children, targetCode)
+        }
+      }
+
+      // 查找组件
+      const iteratorControls = (controls: any, componentCode: string) => {
+        if (Array.isArray(controls)) {
+          for (let key in controls) {
+            return controls[key].properties.code === componentCode
+              ? controls[key]
+              : iteratorComponent(controls[key].controls, componentCode)
+          }
+        } else {
+          return controls.properties.code === componentCode
+            ? controls
+            : iteratorComponent(controls.controls, componentCode)
+        }
+      }
+
+      if ('props' in inProps.children) {
+        let targetPage = iteratorComponent(
+          inProps.children.props.children,
+          pageCode
+        )
+        let targetComponent = iteratorControls(
+          targetPage.controls,
+          componentCode
+        )
+
+        if (targetComponent) {
+          targetComponent.properties = properties
+        }
+
+        const newPropsChildren = Object.assign({}, inProps.children)
+        console.log('浅拷贝修改后', newPropsChildren)
+
+        function deepClone<T>(obj: T): T {
+          let objClone = Array.isArray(obj) ? [] : {}
+          if (obj && typeof obj === 'object') {
+            for (let key in obj) {
+              if (obj[key] && typeof obj[key] === 'object') {
+                objClone[key] = deepClone(obj[key])
+              } else {
+                objClone[key] = obj[key]
+              }
+            }
+          }
+          return objClone
+        }
+
+        setPropsChildren(deepClone(newPropsChildren))
+        setRefresh(true)
+      }
+    }
+
+    console.log('inProps: ', inProps)
+
     const props: BoxProps = {
       sx: {
         width: toWidth(inProps.width, context, ReactEnum.Space),
@@ -45,7 +139,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     }
     return (
       <JGComponentRoot {...props} ref={ref}>
-        {inProps.children}
+        {propsChildren}
       </JGComponentRoot>
     )
   }
