@@ -1,6 +1,6 @@
 import Field from '../../api/Field'
 
-let sandbox: never
+let sandbox: any
 
 function initModule(sb: never) {
   if (sb) sandbox = sb
