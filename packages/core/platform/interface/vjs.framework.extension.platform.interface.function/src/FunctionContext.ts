@@ -10,7 +10,7 @@ import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.
  */
 class FunctionContext {
   args: Array<any>
-  routeContext: RoutContext
+  routeContext?: RouteContext
   constructor(args?: Array<any>, routeContext?: RouteContext) {
     this.args = args || []
     this.routeContext = routeContext
@@ -19,7 +19,7 @@ class FunctionContext {
    * 获取函数参数
    * @return Array
    */
-  getArgs = function () {
+  getArgs() {
     return this.args
   }
 
