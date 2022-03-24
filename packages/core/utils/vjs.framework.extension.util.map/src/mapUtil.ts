@@ -1,4 +1,4 @@
-export class MapUtil {
+class Map {
   elements: any[]
 
   constructor(elements: any[] = []) {
@@ -129,3 +129,5 @@ export class MapUtil {
     return arr
   }
 }
+
+export { Map }
