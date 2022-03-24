@@ -5,9 +5,9 @@ let storageToken = 'STORAGE_RUNTIME_PARAM_COMPONENTPARAM',
   optionToken = 'RUNTIME_COMPONENT_OPTION',
   initedToken = 'RUNTIME_COMPONENT_INITED'
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
-let getStorage = function (depth, isCreate) {
+let getStorage = function (depth: any, isCreate: boolean) {
   let rs,
     s = storageManager.get(storageManager.TYPES.MAP, storageToken)
   for (let i = 0, key; (key = depth[i]); i++) {
@@ -22,37 +22,41 @@ let getStorage = function (depth, isCreate) {
   return rs
 }
 
-const setVariant = function (componentCode, variantCode, variantValue) {
+const setVariant = function (
+  componentCode: string,
+  variantCode: string,
+  variantValue: any
+) {
   let storage = getStorage([variantToken, componentCode], true)
   storage.put(variantCode, variantValue)
 }
 
-const existsVariant = function (componentCode, variantCode) {
+const existsVariant = function (componentCode: string, variantCode: any) {
   let storage = getStorage([variantToken, componentCode], true)
   return storage.containsKey(variantCode)
 }
 
-const getVariant = function (componentCode, variantCode) {
+const getVariant = function (componentCode: string, variantCode: string) {
   let storage = getStorage([variantToken, componentCode], true)
   return storage.get(variantCode)
 }
 
-const getOption = function (componentCode, optionCode) {
+const getOption = function (componentCode: string, optionCode: string) {
   let storage = getStorage([optionToken, componentCode], true)
   return storage.get(optionCode)
 }
 
-const existsOption = function (componentCode, optionCode) {
+const existsOption = function (componentCode: string, optionCode: string) {
   let storage = getStorage([optionToken, componentCode], true)
   return storage.containsKey(optionCode)
 }
 
-const markVariantInited = function (componentCode) {
+const markVariantInited = function (componentCode: string) {
   let storage = getStorage([initedToken], true)
   storage.put(componentCode, true)
 }
 
-const isVariantInited = function (componentCode) {
+const isVariantInited = function (componentCode: string) {
   let storage = getStorage([initedToken], true)
   return storage.containsKey(componentCode)
 }
