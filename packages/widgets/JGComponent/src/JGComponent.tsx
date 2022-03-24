@@ -75,12 +75,23 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 
       // 查找组件
       const iteratorControls = (controls: any, componentCode: string) => {
+        if (!controls || controls == []) return false
         if (Array.isArray(controls)) {
+          let target
           for (let key in controls) {
-            return controls[key].properties.code === componentCode
-              ? controls[key]
-              : iteratorComponent(controls[key].controls, componentCode)
+            if (controls[key].properties.code === componentCode) {
+              target = controls[key]
+            }
           }
+          if (!target) {
+            for (let key in controls) {
+              let t = iteratorComponent(controls[key].controls, componentCode)
+              if (t) {
+                return target
+              }
+            }
+          }
+          return target
         } else {
           return controls.properties.code === componentCode
             ? controls
@@ -101,7 +112,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         )
 
         if (targetComponent) {
-          if (properties.code) throw new Error('不允许更改code值')
+          // if (properties.code) throw new Error('不允许更改code值')
           targetComponent.properties = Object.assign(
             targetComponent.properties,
             properties

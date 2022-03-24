@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 
 import { Property } from 'csstype'
 
@@ -38,6 +38,9 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
     const context = useContext()
     const sx = inProps.sx || {}
     console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', inProps)
+    useEffect(() => {
+      console.log('inProps:', inProps)
+    }, [])
     const props: ButtonProps = {
       variant: 'contained',
       disabled: inProps.disabled,
