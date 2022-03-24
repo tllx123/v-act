@@ -1,11 +1,12 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+// @ts-ignore
 import { ResultSet as Resultset } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { Record as Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-const initModule = function (sBox) {}
+const initModule = function (sBox: any) {}
 
 let primaryKey = 'id'
 
-let SmartclientDatasource = function (metadata) {
+let SmartclientDatasource = function (metadata: any) {
   this.metadata = metadata
   this.ds = null
   let dsName = metadata.getDatasourceName()
