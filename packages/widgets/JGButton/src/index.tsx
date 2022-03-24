@@ -38,6 +38,7 @@ const convert = function (
     events.forEach((evt) => {
       eventMap[evt.code] = evt.handler
     })
+
     props.click = eventMap.OnClick
   }
   return <JGButton {...props}>{pros.labelText}</JGButton>

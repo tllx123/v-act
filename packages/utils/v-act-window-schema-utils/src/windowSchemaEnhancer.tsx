@@ -875,11 +875,13 @@ const parseWindowSchema = function (params: {
   windowSchema: WindowSchema
   widgetDefines: WidgetDefines
   context: WidgetConvertContext
+  windowScope: {}
 }): JSX.Element | null {
   try {
     const instanceId = params.instanceId
     const componentCode = params.componentCode
     const windowSchema = params.windowSchema
+    const windowScope = params.windowScope
     const widgetDefines = params.widgetDefines
     const context = params.context
     let windowDefine = convertWindowSchema(windowSchema)
@@ -921,7 +923,8 @@ const parseWindowSchema = function (params: {
       const widgetContext = createContext({
         instanceId,
         position: 'relative',
-        componentCode: componentCode
+        componentCode,
+        windowScope
       })
       return (
         <ContextProvider context={widgetContext}>
