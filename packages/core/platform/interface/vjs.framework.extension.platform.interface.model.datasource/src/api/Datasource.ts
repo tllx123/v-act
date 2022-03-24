@@ -2,7 +2,7 @@ import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.ma
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 let primaryKey = 'id',
-  each
+  each: any
 
 /**
  * @namespace Datasource
@@ -14,23 +14,61 @@ let primaryKey = 'id',
  * vjs服务名称：vjs.framework.extension.platform.interface.model.datasource.Datasource<br/>
  */
 
-let Datasource = function (metadata, db) {
-  this.metadata = metadata
-  this.db = db
-  this.instanceId = uuid.generate()
-  this._eventPool = {}
-  this.dataAccessObject = null
-  this.db._putDatasource(this)
-  this.db._putSnapshotHandler(this._genSnapshotHandler())
-}
+export default class Datasource {
+  constructor(
+    public metadata: any,
+    public db: any,
+    public instanceId?: string,
+    public dataAccessObject?: object,
+    public bindWidgets?: any,
+    /**
+     * 事件名称枚举
+     * @enum {String}
+     */
+    public Events: object = {
+      /**加载事件*/
+      LOAD: 'LOAD',
+      /**新增事件*/
+      INSERT: 'INSERT',
+      /**更新事件*/
+      UPDATE: 'UPDATE',
+      /**删除事件*/
+      DELETE: 'DELETE',
+      /**当前行切换事件*/
+      CURRENT: 'CURRENT',
+      /**记录选择事件*/
+      SELECT: 'SELECT',
+      /**获取数据事件*/
+      FETCH: 'FETCH',
+      /**获取数据后事件*/
+      FETCHED: 'FETCHED',
+      /** 记录处理事件*/
+      RECORDPROCESS: 'RECORDPROCESS'
+    },
+    /**
+     * 数据位置枚举
+     * @enum {String}
+     */
+    public Position: object = {
+      /**前*/
+      BEFORE: 'BEFORE',
+      /**后*/
+      AFTER: 'AFTER',
+      /**最前*/
+      TOP: 'TOP',
+      /**最后*/
+      BOTTOM: 'BOTTOM'
+    }
+  ) {
+    return this
+  }
 
-Datasource.prototype = {
-  initModule: function (sb) {
+  initModule(sb: any) {
     each = sb.util.collections.each
-  },
+  }
 
-  _genSnapshotHandler: function () {
-    let _this = this
+  _genSnapshotHandler() {
+    let _this: any = this
     return function () {
       if (snapshotManager) {
         let snapshot = snapshotManager.getCurrentSnapshot()
@@ -40,44 +78,44 @@ Datasource.prototype = {
       }
       return null
     }
-  },
+  }
 
   /**
    * 获取数据源实例Id
    * @return String 数据源实例Id
    */
-  getInstanceId: function () {
+  getInstanceId() {
     return this.instanceId
-  },
+  }
 
   /**
    *获取数据源元数据信息
    * @return {@link Metadata}
    */
-  getMetadata: function () {
+  getMetadata() {
     return this.metadata
-  },
+  }
 
   /**
    * 设置数据源元数据信息
    *
    * @param {Metadata} meta 元数据信息，可通过MetadataFactory.unSerialize(meta)创建
    */
-  setMetadata: function (meta) {
+  setMetadata(meta: any) {
     this.metadata = meta
-  },
+  }
 
-  _processLoadDatas: function (datas) {
+  _processLoadDatas(datas: any) {
     if (datas) {
-      let rs = []
-      each(datas, function (data) {
+      let rs: any = []
+      each(datas, function (data: any) {
         if (!data.hasOwnProperty(primaryKey)) data[primaryKey] = uuid.generate()
         rs.push(data)
       })
       datas = rs
     }
     return datas
-  },
+  }
 
   /**
    *加载数据
@@ -90,10 +128,10 @@ Datasource.prototype = {
    * @example datasource.load({"datas":[{"field1":"a","field2":"b"},{"field1":"a1","field2":"b2"}],"isAppend":true})
    * @return {@link ResultSet}
    */
-  load: function (params) {
+  load(params: any) {
     this._processLoadDatas(params.datas)
     return this.db.load(params)
-  },
+  }
 
   /**
    *新增记录
@@ -112,9 +150,9 @@ Datasource.prototype = {
    * });
    * @return {@link ResultSet}
    */
-  insertRecords: function (params) {
+  insertRecords(params: any) {
     return this.db.insertRecords(params)
-  },
+  }
 
   /**
    *更新记录
@@ -124,9 +162,9 @@ Datasource.prototype = {
    * }
    * @return {@link ResultSet}
    */
-  updateRecords: function (params) {
+  updateRecords(params: any) {
     return this.db.updateRecords(params)
-  },
+  }
 
   /**
    * 根据主键值移除记录
@@ -136,105 +174,105 @@ Datasource.prototype = {
    * }
    * @return {@link ResultSet}
    */
-  removeRecordByIds: function (params) {
+  removeRecordByIds(params: any) {
     return this.db.removeRecordByIds(params)
-  },
+  }
 
   /**
    * 清空数据源记录 ,只清空记录
    */
-  clear: function () {
+  clear() {
     this.db.clear()
-  },
+  }
   /**
    *清楚已删除数据
    */
-  clearRemoveDatas: function () {
+  clearRemoveDatas() {
     this.db.clearRemoveDatas()
-  },
+  }
 
-  reset: function () {
+  reset() {
     this.db.reset()
-  },
+  }
 
   /**
    * 根据数据源创建一条记录
    * @return {@link Record}
    */
-  createRecord: function () {
+  createRecord() {
     return this.db.createRecord()
-  },
+  }
 
   /**
    * 根据主键值获取记录
    * @param {String} id 主键值
    * @return {@link Record}
    */
-  getRecordById: function (id) {
+  getRecordById(id: string) {
     return this.db.getRecordById(id)
-  },
+  }
 
   /**
    * 根据下标顺序获取记录
    * @param  {Number} index 记录下标(下标从0开始)
    * @return {@link Record}
    */
-  getRecordByIndex: function (index) {
+  getRecordByIndex(index: number) {
     return this.db.getRecordByIndex(index)
-  },
+  }
 
   /**
    * 获取所有记录
    * @return {@link ResultSet}
    */
-  getAllRecords: function () {
+  getAllRecords() {
     return this.db.getAllRecords()
-  },
+  }
   /**
    * 是否为空数据源
    * @return Boolean
    */
-  isEmpty: function () {
+  isEmpty() {
     return this.db.isEmpty()
-  },
+  }
 
   /**
    * 获取新增记录
    * @return {@link ResultSet}
    */
-  getInsertedRecords: function () {
+  getInsertedRecords() {
     return this.db.getInsertedRecords()
-  },
+  }
 
   /**
    * 获取更新记录
    * @return {@link ResultSet}
    */
-  getUpdatedRecords: function () {
+  getUpdatedRecords() {
     return this.db.getUpdatedRecords()
-  },
+  }
 
   /**
    * 获取已删除记录
    * @return {@link ResultSet}
    */
-  getDeletedRecords: function () {
+  getDeletedRecords() {
     return this.db.getDeletedRecords()
-  },
+  }
   /**
    * 获取数据源中所有已选中记录
    * @return {@link ResultSet}
    */
-  getSelectedRecords: function () {
+  getSelectedRecords() {
     return this.db.getSelectedRecords()
-  },
+  }
   /**
    * 获取数据源中当前行记录
    * @return {@link Record}
    */
-  getCurrentRecord: function () {
+  getCurrentRecord() {
     return this.db.getCurrentRecord()
-  },
+  }
 
   /**
    * 是否为已选中记录
@@ -246,9 +284,9 @@ Datasource.prototype = {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isSelectedRecord: function (params) {
+  isSelectedRecord(params: any) {
     return this.db.isSelectedRecord(params)
-  },
+  }
 
   /**
    * 是否为已当前行记录
@@ -260,9 +298,9 @@ Datasource.prototype = {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isCurrentRecord: function (params) {
+  isCurrentRecord(params: any) {
     return this.db.isCurrentRecord(params)
-  },
+  }
   /**
    * 记录是否已删除
    * @param {Object} params 参数信息
@@ -270,17 +308,17 @@ Datasource.prototype = {
    * 	 "record" :　{@link Record} 记录
    * }
    */
-  isDeletedRecord: function (params) {
+  isDeletedRecord(params: any) {
     return this.db.isDeletedRecord(params)
-  },
+  }
 
   /**
    * 获取前台实体与之关联的后台数据源信息
    * @return DataAccessor
    */
-  getDataAccessor: function () {
+  getDataAccessor() {
     return this.dataAccessObject
-  },
+  }
 
   /**
    * 设置前台实体与之关联的后台数据源信息
@@ -289,9 +327,9 @@ Datasource.prototype = {
    * 		accessor : DataAccessor
    * }
    */
-  setDataAccessor: function (params) {
+  setDataAccessor(params: any) {
     this.dataAccessObject = params.accessor
-  },
+  }
 
   /**
    * 更新选中记录(只选中给出的记录，其他已选中的记录将被取消选中)
@@ -301,9 +339,9 @@ Datasource.prototype = {
    *      records : Array<{@link Record}> 记录集合
    * }
    */
-  updateSelectedRecords: function (params) {
+  updateSelectedRecords(params: any) {
     this.db.updateSelectedRecords(params)
-  },
+  }
 
   /**
    * 选中数据源记录
@@ -316,9 +354,9 @@ Datasource.prototype = {
    * }
    * @return {@link ResultSet}
    */
-  selectRecords: function (params) {
+  selectRecords(params: any) {
     return this.db.selectRecords(params)
-  },
+  }
 
   /**
    *设置当前行
@@ -327,50 +365,10 @@ Datasource.prototype = {
    * 		record : {@link Record} 记录
    * }
    */
-  setCurrentRecord: function (params) {
+  setCurrentRecord(params: any) {
     this.db.setCurrentRecord(params)
-  },
-  /**
-   * 事件名称枚举
-   * @enum {String}
-   */
-  Events: {
-    /**加载事件*/
-    LOAD: 'LOAD',
-    /**新增事件*/
-    INSERT: 'INSERT',
-    /**更新事件*/
-    UPDATE: 'UPDATE',
-    /**删除事件*/
-    DELETE: 'DELETE',
-    /**当前行切换事件*/
-    CURRENT: 'CURRENT',
-    /**记录选择事件*/
-    SELECT: 'SELECT',
-    /**获取数据事件*/
-    FETCH: 'FETCH',
-    /**获取数据后事件*/
-    FETCHED: 'FETCHED',
-    /**
-     *@private
-     * 记录处理事件
-     * */
-    RECORDPROCESS: 'RECORDPROCESS'
-  },
-  /**
-   * 数据位置枚举
-   * @enum {String}
-   */
-  Position: {
-    /**前*/
-    BEFORE: 'BEFORE',
-    /**后*/
-    AFTER: 'AFTER',
-    /**最前*/
-    TOP: 'TOP',
-    /**最后*/
-    BOTTOM: 'BOTTOM'
-  },
+  }
+
   /**
    * 注册事件回调
    * @param {Object} params 参数信息
@@ -387,36 +385,36 @@ Datasource.prototype = {
    * 		"handler" : function(){alert("loaded@");}
    * });
    */
-  on: function (params) {
+  on(params: any) {
     this.db.on(params)
-  },
+  }
 
   /**
    * 是否为多选
    * @return Boolean
    */
-  isMultipleSelect: function () {
+  isMultipleSelect() {
     return this.db.isMultipleSelect()
-  },
+  }
   /**
    * 标记数据源为多选
    */
-  markMultipleSelect: function () {
+  markMultipleSelect() {
     this.db.markMultipleSelect()
-  },
+  }
   /**
    * 标记数据源为单选
    */
-  markMultipleSingle: function () {
+  markMultipleSingle() {
     this.db.markMultipleSingle()
-  },
+  }
   /**
    * 是否默认选中记录
    * @return Boolean
    */
-  isDefaultSelect: function () {
+  isDefaultSelect() {
     return this.db.isDefaultSelect()
-  },
+  }
   /**
    * 设置是否默认选中
    * @param {Object} params 参数信息
@@ -424,9 +422,9 @@ Datasource.prototype = {
    * 		"defaultSel" : Boolean 是否默认选中
    * }
    */
-  setDefaultSelect: function (params) {
+  setDefaultSelect(params: any) {
     this.db.setDefaultSelect(params)
-  },
+  }
   /**
    * 数据源序列化
    * @return Object
@@ -452,10 +450,10 @@ Datasource.prototype = {
    * 		}
    * }
    */
-  serialize: function () {
+  serialize() {
     let set = this.getAllRecords()
-    let values = []
-    set.iterate(function (record) {
+    let values: any = []
+    set.iterate(function (record: any) {
       //过滤字段,剔除非数据源中的字段
       values.push(record.toMap())
     })
@@ -466,19 +464,19 @@ Datasource.prototype = {
         recordCount: this.db.getDataAmount()
       }
     }
-  },
+  }
   /**
    * 标记数据源将要取数据
    */
-  markWillToFecth: function () {
+  markWillToFecth() {
     this.db.markWillToFecth()
-  },
+  }
   /**
    * 标记数据已加载过
    */
-  markFecthed: function () {
+  markFecthed() {
     this.db.markFecthed()
-  },
+  }
   /**
    * 查询记录
    * @param {Object} params 参数信息
@@ -487,46 +485,40 @@ Datasource.prototype = {
    * }
    * @return {@link ResultSet}
    */
-  queryRecord: function (params) {
+  queryRecord(params: any) {
     return this.db.queryRecord(params)
-  },
+  }
   /**
    * 获取db数据量
    * @return Integer
    */
-  getDataAmount: function () {
+  getDataAmount() {
     return this.db.getDataAmount()
-  },
+  }
 
-  getOrginalDatasource: function () {
+  getOrginalDatasource() {
     return this.db
-  },
+  }
 
   /**
    * 根据id获取数据下标值,如果记录不存在,则返回-1
    * @param {String} id 记录id值
    * @return Integer
    */
-  getIndexById: function (id) {
+  getIndexById(id: any) {
     return this.db.getIndexById(id)
-  },
+  }
 
   /**
    * 获取当前实体数据量
    */
-  getCurrentDataAmount: function () {
+  getCurrentDataAmount() {
     return this.db.getCurrentDataAmount()
-  },
-  destroy: function () {
+  }
+
+  destroy() {
     if (this.bindWidgets) {
       this.bindWidgets = null
     }
-    this.Super('destroy', arguments)
   }
 }
-
-Datasource.Events = Datasource.prototype.Events
-
-Datasource.Position = Datasource.prototype.Position
-
-export default Datasource
