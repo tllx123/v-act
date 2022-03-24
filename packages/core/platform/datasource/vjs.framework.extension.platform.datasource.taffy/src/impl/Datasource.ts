@@ -309,7 +309,7 @@ class Datasource {
     this.db._insert(toInserted, index)
 
     const windowScope = scopeManager.getWindowScope()
-    const operations = windowScope.get('currentWindowHandler')
+    const operations = windowScope.get('dataSourceHandler')
     const code = this.metadata.getCode()
     let paramsTemp = {
       code: code,
@@ -375,7 +375,7 @@ class Datasource {
       let oDatas = this.db._update(updated)
 
       const windowScope = scopeManager.getWindowScope()
-      const operations = windowScope.get('currentWindowHandler')
+      const operations = windowScope.get('dataSourceHandler')
       const code = this.metadata.getCode()
       let paramsTemp = {
         code: code,
@@ -416,7 +416,18 @@ class Datasource {
       // @ts-ignore
       remove(ds.selectIds, id)
     })
+
     this.deleteDatas = this.deleteDatas.concat(deleted)
+
+    const windowScope = scopeManager.getWindowScope()
+    const operations = windowScope.get('dataSourceHandler')
+    const code = this.metadata.getCode()
+    let paramsTemp = {
+      code: code,
+      records: this.deleteDatas
+    }
+    operations.remove(paramsTemp)
+
     let rs = new ResultSet(this.metadata, datas)
     if (datas.length > 0) {
       this._fireEvent({
@@ -435,7 +446,6 @@ class Datasource {
         this.setCurrentRecord({ record: record })
       }
     }
-
     return rs
   }
 
@@ -459,12 +469,12 @@ class Datasource {
       }
 
       const windowScope = scopeManager.getWindowScope()
-      const operations = windowScope.get('currentWindowHandler')
+      const operations = windowScope.get('dataSourceHandler')
       const code = this.metadata.getCode()
       let paramsTemp = {
         code: code
       }
-      operations.clearDataFunc(paramsTemp)
+      operations.clear(paramsTemp)
     }
     this._removeRecords(datas, null, true)
     this.reset()
