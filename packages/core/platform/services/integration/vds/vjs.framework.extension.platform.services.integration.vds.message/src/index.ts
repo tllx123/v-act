@@ -11,7 +11,12 @@
 
 import { DialogUtil as dialogUtil } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog'
 
-var _exe = function (funName: string, msg: string, params?: { time: number }) {
+var _exe = function (
+  this: any,
+  funName: string,
+  msg: string,
+  params?: { time: number }
+) {
   var _this = this
   var func = (function (_this, _funName, _msg, _params) {
     return function (
@@ -25,7 +30,7 @@ var _exe = function (funName: string, msg: string, params?: { time: number }) {
         reject(e)
       }
     }
-  })(this, funName, msg, params)
+  })(_this, funName, msg, params)
   return new Promise(func)
 }
 
