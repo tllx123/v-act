@@ -8,26 +8,16 @@
  * vds.import("vds.date.*");
  * vds.date.add("2012-03-05 18:20:30",30,vds.date.Units.Hour);
  */
-window.vds = window.vds || {}
-window.vds.date = window.vds.date || {}
 
-var date = window.vds.date
-
-exports = date
-
-var dateUtil, formatUtil, mathUtil
-
-export function initModule(sb) {
-  dateUtil = sb.getService('vjs.framework.extension.util.date.DateTimeUtil')
-  formatUtil = sb.getService('vjs.framework.extension.util.DateFormatUtil')
-  mathUtil = sb.getService('vjs.framework.extension.util.Math')
-}
+import { DateTimeUtil as dateUtil } from '@v-act/vjs.framework.extension.util.date'
+import { dateFormatUtil as formatUtil } from '@v-act/vjs.framework.extension.util.dateformat'
+import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 /**
  * 日期单位枚举
  * @enum {String}
  */
-Units = {
+const Units = {
   /**
    * 年
    */
@@ -65,7 +55,7 @@ export { Units }
  * @example
  * vds.date.add("2012-03-05 18:20:30",30,vds.date.Units.Hour);//2012-03-07 00:20:30
  */
-export function add(date, num, type) {
+export function add(date: string, num: number, type: string) {
   return dateUtil.dateAdd(date, num, type)
 }
 
@@ -77,7 +67,7 @@ export function add(date, num, type) {
  * @example
  * vds.date.convert(30,"s",vds.date.Units.Minute)//0.5
  */
-export function convert(num, timeUnit, destTimeUnit) {
+export function convert(num: number, timeUnit: string, destTimeUnit: string) {
   return dateUtil.dateConvert(num, timeUnit, destTimeUnit)
 }
 
@@ -90,7 +80,7 @@ export function convert(num, timeUnit, destTimeUnit) {
  * @example
  * vds.date.diff("2012-11-25 00:00:00","2012-11-26 12:00:00",vds.date.Units.Day)//1.5
  */
-export function diff(src, dest, timeUnit) {
+export function diff(src: string, dest: string, timeUnit: string) {
   return dateUtil.datediff(src, dest, timeUnit)
 }
 
@@ -102,7 +92,7 @@ export function diff(src, dest, timeUnit) {
  * @example
  * vds.date.format(new Date("2021-05-12"),"yyyy-MM-dd");//2021-05-12
  */
-export function format(date, format) {
+export function format(date: Date, format: string) {
   var formatter = formatUtil.newInstance(format)
   return formatter.format(date)
 }
@@ -114,6 +104,6 @@ export function format(date, format) {
  * @example
  * vds.date.valueOf("2021-05-12");
  */
-export function valueOf(dateStr) {
+export function valueOf(dateStr: string) {
   return mathUtil.toDate(dateStr)
 }
