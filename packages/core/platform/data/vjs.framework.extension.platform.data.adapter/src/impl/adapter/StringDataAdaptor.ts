@@ -1,4 +1,4 @@
-const adapt = function (params) {
+const adapt = function (params: any) {
   let value = params.value
   //值如果为null则退出
   if (value == null) {
@@ -16,12 +16,12 @@ const adapt = function (params) {
   return temp
 }
 
-let isCHS = function (str, index) {
+let isCHS = function (str: string, index: number) {
   if (str.charCodeAt(index) > 255 || str.charCodeAt(index) < 0) return true
   else return false
 }
 
-let getLength = function (str) {
+let getLength = function (str: string) {
   let len = 0
   if (str) {
     for (let i = 0; i < str.length; i++) {
@@ -32,7 +32,7 @@ let getLength = function (str) {
   return len
 }
 
-let getChars = function (str) {
+let getChars = function (str: string) {
   let chars = new Array()
   for (let i = 0; i < str.length; i++) {
     chars[i] = [str.substr(i, 1), isCHS(str, i)]
@@ -40,7 +40,7 @@ let getChars = function (str) {
   return chars
 }
 
-let subString = function (str, start, length) {
+let subString = function (str: string, start: number, length: number) {
   let end = start + length
   let len = 0
   let substr = ''

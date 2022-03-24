@@ -4,7 +4,7 @@ import * as stringDataAdaptor from '../impl/adapter/StringDataAdaptor'
 
 export function initModule() {}
 
-const adapt = function (params) {
+const adapt = function (params: any) {
   let type = params.type
   let value = params.value
   switch (type) {
