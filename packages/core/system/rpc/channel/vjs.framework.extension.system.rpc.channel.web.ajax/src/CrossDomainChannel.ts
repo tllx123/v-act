@@ -1,8 +1,7 @@
 import AbstractChannel from './spi/AbstractChannel'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
-
-let cUtils: any
+import { CollectionUtil as cUtils } from '@v-act/vjs.framework.extension.util.collection'
 
 class CrossDomainChannel extends AbstractChannel {
   buildRequest(request: any, contract: any) {
