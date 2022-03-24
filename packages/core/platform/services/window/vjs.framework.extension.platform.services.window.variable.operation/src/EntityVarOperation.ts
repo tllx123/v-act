@@ -4,16 +4,18 @@
  * vjs服务：vjs.framework.extension.platform.services.window.EntityVarOperation
  */
 
-import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
-import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { ExpressionEngine as engine } from '@v-act/vjs.framework.extension.platform.services.engine'
-import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
-import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExpressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourcePuller as puller } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
+import {
+  ExpressionContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
+import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
+import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 // 复制类型
 const COPY_TYPE = {
@@ -55,7 +57,7 @@ const VALUE_SOURCE_TYPE = {
   ENTITYFIELD: 'entityField' //实体字段
 }
 
-export { COPY_TYPE, SOURCE_TYPE, ENTITY_TYPE, VALUE_SOURCE_TYPE }
+export { COPY_TYPE, ENTITY_TYPE, OPERATOR_TYPE, SOURCE_TYPE, VALUE_SOURCE_TYPE }
 
 /**
  * 复制实体（变量实体及界面实体）记录(jsonVersion>=1.0)
