@@ -16,9 +16,9 @@ export default class Request {
   timeout
 
   constructor(
-    isAsync: boolean,
-    operations: Record<string, any>,
-    success: Function,
+    isAsync?: boolean,
+    operations?: Record<string, any>,
+    success?: Function,
     error?: Function,
     host?: string,
     timeout?: number
