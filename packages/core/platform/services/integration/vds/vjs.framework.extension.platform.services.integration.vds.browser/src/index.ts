@@ -9,26 +9,21 @@
  * vds.browser.dialog("http://www.yindangu.com");
  */
 
-import { Browser as browserUtils } from '@v-act/vjs.framework.extension.platform.services.browser'
-
-import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
-import { CreateModalByUrl as modalByUrlUtil } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-
-import { WindowRender as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration.render'
-
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
-
-import { Modal as viewModel } from '@v-act/vjs.framework.extension.platform.services.view.modal'
-
-import { render as newWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.newwindow'
-import { render as windowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { Browser as browserUtils } from '@v-act/vjs.framework.extension.platform.services.browser'
+import { WindowRender as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration.render'
+import {
+  CreateModalByUrl as modalByUrlUtil,
+  Modal as viewModel
+} from '@v-act/vjs.framework.extension.platform.services.view.modal'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { render as appointWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.appointwindow'
+import { render as currentWindowRedirectionRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindowredirection'
 import { render as divWindowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.divwindowcontainer'
 import { render as iemsHomeTabRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.iemshometab'
-import { render as currentWindowRedirectionRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.currentwindowredirection'
-import { render as appointWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.appointwindow'
+import { render as newWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.newwindow'
+import { render as windowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer'
 
 const rendererObj = {
   newWindow: newWindowRender,
@@ -235,14 +230,19 @@ export function dialogWindow(componentCode, windowCode, params) {
   return new Promise((resolve, reject) => {
     const windowScope = scopeManager.getWindowScope()
     const handler = windowScope.get('dialogWindowHandler')
+
     if (handler) {
-      handler(
+      handler({
         componentCode,
         windowCode,
-        params.title,
-        handleInputParams(params.inputParams),
-        resolve
-      )
+        title: params.title,
+        param: handleInputParams(params.inputParams),
+        rendered: (scopeId: string) => {
+          const winScope = scopeManager.getScope(scopeId)
+          winScope.setOpenMode(scopeManager.OpenMode.ModalCommon)
+        },
+        closed: resolve
+      })
     } else {
       reject(Error('未找到模态打开窗体处理方法！'))
     }
