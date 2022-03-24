@@ -14,7 +14,7 @@ let sandbox,
 /* 存放各个容器是否存在弹窗，避免同一个容器多次弹窗导致异常信息覆盖 */
 let dialogInfos = {}
 
-let errorStack = []
+let errorStack: any = []
 //当前容器的异常信息 key：容器标识 value 异常信息 用于反馈问题页面获取异常信息
 let currentErrorInfos = {}
 
@@ -54,7 +54,7 @@ let _removeRepeat = function () {
  * 从弹框入参中获取弹框标识，若没有指定的容器id，则使用全局的弹框
  * 全局弹框和局部弹框互不影响
  * */
-let _getModalIden = function (params) {
+let _getModalIden = function (params: any) {
   let endfixed = params.containerId || ''
   return modalCode + endfixed
 }
@@ -62,25 +62,25 @@ let _getModalIden = function (params) {
  * 判断是否存在弹框
  * @param {Object} params 弹窗入参
  * */
-let _existModal = function (iden) {
+let _existModal = function (iden: any) {
   return dialogInfos[iden] === true
 }
 /**
  * 标记弹窗
  * */
-let _markModal = function (iden) {
+let _markModal = function (iden: any) {
   dialogInfos[iden] = true
 }
 /**
  * 取消弹窗标记
  * */
-let _cancelModal = function (iden) {
+let _cancelModal = function (iden: any) {
   try {
     delete dialogInfos[iden]
   } catch (e) {}
 }
 
-let _show = function (params) {
+let _show = function (params: any) {
   let iden = _getModalIden(params)
   let dialog = $('#' + iden)
   if (!dialog.is(':hidden')) {
@@ -108,33 +108,35 @@ let _show = function (params) {
  * @params {Object} params 异常弹框入参
  * @returns {Boolean}
  * */
-let _isLoginException = function (params) {
+let _isLoginException = function (params: any) {
   return params.isLoginException === true
 }
 /**
  * 改变弹窗类型：登录异常弹框与其他异常弹框互转
  * */
-let _changeDialogType = function (params) {
+let _changeDialogType = function (params: any) {
   let isLogin = params.isLoginException === true
   let containerId = params.containerId
   let $com = containerId ? $('#' + containerId) : $('body')
-  $com.find('.modal-footer.clear>button').each(function (index, btn) {
-    let $btn = $(btn)
-    /*属于 登录异常且为确定按钮 或者 非登录异常且不为确定按钮 的状态，设置为显示  */
-    if (
-      ($btn.attr('login') === 'true' && isLogin) ||
-      (!isLogin && $btn.attr('login') != 'true')
-    ) {
-      $btn.css('display', 'block')
-    } else {
-      $btn.css('display', 'none')
-    }
-  })
+  $com
+    .find('.modal-footer.clear>button')
+    .each(function (index: number, btn: any) {
+      let $btn = $(btn)
+      /*属于 登录异常且为确定按钮 或者 非登录异常且不为确定按钮 的状态，设置为显示  */
+      if (
+        ($btn.attr('login') === 'true' && isLogin) ||
+        (!isLogin && $btn.attr('login') != 'true')
+      ) {
+        $btn.css('display', 'block')
+      } else {
+        $btn.css('display', 'none')
+      }
+    })
   $com
     .find('.modal.fade>i.icon-close')
     .css('display', isLogin ? 'none' : 'block')
 }
-function getCopyValue(e) {
+function getCopyValue(e: any) {
   let t = e.text,
     n = void 0 === t ? '' : t,
     o = e.successTip,
@@ -158,6 +160,7 @@ function getCopyValue(e) {
   m.setAttribute('readonly', '')
   m.value = n
   document.body.appendChild(m)
+  // @ts-ignore
   ;(0, setCopyValue)(m)
   try {
     document.execCommand('copy')
@@ -170,7 +173,7 @@ function getCopyValue(e) {
   }
 }
 
-function setCopyValue(e) {
+function setCopyValue(e: any) {
   let t
   if ('SELECT' === e.nodeName) e.focus(), (t = e.value)
   else if ('INPUT' === e.nodeName || 'TEXTAREA' === e.nodeName) {
@@ -182,7 +185,7 @@ function setCopyValue(e) {
       (t = e.value)
   } else {
     e.hasAttribute('contenteditable') && e.focus()
-    let i = window.getSelection(),
+    let i: any = window.getSelection(),
       r = document.createRange()
     r.selectNodeContents(e),
       i.removeAllRanges(),
@@ -196,13 +199,14 @@ function setCopyValue(e) {
 /**
  * 初始化异常提示框：1、创建dom结构 2、绑定事件
  */
-let _initDialog = function (params) {
+let _initDialog = function (params: any) {
   let iden = _getModalIden(params)
   let html = getHtml(params)
   let containerId = params.containerId
   let $com = containerId ? $('#' + containerId) : $('body')
   $com.append(html)
   $com.find('#' + iden + ' #toggle' + iden).click(function () {
+    // @ts-ignore
     $(this)
       .toggleClass('active')
       .parents('.modal-footer')
@@ -268,7 +272,7 @@ let _initDialog = function (params) {
 /**
  * 修改异常提示框显示内容
  */
-let _modifyDialog = function (params) {
+let _modifyDialog = function (params: any) {
   let iden = _getModalIden(params)
   let title = params.title,
     msgHeader = params.msgHeader,
@@ -302,7 +306,7 @@ let _modifyDialog = function (params) {
 /**
  * 显示异常提示框
  */
-let _showDialog = function (params) {
+let _showDialog = function (params: any) {
   let iden = _getModalIden(params)
   let modal = $('#' + iden + ' .modal')
   modal.css('marginTop', '-' + modal.height() / 2 + 'px')
@@ -314,7 +318,7 @@ let _showDialog = function (params) {
   })
 }
 
-let getCloseFun = function (params) {
+let getCloseFun = function (params: any) {
   let iden = _getModalIden(params)
   let close = params.callback
   let closeFun = (function (callback2, _iden) {
@@ -360,7 +364,7 @@ let getCloseFun = function (params) {
 /**
  * 绑定关闭逻辑
  */
-let _bindCloseLogic = function (params) {
+let _bindCloseLogic = function (params: any) {
   let iden = _getModalIden(params)
   let closeFun = getCloseFun(params)
   $('#' + iden)
@@ -379,7 +383,7 @@ let _bindCloseLogic = function (params) {
     .on('click', closeFun)
 }
 
-const error = function (params) {
+const error = function (params: any) {
   //异常弹框前，隐藏全部进度条，避免遮挡弹框的操作按钮
   try {
     progressBarUtil.hideProgress(true)
@@ -399,6 +403,7 @@ const error = function (params) {
     return function () {
       _cancelModal(_iden)
       if (typeof cb2 == 'function') {
+        // @ts-ignore
         cb2.apply(this, arguments)
       }
     }
@@ -411,7 +416,7 @@ const error = function (params) {
   _show(params)
 }
 
-let getHtml = function (params) {
+let getHtml = function (params: any) {
   let iden = _getModalIden(params)
   let containerStyle = ''
   if (params.containerId) {
@@ -490,10 +495,12 @@ let getHtml = function (params) {
   return html
 }
 
-let transEndEvent = function (obj) {
+let transEndEvent = function (obj: any) {
   obj.on('transitionend', function () {
+    // @ts-ignore
     let isShow = $(this).hasClass('in')
     if (!isShow) {
+      // @ts-ignore
       $(this).hide()
     }
   })
