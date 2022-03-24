@@ -3,7 +3,7 @@ import { RemoteOperation as remote } from '@v-act/vjs.framework.extension.platfo
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
 
-const showDialog = function (params, exceptionType) {
+const showDialog = function (params: any, exceptionType: any) {
   /* 由弹框内部处理是否重复弹框 */
   //		if(isShowDialog){//异常弹窗运行中，避免其他弹窗覆盖
   //			return;
@@ -22,14 +22,16 @@ const showDialog = function (params, exceptionType) {
   /* 若是指定容器发生的网络异常，则统一调用VMetrix提供的异常接口，暂不使用异常弹框 */
   if (
     params.network === true &&
+    // @ts-ignore
     VMetrix.showNetworkError &&
     params.msg &&
     params.containerId
   ) {
+    // @ts-ignore
     VMetrix.showNetworkError(params.msg, params.containerId)
     return
   }
-  let types = alerter.TYPE
+  let types: any = alerter.TYPE
   if (types) {
     switch (exceptionType) {
       case 'BusinessException':
@@ -42,7 +44,7 @@ const showDialog = function (params, exceptionType) {
         params.type = types.DEV
         break
       case 'UnLoginException':
-        params.type = type.UnLogin
+        params.type = types.UnLogin
       //					isShowDialog = false;
       default:
         params.type = types.SYSTEM
@@ -52,7 +54,7 @@ const showDialog = function (params, exceptionType) {
   alerter.error(params)
 }
 
-const callCommand = function (value, callback, params) {
+const callCommand = function (value: any, callback: any, params: any) {
   if (!remote) return
   let json = jsonUtil.obj2json(value)
   //测试数据，需删除
@@ -62,26 +64,26 @@ const callCommand = function (value, callback, params) {
     params: {
       detail: json
     },
-    error: function (err) {
+    error: function (err: any) {
       logUtil.error(err && (err.msg || err.message || err))
     } /* 网络异常时，提交请求又会发生异常，如果第一次的异常在组件容器发生，则页面会出现多个网络异常的弹框，此处先把提交产生异常暂不处理，如果后续产生其他问题，需要兼容前面说的场景 */
   })
 }
 
 export {
-  _getHandler,
+  // _getHandler,
   callCommand,
-  create,
-  genError,
-  getExceptionHtml,
-  getExceptionTypeByError,
-  handle,
-  initModule,
-  isAcceptType,
-  isException,
-  onBeforeHandler,
-  onHandleFunction,
-  plupload,
-  showDialog,
-  unSerialize
+  // create,
+  // genError,
+  // getExceptionHtml,
+  // getExceptionTypeByError,
+  // handle,
+  // initModule,
+  // isAcceptType,
+  // isException,
+  // onBeforeHandler,
+  // onHandleFunction,
+  // plupload,
+  showDialog
+  // unSerialize
 }

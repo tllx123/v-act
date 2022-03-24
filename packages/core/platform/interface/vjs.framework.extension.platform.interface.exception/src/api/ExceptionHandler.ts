@@ -4,14 +4,16 @@ import * as exceptionFactory from '../api/ExceptionFactory'
 
 let sandbox
 
-const initModule = function (sb) {
+const initModule = function (sb: any) {
   sandbox = sb
+  // @ts-ignore
   if (VMetrix && typeof VMetrix.setExceptionFactory == 'function') {
+    // @ts-ignore
     VMetrix.setExceptionFactory(exceptionFactory)
   }
 }
 
-const handle = function (e, handler) {
+const handle = function (e: any, handler: any) {
   if (exceptionFactory.isException(e)) {
     e.handle()
   } else {
@@ -37,10 +39,10 @@ const handle = function (e, handler) {
 }
 
 const getExceptionHtml = function (
-  componentCode,
-  windowCode,
-  exceptionTitle,
-  exceptionMessage
+  componentCode: string,
+  windowCode: string,
+  exceptionTitle: string,
+  exceptionMessage: string
 ) {
   let html =
     '<html xmlns="http://www.w3.org/1999/xhtml"> <head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> ' +
@@ -70,13 +72,13 @@ const getExceptionHtml = function (
 }
 
 export {
-  create,
-  genError,
+  // create,
+  // genError,
   getExceptionHtml,
-  getExceptionTypeByError,
-  handle,
-  isAcceptType,
-  isException,
-  plupload,
-  unSerialize
+  // getExceptionTypeByError,
+  handle
+  // isAcceptType,
+  // isException,
+  // plupload,
+  // unSerialize
 }
