@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
 import { useRouter } from 'next/router';
+import { useContext } from '@v-act/widget-context'
 import dynamic from 'next/dynamic';
 import {ScopeManager as scopeManager} from '@v-act/vjs.framework.extension.platform.interface.scope';
 import {uuid} from '@v-act/vjs.framework.extension.util.uuid'
@@ -12,6 +13,8 @@ const JGGroupPanel1 = dynamic(()=>{return import('@v-act/jggrouppanel').then(mod
 const JGContext1 = dynamic(()=>{return import('@v-act/jgcontext').then(mod=>mod.JsonJGContext)});
 const JGButtonGroup1 = dynamic(()=>{return import('@v-act/jgbuttongroup').then(mod=>mod.JsonJGButtonGroup)});
 const JGCollapse1 = dynamic(()=>{return import('@v-act/jgcollapse').then(mod=>mod.JsonJGCollapse)});
+
+
 {{@ importScripts}}
 
 const widgetDefines: {
