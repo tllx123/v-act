@@ -2,7 +2,7 @@ import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
 let sandbox
 
-export function initModule(sb) {
+export function initModule(sb: any) {
   sandbox = sb
 }
 
@@ -11,11 +11,11 @@ let regex = /(^\s*)|(\s*$)/g
 /**
  * 去除字符串左右两侧的空格
  */
-let _trim = function (str) {
+let _trim = function (str: string) {
   return str.replace(regex, '')
 }
 
-const adapt = function (params) {
+const adapt = function (params: any) {
   let value = params.value
   //值如果不存在或是布尔类型则退出
   if (
@@ -25,7 +25,7 @@ const adapt = function (params) {
   ) {
     return value
   }
-  let temp = _trim(value + '').toLowerCase()
+  let temp: string | boolean = _trim(value + '').toLowerCase()
   if (temp == 'true' || temp == '1') {
     temp = true
   } else if (temp == 'false' || temp == '0') {
@@ -39,4 +39,4 @@ const adapt = function (params) {
   return temp
 }
 
-export { adapt, init }
+export { adapt }

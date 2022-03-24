@@ -3,7 +3,7 @@ import * as adapter from './Adapter'
 
 export function initModule() {}
 
-const init = function (params) {
+const init = function (params: any) {
   let type = params.type
   let value = params.value
   switch (type) {
@@ -24,4 +24,4 @@ const init = function (params) {
   }
 }
 
-export { adapt, init }
+export { init }

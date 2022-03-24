@@ -1,7 +1,7 @@
 import * as datasourceInitor from '../impl/initor/DatasourceInitor'
 import * as adapter from './Adapter'
 
-const init = function (param) {
+const init = function (param: any) {
   let type = param.getType()
   switch (type) {
     case 'char':
@@ -22,4 +22,4 @@ const init = function (param) {
   }
 }
 
-export { adapt, init }
+export { init }
