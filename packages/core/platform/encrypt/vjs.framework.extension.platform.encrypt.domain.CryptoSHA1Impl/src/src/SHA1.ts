@@ -4,7 +4,7 @@ code.google.com/p/crypto-js
 (c) 2009-2013 by Jeff Mott. All rights reserved.
 code.google.com/p/crypto-js/wiki/License
 */
-let CryptoJS =
+var CryptoJS =
   CryptoJS ||
   (function (i, m) {
     var p = {},
@@ -190,7 +190,7 @@ let CryptoJS =
     return p
   })(Math)
 ;(function () {
-  let i = CryptoJS,
+  var i = CryptoJS,
     m = i.lib,
     p = m.WordArray,
     m = m.Hasher,
@@ -254,4 +254,4 @@ let CryptoJS =
   i.HmacSHA1 = m._createHmacHelper(n)
 })()
 
-export { genHash, CryptoJS }
+export { CryptoJS, genHash }

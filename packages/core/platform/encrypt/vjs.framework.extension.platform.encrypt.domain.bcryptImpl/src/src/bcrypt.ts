@@ -1211,4 +1211,4 @@ bcrypt.encodeBase64 = base64_encode
  */
 bcrypt.decodeBase64 = base64_decode
 
-export { genHash, bcrypt }
+export { bcrypt, genHash }
