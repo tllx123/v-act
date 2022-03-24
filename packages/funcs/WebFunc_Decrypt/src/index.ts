@@ -1,3 +1,7 @@
+import { EncryptUtil as math } from '@v-act/vjs.framework.extension.platform.services.domain.encryption'
+
+//import * as math from '@v-act/vjs.framework.extension.platform.services.domain.encryption'
+
 /**
  *  Decrypt 解密函数
  * 输入：decryptValue：需要解密的值
