@@ -4,9 +4,9 @@ import * as bcrypt from '@v-act/vjs.framework.extension.platform.encrypt.domain.
 import * as cryptosha1 from '@v-act/vjs.framework.extension.platform.encrypt.domain.cryptosha1impl'
 import * as md5 from '@v-act/vjs.framework.extension.platform.encrypt.domain.md5impl'
 import * as sha1 from '@v-act/vjs.framework.extension.platform.encrypt.domain.sha1impl'
-import * as standardmd5 from '@v-act/vjs.framework.extension.platform.encrypt.domain.standardmd5impl'
+import * as standardMd5 from '@v-act/vjs.framework.extension.platform.encrypt.domain.standardmd5impl'
 
-const impls = { aes, base64, bcrypt, cryptosha1, md5, sha1, standardmd5 }
+const impls = { aes, base64, bcrypt, cryptosha1, md5, sha1, standardMd5 }
 
 /**
  * 获取运行时对应的具体加密实现服务
