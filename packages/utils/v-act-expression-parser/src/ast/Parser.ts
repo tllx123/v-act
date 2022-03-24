@@ -128,12 +128,16 @@ const parseToToken = function (expression: string) {
  * ====================================================================================================================
  * @param {Array<Word>} tokens
  */
-const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
+const parseToSyntax = function (
+  tokens: Array<Token | Syntax>,
+  parentContext?: SyntaxParseContext
+): Syntax {
   if (!tokens || tokens.length == 0) {
     return null
   }
   let syntaxList = getSyntaxs()
   const parseContext = new SyntaxParseContext()
+  parseContext.joinParentContext(parentContext)
   for (let i = 0, l = syntaxList.length; i < l; i++) {
     let SyntaxConstructor = syntaxList[i]
     let tokenNotSyntaxed = true

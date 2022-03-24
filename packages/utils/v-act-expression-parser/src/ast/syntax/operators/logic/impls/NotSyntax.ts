@@ -1,7 +1,8 @@
+import { BlankToken, NotToken, Token } from '@v-act/tokenizer'
+
 import { parseToSyntax } from '../../../../Parser'
 import Position from '../../../../Position'
 import SyntaxParseContext from '../../../../SyntaxParseContext'
-import { Token, BlankToken, NotToken } from '@v-act/tokenizer'
 import Syntax from '../../../Syntax'
 
 const getRightSyntax = function (index: number, tokens: Token[]) {
@@ -43,7 +44,10 @@ class NotSyntax extends Syntax {
       tokenEndIndex = right.index
       rightSyntax = right.syntax
     } else {
-      rightSyntax = parseToSyntax(tokens.slice(index + 1, tokens.length))
+      rightSyntax = parseToSyntax(
+        tokens.slice(index + 1, tokens.length),
+        context
+      )
       tokenEndIndex = tokens.length - 1
     }
     let position = new Position()
