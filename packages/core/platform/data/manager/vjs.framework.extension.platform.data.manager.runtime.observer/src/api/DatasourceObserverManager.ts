@@ -3,6 +3,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+import { number } from 'yargs'
 
 import * as datasourceOperationManager from '../api/DatasourceOperationManager'
 
@@ -14,7 +15,7 @@ let NotAsyncKey = 'notasync'
 
 let _combineOperation = true
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
 let _getObserverStorage = function () {
   let scope = scopeManager.getScope()
@@ -28,7 +29,7 @@ let _getObserverStorage = function () {
   return storage
 }
 
-const addObserver = function (observer) {
+const addObserver = function (observer: any) {
   let dsName = observer.getDatasourceName()
   let scopeId = windowMappingManager.getScopeId(dsName)
   let id = uuid.generate()
@@ -59,7 +60,7 @@ const addObserver = function (observer) {
   return id
 }
 
-const fire = function (params) {
+const fire = function (params: any) {
   if (_combineOperation) {
     datasourceOperationManager.addOperation(params)
     let storage = _getObserverStorage()
@@ -74,11 +75,12 @@ const fire = function (params) {
       }
     }
   } else {
+    // @ts-ignore
     this._callAsyncObservers(params)
   }
 }
 
-const _callAsyncObservers = function (params) {
+const _callAsyncObservers = function (params: any) {
   let storage = _getObserverStorage()
   let ds = params.datasource
   let metadata = ds.getMetadata()
@@ -94,25 +96,25 @@ const _callAsyncObservers = function (params) {
 
 const getBindedDatasourceNames = function () {
   let storage = _getObserverStorage()
-  let rs = []
-  storage.iterate(function (dsName, observers) {
+  let rs: any = []
+  storage.iterate(function (dsName: string, observers: any) {
     rs.push(dsName)
   })
   return rs
 }
 
-const destroy = function (ids) {
+const destroy = function (ids: string[]) {
   let storage = _getObserverStorage()
   for (let i = 0, l = ids.length; i < l; i++) {
-    storage.iterate(function (key, val) {
+    storage.iterate(function (key: any, val: any) {
       let asyncData = val[AsyncKey]
-      for (j = 0; j < asyncData.length; j++) {
+      for (let j = 0; j < asyncData.length; j++) {
         if (ids[i] == asyncData[j].getInstanceId()) {
           arrayUtil.remove(asyncData, asyncData[j])
         }
       }
       let notAsync = val[NotAsyncKey]
-      for (j = 0; j < notAsync.length; j++) {
+      for (let j = 0; j < notAsync.length; j++) {
         if (ids[i] == notAsync[j].getInstanceId()) {
           arrayUtil.remove(notAsync, notAsync[j])
         }

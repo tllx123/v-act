@@ -20,9 +20,9 @@ let contructors = {
   UnknowOperation
 }
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
-const create = function (params) {
+const create = function (params: any) {
   let eventName = params.eventName
   let Contructor = contructors[eventName]
   Contructor = Contructor ? Contructor : UnknowOperation
@@ -40,11 +40,11 @@ const create = function (params) {
 }
 
 export {
-  _callAsyncObservers,
-  addObserver,
-  addOperation,
-  create,
-  destroy,
-  fire,
-  getBindedDatasourceNames
+  // _callAsyncObservers,
+  // addObserver,
+  // addOperation,
+  create
+  // destroy,
+  // fire,
+  // getBindedDatasourceNames
 }
