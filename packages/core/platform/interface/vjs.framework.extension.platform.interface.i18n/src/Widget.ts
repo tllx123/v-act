@@ -1,6 +1,6 @@
 let WIDGET_I18N = {}
 
-const init = function (params) {
+const init = function (params: any) {
   let series = params.series,
     widgetType = params.widgetType
   let seriesPool = WIDGET_I18N[series]
@@ -11,22 +11,23 @@ const init = function (params) {
   seriesPool[widgetType] = params.items
 }
 
-const get = function (params) {
+const get = function (params: any) {
   let seriesPool = WIDGET_I18N[params.series]
   if (seriesPool) {
-    let widgetPool = seriesPool[params.widgetType]
+    let widgetPool: any = seriesPool[params.widgetType]
     if (widgetPool) {
+      // @ts-ignore
       return widgetPool[code] || params.defaultVal
     }
   }
   return params.defaultVal
 }
 
-const getAll = function (params) {
+const getAll = function (params: any) {
   let seriesPool = WIDGET_I18N[params.series],
     result = {}
   if (seriesPool) {
-    let widgetPool = seriesPool[params.widgetType]
+    let widgetPool: any = seriesPool[params.widgetType]
     if (widgetPool) {
       for (let attr in widgetPool) {
         if (widgetPool.hasOwnProperty(attr)) {
@@ -38,11 +39,13 @@ const getAll = function (params) {
   return result
 }
 
-const has = function (params) {
+const has = function (params: any) {
   let seriesPool = WIDGET_I18N[params.series]
   let widgetType = params.widgetType
+  // @ts-ignore
   if (seriesPool && widgetPool.hasOwnProperty(widgetType)) {
     let widgetPool = seriesPool[widgetType]
+    // @ts-ignore
     if (widgetPool && widgetPool.hasOwnProperty(code)) {
       return true
     }
@@ -51,20 +54,16 @@ const has = function (params) {
 }
 
 export {
-  initResourcePackage,
-  init,
-  initExp,
-  getResourcePackage,
-  getExpLanguage,
-  get,
-  hasResourcePackage,
-  hasExpLanguage,
+  // initResourcePackage,
+
+  // initExp,
+  // getResourcePackage,
+  // getExpLanguage,
+
+  // hasResourcePackage,
+  // hasExpLanguage,
   has,
   init,
   get,
-  has,
-  init,
-  get,
-  getAll,
-  has
+  getAll
 }

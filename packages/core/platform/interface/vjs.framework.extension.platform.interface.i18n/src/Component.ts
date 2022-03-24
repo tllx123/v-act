@@ -4,19 +4,19 @@ let COMPONENT_I18N = {}
 
 let COMPONENT_EXP = {}
 
-const initResourcePackage = function (params) {
+const initResourcePackage = function (params: any) {
   COMPONENT_RESOURCE_PACKAGE[params.componentCode] = params.items
 }
 
-const init = function (params) {
+const init = function (params: any) {
   COMPONENT_I18N[params.componentCode] = params.items
 }
 
-const initExp = function (params) {
+const initExp = function (params: any) {
   COMPONENT_EXP[params.componentCode] = params.items
 }
 
-const getResourcePackage = function (params) {
+const getResourcePackage = function (params: any) {
   let items = COMPONENT_RESOURCE_PACKAGE[params.componentCode]
   if (items) {
     return items[params.code] || ''
@@ -24,7 +24,7 @@ const getResourcePackage = function (params) {
   return ''
 }
 
-const getExpLanguage = function (params) {
+const getExpLanguage = function (params: any) {
   let items = COMPONENT_EXP[params.componentCode]
   if (items) {
     return items[params.code] || ''
@@ -32,7 +32,7 @@ const getExpLanguage = function (params) {
   return ''
 }
 
-const get = function (params) {
+const get = function (params: any) {
   let items = COMPONENT_I18N[params.componentCode]
   if (items) {
     return items[params.code] || params.defaultVal
@@ -49,7 +49,7 @@ const get = function (params) {
  * 		code			:	String	多语言项编号
  * }
  * */
-function exist(obj, params) {
+function exist(obj: any, params: any) {
   let componentCode = params.componentCode
   let code = params.code
   let items = obj[componentCode]
@@ -59,15 +59,15 @@ function exist(obj, params) {
   return false
 }
 
-const hasResourcePackage = function (params) {
+const hasResourcePackage = function (params: any) {
   return exist(COMPONENT_RESOURCE_PACKAGE, params)
 }
 
-const hasExpLanguage = function (params) {
+const hasExpLanguage = function (params: any) {
   return exist(COMPONENT_EXP, params)
 }
 
-const has = function (params) {
+const has = function (params: any) {
   return exist(COMPONENT_I18N, params)
 }
 
