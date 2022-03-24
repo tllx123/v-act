@@ -1,1 +1,1 @@
-export * from './DropDownSourceEventHandler'
+export * as DropDownSourceEventHandler from './DropDownSourceEventHandler'

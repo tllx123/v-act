@@ -99,8 +99,19 @@ function Index(){
                 componentCode: string,
                 windowCode: string,
                 title: string,
-                param: { [code: string]: any }
+                param: { [code: string]: any },
+                callback:(...args:any[])=>any
               ) => {
+                const callbackId = "__dialog_win_close_cb_"+(thisLevel + 1);
+                window[callbackId] = ()=>{
+                  try{
+                    if(typeof callback == 'function'){
+                      callback();
+                    }
+                  }finally{
+                    delete window[callbackId];
+                  }
+                }
                 router.push({
                   pathname: `/${componentCode}/${windowCode}`,
                   query: {

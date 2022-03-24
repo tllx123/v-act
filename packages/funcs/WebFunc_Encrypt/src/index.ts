@@ -1,3 +1,5 @@
+//import * as math from '@v-act/vjs.framework.extension.util.math'
+import { EncryptUtil as math } from '@v-act/vjs.framework.extension.platform.services.domain.encryption'
 /**
  *  Encrypt 加密函数
  * 输入：encryptValue：需要加密的值
@@ -6,7 +8,6 @@
  *
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as math from '@v-act/vjs.framework.extension.util.math'
 
 const vds = { exception }
 

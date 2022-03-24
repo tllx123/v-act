@@ -2,14 +2,14 @@
  * bcrypt namespace.
  * @type {Object.<string,*>}
  */
-let bcrypt = {}
+var bcrypt = {}
 
 /**
  * The random implementation to use as a fallback.
  * @type {?function(number):!Array.<number>}
  * @inner
  */
-let randomFallback = null
+var randomFallback = null
 
 /**
  * Generates cryptographically secure random bytes.
@@ -25,7 +25,7 @@ function random(len) {
       return require('crypto')['randomBytes'](len)
     } catch (e) {}
   /* WCA */ try {
-    let a
+    var a
     ;(self['crypto'] || self['msCrypto'])['getRandomValues'](
       (a = new Uint32Array(len))
     )
@@ -39,7 +39,7 @@ function random(len) {
 }
 
 // Test if any secure randomness source is available
-let randomAvailable = false
+var randomAvailable = false
 try {
   random(1)
   randomAvailable = true
@@ -76,7 +76,7 @@ bcrypt.genSaltSync = function (rounds, seed_length) {
     )
   if (rounds < 4) rounds = 4
   else if (rounds > 31) rounds = 31
-  let salt = []
+  var salt = []
   salt.push('$2a$')
   if (rounds < 10) salt.push('0')
   salt.push(rounds.toString())
@@ -198,9 +198,9 @@ bcrypt.hash = function (s, salt, callback, progressCallback) {
  * @inner
  */
 function safeStringCompare(known, unknown) {
-  let right = 0,
+  var right = 0,
     wrong = 0
-  for (let i = 0, k = known.length; i < k; ++i) {
+  for (var i = 0, k = known.length; i < k; ++i) {
     if (known.charCodeAt(i) === unknown.charCodeAt(i)) ++right
     else ++wrong
   }
@@ -312,7 +312,7 @@ bcrypt.getSalt = function (hash) {
  * @param {function(...[*])} callback Callback to execute
  * @inner
  */
-let nextTick =
+var nextTick =
   typeof process !== 'undefined' &&
   process &&
   typeof process.nextTick === 'function'
@@ -328,7 +328,7 @@ let nextTick =
  * @inner
  */
 function stringToBytes(str) {
-  let out = [],
+  var out = [],
     i = 0
   utfx.encodeUTF16toUTF8(
     function () {
@@ -350,7 +350,7 @@ function stringToBytes(str) {
  * @const
  * @inner
  **/
-let BASE64_CODE =
+var BASE64_CODE =
   './ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.split('')
 
 /**
@@ -358,7 +358,7 @@ let BASE64_CODE =
  * @const
  * @inner
  **/
-let BASE64_INDEX = [
+var BASE64_INDEX = [
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
   -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
@@ -372,7 +372,7 @@ let BASE64_INDEX = [
  * @type {!function(...number):string}
  * @inner
  */
-let stringFromCharCode = String.fromCharCode
+var stringFromCharCode = String.fromCharCode
 
 /**
  * Encodes a byte array to base64 with up to len bytes of input.
@@ -382,7 +382,7 @@ let stringFromCharCode = String.fromCharCode
  * @inner
  */
 function base64_encode(b, len) {
-  let off = 0,
+  var off = 0,
     rs = [],
     c1,
     c2
@@ -419,7 +419,7 @@ function base64_encode(b, len) {
  * @inner
  */
 function base64_decode(s, len) {
-  let off = 0,
+  var off = 0,
     slen = s.length,
     olen = 0,
     rs = [],
@@ -454,7 +454,7 @@ function base64_decode(s, len) {
     rs.push(stringFromCharCode(o))
     ++olen
   }
-  let res = []
+  var res = []
   for (off = 0; off < olen; off++) res.push(rs[off].charCodeAt(0))
   return res
 }
@@ -464,7 +464,7 @@ function base64_decode(s, len) {
  * Released under the Apache License, Version 2.0
  * see: https://github.com/dcodeIO/utfx for details
  */
-let utfx = (function () {
+var utfx = (function () {
   'use strict'
 
   /**
@@ -472,7 +472,7 @@ let utfx = (function () {
    * @inner
    * @type {!Object.<string,*>}
    */
-  let utfx = {}
+  var utfx = {}
 
   /**
    * Maximum valid code point.
@@ -488,7 +488,7 @@ let utfx = (function () {
    * @param {!function(number)} dst Bytes destination as a function successively called with the next byte
    */
   utfx.encodeUTF8 = function (src, dst) {
-    let cp = null
+    var cp = null
     if (typeof src === 'number')
       (cp = src),
         (src = function () {
@@ -521,13 +521,13 @@ let utfx = (function () {
    *  remaining bytes.
    */
   utfx.decodeUTF8 = function (src, dst) {
-    let a,
+    var a,
       b,
       c,
       d,
       fail = function (b) {
         b = b.slice(0, b.indexOf(null))
-        let err = Error(b.toString())
+        var err = Error(b.toString())
         err.name = 'TruncatedError'
         err['bytes'] = b
         throw err
@@ -563,7 +563,7 @@ let utfx = (function () {
    *  point.
    */
   utfx.UTF16toUTF8 = function (src, dst) {
-    let c1,
+    var c1,
       c2 = null
     while (true) {
       if ((c1 = c2 !== null ? c2 : src()) === null) break
@@ -589,7 +589,7 @@ let utfx = (function () {
    * @throws {RangeError} If a code point is out of range
    */
   utfx.UTF8toUTF16 = function (src, dst) {
-    let cp = null
+    var cp = null
     if (typeof src === 'number')
       (cp = src),
         (src = function () {
@@ -644,7 +644,7 @@ let utfx = (function () {
    * @returns {number} The number of UTF8 bytes required
    */
   utfx.calculateUTF8 = function (src) {
-    let cp,
+    var cp,
       l = 0
     while ((cp = src()) !== null) l += utfx.calculateCodePoint(cp)
     return l
@@ -657,7 +657,7 @@ let utfx = (function () {
    * @returns {!Array.<number>} The number of UTF8 code points at index 0 and the number of UTF8 bytes required at index 1.
    */
   utfx.calculateUTF16asUTF8 = function (src) {
-    let n = 0,
+    var n = 0,
       l = 0
     utfx.UTF16toUTF8(src, function (cp) {
       ++n
@@ -680,35 +680,35 @@ Date.now =
  * @const
  * @inner
  */
-let BCRYPT_SALT_LEN = 16
+var BCRYPT_SALT_LEN = 16
 
 /**
  * @type {number}
  * @const
  * @inner
  */
-let GENSALT_DEFAULT_LOG2_ROUNDS = 10
+var GENSALT_DEFAULT_LOG2_ROUNDS = 10
 
 /**
  * @type {number}
  * @const
  * @inner
  */
-let BLOWFISH_NUM_ROUNDS = 16
+var BLOWFISH_NUM_ROUNDS = 16
 
 /**
  * @type {number}
  * @const
  * @inner
  */
-let MAX_EXECUTION_TIME = 100
+var MAX_EXECUTION_TIME = 100
 
 /**
  * @type {Array.<number>}
  * @const
  * @inner
  */
-let P_ORIG = [
+var P_ORIG = [
   0x243f6a88, 0x85a308d3, 0x13198a2e, 0x03707344, 0xa4093822, 0x299f31d0,
   0x082efa98, 0xec4e6c89, 0x452821e6, 0x38d01377, 0xbe5466cf, 0x34e90c6c,
   0xc0ac29b7, 0xc97c50dd, 0x3f84d5b5, 0xb5470917, 0x9216d5d9, 0x8979fb1b
@@ -719,7 +719,7 @@ let P_ORIG = [
  * @const
  * @inner
  */
-let S_ORIG = [
+var S_ORIG = [
   0xd1310ba6, 0x98dfb5ac, 0x2ffd72db, 0xd01adfb7, 0xb8e1afed, 0x6a267e96,
   0xba7c9045, 0xf12c7f99, 0x24a19947, 0xb3916cf7, 0x0801f2e2, 0x858efc16,
   0x636920d8, 0x71574e69, 0xa458fea3, 0xf4933d7e, 0x0d95748f, 0x728eb658,
@@ -898,7 +898,7 @@ let S_ORIG = [
  * @const
  * @inner
  */
-let C_ORIG = [
+var C_ORIG = [
   0x4f727068, 0x65616e42, 0x65686f6c, 0x64657253, 0x63727944, 0x6f756274
 ]
 
@@ -912,12 +912,12 @@ let C_ORIG = [
  */
 function _encipher(lr, off, P, S) {
   // This is our bottleneck: 1714/1905 ticks / 90% - see profile.txt
-  let n,
+  var n,
     l = lr[off],
     r = lr[off + 1]
 
   l ^= P[0]
-  for (let i = 0, k = BLOWFISH_NUM_ROUNDS - 2; i <= k; )
+  for (var i = 0, k = BLOWFISH_NUM_ROUNDS - 2; i <= k; )
     // Feistel substitution on left word
     (n = S[(l >> 24) & 0xff]),
       (n += S[0x100 | ((l >> 16) & 0xff)]),
@@ -942,7 +942,7 @@ function _encipher(lr, off, P, S) {
  * @inner
  */
 function _streamtoword(data, offp) {
-  for (let i = 0, word = 0; i < 4; ++i)
+  for (var i = 0, word = 0; i < 4; ++i)
     (word = (word << 8) | (data[offp] & 0xff)),
       (offp = (offp + 1) % data.length)
   return { key: word, offp: offp }
@@ -955,12 +955,12 @@ function _streamtoword(data, offp) {
  * @inner
  */
 function _key(key, P, S) {
-  let offset = 0,
+  var offset = 0,
     lr = [0, 0],
     plen = P.length,
     slen = S.length,
     sw
-  for (let i = 0; i < plen; i++)
+  for (var i = 0; i < plen; i++)
     (sw = _streamtoword(key, offset)),
       (offset = sw.offp),
       (P[i] = P[i] ^ sw.key)
@@ -979,12 +979,12 @@ function _key(key, P, S) {
  * @inner
  */
 function _ekskey(data, key, P, S) {
-  let offp = 0,
+  var offp = 0,
     lr = [0, 0],
     plen = P.length,
     slen = S.length,
     sw
-  for (let i = 0; i < plen; i++)
+  for (var i = 0; i < plen; i++)
     (sw = _streamtoword(key, offp)), (offp = sw.offp), (P[i] = P[i] ^ sw.key)
   offp = 0
   for (i = 0; i < plen; i += 2)
@@ -1021,7 +1021,7 @@ function _ekskey(data, key, P, S) {
  * @inner
  */
 function _crypt(b, salt, rounds, callback, progressCallback) {
-  let cdata = C_ORIG.slice(),
+  var cdata = C_ORIG.slice(),
     clen = cdata.length,
     err
 
@@ -1043,7 +1043,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
     } else throw err
   }
   rounds = (1 << rounds) >>> 0
-  let P = P_ORIG.slice(),
+  var P = P_ORIG.slice(),
     S = S_ORIG.slice(),
     i = 0,
     j
@@ -1057,7 +1057,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
   function next() {
     if (progressCallback) progressCallback(i / rounds)
     if (i < rounds) {
-      let start = Date.now()
+      var start = Date.now()
       for (; i < rounds; ) {
         i = i + 1
         _key(b, P, S)
@@ -1067,7 +1067,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
     } else {
       for (i = 0; i < 64; i++)
         for (j = 0; j < clen >> 1; j++) _encipher(cdata, j << 1, P, S)
-      let ret = []
+      var ret = []
       for (i = 0; i < clen; i++)
         ret.push(((cdata[i] >> 24) & 0xff) >>> 0),
           ret.push(((cdata[i] >> 16) & 0xff) >>> 0),
@@ -1087,7 +1087,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
 
     // Sync
   } else {
-    let res
+    var res
     while (true) if (typeof (res = next()) !== 'undefined') return res || []
   }
 }
@@ -1103,7 +1103,7 @@ function _crypt(b, salt, rounds, callback, progressCallback) {
  * @inner
  */
 function _hash(s, salt, callback, progressCallback) {
-  let err
+  var err
   if (typeof s !== 'string' || typeof salt !== 'string') {
     err = Error('Invalid string / salt: Not a string')
     if (callback) {
@@ -1113,7 +1113,7 @@ function _hash(s, salt, callback, progressCallback) {
   }
 
   // Validate the salt
-  let minor, offset
+  var minor, offset
   if (salt.charAt(0) !== '$' || salt.charAt(1) !== '2') {
     err = Error('Invalid salt version: ' + salt.substring(0, 2))
     if (callback) {
@@ -1145,13 +1145,13 @@ function _hash(s, salt, callback, progressCallback) {
       return
     } else throw err
   }
-  let r1 = parseInt(salt.substring(offset, offset + 1), 10) * 10,
+  var r1 = parseInt(salt.substring(offset, offset + 1), 10) * 10,
     r2 = parseInt(salt.substring(offset + 1, offset + 2), 10),
     rounds = r1 + r2,
     real_salt = salt.substring(offset + 3, offset + 25)
   s += minor >= 'a' ? '\x00' : ''
 
-  let passwordb = stringToBytes(s),
+  var passwordb = stringToBytes(s),
     saltb = base64_decode(real_salt, BCRYPT_SALT_LEN)
 
   /**
@@ -1161,7 +1161,7 @@ function _hash(s, salt, callback, progressCallback) {
    * @inner
    */
   function finish(bytes) {
-    let res = []
+    var res = []
     res.push('$2')
     if (minor >= 'a') res.push(minor)
     res.push('$')
@@ -1211,4 +1211,4 @@ bcrypt.encodeBase64 = base64_encode
  */
 bcrypt.decodeBase64 = base64_decode
 
-export { genHash, bcrypt }
+export { bcrypt, genHash }

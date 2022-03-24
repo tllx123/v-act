@@ -1,1 +1,1 @@
-export * from './api/SystemConstant'
+export * as SystemConstant from './api/SystemConstant'

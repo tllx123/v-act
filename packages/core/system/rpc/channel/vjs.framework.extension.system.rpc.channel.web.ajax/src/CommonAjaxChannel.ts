@@ -1,30 +1,10 @@
-import { AbstractChannel } from '@v-act/vjs.framework.extension.system.rpc.channel'
+import AbstractChannel from './spi/AbstractChannel'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import { ObjectUtil as objectUtil } from '@v-act/vjs.framework.extension.util.object'
+import { CollectionUtil as cUtils } from '@v-act/vjs.framework.extension.util.collection'
 
-let objectUtil: any, cUtils: any
-
-let CommonAjaxChannel = function () {
-  AbstractChannel.apply(this, arguments)
-}
-
-CommonAjaxChannel.prototype = {
-  initModule: function (sb: any) {
-    objectUtil = sb.util.object
-    cUtils = sb.util.collections
-    var initFunc = AbstractChannel.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    var prototype = Object.create(AbstractChannel.prototype)
-    prototype.constructor = CommonAjaxChannel
-    objectUtil.extend(prototype, CommonAjaxChannel.prototype)
-    CommonAjaxChannel.prototype = prototype
-    var channelManager = sb.getService(
-      'vjs.framework.extension.system.rpc.channel.Manager'
-    )
-    channelManager.injectCurrentChannel(CommonAjaxChannel, 'common')
-  },
-  buildRequest: function (request: any, contract: any) {
+class CommonAjaxChannel extends AbstractChannel {
+  buildRequest(request: any, contract: any) {
     let data = {}
     let operations = request.getOperations()
     cUtils.each(operations, function (op: any) {
@@ -61,9 +41,8 @@ CommonAjaxChannel.prototype = {
       throw new Error('未识别异常，请联系系统管理员处理')
     }
     return body
-  },
-
-  request: function (request: any, contract: any) {
+  }
+  request(request: any, contract: any) {
     let ajax
     if ($) {
       ajax = $.ajax
@@ -79,5 +58,4 @@ CommonAjaxChannel.prototype = {
     ajax(request)
   }
 }
-
 export default CommonAjaxChannel

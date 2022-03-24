@@ -4,8 +4,11 @@ const init = function (params) {
   PLATFORM_POOL[params.vjsName] = params.items
 }
 
-const get = function (params) {
-  if (params && params.defaultVal) {
+const get = function (
+  params: string | { defaultVal: string; code?: string; vjsName: string },
+  detail?: string
+) {
+  if (typeof params == 'object' && params.defaultVal) {
     let vjsPool = PLATFORM_POOL[params.vjsName]
     if (vjsPool) {
       return vjsPool.hasOwnProperty(params.code)

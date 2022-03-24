@@ -1,1 +1,1 @@
-export * from './WidgetDatasource'
+export * as WidgetDatasource from './WidgetDatasource'

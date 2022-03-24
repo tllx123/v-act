@@ -61,6 +61,4 @@ class VPlatformContract extends Contract {
   }
 }
 
-manager.injectCurrentContract(VPlatformContract, 'vPlatform')
-
 export default VPlatformContract

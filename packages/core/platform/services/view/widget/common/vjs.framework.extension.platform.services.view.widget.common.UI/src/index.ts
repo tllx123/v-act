@@ -1,1 +1,1 @@
-export * from './handlColor'
+export * as handlColor from './handlColor'

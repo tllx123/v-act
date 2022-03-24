@@ -1,1 +1,1 @@
-export * from './WidgetModule'
+export * as WidgetModule from './WidgetModule'

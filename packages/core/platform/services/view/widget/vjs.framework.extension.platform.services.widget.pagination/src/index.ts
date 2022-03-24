@@ -1,1 +1,1 @@
-export * from './facade/api/Pagination'
+export * as Pagination from './facade/api/Pagination'

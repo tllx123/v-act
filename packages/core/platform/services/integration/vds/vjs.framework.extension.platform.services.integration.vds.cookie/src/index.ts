@@ -8,27 +8,9 @@
  * vds.import("vds.cookie.*");
  * vds.cookie.set("yindangu","123456");
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var cookie = vds.cookie
-if (!cookie) {
-  cookie = {}
-  vds.cookie = cookie
-}
 
-exports = cookie
+import { CookieUtil as cookieUtil } from '@v-act/vjs.framework.extension.platform.services.domain.cookie'
 
-var sandbox, cookieUtil
-
-export function initModule(sBox) {
-  sandbox = sBox
-  cookieUtil = sandbox.getService(
-    'vjs.framework.extension.platform.services.domain.cookie.cookieUtil'
-  )
-}
 /**
  * 删除cookie
  * @param {String} code 需要删除的cookie编码
@@ -40,7 +22,7 @@ export function initModule(sBox) {
  * @example
  * vds.cookie.remove("yindangu");
  * */
-export function remove(code, options) {
+export function remove(code: string, options: any) {
   cookieUtil.vcookie({
     name: code,
     value: null,
@@ -54,7 +36,7 @@ export function remove(code, options) {
  * @example
  * vds.cookie.get("yindangu");
  * */
-export function get(code) {
+export function get(code: string) {
   var cookieVal = cookieUtil.vcookie({
     name: code
   })
@@ -76,12 +58,10 @@ export function get(code) {
  * @example
  * vds.cookie.set("yindangu","123456");
  * */
-export function set(code, value, options) {
+export function set(code: string, value: string, options: any) {
   cookieUtil.vcookie({
     name: code,
     value: value,
     options: options
   })
 }
-
-module.exports = exports

@@ -77,7 +77,7 @@ class MultiContract extends Contract {
   }
 }
 
-manager.injectCurrentContract(MultiContract, 'multiVPlatform')
+//manager.injectCurrentContract(MultiContract, 'multiVPlatform')
 
 let _notBlank = function (str: string) {
   return str != null && str != undefined

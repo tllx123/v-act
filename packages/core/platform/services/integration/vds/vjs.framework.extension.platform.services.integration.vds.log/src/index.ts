@@ -16,7 +16,7 @@ import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
  * @example
  * vds.log.log("日志信息");
  */
-export function log(msg) {
+export function log(msg: string) {
   return logUtil.log(msg)
 }
 
@@ -26,7 +26,7 @@ export function log(msg) {
  * @example
  * vds.log.warn("警告日志");
  */
-export function warn(msg) {
+export function warn(msg: string) {
   return logUtil.warn(msg)
 }
 
@@ -36,6 +36,6 @@ export function warn(msg) {
  * @example
  * vds.log.error("错误日志");
  */
-export function error(msg) {
+export function error(msg: string) {
   return logUtil.error(msg)
 }

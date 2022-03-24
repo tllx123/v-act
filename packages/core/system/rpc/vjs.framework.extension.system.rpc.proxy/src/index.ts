@@ -1,1 +1,3 @@
-export * as Proxy from './api/Proxy'
+import Proxy from './api/Proxy'
+
+export { Proxy }

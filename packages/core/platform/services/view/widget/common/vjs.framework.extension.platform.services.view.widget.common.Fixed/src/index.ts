@@ -1,1 +1,1 @@
-export * from './FixedComponent'
+export * as FixedComponent from './FixedComponent'

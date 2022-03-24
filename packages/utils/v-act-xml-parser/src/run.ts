@@ -92,27 +92,35 @@ export const run = (resources: XMLElementObj[]): Function => {
   }
   ForInObj(resources, executionRules)
 
-  let returnFun = function (
+  return function (
     ruleEngine: {
-      executeWithRouteCallback: (config: {
-        ruleCode: string
-        routeContext: any
-      }) => void
+      executeWithRouteCallback: (
+        config: {
+          ruleCode: string
+          routeContext: any
+        },
+        func: (index: number) => any
+      ) => any
     },
     routeRuntime: any
   ) {
-    for (let code of codes) {
+    function runFun(index: number) {
       if (routeRuntime.isInterrupted()) {
         routeRuntime.fireRouteCallBack()
-        break
+        return
       }
-
-      ruleEngine.executeWithRouteCallback({
-        ruleCode: code,
-        routeContext: routeRuntime
-      })
+      ruleEngine.executeWithRouteCallback(
+        {
+          ruleCode: codes[index],
+          routeContext: routeRuntime
+        },
+        function () {
+          index++
+          if (index < codes.length) return runFun(index)
+        }
+      )
     }
-  }
 
-  return returnFun
+    return runFun(0)
+  }
 }

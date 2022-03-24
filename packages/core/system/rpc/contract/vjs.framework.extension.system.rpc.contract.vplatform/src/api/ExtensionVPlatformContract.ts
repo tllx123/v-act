@@ -155,6 +155,6 @@ class ExtensionVPlatformContract extends Contract {
   }
 }
 
-manager.injectCurrentContract(ExtensionVPlatformContract, 'extensionVPlatform')
+//manager.injectCurrentContract(ExtensionVPlatformContract, 'extensionVPlatform')
 
 export default ExtensionVPlatformContract

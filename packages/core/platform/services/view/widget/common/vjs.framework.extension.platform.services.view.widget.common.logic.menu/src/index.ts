@@ -1,1 +1,1 @@
-export * from './MenuDataTrans'
+export * as MenuDataTrans from './MenuDataTrans'

@@ -1,1 +1,1 @@
-export * from './api/WindowInit'
+export * as WindowInit from './api/WindowInit'

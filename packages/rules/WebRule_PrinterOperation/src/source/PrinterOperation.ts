@@ -18,6 +18,7 @@ let sandBox,
 
 export function initModule(sBox: any) {
   sandBox = sBox
+  //@ts-ignore
   window.showModalDialog = function (strPURL: string) {
     window.open(
       strPURL,

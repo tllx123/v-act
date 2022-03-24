@@ -20,7 +20,7 @@ const main = function (ruleContext: RuleContext) {
           var value = vds.expression.execute(
             'GetDropDownData("' + widgetId + '", true)',
             {
-              context: ruleContext
+              ruleContext: ruleContext
             }
           )
           vds.widget.execute(widgetId, 'loadData', [value])

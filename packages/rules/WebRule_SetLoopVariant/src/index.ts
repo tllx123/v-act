@@ -3,26 +3,27 @@
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
-const vds = { exception, expression }
-
 /**
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+
+const vds = { exception, expression }
+
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     try {
-      var inParamObj = ruleContext.getVplatformInput()
-      var varCode = inParamObj.LoopVar
-      var entity = inParamObj.LoopEntity
-      var fields = inParamObj.Fields
-      var datasource = ruleContext.getForEachObj(varCode)
+      const inParamObj = ruleContext.getVplatformInput()
+      const varCode = inParamObj.LoopVar
+      const entity = inParamObj.LoopEntity
+      const fields = inParamObj.Fields
+      const datasource = ruleContext.getForEachObj(varCode)
       if (datasource) {
-        var record = ruleContext.getForEachVar(varCode)
+        const record = ruleContext.getForEachVar(varCode)
         if (fields && fields.length > 0) {
-          for (var i = 0, l = fields.length; i < l; i++) {
-            var fieldInfo = fields[i]
-            var value = vds.expression.execute(fieldInfo.Source, {
+          for (let i = 0, l = fields.length; i < l; i++) {
+            const fieldInfo = fields[i]
+            const value = vds.expression.execute(fieldInfo.Source, {
               ruleContext: ruleContext
             })
             record.set(fieldInfo.LoopVarField, value)

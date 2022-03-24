@@ -53,6 +53,6 @@ class Contract {
   }
 }
 
-manager.injectCurrentContract(Contract, null)
+//manager.injectCurrentContract(Contract, null)
 
 export default Contract

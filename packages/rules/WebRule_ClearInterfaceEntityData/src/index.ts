@@ -44,6 +44,4 @@ function HandleException(error_msg: any) {
   throw exception
 }
 
-exports.main = main
-
 export { main }

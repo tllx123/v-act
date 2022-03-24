@@ -1,4 +1,6 @@
-import { union as un } from 'underscore'
+import { underscore } from '@v-act/vjs.framework.extension.vendor.underscore'
+
+const un = underscore.union
 
 /**
  *查找下标

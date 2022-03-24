@@ -12,10 +12,7 @@ import { styled } from '@mui/material/styles'
 
 function DraggableComponent(props: PaperProps) {
   return (
-    <Draggable
-      handle="#draggable-dialog-title"
-      cancel={'[class*="MuiDialogContent-root"]'}
-    >
+    <Draggable handle="#draggable-dialog-title" cancel={'[class*="MuiDialogContent-root"]'}>
       <Paper {...props} />
     </Draggable>
   )
@@ -62,13 +59,18 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 
 interface PageModalProperty {
   title?: string
+  onClose?: (...args: any[]) => void
   children?: JSX.Element | JSX.Element[] | null
 }
 
 const PageModal = function (props: PageModalProperty) {
   const [open, setOpen] = React.useState(true)
+  const { onClose } = props
   const handleClose = () => {
     setOpen(false)
+    if (onClose) {
+      onClose()
+    }
   }
   if (!open) {
     return null
@@ -83,11 +85,7 @@ const PageModal = function (props: PageModalProperty) {
         open={open}
       >
         <BootstrapDialogTitle id="draggable-dialog-title" onClose={handleClose}>
-          <h4
-            style={{ lineHeight: '100%', fontSize: '16px', fontWeight: 'bold' }}
-          >
-            {props.title ? props.title : ''}
-          </h4>
+          <h4 style={{ lineHeight: '100%', fontSize: '16px', fontWeight: 'bold' }}>{props.title ? props.title : ''}</h4>
         </BootstrapDialogTitle>
         <DialogContent
           sx={{

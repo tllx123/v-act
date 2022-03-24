@@ -880,7 +880,7 @@ let WhereRestrictFactory = {
  * @param fetchMode 实例模式(已经作废)
  * @return WhereRestrict对象
  */
-let init = function (fetchMode) {
+let init = function (fetchMode?: string) {
   let params =
     typeof fetchMode == 'object' ? fetchMode : { fetchMode: fetchMode }
   let mode = params.fetchMode,

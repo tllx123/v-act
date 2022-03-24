@@ -4,6 +4,10 @@ import { ProgressBarUtil as progressBarUtil } from '@v-act/vjs.framework.extensi
 import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
+environment.parseCssStr(
+  '.front-end-alerter .modal-body{padding: 32px 32px 24px;}.front-end-alerter .modal-body .icon{position: absolute;left: 32px;top: 32px;width: 24px;height: 24px;line-height: 1;}.front-end-alerter .modal-body p, .front-end-alerter .modal-body h5{padding-left: 40px;color:#666;}.front-end-alerter .modal-body h5{font-weight: bold;}.modal-body>.error-msg{padding-top: 5px;line-height:2;max-height:160px;overflow:auto;}.front-end-alerter .modal-footer{padding: 0 32px 24px;border-top: 0;}.front-end-alerter .modal button{padding: 0 16px;}.front-end-alerter .modal-footer button{height: 32px;line-height: 32px;font-size:12px;}.front-end-alerter .modal{width:530px;}.front-end-alerter .modal-footer .toggle-extra{font-size:12px;padding: 0 28px 0 16px;height: 32px;line-height: 32px;float:right;}.front-end-alerter .modal-footer .toggle-extra>.icon-unfold{font-size:12px;right:46px;margin:0px;}.front-end-alerter .modal-extra.in{padding: 24px 0 0;}.front-end-alerter .modal-extra .extra-cont{padding: 0 32px;}'
+)
+
 let sandbox,
   modalCode = 'error_modal_div',
   isShowDialog = false
@@ -20,13 +24,6 @@ const TYPE = {
   CONFIG: 'ConfigException', //配置异常弹框
   BUSINESS: 'BusinessException', //业务异常弹框
   LOGIN: 'LoginException' //登录异常
-}
-
-const initModule = function (sb) {
-  sandbox = sb
-  environment.parseCssStr(
-    '.front-end-alerter .modal-body{padding: 32px 32px 24px;}.front-end-alerter .modal-body .icon{position: absolute;left: 32px;top: 32px;width: 24px;height: 24px;line-height: 1;}.front-end-alerter .modal-body p, .front-end-alerter .modal-body h5{padding-left: 40px;color:#666;}.front-end-alerter .modal-body h5{font-weight: bold;}.modal-body>.error-msg{padding-top: 5px;line-height:2;max-height:160px;overflow:auto;}.front-end-alerter .modal-footer{padding: 0 32px 24px;border-top: 0;}.front-end-alerter .modal button{padding: 0 16px;}.front-end-alerter .modal-footer button{height: 32px;line-height: 32px;font-size:12px;}.front-end-alerter .modal{width:530px;}.front-end-alerter .modal-footer .toggle-extra{font-size:12px;padding: 0 28px 0 16px;height: 32px;line-height: 32px;float:right;}.front-end-alerter .modal-footer .toggle-extra>.icon-unfold{font-size:12px;right:46px;margin:0px;}.front-end-alerter .modal-extra.in{padding: 24px 0 0;}.front-end-alerter .modal-extra .extra-cont{padding: 0 32px;}'
-  )
 }
 
 /**

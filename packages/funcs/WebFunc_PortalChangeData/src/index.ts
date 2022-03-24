@@ -1,1 +1,1 @@
-export * from './source/PortalChangeData'
+export * as PortalChangeData from './source/PortalChangeData'

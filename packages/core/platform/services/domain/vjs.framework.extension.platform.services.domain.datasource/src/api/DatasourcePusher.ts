@@ -1,3 +1,4 @@
+import { RouteContext } from '@v-act/vjs.framework.extension.platform.interface.route'
 import {
   ExpressionContext,
   ExpressionEngine as expressionEngine
@@ -5,20 +6,18 @@ import {
 import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { uuid as UUID } from '@v-act/vjs.framework.extension.util.uuid'
 
-export function initModule(sb) {}
-
-const removeAllRecords = function (params) {
+const removeAllRecords = function (params: Record<string, any>) {
   let dsName = params.datasourceName
   let datasource = dsManager.lookup({ datasourceName: dsName })
-  let ids = []
+  let ids: any[] = []
   let rs = datasource.getAllRecords()
-  rs.iterate(function (rd) {
+  rs.iterate(function (rd: Record<string, any>) {
     ids.push(rd.getSysId())
   })
   datasource.removeRecordByIds({ ids: ids })
 }
 
-const setFieldValue = function (params) {
+const setFieldValue = function (params: Record<string, any>) {
   let dsName = params.datasourceName,
     code = params.fieldCode,
     val = params.value
@@ -34,7 +33,7 @@ const setFieldValue = function (params) {
   datasource.updateRecords({ records: [record] })
 }
 
-const setValues = function (params) {
+const setValues = function (params: Record<string, any>) {
   let dsName = params.datasourceName,
     values = params.values
   let datasource = dsManager.lookup({ datasourceName: dsName })
@@ -51,7 +50,7 @@ const setValues = function (params) {
   }
 }
 
-const copyBetweenEntities = function (params) {
+const copyBetweenEntities = function (params: Record<string, any>) {
   let srcEntity = params.sourceEntity,
     destEntity = params.destEntity,
     valuesMapping = params.valuesMapping,
@@ -63,7 +62,7 @@ const copyBetweenEntities = function (params) {
   //根据值映射信息将记录载入目标实体
   for (let i = 0; i < srcAllRecords.length; i++) {
     let curRecord = srcAllRecords[i]
-    let paramValueObj = {}
+    let paramValueObj: Record<string, any> = {}
     let isExistValue = false
     for (let j = 0; j < valuesMapping.length; j++) {
       let mapping = valuesMapping[j]
@@ -96,25 +95,25 @@ const copyBetweenEntities = function (params) {
   return destEntity
 }
 
-let getRecords = function (ds, dataFilterType) {
+let getRecords = function (ds: Record<string, any>, dataFilterType: string) {
   let records
   if (dataFilterType == 'all') {
     records = ds.getAllRecords().toArray()
   } else {
-    inserted = ds.getInsertedRecords().toArray()
-    updated = ds.getUpdatedRecords().toArray()
+    let inserted = ds.getInsertedRecords().toArray()
+    let updated = ds.getUpdatedRecords().toArray()
     records = inserted.concat(updated)
   }
   return records
 }
 
-let getExpValue = function (exp, routeContext) {
+let getExpValue = function (exp: any, routeContext: RouteContext) {
   let context = new ExpressionContext()
   context.setRouteContext(routeContext)
   return expressionEngine.execute({ expression: exp, context: context })
 }
 
-const loadRecords = function (params) {
+const loadRecords = function (params: Record<string, any>) {
   let records = params.records
   if (records && records.length > 0) {
     let datas = []
@@ -132,10 +131,6 @@ const loadRecords = function (params) {
 
 export {
   copyBetweenEntities,
-  createRecords,
-  getFieldName,
-  getSelectedAndCurrentRecords,
-  hasChanged,
   loadRecords,
   removeAllRecords,
   setFieldValue,

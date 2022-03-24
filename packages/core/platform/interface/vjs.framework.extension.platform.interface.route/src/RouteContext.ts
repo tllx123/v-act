@@ -4,6 +4,10 @@ import { AsyncFacotory as asyncFactory } from '@v-act/vjs.framework.extension.pl
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
 import {
+  ExceptionFactory as factory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
   ParamConfig,
   RouteConfig
 } from '@v-act/vjs.framework.extension.platform.interface.model.config'
@@ -11,13 +15,10 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { TransactionManager as transactionManager } from '@v-act/vjs.framework.extension.platform.transaction.manager'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
-import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import { TransactionInfo } from '../../vjs.framework.extension.platform.interface.model.config/src/api/types'
 import RuleContext from './RuleContext'
-
-const extend = ObjectUtil.extend
 
 /**
  * @namespace RouteContext
@@ -1059,12 +1060,12 @@ class RouteContext {
         }
       }
       if (type == this.EXCEPTION) {
-        this._fireEvent(this.Events.EXCEPTION)
+        this._fireEvent(RouteContext.Events.EXCEPTION)
       } else {
         //非异常中断,提交事务,异常中断交给外层回滚事务
         this._dealTransaction()
         //this._dealSnapshot();
-        this._fireEvent(this.Events.INTERRUPT)
+        this._fireEvent(RouteContext.Events.INTERRUPT)
       }
     }
     this.__currentRuleResult__ = false
@@ -1594,7 +1595,5 @@ let _getTransactionManager = function () {
   //没有主动添加依赖，所以实时获取服务
   return transactionManager
 }
-
-RouteContext.Events = RouteContext.prototype.Events
 
 export default RouteContext

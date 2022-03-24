@@ -81,7 +81,7 @@ abstract class BinaryExpressionSyntax extends Syntax {
       leftSyntax = left.syntax
     } else {
       tokenStartIndex = 0
-      leftSyntax = parseToSyntax(tokens.slice(0, index))
+      leftSyntax = parseToSyntax(tokens.slice(0, index), context)
     }
     let right = getRightSyntax(index + this.SYMBOL.length - 1, <Token[]>tokens)
     if (right) {
@@ -89,7 +89,10 @@ abstract class BinaryExpressionSyntax extends Syntax {
       rightSyntax = right.syntax
     } else {
       tokenEndIndex = tokens.length - 1
-      rightSyntax = parseToSyntax(tokens.slice(index + 1, tokens.length))
+      rightSyntax = parseToSyntax(
+        tokens.slice(index + 1, tokens.length),
+        context
+      )
     }
     position.parseStartToken(<Token>tokens[index])
     position.parseEndToken(<Token>tokens[index + this.SYMBOL.length - 1])

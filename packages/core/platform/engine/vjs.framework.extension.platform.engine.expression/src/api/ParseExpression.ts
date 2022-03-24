@@ -7,9 +7,11 @@ const ParseExpression = function (exp: string) {
     printComponentVarSyntax: function (syntax, print) {
       return 'context.getComponontVar("' + syntax.getCode() + '")'
     },
+
     printWindowVarSyntax: function (syntax, print) {
       return 'context.getWindowVar("' + syntax.getCode() + '")'
     },
+
     printEntityFieldSyntax: function (syntax, print) {
       return (
         'context.getRecordValue("' +
@@ -19,6 +21,7 @@ const ParseExpression = function (exp: string) {
         '")'
       )
     },
+
     printWidgetPropertySyntax: function (syntax, print) {
       return (
         'context.getWidgetProperty("' +
@@ -28,10 +31,10 @@ const ParseExpression = function (exp: string) {
         '")'
       )
     },
+
     printFunctionSyntax: function (syntax, print) {
-      const script = ['context.executeFunction("']
+      const script = ['context.executeFunction(']
       script.push('"')
-      script.push(',')
       script.push(syntax.getCode())
       script.push('"')
       script.push(',')
@@ -96,6 +99,49 @@ const ParseExpression = function (exp: string) {
     },
     printNotEqualSyntax: function (syntax, print) {
       return `${print(syntax.getLeft())}!=${print(syntax.getRight())}`
+    },
+    printStringIdentifierSyntax: function (syntax, print) {
+      return `context.getString("${syntax.getValue()}")`
+    },
+    // printNumberIdentifierSyntax: function (syntax, print) {
+    //    return `context.getNumber("${syntax.getValue()}")`
+    // },
+
+    printAddSyntax: function (syntax, print) {
+      return (
+        'context.evaluateAdd("' +
+        syntax.getLeft() +
+        '","' +
+        syntax.getRight() +
+        '")'
+      )
+    },
+    printSubtractSyntax: function (syntax, print) {
+      return (
+        'context.evaluateSub("' +
+        syntax.getLeft() +
+        '","' +
+        syntax.getRight() +
+        '")'
+      )
+    },
+    printMultiplySyntax: function (syntax, print) {
+      return (
+        'context.evaluateMult("' +
+        syntax.getLeft() +
+        '","' +
+        syntax.getRight() +
+        '")'
+      )
+    },
+    printDivideSyntax: function (syntax, print) {
+      return (
+        'context.evaluateDiv("' +
+        syntax.getLeft() +
+        '","' +
+        syntax.getRight() +
+        '")'
+      )
     }
   })
 }

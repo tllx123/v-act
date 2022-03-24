@@ -8,18 +8,30 @@
  * vds.import("vds.rpc.*");
  * var date = vds.rpc.getDate();
  */
-var vds = window.vds
-if (!vds) {
-  vds = {}
-  window.vds = vds
-}
-var rpc = vds.rpc
-if (!rpc) {
-  rpc = {}
-  vds.rpc = rpc
-}
 
-exports = rpc
+import { RPC as rpcEnum } from '@v-act/vjs.framework.extension.platform.interface.enum'
+import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import * as sysConstant from '@v-act/vjs.framework.extension.platform.services.constant'
+import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
+import {
+  ExpressionContext as EngineContext,
+  ExpressionEngine as engine
+} from '@v-act/vjs.framework.extension.platform.services.engine'
+import { RemoteMethodAccessor as serverRuleSetAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
+import { DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.access'
+import { DataQuery as dataQuery } from '@v-act/vjs.framework.extension.platform.services.repository.remote.base'
+import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import * as dataAdapter from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
+import { RPC } from '@v-act/vjs.framework.extension.system.rpc'
+import { DataValidateUtil as dataValidateUtil } from '@v-act/vjs.framework.extension.util.datavalidate'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import { plupload } from '@v-act/vjs.framework.extension.vendor.plupload'
+
+import RuleContext from '../../vjs.framework.extension.platform.services.integration.vds.rule/src/RuleContext'
+;('vjs.framework.extension.util.DataValidateUtil')
 
 /**
  * 超时类型
@@ -44,8 +56,6 @@ const Timeout = {
   Infinite: 'INFINITE'
 }
 
-export { Timeout }
-
 /**
  * 查询类型
  * @enum {String}
@@ -61,66 +71,8 @@ const QueryType = {
   Query: 'Query'
 }
 
-export { QueryType }
+export { QueryType, Timeout }
 
-var RPC,
-  sysConstant,
-  dataAdapter,
-  serverRuleSetAccessor,
-  scopeManager,
-  rpcEnum,
-  DataAccessObject,
-  dataValidateUtil,
-  factory,
-  operation,
-  widgetAction,
-  WhereRestrict
-var engine, EngineContext, dataQuery
-export function initModule(sBox) {
-  RPC = sBox.getService('vjs.framework.extension.system.RPC')
-  sysConstant = sBox.getService(
-    'vjs.framework.extension.platform.services.constant.SystemConstant'
-  )
-  dataAdapter = sBox.getService(
-    'vjs.framework.extension.platform.services.viewmodel.dataadapter.DataAdapter'
-  )
-  serverRuleSetAccessor = sBox.getService(
-    'vjs.framework.extension.platform.services.operation.remote.RemoteMethodAccessor'
-  )
-  WhereRestrict = sBox.getService(
-    'vjs.framework.extension.platform.services.where.restrict.WhereRestrict'
-  )
-  scopeManager = sBox.getService(
-    'vjs.framework.extension.platform.interface.scope.ScopeManager'
-  )
-  rpcEnum = sBox.getService(
-    'vjs.framework.extension.platform.interface.enum.RPC'
-  )
-  widgetAction = sBox.getService(
-    'vjs.framework.extension.platform.services.view.widget.common.action.WidgetAction'
-  )
-  DataAccessObject = sBox.getService(
-    'vjs.framework.extension.platform.services.repository.data.object'
-  )
-  factory = sBox.getService(
-    'vjs.framework.extension.platform.interface.exception.ExceptionFactory'
-  )
-  engine = sBox.getService(
-    'vjs.framework.extension.platform.services.engine.expression.ExpressionEngine'
-  )
-  EngineContext = sBox.getService(
-    'vjs.framework.extension.platform.services.engine.expression.ExpressionContext'
-  )
-  dataQuery = sBox.getService(
-    'vjs.framework.extension.platform.services.repository.query'
-  )
-  dataValidateUtil = sBox.getService(
-    'vjs.framework.extension.util.DataValidateUtil'
-  )
-  operation = sBox.getService(
-    'vjs.framework.extension.platform.services.domain.operation.RemoteOperation'
-  )
-}
 /**
  * 获取当前域信息,此方法是为了补充请求后台的时需要的构件/窗体信息，如果当前域是窗体域，则有构件编码和窗体编码，如果当前域是构件域，则只有构件编码
  * @returns {Object}
@@ -145,7 +97,7 @@ var _getWindowInfo = function () {
   }
 }
 
-rpc.get = function (url) {
+export function get(url: string) {
   return new Promise(function (resolve, reject) {
     RPC.crossDomainRequest({
       host: url,
@@ -208,8 +160,12 @@ export function getDate() {
  *  }]
  * ]);
  */
-export function saveData(configs, ruleContext, params) {
-  return new Promise(function (resolve, reject) {
+export function saveData(
+  configs: string | any[],
+  ruleContext: RuleContext,
+  params: { isAsync: any; isLocalDb?: any; ruleContext?: RuleContext }
+) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       if (!configs) {
         resolve()
@@ -230,7 +186,7 @@ export function saveData(configs, ruleContext, params) {
           continue
         }
         entity = entity._get()
-        var entityCode = entity.getMetadata().getDatasourceName()
+        // var entityCode = entity.getMetadata().getDatasourceName()
         var tableCode = config.tableCode
         var fieldMappings = config.fieldMappings
         var autoFieldMapping = config.autoFieldMapping
@@ -328,16 +284,29 @@ export function saveData(configs, ruleContext, params) {
  * }
  */
 export function queryDataSync(
-  sourceCode,
-  sourceType,
-  target,
-  fieldMappings,
-  params
+  sourceCode: string | string[],
+  sourceType: string,
+  target: any,
+  fieldMappings: string | any[] | null,
+  params: {
+    where?: any
+    pageConfig?:
+      | { pageSize: number; recordStart: number }
+      | { pageSize: number; recordStart: number }
+      | { pageSize: number; recordStart: number }
+    methodContext?: any
+    CheckUnique?: boolean
+    success?:
+      | ((resultData: Record<string, any>[]) => void)
+      | ((result: any[]) => void)
+      | ((result: any[]) => void)
+    fail?: any
+  }
 ) {
   try {
-    var extraParams = params || {}
-    var successFunc = extraParams.success || function () {}
-    var failFunc = extraParams.fail || function () {}
+    var extraParams: any = params || {}
+    var successFunc: any = extraParams.success || function () {}
+    var failFunc: any = extraParams.fail || function () {}
     if (!sourceCode || !sourceType) {
       successFunc()
       return
@@ -439,7 +408,7 @@ export function queryDataSync(
         isFieldAutoMapping: autoFieldMapping === true //是否自动映射字段
       }
     }
-    var command = {
+    var command: any = {
       config: {
         where: where,
         pageSize: pageSize,
@@ -454,7 +423,7 @@ export function queryDataSync(
     if (methodContext && typeof methodContext._getRouteContext == 'function') {
       methodContext = methodContext._getRouteContext()
     }
-    var newConfig = {
+    var newConfig: Record<string, any> = {
       isAppend: extraParams.isAppend === false ? false : true,
       isConcurrent: false,
       isLocalDb: extraParams.isLocalDb === true,
@@ -547,19 +516,31 @@ export function queryDataSync(
  * @returns {Promise}
  */
 export function queryData(
-  sourceCode,
-  sourceType,
-  target,
-  fieldMappings,
-  params
+  sourceCode: string | string[],
+  sourceType: string,
+  target: Record<string, any>,
+  fieldMappings: string | any[] | null,
+  params: {
+    where?: any
+    pageConfig?:
+      | { pageSize: number; recordStart: number }
+      | { pageSize: any; recordStart: any }
+    autoFieldMapping?: boolean
+    treeStruct?: any
+    methodContext?: any
+    isAsync?: boolean
+    depth?: string
+    isAppend?: boolean
+    Senior?: { command: string; groupCrossConfig: any[]; type: number }
+  }
 ) {
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       if (!sourceCode || !sourceType) {
         resolve()
         return
       }
-      var extraParams = params || {}
+      var extraParams: Record<string, any> = params || {}
       var pageConfig = extraParams.pageConfig
       //每页记录数
       var pageSize = -1
@@ -658,7 +639,7 @@ export function queryData(
           isFieldAutoMapping: autoFieldMapping === true //是否自动映射字段
         }
       }
-      var command = {
+      var command: any = {
         config: {
           where: where,
           pageSize: pageSize,
@@ -677,7 +658,7 @@ export function queryData(
         methodContext = methodContext._getRouteContext()
       }
 
-      var newConfig = {
+      var newConfig: Record<string, any> = {
         isAppend: extraParams.isAppend === false ? false : true,
         isConcurrent: false,
         isLocalDb: extraParams.isLocalDb === true,
@@ -762,9 +743,22 @@ export function queryData(
  *  console.err("调用失败.");
  * })
  */
-export function callCommand(code, datas, params) {
+export function callCommand(
+  this: any,
+  code: string,
+  datas: string | any[] | null,
+  params: {
+    [x: string]: any
+    isAsyn?: any
+    isRuleSetCode?: any
+    ruleContext?: any
+    isAsync?: any
+    isOperation?: any
+    operationParam?: any
+  }
+) {
   var __info = _getWindowInfo.apply(this)
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       if (vds.string.isEmpty(code)) {
         resolve()
@@ -878,7 +872,23 @@ export function callCommand(code, datas, params) {
  *  }
  * });
  */
-export function callCommandSync(code, datas, params) {
+export function callCommandSync(
+  this: any,
+  code: string,
+  datas: string | any[] | null,
+  params: {
+    [x: string]: any
+    isOperation?: any
+    operationParam?: any
+    success?: any
+    fail?: any
+    error?: ((e: any) => never) | ((e: any) => never)
+    isAsync?: any
+    CertPicCode?: string
+    isRuleSetCode?: any
+    ruleContext?: any
+  }
+) {
   params = params || {}
   var success = params.success || function () {}
   var fail = params.fail || function () {}
@@ -983,7 +993,7 @@ export function callCommandSync(code, datas, params) {
  * 	console.log("请求失败");
  * })
  * */
-export function callWebapi(webAPISite, params) {
+export function callWebapi(webAPISite: string, params: Record<string, any>) {
   return new Promise(function (resolve, reject) {
     try {
       if (!webAPISite) {
@@ -1077,18 +1087,21 @@ export function callWebapi(webAPISite, params) {
  *  }]
  * }]);
  * */
-export function importExcel(configs, params) {
+export function importExcel(
+  configs: string | any[],
+  params: { methodContext?: any; widgetCode?: any }
+) {
   var __params = params || {}
   var __info = _getWindowInfo()
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var methodContext = __params.methodContext
         ? __params.methodContext._getRouteContext()
         : null
       var widgetCode = __params.widgetCode
       var transaction_id = methodContext && methodContext.getTransactionId()
-      var treeStructs = []
-      var items = []
+      var treeStructs: any[] = []
+      var items: any[] = []
       var varMaps = {}
       var ruleConfig = {
         fileSource: '',
@@ -1166,7 +1179,7 @@ export function importExcel(configs, params) {
           transaction_id /**后台需要这个进行事物管理, 事物id变量错误，导致没有与前一个事务串联 jiqj*/
       }
       if (widgetCode) {
-        var callback = function (arg2, error) {
+        var callback = function (arg2: any, error: any) {
           if (error.success === false) {
             var exception = factory.create(error)
             reject(exception)
@@ -1189,7 +1202,7 @@ export function importExcel(configs, params) {
       var fileInput =
         "<div id='importExcelToDBFileButton' style='display:none'>隐藏按钮</div>"
       $('body').append(fileInput)
-      var error_msg
+      var error_msg: { success: boolean; msg: string }
       var plupload_upload_obj = new plupload.Uploader({
         //实例化一个plupload上传对象
         runtimes: 'html5,flash,html4',
@@ -1198,15 +1211,19 @@ export function importExcel(configs, params) {
         multipart_params: {},
         multi_selection: false,
         init: {
-          FilesAdded: function (uploader, files) {
+          FilesAdded: function (uploader: any, files: any) {
             //添加文件触发
             plupload_upload_obj.start()
           },
-          FileUploaded: function (uploader, file, responseObject) {
+          FileUploaded: function (
+            uploader: any,
+            file: any,
+            responseObject: { response: { success: boolean; msg: string } }
+          ) {
             //每个文件上传完成触发
             error_msg = responseObject.response
           },
-          UploadComplete: function (uploader, files) {
+          UploadComplete: function (uploader: any, files: any) {
             //全部文件上传完成触发
             if (error_msg && typeof error_msg == 'string') {
               try {
@@ -1217,7 +1234,8 @@ export function importExcel(configs, params) {
               var msg = error_msg.msg || '导入失败'
               var exception = factory.create({
                 message: msg,
-                type: factory.TYPES.System
+                type: factory.TYPES.System,
+                exceptionDatas: []
               })
               exception.markServiceException()
               reject(exception)
@@ -1225,33 +1243,30 @@ export function importExcel(configs, params) {
               resolve()
             }
           },
-          Error: function (uploader, errObject) {
+          Error: function (uploader: any, errObject: { code: any }) {
             var ERROR_CODE = {
-              '-100': vdk.i18n.get('上传失败', 'Excel导入失败的通用提示'), //发生通用错误时的错误代码
-              '-200': vdk.i18n.get('网络异常', '无法访问网络导致失败的信息'), //发生http网络错误时的错误代码，例如服务器端返回的状态码不是200
-              '-300': vdk.i18n.get(
+              '-100': i18n.get('上传失败', 'Excel导入失败的通用提示'), //发生通用错误时的错误代码
+              '-200': i18n.get('网络异常', '无法访问网络导致失败的信息'), //发生http网络错误时的错误代码，例如服务器端返回的状态码不是200
+              '-300': i18n.get(
                 '文件读取失败',
                 '导入文件无法读取导致失败的信息'
               ), //发生磁盘读写错误时的错误代码，例如本地上某个文件不可读
-              '-400': vdk.i18n.get(
-                '网络安全异常',
-                '网络安全问题导致失败的信息'
-              ), //发生因为安全问题而产生的错误时的错误代码
-              '-500': vdk.i18n.get('初始化失败', '导入插件初始化失败的信息'), //初始化时发生错误的错误代码
-              '-600': vdk.i18n.get(
+              '-400': i18n.get('网络安全异常', '网络安全问题导致失败的信息'), //发生因为安全问题而产生的错误时的错误代码
+              '-500': i18n.get('初始化失败', '导入插件初始化失败的信息'), //初始化时发生错误的错误代码
+              '-600': i18n.get(
                 '对不起，上传的文件太大',
                 '上传文件过大导致失败的信息'
               ),
-              '-601': vdk.i18n.get(
+              '-601': i18n.get(
                 '对不起，上传的文件类型不允许',
                 '上传文件类型不允许导致失败的信息'
               ),
-              '-602': vdk.i18n.get(
+              '-602': i18n.get(
                 '执行失败',
                 '选取了重复的文件而配置中又不允许有重复文件时的错误信息'
               ), //当选取了重复的文件而配置中又不允许有重复文件时的错误代码
-              '-700': vdk.i18n.get('图片格式错误', '图片格式错误时的错误信息'), //发生图片格式错误时的错误代码
-              '-702': vdk.i18n.get(
+              '-700': i18n.get('图片格式错误', '图片格式错误时的错误信息'), //发生图片格式错误时的错误代码
+              '-702': i18n.get(
                 '文件大小超过可处理范围，请分批上传',
                 '上传的文件超过最大的处理时的错误信息'
               ) //当文件大小超过了plupload所能处理的最大值时的错误代码
@@ -1263,7 +1278,8 @@ export function importExcel(configs, params) {
             }
             var exception = factory.create({
               message: error,
-              type: factory.TYPES.System
+              type: factory.TYPES.System,
+              exceptionDatas: []
             })
             reject(exception)
           },
@@ -1286,7 +1302,9 @@ export function importExcel(configs, params) {
       appendUrl += '&' + 'componentCode=' + option.componentCode
       appendUrl += '&' + 'windowCode=' + option.windowCode
       plupload_upload_obj.settings.url = appendUrl
-      plupload_upload_obj._handleRequestDataByV3 = function (datas) {
+      plupload_upload_obj._handleRequestDataByV3 = function (datas: {
+        [x: string]: any
+      }) {
         if (datas && dataValidateUtil.genAsciiCode) {
           var url = this.settings.url
           if (undefined != url && url.indexOf('?') != -1) {
@@ -1304,7 +1322,8 @@ export function importExcel(configs, params) {
         }
       }
       plupload_upload_obj.settings.multipart_params.token = encodeURI(
-        isc.JSON.encode(token)
+        // isc.JSON.encode(token)
+        JSON.stringify(token)
       )
       plupload_upload_obj.init()
     } catch (err) {
@@ -1312,4 +1331,3 @@ export function importExcel(configs, params) {
     }
   })
 }
-module.exports = exports

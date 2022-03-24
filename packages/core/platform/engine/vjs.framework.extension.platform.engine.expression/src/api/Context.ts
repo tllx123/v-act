@@ -1,11 +1,12 @@
-import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 export default class Context {
-  private context: any
-  private routeContext: any
+  private readonly context: any
+  private readonly routeContext: any
 
   constructor(context: any) {
     this.context = context
@@ -67,19 +68,7 @@ export default class Context {
   /**
    * 函数运行
    * */
-  executeFunction() {
-    if (arguments.length < 1)
-      throw new Error('[Context.executeFunction]运行失败，未传参！')
-
-    let functionName: string = arguments[0]
-    let args = []
-
-    for (let i = 0; i < arguments.length; i++) {
-      if (i < 1) continue
-      let result: Function = new Function('context', `return ${arguments[i]}`)
-      args.push(result(this))
-    }
-
+  executeFunction(functionName: string, ...args: any[]) {
     return FunctionEngine.execute({
       functionName: functionName,
       context: new FunctionContext(args, this.routeContext)
@@ -189,6 +178,59 @@ export default class Context {
    *获取活动集变量值
    */
   getRulesetVar(entityName: string) {
-    return this.routeContext.routeContext.getVariable(entityName)
+    return this.routeContext.getVariable(entityName)
+  }
+  getString(string: string) {
+    return string
+  }
+
+  getNumber(v: string) {
+    return Number(v)
+  }
+
+  /**
+   *获取加法结果
+   */
+  evaluateAdd(v1: number, v2: number) {
+    if (!isNaN(v1) && !isNaN(v2)) {
+      let val = MathUtil.add(v1, v2)
+      return Number(val)
+    } else {
+      throw new Error(v1 + ',' + v2 + ' add type is wrong')
+    }
+  }
+
+  /**
+   * 获取乘法结果
+   */
+  evaluateSub(v1: number, v2: number) {
+    if (!isNaN(v1) && !isNaN(v2)) {
+      let val = MathUtil.subtract(v1, v2)
+      return Number(val)
+    } else {
+      throw new Error(v1 + ',' + v2 + ' subtract type is wrong')
+    }
+  }
+  /**
+   * 获取乘法结果
+   */
+  evaluateMult(v1: number, v2: number) {
+    if (!isNaN(v1) && !isNaN(v2)) {
+      let val = MathUtil.multiply(v1, v2)
+      return Number(val)
+    } else {
+      throw new Error(v1 + ',' + v2 + ' multiply type is wrong')
+    }
+  }
+  /**
+   * 获取乘法结果
+   */
+  evaluateDiv(v1: number, v2: number) {
+    if (!isNaN(v1) && !isNaN(v2)) {
+      let val = MathUtil.divide(v1, v2)
+      return Number(val)
+    } else {
+      throw new Error(v1 + ',' + v2 + ' divide type is wrong')
+    }
   }
 }

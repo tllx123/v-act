@@ -59,6 +59,17 @@ class WindowScope extends Scope {
 
   customCloseFunc: null | ((...args: any[]) => void) = null
 
+  //窗体返回值
+  output = {
+    config: {
+      isSelectionConfirm: false //是否确认退出
+      //"isReturnValues":true//是否返回值
+    },
+    values: {
+      //"窗体输出变量名":"窗体输出变量值"
+    }
+  }
+
   constructor(
     instanceId: string | null,
     componentCode: string,
@@ -80,6 +91,22 @@ class WindowScope extends Scope {
     this.waterMark = false //是否有水印
     this.isSimple = false //是否简约窗体
     this.openMode = null //打开模式，locationHref（跳转），dialog（模态），retrunValues（模态），container（组件容器），vuiWindowContainer（vui容器）
+    //关闭模式， DestroyScope（销毁域）,CustomFunc（自定义关闭），默认为空，走原来逻辑：先用openMode决定销毁方式，如果没有openMode，按照入参【formulaOpenMode】决定。closeMode优先级高于openMode
+    this.closeMode = null
+    this.vjsContext = {}
+    this.rendered = false //是否渲染完成（准备执行窗体加载事件时设置成渲染完成）
+    //自定义关闭函数
+    this.customCloseFunc = null
+    //是否已经初始化数据源
+    this.initDatasource = false
+  }
+
+  markSelectionConfirmed() {
+    this.output.config.isSelectionConfirm = true
+  }
+
+  getOutput() {
+    return this.output
   }
 
   /**
@@ -373,6 +400,17 @@ class WindowScope extends Scope {
       return widgets
     }
     if (widgets) {
+      if (propertyName == 'widgetType' && !widgets[propertyName]) {
+        //兼容处理：窗体设计器预览之后暂时只走rendered，此时还没有widgetType
+        return widgets['_$WidgetType']
+      }
+      if (
+        !widgets[propertyName] &&
+        widgets.ProxyWidgetId &&
+        widgets.widgetObj
+      ) {
+        return widgets.widgetObj[propertyName]
+      }
       return widgets[propertyName]
     }
     return null

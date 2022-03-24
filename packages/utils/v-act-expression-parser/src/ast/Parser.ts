@@ -1,3 +1,5 @@
+import { parse as parse2ken, Token } from '@v-act/tokenizer'
+
 import Position from './Position'
 import BracketSyntax from './syntax/block/BracketSyntax'
 import BooleanIdentifierSyntax from './syntax/identifiers/BooleanIdentifierSyntax'
@@ -35,7 +37,6 @@ import BusinessWidgetPropertySyntax from './syntax/vplatform/widget/BusinessWidg
 import WidgetPropertySyntax from './syntax/vplatform/widget/WidgetPropertySyntax'
 import WorkflowVarSyntax from './syntax/vplatform/workflow/WorkflowVarSyntax'
 import SyntaxParseContext from './SyntaxParseContext'
-import { parse as parse2ken, Token } from '@v-act/tokenizer'
 
 let Synatx_Constructor_Cache = [
   UnknownSyntax,
@@ -127,12 +128,16 @@ const parseToToken = function (expression: string) {
  * ====================================================================================================================
  * @param {Array<Word>} tokens
  */
-const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
+const parseToSyntax = function (
+  tokens: Array<Token | Syntax>,
+  parentContext?: SyntaxParseContext
+): Syntax {
   if (!tokens || tokens.length == 0) {
     return null
   }
   let syntaxList = getSyntaxs()
   const parseContext = new SyntaxParseContext()
+  parseContext.joinParentContext(parentContext)
   for (let i = 0, l = syntaxList.length; i < l; i++) {
     let SyntaxConstructor = syntaxList[i]
     let tokenNotSyntaxed = true
@@ -227,8 +232,12 @@ const parseToSyntax = function (tokens: Array<Token | Syntax>): Syntax {
  */
 const parse = function (expression: string) {
   if (expression.trim() != '') {
-    let tokens = parseToToken(expression)
-    return parseToSyntax(tokens)
+    try {
+      let tokens = parseToToken(expression)
+      return parseToSyntax(tokens)
+    } catch (e) {
+      throw Error('表达式识别失败！表达式：' + expression)
+    }
   }
   return null
 }
