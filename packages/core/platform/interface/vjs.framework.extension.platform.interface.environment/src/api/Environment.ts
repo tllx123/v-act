@@ -1,5 +1,5 @@
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
-
+// @ts-ignore
 this._$v3platform_runtime_env = true
 const token = 'ENVIRONMENT_V3_INFO',
   RUNNING_MODE = 'RUNNING_MODE',
@@ -25,7 +25,7 @@ const token = 'ENVIRONMENT_V3_INFO',
 
 const storage = storageManager.get(storageManager.TYPES.MAP, token)
 
-const init = function (params) {
+const init = function (params: any) {
   if (params) {
     setDomain(params.domain)
     setOptimizeLink(params.optimizeLink)
@@ -50,7 +50,7 @@ const isEncryptToken = function () {
   return val === true
 }
 
-const setRunningMode = function (mode) {
+const setRunningMode = function (mode: any) {
   storage.put(RUNNING_MODE, mode)
 }
 
@@ -194,7 +194,7 @@ const setDomain = function (domain: null | string) {
  * �����Ż�����
  * @params	{Boolean}	optimize true���Ż���false�����Ż�
  * */
-let setOptimizeLink = function (optimize) {
+let setOptimizeLink = function (optimize: any) {
   storage.put(OPTIMIZELINK_KEY, optimize === true)
 }
 
@@ -344,10 +344,12 @@ let isChrome = function () {
 }
 
 let isIE8 = function () {
+  // @ts-ignore
   return isIE() && version() >= 8 && document.documentMode == 8
 }
 
 let isIE9 = function () {
+  // @ts-ignore
   return isIE() && version() >= 9 && document.documentMode >= 9
 }
 
