@@ -1,8 +1,22 @@
 import * as widgetAction from './WidgetAction'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
-let set = function (widgetId: any, propertyName: string) {
-  let actionName = 'set' + propertyName
-  return widgetAction.executeWidgetAction(widgetId, actionName)
+let set = function (widgetId: any, propertyName: string, propertyValue: any) {
+  //let actionName = 'set' + propertyName
+  //return widgetAction.executeWidgetAction(widgetId, actionName)
+  const windowScope = ScopeManager.getWindowScope()
+  const handler = windowScope.get('changeComponentByProperties')
+  if (handler) {
+    const attrs = {}
+    if (propertyName.length > 1) {
+      propertyName =
+        propertyName.substring(0, 2).toLowerCase() + propertyName.substring(2)
+    } else {
+      propertyName = propertyName.toLowerCase()
+    }
+    attrs[propertyName] = propertyValue
+    handler(widgetId, attrs)
+  }
 }
 
 let get = function (widgetId: any, propertyName: string) {
