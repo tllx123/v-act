@@ -1,9 +1,10 @@
 import { RuleContext as Context } from '@v-act/vjs.framework.extension.platform.interface.route'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import {
+  MethodContext,
+  RuleOutput
+} from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
-
-import MethodContext from './MethodContext'
-import RuleOutput from './RuleOutput'
 
 /**
  * 规则上下文定义

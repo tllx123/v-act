@@ -1,8 +1,16 @@
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 /**
  *根据身份证号获取生日日期
  *
  */
-vds.import('vds.object.*', 'vds.exception.*')
+//vds.import('vds.object.*', 'vds.exception.*')
+
+let vds = {
+  object,
+  exception
+}
 const main = function (id_card: string) {
   if (vds.object.isUndefOrNull(id_card)) {
     throw vds.exception.newConfigException('身份证号码不能为空！')
