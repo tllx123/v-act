@@ -1,11 +1,11 @@
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-import * as DataAccessObject from '../object/DataAccessObject'
-import * as DataProvider from '../object/DataProvider'
+import DataAccessObject from '../object/DataAccessObject'
+import DataProvider from '../object/DataProvider'
 
-export function initModule(sBox) {}
+// export function initModule(sBox) {}
 
-const serializer = function (rsDataValueStr, queryParam) {
+const serializer = function (rsDataValueStr: string, queryParam: unknown) {
   let rsDataObj = jsonUtil.json2obj(rsDataValueStr)
   let dataProvider = _genDataProviderObj(queryParam)
   let rsDataWidthProvider = _addProvider2RSData(rsDataObj, dataProvider)
@@ -15,8 +15,8 @@ const serializer = function (rsDataValueStr, queryParam) {
     let dataAccessObject = new DataAccessObject(
       data.dataSource,
       data.datas,
-      data.dataProvider,
-      data.metadata
+      data.dataProvider
+      // data.metadata
     )
     result.push(dataAccessObject)
   }
@@ -28,7 +28,7 @@ const serializer = function (rsDataValueStr, queryParam) {
  * @param rsDataObj 查询结果
  * @param loadCondition 各数据源的加载条件
  */
-let _addProvider2RSData = function (rsDataObj, dataProvider) {
+let _addProvider2RSData = function (rsDataObj: any, dataProvider: any) {
   if (rsDataObj && rsDataObj[0]) {
     rsDataObj[0]['dataProvider'] = dataProvider
   }
@@ -40,7 +40,7 @@ let _addProvider2RSData = function (rsDataObj, dataProvider) {
  * @param queryParam 查询体selectData列表
  * @return Object
  */
-let _genDataProviderObj = function (queryParam) {
+let _genDataProviderObj = function (queryParam: any) {
   let dataSourceName = queryParam.dataSourceName
   let dataSourceMappings = queryParam.dataSourceMappings
   let whereRestrict = queryParam.whereRestrict

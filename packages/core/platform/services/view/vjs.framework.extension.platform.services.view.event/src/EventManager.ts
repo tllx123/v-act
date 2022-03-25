@@ -262,8 +262,8 @@ var getPlatformWidgetEventAfter = function (
 let fireEvent = function (
   widgetId: string,
   eventName: string,
-  success: any,
-  fail: any
+  success?: any,
+  fail?: any
 ) {
   let scopeId = scopeManager.getCurrentScopeId()
   var winScope = scopeManager.getWindowScope()
