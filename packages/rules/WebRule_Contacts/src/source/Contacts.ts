@@ -16,7 +16,6 @@ import * as ContactsService from '@v-act/vjs.framework.extension.platform.servic
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 const main = function (ruleContext: RuleContext) {
-  debugger
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值
@@ -36,7 +35,6 @@ let getContactsInfo = function (
   ruleContext: RuleContext
 ) {
   ruleContext.markRouteExecuteUnAuto()
-  debugger
   let successCB = function (contactsInfo: Array<Record<string, any>>) {
     let datas = []
     if (contactsInfo) {

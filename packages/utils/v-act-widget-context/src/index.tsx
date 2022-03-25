@@ -1,5 +1,3 @@
-import { Datasource } from '@v-act/vjs.framework.extension.platform.datasource.taffy'
-
 import React, { ReactNode, useState } from 'react'
 import { Property } from 'csstype'
 
@@ -61,11 +59,9 @@ interface WidgetContextProps {
     context: WidgetContextProps
   ) => void
   inputVal?: any
-  TaffyDB_Data?: any
   insertDataFunc?: (data: any) => void
-  updataDataFunc?: (data: any) => void
+  updateDataFunc?: (data: any) => void
   removeDataFunc?: (data: any) => void
-  datasource?: any
 }
 
 interface ContextProviderProps {
@@ -74,7 +70,9 @@ interface ContextProviderProps {
 }
 
 const defaultContext: WidgetContextProps = {
-  position: 'absolute'
+  position: 'absolute',
+  entities: undefined,
+  instanceId: ''
 }
 
 const WidgetContext = React.createContext<WidgetContextProps>(defaultContext)
@@ -106,28 +104,23 @@ const ContextProvider = function (props: ContextProviderProps) {
   const context = props.context || { position: 'absolute' }
   const children = props.children
 
-  const [contextTemp, setVal] = useState(context)
-
-  //datasource操作函数
-  const [datasource] = useState(Datasource.DB())
-  const [TaffyDB_Data, setData] = useState(datasource.db.datas)
-  const [TaffyDB_search_Data, setSearchData] = useState(datasource.datas)
+  const [contextTemp, setVal] = useState([context])
 
   //插入
   const insertDataFunc = (params: any) => {
-    datasource.insertRecords(params)
-    setData(datasource.db.datas)
+    const entities = contextTemp.entities
+    if (entities) {
+      const entity = entities[params.code]
+      if (entity) {
+        entity.datas.push(params.re)
+      }
+    }
   }
+
   //更新
-  const updataDataFunc = (params: any) => {
-    datasource.updateRecords(params)
-    setData(datasource.db.datas)
-  }
+  const updateDataFunc = (params: any) => {}
   //删除
-  const removeDataFunc = (params: any) => {
-    datasource.updateRecords(params)
-    setData(datasource.db.datas)
-  }
+  const removeDataFunc = (params: any) => {}
 
   const getFieldValue = (
     tableName: string,
@@ -173,9 +166,8 @@ const ContextProvider = function (props: ContextProviderProps) {
         getFieldValue,
         setFieldValueTemp,
         insertDataFunc,
-        updataDataFunc,
-        removeDataFunc,
-        TaffyDB_Data
+        updateDataFunc,
+        removeDataFunc
       }}
     >
       {children}

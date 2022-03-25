@@ -5,12 +5,13 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.engine'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import { WidgetDatasource as widgetDatasource } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.logic.datasource'
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-let getDatasource = function (datasourceName) {
+let getDatasource = function (datasourceName: any) {
   if (undefined == datasourceName || null == datasourceName) return null
   let datasource = datasourceManager.lookup({
     datasourceName: datasourceName
@@ -18,81 +19,96 @@ let getDatasource = function (datasourceName) {
   return datasource
 }
 
-let getDatasourceField = function (datasourceName, datasourceFieldCode) {
+let getDatasourceField = function (
+  datasourceName: unknown,
+  datasourceFieldCode: string
+) {
   let datasource = getDatasource(datasourceName)
   return datasource.getMetadata().getFieldByCode(datasourceFieldCode)
 }
 
-let resetDatasource = function (datasourceName) {
+let resetDatasource = function (datasourceName: string) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.reset()
 }
 
-let resultsetToMapArray = function (resultset) {
-  let mapArray = []
-  resultset.iterate(function (record, i) {
+let resultsetToMapArray = function (resultset: any) {
+  let mapArray: any = []
+  resultset.iterate(function (record: any, i: any) {
     mapArray.push(record.toMap())
   })
   return mapArray
 }
 
-let setBaseValue = function (datasourceName, records) {
+let setBaseValue = function (datasourceName: string, records: any) {
   let datasource = getDatasource(datasourceName)
   datasource.updateRecords({
     records: records
   })
 }
 
-let getSingleValue = function (datasourceName, field) {
+let getSingleValue = function (datasourceName: string, field: string) {
   let datasource = getDatasource(datasourceName)
   let currentRecord = datasource.getCurrentRecord()
   return currentRecord.get(field)
 }
 
-let getWidgetCodesByDatasource = function (datasourceName, datasourceField) {
+let getWidgetCodesByDatasource = function (
+  datasourceName: string,
+  datasourceField: string
+) {
   return vmmappingManager.getWidgetCodesByFieldCode({
     datasourceName: datasourceName,
     fieldCode: datasourceField
   })
 }
 
-let addDatasourceLoadEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceLoadEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.LOAD,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
 }
 
-let addDatasourceUpdateEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceUpdateEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.UPDATE,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
 }
 
 let addDatasourceFieldUpdateEventHandler = function (
-  datasourceName,
-  datasourceFields,
-  eventHandler
+  datasourceName: string,
+  datasourceFields: any[],
+  eventHandler: any
 ) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   if (undefined == datasourceFields || null == datasourceFields)
-    datasourceFields = getBindDatasourceFields(widgetId, datasourceName)
+    datasourceFields = widgetDatasource.getBindDatasourceFields(
+      widgetId,
+      datasourceName
+    )
   if (!arrayUtil.isArray(datasourceFields))
     datasourceFields = [datasourceFields]
   datasource.on({
     eventName: datasource.Events.UPDATE,
-    handler: function (params) {
+    handler: function (params: any) {
       let result = params.resultSet
       let iterator = result.iterator()
       let isChanged = false
@@ -591,4 +607,7 @@ export {
   resetDatasource,
   resultsetToMapArray,
   setBaseValue
+}
+function widgetId(widgetId: any, datasourceName: string): string {
+  throw new Error('Function not implemented.')
 }

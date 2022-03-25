@@ -2,7 +2,7 @@ import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.
 
 let isEmpty, sandbox
 
-export function initModule(sBox) {
+export function initModule(sBox: any) {
   isEmpty = sBox.util.object.isEmpty
   sandbox = sBox
 }

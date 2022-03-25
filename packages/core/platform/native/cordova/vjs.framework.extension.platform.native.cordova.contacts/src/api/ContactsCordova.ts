@@ -16,7 +16,6 @@ if (window.VJSBridge) {
 
 const getInfo = function (successCallback: Function, errorCallback: Function) {
   function onSuccess(contacts: any) {
-    debugger
     console.log(contacts)
     if (typeof successCallback == 'function') {
       successCallback(contacts)
