@@ -35,11 +35,9 @@ const main = function (ruleContext: RuleContext) {
  * 拍摄视频文件
  */
 let getVideoFile = function (inParamObj, routeContext, ruleContext) {
-  debugger
   ruleContext.markRouteExecuteUnAuto()
   let scopeId = scopeManager.getCurrentScopeId()
   let successCB = function (mediaFiles) {
-    debugger
     let scopeId = scopeManager.getCurrentScopeId()
     if (mediaFiles) {
       let mediaFileLocalPath = mediaFiles[0].fullPath
@@ -97,7 +95,6 @@ let uploadMediaFile = function (
   inParamObj,
   ruleContext: RuleContext
 ) {
-  debugger
   let entityCode = inParamObj.entityCode //实体编码
   let fieldFileID = inParamObj.fieldId //字段编码（文件ID）
   let dataSource = getDataSource(entityCode, routeContext)

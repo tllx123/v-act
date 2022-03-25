@@ -13,7 +13,6 @@ const main = function (ruleContext: RuleContext) {
   //		var inParams = ruleCfgValue["inParams"];
   let successCB = function (deviceId: string) {
     setDirectResult(ruleContext, deviceId)
-    debugger
     ruleContext.fireRouteCallback()
   }
   let errorCB = function (msg: string) {

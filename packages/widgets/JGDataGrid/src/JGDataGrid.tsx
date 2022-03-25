@@ -203,9 +203,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
   }
 
   let headerControlTemp = []
-  if (control.headerControls) {
-    console.log('control.headerControls[0].controls')
-    console.log(control.headerControls[0].controls)
+  if (control.headerControls && control.headerControls.length > 0) {
     headerControlTemp = control.headerControls[0].controls
   }
 
