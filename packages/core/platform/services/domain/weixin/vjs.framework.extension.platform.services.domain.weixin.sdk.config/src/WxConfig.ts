@@ -1,3 +1,4 @@
+//@ts-nocheck
 let cb = function (res) {
   debugger
   let obj = $.parseJSON(res)

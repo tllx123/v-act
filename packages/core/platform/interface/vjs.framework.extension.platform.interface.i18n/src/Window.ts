@@ -6,9 +6,9 @@ let WIDGET_I18N = {}
 
 let EXP_I18N = {}
 
-export function initModule(sb) {}
+export function initModule(sb: any) {}
 
-const initWindow = function (params) {
+const initWindow = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode
   let componentPool = WINDOW_I18N[componentCode]
@@ -19,7 +19,7 @@ const initWindow = function (params) {
   componentPool[windowCode] = params.items
 }
 
-const initWidget = function (params) {
+const initWidget = function (params: any) {
   let componentCode = params.componentCode,
     windowCode = params.windowCode,
     widgetCode = params.widgetCode
@@ -36,7 +36,7 @@ const initWidget = function (params) {
   windowPool[widgetCode] = params.items
 }
 
-const initExp = function (params) {
+const initExp = function (params: any) {
   let componentPool = EXP_I18N[params.componentCode]
   if (!componentPool) {
     EXP_I18N[params.componentCode] = componentPool = {}
@@ -44,7 +44,7 @@ const initExp = function (params) {
   componentPool[params.windowCode] = params.items
 }
 
-const get = function (params) {
+const get = function (params: any) {
   let componentPool = WINDOW_I18N[params.componentCode]
   if (componentPool) {
     let windowPool = componentPool[params.windowCode]
@@ -55,7 +55,7 @@ const get = function (params) {
   return params.defaultVal
 }
 
-const getExpLanguage = function (params) {
+const getExpLanguage = function (params: any) {
   let componentPool = EXP_I18N[params.componentCode]
   if (componentPool) {
     let items = componentPool[params.windowCode]
@@ -66,7 +66,7 @@ const getExpLanguage = function (params) {
   return params.defaultVal
 }
 
-const getWidgetInfo = function (params) {
+const getWidgetInfo = function (params: any) {
   let hasCode = params.hasOwnProperty('code')
   let defaultVal = params.defaultVal ? params.defaultVal : hasCode ? '' : {}
   let componentPool = WIDGET_I18N[params.componentCode]
@@ -99,7 +99,7 @@ const getWidgetInfo = function (params) {
  * 		code			:	String	多语言项编号
  * }
  * */
-function exist(obj, params) {
+function exist(obj: any, params: any) {
   let componentCode = params.componentCode
   let code = params.code
   let items = obj[componentCode]
@@ -109,7 +109,7 @@ function exist(obj, params) {
   return false
 }
 
-const has = function (params) {
+const has = function (params: any) {
   let componentPool = WINDOW_I18N[params.componentCode]
   if (componentPool) {
     let windowPool = componentPool[params.windowCode]
@@ -120,7 +120,7 @@ const has = function (params) {
   return false
 }
 
-const hasExpLanguage = function (params) {
+const hasExpLanguage = function (params: any) {
   let componentPool = EXP_I18N[params.componentCode]
   if (componentPool) {
     let items = componentPool[params.windowCode]
@@ -131,7 +131,7 @@ const hasExpLanguage = function (params) {
   return false
 }
 
-const hasWidgetInfo = function (params) {
+const hasWidgetInfo = function (params: any) {
   let componentPool = WIDGET_I18N[params.componentCode]
   if (componentPool) {
     let windowPool = componentPool[params.windowCode]
@@ -147,17 +147,17 @@ const hasWidgetInfo = function (params) {
 
 export {
   get,
-  getAll,
+  // getAll,
   getExpLanguage,
-  getResourcePackage,
+  // getResourcePackage,
   getWidgetInfo,
   has,
   hasExpLanguage,
-  hasResourcePackage,
+  // hasResourcePackage,
   hasWidgetInfo,
-  init,
+  // init,
   initExp,
-  initResourcePackage,
+  // initResourcePackage,
   initWidget,
   initWindow
 }

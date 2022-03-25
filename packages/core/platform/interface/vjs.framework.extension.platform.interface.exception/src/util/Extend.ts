@@ -1,4 +1,4 @@
-const extend = function (subClass, superClass, sandbox) {
+const extend = function (subClass: any, superClass: any, sandbox: any) {
   let initFunc = superClass.prototype.initModule
   if (initFunc) {
     initFunc.call(subClass, sandbox)
@@ -11,14 +11,14 @@ const extend = function (subClass, superClass, sandbox) {
 }
 
 export {
-  create,
-  isException,
-  handle,
-  getExceptionHtml,
-  onBeforeHandler,
-  onHandleFunction,
-  _getHandler,
-  showDialog,
-  callCommand,
+  // create,
+  // isException,
+  // handle,
+  // getExceptionHtml,
+  // onBeforeHandler,
+  // onHandleFunction,
+  // _getHandler,
+  // showDialog,
+  // callCommand,
   extend
 }

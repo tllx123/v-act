@@ -16,6 +16,7 @@ const create = function (params: Metadata) {
   }
   if (hasPrimaryKey == false) {
     fields.push(
+      // @ts-ignore
       fieldFactory.unSerialize({
         name: '***',
         code: datasourceEnums.IDFIELD,
@@ -33,7 +34,7 @@ const create = function (params: Metadata) {
   return metadata
 }
 
-const unSerialize = function (input) {
+const unSerialize = function (input: any) {
   let model = input.model
   if (model.length > 1) {
     throw Error('[Metadata.unSerialize]未知元数据格式，请检查！')
@@ -53,6 +54,7 @@ const unSerialize = function (input) {
   }
   if (!hasPrimaryKey) {
     fields.push(
+      // @ts-ignore
       fieldFactory.unSerialize({
         code: datasourceEnums.IDFIELD,
         type: 'char',
@@ -60,6 +62,7 @@ const unSerialize = function (input) {
       })
     )
   }
+  // @ts-ignore
   return this.create({
     dataSourceName: dataSourceName,
     fields: fields,
@@ -68,20 +71,20 @@ const unSerialize = function (input) {
 }
 
 export {
-  adapt,
-  Any,
-  begin,
-  Boolean,
-  Char,
-  collect,
+  // adapt,
+  // Any,
+  // begin,
+  // Boolean,
+  // Char,
+  // collect,
   create,
-  Date,
-  File,
-  getDataValidator,
-  Integer,
-  LongDate,
-  Number,
-  Object,
-  Text,
+  // Date,
+  // File,
+  // getDataValidator,
+  // Integer,
+  // LongDate,
+  // Number,
+  // Object,
+  // Text,
   unSerialize
 }

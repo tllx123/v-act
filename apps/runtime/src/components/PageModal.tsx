@@ -59,18 +59,22 @@ const BootstrapDialogTitle = (props: DialogTitleProps) => {
 
 interface PageModalProperty {
   title?: string
+  closeHandlerKey?: string
   onClose?: (...args: any[]) => void
   children?: JSX.Element | JSX.Element[] | null
 }
 
 const PageModal = function (props: PageModalProperty) {
   const [open, setOpen] = React.useState(true)
-  const { onClose } = props
-  const handleClose = () => {
+  const { onClose, closeHandlerKey } = props
+  const handleClose = (...args: any[]) => {
     setOpen(false)
     if (onClose) {
-      onClose()
+      onClose(...args)
     }
+  }
+  if (closeHandlerKey && typeof window != 'undefined') {
+    window[closeHandlerKey] = handleClose
   }
   if (!open) {
     return null

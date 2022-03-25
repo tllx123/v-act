@@ -31,6 +31,10 @@ interface WidgetContextProps {
    */
   componentCode?: string
   /**
+   * 构件方法
+   */
+  windowScope?: any
+  /**
    * 标题宽度
    */
   labelWidth?: number

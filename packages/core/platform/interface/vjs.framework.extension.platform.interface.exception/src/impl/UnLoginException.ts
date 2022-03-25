@@ -32,6 +32,7 @@ class UnLoginException extends ExpectedException {
     } else {
       let eventName = 'unlogin_' + uuidUtil.generate()
       let _this = this
+      // @ts-ignore
       let cb = scopeManager.createScopeHandler({
         handler: function () {
           let storage = _getStorage()
@@ -70,7 +71,7 @@ class UnLoginException extends ExpectedException {
             }
             if (_this.isSubmit())
               //服务端异常不需要提交，服务端异常在创建异常对象时会标记为服务端异常
-              callCommandService.callCommand(params)
+              callCommandService.callCommand(null, null, params)
             callCommandService.showDialog(params, callback)
           }
         }
@@ -78,6 +79,7 @@ class UnLoginException extends ExpectedException {
       if (window.top && window.top != window) {
         let storage = _getStorage()
         storage.put(eventName, true)
+        // @ts-ignore
         let cancalFire = scopeManager.createScopeHandler({
           handler: (function (event) {
             return function () {

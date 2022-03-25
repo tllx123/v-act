@@ -10,8 +10,8 @@ let _getDSContructor = function () {
   return datasourceFactory.getConstructor()
 }
 
-let _getExpressionObserveDatasources = function (expression) {
-  let observeDatasources = null
+let _getExpressionObserveDatasources = function (expression: any) {
+  let observeDatasources: any = null
   let regex = new RegExp('\\[([^\\]]+)\\]\\.\\[([^\\]]+)\\]', 'gm')
   let matcher
   while ((matcher = regex.exec(expression))) {
@@ -27,7 +27,7 @@ let _getExpressionObserveDatasources = function (expression) {
   return observeDatasources
 }
 
-let _createExpressionHandler = function (datasource) {
+let _createExpressionHandler = function (datasource: Datasource) {
   let metadata = datasource.getMetadata()
   let fields = metadata.getFields()
   for (let i = 0; i < fields.length; i++) {
@@ -37,23 +37,26 @@ let _createExpressionHandler = function (datasource) {
       expression = ''
     }
     if ('' != expression) {
-      let observeDatasourceNames = _getExpressionObserveDatasources(expression)
+      let observeDatasourceNames: any =
+        _getExpressionObserveDatasources(expression)
       if (observeDatasourceNames == null) {
         let fcode = field.getCode()
         let fexp = field.getExpression()
         datasource.on({
+          // @ts-ignore
           eventName: datasource.Events.RECORDPROCESS,
           fieldCode: fcode,
           handler: (function (ifcode, ifexp) {
-            return function (params) {
+            return function (params: any) {
               let record = params.record
               let expContext = new ExpressionContext()
               try {
                 let result = expressionUtil.execute(ifexp, expContext)
+                // @ts-ignore
                 if (params.eventType == datasource.Events.LOAD)
                   record.__recordData__[ifcode] = result
                 else record.set(ifcode, result)
-              } catch (e) {
+              } catch (e: any) {
                 let msg =
                   '执行字段计算表达式【' + ifexp + '】失败，原因' + e.message
                 log.log(msg)
@@ -62,21 +65,22 @@ let _createExpressionHandler = function (datasource) {
           })(fcode, fexp)
         })
       } else {
-        for (observeDatasourceName in observeDatasourceNames) {
+        for (let observeDatasourceName in observeDatasourceNames) {
           if (metadata.getDatasourceName() == observeDatasourceName) {
             let fcode = field.getCode()
             let fexp = field.getExpression()
             let observHandler = (function (ifcode, ifexp) {
-              return function (params) {
+              return function (params: any) {
                 let record = params.record
                 let expContext = new ExpressionContext()
                 expContext.setRecords([record])
                 try {
                   let result = expressionUtil.execute(ifexp, expContext)
+                  // @ts-ignore
                   if (params.eventType == datasource.Events.LOAD)
                     record.__recordData__[ifcode] = result
                   else record.set(ifcode, result)
-                } catch (e) {
+                } catch (e: any) {
                   let msg =
                     '执行字段计算表达式【' + ifexp + '】失败，原因' + e.message
                   log.log(msg)
@@ -88,6 +92,7 @@ let _createExpressionHandler = function (datasource) {
             for (let j = 0; j < observeDatasourceFieldCodes.length; j++) {
               let observeDatasourceFieldCode = observeDatasourceFieldCodes[j]
               datasource.on({
+                // @ts-ignore
                 eventName: datasource.Events.RECORDPROCESS,
                 fieldCode: observeDatasourceFieldCode,
                 handler: observHandler
@@ -100,24 +105,25 @@ let _createExpressionHandler = function (datasource) {
   }
 }
 
-const create = function (metadata) {
+const create = function (metadata: any) {
   let constructor = _getDSContructor()
-  let database = new constructor(metadata)
+  let database: any = new constructor(metadata)
   let datasource = new Datasource(metadata, database)
+
   if (database._setDatasource) {
     database._setDatasource(datasource)
   }
-  _createExpressionHandler(datasource, datasource.getMetadata())
+  _createExpressionHandler(datasource)
   return datasource
 }
 
-const unSerialize = function (input) {
+const unSerialize = function (input: any) {
   if (typeof input == 'string') {
     input = eval('(' + input + ')')
   }
   //		var constructor = _getDSContructor();
   let metadata = metadataFactory.unSerialize(input.metadata)
-  let datasource = this.create(metadata)
+  let datasource = create(metadata)
   let datas = input.datas
   if (datas && datas.values) {
     datasource.load({
@@ -129,8 +135,9 @@ const unSerialize = function (input) {
   return datasource
 }
 
-const createJsonFromConfig = function (config) {
+const createJsonFromConfig = function (config: any) {
   let fields = []
+  // @ts-ignore
   let freeDBName = 'freeDB_' + uuidUtil.generate()
   let data = []
   if (config && config.fields) {
@@ -168,17 +175,19 @@ const createJsonFromConfig = function (config) {
   }
 }
 
-const createDatasourceFromConfig = function (config) {
+const createDatasourceFromConfig = function (config: any) {
   let ds = unSerialize(createJsonFromConfig(config))
   return ds
 }
 
-const _getFieldFromValue = function (code, value) {
-  let type = typeof value
+const _getFieldFromValue = function (code: string, value: any) {
+  let type: string = typeof value
   switch (type) {
     case 'string':
+      // @ts-ignore
       if (dateUtils.isDate(value)) {
         type = 'date'
+        // @ts-ignore
       } else if (dateUtils.isDateTime(value)) {
         type = 'longDate'
       } else {
@@ -208,7 +217,7 @@ const _getFieldFromValue = function (code, value) {
   }
 }
 
-const createFromDatas = function (datas, datasourceName) {
+const createFromDatas = function (datas: any, datasourceName: string) {
   let fields = []
   let existField = []
   for (let i = 0, l = datas.length; i < l; i++) {
@@ -223,7 +232,8 @@ const createFromDatas = function (datas, datasourceName) {
   }
   let freeDBName = datasourceName
     ? datasourceName
-    : 'freeDB_' + uuidUtil.generate()
+    : // @ts-ignore
+      'freeDB_' + uuidUtil.generate()
   let metadata = {
     datas: {
       recordCount: datas.length,
@@ -238,10 +248,10 @@ const createFromDatas = function (datas, datasourceName) {
       ]
     }
   }
-  return this.unSerialize(metadata)
+  return unSerialize(metadata)
 }
 
-const isDatasource = function (datasource) {
+const isDatasource = function (datasource: Datasource) {
   return datasource instanceof Datasource
 }
 

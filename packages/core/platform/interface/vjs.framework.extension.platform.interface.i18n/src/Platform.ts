@@ -1,6 +1,6 @@
 let PLATFORM_POOL = {}
 
-const init = function (params) {
+const init = function (params: any) {
   PLATFORM_POOL[params.vjsName] = params.items
 }
 
@@ -21,7 +21,7 @@ const get = function (
   }
 }
 
-const has = function (params) {
+const has = function (params: any) {
   let vjsPool = PLATFORM_POOL[params.vjsName]
   let code = params.code
   if (vjsPool && vjsPool.hasOwnProperty(code)) {
@@ -32,12 +32,12 @@ const has = function (params) {
 
 export {
   get,
-  getExpLanguage,
-  getResourcePackage,
+  // getExpLanguage,
+  // getResourcePackage,
   has,
-  hasExpLanguage,
-  hasResourcePackage,
-  init,
-  initExp,
-  initResourcePackage
+  // hasExpLanguage,
+  // hasResourcePackage,
+  init
+  // initExp,
+  // initResourcePackage
 }
