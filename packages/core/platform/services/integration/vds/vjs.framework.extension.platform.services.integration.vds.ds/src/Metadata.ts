@@ -6,11 +6,13 @@ import Field from './Field'
  * @alias Metadata
  * @catalog 数据源/数据源定义
  */
-function Metadata(metadata) {
-  this.metadata = metadata
-}
 
-Metadata.prototype = {
+class Metadata {
+  metadata: any
+  constructor(metadata: any) {
+    this.metadata = metadata
+  }
+
   /**
    * 获取数据源编码
    * @returns String
@@ -19,9 +21,9 @@ Metadata.prototype = {
    * var metadata = ds.getMetadata();
    * var code = metadata.getCode();
    */
-  getCode: function () {
+  getCode() {
     return this.metadata.getDatasourceName()
-  },
+  }
 
   /**
    * 获取字段定义
@@ -32,10 +34,10 @@ Metadata.prototype = {
    * var metadata = ds.getMetadata();
    * var field = metadata.getField("fieldCode1");
    */
-  getField: function (code) {
+  getField(code: any) {
     var field = this.metadata.getFieldByCode(code)
     return field == null ? null : new Field(field)
-  },
+  }
 
   /**
    * 获取所有字段定义
@@ -45,7 +47,7 @@ Metadata.prototype = {
    * var metadata = ds.getMetadata();
    * var fields = metadata.getFields();
    */
-  getFields: function () {
+  getFields() {
     var rs = []
     var fields = this.metadata.getFields()
     if (fields && fields.length > 0) {
@@ -54,7 +56,7 @@ Metadata.prototype = {
       }
     }
     return rs
-  },
+  }
 
   /**
    * 是否包含自定义编号的字段
@@ -64,7 +66,7 @@ Metadata.prototype = {
    * var metadata = ds.getMetadata();
    * var contains = metadata.contains("fieldCode1");
    */
-  contains: function (code) {
+  contains(code: string) {
     return this.metadata.isContainField(code)
   }
 }

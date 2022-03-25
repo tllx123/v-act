@@ -6,11 +6,12 @@ import Record from './Record'
  * @alias ResultSetIterator
  * @catalog 数据源/数据源定义
  */
-function ResultSetIterator(iterator) {
-  this.iterator = iterator
-}
+class ResultSetIterator {
+  iterator: any
+  constructor(iterator: any) {
+    this.iterator = iterator
+  }
 
-ResultSetIterator.prototype = {
   /**
    * 当前游标后是否有记录
    * @returns Boolean
@@ -20,9 +21,9 @@ ResultSetIterator.prototype = {
    * var iterator = resultSet.iterator();
    * var hasNext = iterator.hasNext();
    */
-  hasNext: function () {
+  hasNext() {
     return this.iterator.hasNext()
-  },
+  }
   /**
    * 下一条记录
    * @returns {@link Record}
@@ -35,7 +36,7 @@ ResultSetIterator.prototype = {
    * 	var val = record.get("fieldCode1");
    * }
    */
-  next: function () {
+  next() {
     return new Record(this.iterator.next())
   }
 }
