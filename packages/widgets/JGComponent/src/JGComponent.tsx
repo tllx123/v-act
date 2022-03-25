@@ -37,12 +37,11 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 
     /**
      * 为全局暴露一个接口更改组件属性
-     * @param String pageCode 页面code值
      * @param String componentCode 组件code值
      * @param String properties 更改属性
      * */
-    window.changeComponentByProperties = (
-      pageCode: string,
+
+    const changeComponentByProperties = (
       componentCode: string,
       properties: any
     ): any => {
@@ -60,21 +59,19 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
             let children = childrens[key]
             if (!('props' in children)) continue
 
-            return children.props.componentCode &&
-              children.props.componentCode === targetCode
+            return children.props.componentCode
               ? children.props.control
               : iteratorComponent(children.props.children, targetCode)
           }
         } else {
-          return childrens.props.componentCode &&
-            childrens.props.componentCode === targetCode
+          return childrens.props.componentCode
             ? childrens.props.control
             : iteratorComponent(childrens.props.children, targetCode)
         }
       }
 
       // 查找组件
-      const iteratorControls = (controls: any, componentCode: string) => {
+      const iteratorControls = (controls: any, componentCode: string): any => {
         if (!controls || controls == []) return false
         if (Array.isArray(controls)) {
           let target
@@ -85,9 +82,9 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
           }
           if (!target) {
             for (let key in controls) {
-              let t = iteratorComponent(controls[key].controls, componentCode)
+              let t = iteratorControls(controls[key].controls, componentCode)
               if (t) {
-                return target
+                return t
               }
             }
           }
@@ -95,15 +92,16 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         } else {
           return controls.properties.code === componentCode
             ? controls
-            : iteratorComponent(controls.controls, componentCode)
+            : iteratorControls(controls.controls, componentCode)
         }
       }
 
       if ('props' in inProps.children) {
         let targetPage = iteratorComponent(
           inProps.children.props.children,
-          pageCode
+          componentCode
         )
+
         targetPage = Object.assign({}, targetPage)
 
         let targetComponent = iteratorControls(
@@ -112,7 +110,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         )
 
         if (targetComponent) {
-          // if (properties.code) throw new Error('不允许更改code值')
+          if (properties.code) throw new Error('不允许更改code值')
           targetComponent.properties = Object.assign(
             targetComponent.properties,
             properties
@@ -126,6 +124,13 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         setPropsChildren(newPropsChildren)
       }
     }
+
+    window.changeComponentByProperties = changeComponentByProperties
+    context.windowScope &&
+      context.windowScope.set(
+        'changeComponentByProperties',
+        changeComponentByProperties
+      )
 
     console.log('inProps: ', inProps)
 

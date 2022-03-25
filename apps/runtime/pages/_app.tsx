@@ -14,12 +14,15 @@ export default class MyApp extends App {
     return { pageProps, level, url: ctx.asPath }
   }
   render() {
-    const { Component, pageProps, level, url } = this.props
+    const { Component, pageProps, url, router } = this.props
+    const query = router.query
+    const level = parseInt(query.modal, 10) || 0
+    const title = query.title || ''
     const theme = createTheme()
     const page = <Component {...pageProps} />
     return (
       <ThemeProvider theme={theme}>
-        <PageManager page={page} level={level} url={url} />
+        <PageManager page={page} level={level} url={url} title={title} />
       </ThemeProvider>
     )
   }

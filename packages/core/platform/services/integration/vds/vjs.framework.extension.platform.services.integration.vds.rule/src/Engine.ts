@@ -33,14 +33,13 @@ var VarType = {
 /**
  * 二次开发mock调试使用
  * */
-var exeExtRuleMock = function (params) {
-  var _this = this
+var exeExtRuleMock = function (params: any) {
   return new Promise(function (resolve, reject) {
     var ruleCtx = params.ruleContext
     var rs =
       typeof params.mainFunc == 'function'
         ? { func: params.mainFunc, caller: params.mainFunc }
-        : _this._getMainFunc(params.mainFunc)
+        : _getMainFunc(params.mainFunc)
     var ruleCfg = ruleCtx._getRuleCfg()
     if (!rs) {
       var detail =
@@ -119,7 +118,7 @@ var exeExtRuleMock = function (params) {
 		  ]
 		}
 	 */
-export function exeExtRule(params) {
+export function exeExtRule(this: any, params: Record<string, any>) {
   var ruleCtx = params.ruleContext
   if (typeof ruleCtx._isMock == 'function') {
     return exeExtRuleMock.apply(this, [params])
@@ -127,7 +126,7 @@ export function exeExtRule(params) {
   var rs =
     typeof params.mainFunc == 'function'
       ? { func: params.mainFunc, caller: params.mainFunc }
-      : _this._getMainFunc(params.mainFunc)
+      : _getMainFunc(params.mainFunc)
   var ruleCfg = ruleCtx.getRuleCfg()
   if (!rs) {
     ruleCtx.setRuleStatus(false)
@@ -142,6 +141,7 @@ export function exeExtRule(params) {
       exceptionFactory.create({
         type: exceptionFactory.TYPES.System,
         message: detail,
+        //@ts-ignore
         detail: detail,
         error: new Error(detail)
       })
@@ -162,7 +162,7 @@ export function exeExtRule(params) {
         //                    ruleCtx.setBusinessRuleResult(result);//规则返回值通过ruleContext.setResult设置
         ruleCtx.fireRouteCallback()
       }
-      var error = function (err) {
+      var error = function (err: any) {
         var error = err
         //兼容json类的异常
         if (
@@ -176,22 +176,29 @@ export function exeExtRule(params) {
         ruleCtx.setRuleStatus(false)
         ruleCtx.handleException(error)
       }
+      //@ts-ignore
       if (Promise._isFinish && Promise._isFinish(promise)) {
         //解决两个同步规则执行完成后取值不正确的问题
         if (
+          //@ts-ignore
           typeof Promise._isError == 'function' &&
+          //@ts-ignore
           Promise._isError(promise)
         ) {
           //发生异常的同步规则
           var args =
+            //@ts-ignore
             typeof Promise._getErrorParam == 'function'
-              ? Promise._getErrorParam(promise)
+              ? //@ts-ignore
+                Promise._getErrorParam(promise)
               : null
           error.apply(this, args)
         } else {
           var args =
+            //@ts-ignore
             typeof Promise._getSuccessParam == 'function'
-              ? Promise._getSuccessParam(promise)
+              ? //@ts-ignore
+                Promise._getSuccessParam(promise)
               : null
           success.apply(this, args)
         }
@@ -211,6 +218,7 @@ export function exeExtRule(params) {
         exceptionFactory.create({
           type: exceptionFactory.TYPES.Expected,
           message: '规则执行异常',
+          //@ts-ignore
           detail: detail,
           error: new Error(detail)
         })
@@ -222,7 +230,10 @@ export function exeExtRule(params) {
   }
 }
 
-var handleInput = function (params, ruleCtx) {
+var handleInput = function (
+  params: Record<string, any>,
+  ruleCtx: Record<string, any>
+) {
   var routeContext = ruleCtx.getRouteContext()
   var datas = {}
   if (params) {
@@ -337,7 +348,11 @@ var handleInput = function (params, ruleCtx) {
   return datas
 }
 
-var handleOutput = function (output, mappings, ruleContext) {
+var handleOutput = function (
+  output: Record<string, any>,
+  mappings: string | any[],
+  ruleContext: Record<string, any>
+) {
   if (!output || !mappings || mappings.length < 1) {
     return
   }
@@ -360,7 +375,7 @@ var handleOutput = function (output, mappings, ruleContext) {
       value = output[sourceCode]
     }
     if (value && value instanceof Array) {
-      value = genDataSource(value, sourceCode)
+      value = genDataSource(value)
       if (value) {
         var targetEntityType
         switch (mapping.destType) {
@@ -457,7 +472,7 @@ var handleOutput = function (output, mappings, ruleContext) {
   }
 }
 
-var genDataSource = function (datas) {
+var genDataSource = function (datas: string | any[]) {
   //字段对应字段类型
   var fieldCodes = {}
   //字段列表
@@ -488,7 +503,7 @@ var genDataSource = function (datas) {
   return datasource
 }
 
-var getValueType = function (value) {
+var getValueType = function (value: string | null | undefined) {
   if (null === value || undefined === value) {
     return null
   }

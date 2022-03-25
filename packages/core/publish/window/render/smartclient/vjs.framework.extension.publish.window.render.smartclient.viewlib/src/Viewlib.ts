@@ -30,6 +30,7 @@ import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.medi
 import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
+import eventHandler from './eventHandler'
 import * as initRuleSet from './initRuleSet'
 
 const _initWindowInfoFromJson = function (params) {
@@ -38,6 +39,7 @@ const _initWindowInfoFromJson = function (params) {
   ComponentInfo.markComponentSchemaInited(params.componentCode)
   _initVMInfo(params)
   initRuleSet.init(params)
+  eventHandler(params)
 }
 
 const _initVMInfo = function (params) {
@@ -104,6 +106,7 @@ export function init(params) {
     vjsInitFunc = params.vjsInitFunc,
     rendered = params.rendered,
     paramCfg = params.paramCfg
+
   _initWindowInfoFromJson(params)
   //设置领域信息
   //		Environment.setDomain(domain);

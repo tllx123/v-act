@@ -62,137 +62,152 @@ function Index(props:{instanceId:string}){
         "remove": context.removeDataFunc,
         "clear": context.clearDataFunc,
     };    
-    useEffect(async ()=>{
-      try{
-        {{@ ruleImports}}
-        {{@ funcImports}}
-        const ruleDefines = {{@ ruleDefines}}
-        const funcDefines = {{@ funcDefines}}
-        const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).ViewLib
-        viewLib.init({
-          "paramCfg": {
-            "skinType": "default",
-            "runningMode": "test",
-            "debug": false,
-            "debugPort": "",
-            "devId": "",
-            "contextPath": "",
-            "refComponents": {},
-            "showChromePlugin": false
-          },
-          "languageCode": "",
-          "scopeId":instanceId,
-          "componentCode": "{{@ componentCode}}",
-          "windowCode": "{{@ windowCode}}",
-          "componentPackMappingDatas": {},
-          "envirmentContext": {
-            "optimizeLink": true,
-            "isEncryptToken": false,
-            "ExceptionInstanceIden": "vxl0b2bdLP7aSIRoZJlf1Q__",
-            "CompatibleMode": true
-          },
-          "inputParam": {
-            "variable": {
-              "windowCode": "{{@ windowCode}}",
-              "componentCode": "{{@ componentCode}}",
-              "workspaceKey": "",
-            }
-          },
-          winDatas:windowObjs,
-          rendered:(scopeId)=>{
-            const scope = scopeManager.getScope(scopeId);
-            scope.set("ruleDefines",ruleDefines);
-            scope.set("funcDefines",funcDefines);
-            const { thisLevel } = stackInfo
-            const windowScope = scopeManager.getWindowScope()
-            windowScope.set(
-              'dialogWindowHandler',
-              (
-                params:{
+    useEffect(()=>{
+      const initVPlatformWin = async()=>{
+        try{
+          {{@ ruleImports}}
+          {{@ funcImports}}
+          const ruleDefines = {{@ ruleDefines}}
+          const funcDefines = {{@ funcDefines}}
+          const viewLib = (await import('@v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib')).ViewLib
+          scopeManager.getScope(instanceId).set('__vplatformWinInited', true)
+          viewLib.init({
+            "paramCfg": {
+              "skinType": "default",
+              "runningMode": "test",
+              "debug": false,
+              "debugPort": "",
+              "devId": "",
+              "contextPath": "",
+              "refComponents": {},
+              "showChromePlugin": false
+            },
+            "languageCode": "",
+            "scopeId":instanceId,
+            "componentCode": "{{@ componentCode}}",
+            "windowCode": "{{@ windowCode}}",
+            "componentPackMappingDatas": {},
+            "envirmentContext": {
+              "optimizeLink": true,
+              "isEncryptToken": false,
+              "ExceptionInstanceIden": "vxl0b2bdLP7aSIRoZJlf1Q__",
+              "CompatibleMode": true
+            },
+            "inputParam": {
+              "variable": {
+                "windowCode": "{{@ windowCode}}",
+                "componentCode": "{{@ componentCode}}",
+                "workspaceKey": "",
+              }
+            },
+            winDatas:windowObjs,
+            rendered:(scopeId)=>{
+              const scope = scopeManager.getScope(scopeId);
+              scope.set("ruleDefines",ruleDefines);
+              scope.set("funcDefines",funcDefines);
+              const { thisLevel } = stackInfo
+              const windowScope = scopeManager.getWindowScope()
+              windowScope.set(
+                'dialogWindowHandler',
+                (
+                  params:{
+                    componentCode: string,
+                    windowCode: string,
+                    title: string,
+                    param: { [code: string]: any },
+                    rendered:(scopeId:string)=>void,
+                    closed:(...args:any[])=>any
+                  }
+                ) => {
+                  const {componentCode,windowCode,title,param,rendered,closed} = params;
+                  const callbackId = "__dialog_win_close_cb_"+(thisLevel + 1);
+                  const renderedCallbackId = "__dialog_win_rendered_cb_"+(thisLevel + 1);
+                  window[callbackId] = (...args:any[])=>{
+                    try{
+                      if(typeof closed == 'function'){
+                        closed(...args);
+                      }
+                    }finally{
+                      delete window[callbackId];
+                    }
+                  }
+                  window[renderedCallbackId] = (scopeId)=>{
+                    try{
+                      if(typeof rendered == 'function'){
+                        rendered(scopeId);
+                      }
+                    }finally{
+                      delete window[renderedCallbackId];
+                    }
+                  }
+                  router.push({
+                    pathname: `/${componentCode}/${windowCode}`,
+                    query: {
+                      modal: thisLevel + 1,
+                      title: title ? title : '',
+                      v: _getRandomNum()
+                    }
+                  })
+                }
+              )
+              windowScope.set(
+                'currentWindowHandler',
+                (
                   componentCode: string,
                   windowCode: string,
                   title: string,
-                  param: { [code: string]: any },
-                  rendered:(scopeId:string)=>void,
-                  closed:(...args:any[])=>any
-                }
-              ) => {
-                const {componentCode,windowCode,title,param,rendered,closed} = params;
-                const callbackId = "__dialog_win_close_cb_"+(thisLevel + 1);
-                const renderedCallbackId = "__dialog_win_rendered_cb_"+(thisLevel + 1);
-                window[callbackId] = (...args:any[])=>{
-                  try{
-                    if(typeof closed == 'function'){
-                      closed(...args);
+                  param: { [code: string]: any }
+                ) => {
+                  router.push({
+                    pathname: `/${componentCode}/${windowCode}`,
+                    query: {
+                      modal: thisLevel,
+                      title: title ? title : '',
+                      v: _getRandomNum()
                     }
-                  }finally{
-                    delete window[callbackId];
-                  }
+                  })
                 }
-                window[renderedCallbackId] = (scopeId)=>{
+              )
+              windowScope.set('dataSourceHandler',entityOperation)
+              windowScope.set('dailogWindowCloseHandler',(...args:any[])=>{
+                const closeHandlerId = "__dialog_win_close_handler_"+thisLevel;
+                const handler = window[closeHandlerId]
+                if(handler){
                   try{
-                    if(typeof rendered == 'function'){
-                      rendered(scopeId);
-                    }
+                    handler(...args);
                   }finally{
-                    delete window[renderedCallbackId];
+                    delete window[closeHandlerId]
                   }
                 }
-                router.push({
-                  pathname: `/${componentCode}/${windowCode}`,
-                  query: {
-                    modal: thisLevel + 1,
-                    title: title ? title : '',
-                    v: _getRandomNum()
+              })
+              if(router.query){
+                let modal = router.query.modal
+                const rendercb = window["__dialog_win_rendered_cb_"+modal];
+                if(rendercb){
+                  try{
+                    rendercb(scopeId)
+                  }finally{
+                    delete window["__dialog_win_rendered_cb_"+modal];
                   }
-                })
-              }
-            )
-            windowScope.set(
-              'currentWindowHandler',
-              (
-                componentCode: string,
-                windowCode: string,
-                title: string,
-                param: { [code: string]: any }
-              ) => {
-                router.push({
-                  pathname: `/${componentCode}/${windowCode}`,
-                  query: {
-                    modal: thisLevel,
-                    title: title ? title : '',
-                    v: _getRandomNum()
-                  }
-                })
-              }
-            )
-            windowScope.set('dataSourceHandler',entityOperation)
-	          windowScope.set('dailogWindowCloseHandler',(...args:any[])=>{
-              const closeHandlerId = "__dialog_win_close_handler_"+thisLevel;
-              const handler = window[closeHandlerId]
-              if(handler){
-                try{
-                  handler(...args);
-                }finally{
-                  delete window[closeHandlerId]
-                }
-              }
-            })
-	          if(router.query){
-              let modal = router.query.modal
-              const rendercb = window["__dialog_win_rendered_cb_"+modal];
-              if(rendercb){
-                try{
-                  rendercb(scopeId)
-                }finally{
-                  delete window["__dialog_win_rendered_cb_"+modal];
                 }
               }
             }
-          }
-        });
-      }catch(e){
-        console.error(e);
+          });
+        }catch(e){
+          console.error(e);
+        }
+      }
+      const winScope = scopeManager.getScope(instanceId);
+      const key = "__vplatformWinIniting";
+      const initing = winScope.get(key);
+      if(!initing){
+        winScope.set(key,true);
+        initVPlatformWin();
+      }
+      return ()=>{
+        if (scopeManager.getScope(instanceId).get('__vplatformWinInited')) {
+          scopeManager.destroy(instanceId)
+        }
       }
     });
     return (

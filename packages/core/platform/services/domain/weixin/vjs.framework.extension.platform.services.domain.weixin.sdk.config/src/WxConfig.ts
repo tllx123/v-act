@@ -1,3 +1,4 @@
+//@ts-nocheck
 let cb = function (res) {
   let obj = $.parseJSON(res)
   wx.config({
