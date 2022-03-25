@@ -15,7 +15,7 @@ import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
  * 处理可忽略的参数值
  * @param	{Object}	selectDatas	原参数
  * */
-var handleParam = function (selectDatas) {
+var handleParam = function (selectDatas: any) {
   if (!selectDatas) {
     return
   }
@@ -51,7 +51,7 @@ var handleParam = function (selectDatas) {
  * }
  */
 
-export function query(params) {
+function query(params: any) {
   var queryParam = params.queryParams,
     isConcurrent = params.isConcurrent,
     isAsync = params.isAsync,
@@ -82,7 +82,7 @@ export function query(params) {
     }
   }
 
-  var callBackFunc = function (resultDataString) {
+  var callBackFunc = function (resultDataString: any) {
     if (resultDataString.success == true) {
       var outputResult = resultDataString.data.result
       var outputJson = outputResult.OutputJson
@@ -109,7 +109,7 @@ export function query(params) {
   }
   //处理可忽略的参数
   handleParam(selectDatas)
-  var operationParams = {
+  var operationParams: any = {
     param: {
       componentCode: scope.getComponentCode(),
       ruleSetCode: 'CommonRule_DataBaseDataToInterfaceEntity',
@@ -147,7 +147,7 @@ export function query(params) {
  * 		"success" : Function 查询成功后回调
  * }
  */
-export function querySenior(params) {
+function querySenior(params: any) {
   var queryParam = params.queryParams,
     isConcurrent = params.isConcurrent,
     isAsync = params.isAsync,
@@ -177,7 +177,7 @@ export function querySenior(params) {
     }
   }
 
-  var callBackFunc = function (resultDataString) {
+  var callBackFunc = function (resultDataString: any) {
     if (resultDataString.success == true) {
       var outputResult = resultDataString.data.result
       var outputJson = outputResult.OutputJson
@@ -204,7 +204,7 @@ export function querySenior(params) {
   }
   //处理可忽略的参数
   handleParam(selectDatas)
-  var operationParams = {
+  var operationParams: any = {
     param: {
       ruleSetCode: 'CommonRule_DynamicCrossDataToInterfaceEntity',
       params: {
@@ -226,7 +226,7 @@ export function querySenior(params) {
 /**
  * 将参数值为undefined的改为null值
  * */
-var changeUndefinedToNull = function (params) {
+var changeUndefinedToNull = function (params: any) {
   if (undefined == params) return
   for (var _key in params) {
     if (undefined === params[_key]) {
@@ -234,4 +234,9 @@ var changeUndefinedToNull = function (params) {
     }
   }
   return params
+}
+
+export default {
+  querySenior,
+  query
 }
