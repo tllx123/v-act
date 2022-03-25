@@ -4,17 +4,19 @@
  * @alias VObject
  * @catalog 二次开发/规则
  */
-function VObject(vObject) {
-  this.vObject = vObject
-}
+class VObject {
+  vObject: any
 
-VObject.prototype = {
+  constructor(vObject: any) {
+    this.vObject = vObject
+  }
+
   /**
    * 获取规则输入配置
    * @param {String} code 配置编号
    * @returns Any
    */
-  getInput: function (code: string) {
+  getInput(code: string) {
     return this.vObject.getInput(code)
   }
 }
