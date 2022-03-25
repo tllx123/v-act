@@ -1,8 +1,19 @@
+import * as date from '@v-act/vjs.framework.extension.platform.services.integration.vds.date'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
+
 /**
  *
  *
  */
-vds.import('vds.object.*', 'vds.exception.*', 'vds.date.*', 'vds.rpc.*')
+let vds = {
+  object,
+  exception,
+  date,
+  rpc
+}
+//vds.import('vds.object.*', 'vds.exception.*', 'vds.date.*', 'vds.rpc.*')
 const main = function (idcard: string) {
   var result = 0
   if (vds.object.isUndefOrNull(idcard)) {
