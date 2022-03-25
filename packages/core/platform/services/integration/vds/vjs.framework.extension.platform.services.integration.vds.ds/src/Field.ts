@@ -4,11 +4,13 @@
  * @alias Field
  * @catalog 数据源/数据源定义
  */
-function Field(field) {
-  this.field = field
-}
 
-Field.prototype = {
+class Field {
+  field: any
+  constructor(field: any) {
+    this.field = field
+  }
+
   /**
    * 获取编号
    * @returns {String}
@@ -18,9 +20,9 @@ Field.prototype = {
    * var field = metadata.getField("fieldCode1");
    * var code = field.getCode();
    */
-  getCode: function () {
+  getCode() {
     return this.field.getCode()
-  },
+  }
 
   /**
    * 获取名称
@@ -31,9 +33,9 @@ Field.prototype = {
    * var field = metadata.getField("fieldCode1");
    * var name = field.getName();
    */
-  getName: function () {
+  getName() {
     return this.field.getName()
-  },
+  }
   /**
    * 获取默认值
    * @returns Any
@@ -43,9 +45,9 @@ Field.prototype = {
    * var field = metadata.getField("fieldCode1");
    * var defaultVal = field.getDefaultValue();
    */
-  getDefaultValue: function () {
+  getDefaultValue() {
     return this.field.getDefaultValue()
-  },
+  }
 
   /**
    * 获取字段长度
@@ -56,9 +58,9 @@ Field.prototype = {
    * var field = metadata.getField("fieldCode1");
    * var len = field.getLength();
    */
-  getLength: function () {
+  getLength() {
     return this.field.getLength()
-  },
+  }
 
   /**
    * 获取类型
@@ -69,7 +71,7 @@ Field.prototype = {
    * var field = metadata.getField("fieldCode1");
    * var type = field.getType();
    */
-  getType: function () {
+  getType() {
     return this.field.getType()
   }
 }

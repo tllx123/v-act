@@ -8,14 +8,15 @@ import ResultSetIterator from './ResultSetIterator'
  * @alias ResultSet
  * @catalog 数据源/数据源定义
  */
-function ResultSet(resultset) {
-  this.resultset = resultset
-}
+class ResultSet {
+  resultset: any
+  constructor(resultset: any) {
+    this.resultset = resultset
+  }
 
-ResultSet.prototype = {
-  _to: function (record) {
+  _to(record: any) {
     return !record ? null : new Record(record)
-  },
+  }
   /**
    * 获取结果集迭代器
    * @returns {@link ResultSetIterator}
@@ -24,9 +25,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var iterator = resultSet.interator();
    */
-  iterator: function () {
+  iterator() {
     return new ResultSetIterator(this.resultset.iterator())
-  },
+  }
   /**
    * 结果集是否为空
    * @returns Boolean
@@ -35,9 +36,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var empty = resultSet.isEmpty();
    */
-  isEmpty: function () {
+  isEmpty() {
     return this.resultset.isEmpty()
-  },
+  }
   /**
    * 结果集记录数
    * @returns Boolean
@@ -46,9 +47,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var size = resultSet.size();
    */
-  size: function () {
+  size() {
     return this.resultset.size()
-  },
+  }
   /**
    * 将结果集转换成原生数组
    * 注意：当记录数多时，此方法会存在性能隐患
@@ -58,14 +59,14 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var list = resultSet.toArray();
    */
-  toArray: function () {
+  toArray() {
     var list = this.resultset.toArray()
     var rs = []
     for (var i = 0, l = list.length; i < l; i++) {
       rs.push(this._to(list[i]))
     }
     return rs
-  },
+  }
   /**
    * 获取数据源元数据定义
    * @returns {@link Metadata}
@@ -74,9 +75,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var metadata = resultSet.getMetadata();
    */
-  getMetadata: function () {
+  getMetadata() {
     return new Metadata(this.resultset.getMetadata())
-  },
+  }
   /**
    * 获取指定下标的记录
    * @param {Integer} i 记录下标
@@ -86,9 +87,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var record = resultSet.index(1);
    */
-  index: function (i) {
+  index(i: any) {
     return this._to(this.resultset.index(i))
-  },
+  }
 
   /**
    * 获取第一条记录
@@ -98,9 +99,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var record = resultSet.first();
    */
-  first: function () {
-    return this._to(this.resulset.first())
-  },
+  first() {
+    return this._to(this.resultset.first())
+  }
 
   /**
    * 获取最后一条记录
@@ -110,9 +111,9 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var record = resultSet.last();
    */
-  last: function () {
-    return this._to(this.resulset.last())
-  },
+  last() {
+    return this._to(this.resultset.last())
+  }
 
   /**
    * 遍历结果集
@@ -124,14 +125,14 @@ ResultSet.prototype = {
    * 		var val = record.get("fieldCode1");
    * });
    */
-  iterate: function (fn) {
+  iterate(fn: any) {
     var func = (function (f, _t) {
-      return function (record, index) {
+      return function (record: any, index: any) {
         return f(_t._to(record), index)
       }
     })(fn, this)
     return this.resultset.iterate(func)
-  },
+  }
   /**
    * 结果集克隆
    * @returns {@link ResultSet}
@@ -140,7 +141,7 @@ ResultSet.prototype = {
    * var resultSet = ds.getAllRecords();
    * var rs = resultSet.clone();
    */
-  clone: function () {
+  clone() {
     var newRes = this.resultset.clone()
     return new ResultSet(newRes)
   }

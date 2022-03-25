@@ -3,6 +3,7 @@
  */
 import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as Getdropdowndata from '@v-act/webfunc_getdropdowndata'
 const vds = { expression, widget }
 
 /**
@@ -17,12 +18,7 @@ const main = function (ruleContext: RuleContext) {
       if (widgetIds != null && widgetIds != undefined && widgetIds.length > 0) {
         for (var i = 0; i < widgetIds.length; i++) {
           var widgetId = widgetIds[i]
-          var value = vds.expression.execute(
-            'GetDropDownData("' + widgetId + '", true)',
-            {
-              ruleContext: ruleContext
-            }
-          )
+          var value = Getdropdowndata(widgetId, true)
           vds.widget.execute(widgetId, 'loadData', [value])
         }
       }

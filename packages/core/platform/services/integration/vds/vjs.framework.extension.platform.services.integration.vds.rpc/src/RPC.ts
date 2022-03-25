@@ -290,7 +290,7 @@ export function saveData(
  * }
  */
 export function queryDataSync(
-  sourceCode: string | string[],
+  sourceCode: string,
   sourceType: string,
   target: any,
   fieldMappings: string | any[] | null,
@@ -522,7 +522,7 @@ export function queryDataSync(
  * @returns {Promise}
  */
 export function queryData(
-  sourceCode: string | string[],
+  sourceCode: string,
   sourceType: string,
   target: Record<string, any>,
   fieldMappings: string | any[] | null,

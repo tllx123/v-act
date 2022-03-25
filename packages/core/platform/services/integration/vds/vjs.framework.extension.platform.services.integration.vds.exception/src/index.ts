@@ -9,8 +9,10 @@
  * vds.exception.warn("打印警告信息！");
  */
 
-import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import {
+  ExceptionFactory as factory,
+  ExceptionHandler as exceptionHandler
+} from '@v-act/vjs.framework.extension.platform.interface.exception'
 
 /**
  * 创建配置类异常
@@ -19,10 +21,11 @@ import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.exten
  * @example
  * vds.exception.newConfigException("配置错误");
  * */
-export function newConfigException(msg) {
+export function newConfigException(msg: any) {
   var exception = factory.create({
     message: msg,
-    type: factory.TYPES.Config
+    type: factory.TYPES.Config,
+    exceptionDatas: []
   })
   return exception
 }
@@ -33,10 +36,11 @@ export function newConfigException(msg) {
  * @example
  * vds.exception.newBusinessException("业务错误");
  * */
-export function newBusinessException(msg) {
+export function newBusinessException(msg: any) {
   var exception = factory.create({
     message: msg,
-    type: factory.TYPES.Business
+    type: factory.TYPES.Business,
+    exceptionDatas: []
   })
   return exception
 }
@@ -47,10 +51,11 @@ export function newBusinessException(msg) {
  * @example
  * vds.exception.newDevException("环境错误");
  * */
-export function newDevException(msg) {
+export function newDevException(msg: any) {
   var exception = factory.create({
     message: msg,
-    type: factory.TYPES.Dev
+    type: factory.TYPES.Dev,
+    exceptionDatas: []
   })
   return exception
 }
@@ -61,10 +66,11 @@ export function newDevException(msg) {
  * @example
  * vds.exception.newConfigException("系统错误");
  * */
-export function newSystemException(msg) {
+export function newSystemException(msg: any) {
   var exception = factory.create({
     message: msg,
-    type: factory.TYPES.System
+    type: factory.TYPES.System,
+    exceptionDatas: []
   })
   return exception
 }
@@ -77,7 +83,7 @@ export function newSystemException(msg) {
  * vds.exception.isException(exception);//true
  * vds.exception.isException(new Error("系统错误"));//false
  * */
-export function isException(obj) {
+export function isException(obj: string) {
   return factory.isException(obj)
 }
 /**
@@ -89,7 +95,7 @@ export function isException(obj) {
  * vds.exception.handle(exception);
  * vds.exception.handle(new Error("系统错误"));
  * */
-export function handle(exception) {
+export function handle(exception: any) {
   exceptionHandler.handle(exception)
 }
 //    /**暂时不出，目前的问题场景（CallWebapi）可以把异常创建逻辑写在接口内部

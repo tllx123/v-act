@@ -4,14 +4,15 @@
  * @alias Record
  * @catalog 数据源/数据源定义
  */
-var Record = function (record) {
-  this.record = record
-}
+class Record {
+  record: any
+  constructor(record: any) {
+    this.record = record
+  }
 
-Record.prototype = {
-  _get: function () {
+  _get() {
     return this.record
-  },
+  }
 
   /**
    * 获取字段值
@@ -22,9 +23,9 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * var val = record.get("fieldCode1");
    */
-  get: function (fieldCode) {
+  get(fieldCode: string) {
     return this.record.get(fieldCode)
-  },
+  }
   /**
    * 设置字段值
    * @param {String} fieldCode 字段编号
@@ -34,9 +35,9 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * record.set("fieldCode1",120);
    */
-  set: function (fieldCode, value) {
+  set(fieldCode: string, value: string) {
     return this.record.set(fieldCode, value)
-  },
+  }
 
   /**
    * 批量设置字段值
@@ -49,9 +50,9 @@ Record.prototype = {
    *      "fieldCode2":true
    * });
    */
-  setData: function (data) {
+  setData(data: any) {
     return this.record.setDatas(data)
-  },
+  }
 
   /**
    * 将数据源记录转换成原生Object
@@ -61,9 +62,9 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * var map = record.toMap();
    */
-  toMap: function () {
+  toMap() {
     return this.record.toMap()
-  },
+  }
 
   /**
    * 获取主键值
@@ -73,9 +74,9 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * var id = record.getSysId();
    */
-  getSysId: function () {
+  getSysId() {
     return this.record.getSysId()
-  },
+  }
 
   /**
    * 数据源记录克隆
@@ -85,9 +86,9 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * var rd = record.clone();
    */
-  clone: function () {
+  clone() {
     return new Record(this.record.clone())
-  },
+  }
 
   /**
    * 获取已变化的字段值
@@ -97,7 +98,7 @@ Record.prototype = {
    * var record = ds.getCurrentRecord();
    * var diff = record.getDiff();
    */
-  getDiff: function () {
+  getDiff() {
     return this.record.getDiff()
   }
 }
