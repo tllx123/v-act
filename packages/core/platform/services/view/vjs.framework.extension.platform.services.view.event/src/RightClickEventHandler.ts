@@ -1,36 +1,38 @@
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let RightClickEventHandler = function (params: any) {
-  //@ts-ignore
-  let that = this
-  that.id = uuid.generate()
-  that.handler = params.handler
-  that.title = params.title
-  that.html = params.html
-  that.accept = params.accept
-}
+class RightClickEventHandler {
+  id: string
+  handler: any
+  title: any
+  html: any
+  accept: any
+  constructor(params: any) {
+    this.id = uuid.generate()
+    this.handler = params.handler
+    this.title = params.title
+    this.html = params.html
+    this.accept = params.accept
+  }
+  initModule(sb: unknown) {}
 
-RightClickEventHandler.prototype = {
-  initModule: function (sb: unknown) {},
-
-  getId: function () {
+  getId() {
     return this.id
-  },
+  }
 
-  getHtml: function () {
+  getHtml() {
     return this.html || "<li style='cursor:pointer;'>" + this.title + '</li>'
-  },
+  }
 
-  getHandler: function () {
+  getHandler() {
     return this.handler
-  },
+  }
 
-  jugde: function () {
+  jugde() {
     return this.accept ? this.accept.apply(this, arguments) : true
-  },
+  }
 
-  hideMenu: function () {
+  hideMenu() {
     $('#mask').hide()
     $('#rightMenu_div').css({ top: -1000, left: -1000 })
   }
