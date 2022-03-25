@@ -32,9 +32,7 @@ import {
   WindowActionSchema,
   WindowSchema
 } from '@v-act/schema-types'
-import { RuleEngine as ruleEngine } from '@v-act/vjs.framework.extension.platform.engine.rule'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { EventManager as commonEventManager } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.event.binding'
 import { ContextProvider, createContext } from '@v-act/widget-context'
 
@@ -211,22 +209,8 @@ const _enhanceControl = function (
 
         const controlEvents = []
         const triggerEvent = item.eventCode
-        const evaluateRule = item.evaluateRule
-
-        const $addEventHandler = eventManager.addEventHandler
-        const $executeRouteRule = ruleEngine.executeRouteRule
 
         try {
-          $addEventHandler(controlCode, triggerEvent, function () {
-            $executeRouteRule({
-              ruleSetCode: triggerEvent,
-              ruleCode: evaluateRule,
-              args: arguments,
-              argMapping: {},
-              argIndex: {}
-            })
-          })
-
           const handler = commonEventManager.fireEvent(
             controlCode,
             triggerEvent
