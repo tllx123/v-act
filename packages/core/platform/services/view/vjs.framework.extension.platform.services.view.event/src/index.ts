@@ -1,1 +1,4 @@
-export * as EventManager from './EventManager'
+import EventManager from './EventManager'
+import RightClickEventHandler from './RightClickEventHandler'
+
+export { EventManager, RightClickEventHandler }

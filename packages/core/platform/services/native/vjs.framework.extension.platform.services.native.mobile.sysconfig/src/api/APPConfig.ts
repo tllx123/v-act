@@ -1,15 +1,15 @@
 import { Log as log } from '@v-act/vjs.framework.extension.util.logutil'
 
-let instance
+let instance: any
 let VJSNAME = 'VJS[APPConfig]：'
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const isAwakeByURL = function (callback) {
+const isAwakeByURL = function (callback: unknown) {
   if (instance && instance.isAwakeByURL) {
     instance.isAwakeByURL(callback)
   } else {
@@ -17,7 +17,7 @@ const isAwakeByURL = function (callback) {
   }
 }
 
-const getAwakeParams = function (callback) {
+const getAwakeParams = function (callback: unknown) {
   if (instance && instance.getAwakeParams) {
     instance.getAwakeParams(callback)
   } else {
@@ -33,7 +33,7 @@ const clear = function () {
   }
 }
 
-const pasteBoard = function (content) {
+const pasteBoard = function (content: unknown) {
   if (instance && instance.pasteBoard) {
     instance.pasteBoard(content)
   } else {
@@ -41,7 +41,7 @@ const pasteBoard = function (content) {
   }
 }
 
-const call = function (phoneNum) {
+const call = function (phoneNum: number) {
   if (instance && instance.call) {
     instance.call(phoneNum)
   } else {
@@ -49,7 +49,7 @@ const call = function (phoneNum) {
   }
 }
 
-const setPreferences = function (param) {
+const setPreferences = function (param: unknown) {
   if (instance && instance.setPreferences) {
     instance.setPreferences(param)
   } else {
@@ -57,7 +57,7 @@ const setPreferences = function (param) {
   }
 }
 
-const getPreferences = function (successCallback, param) {
+const getPreferences = function (successCallback: unknown, param: unknown) {
   if (instance && instance.getPreferences) {
     instance.getPreferences(successCallback, param)
   } else {

@@ -1,27 +1,31 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
 const share = function (
-  text,
-  title,
-  url,
-  imgUrl,
-  platforms,
-  successCB,
-  errorCB
+  text: string,
+  title: unknown,
+  url: string,
+  imgUrl: string,
+  platforms: unknown,
+  successCB: unknown,
+  errorCB: unknown
 ) {
   instance.share(text, title, url, imgUrl, platforms, successCB, errorCB)
 }
 
-const auth = function (platformName, successCB, errorCB) {
+const auth = function (
+  platformName: string,
+  successCB: unknown,
+  errorCB: unknown
+) {
   instance.auth(platformName, successCB, errorCB)
 }
 
-const isInstall = function (platformName, callback) {
+const isInstall = function (platformName: string, callback: unknown) {
   instance.isInstall(platformName, callback)
 }
 
-export { putInstance, share, auth, isInstall }
+export { auth, isInstall, putInstance, share }

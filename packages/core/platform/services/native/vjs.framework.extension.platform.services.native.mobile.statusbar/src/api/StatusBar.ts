@@ -1,14 +1,14 @@
-let instance
+let instance: any
 
-const putInstance = function (ins) {
+const putInstance = function (ins: unknown) {
   instance = ins
 }
 
-const changeStatusBarColor = function (colorName) {
+const changeStatusBarColor = function (colorName: string) {
   instance.changeStatusBarColor(colorName)
 }
 
-const isShow = function (isShow) {
+const isShow = function (isShow: boolean) {
   if (isShow) {
     instance.show()
   } else {
@@ -16,4 +16,4 @@ const isShow = function (isShow) {
   }
 }
 
-export { putInstance, changeStatusBarColor, isShow }
+export { changeStatusBarColor, isShow, putInstance }

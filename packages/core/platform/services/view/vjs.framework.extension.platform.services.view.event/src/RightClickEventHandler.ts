@@ -1,15 +1,18 @@
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let RightClickEventHandler = function (params) {
-  this.id = uuid.generate()
-  this.handler = params.handler
-  this.title = params.title
-  this.html = params.html
-  this.accept = params.accept
+let RightClickEventHandler = function (params: any) {
+  //@ts-ignore
+  let that = this
+  that.id = uuid.generate()
+  that.handler = params.handler
+  that.title = params.title
+  that.html = params.html
+  that.accept = params.accept
 }
 
 RightClickEventHandler.prototype = {
-  initModule: function (sb) {},
+  initModule: function (sb: unknown) {},
 
   getId: function () {
     return this.id
