@@ -69,7 +69,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
             : iteratorComponent(childrens.props.children, targetCode)
         }
       }
-      //
+
       // 查找组件
       const iteratorControls = (controls: any, componentCode: string): any => {
         if (!controls || controls == []) return false
@@ -84,7 +84,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
             for (let key in controls) {
               let t = iteratorControls(controls[key].controls, componentCode)
               if (t) {
-                return target
+                return t
               }
             }
           }
