@@ -1,3 +1,4 @@
+//@ts-nocheck
 /**
  * 初始化微信分享插件
  * @useage

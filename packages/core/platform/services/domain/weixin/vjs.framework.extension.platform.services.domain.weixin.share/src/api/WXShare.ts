@@ -1,3 +1,4 @@
+//@ts-nocheck
 const onMenuShareTimeline = function (config) {
   if (window.VJSBridge && window.VJSBridge.plugins.weixin.Share) {
     window.VJSBridge.plugins.weixin.Share.onMenuShareTimeline(config)
@@ -18,4 +19,4 @@ const onMenuShareAppMessage = function (config) {
   }
 }
 
-export { onMenuShareTimeline, onMenuShareAppMessage }
+export { onMenuShareAppMessage, onMenuShareTimeline }
