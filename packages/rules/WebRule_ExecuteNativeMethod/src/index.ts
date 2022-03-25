@@ -14,25 +14,27 @@
  *  @author dengb
  */
 
+import { Record } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 //规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as nativeMethodAccessorService from '@v-act/vjs.framework.extension.platform.services.operation.local.NativeMethodAccessor'
 
-var Record
-var nativeMethodAccessorService
+// var Record
+// var nativeMethodAccessorService
 
-exports.initModule = function (sBox) {
-  Record = sBox.getService(
-    'vjs.framework.extension.platform.interface.model.datasource.Record'
-  )
-  nativeMethodAccessorService = sBox.getService(
-    'vjs.framework.extension.platform.services.operation.local.NativeMethodAccessor',
-    { type: 'dotNet' }
-  )
-}
+// exports.initModule = function (sBox) {
+//   Record = sBox.getService(
+//     'vjs.framework.extension.platform.interface.model.datasource.Record'
+//   )
+//   nativeMethodAccessorService = sBox.getService(
+//     'vjs.framework.extension.platform.services.operation.local.NativeMethodAccessor',
+//     { type: 'dotNet' }
+//   )
+// }
 
-const vds = { ds, object }
+const vds = { ds, object, nativeMethodAccessorService }
 
 const main = function (ruleContext: RuleContext) {
   //处理规则的入参
