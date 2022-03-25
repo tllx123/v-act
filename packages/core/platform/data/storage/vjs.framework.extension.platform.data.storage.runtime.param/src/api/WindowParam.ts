@@ -52,7 +52,7 @@ let _putCode = function (code: string, value: any, fn: any) {
   }
 }
 
-let _getCode = function (code: string, type: string, scopeId: string) {
+let _getCode = function (code: string, type: string, scopeId?: string) {
   let scope = scopeId
     ? scopeManager.getScope(scopeId)
     : scopeManager.getWindowScope()
@@ -80,7 +80,7 @@ let _getCode = function (code: string, type: string, scopeId: string) {
 }
 
 const setInput = function (_code: string, value: any) {
-  let code = _getCode(_code, 'input', value)
+  let code = _getCode(_code, 'input')
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   _putCode(code, value, schemaWinParam.getInputDefine)
@@ -88,7 +88,7 @@ const setInput = function (_code: string, value: any) {
 }
 
 const getInput = function (_code: string) {
-  let code = _getCode(_code, 'output', '')
+  let code = _getCode(_code, 'output')
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   return storage.get(code)
@@ -101,14 +101,14 @@ const getInputs = function () {
 }
 
 const existsInput = function (_code: string) {
-  let code = _getCode(_code, 'input', '')
+  let code = _getCode(_code, 'input')
   let depth = _getDepth([inputToken])
   let storage = getStorage(depth, true)
   return storage.containsKey(code)
 }
 
 const setOutput = function (_code: string, value: any) {
-  let code = _getCode(_code, 'output', '')
+  let code = _getCode(_code, 'output')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   _putCode(code, value, schemaWinParam.getOutputDefine)
@@ -116,7 +116,7 @@ const setOutput = function (_code: string, value: any) {
 }
 
 const getOutput = function (_code: string) {
-  let code = _getCode(_code, 'output', '')
+  let code = _getCode(_code, 'output')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   return storage.get(code)
@@ -129,7 +129,7 @@ const getOutputs = function () {
 }
 
 const existsOutput = function (_code: string) {
-  let code = _getCode(_code, 'output', '')
+  let code = _getCode(_code, 'output')
   let depth = _getDepth([outputToken])
   let storage = getStorage(depth, true)
   return storage.containsKey(code)

@@ -39,7 +39,7 @@ let addWindowDefines = function (
 }
 
 let getWindowDefine = function (
-  componentCod: string,
+  componentCode: string,
   windowCode: string,
   domain: string,
   code: string
