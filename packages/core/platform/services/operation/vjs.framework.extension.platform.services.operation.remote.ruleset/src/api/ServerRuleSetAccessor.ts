@@ -3,16 +3,16 @@ import { RPC as rpc } from '@v-act/vjs.framework.extension.system.rpc'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 import { jsonUtil as jsonUtils } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-export function initModule(sb) {}
+// export function initModule(sb) {}
 
-const invoke = function (params) {
+const invoke = function (params: any) {
   let ruleSetCode = params.ruleSetCode,
     commitParams = params.commitParams
   let beforeRequest = params.beforeRequest
   let afterResponse = params.afterResponse
   let isAsyn = params.isAsyn
   isAsyn = typeof isAsyn == 'boolean' ? isAsyn : true
-  let config = {}
+  let config: any = {}
   config.param = {
     params: commitParams,
     ruleSetCode: ruleSetCode,
@@ -51,10 +51,12 @@ const invoke = function (params) {
   rpc.invokeExtensibleOperation(config)
 }
 
-const invokeV3Webapi = function (params) {
+const invokeV3Webapi = function (params: any) {
   if (params) {
     let host
+    //@ts-ignore
     if (window.GlobalVariables) {
+      //@ts-ignore
       host = window.GlobalVariables.getServerPath() + '/'
     } else {
       //Task20200623111
@@ -68,15 +70,16 @@ const invokeV3Webapi = function (params) {
     /**
      * 重写错误回调，因为后台返回的数据存在转换不了的情况。
      * */
-    let errorFun = function (res) {
+    let errorFun = function (res: any) {
       if (typeof customError == 'function') customError(res)
     }
     /**
      * 成功回调
      * */
-    let successFun = function (res) {
+    let successFun = function (res: any) {
       if (typeof customSuccess == 'function') {
         //移动版添加对结果处理，保持与pc版一致
+        //@ts-ignore
         if (window.GlobalVariables) {
           res = jsonUtils.json2obj(res.responseText)
         }
