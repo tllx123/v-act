@@ -1,2 +1,4 @@
-export * as DataQuery from './api/query/DataQuery'
-export * as DataSave from './api/save/DataSave'
+import DataQuery from './api/query/DataQuery'
+import DataSave from './api/save/DataSave'
+
+export { DataQuery, DataSave }

@@ -51,7 +51,7 @@ var handleParam = function (selectDatas: any) {
  * }
  */
 
-export function query(params: any) {
+function query(params: any) {
   var queryParam = params.queryParams,
     isConcurrent = params.isConcurrent,
     isAsync = params.isAsync,
@@ -147,7 +147,7 @@ export function query(params: any) {
  * 		"success" : Function 查询成功后回调
  * }
  */
-export function querySenior(params: any) {
+function querySenior(params: any) {
   var queryParam = params.queryParams,
     isConcurrent = params.isConcurrent,
     isAsync = params.isAsync,
@@ -234,4 +234,9 @@ var changeUndefinedToNull = function (params: any) {
     }
   }
   return params
+}
+
+export default {
+  querySenior,
+  query
 }
