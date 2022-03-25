@@ -53,7 +53,7 @@ class NumberIdentifierSyntax extends Syntax {
       while (true) {
         i--
         if (i > -1) {
-          let tk = tokens[i]
+          let tk = tokens[i + 1]
           if (tk instanceof Token && !(tk instanceof BlankToken)) {
             token = tk
           }
@@ -61,7 +61,7 @@ class NumberIdentifierSyntax extends Syntax {
           break
         }
       }
-      if (!token || !token.isSubtractAhead()) {
+      if (!token || token.isSubtractAhead()) {
         startIndex--
         value = 0 - value
       }
