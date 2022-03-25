@@ -126,10 +126,11 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     }
 
     window.changeComponentByProperties = changeComponentByProperties
-    context.windowScope.set(
-      'changeComponentByProperties',
-      changeComponentByProperties
-    )
+    context.windowScope &&
+      context.windowScope.set(
+        'changeComponentByProperties',
+        changeComponentByProperties
+      )
 
     console.log('inProps: ', inProps)
 
