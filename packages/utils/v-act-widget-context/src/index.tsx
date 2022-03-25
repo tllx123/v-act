@@ -104,15 +104,16 @@ const ContextProvider = function (props: ContextProviderProps) {
   const context = props.context || { position: 'absolute' }
   const children = props.children
 
-  const [contextTemp, setVal] = useState([context])
+  const [contextTemp, setVal] = useState(context)
 
   //插入
   const insertDataFunc = (params: any) => {
-    const entities = contextTemp.entities
+    const entities = context.entities
     if (entities) {
       const entity = entities[params.code]
       if (entity) {
-        entity.datas.push(params.re)
+        entity.datas.push(params.record)
+        setVal(context)
       }
     }
   }
