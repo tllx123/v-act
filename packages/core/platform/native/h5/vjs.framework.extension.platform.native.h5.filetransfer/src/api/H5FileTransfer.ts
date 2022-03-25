@@ -83,7 +83,6 @@ const uploadFiles = function (
   uploader.bind(
     'UploadProgress',
     function (uploader: Record<string, any>, file: any) {
-      debugger
       let queueProgress = uploader.total
       let percent = queueProgress.percent
       let loadingMsg = '正在上传(' + percent + '%)'

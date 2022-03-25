@@ -1,4 +1,3 @@
-// @ts-ignore
 import {
   Record as nRecord,
   ResultSet
