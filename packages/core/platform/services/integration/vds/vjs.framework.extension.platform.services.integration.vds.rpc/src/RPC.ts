@@ -13,17 +13,22 @@ import { RPC as rpcEnum } from '@v-act/vjs.framework.extension.platform.interfac
 import { ExceptionFactory as factory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { Platform as i18n } from '@v-act/vjs.framework.extension.platform.interface.i18n'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-import * as sysConstant from '@v-act/vjs.framework.extension.platform.services.constant'
+import { SystemConstant as sysConstant } from '@v-act/vjs.framework.extension.platform.services.constant'
 import { RemoteOperation as operation } from '@v-act/vjs.framework.extension.platform.services.domain.operation'
 import {
   ExpressionContext as EngineContext,
   ExpressionEngine as engine
 } from '@v-act/vjs.framework.extension.platform.services.engine'
+import * as date from '@v-act/vjs.framework.extension.platform.services.integration.vds.date'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import { RemoteMethodAccessor as serverRuleSetAccessor } from '@v-act/vjs.framework.extension.platform.services.operation.remote.ruleset'
 import { DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.access'
 import { DataQuery as dataQuery } from '@v-act/vjs.framework.extension.platform.services.repository.remote.base'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
-import * as dataAdapter from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
 import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { RPC } from '@v-act/vjs.framework.extension.system.rpc'
 import { DataValidateUtil as dataValidateUtil } from '@v-act/vjs.framework.extension.util.datavalidate'
@@ -31,7 +36,8 @@ import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 import { plupload } from '@v-act/vjs.framework.extension.vendor.plupload'
 
 import RuleContext from '../../vjs.framework.extension.platform.services.integration.vds.rule/src/RuleContext'
-;('vjs.framework.extension.util.DataValidateUtil')
+
+const vds = { date, string, ds, object, exception }
 
 /**
  * 超时类型
@@ -112,7 +118,7 @@ export function get(url: string) {
  * @return {Date} 返回日期对象
  * */
 export function getDate() {
-  var value = sysConstant.get({
+  var value: any = sysConstant.get({
     type: sysConstant.TYPES.CurrentTime,
     params: ['yyyy-MM-dd HH:mm:ss']
   })
@@ -369,7 +375,7 @@ export function queryDataSync(
           })
         }
         if (_entity) {
-          entityInfo = vds.string.toJson(_entity.serialize(), false)
+          entityInfo = vds.string.toJson(_entity.serialize())
         }
       }
     }
@@ -599,7 +605,7 @@ export function queryData(
             })
           }
           if (_entity) {
-            entityInfo = vds.string.toJson(_entity.serialize(), false)
+            entityInfo = vds.string.toJson(_entity.serialize())
           }
         }
       }
