@@ -61,7 +61,10 @@ const closeModalWindow = function (params: Record<string, any>) {
     }
   }
   //@ts-ignore
-  actionHandler.executeComponentAction('closeComponent', retVal)
+  //actionHandler.executeComponentAction('closeComponent', retVal)
+  const windowScope = scopeManager.getWindowScope()
+  const handler = windowScope.get('dailogWindowCloseHandler')
+  handler && handler(retVal)
 }
 /**
  * 替换构件包信息

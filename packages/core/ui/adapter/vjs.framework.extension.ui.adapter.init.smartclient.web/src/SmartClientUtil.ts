@@ -531,10 +531,10 @@ var _genRenderComponentCallback = function (params) {
       //}
       var _callback = function () {
         ScopeManager.openScope(scopeId)
-        var windowScope = ScopeManager.getWindowScope()
+        /*var windowScope = ScopeManager.getWindowScope()
         windowScope.on(ScopeManager.EVENTS.DESTROY, function () {
           widgetAction.executeComponentAction('destroyComponentData', scopeId)
-        })
+        })*/
         ScopeManager.closeScope()
         eventManager.fire({
           event: eventManager.Events.AfterWindowRender,

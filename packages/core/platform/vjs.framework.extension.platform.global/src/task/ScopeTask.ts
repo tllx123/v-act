@@ -18,9 +18,7 @@ let ScopeTask: any = function (
   this.props = props
   //@ts-ignore
   if (!this._registedHandler) {
-    ScopeManager.on(ScopeManager.EVENTS.DESTROY, function () {
-      //@ts-ignore
-      let scopeId = this.getCurrentScopeId()
+    ScopeManager.on(ScopeManager.EVENTS.DESTROY, function (scopeId) {
       TaskManager.removeByFilter({ scopeId: scopeId })
     })
     ScopeTask.prototype._registedHandler = true

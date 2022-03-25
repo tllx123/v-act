@@ -242,7 +242,7 @@ let _fire = function (eventName: string, scope: Scope, ...args1: any[]) {
     if (storage.containsKey(eventName)) {
       let handlers = storage.get(eventName)
       handlers.forEach((handler: (...args: any[]) => void) => {
-        handler(...args)
+        handler(scopeId)
       })
     }
     scope.fire(eventName, ...args)
