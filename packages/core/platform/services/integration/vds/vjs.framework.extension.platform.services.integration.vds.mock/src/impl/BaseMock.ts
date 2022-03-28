@@ -3,6 +3,7 @@
  * */
 
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as paramRandom from '../ParamRandom'
 import * as Path from '../util/Path'
@@ -17,7 +18,21 @@ import WidgetMock from './WidgetMock'
  * @catalog 本地测试/基础定义
  */
 class BaseMock {
-  constructor(metadata, scopeId, code, name, baseUrl) {
+  code: string
+  inputs: Record<string, any>
+  metadata: any
+  scopeId: string
+  _mockName: string
+  baseUrl: any
+  outputs: Record<string, any>
+
+  constructor(
+    metadata: any,
+    scopeId: string,
+    code: string,
+    name?: string,
+    baseUrl?: string
+  ) {
     this.code = code
     this.inputs = {} //输入参数
     this.metadata = metadata
@@ -27,16 +42,16 @@ class BaseMock {
     this.outputs = {} //输入参数
   }
 
-  _toCallback(func, resolve, reject) {
+  _toCallback(func: Record<string, any>) {
     var _this = this
-    return function (res, rej) {
+    return function (res: any, rej: any) {
       func.call(_this, res, rej)
     }
   }
 
-  _fixCode(code) {
+  _fixCode(code: string) {
     return new Promise(
-      this._toCallback(function (resolve, reject) {
+      this._toCallback((resolve: () => void, reject: (arg0: Error) => any) => {
         var plugins = this.metadata.plugins
         if (!plugins || plugins.length == 0) {
           return reject(new Error('不存在前端插件定义，执行结束！'))
@@ -68,7 +83,7 @@ class BaseMock {
    * 根据编号获取插件定义
    * @ignore
    */
-  _getPlugin(code) {
+  _getPlugin(code: string) {
     if (this.metadata && this.metadata.plugins) {
       var plugins = this.metadata.plugins
       for (var i = 0, l = plugins.length; i < l; i++) {
@@ -86,7 +101,7 @@ class BaseMock {
    */
   _loadDefineScript() {
     return new Promise(
-      this._toCallback(function (resolve, reject) {
+      this._toCallback((resolve: () => void) => {
         var plugin = this._getPlugin(this.code)
         var defineUrl = plugin.defineUrl
         if (defineUrl) {
@@ -119,90 +134,115 @@ class BaseMock {
    */
   _mockPlugin() {
     return new Promise(
-      this._toCallback(function (resolve, reject) {
-        var plugin = this._getPlugin(this.code)
-        var type = plugin.type
-        if (this['_' + type + 'Mock']) {
-          this['_' + type + 'Mock']()
-            .then(function (mock) {
-              resolve(mock)
-            })
-            .catch(function (e) {
-              reject(e)
-            })
-        } else {
-          reject(new Error('前端插件类型【' + plugin.type + '】不支持！'))
+      this._toCallback(
+        (resolve: (arg0: any) => void, reject: (arg0: Error) => void) => {
+          var plugin = this._getPlugin(this.code)
+          var type = plugin.type
+          if (this['_' + type + 'Mock']) {
+            this['_' + type + 'Mock']()
+              .then(function (mock: any) {
+                resolve(mock)
+              })
+              .catch(function (e: any) {
+                reject(e)
+              })
+          } else {
+            reject(new Error('前端插件类型【' + plugin.type + '】不支持！'))
+          }
         }
-      })
+      )
     )
   }
 
   _ruleMock() {
     return new Promise(
-      this._toCallback(function (resolve, reject) {
-        var cb = this._toCallback(function () {
-          try {
-            var mock = new RuleMock(this.metadata, this.scopeId, this.code)
-            scopeManager.openScope(this.scopeId)
-            resolve(mock)
-          } catch (e) {
-            reject(e)
-          }
-        })
-        this._loadDefineScript()
-          .then(function () {
-            //加载规则中新import的vds命名空间
-            vds.config({}).ready(cb)
+      this._toCallback(
+        (
+          resolve: (arg0: RuleMock) => void,
+          reject: (arg0: unknown) => void
+        ) => {
+          var cb = this._toCallback(() => {
+            try {
+              var mock = new RuleMock(this.metadata, this.scopeId, this.code)
+              scopeManager.openScope(this.scopeId)
+              resolve(mock)
+            } catch (e) {
+              reject(e)
+            }
           })
-          .catch(function (e) {
-            reject(e)
-          })
-      })
+          this._loadDefineScript()
+            .then(function () {
+              //加载规则中新import的vds命名空间
+              vds.config({}).ready(cb)
+            })
+            .catch(function (e) {
+              reject(e)
+            })
+        }
+      )
     )
   }
 
   _functionMock() {
     return new Promise(
-      this._toCallback(function (resolve, reject) {
-        var cb = this._toCallback(function () {
-          try {
-            var mock = new FunctionMock(this.metadata, this.scopeId, this.code)
-            scopeManager.openScope(this.scopeId)
-            resolve(mock)
-          } catch (e) {
-            reject(e)
-          }
-        })
-        this._loadDefineScript()
-          .then(function () {
-            //加载函数中新import的vds命名空间
-            vds.config({}).ready(cb)
+      this._toCallback(
+        (
+          resolve: (arg0: FunctionMock) => void,
+          reject: (arg0: unknown) => void
+        ) => {
+          var cb = this._toCallback(() => {
+            try {
+              var mock = new FunctionMock(
+                this.metadata,
+                this.scopeId,
+                this.code
+              )
+              scopeManager.openScope(this.scopeId)
+              resolve(mock)
+            } catch (e) {
+              reject(e)
+            }
           })
-          .catch(function (e) {
-            reject(e)
-          })
-      })
+          this._loadDefineScript()
+            .then(function () {
+              //加载函数中新import的vds命名空间
+              vds.config({}).ready(cb)
+            })
+            .catch(function (e) {
+              reject(e)
+            })
+        }
+      )
     )
   }
 
   _widgetMock() {
     return new Promise(
+      //@ts-ignore
       this._toCallback(function (resolve, reject) {
+        //@ts-ignore
         var sandBox = VMetrix.sandbox.create()
         sandBox.use([
           'vjs.framework.extension.platform.plugin.ui.smartclient.core'
         ])
         sandBox.active().done(
+          //@ts-ignore
           this._toCallback(function () {
+            //@ts-ignore
             this._loadDefineScript()
               .then(
+                //@ts-ignore
                 this._toCallback(function () {
                   try {
                     var mock = new WidgetMock(
+                      //@ts-ignore
                       this.metadata,
+                      //@ts-ignore
                       this.scopeId,
+                      //@ts-ignore
                       this.code
                     )
+                    //@ts-ignore
                     scopeManager.openScope(this.scopeId)
                     resolve(mock)
                   } catch (e) {
@@ -210,6 +250,7 @@ class BaseMock {
                   }
                 })
               )
+              //@ts-ignore
               .catch(function (e) {
                 reject(e)
               })
@@ -224,19 +265,26 @@ class BaseMock {
    * @param	{String}	code 当manifest中只有一个插件时，可以不传，如果存在多个插件，则需要传入插件编码
    * @return	{Promise}
    * */
+  //@ts-ignore
   get(code) {
     return new Promise(
+      //@ts-ignore
       this._toCallback(function (resolve, reject) {
+        //@ts-ignore
         this._fixCode(code)
           .then(
+            //@ts-ignore
             this._toCallback(function () {
+              //@ts-ignore
               this._mockPlugin()
                 .then(
+                  //@ts-ignore
                   this._toCallback(function (mock) {
                     resolve(mock)
                   })
                 )
                 .catch(
+                  //@ts-ignore
                   this._toCallback(function (e) {
                     reject(e)
                   })
@@ -244,6 +292,7 @@ class BaseMock {
             })
           )
           .catch(
+            //@ts-ignore
             this._toCallback(function (e) {
               reject(e)
             })
@@ -257,7 +306,7 @@ class BaseMock {
    * @param {String} key 配置编号
    * @param {Any} value 配置值
    */
-  mockInput(key, value) {
+  mockInput(key: string | number, value: any) {
     this.inputs[key] = value
     return this
   }
@@ -266,10 +315,10 @@ class BaseMock {
    * 批量mock输入配置
    * @param {Object} params 配置信息
    */
-  mockInputs(params) {
+  mockInputs(params: any) {
     if (params) {
       for (var key in params) {
-        if (param.hasOwnerProperty(key)) {
+        if (params.hasOwnerProperty(key)) {
           this.inputs[key] = params[key]
         }
       }
@@ -281,8 +330,8 @@ class BaseMock {
    * 运行插件
    * @returns {Promise}
    */
-  exec() {
-    return new Promise(function (resolve, reject) {
+  exec(...vals: any) {
+    return new Promise<void>(function (resolve, reject) {
       resolve()
       scopeManager.closeScope()
     })
@@ -292,7 +341,7 @@ class BaseMock {
    * 获取所有前端插件编号
    * @return Array
    */
-  _getFrontendPluginCodes(targetType) {
+  _getFrontendPluginCodes(targetType: string) {
     var codes = []
     var types = targetType ? [targetType] : ['rule', 'function']
     var plugins = this.metadata.plugins
@@ -317,7 +366,7 @@ class BaseMock {
     return null
   }
 
-  _isEntityByInputCode(code) {
+  _isEntityByInputCode(code: any) {
     var input = this._getPluginInputCfg(code)
     if (input && input.editor.type == 'entity') {
       return true
@@ -325,7 +374,7 @@ class BaseMock {
     return false
   }
 
-  _getPluginInputCfg(code) {
+  _getPluginInputCfg(code: any) {
     var plugin = this._getPluginCfg()
     var inputs = plugin.inputs
     if (inputs) {
@@ -339,11 +388,11 @@ class BaseMock {
     return null
   }
 
-  _existInput(code) {
+  _existInput(code: any) {
     return this.inputs.hasOwnProperty(code)
   }
 
-  _genInput(code, inputCfg) {
+  _genInput(code: string, inputCfg: any) {
     var input = inputCfg || this._getPluginInputCfg(code)
     if (input) {
       /*if(input.hasOwnProperty("default")){
@@ -383,7 +432,7 @@ class BaseMock {
     }
   }
 
-  _getInput(code, input) {
+  _getInput(code: string, input?: any) {
     if (!this._existInput(code)) {
       this.inputs[code] = this._genInput(code, input)
     }
@@ -394,7 +443,7 @@ class BaseMock {
    * 获取输入信息
    * @param {String|Integer} code 输入编号或参数下标
    */
-  getInput(code) {
+  getInput(code: string) {
     return this._getInput(code)
   }
 

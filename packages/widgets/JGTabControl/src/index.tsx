@@ -4,7 +4,12 @@ import {
   WidgetRenderContext,
   WidgetRenderer
 } from '@v-act/schema-types'
-import { toBoolean, toCssAxisVal, toNumber } from '@v-act/widget-utils'
+import {
+  toBoolean,
+  toCssAxisVal,
+  toNumber,
+  isNullOrUnDef
+} from '@v-act/widget-utils'
 
 import {
   Aligment,
@@ -24,6 +29,20 @@ const convert = function (
   context: WidgetRenderContext
 ): JSX.Element {
   const pros: JGTabControlProperty = control.properties
+  let selectedIndex = isNullOrUnDef(pros.selectedIndex)
+    ? 0
+    : toNumber(pros.selectedIndex, Number.MAX_SAFE_INTEGER)
+  if (selectedIndex == Number.MAX_SAFE_INTEGER) {
+    //当selectedIndex为页签页编号时
+    selectedIndex = 0
+    if (control.controls) {
+      control.controls.forEach((con, index) => {
+        if (con.properties.code == pros.selectedIndex) {
+          selectedIndex = index
+        }
+      })
+    }
+  }
   const props: JGTabControlProps = {
     top: toCssAxisVal(pros.top, '0px'),
     left: toCssAxisVal(pros.left, '0px'),

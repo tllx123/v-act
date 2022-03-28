@@ -108,40 +108,16 @@ const ParseExpression = function (exp: string) {
     // },
 
     printAddSyntax: function (syntax, print) {
-      return (
-        'context.evaluateAdd("' +
-        syntax.getLeft() +
-        '","' +
-        syntax.getRight() +
-        '")'
-      )
+      return `context.evaluateAdd(${syntax.getLeft()},${syntax.getRight()})`
     },
     printSubtractSyntax: function (syntax, print) {
-      return (
-        'context.evaluateSub("' +
-        syntax.getLeft() +
-        '","' +
-        syntax.getRight() +
-        '")'
-      )
+      return `context.evaluateSub(${syntax.getLeft()},${syntax.getRight()})`
     },
     printMultiplySyntax: function (syntax, print) {
-      return (
-        'context.evaluateMult("' +
-        syntax.getLeft() +
-        '","' +
-        syntax.getRight() +
-        '")'
-      )
+      return `context.evaluateMult(${syntax.getLeft()},${syntax.getRight()})`
     },
     printDivideSyntax: function (syntax, print) {
-      return (
-        'context.evaluateDiv("' +
-        syntax.getLeft() +
-        '","' +
-        syntax.getRight() +
-        '")'
-      )
+      return `context.evaluateDiv(${syntax.getLeft()},${syntax.getRight()})`
     }
   })
 }

@@ -16,6 +16,7 @@ import { Modal } from '@v-act/vjs.framework.extension.platform.services.view.mod
 import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.framework.extension.platform.services.view.relation'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { Mode as disposeUtil } from '@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.default'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 var gelEl = function () {
   var windowScope = scopeManager.getWindowScope()
@@ -42,7 +43,7 @@ var gelEl = function () {
  * @example
  * vds.window.getInput("var1");
  */
-export function getInput(code) {
+export function getInput(code: string) {
   var value = windowParam.getInput({
     code: code
   })
@@ -59,7 +60,7 @@ export function getInput(code) {
  * @example
  * vds.window.getOutput("var1");
  */
-export function getOutput(code) {
+export function getOutput(code: string) {
   var value = windowParam.getOutput({
     code: code
   })
@@ -76,7 +77,7 @@ export function getOutput(code) {
  * @example
  * vds.window.setOutput("var1", "value1");
  */
-export function setOutput(code, value) {
+export function setOutput(code: string, value: Record<string, any>) {
   if (!code) {
     return null
   }
@@ -96,7 +97,7 @@ export function setOutput(code, value) {
  * @example
  * vds.window.setInput("var1", "value1");
  */
-export function setInput(code, value) {
+export function setInput(code: string, value: Record<string, any>) {
   if (!code) {
     return
   }
@@ -115,7 +116,7 @@ export function setInput(code, value) {
  * @example
  * var value = vds.window.getVariable("code1");
  * */
-export function getVariable(code) {
+export function getVariable(code: any) {
   var scope = scopeManager.getWindowScope()
   if (scope) {
     var value = scope.get(code)
@@ -134,7 +135,7 @@ export function getVariable(code) {
  * @example
  * vds.window.dispose(ruleContext);
  * */
-export function dispose(ruleContext) {
+export function dispose(ruleContext: Record<string, any>) {
   if (!ruleContext) {
     return
   }
@@ -180,7 +181,7 @@ export function cancelClose() {
  * @example
  * var type = vds.window.getInputType("code1");
  * */
-export function getInputType(code) {
+export function getInputType(code: string) {
   var input = windowParam.getInputDefine({
     code: code
   })
@@ -196,7 +197,7 @@ export function getInputType(code) {
  * @example
  * var type = vds.window.getOutputType("code1");
  * */
-export function getOutputType(code) {
+export function getOutputType(code: string) {
   var output = windowParam.getOutputDefine({
     code: code
   })
@@ -232,7 +233,7 @@ export function render() {}
  * @example
  * vds.window.exist("facedbf6edc9fc63679d830af4b60e13");
  * */
-export function exist(instanceId) {
+export function exist(instanceId: string) {
   if (scopeManager.isWindowScope(instanceId)) {
     return true
   }
@@ -244,7 +245,7 @@ export function exist(instanceId) {
  * @example
  * vds.window.setTitle("新窗体标题");
  * */
-export function setTitle(title) {
+export function setTitle(title: string) {
   var scope = scopeManager.getWindowScope()
   if (scope) {
     windowContainerManager.updateTitleByScopeId(scope.getInstanceId(), title)
@@ -273,7 +274,7 @@ export { State }
  * @example
  * vds.window.setState(vds.window.state.Maximized);
  * */
-export function setState(state) {
+export function setState(state: any) {
   switch (state) {
     case State.Maximized:
     case State.Normal:
