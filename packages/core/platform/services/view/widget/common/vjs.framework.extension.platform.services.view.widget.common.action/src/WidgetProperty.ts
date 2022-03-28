@@ -20,8 +20,12 @@ let set = function (widgetId: any, propertyName: string, propertyValue: any) {
 }
 
 let get = function (widgetId: any, propertyName: string) {
-  let actionName = 'get' + propertyName
-  return widgetAction.executeWidgetAction(widgetId, actionName)
+  const windowScope = ScopeManager.getWindowScope()
+  const handler = windowScope.get('getComponentProperty')
+  if (handler) {
+    return handler(widgetId, propertyName)
+  }
+  return null
 }
 
 let hasProperty = function (widgetId: any, propertyName: string) {
