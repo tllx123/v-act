@@ -18,9 +18,7 @@ const action = process.argv && process.argv[2]
 if (action === 'export' || action === 'build') {
   //如果是导出，则添加项目名称作为根路径
   const packageJson = require('./package.json')
-  const projectName = (packageJson.name || '')
-    .replace('@', '')
-    .replace(/\//g, '-')
+  const projectName = (packageJson.name || '').replace('@', '').replace(/\//g, '-')
   config.basePath = '/' + projectName
 }
 
