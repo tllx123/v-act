@@ -87,7 +87,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
      * @param String componentCode 组件code值
      * @param String propCode 属性编号
      * */
-    const getComponentProperty = (componentCode: string, propCode?: string) => {
+    const getComponentProperty = (componentCode: string, propCode: string) => {
       if (!inProps.children) return new Error('页面未设置组件')
       if ('props' in inProps.children) {
         let targetPage = iteratorComponent(
@@ -102,7 +102,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         if (targetComponent) {
           let { properties } = targetComponent
           if (!propCode) {
-            return properties
+            return '请传入属性编码'
           } else {
             return properties[propCode]
           }
