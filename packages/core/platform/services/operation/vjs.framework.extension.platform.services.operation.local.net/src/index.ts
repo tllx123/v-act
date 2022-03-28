@@ -1,1 +1,1 @@
-export * as Share from './impl/dotNetNativeMethodAccessor'
+export * as MethodAccessor from './impl/dotNetNativeMethodAccessor'
