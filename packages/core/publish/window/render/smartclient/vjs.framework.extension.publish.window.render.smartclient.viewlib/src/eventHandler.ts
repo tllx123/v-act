@@ -4,17 +4,15 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
 
 export default function eventHandler(params: Record<string, any>) {
-  const {
-    scopeId: instanceId,
-    winDatas: { controls }
-  } = params
-  if (controls && controls.control) {
+  const { scopeId: instanceId, winDatas } = params
+  /*if (controls && controls.control) {
     let controlList = controls.control
     controlList = Array.isArray(controlList) ? controlList : [controlList]
     controlList.forEach((control: any) => {
       _enhanceControl(control, instanceId)
     })
-  }
+  }*/
+  _enhanceControl(winDatas, instanceId)
 }
 
 const _enhanceControl = function (control: ControlSchema, instanceId: string) {
