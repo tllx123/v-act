@@ -27,6 +27,53 @@ const JGComponentRoot = styled(Box, {
   position: 'relative'
 }))
 
+// 查找页面
+const iteratorComponent = (
+  childrens: JSX.Element | JSX.Element[],
+  targetCode: string
+): any => {
+  if (Array.isArray(childrens)) {
+    for (let key in childrens) {
+      let children = childrens[key]
+      if (!('props' in children)) continue
+
+      return children.props.componentCode
+        ? children.props.control
+        : iteratorComponent(children.props.children, targetCode)
+    }
+  } else {
+    return childrens.props.componentCode
+      ? childrens.props.control
+      : iteratorComponent(childrens.props.children, targetCode)
+  }
+}
+
+// 查找组件
+const iteratorControls = (controls: any, componentCode: string): any => {
+  if (!controls || controls == []) return false
+  if (Array.isArray(controls)) {
+    let target
+    for (let key in controls) {
+      if (controls[key].properties.code === componentCode) {
+        target = controls[key]
+      }
+    }
+    if (!target) {
+      for (let key in controls) {
+        let t = iteratorControls(controls[key].controls, componentCode)
+        if (t) {
+          return t
+        }
+      }
+    }
+    return target
+  } else {
+    return controls.properties.code === componentCode
+      ? controls
+      : iteratorControls(controls.controls, componentCode)
+  }
+}
+
 const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
   (inProps, ref) => {
     const [propsChildren, setPropsChildren] = useState(
@@ -34,6 +81,36 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     )
     const context = useContext()
     context.entities = inProps.entities
+
+    /**
+     * 为全局暴露一个接口获取组件属性
+     * @param String componentCode 组件code值
+     * @param String propCode 属性编号
+     * */
+    const getComponentProperty = (componentCode: string, propCode?: string) => {
+      if (!inProps.children) return new Error('页面未设置组件')
+      if ('props' in inProps.children) {
+        let targetPage = iteratorComponent(
+          inProps.children.props.children,
+          componentCode
+        )
+        let targetComponent = iteratorControls(
+          targetPage.controls,
+          componentCode
+        )
+
+        if (targetComponent) {
+          let { properties } = targetComponent
+          if (!propCode) {
+            return properties
+          } else {
+            return properties[propCode]
+          }
+        } else {
+          return '未找到该组件'
+        }
+      }
+    }
 
     /**
      * 为全局暴露一个接口更改组件属性
@@ -47,53 +124,6 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     ): any => {
       if (!inProps.children) {
         return new Error('页面未设置组件')
-      }
-
-      // 查找页面
-      const iteratorComponent = (
-        childrens: JSX.Element | JSX.Element[],
-        targetCode: string
-      ): any => {
-        if (Array.isArray(childrens)) {
-          for (let key in childrens) {
-            let children = childrens[key]
-            if (!('props' in children)) continue
-
-            return children.props.componentCode
-              ? children.props.control
-              : iteratorComponent(children.props.children, targetCode)
-          }
-        } else {
-          return childrens.props.componentCode
-            ? childrens.props.control
-            : iteratorComponent(childrens.props.children, targetCode)
-        }
-      }
-
-      // 查找组件
-      const iteratorControls = (controls: any, componentCode: string): any => {
-        if (!controls || controls == []) return false
-        if (Array.isArray(controls)) {
-          let target
-          for (let key in controls) {
-            if (controls[key].properties.code === componentCode) {
-              target = controls[key]
-            }
-          }
-          if (!target) {
-            for (let key in controls) {
-              let t = iteratorControls(controls[key].controls, componentCode)
-              if (t) {
-                return t
-              }
-            }
-          }
-          return target
-        } else {
-          return controls.properties.code === componentCode
-            ? controls
-            : iteratorControls(controls.controls, componentCode)
-        }
       }
 
       if ('props' in inProps.children) {
@@ -115,6 +145,8 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
             targetComponent.properties,
             properties
           )
+        } else {
+          return '未找到该组件'
         }
 
         const newPropsChildren = Object.assign({}, inProps.children)
@@ -126,13 +158,15 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     }
 
     window.changeComponentByProperties = changeComponentByProperties
-    context.windowScope &&
+    window.getComponentProperty = getComponentProperty
+    if (context.windowScope) {
       context.windowScope.set(
         'changeComponentByProperties',
         changeComponentByProperties
       )
 
-    console.log('inProps: ', inProps)
+      context.windowScope.set('getComponentProperty', getComponentProperty)
+    }
 
     const props: BoxProps = {
       sx: {

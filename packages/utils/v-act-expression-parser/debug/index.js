@@ -147,11 +147,15 @@ const testPrintAll = function () {
 //testAll()
 // const script = testPrint('4.3-9.2')
 // console.log(script)
-console.log(testPrint('4.3 - 9.2'))
-console.log(testPrint('20-10'))
-console.log(testPrint('-9.2'))
-console.log(testPrint('-4.3-2'))
-// console.log( testPrint('-4.3--2'))
+let result
+
+result = testPrint('20-10')
+// console.log(testPrint('4.3 - 9.2'))
+// console.log(testPrint('20+10'))
+console.log(result)
+// console.log(testPrint('-9.2'))
+// console.log(testPrint('-4.3-2'))
+// console.log(testPrint('(-2)'))
 // const func = new Function(
 //   { getRulesetInput: function () {}, getRulesetVar: function () {} },
 //   'return ' + script
