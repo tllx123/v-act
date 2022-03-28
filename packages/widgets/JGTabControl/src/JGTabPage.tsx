@@ -1,10 +1,13 @@
 import { CSSProperties } from 'react'
 
 import Box from '@mui/material/Box'
+import { toBoolean } from '@v-act/widget-utils'
 import { Control, ControlReact, WidgetRenderer } from '@v-act/schema-types'
 
 interface JGTabPageProps {
   code: string
+
+  visible?: boolean
 
   index?: number
 
@@ -27,6 +30,7 @@ const convert = function (
   const pros = control.properties
   const props: JGTabPageProps = {
     code: pros.code,
+    visible: toBoolean(pros.visible, true),
     labelText: pros.labelText
   }
   const containerProps: ControlReact = {
@@ -41,6 +45,9 @@ const convert = function (
 }
 
 function JGTabPage(props: JGTabPageProps) {
+  if (!props.visible) {
+    return null
+  }
   const { children, index, value } = props
   const styles = props.sx ? props.sx : {}
   return (
