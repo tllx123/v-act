@@ -30,9 +30,11 @@ const testPrint = function (exp) {
     printComponentVarSyntax: function (syntax, print) {
       return 'context.getComponontVar("' + syntax.getCode() + '")'
     },
+
     printWindowVarSyntax: function (syntax, print) {
       return 'context.getWindowVar("' + syntax.getCode() + '")'
     },
+
     printEntityFieldSyntax: function (syntax, print) {
       return (
         'context.getRecordValue("' +
@@ -42,6 +44,7 @@ const testPrint = function (exp) {
         '")'
       )
     },
+
     printWidgetPropertySyntax: function (syntax, print) {
       return (
         'context.getWidgetProperty("' +
@@ -51,8 +54,10 @@ const testPrint = function (exp) {
         '")'
       )
     },
+
     printFunctionSyntax: function (syntax, print) {
-      const script = ['context.executeFunction("']
+      const script = ['context.executeFunction(']
+      script.push('"')
       script.push(syntax.getCode())
       script.push('"')
       script.push(',')
@@ -118,14 +123,24 @@ const testPrint = function (exp) {
     printNotEqualSyntax: function (syntax, print) {
       return `${print(syntax.getLeft())}!=${print(syntax.getRight())}`
     },
+    printStringIdentifierSyntax: function (syntax, print) {
+      return `context.getString("${syntax.getValue()}")`
+    },
+    // printNumberIdentifierSyntax: function (syntax, print) {
+    //    return `context.getNumber("${syntax.getValue()}")`
+    // },
+
+    printAddSyntax: function (syntax, print) {
+      return `context.evaluateAdd(${syntax.getLeft()},${syntax.getRight()})`
+    },
     printSubtractSyntax: function (syntax, print) {
-      return (
-        'context.evaluateSub("' +
-        syntax.getLeft() +
-        '","' +
-        syntax.getRight() +
-        '")'
-      )
+      return `context.evaluateSub(${syntax.getLeft()},${syntax.getRight()})`
+    },
+    printMultiplySyntax: function (syntax, print) {
+      return `context.evaluateMult(${syntax.getLeft()},${syntax.getRight()})`
+    },
+    printDivideSyntax: function (syntax, print) {
+      return `context.evaluateDiv(${syntax.getLeft()},${syntax.getRight()})`
     }
   })
 }
@@ -149,13 +164,13 @@ const testPrintAll = function () {
 // console.log(script)
 let result
 
-result = testPrint('20-10')
-// console.log(testPrint('4.3 - 9.2'))
-// console.log(testPrint('20+10'))
-console.log(result)
-// console.log(testPrint('-9.2'))
-// console.log(testPrint('-4.3-2'))
-// console.log(testPrint('(-2)'))
+console.log(testPrint('4.3 - 9.2'))
+console.log(testPrint('20+10'))
+console.log(testPrint('(-2)'))
+console.log(testPrint('20-10'))
+console.log(testPrint('-9.2'))
+console.log(testPrint('-4.3-2'))
+console.log(testPrint('(-2)'))
 // const func = new Function(
 //   { getRulesetInput: function () {}, getRulesetVar: function () {} },
 //   'return ' + script

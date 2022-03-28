@@ -49,19 +49,25 @@ class NumberIdentifierSyntax extends Syntax {
     if (preToken instanceof MinusToken) {
       //判断是否是负数
       let i = index - 1,
-        token
+        token,
+        before: Token | Syntax
       while (true) {
         i--
         if (i > -1) {
           let tk = tokens[i + 1]
           if (tk instanceof Token && !(tk instanceof BlankToken)) {
             token = tk
+            before = tokens[i]
           }
         } else {
           break
         }
       }
-      if (!token || token.isSubtractAhead()) {
+      if (
+        !token ||
+        token.isSubtractAhead() ||
+        (before && !(before instanceof Syntax) && before.getValue() == '(')
+      ) {
         startIndex--
         value = 0 - value
       }
