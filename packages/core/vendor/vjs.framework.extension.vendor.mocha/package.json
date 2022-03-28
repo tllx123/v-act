@@ -1,0 +1,20 @@
+{
+  "name": "@v-act/vjs.framework.extension.vendor.mocha",
+  "version": "1.0.0-alpha.1",
+  "description": "第三方mocha",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/vendor/vjs.frameword.extension.vendor.mocha"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "mocha": "^9.2.2"
+  }
+}
