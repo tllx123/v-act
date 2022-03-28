@@ -1,8 +1,6 @@
-var vds = window.vds || {}
-vds.test = vds.test || {}
-var global_key = 'mocha'
+import { mocha } from '@v-act/vjs.framework.extension.vendor.mocha'
 
-vds.test.init = function (callback) {
+export function init(callback: () => void) {
   mocha.setup({
     //allowUncaught: true,
     //bail: true,
@@ -24,20 +22,21 @@ vds.test.init = function (callback) {
 /**
  * 测试场景
  */
-vds.test.describe = function (name, callback) {
+export function describe(name: any, callback: any): any {
   return describe(name, callback)
 }
 
 /**
  * 测试用例
  */
-vds.test.it = function (name, callback) {
+export function it(name: any, callback: any): any {
   return it(name, callback)
 }
 
 /**
  * 断言
  */
-vds.test.expect = function () {
+export function expect() {
+  //@ts-ignore
   return chai.expect.apply(chai.expect, arguments)
 }

@@ -1006,7 +1006,8 @@ const currentPageOpen = function (params: Record<string, any>) {
         },
         params: {
           url: url,
-          childPM: vdk.postMsg.getPMIden()
+          //@ts-ignore
+          childPM: window.vdk.postMsg.getPMIden()
         }
       })
     }

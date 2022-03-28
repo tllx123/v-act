@@ -27,6 +27,5 @@ const main = function (ruleContext: RuleContext) {
   })
 }
 
-exports.main = main
-
+// exports.main = main
 export { main }

@@ -10,8 +10,8 @@
  * 	console.log("item:"+item+",index:"+index);
  * });
  */
-window.vds = window.vds || {}
-window.vds.collection = window.vds.collection || {}
+// window.vds = window.vds || {}
+// window.vds.collection = window.vds.collection || {}
 
 var methods = [
   /**
@@ -134,15 +134,16 @@ var methods = [
   'sortBy'
 ]
 
-export function initModule(sb) {
-  var utils = sb.util.collections
-  for (var i = 0, l = methods.length; i < l; i++) {
-    var methodName = methods[i]
-    var define = utils[methodName]
-    window.vds.collection[methodName] = (function (func) {
-      return function () {
-        return func.apply(utils, arguments)
-      }
-    })(define)
-  }
+// export function initModule(sb) {
+// var utils = sb.util.collections
+let utils: any[] = []
+for (let i = 0, l = methods.length; i < l; i++) {
+  var methodName = methods[i]
+  var define = utils[methodName]
+  window.vds.collection[methodName] = (function (func) {
+    return function () {
+      return func.apply(utils, arguments)
+    }
+  })(define)
 }
+// }

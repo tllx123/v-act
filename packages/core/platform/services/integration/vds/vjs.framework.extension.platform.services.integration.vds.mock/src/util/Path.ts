@@ -1,11 +1,11 @@
 /**
  * 是否为绝对路径
  */
-var isAbsolute = function (path) {
+var isAbsolute = function (path: string) {
   return path.charAt(0) === '/'
 }
 
-var normalizeArray = function (parts, allowAboveRoot) {
+var normalizeArray = function (parts: string | any[], allowAboveRoot: boolean) {
   var res = []
   for (var i = 0; i < parts.length; i++) {
     var p = parts[i]
@@ -25,7 +25,7 @@ var normalizeArray = function (parts, allowAboveRoot) {
   return res
 }
 
-var normalize = function (path) {
+var normalize = function (path: string) {
   var isAbs = isAbsolute(path),
     trailingSlash = path && path[path.length - 1] === '/'
   path = normalizeArray(path.split('/'), !isAbs).join('/')
@@ -38,11 +38,11 @@ var normalize = function (path) {
   return (isAbs ? '/' : '') + path
 }
 
-export function join() {
+export function join(...vals: string[]) {
   var paths = []
-  for (var i = 0; i < arguments.length; i++) {
-    var arg = arguments[i]
-    if (!typeof arg == 'string') {
+  for (var i = 0; i < vals.length; i++) {
+    var arg = vals[i]
+    if (!(typeof arg == 'string')) {
       throw new TypeError('Arguments to path.join must be strings')
     }
     if (arg) {

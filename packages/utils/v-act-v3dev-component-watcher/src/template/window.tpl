@@ -227,7 +227,7 @@ function Index(props:{instanceId:string}){
 export async function getStaticProps() {
   return {
     props: {
-      instanceId: uuid.generate()
+      instanceId: (()=>uuid.generate())()
     }
   }
 }

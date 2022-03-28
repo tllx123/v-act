@@ -1,4 +1,8 @@
-export function extend(subClass, superClass, sandbox) {
+export function extend(
+  subClass: any,
+  superClass: Record<string, any>,
+  sandbox: Record<string, any>
+) {
   var initFunc = superClass.prototype.initModule
   if (initFunc) {
     initFunc.call(subClass, sandbox)

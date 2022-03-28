@@ -5,6 +5,8 @@ import {
   WidgetProperty as widgetProperty
 } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+
 /**
  * 控件定义
  * @desc 提供与日志相关的一系列接口，使用前请先import：vds.import("vds.widget.*")
@@ -110,8 +112,8 @@ export function getStoreType(code: string) {
  * vds.widget.setProperty("JGTextBox1", "ReadOnly", true);
  */
 export function setProperty(
-  widgetCode: String,
-  propertyCode: String,
+  widgetCode: string,
+  propertyCode: string,
   propertyValue: any
 ) {
   //    	if(_isComponentScope()){
@@ -129,7 +131,7 @@ export function setProperty(
  * @example
  * vds.widget.getType("JGTextBox1");//JGTextBox
  */
-export function getType(widgetCode: String) {
+export function getType(widgetCode: string) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -145,7 +147,7 @@ export function getType(widgetCode: String) {
  * @example
  * vds.widget.getProperty("JGTextBox1", "ReadOnly");//false
  */
-export function getProperty(widgetCode: String, propertyCode: String) {
+export function getProperty(widgetCode: string, propertyCode: string) {
   //    	if(_isComponentScope()){
   //    		return null;
   //    	}
@@ -163,7 +165,7 @@ export function getProperty(widgetCode: String, propertyCode: String) {
  * @example
  * vds.widget.exists("JGTextBox1");//true
  */
-export function exists(widgetCode: String) {
+export function exists(widgetCode: string) {
   //    	if(_isComponentScope()){
   //    		return false;
   //    	}
@@ -215,14 +217,19 @@ export function getFieldCodes(datasourceCode: String, widgetCode: String) {
  * @example
  * vds.widget.execute("JGTextBox1","setVisible",[false]);
  * */
-export function execute(widgetCode?: any, funCode?: any, params?: any) {
+export function execute(
+  this: any,
+  widgetCode?: any,
+  funCode?: any,
+  params?: any
+) {
   //    	if(_isComponentScope()){
   //    		return;
   //    	}
   if (!widgetCode || !funCode) {
     return
   }
-  var array: Array<string> = [widgetCode, funCode]
+  var array: any = [widgetCode, funCode]
   if (params instanceof Array) {
     array = array.concat(params)
   }

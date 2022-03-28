@@ -16,7 +16,7 @@
 import BaseMock from './BaseMock'
 
 class WidgetMock extends BaseMock {
-  constructor(metadata, scopeId, code) {
+  constructor(metadata: any, scopeId: string, code: string) {
     super(metadata, scopeId, code, '控件')
   }
   /*
@@ -28,23 +28,31 @@ class WidgetMock extends BaseMock {
     return codes
   }
 
-  _getPluginInputCfg(code) {
-    var plugin = this._getPluginCfg()
-    var inputs = plugin.inputs
-    if (inputs) {
-      return inputs[code]
-    }
-    return null
-  }
+  // _getPluginInputCfg(code) {
+  //   var plugin = this._getPluginCfg()
+  //   var inputs = plugin.inputs
+  //   if (inputs) {
+  //     return inputs[code]
+  //   }
+  //   return null
+  // }
 
-  _getWidgetInputCfg(code) {
+  _getWidgetInputCfg(code: any) {
     return this._getPluginInputCfg(code)
   }
 
-  mockInputs() {
-    for (var i = 0, l = arguments.length; i < l; i++) {
-      this.inputs[i] = arguments[i]
+  mockInputs(params: any) {
+    // for (var i = 0, l = arguments.length; i < l; i++) {
+    //   this.inputs[i] = arguments[i]
+    // }
+    if (params) {
+      for (var key in params) {
+        if (params.hasOwnerProperty(key)) {
+          this.inputs[key] = params[key]
+        }
+      }
     }
+    return this
   }
 
   /**
@@ -52,7 +60,7 @@ class WidgetMock extends BaseMock {
    * @param {String} code 属性编号
    * @param {Any} value 属性值
    */
-  mockProperty(code, value) {
+  mockProperty(code: string | number, value: any) {
     this.mockInput(code, value)
   }
 
@@ -61,10 +69,10 @@ class WidgetMock extends BaseMock {
    * @param {String} code 属性编号
    * @returns Any
    */
-  getProperty(code) {
+  getProperty(code: string) {
     return this._getInput(code)
   }
-  _getPluginInputCfg(code) {
+  _getPluginInputCfg(code: string) {
     var pluginCfg = this._getPluginCfg()
     var properties = pluginCfg.properties
     var props = {}
@@ -92,7 +100,7 @@ class WidgetMock extends BaseMock {
    * 	});
    * });
    */
-  exec(callback) {
+  exec(callback: (arg0: {}) => any) {
     var code = this.code
     var pluginCfg = this._getPluginCfg()
     var properties = pluginCfg.properties
@@ -100,7 +108,7 @@ class WidgetMock extends BaseMock {
     if (properties) {
       for (var i = 0, len = properties.length; i < len; i++) {
         var prop = properties[i]
-        var code = prop.code
+        var code: string = prop.code
         var value = this.getProperty(code)
         props[code] = value
       }
@@ -108,11 +116,11 @@ class WidgetMock extends BaseMock {
     if (typeof callback == 'function') {
       return callback(props)
     } else {
+      //@ts-ignore
       var widget = isc[this.code].create(props)
       widget.show()
     }
   }
 }
 
-//	module.exports = FunctionMock;
 export default WidgetMock

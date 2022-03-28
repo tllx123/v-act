@@ -1,9 +1,10 @@
 //@ts-nocheck
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 import { DropDownSourceUtil as dropDownSourceUtil } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
-const main = function (param: { getArgs: () => string }) {
+const main = function (param: FunctionContext) {
   let args = param.getArgs()
   let widgetId = args[0]
   let IsLoadData = args[1]
