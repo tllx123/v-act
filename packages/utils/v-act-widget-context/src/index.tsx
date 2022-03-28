@@ -108,14 +108,16 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   //插入
   const insertDataFunc = (params: any) => {
-    const entities = context.entities
-    if (entities) {
-      const entity = entities[params.code]
-      if (entity) {
-        entity.datas.push(params.record)
-        setVal(context)
-      }
-    }
+    // const entities = context.entities
+    console.log('entities')
+    console.log(context.entities)
+    // if (entities) {
+    //   const entity = entities[params.code]
+    //   if (entity) {
+    //     entity.datas.push(params.record)
+    //     setVal(context)
+    //   }
+    // }
   }
 
   //更新

@@ -7,67 +7,89 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import * as taffy from './TaffyDB'
 import { Metadata } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
+import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
+import { ArrayUtil } from '@v-act/vjs.framework.extension.util.array'
+
 interface obj {
   [key: string]: any
 }
 
 let primaryKey = 'id'
 const initModule = function (sb: any) {
-  let each: () => void = sb.util.collections.each
-  let find: () => void = sb.util.collections.find
-  let contains: () => void = sb.util.collections.contains
-  let objectUtil: () => void = sb.util.object
-  let arrays: () => void = sb.util.arrays
+  let each: any = CollectionUtil.each
+  let find: any = CollectionUtil.find
+  let contains: any = CollectionUtil.contains
+  let objectUtil: void = ObjectUtil.object
+  let arrays: void = ArrayUtil.arrays
   let remove = arrayUtil.remove
 }
 
 class Datasource {
-  constructor(
-    public indexData: obj = {},
-    public datas: Array<any> = [],
-    public primaryKey = 'id',
-    // @ts-ignore
-    public metadata?: Metadata,
-    public ds: any = null,
-    public metadataJson = null,
-    public db = taffy.DB(),
-    public isMultipleSel: boolean = false,
-    public isDefaultSel: boolean = true,
-    public dataAmount = 0,
-    public _eventPool = {},
-    public insertIds: string[] = [],
-    public updateIds: string[] = [],
-    public deleteDatas = [],
-    public selectIds: string[] = [],
-    public currentId?: string,
-    public dataAccessObject = null,
-    public snapshotHandler: () => void = () => {},
-    public bindWidgets = null,
-    public _snapshotManager = null,
-    public Events = {
-      /**加载事件*/
-      LOAD: 'LOAD',
-      /**新增事件*/
-      INSERT: 'INSERT',
-      /**更新事件*/
-      UPDATE: 'UPDATE',
-      /**删除事件*/
-      DELETE: 'DELETE',
-      /**当前行切换事件*/
-      CURRENT: 'CURRENT',
-      /**记录选择事件*/
-      SELECT: 'SELECT',
-      /**获取数据事件*/
-      FETCH: 'FETCH',
-      /**获取数据后事件*/
-      FETCHED: 'FETCHED',
-      /**
-       *@private
-       * 记录处理事件
-       * */
-      RECORDPROCESS: 'RECORDPROCESS'
-    },
-    public Position = {
+  public Events: object
+  public Position: object
+  public indexData?: obj
+  public datas: Array<any>
+  public ds: any
+  public metadataJson: any
+  public db = taffy.DB()
+  public isMultipleSel: boolean
+  public isDefaultSel: boolean
+  public dataAmount = 0
+  public _eventPool = {}
+  public insertIds: string[]
+  public updateIds: string[]
+  public deleteDatas = []
+  public selectIds: string[]
+  public currentId: string
+  public dataAccessObject: any
+  public snapshotHandler: () => void
+  public bindWidgets: any
+  public _snapshotManager: any
+
+  constructor(public metadata?: any) {
+    ;(this.indexData = {}),
+      (this.datas = []),
+      (this.ds = null),
+      (this.metadataJson = null),
+      (this.db = taffy.DB()),
+      (this.isMultipleSel = false),
+      (this.isDefaultSel = true),
+      (this.dataAmount = 0),
+      (this._eventPool = {}),
+      (this.insertIds = []),
+      (this.updateIds = []),
+      (this.deleteDatas = []),
+      (this.selectIds = []),
+      (this.currentId = ''),
+      (this.dataAccessObject = null),
+      (this.snapshotHandler = () => {}),
+      (this.bindWidgets = null),
+      (this._snapshotManager = null),
+      (this.Events = {
+        /**加载事件*/
+        LOAD: 'LOAD',
+        /**新增事件*/
+        INSERT: 'INSERT',
+        /**更新事件*/
+        UPDATE: 'UPDATE',
+        /**删除事件*/
+        DELETE: 'DELETE',
+        /**当前行切换事件*/
+        CURRENT: 'CURRENT',
+        /**记录选择事件*/
+        SELECT: 'SELECT',
+        /**获取数据事件*/
+        FETCH: 'FETCH',
+        /**获取数据后事件*/
+        FETCHED: 'FETCHED',
+        /**
+         *@private
+         * 记录处理事件
+         * */
+        RECORDPROCESS: 'RECORDPROCESS'
+      })
+    this.Position = {
       /**前*/
       BEFORE: 'BEFORE',
       /**后*/
@@ -77,7 +99,7 @@ class Datasource {
       /**最后*/
       BOTTOM: 'BOTTOM'
     }
-  ) {
+
     return this
   }
 
@@ -306,7 +328,7 @@ class Datasource {
       }
     }
     this.db._insert(toInserted, index)
-
+    debugger
     const windowScope = scopeManager.getWindowScope()
     const operations = windowScope.get('dataSourceHandler')
     const code = this.metadata.getCode()

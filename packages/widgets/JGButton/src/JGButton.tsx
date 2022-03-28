@@ -1,7 +1,5 @@
 import { forwardRef, useEffect } from 'react'
-
 import { Property } from 'csstype'
-
 import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { useContext } from '@v-act/widget-context'

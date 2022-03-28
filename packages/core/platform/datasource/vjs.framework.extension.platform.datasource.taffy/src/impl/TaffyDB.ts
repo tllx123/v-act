@@ -3,11 +3,9 @@ interface obj {
 }
 
 class TaffyDB {
-  constructor(
-    public indexData: obj = {},
-    public datas: Array<any> = [],
-    public primaryKey = 'id'
-  ) {
+  public primaryKey: string
+  constructor(public indexData: obj = {}, public datas: Array<any> = []) {
+    this.primaryKey = 'id'
     return this
   }
 
