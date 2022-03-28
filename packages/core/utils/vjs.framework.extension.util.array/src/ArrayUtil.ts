@@ -2,6 +2,8 @@ import { underscore } from '@v-act/vjs.framework.extension.vendor.underscore'
 
 const un = underscore.union
 
+const difference = underscore.difference
+
 /**
  *查找下标
  */
@@ -49,4 +51,4 @@ const union = function () {
   return params
 }
 
-export { contains, isArray, remove, union }
+export { contains, isArray, remove, union, difference }
