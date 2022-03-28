@@ -2,24 +2,19 @@
  * 二次开发使用的V对象
  * */
 
-var datasourceFactory, manager
+import { DatasourceFactory as datasourceFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
+import { DatasourceManager as manager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
-var VObject = function (mock) {
-  this.mock = mock
-  this._cacheVObject = {} //缓存v对象，VObject取的输入值
-}
+class VObject {
+  mock: any
+  _cacheVObject: any
 
-VObject.prototype = {
-  initModule: function (sBox) {
-    datasourceFactory = sBox.getService(
-      'vjs.framework.extension.platform.interface.model.datasource.DatasourceFactory'
-    )
-    manager = sBox.getService(
-      'vjs.framework.extension.platform.services.model.manager.datasource.DatasourceManager'
-    )
-  },
+  constructor(mock: any) {
+    this.mock = mock
+    this._cacheVObject = {} //缓存v对象，VObject取的输入值
+  }
 
-  getInput: function (code) {
+  getInput(code: string | number) {
     var mock = this.mock
     if (this._cacheVObject.hasOwnProperty(code)) {
       return this._cacheVObject[code]
@@ -42,9 +37,9 @@ VObject.prototype = {
     }
     this._cacheVObject[code] = value
     return value
-  },
+  }
 
-  putOutput: function (code, value) {
+  putOutput(code: any, value: any) {
     var mock = this.mock
     this.mock.putOutput(code, value)
   }

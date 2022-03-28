@@ -5,20 +5,24 @@
 import VObject from './VObject'
 
 class RuleContext {
-  constructor(ruleCfg, mock) {
+  _ruleCfg: any
+  _cacheDatas: Record<string, any>
+  _vObject: any
+
+  constructor(ruleCfg: any, mock: any) {
     this._ruleCfg = ruleCfg
     this._cacheDatas = {}
     this._vObject = new VObject(mock)
   }
-  getInput(code) {
+  getInput(code: any) {
     if (this._cacheDatas.hasOwnProperty(code)) {
       return this._cacheDatas[code]
     }
     var value = this._vObject.getInput(code)
     if (value && vds.ds.isDatasource(value)) {
       var resultSet = value.getAllRecords()
-      var datas = []
-      resultSet.iterate(function (record) {
+      var datas: any[] = []
+      resultSet.iterate(function (record: { toMap: () => any }) {
         datas.push(record.toMap())
       })
       value = datas
@@ -27,7 +31,7 @@ class RuleContext {
     return value
   }
 
-  setOutput(code, value) {
+  setOutput(code: any, value: any) {
     var mock = this._vObject.mock
     mock._putOutput(code, value)
   }

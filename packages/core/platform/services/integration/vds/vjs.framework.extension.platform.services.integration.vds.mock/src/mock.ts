@@ -13,6 +13,7 @@
 
 import { Environment as environment } from '@v-act/vjs.framework.extension.platform.interface.environment'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
+import { RPC } from '@v-act/vjs.framework.extension.system.rpc'
 
 import BaseMock from './impl/BaseMock'
 import * as Path from './util/Path'
@@ -59,13 +60,18 @@ var show404Html = function (relativePath: string) {
  * @param {Object|String} metadata 插件元数据定义或插件元数据路径
  * @returns {Promise}
  */
-export function init(metadata: object | string) {
+export function init(metadata: any) {
   return new Promise(function (resolve, reject) {
-    var callback = function (data, baseUrl) {
+    var callback: any = function (
+      data: string | object | undefined,
+      baseUrl?: string | undefined
+    ) {
       var scopeId = scopeManager.createWindowScope({
         componentCode: 'v3',
         windowCode: 'demo',
-        series: 'smartclient'
+        series: 'smartclient',
+        scopeId: null,
+        parentScopeId: null
       })
       var baseMock = new BaseMock(data, scopeId, null, null, baseUrl)
       scopeManager.openScope(scopeId)
@@ -79,7 +85,7 @@ export function init(metadata: object | string) {
         RPC.orginalRequest({
           host: metadata,
           type: 'GET',
-          afterResponse: function (res) {
+          afterResponse: function (res: { responseText: string }) {
             var json
             try {
               json = JSON.parse(res.responseText)
@@ -88,7 +94,7 @@ export function init(metadata: object | string) {
             }
             callback(json, Path.join(metadata, '../'))
           },
-          error: function (e) {
+          error: function (e: any) {
             if (
               e &&
               (e.status == 0 || (e.readyState == 4 && e.status == 404))

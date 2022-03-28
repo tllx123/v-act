@@ -9,14 +9,16 @@ import BaseMock from './BaseMock'
  * 数据容器
  **/
 class DataContainer {
+  datas: Record<string, any>
+
   constructor() {
     this.datas = {}
   }
-  set(code, value) {
+  set(code: string | number, value: any) {
     this.datas[code] = value
     return this
   }
-  get(code) {
+  get(code: string | number) {
     if (!code) {
       return this.datas
     }
@@ -43,7 +45,8 @@ class DataContainer {
  */
 
 class RuleMock extends BaseMock {
-  constructor(metadata, scopeId, code) {
+  container: any
+  constructor(metadata: any, scopeId: string, code: string) {
     super(metadata, scopeId, code, '规则')
     this.container = new DataContainer()
   }
@@ -57,7 +60,7 @@ class RuleMock extends BaseMock {
     return codes
   }
 
-  _getRuleInputCfg(code) {
+  _getRuleInputCfg(code: any) {
     return this._getPluginInputCfg(code)
   }
 
@@ -87,7 +90,7 @@ class RuleMock extends BaseMock {
    */
   exec() {
     var _this = this
-    return new Promise(function (resolve, reject) {
+    return new Promise<void>((resolve, reject) => {
       var code = this.code
       if (!code) {
         var codes = _this._getRuleCodes()
@@ -99,7 +102,7 @@ class RuleMock extends BaseMock {
         code = codes[0]
       }
       _this.code = code
-      var error = _this._checkCfg()
+      var error: any = _this._checkCfg()
       if (error) {
         reject(new Error(error))
       }
@@ -139,12 +142,12 @@ class RuleMock extends BaseMock {
       }
       var ruleContext = new RuleContext(ruleConfig, _this)
       //执行规则
-      var promise = ruleEngine.exeExtRule({
+      var promise: any = ruleEngine.exeExtRule({
         ruleContext: ruleContext,
         mainFunc: pluginCfg.entry
       })
       promise
-        .then(function (datas) {
+        .then(function () {
           //					if(datas){
           //						for(var i = 0,len = outputs.length;i<len;i++){
           //							var output = outputs[i];
@@ -155,8 +158,9 @@ class RuleMock extends BaseMock {
           resolve()
           scopeManager.closeScope()
         })
-        .catch(function () {
-          reject.apply(this, arguments)
+        .catch(() => {
+          // reject.apply(this, arguments)
+          reject.apply(this)
           scopeManager.closeScope()
         })
     })
@@ -166,7 +170,7 @@ class RuleMock extends BaseMock {
    * @param {String} code 规则输出编号
    * @returns Any
    */
-  getOutput(code) {
+  getOutput(code: any) {
     return this.container.get(code)
   }
 }

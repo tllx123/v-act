@@ -1,4 +1,4 @@
-import { FunctionEngine as functionEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { FunctionEngine as functionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { StringUtil as strUtils } from '@v-act/vjs.framework.extension.util.string'
 
 /**
@@ -20,6 +20,7 @@ import FunctionContext from '../context/FunctionContext'
 import BaseMock from './BaseMock'
 
 class FunctionMock extends BaseMock {
+  private _dealedInputs: any
   /**
    * 获取所有前端函数编号
    * @ignore
@@ -30,7 +31,7 @@ class FunctionMock extends BaseMock {
     return codes
   }
 
-  _getPluginInputCfg(index) {
+  _getPluginInputCfg(index: string) {
     var plugin = this._getPluginCfg()
     var inputs = plugin.inputs
     if (inputs) {
@@ -39,19 +40,27 @@ class FunctionMock extends BaseMock {
     return null
   }
 
-  _getFunctionInputCfg(index) {
+  _getFunctionInputCfg(index: string) {
     return this._getPluginInputCfg(index)
   }
 
-  mockInputs() {
-    for (var i = 0, l = arguments.length; i < l; i++) {
-      this.inputs[i] = arguments[i]
+  mockInputs(params: any) {
+    // for (var i = 0, l = arguments.length; i < l; i++) {
+    //   this.inputs[i] = arguments[i]
+    // }
+    if (params) {
+      for (var key in params) {
+        if (params.hasOwnerProperty(key)) {
+          this.inputs[key] = params[key]
+        }
+      }
     }
+    return this
   }
   /**
    * 解析区间
    */
-  _parseRange(str) {
+  _parseRange(str: string) {
     str = strUtils.trim(str)
     var pair = str.split(',')
     var leftRange = pair[0]
@@ -69,9 +78,10 @@ class FunctionMock extends BaseMock {
     var endNumStr = strUtils.trim(
       rightRange.substring(0, rightRange.length - 1)
     )
-    var endNum
+    var endNum = 0
     if (endNumStr == '+∞') {
-      endNum = startNum + parseInt(10 * Math.random()) + 1
+      // endNum = startNum + parseInt(10 * Math.random()) + 1
+      endNum = startNum + 10 * Math.random() + 1
     }
     var endChar = rightRange.charAt(rightRange.length - 1)
     if (endChar == ')') {
@@ -89,9 +99,9 @@ class FunctionMock extends BaseMock {
       var input = inputs[i]
       var index = input.index
       if (index) {
-        var range = this._parseRange(index)
-        var start = range[0],
-          end = range[1]
+        var range: any[] = this._parseRange(index)
+        var start = range[0]
+        var end = range[1]
         for (var j = start; j <= end; j++) {
           map[j] = input
         }
@@ -99,8 +109,8 @@ class FunctionMock extends BaseMock {
         map[i] = input
       }
     }
-    var res = []
-    for (var i in map) {
+    let res: any[] = []
+    for (let i in map) {
       if (map.hasOwnProperty(i)) {
         res[i] = map[i]
       }
@@ -112,7 +122,9 @@ class FunctionMock extends BaseMock {
       this._dealedInputs = []
       var inputs = this._getInputsCfg()
       for (var i = 0, len = inputs.length; i < len; i++) {
-        this._dealedInputs.push(this._getInput(i, inputs[i]))
+        this._dealedInputs.push(
+          this._getInput(i as unknown as string, inputs[i])
+        )
       }
     }
     return this._dealedInputs
@@ -142,5 +154,4 @@ class FunctionMock extends BaseMock {
   }
 }
 
-//	module.exports = FunctionMock;
 export default FunctionMock
