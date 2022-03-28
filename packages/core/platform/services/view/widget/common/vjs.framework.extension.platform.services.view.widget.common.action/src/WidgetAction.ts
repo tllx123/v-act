@@ -219,7 +219,7 @@ let executeSubWidgetAction = function (widgetId: string, actionName: string) {
  *
  * @actionName 控件接口名
  */
-let executeComponentAction = function (actionName: string) {
+let executeComponentAction = function (actionName: string, ...args: any[]) {
   if (isComponentActionExist(actionName)) {
     let componentActionHandler = getComponentActionHandler()
     let params = []

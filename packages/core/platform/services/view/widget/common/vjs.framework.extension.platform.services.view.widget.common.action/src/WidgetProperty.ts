@@ -8,20 +8,30 @@ let set = function (widgetId: any, propertyName: string, propertyValue: any) {
   const handler = windowScope.get('changeComponentByProperties')
   if (handler) {
     const attrs = {}
-    if (propertyName.length > 1) {
-      propertyName =
-        propertyName.substring(0, 2).toLowerCase() + propertyName.substring(2)
-    } else {
-      propertyName = propertyName.toLowerCase()
-    }
+    propertyName = getPropertyName(propertyName)
     attrs[propertyName] = propertyValue
     handler(widgetId, attrs)
   }
 }
 
 let get = function (widgetId: any, propertyName: string) {
-  let actionName = 'get' + propertyName
-  return widgetAction.executeWidgetAction(widgetId, actionName)
+  const windowScope = ScopeManager.getWindowScope()
+  const handler = windowScope.get('getComponentProperty')
+  if (handler) {
+    propertyName = getPropertyName(propertyName)
+    return handler(widgetId, propertyName)
+  }
+  return null
+}
+
+let getPropertyName = function (propertyName) {
+  if (propertyName.length > 1) {
+    propertyName =
+      propertyName.substring(0, 2).toLowerCase() + propertyName.substring(2)
+  } else {
+    propertyName = propertyName.toLowerCase()
+  }
+  return propertyName
 }
 
 let hasProperty = function (widgetId: any, propertyName: string) {

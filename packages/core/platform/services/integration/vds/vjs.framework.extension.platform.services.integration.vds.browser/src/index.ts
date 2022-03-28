@@ -13,6 +13,9 @@ import { EventManager as eventManager } from '@v-act/vjs.framework.extension.pla
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { Browser as browserUtils } from '@v-act/vjs.framework.extension.platform.services.browser'
 import { WindowRender as webViewService } from '@v-act/vjs.framework.extension.platform.services.integration.render'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as environment from '@v-act/vjs.framework.extension.platform.services.integration.vds.environment'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import {
   CreateModalByUrl as modalByUrlUtil,
   Modal as viewModel
@@ -24,6 +27,8 @@ import { render as divWindowContainerRender } from '@v-act/vjs.framework.extensi
 import { render as iemsHomeTabRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.iemshometab'
 import { render as newWindowRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.newwindow'
 import { render as windowContainerRender } from '@v-act/vjs.framework.extension.platform.services.view.window.render.mode.windowcontainer'
+
+const vds = { exception, environment, ds }
 
 const rendererObj = {
   newWindow: newWindowRender,
@@ -67,7 +72,11 @@ var _getWindowInfo = function () {
  * vds.import("vds.browser.*");
  * vds.browser.redirect("v3_example", "index");
  */
-export function redirect(componentCode, windowCode, params) {
+export function redirect(
+  componentCode: any,
+  windowCode: any,
+  params: Record<string, any> | undefined
+) {
   if (!componentCode || !windowCode) {
     return
   }
@@ -109,19 +118,22 @@ export function redirect(componentCode, windowCode, params) {
  * vds.import("vds.browser.*");
  * vds.browser.dialog("http://www.yindangu.com");
  */
-export function dialog(url, params) {
+export function dialog(url: any, params: Record<string, any> | undefined) {
   var __params = params || {}
-  var func = function (resolve, reject) {
+  var func: any = function (
+    resolve: () => void,
+    reject: (arg0: unknown) => void
+  ) {
     try {
       if (!url) {
         reject(vds.exception.newBusinessException('打开的地址不能为空.'))
         return
       }
-      var params = __params || {}
+      var params: Record<string, any> = __params || {}
       if (vds.environment.isMobileWindow()) {
         var userAgent = navigator.userAgent
         if (userAgent.indexOf('v3app') < 1 && userAgent.indexOf('ydgApp') < 1) {
-          var params = {
+          params = {
             url: url,
             title: title
           }
@@ -130,7 +142,7 @@ export function dialog(url, params) {
           }
           widgetAction.executeComponentAction('showModalUrl', params)
         } else {
-          var config = {}
+          var config: Record<string, any> = {}
           config.url = url //创建webview后请求的url地址，需要带http://或https://            （打开H5窗体时必填）
           config.onClose = function () {
             resolve()
@@ -158,7 +170,7 @@ export function dialog(url, params) {
           windowState = true
         }
       }
-      var newParams = {
+      var newParams: Record<string, any> = {
         url: url,
         title: title,
         width: width,
@@ -172,7 +184,8 @@ export function dialog(url, params) {
         if (params.winName) {
           newParams['winName'] = params['winName']
         }
-        browserUtil.showModelessDialogEx(newParams)
+        // browserUtil.showModelessDialogEx(newParams)
+        browserUtils.showModelessDialogEx(newParams)
         resolve()
         return
       } else {
@@ -207,7 +220,11 @@ export function dialog(url, params) {
  * 	alert("模态窗体打开失败")
  * })
  * */
-export function dialogWindow(componentCode, windowCode, params) {
+export function dialogWindow(
+  componentCode: any,
+  windowCode: any,
+  params: Record<string, any>
+) {
   /*var __params = params || {}
   var func = function (resovle, reject) {
     var params = __params
@@ -292,7 +309,7 @@ export function newTab(url: string, params?: any) {
  * @example
  * vds.browser.redirectByUrl("http://www.yindangu.com");
  * */
-export function redirectByUrl(url) {
+export function redirectByUrl(url: any) {
   _getBrowserUtils().currentPageOpen({
     url: url
   })
@@ -308,7 +325,11 @@ export function redirectByUrl(url) {
  *  inputParams {Object} 输入参数
  * }
  * */
-export function newWindow(componentCode, windowCode, params) {
+export function newWindow(
+  componentCode: any,
+  windowCode: any,
+  params: Record<string, any>
+) {
   if (!componentCode || !windowCode) {
     throw vds.exception.newConfigException('构件编码和窗体编码不能为空.')
   }
@@ -344,14 +365,14 @@ export function newWindow(componentCode, windowCode, params) {
  * }
  * */
 export function renderToContainer(
-  componentCode,
-  windowCode,
-  containerCode,
-  params
+  componentCode: any,
+  windowCode: any,
+  containerCode: any,
+  params: Record<string, any>
 ) {
   var __args = arguments
   var __params = params || {}
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var names = ['构件编码', '窗体编码', '组件容器编码']
       for (var i = 0, len = __args.length; i < len; i++) {
@@ -399,13 +420,13 @@ export function renderToContainer(
  * }
  * */
 export function renderToDivContainerByUrl(
-  url,
-  widgetCode,
-  containerTagCode,
-  params
+  url: any,
+  widgetCode: any,
+  containerTagCode: any,
+  params: Record<string, any>
 ) {
   var __info = _getWindowInfo()
-  var _setWidget = function (_closeParams) {
+  var _setWidget = function (_closeParams: Record<string, any>) {
     return function () {
       widgetAction.executeWidgetAction(
         widgetCode,
@@ -422,9 +443,9 @@ export function renderToDivContainerByUrl(
   if (ruleContext) {
     _setWidget = ruleContext.genAsynCallback(_setWidget)
   }
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
-      var callBackFunc = function (params) {
+      var callBackFunc = function (params: Record<string, any>) {
         if (!params) {
           resolve()
           return
@@ -449,7 +470,7 @@ export function renderToDivContainerByUrl(
         }
         resolve()
       }
-      var closeback = function (params) {}
+      var closeback = function () {}
       var params = __params
       var containerParam = {
         containerCode: containerTagCode,
@@ -489,15 +510,15 @@ export function renderToDivContainerByUrl(
  * @returns {Promise}
  * */
 export function renderToDivContainer(
-  componentCode,
-  windowCode,
-  widgetCode,
-  divTagCode,
-  params
+  componentCode: any,
+  windowCode: any,
+  widgetCode: any,
+  divTagCode: any,
+  params: Record<string, any>
 ) {
   var __args = arguments
   var __params = params || {}
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       var names = ['构件编码', '窗体编码', 'div控件编码', 'div容器标签编码']
       for (var i = 0, len = __args.length; i < len; i++) {
@@ -521,7 +542,7 @@ export function renderToDivContainer(
         title: params['title'],
         ruleContext: ruleContext,
         inputs: inputs,
-        inited: function (windowInstanceCode) {
+        inited: function (windowInstanceCode: any) {
           resolve(windowInstanceCode)
         }
       }
@@ -547,9 +568,13 @@ export function renderToDivContainer(
  *  inputParams {Object} 输入参数
  * }
  * */
-export function renderToHomeTab(componentCode, windowCode, params) {
+export function renderToHomeTab(
+  componentCode: any,
+  windowCode: any,
+  params: Record<string, any>
+) {
   var __params = params || {}
-  return new Promise(function (resolve, reject) {
+  return new Promise<void>(function (resolve, reject) {
     try {
       if (!componentCode || !windowCode) {
         throw vds.exception.newConfigException('构件编码和窗体编码不能为空.')
@@ -566,7 +591,7 @@ export function renderToHomeTab(componentCode, windowCode, params) {
         title: params['title'],
         ruleContext: ruleContext,
         inputs: inputs,
-        closeTab: function (params) {
+        closeTab: function (params: Record<string, any>) {
           params = params || {}
           var output = params.output || {}
           var isSure = params.isConfirmExit === true
@@ -594,7 +619,7 @@ export function renderToHomeTab(componentCode, windowCode, params) {
  * }
  * @returns {Promise}
  * */
-export function renderToHomeTabByUrl(url, params) {
+export function renderToHomeTabByUrl(url: any, params: Record<string, any>) {
   var __params = params || {}
   return new Promise(function (resolve, reject) {
     try {
@@ -630,7 +655,11 @@ export function renderToHomeTabByUrl(url, params) {
  *  winName {String} 在指定窗体标识中刷新，默认为空，当值为空时刷新当前浏览器页
  * }
  * */
-export function refresh(componentCode, windowCode, params) {
+export function refresh(
+  componentCode: any,
+  windowCode: any,
+  params: Record<string, any>
+) {
   if (!componentCode || !windowCode) {
     throw vds.exception.newConfigException('构件编码和窗体编码不能为空.')
   }
@@ -640,7 +669,7 @@ export function refresh(componentCode, windowCode, params) {
     ruleContext = ruleContext._get()
   }
   var inputs = handleInputParams(params.inputParams)
-  var newConfig = {
+  var newConfig: Record<string, any> = {
     componentCode: componentCode,
     windowCode: windowCode,
     title: params['title'],
@@ -662,7 +691,7 @@ export function refresh(componentCode, windowCode, params) {
 /**
  * 将vds数据源对象转换成平台数据源对象
  * */
-var handleInputParams = function (params) {
+var handleInputParams = function (params: Record<string, any>) {
   var variable = {}
   var windowInputParams = {
     variable: variable
@@ -706,14 +735,14 @@ var handleInputParams = function (params) {
  *  }
  * });
  * */
-export function createDialog(params) {
+export function createDialog(params: Record<string, any>) {
   var modalParams = {
     title: params.title,
     width: params.width,
     height: params.height,
     rendered: params.rendered,
     closed: params.closed,
-    resized: function (containerCode) {},
+    // resized: function (containerCode) {},
     formBorderStyle: params.formBorderStyle
       ? params.formBorderStyle
       : 'FixedSingle',

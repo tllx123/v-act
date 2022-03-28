@@ -1,16 +1,6 @@
 /**
  *	生成验证码
  */
-/*
-vds.import(
-  'vds.window.*',
-  'vds.string.*',
-  'vds.rpc.*',
-  'vds.message.*',
-  'vds.environment.*',
-  'vds.widget.*'
-)
-*/
 import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'

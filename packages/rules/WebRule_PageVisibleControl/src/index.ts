@@ -30,22 +30,25 @@ const main = function (ruleContext: RuleContext) {
 
           var hide = mappingItem['visible']
           if (undefined != widgetId && null != widgetId) {
-            var proxyWidgetId = vds.widget.getProperty(
+            /*var proxyWidgetId = vds.widget.getProperty(
               widgetId,
               'ProxyWidgetId'
-            )
+            )*/
             if (hide.toString().toLowerCase() == 'true') {
-              vds.widget.execute(proxyWidgetId, 'hideItem', [widgetId])
+              vds.widget.setProperty(widgetId, 'Visible', false)
+              //vds.widget.execute(proxyWidgetId, 'hideItem', [widgetId])
             } else if (hide.toString().toLowerCase() == 'false') {
-              vds.widget.execute(proxyWidgetId, 'showItem', [widgetId])
-              lastShowTabId = widgetId
+              vds.widget.setProperty(widgetId, 'Visible', true)
+              vds.widget.execute(widgetId, 'Selected', true)
+              //vds.widget.execute(proxyWidgetId, 'showItem', [widgetId])
+              //lastShowTabId = widgetId
             }
           }
         }
-        if (lastShowTabId) {
+        /*if (lastShowTabId) {
           var widgetId = vds.widget.getProperty(lastShowTabId, 'ProxyWidgetId')
           vds.widget.execute(widgetId, 'selectedById', [lastShowTabId])
-        }
+        }*/
       }
       resolve()
     } catch (err) {

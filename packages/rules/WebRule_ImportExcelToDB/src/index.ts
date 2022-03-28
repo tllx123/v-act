@@ -7,7 +7,7 @@ import * as window from '@v-act/vjs.framework.extension.platform.services.integr
 import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
-import * as collection from '@v-act/vjs.framework.extension.platform.services.integration.vds.collection'
+import * as collection from '@v-act/vjs.framework.extension.util.collection'
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
 const vds = {
   widget,
