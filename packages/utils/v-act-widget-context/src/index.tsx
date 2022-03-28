@@ -104,7 +104,7 @@ const ContextProvider = function (props: ContextProviderProps) {
   const context = props.context || { position: 'absolute' }
   const children = props.children
 
-  const [contextTemp, setVal] = useState([context])
+  const [contextTemp, setVal] = useState(context)
 
   //插入
   const insertDataFunc = (params: any) => {
