@@ -22,6 +22,51 @@ import {
 import { JGTabControl, JGTabControlProps } from './JGTabControl'
 import { convert as convertJGTabPage, JGTabPage } from './JGTabPage'
 
+/**
+ * 获取选中页签页下标
+ * 1、如果页签页属性有设置selected为True，优先使用
+ * 2、否则根据页签selectedIndex来设置，selectedIndex属性值支持下标和页签页编号
+ * @param control 页签配置信息
+ */
+const getSelectedIndex = function (control: Control) {
+  let selectedIndex = -1
+  const pros: JGTabControlProperty = control.properties
+  if (control.controls) {
+    //优先查找页签页是否配置selected（规则设置）
+    for (let index = 0; index < control.controls.length; index++) {
+      const con = control.controls[index]
+      //@ts-ignore
+      if (con.properties.selected) {
+        selectedIndex = index
+        break
+      }
+    }
+    if (selectedIndex == -1) {
+      //页签页未设置selected
+      if (isNullOrUnDef(pros.selectedIndex)) {
+        //页签未设置选中页，默认选中第一页
+        selectedIndex = 0
+      } else {
+        const temp = toNumber(pros.selectedIndex, -1)
+        if (temp == -1) {
+          //页签选中页为页签页编号
+          for (let index = 0; index < control.controls.length; index++) {
+            const con = control.controls[index]
+            //@ts-ignore
+            if ((con.properties.code = pros.selectedIndex)) {
+              selectedIndex = index
+              break
+            }
+          }
+        } else {
+          selectedIndex = temp || 0
+        }
+      }
+    }
+  }
+  return selectedIndex
+}
+
 const convert = function (
   control: Control,
   render: WidgetRenderer,
@@ -29,27 +74,13 @@ const convert = function (
   context: WidgetRenderContext
 ): JSX.Element {
   const pros: JGTabControlProperty = control.properties
-  let selectedIndex = isNullOrUnDef(pros.selectedIndex)
-    ? 0
-    : toNumber(pros.selectedIndex, Number.MAX_SAFE_INTEGER)
-  if (selectedIndex == Number.MAX_SAFE_INTEGER) {
-    //当selectedIndex为页签页编号时
-    selectedIndex = 0
-    if (control.controls) {
-      control.controls.forEach((con, index) => {
-        if (con.properties.code == pros.selectedIndex) {
-          selectedIndex = index
-        }
-      })
-    }
-  }
   const props: JGTabControlProps = {
     top: toCssAxisVal(pros.top, '0px'),
     left: toCssAxisVal(pros.left, '0px'),
     multiWidth: toCssAxisVal(pros.multiWidth, '200px'),
     multiHeight: toCssAxisVal(pros.multiHeight, '100px'),
     visible: toBoolean(pros.visible, true),
-    selectedIndex: toNumber(pros.selectedIndex, 0),
+    selectedIndex: getSelectedIndex(control),
     disabled: !toBoolean(pros.enabled, true),
     alignment: pros.alignment ? valueofAligment(pros.alignment) : Aligment.Top,
     tabHeadWidth: toNumber(pros.tabHeadWidth, 110),
