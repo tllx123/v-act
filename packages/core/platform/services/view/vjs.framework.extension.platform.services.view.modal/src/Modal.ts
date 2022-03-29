@@ -1,22 +1,27 @@
+// import { default } from 'yargs'
+
 import {
   BackMask as backMask,
   ZIndex as zIndex
 } from '@v-act/vjs.framework.extension.platform.services.view.ui'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
 import * as initor from './ModalInitor'
 
-let WindowContaine, dragParams
-let headerH
+let WindowContaine, dragParams: any
+let headerH: any
 
-let borderWidth
+let borderWidth: number
 
-export function initModule(sb) {
-  dragParams = 'dragParams'
-  headerH = 47
-  borderWidth = 4
-}
+dragParams = 'dragParams'
+headerH = 47
+borderWidth = 4
 
-const create = function (params) {
+// export function initModule(sb) {
+
+// }
+
+const create = function (params: any) {
   initor.init()
   createModal(params)
 }
@@ -27,7 +32,7 @@ const create = function (params) {
  *  @windowState 窗体初始大小
  *  @maximizeBox 是否显示最小化按钮
  */
-let createModal = function (params) {
+let createModal = function (params: any) {
   let title = params.title,
     width = params.width,
     height = params.height,
@@ -64,7 +69,7 @@ let createModal = function (params) {
   $('#' + containerCode)
     .css('display', 'block')
     .show() //此处加入设置样式原由：在功能构件中，活动定义打开模态窗体不显示，原因display为none
-  let setTitleFunc = function (title) {
+  let setTitleFunc = function (title: string) {
     if (title) {
       let now = $('#' + containerCode)
       let parent = now.parent()
@@ -77,7 +82,11 @@ let createModal = function (params) {
   /**
    * 隐藏模态
    * */
-  let hideFunc = function (modalCode, renderParams, isMiss) {
+  let hideFunc = function (
+    modalCode: string,
+    renderParams: any,
+    isMiss: boolean
+  ) {
     backMask.Hide()
     $('#' + modalCode)
       .css('display', 'none')
@@ -100,7 +109,7 @@ let createModal = function (params) {
   /**
    * 显示模态
    * */
-  let showFunc = function (modalCode, newParams) {
+  let showFunc = function (modalCode: string, newParams: any) {
     let $dom = $('#' + modalCode)
     let marginTop = $('#' + modalCode + '>div').css('width')
     let marginHeight = $('#' + modalCode + '>div').css('width')
@@ -155,7 +164,7 @@ let createModal = function (params) {
     }
   }
   let closeModal = (function () {
-    return function (newCode) {
+    return function (newCode: string) {
       let _code = containerCode
       backMask.Hide()
       $('#' + _code).hide()
@@ -192,7 +201,7 @@ let createModal = function (params) {
       modalHeight: height,
       formBorderStyle: formBorderStyle
     },
-    function (e) {
+    function (e: any) {
       if (e.data.formBorderStyle !== 'None') {
         let el = $('#' + e.data.containerCode).children()
         if (el && el.length > 0) {
@@ -256,6 +265,7 @@ let createModal = function (params) {
             } catch (e) {
               //            			logUtil.warn("已忽略closeFunc");
             }
+            //@ts-ignore
             closeModal()
           } else if (closeFunc && typeof closeFunc == 'function') {
             closeFunc(bodyCode, closeModal)
@@ -301,13 +311,14 @@ let createModal = function (params) {
 }
 
 let getImgBasePath = function () {
+  //@ts-ignore
   return window.V3PlatformNamespace ? V3PlatformNamespace.getBasePath() : ''
 }
 
 /**
  * 生成模态窗体Html
  */
-let genModalWindowHtml = function (params) {
+let genModalWindowHtml = function (params: any) {
   let title = params.title,
     width = params.width,
     height = params.height,
@@ -413,13 +424,15 @@ let genModalWindowHtml = function (params) {
     '  </div>' +
     '</div>'
   // 处理BS中打开模态SC窗体，日期控件弹出层被遮盖
+  //@ts-ignore
   if (window.isc && window.isc.Canvas) {
+    //@ts-ignore
     isc.Canvas._BIG_Z_INDEX = zIndex.getFrontZIndex()
   }
   return result
 }
 
-let _dealRect = function (width, height) {
+let _dealRect = function (width: string, height: string) {
   let w = parseInt(width)
   let h = parseInt(height)
   let page = null
@@ -455,10 +468,10 @@ let _dealRect = function (width, height) {
 /**
  * 最大化\还原时调整模态窗体CSS
  */
-let rejustModalCss = function (param) {
+let rejustModalCss = function (param: any) {
   //setModalWindowState(param);
 }
-let setModalWindowState = function (param, el) {
+let setModalWindowState = function (param: any, el: any) {
   if (param == 'Maximized') {
     setMaximized(el)
   }
@@ -466,7 +479,7 @@ let setModalWindowState = function (param, el) {
     setReinstatement(el)
   }
 }
-let setMaximized = function (el) {
+let setMaximized = function (el: any) {
   let newPosition = {
     'width': '100%',
     'height': '100%',
@@ -485,7 +498,7 @@ let setMaximized = function (el) {
     .addClass('icon-restore')
   _setDialogDragable(el, false)
 }
-let setReinstatement = function (el) {
+let setReinstatement = function (el: any) {
   let orginPosition = el.data('orginPosition')
   el.addClass('v-full-center').removeClass('v-full-screen').css(orginPosition)
   let header = el.find('>.modal-content >.modal-header')
@@ -498,7 +511,7 @@ let setReinstatement = function (el) {
   _setDialogDragable(el, true)
 }
 //拖拽的实现
-let _initDrag = function (bar, dialog, options, callback) {
+let _initDrag = function (bar: any, dialog: any, options: any, callback?: any) {
   let resizeFunc = options.resized
   // 初始化信息
   let params = $(dialog).data(dragParams)
@@ -518,7 +531,7 @@ let _initDrag = function (bar, dialog, options, callback) {
   if (options.windowState && options.windowState.toLowerCase() == 'maximized') {
     _setDialogDragable($(dialog), false)
   }
-  function down(event, dialog) {
+  function down(event: any, dialog: any) {
     let e = event || window.event
     let _eveTarget = e.target || e.srcElement
     let params = $(dialog).data(dragParams)
@@ -536,7 +549,7 @@ let _initDrag = function (bar, dialog, options, callback) {
       $(dialog).data(dragParams, params)
     }
   }
-  function up(event, dialog) {
+  function up(event: any, dialog: any) {
     let e = event || window.event
     // 当点击的是最大化按钮或者恢复按钮时，不记录位置
     let params = $(dialog).data(dragParams)
@@ -556,7 +569,7 @@ let _initDrag = function (bar, dialog, options, callback) {
     $(dialog).data('isDrag', true)
     _updDiaPosition(params, dialog)
   }
-  function move(event, dialog, callback) {
+  function move(event: any, dialog: any, callback?: any) {
     let e = event || window.event
     if (!dialog) {
       dialog = e.data[1]
@@ -595,14 +608,14 @@ let _initDrag = function (bar, dialog, options, callback) {
       return false
     }
   }
-  $(bar).on('mousedown', function (event) {
+  $(bar).on('mousedown', function (event: any) {
     let _this = dialog
     down(event, _this)
     $(document).on('mousemove', [event, _this, callback], move)
 
-    $(document).on('mouseup', function (event) {
+    $(document).on('mouseup', function (event: any) {
       up(event, _this)
-      orginPosition = {
+      let orginPosition = {
         'width': $(_this).css('width'),
         'height': $(_this).css('height'),
         'margin-left': $(_this).css('margin-left'),
@@ -617,7 +630,7 @@ let _initDrag = function (bar, dialog, options, callback) {
   })
 }
 
-let getPosition = function (e) {
+let getPosition = function (e: any) {
   // 访问事件对象
   //var e = e || window.event;
 
@@ -643,15 +656,15 @@ let getPosition = function (e) {
 }
 
 // 获取相关CSS属性
-let getCss = function (o, cssCode) {
+let getCss = function (o: any, cssCode: any) {
   //return o.currentStyle ? o.currentStyle[key] : document.defaultView.getComputedStyle(o, false)[key];
   return document.defaultView
-    ? document.defaultView.getComputedStyle(o, false)[cssCode]
+    ? document.defaultView.getComputedStyle(o, '')[cssCode]
     : o.currentStyle.getAttribute(cssCode)
 }
 
 // 执行更新dom存储的位置信息
-let _updDiaPosition = function (params, dialog) {
+let _updDiaPosition = function (params: any, dialog: any) {
   let left = getCss(dialog, 'left')
   let top = getCss(dialog, 'top')
   if (left !== 'auto') {
@@ -664,7 +677,7 @@ let _updDiaPosition = function (params, dialog) {
 }
 
 // 判断对话框的顶部标题栏是否可拖动
-let _getDialogTop = function (newTop, $dialog) {
+let _getDialogTop = function (newTop: any, $dialog: any) {
   let headerHeight = $dialog.find('.modal-header').innerHeight()
   let dialogMarTop = $dialog.css('margin-top').replace('px', '') * 1
   let comTop = newTop + dialogMarTop
@@ -678,24 +691,24 @@ let _getDialogTop = function (newTop, $dialog) {
   return newTop
 }
 
-let _allowSavePosition = function (headDom, $dialog) {
+let _allowSavePosition = function (headDom: any, $dialog: any) {
   let params = $dialog.data(dragParams) || {}
   if (params.isDragable && headDom.className.indexOf('modal-title') > -1)
     return true
   else return false
 }
 
-let _setDialogDragable = function ($dom, isAllow) {
+let _setDialogDragable = function ($dom: any, isAllow: boolean) {
   let params = $dom.data(dragParams) || {}
   params.isDragable = isAllow
 }
 
-let _getDialogDragable = function ($dom) {
+let _getDialogDragable = function ($dom: any) {
   let params = $dom.data(dragParams) || {}
   return params.isDragable
 }
 
-let _addEvent = function (elem, type, handler) {
+let _addEvent = function (elem: any, type: any, handler: any) {
   if (elem.addEventListener) {
     // 非ie
     elem.addEventListener(type, handler, false)
@@ -710,4 +723,4 @@ let _addEvent = function (elem, type, handler) {
     elem['on' + type] = handler
   }
 }
-export { create, createOld, renderIFrameToDom, setModalWindowState }
+export default { create, setModalWindowState }

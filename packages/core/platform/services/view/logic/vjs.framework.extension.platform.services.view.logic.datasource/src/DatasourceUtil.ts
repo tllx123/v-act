@@ -9,6 +9,8 @@ import { WidgetDatasource as widgetDatasource } from '@v-act/vjs.framework.exten
 import { WindowVMMappingManager as vmmappingManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
+// import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+
 // export function initModule(sb) {}
 
 let getDatasource = function (datasourceName: any) {
@@ -101,6 +103,7 @@ let addDatasourceFieldUpdateEventHandler = function (
   if (undefined == datasource || null == datasource) return
   if (undefined == datasourceFields || null == datasourceFields)
     datasourceFields = widgetDatasource.getBindDatasourceFields(
+      //@ts-ignore
       widgetId,
       datasourceName
     )
@@ -131,19 +134,19 @@ let addDatasourceFieldUpdateEventHandler = function (
 }
 
 let addDatasourceCurrentRecordUpdateEventHandler = function (
-  datasourceName,
-  eventHandler
+  datasourceName: string,
+  eventHandler: any
 ) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.UPDATE,
-    handler: function (params) {
+    handler: function (params: any) {
       let result = params.resultSet
       let iterator = result.iterator()
       while (iterator.hasNext()) {
         let record = iterator.next()
-        let flag = ds.isCurrentRecord({
+        let flag = datasource.isCurrentRecord({
           record: record
         })
         if (flag) {
@@ -155,24 +158,28 @@ let addDatasourceCurrentRecordUpdateEventHandler = function (
 }
 
 let addDatasourceCurrentRecordFieldUpdateEventHandler = function (
-  datasourceName,
-  datasourceFields,
-  eventHandler
+  datasourceName: string,
+  datasourceFields: any,
+  eventHandler: any
 ) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   if (undefined == datasourceFields || null == datasourceFields)
-    datasourceFields = getBindDatasourceFields(widgetId, datasourceName)
+    datasourceFields = widgetDatasource.getBindDatasourceFields(
+      //@ts-ignore
+      widgetId,
+      datasourceName
+    )
   if (!arrayUtil.isArray(datasourceFields))
     datasourceFields = [datasourceFields]
   datasource.on({
     eventName: datasource.Events.UPDATE,
-    handler: function (params) {
+    handler: function (params: any) {
       let result = params.resultSet
       let iterator = result.iterator()
       while (iterator.hasNext()) {
         let record = iterator.next()
-        let flag = ds.isCurrentRecord({
+        let flag = datasource.isCurrentRecord({
           record: record
         })
         if (flag) {
@@ -200,45 +207,57 @@ let addDatasourceCurrentRecordFieldUpdateEventHandler = function (
   })
 }
 
-let addDatasourceDeleteEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceDeleteEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.DELETE,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
 }
 
-let addDatasourceInsertEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceInsertEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.INSERT,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
 }
 
-let addDatasourceCurrentEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceCurrentEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.CURRENT,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
 }
 
-let addDatasourceSelectEventHandler = function (datasourceName, eventHandler) {
+let addDatasourceSelectEventHandler = function (
+  datasourceName: string,
+  eventHandler: any
+) {
   let datasource = getDatasource(datasourceName)
   if (undefined == datasource || null == datasource) return
   datasource.on({
     eventName: datasource.Events.SELECT,
-    handler: function (params) {
+    handler: function (params: any) {
       eventHandler(params)
     }
   })
@@ -247,7 +266,7 @@ let addDatasourceSelectEventHandler = function (datasourceName, eventHandler) {
 /**
  * 重新绑定数据源事件，适用于销毁DB后重新注册事件
  */
-let rebindDatasourceEvent = function (datasourceName) {
+let rebindDatasourceEvent = function (datasourceName: string) {
   datasourceEventBinding.bindByDatasourceName(datasourceName)
 }
 
@@ -285,14 +304,14 @@ let rebindDatasourceEvent = function (datasourceName) {
  *            规则上下文
  */
 let insertOrUpdateRecords2Entity = function (
-  entityName,
-  entityType,
-  records,
-  mappings,
-  operType,
-  isClearDatas,
-  ruleContext,
-  extraParams
+  entityName: string,
+  entityType: any,
+  records: any,
+  mappings: any,
+  operType: any,
+  isClearDatas: boolean,
+  ruleContext: any,
+  extraParams: any
 ) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
@@ -388,7 +407,7 @@ let insertOrUpdateRecords2Entity = function (
     // 为更新当前记录时只取第一个返回值
     if (operType == 'updateRecord') {
       // 操作类型为更新时，如果目标实体没有当前行，则取其第一行
-      oldRecords = []
+      let oldRecords = []
       oldRecords = destEntity.getSelectedRecords().toArray()
       if (oldRecords.length < 1)
         if (destEntity.getAllRecords().toArray().length > 0)
@@ -398,7 +417,7 @@ let insertOrUpdateRecords2Entity = function (
       // 把新记录的值赋值到旧记录中，id不会赋值过去
       for (let j = 0; j < oldRecords.length; j++) {
         if (undefined == oldRecords[j] || null == oldRecords[j]) continue
-        for (proName in tmpObj) {
+        for (let proName in tmpObj) {
           if (proName.toLocaleLowerCase() != 'id')
             oldRecords[j].set(proName, tmpObj[proName])
         }
@@ -417,7 +436,7 @@ let insertOrUpdateRecords2Entity = function (
       }
       // 如果获取不到目标实体的记录，则新增
       if (oldRecord == null) newRecord = destEntity.createRecord()
-      for (proName in tmpObj) {
+      for (let proName in tmpObj) {
         if (oldRecord == null) newRecord.set(proName, tmpObj[proName])
         else if (proName.toLocaleLowerCase() != 'id')
           oldRecord.set(proName, tmpObj[proName])
@@ -455,10 +474,10 @@ let insertOrUpdateRecords2Entity = function (
 }
 
 let _getValueByMapping = function (
-  record,
-  srcColumnType,
-  srcColumn,
-  ruleContext
+  record: any,
+  srcColumnType: any,
+  srcColumn: any,
+  ruleContext: any
 ) {
   // 来源字段类型,returnValue:返回值，expression:表达式
   let value = null
@@ -491,7 +510,11 @@ let _getValueByMapping = function (
  *            规则上下文
  * @return boolean 变量是否实体对象
  */
-let isEntity = function (entityName, entityType, ruleContext) {
+let isEntity = function (
+  entityName: string,
+  entityType: any,
+  ruleContext: any
+) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
 
@@ -560,7 +583,11 @@ let isEntity = function (entityName, entityType, ruleContext) {
  *            规则上下文
  * @return db 实体对象
  */
-let getEntity = function (entityName, entityType, ruleContext) {
+let getEntity = function (
+  entityName: string,
+  entityType: any,
+  ruleContext: any
+) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
 
