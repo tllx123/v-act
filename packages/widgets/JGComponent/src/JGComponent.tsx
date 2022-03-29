@@ -112,6 +112,18 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
       }
     }
 
+    const getComponentConfigs = function (code: string) {
+      if (!inProps.children) return new Error('页面未设置组件')
+      if ('props' in inProps.children) {
+        let targetPage = iteratorComponent(
+          inProps.children.props.children,
+          code
+        )
+        return iteratorControls(targetPage.controls, code)
+      }
+      return null
+    }
+
     /**
      * 为全局暴露一个接口更改组件属性
      * @param String componentCode 组件code值
@@ -165,6 +177,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
       )
 
       context.windowScope.set('getComponentProperty', getComponentProperty)
+      context.windowScope.set('getComponentConfigs', getComponentConfigs)
     }
 
     const props: BoxProps = {

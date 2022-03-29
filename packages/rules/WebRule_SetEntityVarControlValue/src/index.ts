@@ -77,7 +77,7 @@ const setTargetValue = function (fieldMap, ruleContext) {
    * 			 }.....]
    * }
    * */
-  const entityInfos = {}
+  let entityInfos = {}
   for (let i = 0; i < fieldMap.length; i++) {
     const fieldObj = fieldMap[i]
     const targetType = fieldObj['TargetType']
