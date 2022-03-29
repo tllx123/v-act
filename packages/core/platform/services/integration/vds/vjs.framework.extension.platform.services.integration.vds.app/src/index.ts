@@ -14,7 +14,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as str from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
 import { VersionService as versionService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.appversion'
 import { Camera as CameraService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.camera'
-import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.filetransfer'
+import { FileTransfer as FileTransferService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.fileoperation'
 import { Geolocation as geolocationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.geolocation'
 import { HardwareOperation as hardwareOperationService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.hardwareoperation'
 import { ImagePicker as ImagePickerService } from '@v-act/vjs.framework.extension.platform.services.native.mobile.imagepicker'
@@ -173,7 +173,7 @@ export function getPicture(params: { quality?: number; max?: number }) {
  * })
  * */
 export function upload(
-  filePaths: Array<string>,
+  filePaths: any,
   callback?: (res: Array<string>) => void
 ) {
   if (!object.isArray(filePaths) || filePaths.length < 1) {

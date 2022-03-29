@@ -5,7 +5,16 @@
  * @catalog 数据源/树数据源定义
  */
 class TreeStruct {
-  constructor(treeCode, pId, orderNo, innerCode, isLeafCode, filterCode) {
+  treeStruct: any
+
+  constructor(
+    treeCode: any,
+    pId: any,
+    orderNo: any,
+    innerCode: any,
+    isLeafCode: any,
+    filterCode: any
+  ) {
     this.treeStruct = {
       type: '1',
       tableName: treeCode,

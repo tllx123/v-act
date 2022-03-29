@@ -1,10 +1,13 @@
 import { DataAccessObject } from '@v-act/vjs.framework.extension.platform.services.repository.access'
 import { DataAdapter as dataAdapter } from '@v-act/vjs.framework.extension.platform.services.viewmodel.dataadapter'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 
 import Node from './Node'
 import NodeSet from './NodeSet'
 import TreeStruct from './TreeStruct'
 
+const vds = { ds, object }
 /**
  * 数据源定义
  * @constructor
@@ -12,7 +15,10 @@ import TreeStruct from './TreeStruct'
  * @catalog 数据源/树数据源定义
  */
 class Tree {
-  constructor(tree, treeStruct) {
+  tree: any
+  treeStruct: any
+
+  constructor(tree: any, treeStruct: Record<string, any> | null) {
     this.tree = tree
     this.treeStruct = treeStruct
   }
@@ -103,7 +109,7 @@ class Tree {
    * @param {Array<Node>} nodes 添加的节点列表
    * @param {Boolean=} [resetCurrent=true] 是否重置当前行
    * */
-  addRootNodes(nodes, resetCurrent) {
+  addRootNodes(nodes: any[], resetCurrent: any) {
     if (!vds.object.isArray(nodes) || nodes.length < 1) {
       return
     }
@@ -111,7 +117,7 @@ class Tree {
     for (var i = 0, len = nodes.length; i < len; i++) {
       newNodes.push(nodes[i]._get())
     }
-    var datas = this.tree.insertRoots({
+    var datas: any[] = this.tree.insertRoots({
       nodes: newNodes,
       resetCurrent: resetCurrent
     })
@@ -140,7 +146,7 @@ class Tree {
    * 根据id删除节点
    * @param {Array<String>} removeIds 需要删除的节点id列表
    * */
-  removeNodeByIds(removeIds) {
+  removeNodeByIds(removeIds: any[]) {
     if (!vds.object.isArray(removeIds) || removeIds.length < 1) {
       return
     }
@@ -155,7 +161,7 @@ class Tree {
    * @example
    * var node = vds.tree.lookup("tree1", treeStruct).getNodeById("id1");
    * */
-  getNodeById(id) {
+  getNodeById(id: string) {
     var node = this.tree.getNodeById(id)
     if (node) {
       return new Node(node)
@@ -214,7 +220,7 @@ class Tree {
    * var tree1 = vds.tree.getAll("tree1")[0];
    * var index = tree1.getIndexById("1")
    * */
-  getIndexById(recordId) {
+  getIndexById(recordId: any) {
     return this._get().getIndexById(recordId)
   }
   /**
@@ -227,7 +233,10 @@ class Tree {
    *  "isRefreshCondition" : {Boolean} 是否更新加载的条件，查询对象为查询时有效，默认true（可选）
    * }
    * */
-  queryData(condition, params) {
+  queryData(
+    condition: string,
+    params: { isAsync: boolean; isAppend: boolean; isRefreshCondition: boolean }
+  ) {
     var dataAccessObject = this.tree.getDataAccessor()
     if (!dataAccessObject || !condition) return
     var isAsync = false
@@ -250,7 +259,7 @@ class Tree {
     var callbackNewWhereRestrict = newWhereRestrict.clone()
     callbackNewWhereRestrict.andConditionString('(' + condition + ')')
     var cd = dataAccessObject.getCommand()
-    var command = {
+    var command: any = {
       config: {
         where: newWhereRestrict,
         pageSize: -1,

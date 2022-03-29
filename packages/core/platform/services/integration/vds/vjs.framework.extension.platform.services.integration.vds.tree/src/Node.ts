@@ -1,4 +1,7 @@
 import NodeSet from './NodeSet'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
+const vds = { object }
 
 /**
  * 树数据源节点定义
@@ -7,7 +10,8 @@ import NodeSet from './NodeSet'
  * @catalog 数据源/树数据源定义
  */
 class Node {
-  constructor(node) {
+  node: any
+  constructor(node: any) {
     this.node = node
   }
   _get() {
@@ -37,7 +41,7 @@ class Node {
    * @param {Node#Operation=} operation 操作类型
    * @return {Boolean} 是否移动成功
    * */
-  move(operation) {
+  move(operation: string | number) {
     var node = this._get()
     switch (operation) {
       case this.Operation.ABOVE:
@@ -68,7 +72,7 @@ class Node {
    * @param {Array<Node>} nodes 新增的子节点列表
    * @param {Boolean=} [resetCurrent=true] 是否重置当前行
    * */
-  addChilds(nodes, resetCurrent) {
+  addChilds(nodes: any, resetCurrent: any) {
     var newNodes = _toNode(nodes)
     if (newNodes.length < 1) {
       return
@@ -96,7 +100,7 @@ class Node {
    * 在当前节点前面添加兄弟节点
    * @param {Array<Node>} nodes 需要添加的节点列表
    * */
-  addOlderBrothers(nodes) {
+  addOlderBrothers(nodes: any) {
     var newNodes = _toNode(nodes)
     if (newNodes.length < 1) {
       return
@@ -111,7 +115,7 @@ class Node {
    * 在当前节点后面添加兄弟节点
    * @param {Array<Node>} nodes 需要添加的节点列表
    * */
-  addYoungBrothers(nodes) {
+  addYoungBrothers(nodes: any) {
     var newNodes = _toNode(nodes)
     if (newNodes.length < 1) {
       return false
@@ -149,9 +153,9 @@ class Node {
    * @param {String} code 字段编码
    * @param {Any} value 值
    * */
-  set(code, value) {
-    this._get().set(code, value)
-  }
+  // set(code, value) {
+  //   this._get().set(code, value)
+  // }
   /**
    * 获取子节点
    * @returns {@link NodeSet}
@@ -192,7 +196,7 @@ class Node {
    * var node = tree.getCurrentNode();
    * var val = node.get("fieldCode1");
    */
-  get(fieldCode) {
+  get(fieldCode: any) {
     return this.node.get(fieldCode)
   }
   /**
@@ -204,7 +208,7 @@ class Node {
    * var node = tree.getCurrentNode();
    * node.set("fieldCode1", 120);
    */
-  set(fieldCode, value) {
+  set(fieldCode: any, value: number) {
     return this.node.set(fieldCode, value)
   }
 
@@ -225,7 +229,7 @@ class Node {
  * @param {Array<Node>} nodes 节点列表
  * @ignore
  * */
-var _toNode = function (nodes) {
+var _toNode = function (nodes: string | any[]) {
   if (!vds.object.isArray(nodes) || nodes.length < 1) {
     return []
   }
