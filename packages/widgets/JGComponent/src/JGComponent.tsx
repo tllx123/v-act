@@ -148,12 +148,13 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         } else {
           return false
         }
-
         const newPropsChildren = Object.assign({}, inProps.children)
 
         // 设置props为空，解决组件不刷新问题
         setPropsChildren(null)
-        setPropsChildren(newPropsChildren)
+        setTimeout(() => {
+          setPropsChildren(newPropsChildren)
+        })
       }
     }
 
