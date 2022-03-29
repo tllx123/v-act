@@ -934,7 +934,6 @@
         "packages/core/utils/vjs.framework.extension.util.style.preprocessor.less/src"
       ],
       "@v-act/vjs.framework.extension.util.uuid": ["packages/core/utils/vjs.framework.extension.util.uuid/src"],
-      
       "@v-act/vjs.framework.core": ["packages/core/vjs.framework.core/src"],
       "@v-act/vjs.framework.extension.platform.skin.mobile.viewport.adapter": [
         "packages/core/vjs.framework.extension.platform.skin.mobile.viewport.adapter/src"
