@@ -37,6 +37,7 @@ const toNumber = function (
  * @param val 转换值
  */
 const toBoolean = function (val: string | undefined, def?: boolean): boolean {
+  if (typeof val == 'boolean') return val
   def = def === undefined ? false : def
   if (val === undefined) {
     return def
