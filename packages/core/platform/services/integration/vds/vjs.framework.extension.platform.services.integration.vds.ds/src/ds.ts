@@ -23,11 +23,17 @@ import { DatasourceManager as dsManager } from '@v-act/vjs.framework.extension.p
 import { WhereRestrict } from '@v-act/vjs.framework.extension.platform.services.where.restrict'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
+import MethodContext from '../../vjs.framework.extension.platform.services.integration.vds.rule/src/MethodContext'
+import RuleContext from '../../vjs.framework.extension.platform.services.integration.vds.rule/src/RuleContext'
 import Datasource from './Datasource'
 import Metadata from './Metadata'
 import Record from './Record'
 import ResultSet from './ResultSet'
 import Where from './Where'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+const vds = { ds, exception, object }
 
 /**
  * 枚举项
@@ -37,7 +43,6 @@ const enums = {
   IdField: true
 }
 
-export { enums }
 /**
  * 条件类型
  * @enum
@@ -47,8 +52,6 @@ const WhereType = {
   Table: 'Table'
 }
 
-export { WhereType }
-
 /**
  * 查找数据源
  * @desc 根据数据源编号查找数据源实例，如果数据源不存在，则返回null
@@ -57,7 +60,7 @@ export { WhereType }
  * @example
  * var ds = vds.ds.lookup("ds1");
  */
-export function lookup(code) {
+export function lookup(code: string) {
   var ds = dsManager.lookup({
     datasourceName: code
   })
@@ -76,7 +79,7 @@ export function lookup(code) {
  * @example
  * vds.ds.register("ds1",datasource);//true:注册成功,false:注册失败
  */
-export function register(code, datasource) {
+export function register(code: any, datasource: { _get: () => any }) {
   return dsManager.register({
     datasourceName: code,
     datasource: datasource._get()
@@ -90,7 +93,7 @@ export function register(code, datasource) {
  * @example
  * vds.ds.unRegister("ds1");//true:销毁成功,false:销毁失败
  */
-export function unRegister(code) {
+export function unRegister(code: any) {
   return dsManager.unRegister({
     datasourceName: code
   })
@@ -103,7 +106,7 @@ export function unRegister(code) {
  * @example
  * vds.ds.exists("ds1");//true:存在,false:不存在
  */
-export function exists(code) {
+export function exists(code: string) {
   return dsManager.exists({
     datasourceName: code
   })
@@ -129,7 +132,7 @@ export function exists(code) {
 }]);
 vds.ds.register("persion",datasource);
 	 */
-export function mock(datas) {
+export function mock(datas: any) {
   if (dsFactory.isDatasource(datas)) {
     return new Datasource(datas)
   }
@@ -144,7 +147,7 @@ export function mock(datas) {
  * vds.ds.isDatasource(11)//false
  * vds.ds.isDatasource(vds.ds.lookup("ds1"));//true
  */
-export function isDatasource(ds) {
+export function isDatasource(ds: any) {
   if (ds && ds instanceof Datasource) {
     return true
   }
@@ -154,7 +157,7 @@ export function isDatasource(ds) {
 /**
  * @ignore
  */
-export function _genDatasourceByDs(ds) {
+export function _genDatasourceByDs(ds: any) {
   if (ds) {
     return new Datasource(ds)
   }
@@ -164,7 +167,7 @@ export function _genDatasourceByDs(ds) {
  * 平台内部封装数据对象
  * @ignore
  * */
-export function _genRecord(record) {
+export function _genRecord(record: any) {
   if (record) {
     return new Record(record)
   }
@@ -174,7 +177,7 @@ export function _genRecord(record) {
  * 平台内部封装数据集对象
  * @ignore
  * */
-export function _genResultSet(resultset) {
+export function _genResultSet(resultset: any) {
   if (resultset) {
     return new ResultSet(resultset)
   }
@@ -196,7 +199,19 @@ export function _genResultSet(resultset) {
  *  "dataFileType":{String} 来源数据过滤类型，枚举：modify:修改过的(新增、修改、删除的数据)，all:(默认)（可选）
  * }
  * */
-export function copy(sourceEntity, destEntity, fieldMappings, params) {
+export function copy(
+  sourceEntity: any,
+  destEntity: any,
+  fieldMappings: string | any[] | undefined,
+  params:
+    | {
+        dataFilterType?: any
+        context?: RuleContext | MethodContext
+        ruleContext?: any
+        dataFileType?: any
+      }
+    | undefined
+) {
   if (
     !isDatasource(sourceEntity) ||
     !isDatasource(destEntity) ||
@@ -250,7 +265,7 @@ export function copy(sourceEntity, destEntity, fieldMappings, params) {
  * }
  * @returns {Datasouce} 数据源实例
  * */
-export function unSerialize(fields, params) {
+export function unSerialize(fields: any[], params: { [x: string]: any }) {
   if (fields instanceof Array) {
     var datas = params && params.datas instanceof Array ? params.datas : []
     var dsCode =
@@ -288,11 +303,11 @@ export function unSerialize(fields, params) {
  *  "methodContext": ruleContext.getMethodContext()
  * });
  * */
-export function createWhere(params) {
+export function createWhere(params: { [x: string]: any }) {
   if (!params) {
     return WhereRestrict.init()
   }
-  var newParams = {
+  var newParams: any = {
     fetchMode: params.type == vds.ds.WhereType['Query'] ? 'custom' : 'table',
     routeContext:
       params.methodContext && params.methodContext._getRouteContext()
@@ -329,7 +344,7 @@ const MergeType = {
   InsertOrUpdate: 'insertOrUpdateBySameId'
 }
 
-export { MergeType }
+export { enums, MergeType, WhereType }
 
 /**
  *
@@ -363,12 +378,12 @@ export { MergeType }
  * }
  */
 export function merge(
-  targetDs,
-  records,
-  mappings,
-  mergeType,
-  methodContext,
-  params
+  targetDs: { _get: () => any } | null,
+  records: { [x: string]: any },
+  mappings: string | any[],
+  mergeType: string | any[],
+  methodContext: MethodContext,
+  params: { isClear: any; extraParams?: any }
 ) {
   var routeContext = methodContext && methodContext._getRouteContext()
   // 如果目标不是一个数据源对象
@@ -455,10 +470,11 @@ export function merge(
       }
     }
 
+    let proName: string
     // 为更新当前记录时只取第一个返回值
     if (mergeType == 'updateRecord') {
       // 操作类型为更新时，如果目标实体没有当前行，则取其第一行
-      oldRecords = []
+      let oldRecords = []
       oldRecords = destEntity.getSelectedRecords().toArray()
       if (oldRecords.length < 1)
         if (destEntity.getAllRecords().toArray().length > 0)
@@ -527,10 +543,10 @@ export function merge(
 }
 
 var _getValueByMapping = function (
-  record,
-  srcColumnType,
-  srcColumn,
-  routeContext
+  record: { get: (arg0: any) => any },
+  srcColumnType: string,
+  srcColumn: any,
+  routeContext: any
 ) {
   // 来源字段类型,returnValue:返回值，expression:表达式
   var value = null
@@ -555,6 +571,6 @@ var _getValueByMapping = function (
  * 平台内部封装元数据
  * @ignore
  * */
-export function _genMetadata(metadata) {
+export function _genMetadata(metadata: any) {
   return new Metadata(metadata)
 }
