@@ -15,19 +15,38 @@ interface obj {
   [key: string]: any
 }
 
+interface Events {
+  LOAD: string
+  INSERT: string
+  UPDATE: string
+  DELETE: string
+  CURRENT: string
+  SELECT: string
+  FETCH: string
+  FETCHED: string
+  RECORDPROCESS: string
+}
+
+interface Position {
+  BEFORE: string
+  AFTER: string
+  TOP: string
+  BOTTOM: string
+}
+
 let primaryKey = 'id'
 const initModule = function (sb: any) {
   let each: any = CollectionUtil.each
   let find: any = CollectionUtil.find
   let contains: any = CollectionUtil.contains
-  let objectUtil: void = ObjectUtil.object
-  let arrays: void = ArrayUtil.arrays
-  let remove = arrayUtil.remove
+  let objectUtil: any = ObjectUtil
+  let arrays: any = ArrayUtil
+  let remove = ArrayUtil.remove
 }
 
 class Datasource {
-  public Events: object
-  public Position: object
+  public Events: Events
+  public Position: Position
   public indexData?: obj
   public datas: Array<any>
   public ds: any
