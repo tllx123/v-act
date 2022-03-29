@@ -3,6 +3,8 @@ import {
   ResultSet
 } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
+import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 import * as taffy from './TaffyDB'
 import { Metadata } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
@@ -11,74 +13,65 @@ interface obj {
   [key: string]: any
 }
 
+const each = CollectionUtil.each,
+  find = CollectionUtil.find,
+  contains = CollectionUtil.contains
+
 let primaryKey = 'id'
-const initModule = function (sb: any) {
-  let each: () => void = sb.util.collections.each
-  let find: () => void = sb.util.collections.find
-  let contains: () => void = sb.util.collections.contains
-  let objectUtil: () => void = sb.util.object
-  let arrays: () => void = sb.util.arrays
-  let remove = arrayUtil.remove
-}
 
 class Datasource {
-  constructor(
-    public indexData: obj = {},
-    public datas: Array<any> = [],
-    public primaryKey = 'id',
-    // @ts-ignore
-    public metadata?: Metadata,
-    public ds: any = null,
-    public metadataJson = null,
-    public db = taffy.DB(),
-    public isMultipleSel: boolean = false,
-    public isDefaultSel: boolean = true,
-    public dataAmount = 0,
-    public _eventPool = {},
-    public insertIds: string[] = [],
-    public updateIds: string[] = [],
-    public deleteDatas = [],
-    public selectIds: string[] = [],
-    public currentId?: string,
-    public dataAccessObject = null,
-    public snapshotHandler: () => void = () => {},
-    public bindWidgets = null,
-    public _snapshotManager = null,
-    public Events = {
-      /**加载事件*/
-      LOAD: 'LOAD',
-      /**新增事件*/
-      INSERT: 'INSERT',
-      /**更新事件*/
-      UPDATE: 'UPDATE',
-      /**删除事件*/
-      DELETE: 'DELETE',
-      /**当前行切换事件*/
-      CURRENT: 'CURRENT',
-      /**记录选择事件*/
-      SELECT: 'SELECT',
-      /**获取数据事件*/
-      FETCH: 'FETCH',
-      /**获取数据后事件*/
-      FETCHED: 'FETCHED',
-      /**
-       *@private
-       * 记录处理事件
-       * */
-      RECORDPROCESS: 'RECORDPROCESS'
-    },
-    public Position = {
-      /**前*/
-      BEFORE: 'BEFORE',
-      /**后*/
-      AFTER: 'AFTER',
-      /**最前*/
-      TOP: 'TOP',
-      /**最后*/
-      BOTTOM: 'BOTTOM'
-    }
-  ) {
-    return this
+  static Events = {
+    /**加载事件*/
+    LOAD: 'LOAD',
+    /**新增事件*/
+    INSERT: 'INSERT',
+    /**更新事件*/
+    UPDATE: 'UPDATE',
+    /**删除事件*/
+    DELETE: 'DELETE',
+    /**当前行切换事件*/
+    CURRENT: 'CURRENT',
+    /**记录选择事件*/
+    SELECT: 'SELECT',
+    /**获取数据事件*/
+    FETCH: 'FETCH',
+    /**获取数据后事件*/
+    FETCHED: 'FETCHED',
+    /**
+     *@private
+     * 记录处理事件
+     * */
+    RECORDPROCESS: 'RECORDPROCESS'
+  }
+  static Position = {
+    /**前*/
+    BEFORE: 'BEFORE',
+    /**后*/
+    AFTER: 'AFTER',
+    /**最前*/
+    TOP: 'TOP',
+    /**最后*/
+    BOTTOM: 'BOTTOM'
+  }
+  Events = Datasource.Events
+  Position = Datasource.Position
+  ds = null
+  metadataJson = null
+  db = taffy.DB()
+  isMultipleSel = false
+  isDefaultSel = true
+  dataAmount = 0
+  _eventPool = {}
+  insertIds = []
+  updateIds = []
+  deleteDatas = []
+  selectIds = []
+  currentId = null
+  dataAccessObject = null
+  snapshotHandler: (() => any) | null = null
+  metadata
+  constructor(metadata: Metadata) {
+    this.metadata = metadata
   }
 
   _putSnapshotHandler(handler: any) {
@@ -211,12 +204,11 @@ class Datasource {
     return handlers
   }
 
-  _processLoadDatas(datas: any) {
+  _processLoadDatas(datas: Array<{ [fieldCode: string]: any }>) {
     //处理加载数据,如果加载数据不存在id值,则补全
     if (datas) {
       let rs: any = []
-      // @ts-ignore
-      each(datas, function (data: any) {
+      each(datas, function (data: { [fieldCode: string]: any }) {
         if (!data.hasOwnProperty(primaryKey)) {
           data[primaryKey] = uuid.generate()
         }
@@ -309,7 +301,7 @@ class Datasource {
 
     const windowScope = scopeManager.getWindowScope()
     const operations = windowScope.get('dataSourceHandler')
-    const code = this.metadata.getCode()
+    const code = this.metadata.getDatasourceName()
     let paramsTemp = {
       code: code,
       records: toInserted
@@ -349,7 +341,7 @@ class Datasource {
     each(records, function (record: any) {
       let diffData = record.getDiff()
       // @ts-ignore
-      if (diffData && !objectUtil.isEmpty(diffData)) {
+      if (diffData && !ObjectUtil.isEmpty(diffData)) {
         updated.push(record)
         let id = record.getSysId()
         // @ts-ignore
@@ -375,7 +367,7 @@ class Datasource {
 
       const windowScope = scopeManager.getWindowScope()
       const operations = windowScope.get('dataSourceHandler')
-      const code = this.metadata.getCode()
+      const code = this.metadata.getDatasourceName()
       let paramsTemp = {
         code: code,
         records: updated
@@ -407,20 +399,20 @@ class Datasource {
     each(datas, function (data: any) {
       let id = data['id']
       // @ts-ignore
-      if (!remove(ds.insertIds, id)) {
+      if (!arrayUtil.remove(ds.insertIds, id)) {
         deleted.push(data)
       }
       // @ts-ignore
-      remove(ds.updateIds, id)
+      arrayUtil.remove(ds.updateIds, id)
       // @ts-ignore
-      remove(ds.selectIds, id)
+      arrayUtil.remove(ds.selectIds, id)
     })
 
     this.deleteDatas = this.deleteDatas.concat(deleted)
 
     const windowScope = scopeManager.getWindowScope()
     const operations = windowScope.get('dataSourceHandler')
-    const code = this.metadata.getCode()
+    const code = this.metadata.getDatasourceName()
     let paramsTemp = {
       code: code,
       records: this.deleteDatas
@@ -469,7 +461,7 @@ class Datasource {
 
       const windowScope = scopeManager.getWindowScope()
       const operations = windowScope.get('dataSourceHandler')
-      const code = this.metadata.getCode()
+      const code = this.metadata.getDatasourceName()
       let paramsTemp = {
         code: code
       }
@@ -719,9 +711,9 @@ class Datasource {
         iter[index] = id
       })
       // @ts-ignore
-      let toSel = arrays.difference(iter, selectedIds),
+      let toSel = arrayUtil.difference(iter, selectedIds),
         // @ts-ignore
-        unSel = arrays.difference(selectedIds, iter)
+        unSel = arrayUtil.difference(selectedIds, iter)
       this.selectIds = iter
       if (unSel && unSel.length > 0) {
         this._fireEvent({
@@ -790,7 +782,7 @@ class Datasource {
           // @ts-ignore
         } else if (!isSelect && contains(selectedIds, id)) {
           // @ts-ignore
-          remove(selectedIds, id)
+          arrayUtil.remove(selectedIds, id)
           selectRecords.push(record)
         }
       })
@@ -1005,4 +997,4 @@ const getConstructor = function () {
   return Datasource
 }
 
-export { DB, getConstructor, isDB, initModule, unSerialize }
+export { DB, getConstructor, isDB, unSerialize }
