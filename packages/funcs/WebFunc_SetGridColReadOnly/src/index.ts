@@ -13,7 +13,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, object, widget }
 
-const main = function (widgetCode:string, fieldStr:string, readOnly:any) {
+const main = function (widgetCode: string, fieldStr: string, readOnly: any) {
   //获取函数传入的参数
 
   if (vds.object.isUndefOrNull(widgetCode) || widgetCode === '') {
@@ -31,7 +31,15 @@ const main = function (widgetCode:string, fieldStr:string, readOnly:any) {
     throw exception
   }
 
-  var widget = vds.widget.getProperty(widgetCode, 'widgetObj')
+  const config = vds.widget.getConfigs(widgetCode)
+  const controls = config.controls
+
+  //var widget = vds.widget.getProperty(widgetCode, 'controls')
+
+  //var widget2 = vds.widget.getProperty(widgetCode, 'widgetObj')
+
+  var propertys = vds.widget.getProperty(controls, 'propertys')
+
   var fieldList = fieldStr.split(',')
   if (readOnly == 'false' || readOnly == false) {
     readOnly = false
@@ -40,9 +48,12 @@ const main = function (widgetCode:string, fieldStr:string, readOnly:any) {
   }
 
   for (var i = 0; i < fieldList.length; i++) {
-    var field = widget.getFieldByName(fieldList[i])
+    //var field = widget.getFieldByName(fieldList[i])
+    var propertys = vds.widget.getProperty(widget, 'propertys')
+    var field = vds.widget.getProperty(propertys, 'columnName')
     if (field) {
-      field.canEdit = !readOnly
+      //field.canEdit = !readOnly
+      vds.widget.setProperty(field, 'canEdit', readOnly)
     }
   }
 }
