@@ -66,7 +66,7 @@ export { StoreType }
  * @example
  * vds.widget.getWidgetCodes("user");
  */
-export function getWidgetCodes(datasource: string, fieldCode?: string) {
+export function getWidgetCodes(datasource: string, fieldCode?: number) {
   //    	if(_isComponentScope()){
   //    		return [];
   //    	}

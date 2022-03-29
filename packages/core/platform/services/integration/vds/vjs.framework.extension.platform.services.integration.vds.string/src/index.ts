@@ -25,7 +25,7 @@ import { uuid as uuidUtil } from '@v-act/vjs.framework.extension.util.uuid'
  * @example
  * vds.string.concat("a","b");//ab
  */
-export function concat(str1, str2) {
+export function concat(str1: string, str2: string) {
   return strUtil.concat(str1, str2)
 }
 
@@ -40,7 +40,7 @@ export function concat(str1, str2) {
  * vds.string.indexOf("abc","d");//-1
  * vds.string.indexOf("abcabc","b",2);4
  */
-export function indexOf(str, value, begin) {
+export function indexOf(str: string, value: string, begin: number | undefined) {
   return strUtil.indexOf(str, value, begin)
 }
 
@@ -54,7 +54,7 @@ export function indexOf(str, value, begin) {
  * vds.string.isEmpty(undefined);//true
  * vds.string.isEmpty("adsf");//false
  */
-export function isEmpty(str) {
+export function isEmpty(str: string) {
   return strUtil.isEmpty(str)
 }
 
@@ -67,7 +67,11 @@ export function isEmpty(str) {
  * @example
  * vds.string.lastIndexOf("abcabc","b");//4
  */
-export function lastIndexOf(str, value, begin) {
+export function lastIndexOf(
+  str: string,
+  value: string,
+  begin: number | undefined
+) {
   return strUtil.lastIndexOf(str, value, begin)
 }
 
@@ -78,7 +82,7 @@ export function lastIndexOf(str, value, begin) {
  * @example
  * vds.string.ltrim("   abc");//abc
  */
-export function ltrim(str) {
+export function ltrim(str: string) {
   return strUtil.ltrim(str)
 }
 
@@ -92,7 +96,7 @@ export function ltrim(str) {
  * vds.string.replace("abcabc","a","ddd");//dddbcabc
  * vds.string.replace("abbcabc",/b+/,"ddd");//adddcabc
  */
-export function replace(str, replace, replacement) {
+export function replace(str: string, replace: string, replacement: string) {
   return strUtil.replace(str, replace, replacement)
 }
 
@@ -106,7 +110,12 @@ export function replace(str, replace, replacement) {
  * @example
  * vds.string.replaceByIndex("abc","ddd",1,2);//adddc
  */
-export function replaceByIndex(str, replacement, begin, end) {
+export function replaceByIndex(
+  str: string,
+  replacement: string,
+  begin: number,
+  end: number | undefined
+) {
   return strUtil.replaceByIndex(str, replacement, begin, end)
 }
 
@@ -117,7 +126,7 @@ export function replaceByIndex(str, replacement, begin, end) {
  * @example
  * vds.string.rtrim("abc   ");//abc
  */
-export function rtrim(str) {
+export function rtrim(str: string) {
   return strUtil.rtrim(str)
 }
 
@@ -128,7 +137,7 @@ export function rtrim(str) {
  * @example
  * vds.string.trim("   abc   ");//abc
  */
-export function trim(str) {
+export function trim(str: string | null) {
   if (null == str || typeof str != 'string') {
     return str
   }
@@ -144,7 +153,7 @@ export function trim(str) {
  * @example
  * vds.string.substr("abcdefg",1,3);//bcd
  */
-export function substr(str, begin, length) {
+export function substr(str: string, begin: number, length: number) {
   return strUtil.substr(str, begin, length)
 }
 
@@ -157,7 +166,7 @@ export function substr(str, begin, length) {
  * @example
  * vds.string.substring("abcdefg",1,3);//bc
  */
-export function substring(str, begin, end) {
+export function substring(str: string, begin: number, end: number) {
   return strUtil.substring(str, begin, end)
 }
 
@@ -168,7 +177,7 @@ export function substring(str, begin, end) {
  * @example
  * vds.string.toLowerCase("AbcD");//abcd
  */
-export function toLowerCase(str) {
+export function toLowerCase(str: string) {
   return strUtil.toLowerCase(str)
 }
 
@@ -179,7 +188,7 @@ export function toLowerCase(str) {
  * @example
  * vds.string.toUpperCase("AbcD");//ABCD
  */
-export function toUpperCase(str) {
+export function toUpperCase(str: string) {
   return strUtil.toUpperCase(str)
 }
 
@@ -190,7 +199,7 @@ export function toUpperCase(str) {
  * @example
  * vds.string.genHash("yindangu");
  */
-export function genHash(val) {
+export function genHash(val: string) {
   return encryptUtil.genHash(val, 'base64') //默认base64加密，后续有需求再开放加密类型
 }
 
@@ -201,7 +210,7 @@ export function genHash(val) {
  * @example
  * vds.string.toMD5("yindangu");
  */
-export function toMD5(val) {
+export function toMD5(val: any) {
   return desUtil.toMD5(val)
 }
 
@@ -223,7 +232,7 @@ export function uuid() {
  * @example
  * vds.string.isInArray("AAA", ["AAA","BBB","CCC"]);//true
  */
-export function isInArray(str, array) {
+export function isInArray(str: string, array: string[]) {
   return strUtil.isInArray(str, array)
 }
 
@@ -235,7 +244,7 @@ export function isInArray(str, array) {
  * @example
  * vds.string.template("${a}和${b}的天气不错.",{"a":"昨天","b":"今天"});//昨天和今天的天气不错.
  */
-export function template(template, slot) {
+export function template(template: string, slot: Record<string, any>) {
   return easyTemplateUtil.easyTemplate(template, slot)
 }
 /**
@@ -245,7 +254,7 @@ export function template(template, slot) {
  * @example
  * vds.string.toJson({key1:"value1",key2:true});//'{"key1":"value1","key2":true}'
  */
-export function toJson(obj) {
+export function toJson(obj: string | Record<string, any>) {
   return jsonUtil.obj2json(obj)
 }
 /**
@@ -290,8 +299,8 @@ export { EncryptType }
  * vds.import("vds.string.*");
  * var value = vds.string.encrypt("12345",exports.EncryptType.md5);
  * */
-export function encrypt(value, type, secretKey) {
-  var result
+export function encrypt(value: any, type: any, secretKey: undefined) {
+  var result: any
   switch (type) {
     case EncryptType.AES:
       result = newEncryptUtil.encryptWithKey(value, type, secretKey)
@@ -313,7 +322,7 @@ export function encrypt(value, type, secretKey) {
  * vds.import("vds.string.*");
  * vds.string.decrypt("12345","abc");
  * */
-export function decryptAES(value, secretKey) {
+export function decryptAES(value: null | string, secretKey: null | string) {
   if (null == value || null == secretKey) {
     return null
   }
@@ -325,6 +334,6 @@ export function decryptAES(value, secretKey) {
  * @param {Integer} num 累加的加数
  * @return {String}
  * */
-export function numberAdd(numStr, num) {
+export function numberAdd(numStr: string, num: number) {
   return mathUtil.numberCodeAdd(numStr, num)
 }
