@@ -31,15 +31,6 @@ const main = function (widgetCode: string, fieldStr: string, readOnly: any) {
     throw exception
   }
 
-  const config = vds.widget.getConfigs(widgetCode)
-  const controls = config.controls
-
-  //var widget = vds.widget.getProperty(widgetCode, 'controls')
-
-  //var widget2 = vds.widget.getProperty(widgetCode, 'widgetObj')
-
-  var propertys = vds.widget.getProperty(controls, 'propertys')
-
   var fieldList = fieldStr.split(',')
   if (readOnly == 'false' || readOnly == false) {
     readOnly = false
@@ -47,13 +38,15 @@ const main = function (widgetCode: string, fieldStr: string, readOnly: any) {
     readOnly = true
   }
 
-  for (var i = 0; i < fieldList.length; i++) {
-    //var field = widget.getFieldByName(fieldList[i])
-    var propertys = vds.widget.getProperty(widget, 'propertys')
-    var field = vds.widget.getProperty(propertys, 'columnName')
-    if (field) {
-      //field.canEdit = !readOnly
-      vds.widget.setProperty(field, 'canEdit', readOnly)
+  const config = vds.widget.getConfigs(widgetCode)
+  const controls = config.controls
+  for (var i = 0; i < controls.length; i++) {
+    const dataBindings = controls[i].dataBindings
+    const value = dataBindings[0].dataMembers[0].value
+    for (var i = 0; i < fieldList.length; i++) {
+      if (fieldList[i] == value) {
+        vds.widget.setProperty(value, 'canEdit', readOnly)
+      }
     }
   }
 }
