@@ -459,7 +459,9 @@ const getDropDownSource = function (control: Control) {
  */
 const getTableName = function (control: Control) {
   _checkDataBinding(control)
-  return control.dataBindings ? control.dataBindings[0].dataSource : null
+  return control.dataBindings && control.dataBindings.length > 0
+    ? control.dataBindings[0].dataSource
+    : null
 }
 
 /**
@@ -469,7 +471,7 @@ const getTableName = function (control: Control) {
  */
 const getColumnName = function (control: Control) {
   _checkDataBinding(control)
-  if (control.dataBindings) {
+  if (control.dataBindings && control.dataBindings.length > 0) {
     const dataMembers = control.dataBindings[0].dataMembers
     for (let index = 0; index < dataMembers.length; index++) {
       const element = dataMembers[index]
