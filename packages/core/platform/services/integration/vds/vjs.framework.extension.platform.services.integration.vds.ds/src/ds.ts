@@ -31,9 +31,9 @@ import Record from './Record'
 import ResultSet from './ResultSet'
 import Where from './Where'
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
-import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+// import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-const vds = { ds, exception, object }
+const vds = { exception, object }
 
 /**
  * 枚举项
@@ -308,7 +308,7 @@ export function createWhere(params: { [x: string]: any }) {
     return WhereRestrict.init()
   }
   var newParams: any = {
-    fetchMode: params.type == vds.ds.WhereType['Query'] ? 'custom' : 'table',
+    fetchMode: params.type == WhereType['Query'] ? 'custom' : 'table',
     routeContext:
       params.methodContext && params.methodContext._getRouteContext()
   }
