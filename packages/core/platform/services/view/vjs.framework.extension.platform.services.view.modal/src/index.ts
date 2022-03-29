@@ -1,2 +1,4 @@
-export * as CreateModalByUrl from './CreateModalByUrl'
-export * as Modal from './Modal'
+import CreateModalByUrl from './CreateModalByUrl'
+import Modal from './Modal'
+
+export { CreateModalByUrl, Modal }

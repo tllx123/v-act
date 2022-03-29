@@ -1,15 +1,18 @@
+// import { default } from 'yargs'
+
 import { VPlatfromIframeManager as vplatformIframeManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.window.iframe'
 import { EventManager as eventManager } from '@v-act/vjs.framework.extension.platform.interface.event'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-import * as modalUtil from './Modal'
+import modalUtil from './Modal'
 
 let sandbox
 
-export function initModule(sb) {
-  sandbox = sb
-}
+// export function initModule(sb) {
+//   sandbox = sb
+// }
 
-const renderIFrameToDom = function (params) {
+const renderIFrameToDom = function (params: any) {
   let containerCode = params.containerCode
   let url = params.url
   let closeModal = params.closeModal
@@ -29,7 +32,7 @@ const renderIFrameToDom = function (params) {
   eventManager.onCrossDomainEvent({
     eventName: eventManager.CrossDomainEvents.SetModalWindowTitle,
     handler: (function (st) {
-      return function (params) {
+      return function (params: any) {
         if (params.title && typeof st == 'function') {
           st(params.title)
         }
@@ -39,7 +42,7 @@ const renderIFrameToDom = function (params) {
   eventManager.onCrossDomainEvent({
     eventName: eventManager.CrossDomainEvents.ModalWindowClose,
     handler: (function (cm) {
-      return function (params) {
+      return function (params: any) {
         if (typeof cm == 'function') {
           cm(containerCode)
         }
@@ -60,7 +63,9 @@ const renderIFrameToDom = function (params) {
   //	    }, false);
   let iter = function () {
     if (!win || win.closed) {
+      //@ts-ignore
       if (typeof modalCloseCallBack == 'function') {
+        //@ts-ignore
         modalCloseCallBack()
       }
     } else {
@@ -70,7 +75,7 @@ const renderIFrameToDom = function (params) {
   iter()
 }
 
-const create = function (params) {
+const create = function (params: any) {
   if (null != vplatformIframeManager) {
     createNew(params)
   } else {
@@ -82,7 +87,7 @@ const create = function (params) {
  * 根据url创建一个模态窗口
  *
  * */
-let createNew = function (params) {
+let createNew = function (params: any) {
   let url = params.url,
     title = params.title,
     width = params.width,
@@ -97,29 +102,29 @@ let createNew = function (params) {
     url: url,
     oldModalParams: params,
     modalParams: {
-      title: params.title,
-      width: params.width,
+      title: title,
+      width: width,
       windowState: windowState,
       formBorderStyle: null,
-      windowState: null,
+      // windowState: null,
       maximizeBox: true,
-      modalCloseCallBack: params.callback,
-      height: params.height
+      modalCloseCallBack: modalCloseCallBack,
+      height: height
     }
   })
 }
 
-const createOld = function (params) {
+const createOld = function (params: any) {
   let url = params.url,
     title = params.title,
     width = params.width,
     windowState = params.windowState,
     modalCloseCallBack = params.callback,
     height = params.height
-  let win
-  let timeoutIndex
-  let closeFuncHandler
-  params['rendered'] = function (containerCode, closeFunc) {
+  let win: any
+  let timeoutIndex: any
+  let closeFuncHandler: any
+  params['rendered'] = function (containerCode: string, closeFunc: any) {
     closeFuncHandler = closeFunc
     let iframeId = 'iframe_modal_by_url_' + new Date().getTime()
     let iframeObj = document.getElementById(iframeId)
@@ -142,7 +147,7 @@ const createOld = function (params) {
         isDelete: true
       },
       handler: (function (_win) {
-        return function (params) {
+        return function (params: any) {
           if (params && params.MsgEvent) {
             let source = params.MsgEvent.source
             if (source === _win) {
@@ -156,6 +161,7 @@ const createOld = function (params) {
                 },
                 win: _win,
                 params: {
+                  //@ts-ignore
                   parentPM: vdk.tmpStorage.iden
                 }
               })
@@ -166,7 +172,7 @@ const createOld = function (params) {
     })
     eventManager.onCrossDomainEvent({
       eventName: eventManager.CrossDomainEvents.ModalWindowClose,
-      handler: function (params) {
+      handler: function (params: any) {
         if (closeFuncHandler) {
           let func = closeFuncHandler
           closeFuncHandler = null
@@ -217,7 +223,7 @@ const createOld = function (params) {
     }
     iter()
   }
-  params['closed'] = (function () {
+  params['closed'] = (function (win) {
     return function () {
       if (closeFuncHandler) {
         var func = closeFuncHandler
@@ -238,7 +244,7 @@ const createOld = function (params) {
  * @param url {String} 链接地址
  * @return 域名
  * */
-let getUrlHost = function (url) {
+let getUrlHost = function (url: string) {
   if (url) {
     let dom = document.createElement('a')
     dom.href = url
@@ -246,4 +252,4 @@ let getUrlHost = function (url) {
   }
 }
 
-export { create, createOld, renderIFrameToDom }
+export default { create, createOld, renderIFrameToDom }

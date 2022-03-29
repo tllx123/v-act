@@ -13,7 +13,7 @@ class WindowVarSyntax extends Syntax {
     if (token instanceof AtToken) {
       let index = context.getIndex()
       let tokens = context.getTokens()
-      let varTokens = getVarIdentifierTokens(index, <Token[]>tokens)
+      let varTokens = getVarIdentifierTokens(index + 1, <Token[]>tokens)
       return varTokens.length > 0
     }
     return false
@@ -27,7 +27,7 @@ class WindowVarSyntax extends Syntax {
     let index = context.getIndex()
     let startIndex = index
     let tokens = context.getTokens()
-    let varTokens = getVarIdentifierTokens(index, <Token[]>tokens)
+    let varTokens = getVarIdentifierTokens(index + 1, <Token[]>tokens)
     let endIndex = index + varTokens.length
     let code = varTokens.join('')
     let position = new Position()

@@ -102,12 +102,12 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         if (targetComponent) {
           let { properties } = targetComponent
           if (!propCode) {
-            return '请传入属性编码'
+            return false
           } else {
             return properties[propCode]
           }
         } else {
-          return '未找到该组件'
+          return false
         }
       }
     }
@@ -146,14 +146,13 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
             properties
           )
         } else {
-          return '未找到该组件'
+          return false
         }
-
         const newPropsChildren = Object.assign({}, inProps.children)
 
         // 设置props为空，解决组件不刷新问题
         setPropsChildren(null)
-        setPropsChildren(newPropsChildren)
+        setTimeout(() => setPropsChildren(newPropsChildren))
       }
     }
 
