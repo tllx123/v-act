@@ -12,7 +12,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
 const vds = { exception, object, widget }
 
-const main = function (widgetCode:string, fieldStr:string, visible:any) {
+const main = function (widgetCode: string, fieldStr: string, visible: any) {
   //获取函数传入的参数
   if (vds.object.isUndefOrNull(widgetCode) || widgetCode === '') {
     var exception = vds.exception.newConfigException('列表控件名不能为空！')
@@ -35,13 +35,14 @@ const main = function (widgetCode:string, fieldStr:string, visible:any) {
   } else {
     visible = true
   }
-  for (var i = 0; i < fieldList.length; i++) {
-    var field = widget.getFieldByName(fieldList[i])
-    if (field) {
-      if (visible) {
-        widget._widget.showField(field)
-      } else {
-        widget._widget.hideField(field)
+  const config = vds.widget.getConfigs(widgetCode)
+  const controls = config.controls
+  for (var i = 0; i < controls.length; i++) {
+    const dataBindings = controls[i].dataBindings
+    const value = dataBindings[0].dataMembers[0].value
+    for (var i = 0; i < fieldList.length; i++) {
+      if (fieldList[i] == value) {
+        vds.widget.setProperty(value, 'Visible', visible)
       }
     }
   }
