@@ -112,4 +112,18 @@ const lookupByName = function (params: any) {
   return instance
 }
 
-export { lookup, lookupByName }
+const getAll = function () {
+  const scopeId = scopeManager.getCurrentScopeId()
+  const instance = []
+  const treeViewModelInstances = __treeViewModelInstanceCache[scopeId]
+  if (treeViewModelInstances) {
+    for (let i = 0; i < treeViewModelInstances.length; i++) {
+      const tree = treeViewModelInstances[i]
+      const metadata = tree.getMetadata()
+      instance.push(treeViewModelInstances[i])
+    }
+  }
+  return instance
+}
+
+export { lookup, lookupByName, getAll }

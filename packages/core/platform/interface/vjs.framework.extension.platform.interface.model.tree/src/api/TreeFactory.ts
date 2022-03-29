@@ -1,8 +1,6 @@
-import * as Tree from './Tree'
+import Tree from './Tree'
 
-export function initModule() {}
-
-const isTree = function (tree) {
+const isTree = function (tree: any) {
   return tree instanceof Tree
 }
 
