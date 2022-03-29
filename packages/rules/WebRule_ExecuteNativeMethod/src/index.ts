@@ -19,7 +19,7 @@ import * as ds from '@v-act/vjs.framework.extension.platform.services.integratio
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
 //规则主入口(必须有)
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
-import * as nativeMethodAccessorService from '@v-act/vjs.framework.extension.platform.services.operation.local.NativeMethodAccessor'
+import { MethodAccessor as nativeMethodAccessorService } from '@v-act/vjs.framework.extension.platform.services.operation.local.net'
 
 // var Record
 // var nativeMethodAccessorService

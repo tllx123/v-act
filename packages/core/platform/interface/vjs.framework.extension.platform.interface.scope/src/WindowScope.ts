@@ -40,7 +40,8 @@ class WindowScope extends Scope {
     componentCode: 'componentCode',
     windowCode: 'windowCode',
     type: 'type',
-    widgets: 'widgets'
+    widgets: 'widgets',
+    windowStatus: '__windowStatus'
   }
 
   initDatasource: boolean = false
@@ -567,6 +568,26 @@ class WindowScope extends Scope {
    * */
   isInitedDatasource() {
     return this.initDatasource
+  }
+
+  isInited() {
+    let status = this.get(this.Keys.windowStatus)
+    status = status == null || typeof status == 'undefined' ? 0 : status
+    return status == 2
+  }
+
+  markIniting() {
+    this.set(this.Keys.windowStatus, 1)
+  }
+
+  isIniting() {
+    let status = this.get(this.Keys.windowStatus)
+    status = status == null || typeof status == 'undefined' ? 0 : status
+    return status >= 1
+  }
+
+  markInited() {
+    this.set(this.Keys.windowStatus, 2)
   }
 }
 

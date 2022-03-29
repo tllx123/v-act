@@ -1,6 +1,9 @@
 import { FunctionEngine } from '@v-act/vjs.framework.extension.platform.engine.function'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
-import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
+import {
+  WindowParam,
+  ComponentParam
+} from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
@@ -15,22 +18,13 @@ export default class Context {
   /**
    * 获取构件变量
    * */
-  getComponontVar = (name: string) => WindowParam.getInput({ code: name })
+  getComponontVar = (name: string) => ComponentParam.getVariant({ code: name })
 
   /**
    * 获取全局变量
    * */
   getWindowVar = (name: string) => {
-    let val = WindowParam.getInput({ code: name })
-
-    // 临时方案,解决无法单独获取表达式中的“变量-值”对的问题
-    com.toone.itop.formula.FormulaTreeExtra.saveVariableValue(
-      this.context,
-      name,
-      val
-    )
-
-    WindowParam.getInput({ code: name })
+    return WindowParam.getInput({ code: name })
   }
 
   /**
