@@ -2,6 +2,8 @@ import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.exten
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { ObjectUtil } from '@v-act/vjs.framework.extension.util.object'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
 
 /**
  *	vmmapping格式
@@ -36,8 +38,8 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
  * } 
  */
 
-let keys: any,
-  each: any,
+let keys = ObjectUtil.keys,
+  each = CollectionUtil.each,
   token = 'WindowVMMapping_Token_Key',
   token_window_vm = 'WindowVMMapping_Token_Window_Vm'
 
@@ -105,11 +107,6 @@ let iterateFieldMappingItem = function (dsItem: any, callback: any) {
       callback(item)
     })
   }
-}
-
-export function initModule(sb: any) {
-  keys = sb.util.object.keys
-  each = sb.util.collections.each
 }
 
 const addVMMapping = function (

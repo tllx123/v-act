@@ -122,14 +122,13 @@ const JGTextBox = function (props: JGTextBoxProps) {
   if (!props.visible) {
     return null
   }
-
   const context = useContext()
-  const [value, setValue] = useState<FieldValue>('')
-
+  let val = ''
   if (props.tableName && props.columnName) {
-    setValue(getFieldValue(props.tableName, props.columnName, context))
-    setValue(isNullOrUnDef(value) ? '' : value)
+    const val1 = getFieldValue(props.tableName, props.columnName, context)
+    val = val1 == null || typeof val1 == 'undefined' ? '' : val
   }
+  const [value, setValue] = useState<FieldValue>(val)
 
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')

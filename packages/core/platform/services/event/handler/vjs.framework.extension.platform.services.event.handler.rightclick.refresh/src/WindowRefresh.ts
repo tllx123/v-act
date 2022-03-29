@@ -1,31 +1,38 @@
 import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { EventManager } from '@v-act/vjs.framework.extension.platform.services.view.event'
+import {
+  EventManager,
+  RightClickEventHandler as RightClickEventHander
+} from '@v-act/vjs.framework.extension.platform.services.view.event'
 import { WidgetAction as actionHandler } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 
-let sandbox
+let refresh_handler
+let handlerRefresh = new RightClickEventHander({
+  title: '刷新当前页面',
+  handler: refresh_handler,
+  accept: function (
+    _this: any,
+    _scopeId: any,
+    scopeId: any,
+    eventType: string
+  ) {
+    return eventType === 'windowRightClick'
+  }
+})
+//一进来就注册了鼠标右键刷新事件
+EventManager.addPlatformEventHandler(
+  EventManager.PlatformEvents.WindowRightClick,
+  handlerRefresh
+)
+// }
 
-export function initModule(sb) {
-  sandbox = sb
-  let RightClickEventHander = sb.getService(
-    'vjs.framework.extension.platform.services.view.event.RightClickEventHandler'
-  )
-  let handlerRefresh = new RightClickEventHander({
-    title: '刷新当前页面',
-    handler: refresh_handler,
-    accept: function (e, _this, _scopeId, scopeId, eventType) {
-      return eventType === 'windowRightClick'
-    }
-  })
-  //一进来就注册了鼠标右键刷新事件
-  EventManager.addPlatformEventHandler(
-    EventManager.PlatformEvents.WindowRightClick,
-    handlerRefresh
-  )
-}
-
-let refresh_handler = function (e, _this, _scopeId, scopeId) {
+refresh_handler = function (
+  _this: any,
+  _scopeId: string | null,
+  scopeId: string | null
+) {
   //抽离出来的刷新方法
   /*$(".RightMenuTitle>ul").html("<li>刷新当前页面</li>");
     $('#mask').show();

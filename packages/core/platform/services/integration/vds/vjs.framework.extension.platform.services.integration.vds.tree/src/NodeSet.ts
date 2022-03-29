@@ -7,10 +7,12 @@ import NodeSetIterator from './NodeSetIterator'
  * @catalog 数据源/树数据源定义
  */
 class NodeSet {
-  constructor(resultset) {
+  resultset: any
+
+  constructor(resultset: any) {
     this.resultset = resultset
   }
-  _to(node) {
+  _to(node: any) {
     return !node ? null : new Node(node)
   }
   /**
@@ -72,7 +74,7 @@ class NodeSet {
    * var resultSet = tree.getAllRecords();
    * var node = resultSet.index(1);
    */
-  index(i) {
+  index(i: any) {
     return this._to(this.resultset.index(i))
   }
 
@@ -85,7 +87,7 @@ class NodeSet {
    * var node = resultSet.first();
    */
   first() {
-    return this._to(this.resulset.first())
+    return this._to(this.resultset.first())
   }
 
   /**
@@ -97,7 +99,7 @@ class NodeSet {
    * var node = resultSet.last();
    */
   last() {
-    return this._to(this.resulset.last())
+    return this._to(this.resultset.last())
   }
 
   /**
@@ -110,9 +112,9 @@ class NodeSet {
    * 		var val = node.get("fieldCode1");
    * });
    */
-  iterate(fn) {
+  iterate(fn: any) {
     var func = (function (f, _t) {
-      return function (node, index) {
+      return function (node: any, index: any) {
         return f(_t._to(node), index)
       }
     })(fn, this)

@@ -10,11 +10,8 @@
  */
 
 import { ComponentParam as componentParam } from '@v-act/vjs.framework.extension.platform.data.storage.runtime.param'
-
-import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
-
 import { ComponentPackData as componentPackData } from '@v-act/vjs.framework.extension.platform.global'
-
+import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { ComponentParam as componentParamService } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
 /**
@@ -24,7 +21,7 @@ import { ComponentParam as componentParamService } from '@v-act/vjs.framework.ex
  * @example
  * vds.component.getVariant("var1");
  */
-export function getVariant(code) {
+export function getVariant(code: string) {
   return componentParam.getVariant({
     code: code
   })
@@ -37,7 +34,7 @@ export function getVariant(code) {
  * @example
  * vds.component.refreshVariant(["code1","code2"]);
  */
-export function refreshVariant(array) {
+export function refreshVariant(array: any) {
   componentParamService.refreshVariant({
     codes: array
   })
@@ -50,7 +47,7 @@ export function refreshVariant(array) {
  * @example
  * vds.component.setVariant("code1","123");
  */
-export function setVariant(code, val) {
+export function setVariant(code: string, val: string | boolean) {
   componentParamService.setVariant({
     code: code,
     value: val
@@ -64,7 +61,7 @@ export function setVariant(code, val) {
  * @example
  * vds.component.getMetadata("v3_example","BizWindowInstanceData");
  * */
-export function getMetadata(componentCode, domain) {
+export function getMetadata(componentCode: string, domain: string) {
   return new Promise(function (resolve, reject) {
     try {
       var defferend = componentParamService.getMetadata(componentCode, domain)
@@ -81,7 +78,7 @@ export function getMetadata(componentCode, domain) {
  * @returns {String}
  * var url = vds.component.getResourceUrl("file.jpg");
  * */
-export function getResourceUrl(resourceName) {
+export function getResourceUrl(resourceName: string) {
   var scope = scopeManager.getScope()
   if (scope && resourceName) {
     var componentCode = scope.getComponentCode()
@@ -110,7 +107,7 @@ export function getCode() {
  * @param {String} methodCode 方法编码
  * @returns {Object}
  * */
-export function getPack(componentCode, methodCode) {
+export function getPack(componentCode: any, methodCode: any) {
   return new Promise(function (resolve, reject) {
     try {
       var tmpMapping = componentPackData.getMapping({

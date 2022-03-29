@@ -12,15 +12,13 @@ import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.p
 import { WindowVMMappingManager as windowVmManager } from '@v-act/vjs.framework.extension.platform.services.vmmapping.manager'
 import { FileUtil as fileUtil } from '@v-act/vjs.framework.extension.util.file'
 
-export function initModule(sBox) {}
-
 /**
  * 二维数据转换成树形结构数据
  * @param {String} widgetCode 控件编号
  * @param {Array<Object>} datas 二维数据
  * @param {Boolean} isCover 是否已覆盖方式
  */
-let translate = function (widgetId, datas, isCover) {
+let translate = function (widgetId: any, datas: any[], isCover: any) {
   if (datas && datas.length > 0) {
     let properties = _getPropertyMap(widgetId)
     let value = widgetProperty.get(widgetId, 'RealizeWay')
@@ -41,7 +39,12 @@ let translate = function (widgetId, datas, isCover) {
 /**
  *父子节点实现方式
  */
-let translateByParentType = function (widgetId, properties, datas, isCover) {
+let translateByParentType = function (
+  widgetId: any,
+  properties: Record<string, any>,
+  datas: any[],
+  isCover: boolean
+) {
   let nodeMap = {}
   let parentField = properties.parentField
   let openProperty = properties.openProperty
@@ -52,7 +55,8 @@ let translateByParentType = function (widgetId, properties, datas, isCover) {
   let openIcon = properties.openIcon
   let closeIcon = properties.closeIcon
   let iconProperty = properties.iconProperty
-  let tmpLeafField, tmpParentField
+  let tmpLeafField: any = ''
+  let tmpParentField: any = ''
   //子节点数据
   let leafNodes = {}
   //必须是父节点的
@@ -176,8 +180,8 @@ let translateByParentType = function (widgetId, properties, datas, isCover) {
         }
     }
     */
-  let childArray = []
-  let parentArray = []
+  let childArray: string[] = []
+  let parentArray: string[] = []
   for (let i = 0, len = datas.length; i < len; i++) {
     let node = datas[i]
     let nodeId = node.id
@@ -207,15 +211,25 @@ let translateByParentType = function (widgetId, properties, datas, isCover) {
 /**
  *左右编码实现方式
  */
-let translateByLRCodeType = function (widgetId, properties, datas, isCover) {
+let translateByLRCodeType = function (
+  widgetId: any,
+  properties: Record<string, any>,
+  datas: any[],
+  isCover: boolean
+) {
   return translateByParentType(widgetId, properties, datas, isCover)
 }
 
 /**
  *业务编码实现方式
  */
-let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
-  let businessCodeRefField = getBusinessCodeRefField(widgetId)
+let translateByBizCodeType = function (
+  widgetId: any,
+  properties: Record<string, any>,
+  datas: any[],
+  isCover: boolean
+) {
+  let businessCodeRefField: any = getBusinessCodeRefField(widgetId)
   let bizCodeMap = {}
   let parentHashMap = {}
   let businessCodeList = []
@@ -234,6 +248,7 @@ let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
     data[properties.openProperty] = false
     //}
     if (properties.treeIcons) {
+      //@ts-ignore
       let dsName = metaModule.getDataSourceName(widgetId)
       _setTreeNodeIcon(
         data,
@@ -252,7 +267,7 @@ let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
     let parentCode = _getParentBusinessCode(businessCodeCfg, businessCode)
     parentHashMap[businessCode] = parentCode
   }
-  let needToResetParent = isCover === false ? {} : null
+  let needToResetParent: any = isCover === false ? {} : null
   for (let i = 0, len = businessCodeList.length; i < len; i++) {
     let businessCode = businessCodeList[i]
     let parentCode = parentHashMap[businessCode]
@@ -298,7 +313,7 @@ let translateByBizCodeType = function (widgetId, properties, datas, isCover) {
  * 获取编码字段
  * @param {Object} widgetId
  */
-let getBusinessCodeRefField = function (widgetId) {
+let getBusinessCodeRefField = function (widgetId: string) {
   let obj = windowVmManager.getFieldCodeByPropertyCode({
     widgetCode: widgetId,
     propertyCode: widgetId + '_CodeColumn'
@@ -306,9 +321,9 @@ let getBusinessCodeRefField = function (widgetId) {
   return obj
 }
 
-let _getPropertyMap = function (widgetId) {
+let _getPropertyMap = function (widgetId: string) {
   let widget = widgetContext.get(widgetId, 'widgetObj')
-  let properties = {}
+  let properties: Record<string, any> = {}
   properties.folderProperty = widget.getfolderProperty()
   properties.leafField = widget.getLeafField()
   properties.openProperty = widget.getOpenProperty()
@@ -326,13 +341,13 @@ let _getPropertyMap = function (widgetId) {
 }
 
 let _setTreeNodeIcon = function (
-  data,
-  treeIcons,
-  openIcon,
-  closeIcon,
-  iconProperty,
-  dsName,
-  leafField
+  data: Record<string, any>,
+  treeIcons: Record<string, any>,
+  openIcon: string | number,
+  closeIcon: string | number,
+  iconProperty: string | number,
+  dsName: string | number,
+  leafField: string | number
 ) {
   // 新版属性，支持表达式条件
   if (undefined != treeIcons.jsonVersion && '1.0' == treeIcons.jsonVersion) {
@@ -449,7 +464,7 @@ let _setTreeNodeIcon = function (
 }
 
 // 通过实体字段值获取图片
-let _getImageByFileId = function (fileId) {
+let _getImageByFileId = function (fileId: string) {
   // 文件ID模式
   return (
     '/module-operation!executeOperation?operation=FileDown&token=%7B%22data%22%3A%7B%22dataId%22%3A%22' +
@@ -461,7 +476,7 @@ let _getImageByFileId = function (fileId) {
 }
 
 // 判断对象为有效字符串（空白视为无效）
-let _checkStrValid = function (str) {
+let _checkStrValid = function (str: string) {
   let _str = str + ''
 
   if (
@@ -474,7 +489,7 @@ let _checkStrValid = function (str) {
   else return false
 }
 
-let getImageByName = function (imageName) {
+let getImageByName = function (imageName: string) {
   let scope = scopeManager.getScope()
   let componentCode = scope.getComponentCode()
   return fileUtil.getImageByName(componentCode + '_' + imageName)
@@ -483,7 +498,10 @@ let getImageByName = function (imageName) {
 /**
  *获取父节点业务编码
  */
-let _getParentBusinessCode = function (businessCodeCfg, businessCode) {
+let _getParentBusinessCode = function (
+  businessCodeCfg: any[],
+  businessCode: string | null
+) {
   if (businessCode === null || typeof businessCode == 'undefined') {
     return null
   }
@@ -510,7 +528,7 @@ let _getParentBusinessCode = function (businessCodeCfg, businessCode) {
 /**
  *获取层级码配置信息
  */
-let _getBusinessCodeFormat = function (widgetId) {
+let _getBusinessCodeFormat = function (widgetId: string) {
   let value = widgetProperty.get(widgetId, 'CodeFormat')
   if (!value) {
     return null
@@ -529,8 +547,8 @@ let _getBusinessCodeFormat = function (widgetId) {
   return value.split(',')
 }
 
-let _getPropertyIgnoreCase = function (obj, property) {
-  for (p in obj) {
+let _getPropertyIgnoreCase = function (obj: any, property: string) {
+  for (const p in obj) {
     if (p.toUpperCase() == property.toUpperCase()) return p
   }
   return null

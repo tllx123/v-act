@@ -10,15 +10,17 @@
  */
 
 import { TreeManager as treeManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.tree'
-
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import Tree from './Tree'
 import TreeStruct from './TreeStruct'
+
+const vds = { exception }
 
 /**
  * 二开规范的树型结构适配成控件所需的结构
  * @ignore
  * */
-export function _toTreeStruct(treeCode, treeStruct) {
+export function _toTreeStruct(treeCode: any, treeStruct: Record<string, any>) {
   if (treeStruct instanceof TreeStruct) {
     //新规范
     return treeStruct['treeStruct']
@@ -53,7 +55,10 @@ export function _toTreeStruct(treeCode, treeStruct) {
  * @param {TreeStruct} treeStruct 树结构对象
  * @returns {Tree} 树数据源实例
  * */
-export function lookup(treeCode, treeStruct) {
+export function lookup(
+  treeCode: string,
+  treeStruct: Record<string, any> | null
+) {
   if (!treeCode || !treeStruct) {
     return null
   }
@@ -77,12 +82,12 @@ export function lookup(treeCode, treeStruct) {
  * @param {String} filterCode 过滤字段编码(可选)
  * */
 export function createTreeStruct(
-  treeCode,
-  pId,
-  orderNo,
-  innerCode,
-  isLeafCode,
-  filterCode
+  treeCode: any,
+  pId: any,
+  orderNo: any,
+  innerCode: any,
+  isLeafCode: any,
+  filterCode: any
 ) {
   if (!treeCode || !pId || !orderNo || !innerCode || !isLeafCode) {
     throw vds.exception.newSystemException(
@@ -106,7 +111,7 @@ export function createTreeStruct(
  * var trees = vds.tree.getAll("treeCode1");
  * console.log(trees.length);
  * */
-export function getAll(treeCode) {
+export function getAll(treeCode: any) {
   var trees = treeCode
     ? treeManager.lookupByName({
         datasourceName: treeCode

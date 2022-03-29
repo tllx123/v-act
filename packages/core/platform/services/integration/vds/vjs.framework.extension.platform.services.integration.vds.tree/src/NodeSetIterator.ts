@@ -7,7 +7,9 @@ import Node from './Node'
  * @catalog 数据源/树数据源定义
  */
 class NodeSetIterator {
-  constructor(nodeSetIterator) {
+  nodeSetIterator: any
+
+  constructor(nodeSetIterator: any) {
     this.nodeSetIterator = nodeSetIterator
   }
 

@@ -42,14 +42,14 @@ const _initWindowInfoFromJson = function (params) {
   eventHandler(params)
 }
 
-const _initVMInfo = function (params) {
-  const vmInfo = {}
+const _initVMInfo = function (params: Record<string, any>) {
+  const vmInfo: Record<string, any> = {}
   const entitys = params.winDatas.entitys
   if (entitys && entitys.entity) {
     let entityList = entitys.entity
     const dataSources = {}
     entityList = Array.isArray(entityList) ? entityList : [entityList]
-    entityList.forEach((entity) => {
+    entityList.forEach((entity: any) => {
       const code = entity.$.code
       const initMetaFields = []
       if (entity.entityFields && entity.entityFields.entityField) {
@@ -57,7 +57,7 @@ const _initVMInfo = function (params) {
         entityFieldList = Array.isArray(entityFieldList)
           ? entityFieldList
           : [entityFieldList]
-        entityFieldList.forEach((entityField) => {
+        entityFieldList.forEach((entityField: any) => {
           let length = entityField.$.length
           length = parseInt(length)
           length = isNaN(length) ? 255 : length
@@ -89,7 +89,56 @@ const _initVMInfo = function (params) {
     })
     vmInfo.dataSources = dataSources
   }
+  vmInfo.widgets = _getWidgetDSMapping(params)
   WindowVMMapping.addVMMapping(params.componentCode, params.windowCode, vmInfo)
+}
+
+//控件与实体的映射关系
+const _getWidgetDSMapping = function (params: Record<string, any>) {
+  let widgetDSMapping: Record<string, any> = {}
+  const { control } = params?.winDatas?.controls
+
+  function getWidgetDSMappingFromControl(control: any) {
+    control &&
+      Array.isArray(control) &&
+      control.forEach((item: any) => {
+        const widgetId = item?.$?.code,
+          dataSource = item?.dataBindings?.dataBinding?.dataSource || null,
+          mappingItem: Array<Record<string, any>> = [],
+          dataMember = item?.dataBindings?.dataBinding?.dataMembers.dataMember //绑定的实体
+        let dataMembersArray = []
+
+        dataMember &&
+          (Array.isArray(dataMember)
+            ? (dataMembersArray = dataMember)
+            : (dataMembersArray = [dataMember]))
+
+        dataMembersArray.forEach((dataMemberItem: any) => {
+          mappingItem.push({
+            field: dataMemberItem?.$?.code,
+            refField: dataMemberItem?._
+          })
+        })
+
+        //构造映射关系
+        widgetDSMapping[widgetId] = {
+          widgetId,
+          mappingItems: [
+            {
+              mappingItem,
+              dataSource,
+              dataSourceType: null
+            }
+          ]
+        }
+        //构造子控件与实体的映射关系
+        getWidgetDSMappingFromControl(item?.controls?.control)
+      })
+  }
+
+  //开始递归构造映射关系
+  getWidgetDSMappingFromControl(control)
+  return widgetDSMapping
 }
 
 /**
