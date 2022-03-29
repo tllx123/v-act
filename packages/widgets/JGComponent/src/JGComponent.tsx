@@ -152,9 +152,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 
         // 设置props为空，解决组件不刷新问题
         setPropsChildren(null)
-        setTimeout(() => {
-          setPropsChildren(newPropsChildren)
-        })
+        setTimeout(() => setPropsChildren(newPropsChildren))
       }
     }
 
