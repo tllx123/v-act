@@ -2,12 +2,17 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 
-function DefaultValueGenerator(datasourceName, datasourceFieldCode) {
+function DefaultValueGenerator(
+  datasourceName: string,
+  datasourceFieldCode: string
+) {
+  //@ts-ignore
   this.datasourceName = datasourceName
+  //@ts-ignore
   this.datasourceFieldCode = datasourceFieldCode
 }
 
-DefaultValueGenerator.prototype.initModule = function (sandbox) {}
+DefaultValueGenerator.prototype.initModule = function (sandbox: any) {}
 
 DefaultValueGenerator.prototype.generate = function () {
   let defaultValue = datasourceUtil.getDatasourceField(
