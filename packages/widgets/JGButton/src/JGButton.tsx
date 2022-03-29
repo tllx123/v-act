@@ -25,6 +25,7 @@ const JGButtonRoot = styled(Button, {
   slot: 'Root'
 })(({ theme }) => ({
   backgroundColor: '#356abb',
+  textTransform: 'none',
   fontWeight: 400,
   letterSpacing: 0,
   minWidth: 0,
@@ -35,10 +36,6 @@ const JGButton = forwardRef<HTMLButtonElement, JGButtonProps>(
   (inProps, ref) => {
     const context = useContext()
     const sx = inProps.sx || {}
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', inProps)
-    useEffect(() => {
-      console.log('inProps:', inProps)
-    }, [])
     const props: ButtonProps = {
       variant: 'contained',
       disabled: inProps.disabled,

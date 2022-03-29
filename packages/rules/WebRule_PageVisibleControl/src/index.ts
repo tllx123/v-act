@@ -35,10 +35,10 @@ const main = function (ruleContext: RuleContext) {
               'ProxyWidgetId'
             )*/
             if (hide.toString().toLowerCase() == 'true') {
-              vds.widget.setProperty(widgetId, 'Visible', false)
+              vds.widget.setProperty(widgetId, 'Visible', 'false')
               //vds.widget.execute(proxyWidgetId, 'hideItem', [widgetId])
             } else if (hide.toString().toLowerCase() == 'false') {
-              vds.widget.setProperty(widgetId, 'Visible', true)
+              vds.widget.setProperty(widgetId, 'Visible', 'true')
               vds.widget.execute(widgetId, 'Selected', true)
               //vds.widget.execute(proxyWidgetId, 'showItem', [widgetId])
               //lastShowTabId = widgetId

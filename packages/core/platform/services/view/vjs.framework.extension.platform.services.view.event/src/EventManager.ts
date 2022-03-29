@@ -276,7 +276,9 @@ let fireEvent = function (
     if (
       //@ts-ignore
       window._v3Platform &&
+      //@ts-ignore
       typeof window._v3Platform.SkipFormLoad == 'function' &&
+      //@ts-ignore
       window._v3Platform.SkipFormLoad() &&
       eventName != 'OnResize'
     ) {
@@ -403,6 +405,7 @@ let addPlatformEventHandler = function (eventName: string, handler: any) {
   if (
     //@ts-ignore
     PlatformEvents.WindowRightClick == eventName &&
+    //@ts-ignore
     !(handler instanceof RightClickEventHandler)
   ) {
     throw exceptionFactory.create({

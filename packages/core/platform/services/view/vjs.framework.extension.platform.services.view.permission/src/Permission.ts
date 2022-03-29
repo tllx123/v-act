@@ -1,18 +1,18 @@
+import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
-import { WindowInfo as windowInfo } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.info'
 
 let sb
 
 // 权限池
-let permissionPool = {}
+let permissionPool: any = {}
 
-export function initModule(sandbox) {
-  sb = sandbox
-}
+// export function initModule(sandbox) {
+//   sb = sandbox
+// }
 
 let getScopeContext = function () {
-  let scopeId = scopeManager.getCurrentScopeId()
+  let scopeId = scopeManager.getCurrentScopeId() || 'null'
   let scopeContext = permissionPool[scopeId]
   if (!scopeContext) {
     scopeContext = permissionPool[scopeId] = {}
@@ -29,19 +29,19 @@ let getPermissionContext = function () {
   return permission
 }
 
-let addPermission = function (widgetId, hasPermission) {
+let addPermission = function (widgetId: string, hasPermission: any) {
   let permissionList = getPermissionContext()
-  permissionList[widgetId] = permission
+  permissionList[widgetId] = hasPermission
 }
 
-let setPermission = function (permission) {
+let setPermission = function (permission: any) {
   let permissionList = getPermissionContext()
   for (let key in permission) {
     permissionList[key] = permission[key]
   }
 }
 
-let hasPermission = function (widgetId, propertyName) {
+let hasPermission = function (widgetId: string, propertyName: string) {
   let permissionList = getPermissionContext()
   if (permissionList.hasOwnProperty(widgetId)) {
     let info = permissionList[widgetId]
@@ -92,10 +92,10 @@ let hasPermission = function (widgetId, propertyName) {
 }
 
 let initViewLibPermssion = function (
-  mappings,
-  allRelationStr,
-  componentCode,
-  windowCode
+  mappings: any,
+  allRelationStr: any,
+  componentCode: any,
+  windowCode: any
 ) {
   if (null != allRelationStr && '' != allRelationStr) {
     let allRelations = JSON.parse(allRelationStr)
@@ -188,4 +188,4 @@ let initViewLibPermssion = function (
   }
 }
 
-export { initViewLibPermssion, addPermission, setPermission, hasPermission }
+export { addPermission, hasPermission, initViewLibPermssion, setPermission }

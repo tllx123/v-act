@@ -1381,7 +1381,9 @@
       "@v-act/vjs.framework.extension.platform.init": [
         "packages/core/platform/vjs.framework.extension.platform.init/src"
       ],
-      "@v-act/vjs.framework.extension.vendor.mocha": ["packages/core/vendor/vjs.framework.extension.vendor.mocha/src"]
+      "@v-act/vjs.framework.extension.vendor.mocha": [
+        "packages/core/vendor/vjs.framework.extension.vendor.mocha/src"
+      ]
     }
   }
 }
