@@ -36,7 +36,6 @@ const main = function (
   var widgetCode = ''
   var widget
 
-  //@ts-ignore
   widgetCodes = vds.widget.getWidgetCodes(entityName)
 
   if (widgetCodes.length > 0) {
