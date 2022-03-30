@@ -21,11 +21,16 @@ class VPlatformAjaxChannel extends AbstractChannel {
   constructor() {
     super()
     this.contextPath = Environment.getContextPath()
-    if (this.contextPath) {
-      this.url = this.contextPath + '/module-operation!executeOperation'
-    } else {
-      this.url = 'module-operation!executeOperation'
-    }
+    // if (this.contextPath) {
+    //   this.url = "/api/vplatform/"+this.contextPath + '/module-operation!executeOperation'
+    // } else {
+    //   // this.url = '/api/vplatform/module-operation!executeOperation'
+    //   this.url = '/api/vplatform/module-operation!executeOperation'
+    // }
+
+    // 代理
+    this.url = '/api/vplatform'
+
     this.count = 0
     this.requestParams = null
     this.contractParams = null
