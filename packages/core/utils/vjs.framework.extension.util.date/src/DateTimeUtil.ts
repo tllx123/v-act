@@ -1,5 +1,6 @@
 import { MathUtil as mathUtil } from '@v-act/vjs.framework.extension.util.math'
 import { StringUtil as stringUtil } from '@v-act/vjs.framework.extension.util.string'
+import { dateFormatUtil } from '@v-act/vjs.framework.extension.util.dateformat'
 
 let TIME_UNIT_YEAR = 'y' // 时间单位： 年
 let TIME_UNIT_MONTH = 'M' // 时间单位： 月

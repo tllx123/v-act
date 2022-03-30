@@ -47,11 +47,15 @@ class MultiVPlatformAjaxChannel extends AbstractChannel {
   constructor() {
     super()
     this.contextPath = Environment.getContextPath()
-    if (this.contextPath) {
-      this.url = this.contextPath + '/module-operation!executeMultiOperation'
-    } else {
-      this.url = 'module-operation!executeMultiOperation'
-    }
+    // if (this.contextPath) {
+    //   this.url = "/api/multivplatform/"+this.contextPath + '/module-operation!executeMultiOperation'
+    // } else {
+    //   this.url = '/api/multivplatform/'
+    // }
+
+    // 代理
+    this.url = '/api/multivplatform'
+
     this.count = 0
     this.requestParams = null
     this.contractParams = null
