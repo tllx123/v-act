@@ -1,3 +1,5 @@
+import { newConfigException } from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+
 /**
  *
  *
@@ -9,7 +11,7 @@ const main = function (param1: string) {
   //var param1 = args[0];//获取函数第一个参数
   var value = parseFloat(param1)
   if (value == null || value.toString() == 'NaN') {
-    throw vds.exception.newConfigException('参数传入的值为空或者不是数字类型！')
+    throw newConfigException('参数传入的值为空或者不是数字类型！')
   }
   if (value >= 0) return value
   else return -value

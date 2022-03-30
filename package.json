@@ -22,6 +22,7 @@
     "dev: jgimageplay": "node scripts/index.js build -w -s @v-act/jgimageplay --cp ./apps/runtime",
     "dev: jgpassword": "node scripts/index.js build -w -s @v-act/jgpassword --cp ./apps/runtime",
     "dev: jgrichtextviewer": "node scripts/index.js build -w -s @v-act/jgrichtextviewer --cp ./apps/runtime",
+    "dev: jgtextbox": "node scripts/index.js build -w -s @v-act/jgtextbox --cp ./apps/runtime",
     "dev: schemaTypes": "node scripts/index.js build -w -s @v-act/schema-types --cp ./apps/runtime",
     "dev: watcher": "node scripts/index.js build -w -s @v-act/v3dev-component-watcher --cp ./apps/runtime",
     "dev: widgetContext": "node scripts/index.js build -w -s @v-act/widget-context --cp ./apps/runtime",

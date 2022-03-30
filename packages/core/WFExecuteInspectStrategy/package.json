@@ -1,0 +1,35 @@
+{
+  "name": "WFExecuteInspectStrategy",
+  "version": "1.0.0-alpha.1",
+  "description": "",
+  "homepage": "https://github.com/opensource-vplatform/v-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/opensource-vplatform/v-act.git",
+    "directory": "packages/core/WFExecuteInspectStrategy"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@v-act/WFCurrentActivityName": "1.0.0-alpha.1",
+    "@v-act/WFCurrentTaskCreateMod": "1.0.0-alpha.1",
+    "@v-act/WFCurrentTaskOwnerID": "1.0.0-alpha.1",
+    "@v-act/WFCurrentTaskOwnerName": "1.0.0-alpha.1",
+    "@v-act/WFFromActivityName": "1.0.0-alpha.1",
+    "@v-act/WFFromTaskOwnerID": "1.0.0-alpha.1",
+    "@v-act/WFFromTaskOwnerName": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.model.datasource": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.interface.scope": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.domain.operation": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.engine": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.action": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.platform.services.view.widget.common.dialog": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.json": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.log": "1.0.0-alpha.1",
+    "@v-act/vjs.framework.extension.util.string": "1.0.0-alpha.1"
+  }
+}
