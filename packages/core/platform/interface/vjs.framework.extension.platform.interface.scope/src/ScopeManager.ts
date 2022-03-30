@@ -435,7 +435,7 @@ const createScopeHandler = function (params: {
         if (callObject) {
           result = handle.apply(callObject, args)
         } else {
-          handle(...args)
+          result = handle(...args)
         }
       } finally {
         closeScope()

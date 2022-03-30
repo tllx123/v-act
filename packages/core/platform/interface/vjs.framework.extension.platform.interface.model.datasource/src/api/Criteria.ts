@@ -7,69 +7,64 @@
  * vjs服务名称：vjs.framework.extension.platform.interface.model.datasource.Criteria<br/>
  *  @author xiedh
  */
-let Criteria: any = function () {
-  // @ts-ignore
-  this.conditions = []
-}
+class Criteria {
+  static operators = {
+    Eq: 'Eq',
+    Sw: 'Sw'
+  }
+  conditions: Operator[] = []
 
-Criteria.operators = {
-  Eq: 'Eq',
-  Sw: 'Sw'
-}
-
-Criteria.prototype = {
   /**
    *  添加等于条件
    * @param {String} fieldCode 字段编号
    * @param {Object} val 值
    * @return {@link Criteria}
    */
-  eq: function (fieldCode: string, val: any) {
+  eq(fieldCode: string, val: any) {
     // @ts-ignore
     let operator = new Operator(fieldCode, Criteria.operators.Eq, val)
     this.conditions.push(operator)
     return this
-  },
+  }
   /**
    *  添加startWith条件
    * @param {String} fieldCode 字段编号
    * @param {Object} val 值
    * @return {@link Criteria}
    */
-  sw: function (fieldCode: string, val: any) {
+  sw(fieldCode: string, val: any) {
     // @ts-ignore
     let operator = new Operator(fieldCode, Criteria.operators.Sw, val)
     this.conditions.push(operator)
     return this
-  },
+  }
   /**
    *  获取设置的查询条件
    * @return Array
    */
-  getConditions: function () {
+  getConditions() {
     return this.conditions
   }
 }
 
-let Operator = function (fieldCode: string, operator: any, val: any) {
-  // @ts-ignore
-  this.fieldCode = fieldCode
-  // @ts-ignore
-  this.operator = operator
-  // @ts-ignore
-  this.value = val
-}
-
-Operator.prototype = {
-  getFieldCode: function () {
+class Operator {
+  fieldCode: string
+  operator: string
+  value: string
+  constructor(fieldCode: string, operator: string, val: any) {
+    this.fieldCode = fieldCode
+    this.operator = operator
+    this.value = val
+  }
+  getFieldCode() {
     return this.fieldCode
-  },
+  }
 
-  getOperator: function () {
+  getOperator() {
     return this.operator
-  },
+  }
 
-  getValue: function () {
+  getValue() {
     return this.value
   }
 }

@@ -1,64 +1,48 @@
 import { Datasource } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
 
-let Snapshot = function (datasource: any) {
-  // @ts-ignore
-  this.datasource = datasource
-  // @ts-ignore
-  this.currentId = null
-  let record = datasource.getCurrentRecord()
-  if (record) {
-    // @ts-ignore
-    this.currentId = record.getSysId()
-  }
-}
-
-let _dispatcher = function (funcName: string) {
-  return function () {
-    // @ts-ignore
-    let ds = this._getDatasource()
-    return ds[funcName].apply(ds, arguments)
-  }
-}
-
-Snapshot.prototype = {
-  initModule: function (sb: any) {
-    // @ts-ignore
-    if (Datasource.prototype.initModule) {
+class Snapshot {
+  datasource: Datasource
+  currentId: string | null = null
+  constructor(datasource: Datasource) {
+    //super(datasource.metadata, datasource.db)
+    this.datasource = datasource
+    let record = datasource.getCurrentRecord()
+    if (record) {
       // @ts-ignore
-      Datasource.prototype.initModule.call(this, sb)
+      this.currentId = record.getSysId()
     }
-    // @ts-ignore
-    var proto = Datasource.prototype
-    var snapshotPro = Snapshot.prototype
-    for (var attr in proto) {
-      var val = proto[attr]
-      if (!snapshotPro.hasOwnProperty(attr)) {
-        if (typeof val == 'function') {
-          val = _dispatcher(attr)
+    if (datasource) {
+      for (const key in datasource) {
+        const element = datasource[key]
+        if (typeof element == 'function') {
+          this[key] = (...args: any[]) => {
+            const ds = this._getDatasource()
+            if (ds) {
+              element.apply(ds, args)
+            }
+          }
         }
-        snapshotPro[attr] = val
       }
     }
-  },
+  }
 
-  _getDatasource: function () {
+  _getDatasource() {
     return this.datasource
-  },
-
+  }
   /**
    * 清除当前行
    */
-  clearCurrentRecord: function () {
+  clearCurrentRecord() {
     this.currentId = null
-  },
+  }
 
   /**
    * 获取数据源中当前行记录
    * @return {@link Record}
    */
-  getCurrentRecord: function () {
+  getCurrentRecord() {
     return this.getRecordById(this.currentId)
-  },
+  }
 
   /**
    * 是否为已当前行记录
@@ -70,14 +54,14 @@ Snapshot.prototype = {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isCurrentRecord: function (params: any) {
+  isCurrentRecord(params: any) {
     let record = params.record
     if (record) {
       let id = this.currentId
       return id == record.get('id')
     }
     return false
-  },
+  }
 
   /**
    *设置当前行
@@ -86,20 +70,20 @@ Snapshot.prototype = {
    * 		record : {@link Record} 记录
    * }
    */
-  setCurrentRecord: function (params: any) {
+  setCurrentRecord(params: any) {
     let record = params.record
     this.currentId = record.getSysId()
-  },
+  }
 
-  setCurrentId: function (id: string) {
+  setCurrentId(id: string) {
     this.currentId = id
-  },
+  }
 
-  isCurrentById: function (id: string) {
+  isCurrentById(id: string) {
     return id == this.currentId
-  },
+  }
 
-  getCurrentId: function () {
+  getCurrentId() {
     return this.currentId
   }
 }

@@ -213,7 +213,7 @@ export default class Record {
     return this.metadata
   }
 
-  toMap(genAll: boolean) {
+  toMap(genAll?: boolean) {
     let map = {}
     let metadata = this.getMetadata()
     for (let key in this.__recordData__) {

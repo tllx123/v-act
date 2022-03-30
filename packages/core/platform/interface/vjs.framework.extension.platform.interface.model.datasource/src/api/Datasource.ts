@@ -1,8 +1,11 @@
-import { snapshotManager } from '@v-act/vjs.framework.extension.platform.data.manager.runtime.snapshot'
+import { Metadata } from '@v-act/vjs.framework.extension.platform.interface.model.metadata'
 import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
+import Record from './Record'
+import Criteria from './Criteria'
 
 let primaryKey = 'id',
-  each: any
+  each = CollectionUtil.each
 
 /**
  * @namespace Datasource
@@ -14,66 +17,77 @@ let primaryKey = 'id',
  * vjs服务名称：vjs.framework.extension.platform.interface.model.datasource.Datasource<br/>
  */
 
-export default class Datasource {
-  constructor(
-    public metadata: any,
-    public db: any,
-    public instanceId?: string,
-    public dataAccessObject?: object,
-    public bindWidgets?: any,
+let _snapshotManager: any
+class Datasource {
+  /**
+   * 数据位置枚举
+   * @enum {String}
+   */
+  static Position = {
+    /**前*/
+    BEFORE: 'BEFORE',
+    /**后*/
+    AFTER: 'AFTER',
+    /**最前*/
+    TOP: 'TOP',
+    /**最后*/
+    BOTTOM: 'BOTTOM'
+  }
+  /**
+   * 事件名称枚举
+   * @enum {String}
+   */
+
+  static Events = {
+    /**加载事件*/
+    LOAD: 'LOAD',
+    /**新增事件*/
+    INSERT: 'INSERT',
+    /**更新事件*/
+    UPDATE: 'UPDATE',
+    /**删除事件*/
+    DELETE: 'DELETE',
+    /**当前行切换事件*/
+    CURRENT: 'CURRENT',
+    /**记录选择事件*/
+    SELECT: 'SELECT',
+    /**获取数据事件*/
+    FETCH: 'FETCH',
+    /**获取数据后事件*/
+    FETCHED: 'FETCHED',
     /**
-     * 事件名称枚举
-     * @enum {String}
-     */
-    public Events: object = {
-      /**加载事件*/
-      LOAD: 'LOAD',
-      /**新增事件*/
-      INSERT: 'INSERT',
-      /**更新事件*/
-      UPDATE: 'UPDATE',
-      /**删除事件*/
-      DELETE: 'DELETE',
-      /**当前行切换事件*/
-      CURRENT: 'CURRENT',
-      /**记录选择事件*/
-      SELECT: 'SELECT',
-      /**获取数据事件*/
-      FETCH: 'FETCH',
-      /**获取数据后事件*/
-      FETCHED: 'FETCHED',
-      /** 记录处理事件*/
-      RECORDPROCESS: 'RECORDPROCESS'
-    },
-    /**
-     * 数据位置枚举
-     * @enum {String}
-     */
-    public Position: object = {
-      /**前*/
-      BEFORE: 'BEFORE',
-      /**后*/
-      AFTER: 'AFTER',
-      /**最前*/
-      TOP: 'TOP',
-      /**最后*/
-      BOTTOM: 'BOTTOM'
-    }
-  ) {
-    return this
+     *@private
+     * 记录处理事件
+     * */
+    RECORDPROCESS: 'RECORDPROCESS'
+  }
+  Events = Datasource.Events
+  Position = Datasource.Position
+  metadata: Metadata
+  db: any
+  instanceId = uuid.generate()
+  _eventPool = {}
+  dataAccessObject = null
+  bindWidgets: any
+  constructor(metadata: Metadata, db: any) {
+    this.metadata = metadata
+    this.db = db
+    this.db._putDatasource(this)
+    this.db._putSnapshotHandler(this._genSnapshotHandler())
   }
 
-  initModule(sb: any) {
-    each = sb.util.collections.each
+  static _putSnapshotManager = function (manager: any) {
+    //TODO
+    _snapshotManager = manager
   }
 
   _genSnapshotHandler() {
-    let _this: any = this
-    return function () {
-      if (snapshotManager) {
-        let snapshot = snapshotManager.getCurrentSnapshot()
+    const _this = this
+    return () => {
+      if (_snapshotManager) {
+        const snapshot = _snapshotManager.getCurrentSnapshot()
         if (snapshot) {
-          return snapshot.getDatasourceSnapshot(_this.instanceId)
+          return snapshot.getDatasourceSnapshot(this.instanceId)
         }
       }
       return null
@@ -101,14 +115,14 @@ export default class Datasource {
    *
    * @param {Metadata} meta 元数据信息，可通过MetadataFactory.unSerialize(meta)创建
    */
-  setMetadata(meta: any) {
+  setMetadata(meta: Metadata) {
     this.metadata = meta
   }
 
-  _processLoadDatas(datas: any) {
+  _processLoadDatas(datas: Array<{ [fieldCode: string]: any }>) {
     if (datas) {
-      let rs: any = []
-      each(datas, function (data: any) {
+      const rs: Array<{ [fieldCode: string]: any }> = []
+      each(datas, function (data) {
         if (!data.hasOwnProperty(primaryKey)) data[primaryKey] = uuid.generate()
         rs.push(data)
       })
@@ -125,10 +139,16 @@ export default class Datasource {
    * 		dataAmount : Number 记录总数
    * 		isAppend : Boolean 以添加的方式加载数据
    * }
-   * @example datasource.load({"datas":[{"field1":"a","field2":"b"},{"field1":"a1","field2":"b2"}],"isAppend":true})
+   * @example datasource.load({"datas":[{"field1":"a","field2":"b"}{"field1":"a1","field2":"b2"}],"isAppend":true})
    * @return {@link ResultSet}
    */
-  load(params: any) {
+  load(params: {
+    datas: Array<{
+      [fieldCode: string]: any
+      dataAmount?: number
+      isAppend?: boolean
+    }>
+  }) {
     this._processLoadDatas(params.datas)
     return this.db.load(params)
   }
@@ -142,15 +162,19 @@ export default class Datasource {
    * 		resetCurrent: Boolean 重新设置当前行,默认值为true
    * }
    * @example
-   *  var datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
-   *  var datasource = datasourceFactory.create(metadata);
+   *  const datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
+   *  const datasource = datasourceFactory.create(metadata);
    *  datasource.insertRecords({
    * 		"records":[...]
    * 		"position" : datasource.Position.BOTTOM
    * });
    * @return {@link ResultSet}
    */
-  insertRecords(params: any) {
+  insertRecords(params: {
+    records: Array<Record>
+    position?: string
+    resetCurrent?: boolean
+  }) {
     return this.db.insertRecords(params)
   }
 
@@ -162,7 +186,7 @@ export default class Datasource {
    * }
    * @return {@link ResultSet}
    */
-  updateRecords(params: any) {
+  updateRecords(params: { records: Array<Record> }) {
     return this.db.updateRecords(params)
   }
 
@@ -174,7 +198,7 @@ export default class Datasource {
    * }
    * @return {@link ResultSet}
    */
-  removeRecordByIds(params: any) {
+  removeRecordByIds(params: { ids: string[] }) {
     return this.db.removeRecordByIds(params)
   }
 
@@ -284,7 +308,7 @@ export default class Datasource {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isSelectedRecord(params: any) {
+  isSelectedRecord(params: { record: Record }) {
     return this.db.isSelectedRecord(params)
   }
 
@@ -298,7 +322,7 @@ export default class Datasource {
    * @see
    * Record 请参考vjs.framework.extension.platform.interface.model.datasource模块中Record定义
    */
-  isCurrentRecord(params: any) {
+  isCurrentRecord(params: { record: Record }) {
     return this.db.isCurrentRecord(params)
   }
   /**
@@ -308,7 +332,7 @@ export default class Datasource {
    * 	 "record" :　{@link Record} 记录
    * }
    */
-  isDeletedRecord(params: any) {
+  isDeletedRecord(params: { record: Record }) {
     return this.db.isDeletedRecord(params)
   }
 
@@ -327,7 +351,7 @@ export default class Datasource {
    * 		accessor : DataAccessor
    * }
    */
-  setDataAccessor(params: any) {
+  setDataAccessor(params: { accessor: any }) {
     this.dataAccessObject = params.accessor
   }
 
@@ -339,7 +363,7 @@ export default class Datasource {
    *      records : Array<{@link Record}> 记录集合
    * }
    */
-  updateSelectedRecords(params: any) {
+  updateSelectedRecords(params: { ids?: string[]; records?: Record[] }) {
     this.db.updateSelectedRecords(params)
   }
 
@@ -354,7 +378,7 @@ export default class Datasource {
    * }
    * @return {@link ResultSet}
    */
-  selectRecords(params: any) {
+  selectRecords(params: { records: Record[]; isSelect: boolean }) {
     return this.db.selectRecords(params)
   }
 
@@ -365,7 +389,7 @@ export default class Datasource {
    * 		record : {@link Record} 记录
    * }
    */
-  setCurrentRecord(params: any) {
+  setCurrentRecord(params: { record: Record }) {
     this.db.setCurrentRecord(params)
   }
 
@@ -378,14 +402,18 @@ export default class Datasource {
    * 		"handler" : Function 回调
    * }
    * @example
-   *  var datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
-   *  var datasource = datasourceFactory.create(metadata);
+   *  const datasourceFactory = sandbox.getService("vjs.framework.extension.platform.services.model.datasource.datasourceFactory");
+   *  const datasource = datasourceFactory.create(metadata);
    *  datasource.on({
    * 		"eventName":datasource.Events.Load
    * 		"handler" : function(){alert("loaded@");}
    * });
    */
-  on(params: any) {
+  on(params: {
+    eventName: string
+    fieldCode?: string
+    handler: (...args: any[]) => void
+  }) {
     this.db.on(params)
   }
 
@@ -422,7 +450,7 @@ export default class Datasource {
    * 		"defaultSel" : Boolean 是否默认选中
    * }
    */
-  setDefaultSelect(params: any) {
+  setDefaultSelect(params: { defaultSel: boolean }) {
     this.db.setDefaultSelect(params)
   }
   /**
@@ -451,9 +479,9 @@ export default class Datasource {
    * }
    */
   serialize() {
-    let set = this.getAllRecords()
-    let values: any = []
-    set.iterate(function (record: any) {
+    const set = this.getAllRecords()
+    const values: Array<{ [fieldCode: string]: any }> = []
+    set.iterate(function (record: Record) {
       //过滤字段,剔除非数据源中的字段
       values.push(record.toMap())
     })
@@ -485,7 +513,7 @@ export default class Datasource {
    * }
    * @return {@link ResultSet}
    */
-  queryRecord(params: any) {
+  queryRecord(params: { criteria: Criteria }) {
     return this.db.queryRecord(params)
   }
   /**
@@ -505,7 +533,7 @@ export default class Datasource {
    * @param {String} id 记录id值
    * @return Integer
    */
-  getIndexById(id: any) {
+  getIndexById(id: string) {
     return this.db.getIndexById(id)
   }
 
@@ -515,10 +543,12 @@ export default class Datasource {
   getCurrentDataAmount() {
     return this.db.getCurrentDataAmount()
   }
-
   destroy() {
     if (this.bindWidgets) {
       this.bindWidgets = null
     }
+    //this.Super('destroy', arguments)
   }
 }
+
+export default Datasource

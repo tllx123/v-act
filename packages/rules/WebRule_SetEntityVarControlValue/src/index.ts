@@ -77,7 +77,7 @@ const setTargetValue = function (fieldMap, ruleContext) {
    * 			 }.....]
    * }
    * */
-  const entityInfos = {}
+  let entityInfos = {}
   for (let i = 0; i < fieldMap.length; i++) {
     const fieldObj = fieldMap[i]
     const targetType = fieldObj['TargetType']
@@ -254,7 +254,7 @@ const copyBetweenEntities = function (params: any) {
     const curRecord = srcAllRecords[i]
     const paramValueObj: any = {}
     let isExistValue = false
-    for (const j = 0; j < valuesMapping.length; j++) {
+    for (let j = 0; j < valuesMapping.length; j++) {
       const mapping = valuesMapping[j]
       const paramEntityField = mapping['paramEntityField']
       const fieldValueType = mapping['fieldValueType']

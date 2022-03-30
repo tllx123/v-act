@@ -282,7 +282,7 @@ const main = function (ruleContext: RuleContext) {
 
     if (masterTable) {
       //如果主表不为空
-      var dsTemp = ds.lookup(masterTable)
+      var dsTemp: any = ds.lookup(masterTable)
       var selectedData = dsTemp.getCurrentRecord()
       if (!selectedData) {
         message.error('新增记录发生错误：关联父表没有选中记录！')

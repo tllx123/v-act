@@ -159,6 +159,22 @@ export function getProperty(widgetCode: string, propertyCode: string) {
 }
 
 /**
+ * 获取控件所有配置信息
+ * @param widgetCode
+ * @returns
+ */
+export function getConfigs(widgetCode: string) {
+  const winScope = scopeManager.getWindowScope()
+  if (winScope) {
+    const handler = winScope.get('getComponentConfigs')
+    if (handler) {
+      return handler(widgetCode)
+    }
+  }
+  return null
+}
+
+/**
  * 判断控件是否存在
  * @param {String} widgetCode 控件编码
  * @returns {Boolean} true: 控件存在 false:控件不存在
