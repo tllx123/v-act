@@ -164,6 +164,7 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
 
         // 设置props为空，解决组件不刷新问题
         setPropsChildren(null)
+        // inProps.children = null
         setTimeout(() => setPropsChildren(newPropsChildren))
       }
     }
@@ -194,7 +195,9 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
     }
     return (
       <JGComponentRoot {...props} ref={ref}>
-        {propsChildren}
+        {Array.isArray(inProps.children)
+          ? Object.values(propsChildren)
+          : propsChildren}
       </JGComponentRoot>
     )
   }
