@@ -29,6 +29,7 @@ import {
 import { Mediator as mediator } from '@v-act/vjs.framework.extension.system.mediator'
 import { WidgetModule as widgetModule } from '@v-act/vjs.framework.extension.ui.plugin.manager' //未依赖
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 import eventHandler from './eventHandler'
 import * as initRuleSet from './initRuleSet'
@@ -51,7 +52,7 @@ const _initVMInfo = function (params: Record<string, any>) {
     entityList = Array.isArray(entityList) ? entityList : [entityList]
     entityList.forEach((entity: any) => {
       const code = entity.$.code
-      const initMetaFields = []
+      const initMetaFields: Array<{ [fieldCode: string]: any }> = []
       if (entity.entityFields && entity.entityFields.entityField) {
         let entityFieldList = entity.entityFields.entityField
         entityFieldList = Array.isArray(entityFieldList)
@@ -74,12 +75,33 @@ const _initVMInfo = function (params: Record<string, any>) {
           })
         })
       }
+      const initDefaultData: Array<{ [fieldCode: string]: any }> = []
+      if (entity.entityDefRows && entity.entityDefRows.entityDefRow) {
+        let entityDefRowList = entity.entityDefRows.entityDefRow
+        entityDefRowList = Array.isArray(entityDefRowList)
+          ? entityDefRowList
+          : [entityDefRowList]
+        entityDefRowList.forEach((row: any) => {
+          let entityFieldDefVal = row.entityFieldDefVal
+          entityFieldDefVal = Array.isArray(entityFieldDefVal)
+            ? entityFieldDefVal
+            : [entityFieldDefVal]
+          let defRow: { id: string; [fieldCode: string]: any } = { id: '' }
+          entityFieldDefVal.forEach((def: any) => {
+            defRow[def.$.fieldCode] = def._
+          })
+          if (!defRow.id) {
+            defRow.id = uuid.generate()
+          }
+          initDefaultData.push(defRow)
+        })
+      }
       dataSources[code] = {
         chineseName: '',
         defaultValues: [],
         fetchMode: 'dataSet',
         id: code,
-        initDefaultData: [],
+        initDefaultData: initDefaultData,
         initMetaFields: initMetaFields,
         isVirtual: true,
         persistence: false,

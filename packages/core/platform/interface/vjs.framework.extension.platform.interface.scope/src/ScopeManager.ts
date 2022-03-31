@@ -163,8 +163,8 @@ let _isWindowScope = function (scope: Scope) {
     : false
 }
 
-const isWindowScope = function (scopeId: string) {
-  return _isWindowScope(getScope(scopeId))
+const isWindowScope = function (scopeId: any) {
+  return scopeId ? _isWindowScope(getScope(scopeId)) : false
 }
 
 let _isComponentScope = function (scope: Scope) {
@@ -173,8 +173,8 @@ let _isComponentScope = function (scope: Scope) {
     : false
 }
 
-const isComponentScope = function (scopeId: string) {
-  return _isComponentScope(getScope(scopeId))
+const isComponentScope = function (scopeId: any) {
+  return scopeId ? _isComponentScope(getScope(scopeId)) : false
 }
 
 const getWindowScope = function () {
@@ -503,7 +503,7 @@ const getChildWindowScope = function (scopeId?: string) {
   return scope
 }
 
-const getParentWindowScope = function (scopeId: string) {
+const getParentWindowScope = function (scopeId?: string) {
   let scope = scopeId ? getScope(scopeId) : getWindowScope()
   try {
     while (true) {

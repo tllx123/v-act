@@ -1,6 +1,5 @@
 import React, { ReactNode, useState } from 'react'
 import { Property } from 'csstype'
-
 import { Height, Width } from '@v-act/schema-types'
 
 type FieldValue = string | number | boolean | null
@@ -59,9 +58,11 @@ interface WidgetContextProps {
     context: WidgetContextProps
   ) => void
   inputVal?: any
-  insertDataFunc?: (data: any) => void
-  updateDataFunc?: (data: any) => void
-  removeDataFunc?: (data: any) => void
+  loadRecords?: (params: Record<string, any>) => void
+  insertRecords?: (params: Record<string, any>) => void
+  removeRecords?: (params: Record<string, any>) => void
+  updateRecords?: (params: Record<string, any>) => void
+  setCurrentRecord?: (recordId: string, code: string) => void
 }
 
 interface ContextProviderProps {
@@ -100,31 +101,177 @@ const createContext = function (
 }
 
 const ContextProvider = function (props: ContextProviderProps) {
-  const context = props.context || { position: 'absolute' }
+  const entities: Record<string, any> = {}
+  const context = props.context || { position: 'absolute', entities }
   const children = props.children
 
   const [contextTemp, setVal] = useState(context)
+  const [load, setLoad] = useState(0.1)
+
   console.log('contextTemp')
   console.log(contextTemp)
 
-  //插入
-  const insertDataFunc = (params: any) => {
-    // const entities = context.entities
-    // console.log('entities')
-    // console.log(context.entities)
-    // if (entities) {
-    //   const entity = entities[params.code]
-    //   if (entity) {
-    //     entity.datas.push(params.record)
-    //     setVal(context)
-    //   }
-    // }
+  /**加载实体
+   *  params = {
+   *    code:"",//实体编码
+   *    records:[{...},{...}]
+   *  }
+   */
+  const loadRecords = (params: Record<string, any>) => {
+    const entities = contextTemp?.entities
+    const { code, records } = params || {}
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return
+    }
+
+    if (entities) {
+      if (!entities[code]) {
+        entities[code] = {
+          datas: [],
+          _current: null
+        }
+      }
+
+      const entity = entities[code]
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      entity.datas = [...entity.datas, ...records]
+      entity._current = entity.datas[0]
+    }
   }
 
-  //更新
-  const updateDataFunc = (params: any) => {}
-  //删除
-  const removeDataFunc = (params: any) => {}
+  /**插入实体数据
+   *  params = {
+   *    code:"",
+   *    records:[{...},{...}],
+   *    index:0
+   *  }
+   */
+  const insertRecords = (params: Record<string, any>) => {
+    const entities = contextTemp?.entities
+    const { code, records, index } = params || {}
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return
+    }
+
+    let insertIndex =
+      index < 0 ? 0 : index > records.length ? records.length : index
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      entity.datas.splice(insertIndex, 0, ...records)
+    }
+  }
+
+  /**删除实体数据
+   *  params = {
+   *    code:"",
+   *    records:[id1,id2...]
+   *  }
+   */
+  const removeRecords = (params: Record<string, any>) => {
+    const entities = contextTemp?.entities
+    const { code, records } = params || {}
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return
+    }
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity.datas.length === 0) {
+        return
+      }
+
+      var newDatas = entity.datas.filter((item: any) => {
+        return records.indexOf(item.id) === -1
+      })
+
+      entity.datas = newDatas
+    }
+  }
+
+  /**更新实体数据
+   *  params = {
+   *    code:"",
+   *    records:[{...},{...},...]
+   *  }
+   */
+  const updateRecords = (params: Record<string, any>) => {
+    const entities = context?.entities
+    const { code, records } = params || {}
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return
+    }
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity.datas.length === 0) {
+        return
+      }
+
+      var newDatas = entity.datas.map((item: any) => {
+        var record =
+          records.find((record: any) => {
+            return record.id === item.id
+          }) || {}
+
+        return { ...item, ...record }
+      })
+
+      entity.datas = newDatas
+      //setVal(context)
+      setLoad(Math.random())
+    }
+  }
+
+  //设置当前行
+  const setCurrentRecord = (recordId: string, code: string) => {
+    const entities = contextTemp?.entities
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity.datas.length === 0) {
+        return
+      }
+
+      entity._current = entity.datas.find((item: any) => {
+        return item.id === recordId.toString()
+      })
+    }
+  }
 
   const getFieldValue = (
     tableName: string,
@@ -162,6 +309,14 @@ const ContextProvider = function (props: ContextProviderProps) {
       }
     }
   }
+  if (window != undefined) {
+    window.contextTemp = contextTemp
+    window.loadRecords = loadRecords
+    window.insertRecords = insertRecords
+    window.removeRecords = removeRecords
+    window.updateRecords = updateRecords
+    window.setCurrentRecord = setCurrentRecord
+  }
 
   return (
     <WidgetContext.Provider
@@ -169,9 +324,11 @@ const ContextProvider = function (props: ContextProviderProps) {
         ...contextTemp,
         getFieldValue,
         setFieldValueTemp,
-        insertDataFunc,
-        updateDataFunc,
-        removeDataFunc
+        loadRecords,
+        insertRecords,
+        removeRecords,
+        updateRecords,
+        setCurrentRecord
       }}
     >
       {children}

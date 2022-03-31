@@ -176,7 +176,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
     control.controls.some((item: any, index: any) => {
       dataHeader.push({
         title: item.properties.labelText,
-        dataIndex: item.properties.code,
+        dataIndex: item.properties.labelText,
         width: index == 0 ? 200 : 100,
         align: index == 0 ? undefined : 'center',
         key: item.properties.code,
@@ -184,6 +184,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
     })
   }
+
+  console.log('dataHeader-------------------')
+  console.log(dataHeader)
 
   // control.controls.some((item: any, index: any) => {
   //   dataHeader.push({
@@ -198,6 +201,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
   let data: any = []
   if (tablename) {
     data = getEntityDatas(tablename, context)
+
+    console.log('data-------------------')
+    console.log(data)
   }
 
   if (Array.isArray(data)) {

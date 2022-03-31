@@ -4,18 +4,18 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 let historyStack: Array<Record<string, any>> = []
 
 //@ts-ignore
-History.Adapter.bind(window, 'popstate', function () {
-  let index = historyStack.length
-  --index
-  let unit = historyStack[index]
-  if (unit) {
-    if (unit.isInit() && unit.async) {
-      unit.fire()
-    } else {
-      unit.markInit()
-    }
-  }
-})
+// History.Adapter.bind(window, 'popstate', function () {
+//   let index = historyStack.length
+//   --index
+//   let unit = historyStack[index]
+//   if (unit) {
+//     if (unit.isInit() && unit.async) {
+//       unit.fire()
+//     } else {
+//       unit.markInit()
+//     }
+//   }
+// })
 class Unit {
   async: boolean
   title: string
