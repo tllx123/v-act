@@ -190,7 +190,7 @@ export interface JGCheckBoxGroupProps extends BoxProps {
         ConstData: Array<{
           id: string
           text: string
-          selected: boolean
+          selected?: boolean
         }>
         SourceID: string
         SourceName: string
@@ -359,6 +359,25 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
   })
 
   const [checkboxData, setCheckboxData] = React.useState(constData)
+
+  const records: Array<{
+    id: string
+    text: string
+    selected?: boolean
+  }> = []
+  constData.forEach((constDataItem) => {
+    const record = checkboxData.find((checkboxDataItem) => {
+      if (constDataItem.id === checkboxDataItem.id) {
+        Object.assign(checkboxDataItem, constDataItem)
+      }
+      return constDataItem.id === checkboxDataItem.id
+    })
+    if (!record) {
+      records.push(constDataItem)
+    }
+  })
+  checkboxData.splice(checkboxData.length, 0, ...records)
+
   const handleChange = (event: any, item: any) => {
     const newCheckboxData = checkboxData.map((item) => {
       item.id === event.target.id && (item.selected = event.target.checked)

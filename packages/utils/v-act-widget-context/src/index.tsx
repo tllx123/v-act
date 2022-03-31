@@ -173,6 +173,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       !Array.isArray(entity.datas) && (entity.datas = [])
 
       entity.datas.splice(insertIndex, 0, ...records)
+      setVal({ ...contextTemp })
     }
   }
 
@@ -238,18 +239,16 @@ const ContextProvider = function (props: ContextProviderProps) {
         return
       }
 
-      var newDatas = entity.datas.map((item: any) => {
+      entity.datas.forEach((item: any) => {
         var record =
           records.find((record: any) => {
             return record.id === item.id
           }) || {}
 
-        return { ...item, ...record }
+        Object.assign(item, record)
       })
 
-      entity.datas = newDatas
-      //setVal(context)
-      setLoad(Math.random())
+      setVal({ ...contextTemp })
     }
   }
 
@@ -270,9 +269,9 @@ const ContextProvider = function (props: ContextProviderProps) {
         return
       }
 
-      entity._current = entity.datas.find((item: any) => {
-        return item.id === recordId.toString()
-      })
+      entity._current = entity.datas.find(
+        (item: any) => item.id === recordId.toString()
+      )
     }
   }
 
