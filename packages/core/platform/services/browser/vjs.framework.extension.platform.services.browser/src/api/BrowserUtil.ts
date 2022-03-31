@@ -6,7 +6,7 @@ import { WindowParam as wParamManager } from '@v-act/vjs.framework.extension.pla
 /**
  * 关闭窗口
  */
-const closeWindow = function (params: Record<string, any>) {
+const closeWindow = function (params?: Record<string, any>) {
   //是否确定退出
   let isConfirmExit = params && !!params.isConfirmExit
   let returnValues = {}
