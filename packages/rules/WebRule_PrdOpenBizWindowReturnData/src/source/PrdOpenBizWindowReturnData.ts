@@ -338,7 +338,7 @@ let executePermission = function (
   let actionAPI = 'API_PermGetUseBizWindowInstancePrivilegeByInstanceCode'
   let privilegeInfo = {}
   // 设置回调信息
-  let apiCallBackFunc = function (result) {
+  let apiCallBackFunc = function (result: any) {
     let isSettingPrivilege = result['isSettingPrivilege']
     if (isSettingPrivilege == true) {
       let functionResource = result['functionResource']
@@ -509,10 +509,10 @@ let executePermission = function (
     },
     inputParam: frameInputParams,
     config: {
-      success: function (result) {
+      success: function (result: any) {
         apiCallBackFunc(result)
       },
-      error: function (output) {
+      error: function (output: any) {
         throw new Error(
           '[PrdOpenBizWindowReturnData.getPrivilegeInfo]获取权限信息失败：' +
             output
@@ -533,6 +533,7 @@ let closeFrameWindow = function (output: any) {
 
   // 获取框架窗体的打开方式
   let scope = scopeManager.getChildWindowScope()
+  let openMode
   if (scope && scope.getOpenMode()) {
     openMode = scope.getOpenMode()
   } else {
@@ -577,7 +578,7 @@ let closeFrameWindow = function (output: any) {
       actionHandler.executeComponentAction('closeComponent')
       break
     case scopeManager.OpenMode.ModalContaniner:
-      var scopeId
+      var scopeId: any
       var winScope = scopeManager.getChildWindowScope()
       if (winScope) {
         scopeId = winScope.getInstanceId()
