@@ -125,9 +125,9 @@ const init = function (params: {
   let outputVariables = winDatas.windowOutputs.variables
   let inputVariables = winDatas.windowVariants.variables
 
-  if (Array.isArray(outputVariables.variable)) {
-    for (let item of outputVariables.variable) {
-      WindowParam.addOutputDefines(componentCode, windowCode, item)
+  if (Array.isArray(outputVariables)) {
+    for (let item of outputVariables) {
+      WindowParam.addOutputDefines(componentCode, windowCode, item.variables)
     }
   } else {
     WindowParam.addOutputDefines(
@@ -136,10 +136,9 @@ const init = function (params: {
       outputVariables.variable
     )
   }
-
-  if (Array.isArray(inputVariables.variable)) {
-    for (let item of inputVariables.variable) {
-      WindowParam.addInputDefines(componentCode, windowCode, item)
+  if (Array.isArray(inputVariables)) {
+    for (let item of inputVariables) {
+      WindowParam.addInputDefines(componentCode, windowCode, item.variable)
     }
   } else {
     WindowParam.addInputDefines(
