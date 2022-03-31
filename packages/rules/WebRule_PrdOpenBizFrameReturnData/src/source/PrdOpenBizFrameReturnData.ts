@@ -359,10 +359,10 @@ let openFrameWindow = function (ruleContext: any, inParamObjs: any) {
       }
 
       let openFrame = function (
-        scopeComponentCode,
-        scopeMetaCode,
-        currentWindowInputParams,
-        bizWindowInstance
+        scopeComponentCode: string,
+        scopeMetaCode: string,
+        currentWindowInputParams: any,
+        bizWindowInstance: any
       ) {
         // 获取框架窗体所在构件编码
         let frameComponentCode = bizWindowInstance['frameComponentCode']
@@ -684,10 +684,10 @@ let executePermission = function (
     },
     inputParam: ruleInputParams,
     config: {
-      success: function (result) {
+      success: function (result: any) {
         apiCallBackFunc(result)
       },
-      error: function (output) {
+      error: function (output: any) {
         throw new Error(
           '[PrdOpenBizFrameReturnData.getPrivilegeInfo]获取权限信息失败：' +
             output
@@ -703,18 +703,18 @@ let executePermission = function (
  * 模态方式打开
  */
 let openDialogWindow = function (
-  ruleContext,
-  businessRuleResult,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  returnMappings,
-  title,
-  height,
-  width,
-  frameInputParams,
-  instanceComponentCode,
-  instanceCode
+  ruleContext: any,
+  businessRuleResult: any,
+  componentCode: string,
+  windowCode: string,
+  windowInputParams: any,
+  returnMappings: any,
+  title: string,
+  height: any,
+  width: any,
+  frameInputParams: any,
+  instanceComponentCode: string,
+  instanceCode: string
 ) {
   // 标注打开方式为dialog模态窗口
   windowInputParams['variable']['formulaOpenMode'] = 'dialog'
@@ -753,7 +753,7 @@ let openDialogWindow = function (
     eventName: ruleContext.Events.ROUTECALLBACK,
     handler: routeCallback
   })
-  let callBackFunc = function (output) {
+  let callBackFunc = function (output: any) {
     ruleContext.fireRuleCallback()
     ruleContext.fireRouteCallback(output)
   }
@@ -804,9 +804,9 @@ let openDialogWindow = function (
     $.when
       .apply($.when, dtds)
       .done(function (
-        targetWindowIsMaximize,
-        targerWindowWidth,
-        targerWindowHeigth
+        targetWindowIsMaximize: any,
+        targerWindowWidth: any,
+        targerWindowHeigth: any
       ) {
         if (targetWindowIsMaximize == true) {
           isOpenMaximize = true
@@ -834,7 +834,7 @@ let openDialogWindow = function (
           openWindow()
         }
       })
-      .fail(function (e) {
+      .fail(function (e: any) {
         ruleContext.handleException(e)
       })
   }
@@ -865,9 +865,9 @@ let openDialogWindow = function (
  * 处理打开窗体返回信息
  */
 let handleOpenWindowReturnValues = function (
-  ruleContext,
-  windowReturnValue,
-  returnMappings
+  ruleContext: any,
+  windowReturnValue: any,
+  returnMappings: any
 ) {
   if (!returnMappings || returnMappings.length <= 0) {
     return
@@ -876,7 +876,7 @@ let handleOpenWindowReturnValues = function (
   /**
    * 内部方法，获取赋值来源值
    */
-  let getSourceValue = function (source, sourceType) {
+  let getSourceValue = function (source: any, sourceType: any) {
     let sourceValue = null
     switch (sourceType) {
       case 'returnValue':
@@ -977,7 +977,7 @@ let handleOpenWindowReturnValues = function (
   }
 }
 
-let getFreeDBCopyFieldsMapping = function (fieldMappings) {
+let getFreeDBCopyFieldsMapping = function (fieldMappings: any) {
   let copyFieldsMapping = []
   for (let i = 0; i < fieldMappings.length; i++) {
     let configField = fieldMappings[i]
@@ -1002,10 +1002,10 @@ let getFreeDBCopyFieldsMapping = function (fieldMappings) {
  * 获取框架窗体入参
  */
 let getFrameInputParams = function (
-  frameBizWindows,
-  windowInputParams,
-  frameWindowNameMap,
-  scopeComponentCode,
+  frameBizWindows: any,
+  windowInputParams: any,
+  frameWindowNameMap: any,
+  scopeComponentCode: string,
   scopeMetaCode
 ) {
   let frameInputParams = {}
@@ -1249,12 +1249,13 @@ let getFrameInputParams = function (
       }
     }
     let frameActionDataValue = DBFactory.unSerialize(frameActionDataJson)
+    let frameParams = new Array()
+    let variableCount = 0
     // 构件窗体输入参数实体字段信息
     if (null != windowInputParams && undefined != windowInputParams) {
       let variables = windowInputParams['variable']
-      let frameParams = new Array()
-      let variableCount = 0
-      for (variableCode in variables) {
+
+      for (let variableCode in variables) {
         let frameParam = {}
         variableCount++
         let variableValue = variables[variableCode]
@@ -1485,11 +1486,11 @@ let getFrameBizWindowFields = function () {
   return frameBizWindowFields
 }
 
-let executeAPI = function (frameInputParams, ruleContext) {
+let executeAPI = function (frameInputParams: any, ruleContext: any) {
   let actionAPIComponentCode = 'vbase_prdbizframe'
   let actionAPI = 'API_AfterOpenBizFrameWindowEvent'
   ruleContext.markRouteExecuteUnAuto()
-  let callBackFunc = function (output) {
+  let callBackFunc = function (output: any) {
     ruleContext.fireRuleCallback()
   }
   let ruleSetParams = {
@@ -1503,7 +1504,7 @@ let executeAPI = function (frameInputParams, ruleContext) {
     inputParam: frameInputParams,
     config: {
       success: function () {
-        callBackFunc()
+        callBackFunc(null)
       },
       error: function () {
         //alert("执行异常！");
@@ -1517,18 +1518,18 @@ let executeAPI = function (frameInputParams, ruleContext) {
  * 容器中打开
  */
 let openWindowContainer = function (
-  ruleContext,
-  businessRuleResult,
-  containerControlCode,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  returnMappings,
-  title,
-  frameInputParams,
-  isAsyn,
-  instanceComponentCode,
-  instanceCode
+  ruleContext: any,
+  businessRuleResult: any,
+  containerControlCode: string,
+  componentCode: string,
+  windowCode: string,
+  windowInputParams: any,
+  returnMappings: any,
+  title: string,
+  frameInputParams: any,
+  isAsyn: any,
+  instanceComponentCode: string,
+  instanceCode: string
 ) {
   let tmpActionHandler = null
   if (
@@ -1554,7 +1555,7 @@ let openWindowContainer = function (
   // 将标签页的ID传入，以提供给退出事件进行关闭
   windowInputParams['variable']['closeTabId'] = windowCode
   let windowInstanceCode = null
-  let callBackFunc = function (windowInstanceCode, executeApi) {
+  let callBackFunc = function (windowInstanceCode: string, executeApi: any) {
     let businessRuleResult_new = {}
     businessRuleResult_new['windowInstanceCode'] = windowInstanceCode
     if (ruleContext.setBusinessRuleResult)
@@ -1629,18 +1630,18 @@ let openWindowContainer = function (
  * div容器打开
  */
 let openDivWindowContainer = function (
-  ruleContext,
-  businessRuleResult,
-  containerControlCode,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  title,
-  frameInputParams,
-  isDynamicContainer,
-  divCode,
-  instanceComponentCode,
-  instanceCode
+  ruleContext: any,
+  businessRuleResult: any,
+  containerControlCode: string,
+  componentCode: string,
+  windowCode: string,
+  windowInputParams: any,
+  title: string,
+  frameInputParams: any,
+  isDynamicContainer: any,
+  divCode: string,
+  instanceComponentCode: string,
+  instanceCode: string
 ) {
   windowInputParams['variable']['formulaOpenMode'] = 'vuiWindowContainer'
   //如果是动态传入，则按表达式解析
@@ -1654,7 +1655,7 @@ let openDivWindowContainer = function (
   }
 
   let widgetId = divCode
-  let callBackFunc = function (executeApi) {
+  let callBackFunc = function (executeApi: any) {
     // 执行框架api,新打开时需要执行
     if (executeApi != false) {
       executeAPI(frameInputParams, ruleContext)
@@ -1662,7 +1663,7 @@ let openDivWindowContainer = function (
     ruleContext.fireRuleCallback()
     ruleContext.fireRouteCallback()
   }
-  let containerParam = {
+  let containerParam: { [code: string]: any } = {
     containerCode: containerControlCode,
     /* 这个是标签的code */
     componentCode: componentCode,
@@ -1678,7 +1679,7 @@ let openDivWindowContainer = function (
     }
   }
   let scopeId = scopeManager.getCurrentScopeId()
-  let _$callback = function (params) {
+  let _$callback = function (params: any) {
     let cId = params._iden,
       _windowInstanceCode = params.scopeId,
       /* 激活时有值，非激活时，下面重新赋值 */
@@ -1713,9 +1714,9 @@ let openDivWindowContainer = function (
   ruleContext.markRouteExecuteUnAuto()
 }
 
-let setRouteCallBack = function (ruleContext, businessRuleResult) {
+let setRouteCallBack = function (ruleContext: any, businessRuleResult: any) {
   // 关闭窗体回调逻辑
-  let routeCallback = function (output) {
+  let routeCallback = function (output: any) {
     businessRuleResult['isConfirmSelectionOnClose'] = false
     if (output && output['config']) {
       //点击了确定选择
@@ -1752,7 +1753,7 @@ let setRouteCallBack = function (ruleContext, businessRuleResult) {
 /**
  * 生成输入参数标识
  * */
-let genInputParamIden = function (windowInputParams) {
+let genInputParamIden = function (windowInputParams: any) {
   let idens = []
   if (windowInputParams && windowInputParams.variable) {
     let variable = windowInputParams.variable
@@ -1782,18 +1783,18 @@ let genInputParamIden = function (windowInputParams) {
  * 创建多页签窗体
  */
 let openIemsHomeTabContainer = function (
-  ruleContext,
-  businessRuleResult,
-  containerControlCode,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  title,
-  frameInputParams,
-  isDynamicContainer,
-  divCode,
-  scopeComponentCode,
-  scopeMetaCode
+  ruleContext: any,
+  businessRuleResult: any,
+  containerControlCode: string,
+  componentCode: string,
+  windowCode: string,
+  windowInputParams: any,
+  title: string,
+  frameInputParams: any,
+  isDynamicContainer: any,
+  divCode: string,
+  scopeComponentCode: string,
+  scopeMetaCode: string
 ) {
   setRouteCallBack(ruleContext, businessRuleResult)
 
@@ -1810,7 +1811,7 @@ let openIemsHomeTabContainer = function (
   //生成输入参数标识，用于判断是否已经打开过
   let idens = [scopeComponentCode, scopeMetaCode]
   idens.push(genInputParamIden({ variable: frameInputParams }))
-  let _$callBackFunc = function (executeApi) {
+  let _$callBackFunc = function (executeApi: any) {
     // 执行框架api,新打开时需要执行
     //if (executeApi != false) {
     executeAPI(frameInputParams, ruleContext)
@@ -1818,7 +1819,7 @@ let openIemsHomeTabContainer = function (
   }
 
   let newScopeId: any = null
-  let destroyScopeListener = function (scopeId) {
+  let destroyScopeListener = function (scopeId: string) {
     let winScope = scopeManager.getWindowScope()
     //不需要关闭的场景：框架窗体用模态打开另一个窗体
     if (
