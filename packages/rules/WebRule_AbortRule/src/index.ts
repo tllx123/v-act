@@ -2,7 +2,6 @@
  * 中断方法的执行
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
-
 const main = function (ruleContext: RuleContext) {
   return new Promise<void>(function (resolve, reject) {
     // 获取方法上下文
@@ -13,19 +12,24 @@ const main = function (ruleContext: RuleContext) {
       var abortType = input.abortType
       if (abortType.toUpperCase() == 'CURRENT') {
         //中断当前方法
-        methodContext.markInterrupt(methodContext.InterruptType.Current)
+        if (methodContext.InterruptType) {
+          methodContext.markInterrupt(methodContext.InterruptType.Current)
+        }
       } else if (abortType.toUpperCase() == 'GLOBAL') {
         //中断所有方法
-        methodContext.markInterrupt(methodContext.InterruptType.Global)
+        if (methodContext.InterruptType) {
+          methodContext.markInterrupt(methodContext.InterruptType.Global)
+        }
       } else {
         return reject(new Error('不支持中断方式：' + abortType))
       }
     } else {
       // 未配置规则，则中断当前方法
-      methodContext.markInterrupt(methodContext.InterruptType.Current)
+      if (methodContext.InterruptType) {
+        methodContext.markInterrupt(methodContext.InterruptType.Current)
+      }
     }
     resolve()
   })
 }
-
 export { main }
