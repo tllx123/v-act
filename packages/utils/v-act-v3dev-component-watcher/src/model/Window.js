@@ -282,31 +282,34 @@ class Window {
       logicList.forEach((logic) => {
         const attrs = logic.$
         if (attrs && attrs.type == 'client') {
+          let ruleInstanceList = []
           if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
-            let ruleInstanceList = logic.ruleInstances.ruleInstance
-            ruleInstanceList = Array.isArray(ruleInstanceList)
-              ? ruleInstanceList
-              : [ruleInstanceList]
-            if (
-              logic.ruleSets &&
-              logic.ruleSets.ruleSet &&
-              logic.ruleSets.ruleSet.ruleInstances &&
-              logic.ruleSets.ruleSet.ruleInstances.ruleInstance
-            ) {
-              let ruleInst = logic.ruleSets.ruleSet.ruleInstances.ruleInstance
-              if (Array.isArray(ruleInst)) {
-                ruleInstanceList = ruleInstanceList.concat(ruleInst)
-              } else {
-                ruleInstanceList.push(ruleInst)
-              }
+            let ruleInstances = logic.ruleInstances.ruleInstance
+            if (Array.isArray(ruleInstances)) {
+              ruleInstanceList = ruleInstanceList.concat(ruleInstances)
+            } else {
+              ruleInstanceList.push(ruleInstances)
             }
-            ruleInstanceList.forEach((ruleInstance) => {
-              const ruleCode = ruleInstance.$.ruleCode
-              if (ruleSet.indexOf(ruleCode) == -1) {
-                ruleSet.push(ruleCode)
-              }
-            })
           }
+          if (
+            logic.ruleSets &&
+            logic.ruleSets.ruleSet &&
+            logic.ruleSets.ruleSet.ruleInstances &&
+            logic.ruleSets.ruleSet.ruleInstances.ruleInstance
+          ) {
+            let ruleInst = logic.ruleSets.ruleSet.ruleInstances.ruleInstance
+            if (Array.isArray(ruleInst)) {
+              ruleInstanceList = ruleInstanceList.concat(ruleInst)
+            } else {
+              ruleInstanceList.push(ruleInst)
+            }
+          }
+          ruleInstanceList.forEach((ruleInstance) => {
+            const ruleCode = ruleInstance.$.ruleCode
+            if (ruleSet.indexOf(ruleCode) == -1) {
+              ruleSet.push(ruleCode)
+            }
+          })
         }
       })
     }

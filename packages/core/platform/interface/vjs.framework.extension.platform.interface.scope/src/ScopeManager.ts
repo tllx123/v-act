@@ -420,7 +420,7 @@ const _getInstanceIds = function (componentCode: string, windowCode: string) {
 }
 
 const createScopeHandler = function (params: {
-  scopeId: string
+  scopeId?: string
   handler: (...args: any[]) => void
   callObject?: any
 }): (...args: any[]) => any {
