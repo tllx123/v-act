@@ -1,5 +1,5 @@
 import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.platform.interface.model.datasource'
-import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine.route'
+import { RouteEngine as routeEngine } from 'packages/core/WebFunc_PrdSetFrameWindowEnable/src/source/node_modules/packages/core/WebFunc_PrdSetBizFormStateInfo/src/source/node_modules/@v-act/vjs.framework.extension.platform.services.engine.route'
 
 const initModule = function (sBox) {
   //sBox：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务

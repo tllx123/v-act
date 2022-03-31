@@ -1,5 +1,5 @@
-import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
-import { ExpressionContext as expressionContext } from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { ExpressionEngine as expressionEngine } from 'packages/core/WebFunc_WFFromActivityName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerID/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskCreateMod/src/source/node_modules/packages/core/WebFunc_WFCurrentActivityName/src/source/node_modules/@v-act/vjs.framework.extension.platform.services.engine.expression'
+import { ExpressionContext as expressionContext } from 'packages/core/WebFunc_WFFromActivityName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerID/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskCreateMod/src/source/node_modules/packages/core/WebFunc_WFCurrentActivityName/src/source/node_modules/@v-act/vjs.framework.extension.platform.services.engine.expression'
 
 const initModule = function (sb) {
   // sb：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
