@@ -176,7 +176,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
     control.controls.some((item: any, index: any) => {
       dataHeader.push({
         title: item.properties.labelText,
-        dataIndex: item.properties.labelText,
+        dataIndex: item.properties.code.split('JGTextBoxColumn_')[1],
         width: index == 0 ? 200 : 100,
         align: index == 0 ? undefined : 'center',
         key: item.properties.code,
