@@ -138,7 +138,7 @@ let openWindow = function (value: any, ruleContext: any) {
 let getOpenWindowInputParams = function (
   targetComponentCode: string,
   targetWindowCode: string,
-  ruleContext
+  ruleContext: any
 ) {
   /**
    * 获取当前窗体的输入参数信息
@@ -171,17 +171,17 @@ let getOpenWindowInputParams = function (
  * 打开窗体组件容器
  */
 let openWindowContainer = function (
-  ruleContext,
-  businessRuleResult,
+  ruleContext: any,
+  businessRuleResult: any,
   containerControlCode: string,
   componentCode: string,
   windowCode: string,
-  windowInputParams,
+  windowInputParams: any,
   title: string,
-  tmpIsAsyn,
+  tmpIsAsyn: any,
   instanceComponentCode: string,
   instanceCode: string,
-  privilegeInfo
+  privilegeInfo: any
 ) {
   let tmpActionHandler = null
   if (
@@ -220,7 +220,7 @@ let openWindowContainer = function (
   }
   // 设置权限信息
   let setPrivilegeInfo = function (windowInstanceCode: string) {
-    let currentScopeId = scopeManager.getCurrentScopeId()
+    let currentScopeId: any = scopeManager.getCurrentScopeId()
     // 获取父框架窗体域实例Id
     let parentScopeId = scopeManager.getParentScopeId(currentScopeId)
     if (privilegeInfo) {
@@ -309,7 +309,7 @@ let openWindowContainer = function (
         otherInfo: '',
         componentVariable: windowInputParams,
         selected: true,
-        closed: function (output) {
+        closed: function (output: any) {
           closeFrameWindow(output)
         },
         callback: callBackFunc
@@ -321,16 +321,16 @@ let openWindowContainer = function (
 
 // 设置权限信息
 let executePermission = function (
-  ruleContext,
-  businessRuleResult,
-  containerControlCode,
-  componentCode,
-  windowCode,
-  windowInputParams,
-  title,
-  tmpIsAsyn,
-  instanceComponentCode,
-  instanceCode
+  ruleContext: any,
+  businessRuleResult: any,
+  containerControlCode: string,
+  componentCode: string,
+  windowCode: string,
+  windowInputParams: any,
+  title: string,
+  tmpIsAsyn: any,
+  instanceComponentCode: string,
+  instanceCode: string
 ) {
   ruleContext.markRouteExecuteUnAuto()
   // 获取权限信息的方法
@@ -527,7 +527,7 @@ let executePermission = function (
 /**
  * 关闭窗体
  */
-let closeFrameWindow = function (output) {
+let closeFrameWindow = function (output: any) {
   // 获取业务窗体关闭方式,是否为确认退出
   let selectConfirm = output['selectConfirm']
 
@@ -555,7 +555,7 @@ let closeFrameWindow = function (output) {
         // 需要获取业务窗体输出参数赋给框架窗体
         var outParams = output['outParams']
         if (null != outParams && undefined != outParams) {
-          for (outParam in outParams) {
+          for (let outParam in outParams) {
             windowParam.setOutput({
               code: outParam,
               value: outParams[outParam]
@@ -611,4 +611,4 @@ let closeFrameWindow = function (output) {
   }
 }
 
-export { initModule, main }
+export { main }

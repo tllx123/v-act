@@ -21,15 +21,15 @@ import { WindowRenderer as windowRenderer } from '@v-act/vjs.framework.extension
 import { DesUtil as desUtil } from '@v-act/vjs.framework.extension.util.des'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
 import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
-let sandbox
+let sandbox: any
 
-const initModule = function (sBox) {
+const initModule = function (sBox: any) {
   //sBox：前台vjs的沙箱（容器/上下文），可以用它根据vjs名称，获取到相应vjs服务
   sandbox = sBox
 }
 
 //规则主入口(必须有)
-let main = function (ruleContext) {
+let main = function (ruleContext: any) {
   // 获取规则链路由上下文,终止执行后续规则
   let routeContext = ruleContext.getRouteContext()
   // 获取规则链路由上下文的配置参数值
@@ -47,11 +47,11 @@ let main = function (ruleContext) {
  * 产生目标窗体的窗体变量信息
  */
 let getOpenWindowInputParams = function (
-  routeContext,
-  inputParams,
-  frameWindowInputParams,
-  ruleContext,
-  scopeComponentCode
+  routeContext: any,
+  inputParams: any,
+  frameWindowInputParams: any,
+  ruleContext: any,
+  scopeComponentCode: string
 ) {
   let variable = {}
   getInputVariable(
@@ -77,12 +77,12 @@ let getOpenWindowInputParams = function (
 }
 
 let getInputVariable = function (
-  variable,
-  routeContext,
-  mappingItems,
-  ruleContext,
-  isBizWindowInput,
-  scopeComponentCode
+  variable: any,
+  routeContext: any,
+  mappingItems: any,
+  ruleContext: any,
+  isBizWindowInput: any,
+  scopeComponentCode: string
 ) {
   // 业务窗体入参的前缀，用于区分框架窗体入参
   let prefix = 'FRAME_WINDOW_CODE_'
@@ -187,7 +187,7 @@ let getInputVariable = function (
   }
 }
 
-let getFreeDBFieldsMapping = function (fieldMappings) {
+let getFreeDBFieldsMapping = function (fieldMappings: any) {
   let fieldsMapping = []
   for (let i = 0; i < fieldMappings.length; i++) {
     let configField = fieldMappings[i]
@@ -204,14 +204,14 @@ let getFreeDBFieldsMapping = function (fieldMappings) {
 /**
  * 打开框架窗体，并处理窗体返回值
  */
-let openFrameWindow = function (ruleContext, inParamObjs) {
+let openFrameWindow = function (ruleContext: any, inParamObjs: any) {
   let routeContext = ruleContext.getRouteContext()
   let context = new ExpressionContext()
   context.setRouteContext(routeContext)
 
-  let scopeComponentCode
-  let scopeMetaCode
-  let inputBizWindowInstanceCode
+  let scopeComponentCode: string
+  let scopeMetaCode: string
+  let inputBizWindowInstanceCode: string
 
   let openType = inParamObjs['openType']
   // 默认为appoint
@@ -1834,36 +1834,37 @@ let openIemsHomeTabContainer = function (
       scopeManager.destroy(newScopeId)
     }
   }
-  let renderer = sandbox.getService(
-    'vjs.framework.extension.platform.services.view.window.render.mode',
-    {
-      type: 'iemsHomeTab'
-    }
-  )
-  if (renderer) {
-    renderer.render({
-      title: title,
-      ruleContext: ruleContext,
-      inputs: windowInputParams,
-      componentCode: componentCode,
-      windowCode: windowCode,
-      idens: idens,
-      destroyScopeListener: destroyScopeListener,
-      inited: _$callBackFunc,
-      vjsContext: {
-        frameworkComponentCode: scopeComponentCode, //构件编码
-        frameworkInstanceCode: scopeMetaCode //业务单据实例编码
-      }
-    })
-  } else {
-    frontEndAlerterUtil.error({
-      title: '错误信息',
-      msgHeader: '页面打开失败！',
-      msg: '无法获取首页vjs服务',
-      detail:
-        '无法获取首页vjs服务：vjs.framework.extension.platform.services.view.window.render.mode.iemsHomeTab'
-    })
-  }
+  // let renderer = sandbox.getService(
+  //   'vjs.framework.extension.platform.services.view.window.render.mode',
+  //   {
+  //     type: 'iemsHomeTab'
+  //   }
+  // )
+  // if (renderer) {
+  //   renderer.render({
+  //     title: title,
+  //     ruleContext: ruleContext,
+  //     inputs: windowInputParams,
+  //     componentCode: componentCode,
+  //     windowCode: windowCode,
+  //     idens: idens,
+  //     destroyScopeListener: destroyScopeListener,
+  //     inited: _$callBackFunc,
+  //     vjsContext: {
+  //       frameworkComponentCode: scopeComponentCode, //构件编码
+  //       frameworkInstanceCode: scopeMetaCode //业务单据实例编码
+  //     }
+  //   })
+  // } else {
+  //   frontEndAlerterUtil.error({
+  //     title: '错误信息',
+  //     msgHeader: '页面打开失败！',
+  //     msg: '无法获取首页vjs服务',
+  //     detail:
+  //       '无法获取首页vjs服务：vjs.framework.extension.platform.services.view.window.render.mode.iemsHomeTab'
+  //   })
+  // }
+  throw new Error('未识别异常，请联系系统管理员处理')
 }
 /**
  * 当前窗体打开方式
