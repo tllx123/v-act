@@ -1,23 +1,43 @@
+import * as component from '@v-act/vjs.framework.extension.platform.services.integration.vds.component'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
+import * as expression from '@v-act/vjs.framework.extension.platform.services.integration.vds.expression'
+import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
+import * as rpc from '@v-act/vjs.framework.extension.platform.services.integration.vds.rpc'
 /**
  * 规则入口
  */
 import { RuleContext } from '@v-act/vjs.framework.extension.platform.services.integration.vds.rule'
+import * as string from '@v-act/vjs.framework.extension.platform.services.integration.vds.string'
+import * as widget from '@v-act/vjs.framework.extension.platform.services.integration.vds.widget'
+import * as window from '@v-act/vjs.framework.extension.platform.services.integration.vds.window'
 
 /**
  * 获取数据库表中记录数
  */
-vds.import(
-  'vds.ds.*',
-  'vds.exception.*',
-  'vds.log.*',
-  'vds.rpc.*',
-  'vds.string.*',
-  'vds.component.*',
-  'vds.window.*',
-  'vds.widget.*',
-  'vds.expression.*'
-)
+// vds.import(
+//   'vds.ds.*',
+//   'vds.exception.*',
+//   'vds.log.*',
+//   'vds.rpc.*',
+//   'vds.string.*',
+//   'vds.component.*',
+//   'vds.window.*',
+//   'vds.widget.*',
+//   'vds.expression.*'
+// )
 
+const vds = {
+  ds: ds,
+  exception: exception,
+  log: log,
+  rpc: rpc,
+  string: string,
+  component: component,
+  window: window,
+  widget: widget,
+  expression: expression
+}
 interface keyIsString {
   [key: string]: any
 }
@@ -68,13 +88,17 @@ const main = function (ruleContext: RuleContext) {
         reject(responseObj)
       }
       //  调用后台活动集
-      var promise = vds.rpc.callCommand('CommonRule_GetRecordCount', [
-        {
-          code: 'InParams',
-          type: 'char',
-          value: vds.string.toJson(inParamsObj)
-        }
-      ])
+      var promise = vds.rpc.callCommand(
+        'CommonRule_GetRecordCount',
+        [
+          {
+            code: 'InParams',
+            type: 'char',
+            value: vds.string.toJson(inParamsObj)
+          }
+        ],
+        {}
+      )
       promise.then(callback).catch(errorCallback)
     } catch (err) {
       reject(err)
@@ -129,7 +153,7 @@ var getCustomParamValue = function (
       }
       var ds = queryfieldValue.split('.')[0]
       var fieldName = queryfieldValue.split('.')[1]
-      var record = getCurrentRecord(ds)
+      var record: any = getCurrentRecord(ds)
       returnValue = record.get(fieldName)
       break
     case '2':
@@ -166,7 +190,7 @@ var getCustomParamValue = function (
       var storeTypes = vds.widget.StoreType
       // 按照控件不同的属性类型，获取参数值
       var ds: string = getDsName(valueQueryControlID)
-      var record = getCurrentRecord(ds)
+      var record: any = getCurrentRecord(ds)
       if (storeTypes.Set == storeType) {
         // 集合类控件，组装表名.字段名进行取值
         if (record) {
@@ -227,7 +251,7 @@ var getCustomParamValue = function (
   return undefined == returnValue ? null : returnValue
 }
 var getCurrentRecord = function (ds: any) {
-  var datasource = vds.ds.lookup(ds)
+  var datasource: any = vds.ds.lookup(ds)
   return datasource.getCurrentRecord()
 }
 

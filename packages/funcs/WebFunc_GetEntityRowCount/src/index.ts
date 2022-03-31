@@ -10,6 +10,7 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 const vds = { object, ds, exception, expression, log }
 
 const main = function (dsName: string, condition: string) {
+  debugger
   if (dsName == null) {
     throw vds.exception.newConfigException('实体编码不允许为空，请检查配置')
   }
