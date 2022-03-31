@@ -46,7 +46,7 @@ let main = function (ruleContext: any) {
   openBizWindowInstance(value, ruleContext)
 }
 // 打开业务单据实例
-let openBizWindowInstance = function (value, ruleContext) {
+let openBizWindowInstance = function (value: any, ruleContext: any) {
   // 获取打开的容器编码
   let windowContainer = value['windowContainer']
   // 获取业务单据实例构件编码
@@ -108,7 +108,7 @@ let openBizWindowInstance = function (value, ruleContext) {
     // 开域封装
     let _func = scopeManager.createScopeHandler({
       handler: function (metadatas) {
-        let frameInputParams
+        let frameInputParams: any
         if (!metadatas) {
           throw new Error(
             '[PrdOpenBizWindowInstance.openBizWindowInstance]打开业务单据实例异常，获取不到业务单据实例【metadatas】信息！'
@@ -124,10 +124,10 @@ let openBizWindowInstance = function (value, ruleContext) {
           )
         }
         let openFrame = function (
-          instanceComponentCode,
-          instanceCode,
-          currentWindowInputParams,
-          bizWindowInstance
+          instanceComponentCode: string,
+          instanceCode: string,
+          currentWindowInputParams: any,
+          bizWindowInstance: any
         ) {
           if (currentWindowInputParams) {
             bizWindowInstanceInputParams = currentWindowInputParams
@@ -173,7 +173,7 @@ let openBizWindowInstance = function (value, ruleContext) {
             )
           }
           // 根据类型以不同的方式打开
-          let componentVariable = {}
+          let componentVariable: { [code: string]: any } = {}
           if ('NewWindow' == componentOpen) {
             alert('业务框架当前不支持【NewWindow】类型菜单打开方式！')
           } else if ('SpecifiedWindow' == componentOpen) {
@@ -256,7 +256,7 @@ let openBizWindowInstance = function (value, ruleContext) {
                 callback: function () {
                   executeAPI(frameInputParams, ruleContext)
                 },
-                closed: function (output) {
+                closed: function (output: any) {
                   closeFrameWindow(output)
                 },
                 vjsContext: {
@@ -288,7 +288,7 @@ let openBizWindowInstance = function (value, ruleContext) {
                 // 窗体渲染后执行框架API
                 executeAPI(frameInputParams, ruleContext)
               },
-              closed: function (output) {
+              closed: function (output: any) {
                 closeFrameWindow(output)
               },
               vjsContext: {
@@ -314,11 +314,11 @@ let openBizWindowInstance = function (value, ruleContext) {
 
 // 设置权限信息
 let executePermission = function (
-  ruleContext,
-  instanceComponentCode,
-  instanceCode,
-  openFrame,
-  bizWindowInstance
+  ruleContext: any,
+  instanceComponentCode: string,
+  instanceCode: string,
+  openFrame: any,
+  bizWindowInstance: any
 ) {
   ruleContext.markRouteExecuteUnAuto()
   // 获取权限信息的方法
@@ -326,7 +326,7 @@ let executePermission = function (
   let actionAPI = 'API_PermGetUseBizWindowInstancePrivilegeByInstanceCode'
   let privilegeInfo = {}
   // 设置回调信息
-  let apiCallBackFunc = function (result) {
+  let apiCallBackFunc = function (result: any) {
     let isSettingPrivilege = result['isSettingPrivilege']
     let functionResource = result['functionResource']
     let isLogined = result['isLogined']
@@ -385,13 +385,14 @@ let executePermission = function (
           }
         }
       }
+      let currentWindowInputParams = {}
       if (
         isSettingPrivilege &&
         hasEditBizWindowInstancePrivilege !== true &&
         hasQueryBizWindowInstancePrivilege !== true
       ) {
         let prefix = 'FRAME_WINDOW_CODE_'
-        let currentWindowInputParams = {}
+
         currentWindowInputParams[
           prefix +
             'vbase_prd_perm.PrdPermNoBizWindowInstancePrivilege' +
@@ -415,12 +416,7 @@ let executePermission = function (
         bizWindowInstance = getPrivilegeWindow()
       }
     }
-    openFrame(
-      instanceComponentCode,
-      instanceCode,
-      currentWindowInputParams,
-      bizWindowInstance
-    )
+    openFrame(instanceComponentCode, instanceCode, bizWindowInstance)
   }
   // 设置入参
   let ruleInputParams = {}
@@ -436,10 +432,10 @@ let executePermission = function (
     },
     inputParam: ruleInputParams,
     config: {
-      success: function (result) {
+      success: function (result: any) {
         apiCallBackFunc(result)
       },
-      error: function (output) {
+      error: function (output: any) {
         throw new Error(
           '[PrdOpenBizFrameReturnData.getPrivilegeInfo]获取权限信息失败：' +
             output
@@ -499,12 +495,13 @@ let getPrivilegeWindow = function () {
 /**
  * 关闭窗体
  */
-function closeFrameWindow(output) {
+function closeFrameWindow(output: any) {
   // 获取业务窗体关闭方式,是否为确认退出
   let selectConfirm = output['selectConfirm']
 
   // 获取框架窗体的打开方式
   let scope = scopeManager.getChildWindowScope()
+  let openMode
   if (scope && scope.getOpenMode()) {
     openMode = scope.getOpenMode()
   } else {
@@ -527,7 +524,7 @@ function closeFrameWindow(output) {
         // 需要获取业务窗体输出参数赋给框架窗体
         var outParams = output['outParams']
         if (null != outParams && undefined != outParams) {
-          for (outParam in outParams) {
+          for (let outParam in outParams) {
             windowParam.setOutput({
               code: outParam,
               value: outParams[outParam]
@@ -549,7 +546,7 @@ function closeFrameWindow(output) {
       actionHandler.executeComponentAction('closeComponent')
       break
     case scopeManager.OpenMode.ModalContaniner:
-      var scopeId
+      var scopeId: any
       var winScope = scopeManager.getChildWindowScope()
       if (winScope) {
         scopeId = winScope.getInstanceId()
@@ -573,7 +570,7 @@ function closeFrameWindow(output) {
       scopeManager.destroy(scopeId)
       break
     case 'iemsHomeTab':
-      var scopeId = scopeManager.getCurrentScopeId()
+      var scopeId: any = scopeManager.getCurrentScopeId()
       if (scopeId) {
         if (selectConfirm == true) {
           scope.markSelectionConfirmed()
@@ -584,7 +581,7 @@ function closeFrameWindow(output) {
     default:
       var success = function () {
         browserUtil.closeWindow({
-          isConfirmExit: isClickConfirm
+          //isConfirmExit: isClickConfirm
         }) //没有通过打开组件规则打开的，组件变量都不存在，关闭当前窗口
       }
       var error = function () {}
@@ -597,7 +594,7 @@ function closeFrameWindow(output) {
 /**
  * 执行框架固定API
  */
-let executeAPI = function (frameInputParams, ruleContext) {
+let executeAPI = function (frameInputParams: any, ruleContext: any) {
   let actionAPIComponentCode = 'vbase_prdbizframe'
   let actionAPI = 'API_AfterOpenBizFrameWindowEvent'
   let ruleSetParams = {
@@ -628,11 +625,11 @@ let executeAPI = function (frameInputParams, ruleContext) {
  * 获取框架窗体入参
  */
 let getFrameInputParams = function (
-  frameBizWindows,
-  windowInputParams,
-  frameWindowNameMap,
-  scopeComponentCode,
-  scopeMetaCode
+  frameBizWindows: any,
+  windowInputParams: any,
+  frameWindowNameMap: any,
+  scopeComponentCode: any,
+  scopeMetaCode: any
 ) {
   let frameInputParams = {}
   // 单据实例
@@ -870,12 +867,12 @@ let getFrameInputParams = function (
       }
     }
     let frameActionDataValue = DBFactory.unSerialize(frameActionDataJson)
+    let variableCount = 0
+    let frameParams = new Array()
     // 构件窗体输入参数实体字段信息
     if (null != windowInputParams && undefined != windowInputParams) {
       //						var variables = windowInputParams["variable"];
-      let frameParams = new Array()
-      let variableCount = 0
-      for (variableCode in windowInputParams) {
+      for (let variableCode in windowInputParams) {
         let frameParam = {}
         variableCount++
         let variableValue = windowInputParams[variableCode]
