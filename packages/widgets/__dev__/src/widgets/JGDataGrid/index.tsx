@@ -7,25 +7,23 @@ const datagrid = () => {
       {convert({
         type: 'JGDataGrid',
         properties: {
-          code: 'JGDataGrid111',
-          height: '230',
+          code: 'JGDataGrid1',
+          height: '283',
           labelText: '列表',
-          left: '345',
-          multiHeight: '230px',
-          multiWidth: '480px',
-          percentHeight: '26.6%',
-          percentWidth: '36.1%',
-          rowHeight: '28',
-          showGridSummary: 'True',
-          tabIndex: '10',
-          top: '169',
-          width: '480'
+          left: '183',
+          multiHeight: '283px',
+          multiWidth: '752px',
+          percentHeight: '39.6%',
+          percentWidth: '62.6%',
+          tabIndex: '0',
+          top: '186',
+          width: '752'
         },
         headerControls: [
           {
             type: 'JGToolbar',
             properties: {
-              code: 'JGToolbar115'
+              code: 'JGToolbar1'
             },
             headerControls: [],
             controls: [],
@@ -34,77 +32,125 @@ const datagrid = () => {
                 dataSource: null,
                 dataMembers: []
               }
-            ]
+            ],
+            event: []
           }
         ],
         controls: [
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn112',
-              labelText: '文本'
+              code: 'JGTextBoxColumn_a',
+              labelText: 'a'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGDataGrid111',
+                dataSource: 'ds',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn112'
+                    value: 'a'
                   }
                 ]
               }
-            ]
+            ],
+            event: []
           },
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn113',
-              labelText: '文本'
+              code: 'JGTextBoxColumn_b',
+              labelText: 'b'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGDataGrid111',
+                dataSource: 'ds',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn113'
+                    value: 'b'
                   }
                 ]
               }
-            ]
+            ],
+            event: []
           },
           {
             type: 'JGTextBoxColumn',
             properties: {
-              code: 'JGTextBoxColumn114',
-              labelText: '文本'
+              code: 'JGTextBoxColumn_c',
+              labelText: 'c'
             },
             headerControls: [],
             controls: [],
             dataBindings: [
               {
-                dataSource: 'JGDataGrid111',
+                dataSource: 'ds',
                 dataMembers: [
                   {
                     name: '字段名称',
                     code: 'ColumnName',
-                    value: 'JGTextBoxColumn114'
+                    value: 'c'
                   }
                 ]
               }
-            ]
+            ],
+            event: []
+          },
+          {
+            type: 'JGTextBoxColumn',
+            properties: {
+              code: 'JGTextBoxColumn_d',
+              labelText: 'd'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'ds',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'd'
+                  }
+                ]
+              }
+            ],
+            event: []
+          },
+          {
+            type: 'JGTextBoxColumn',
+            properties: {
+              code: 'JGTextBoxColumn_e',
+              labelText: 'e'
+            },
+            headerControls: [],
+            controls: [],
+            dataBindings: [
+              {
+                dataSource: 'ds',
+                dataMembers: [
+                  {
+                    name: '字段名称',
+                    code: 'ColumnName',
+                    value: 'e'
+                  }
+                ]
+              }
+            ],
+            event: []
           }
         ],
         dataBindings: [
           {
-            dataSource: 'JGDataGrid111',
+            dataSource: 'ds',
             dataMembers: [
               {
                 name: '分组字段',
@@ -112,7 +158,8 @@ const datagrid = () => {
               }
             ]
           }
-        ]
+        ],
+        event: []
       })}
     </JGComponent>
   )

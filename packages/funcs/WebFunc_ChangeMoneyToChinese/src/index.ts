@@ -4,9 +4,10 @@
  */
 import * as exception from '@v-act/vjs.framework.extension.platform.services.integration.vds.exception'
 import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 const vds = { exception, object }
 
-const main = function (money: number): string {
+const main = function (money?: number): string {
   var cnNums = new Array(
     '零',
     '壹',
@@ -36,6 +37,7 @@ const main = function (money: number): string {
       '函数ChangeMoneyToChinese传入的参数为空！'
     )
   }
+  // @ts-ignore
   money = parseFloat(money.toString())
   if (isNaN(money)) {
     throw vds.exception.newConfigException(

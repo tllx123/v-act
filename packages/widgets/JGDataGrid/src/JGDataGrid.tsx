@@ -49,6 +49,9 @@ const rowSelection = {
 
 const JGDataGrid = (props: JGDataGridProps) => {
   const context = useContext()
+
+  console.log('context')
+  console.log(context)
   const {
     left,
     top,
@@ -113,7 +116,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
       console.log('data2')
       console.log(data2)
-      // let data3 =   deepcopy(data2 )
+      // let data3 = deepcopy(data2)
 
       let map = new Map()
       data2.forEach((item: any, index: any) => {
@@ -122,6 +125,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
         }
       })
       let data3 = [...map.values()]
+
       console.log('data3')
       console.log(data3)
 

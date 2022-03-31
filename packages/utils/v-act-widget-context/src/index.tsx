@@ -71,7 +71,6 @@ interface ContextProviderProps {
 
 const defaultContext: WidgetContextProps = {
   position: 'absolute',
-  entities: undefined,
   instanceId: ''
 }
 
@@ -105,12 +104,14 @@ const ContextProvider = function (props: ContextProviderProps) {
   const children = props.children
 
   const [contextTemp, setVal] = useState(context)
+  console.log('contextTemp')
+  console.log(contextTemp)
 
   //插入
   const insertDataFunc = (params: any) => {
     // const entities = context.entities
-    console.log('entities')
-    console.log(context.entities)
+    // console.log('entities')
+    // console.log(context.entities)
     // if (entities) {
     //   const entity = entities[params.code]
     //   if (entity) {
