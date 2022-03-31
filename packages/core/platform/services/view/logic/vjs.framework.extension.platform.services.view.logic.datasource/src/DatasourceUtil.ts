@@ -311,7 +311,7 @@ let insertOrUpdateRecords2Entity = function (
   operType: any,
   isClearDatas: boolean,
   ruleContext: any,
-  extraParams: any
+  extraParams?: any
 ) {
   if (undefined == ruleContext || null == ruleContext)
     throw new Error('规则上下文获取失败，请传入正确的ruleContext')
