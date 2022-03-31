@@ -6,7 +6,7 @@ import {
 import {
   ExpressionContext,
   ExpressionEngine as engine
-} from '@v-act/vjs.framework.extension.platform.services.engine.expression'
+} from 'packages/core/WebFunc_WFFromActivityName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerName/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskOwnerID/src/source/node_modules/packages/core/WebFunc_WFCurrentTaskCreateMod/src/source/node_modules/packages/core/WebFunc_WFCurrentActivityName/src/source/node_modules/@v-act/vjs.framework.extension.platform.services.engine.expression'
 //规则主入口(必须有)
 /* import {
   RuleContext
