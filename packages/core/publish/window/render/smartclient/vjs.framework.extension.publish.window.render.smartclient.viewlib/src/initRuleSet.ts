@@ -1,79 +1,7 @@
 import { WindowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
 import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { run } from '@v-act/xml-parser'
-
-import {
-  logicType,
-  routeParamsSchema,
-  ruleInstanceSchema
-} from './interfase/ruleSetInterFace'
-
-const setInstances = (
-  instance: ruleInstanceSchema,
-  instances: { [code: string]: any }
-): void => {
-  let {
-    ruleConfig,
-    $: {
-      instanceCode,
-      isEnabled,
-      ruleCode,
-      isNeedLog,
-      instanceName,
-      transactionType,
-      ruleName
-    }
-  } = instance
-
-  instances[instanceCode] = {
-    enable: isEnabled === 'True',
-    condition: '',
-    ruleCode: ruleCode,
-    instanceCode: instanceCode,
-    needLog: isNeedLog === 'True',
-    instanceName: instanceName,
-    transactionType: transactionType,
-    ruleName: ruleName,
-    inParams: ruleConfig
-  }
-}
-const getRuleInstances = (ruleInstances: ruleInstanceSchema[]): object => {
-  let instances = {}
-  for (let instance of ruleInstances) {
-    setInstances(instance, instances)
-  }
-  return instances
-}
-
-const parseLogic = (logic: logicType): routeParamsSchema | null => {
-  if (logic['$'].type == 'client') {
-    const ruleSet = logic.ruleSets.ruleSet
-    const ruleRoute = ruleSet.ruleRoute
-    const ruleInstances = ruleSet.ruleInstances.ruleInstance
-    const ruleInstanceList = ruleInstances
-      ? Array.isArray(ruleInstances)
-        ? ruleInstances
-        : [ruleInstances]
-      : []
-    if (logic.ruleInstances && logic.ruleInstances.ruleInstance) {
-      if (Array.isArray(logic.ruleInstances.ruleInstance)) {
-        logic.ruleInstances.ruleInstance.forEach((inst) => {
-          ruleInstanceList.push(inst)
-        })
-      } else {
-        ruleInstanceList.push(logic.ruleInstances.ruleInstance)
-      }
-    }
-    let route: routeParamsSchema = {
-      handler: Array.isArray(ruleRoute['_']) ? run(ruleRoute['_']) : null,
-      ruleInstances: getRuleInstances(ruleInstanceList),
-      transactionInfo: {}
-    }
-    return route
-  } else {
-    return null
-  }
-}
+import { logicType } from './interfase/ruleSetInterFace'
+import { parseLogic, parseData } from './utils'
 
 const addRoute = (
   componentCode: string,
@@ -127,24 +55,32 @@ const init = function (params: {
 
   if (Array.isArray(outputVariables)) {
     for (let item of outputVariables) {
-      WindowParam.addOutputDefines(componentCode, windowCode, item.variables)
+      WindowParam.addOutputDefines(
+        componentCode,
+        windowCode,
+        parseData(item.variable)
+      )
     }
   } else {
     WindowParam.addOutputDefines(
       componentCode,
       windowCode,
-      outputVariables.variable
+      parseData(outputVariables.variable)
     )
   }
   if (Array.isArray(inputVariables)) {
     for (let item of inputVariables) {
-      WindowParam.addInputDefines(componentCode, windowCode, item.variable)
+      WindowParam.addInputDefines(
+        componentCode,
+        windowCode,
+        parseData(item.variable)
+      )
     }
   } else {
     WindowParam.addInputDefines(
       componentCode,
       windowCode,
-      inputVariables.variable
+      parseData(inputVariables.variable)
     )
   }
 
