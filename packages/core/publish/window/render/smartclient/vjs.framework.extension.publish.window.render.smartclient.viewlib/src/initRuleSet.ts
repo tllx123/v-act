@@ -1,4 +1,5 @@
 import { WindowRoute } from '@v-act/vjs.framework.extension.platform.data.storage.schema.route'
+import { WindowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { run } from '@v-act/xml-parser'
 
 import {
@@ -116,6 +117,11 @@ const init = function (params: {
   winDatas: { logics: { logic: logicType | logicType[] } }
 }) {
   const { componentCode, windowCode, winDatas } = params
+  console.log(winDatas)
+  let { variables } = winDatas.windowOutputs
+  console.log(variables.variable, componentCode, windowCode)
+
+  WindowParam.addOutputDefines(variable, windowCode, variables.variable)
   let { logic } = winDatas.logics
   // 如果是数组，则添加多个Route
   if (Array.isArray(logic)) {
