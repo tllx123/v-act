@@ -1,4 +1,5 @@
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
 
 import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.interface.model.config'
 let token = 'WindowParam_Token_Key',
@@ -32,7 +33,7 @@ let addWindowDefines = function (
   let params = ParamConfigFactory.unSerialize(defines)
   if (params) {
     // @ts-ignore
-    sandbox.util.collections.each(params, function (param: any) {
+    CollectionUtil.each(params, function (param: any) {
       wStorage.put(param.getCode(), param)
     })
   }
