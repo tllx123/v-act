@@ -7,7 +7,7 @@ import * as expression from '@v-act/vjs.framework.extension.platform.services.in
 import * as log from '@v-act/vjs.framework.extension.platform.services.integration.vds.log'
 
 const vds = { ds, exception, log, expression }
-
+debugger
 const main = function (dsName: string, fieldName: String) {
   var datasource = null
   if (dsName == null)
