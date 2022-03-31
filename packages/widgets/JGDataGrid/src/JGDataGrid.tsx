@@ -49,6 +49,9 @@ const rowSelection = {
 
 const JGDataGrid = (props: JGDataGridProps) => {
   const context = useContext()
+
+  console.log('context')
+  console.log(context)
   const {
     left,
     top,
@@ -113,7 +116,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
       console.log('data2')
       console.log(data2)
-      // let data3 =   deepcopy(data2 )
+      // let data3 = deepcopy(data2)
 
       let map = new Map()
       data2.forEach((item: any, index: any) => {
@@ -122,6 +125,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
         }
       })
       let data3 = [...map.values()]
+
       console.log('data3')
       console.log(data3)
 
@@ -172,7 +176,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
     control.controls.some((item: any, index: any) => {
       dataHeader.push({
         title: item.properties.labelText,
-        dataIndex: item.properties.code,
+        dataIndex: item.properties.labelText,
         width: index == 0 ? 200 : 100,
         align: index == 0 ? undefined : 'center',
         key: item.properties.code,
@@ -180,6 +184,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
     })
   }
+
+  console.log('dataHeader-------------------')
+  console.log(dataHeader)
 
   // control.controls.some((item: any, index: any) => {
   //   dataHeader.push({
@@ -194,6 +201,9 @@ const JGDataGrid = (props: JGDataGridProps) => {
   let data: any = []
   if (tablename) {
     data = getEntityDatas(tablename, context)
+
+    console.log('data-------------------')
+    console.log(data)
   }
 
   if (Array.isArray(data)) {

@@ -1,6 +1,5 @@
 import React, { ReactNode, useState } from 'react'
 import { Property } from 'csstype'
-
 import { Height, Width } from '@v-act/schema-types'
 
 type FieldValue = string | number | boolean | null
@@ -59,9 +58,6 @@ interface WidgetContextProps {
     context: WidgetContextProps
   ) => void
   inputVal?: any
-  insertDataFunc?: (data: any) => void
-  updateDataFunc?: (data: any) => void
-  removeDataFunc?: (data: any) => void
   loadRecords?: (params: Record<string, any>) => void
   insertRecords?: (params: Record<string, any>) => void
   removeRecords?: (params: Record<string, any>) => void
@@ -76,7 +72,6 @@ interface ContextProviderProps {
 
 const defaultContext: WidgetContextProps = {
   position: 'absolute',
-  entities: undefined,
   instanceId: ''
 }
 
@@ -111,8 +106,10 @@ const ContextProvider = function (props: ContextProviderProps) {
   const children = props.children
 
   const [contextTemp, setVal] = useState(context)
-  //const [contextTemp, setVal] = useState({})
   const [load, setLoad] = useState(0.1)
+
+  console.log('contextTemp')
+  console.log(contextTemp)
 
   /**加载实体
    *  params = {
@@ -275,25 +272,6 @@ const ContextProvider = function (props: ContextProviderProps) {
     }
   }
 
-  //插入
-  const insertDataFunc = (params: any) => {
-    // const entities = context.entities
-    console.log('entities')
-    console.log(context.entities)
-    // if (entities) {
-    //   const entity = entities[params.code]
-    //   if (entity) {
-    //     entity.datas.push(params.record)
-    //     setVal(context)
-    //   }
-    // }
-  }
-
-  //更新
-  const updateDataFunc = (params: any) => {}
-  //删除
-  const removeDataFunc = (params: any) => {}
-
   const getFieldValue = (
     tableName: string,
     columnName: string,
@@ -345,9 +323,6 @@ const ContextProvider = function (props: ContextProviderProps) {
         ...contextTemp,
         getFieldValue,
         setFieldValueTemp,
-        insertDataFunc,
-        updateDataFunc,
-        removeDataFunc,
         loadRecords,
         insertRecords,
         removeRecords,

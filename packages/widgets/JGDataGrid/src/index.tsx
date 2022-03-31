@@ -25,7 +25,7 @@ const JsonJGDataGrid = function (props: {
 
 const convert = function (control: Control): JSX.Element {
   console.log(control.properties.labelText)
-  console.log('control')
+  console.log('control11111111111111111111')
   console.log(control)
 
   const pros = control.properties
