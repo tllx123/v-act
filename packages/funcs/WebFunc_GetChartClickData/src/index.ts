@@ -35,8 +35,8 @@ const main = function (widgetCode: string, fieldCode: string) {
     throw exception
   }
   var relValue = ''
-  var widget = vds.widget.getProperty(widgetCode, 'widgetObj')
-  var barClickData = widget.clickBarData
+  var barClickData = vds.widget.getProperty(widgetCode, 'clickBarData')
+  //var barClickData = widget.clickBarData
   if (barClickData && barClickData != null && barClickData != undefined) {
     for (var barCode in barClickData) {
       if (barCode == fieldCode) {
