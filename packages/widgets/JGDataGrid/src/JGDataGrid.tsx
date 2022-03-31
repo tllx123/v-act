@@ -99,7 +99,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
                 ? 'a' + (val[i - 1] ? val[i - 1] : '')
                 : (i - 1).toString() + 'a',
             title: val[i] ? val[i] : '',
-            dataIndex: item.properties.code,
+            dataIndex: item.properties.code.split('JGTextBoxColumn_')[1],
             width: index == 0 ? 200 : 100,
             align: index == 0 ? undefined : 'center',
             key: item.properties.code,
@@ -149,7 +149,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
             id: i.toString() + 'a',
             pid: i == 0 ? '$$$' : (i - 1).toString() + 'a',
             title: val[i] ? val[i] : '',
-            dataIndex: item.properties.code,
+            dataIndex: item.properties.code.split('JGTextBoxColumn_')[1],
             width: index == 0 ? 200 : 100,
             align: index == 0 ? undefined : 'center',
             key: item.properties.code,
