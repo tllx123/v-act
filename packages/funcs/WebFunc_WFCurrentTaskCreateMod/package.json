@@ -1,12 +1,12 @@
 {
-  "name": "@v-act/webfunc_vworkflowchangeinstancegraph",
+  "name": "@v-act/webfunc_wfcurrenttaskcreatemod",
   "version": "1.0.0-alpha.1",
-  "description": "2019-7-23zhaoyf：提交构件",
+  "description": "",
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",
-    "directory": "packages/funcs/WebFunc_VWorkFlowChangeInstanceGraph"
+    "directory": "packages/funcs/WebFunc_WFCurrentTaskCreateMod"
   },
   "main": "dist/index.js",
   "module": "dist/index.es.js",

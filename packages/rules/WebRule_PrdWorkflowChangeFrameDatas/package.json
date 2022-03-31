@@ -1,12 +1,12 @@
 {
-  "name": "@v-act/webfunc_vworkflowchangeinstancegraph",
+  "name": "@v-act/webrule_prdworkflowchangeframedatas",
   "version": "1.0.0-alpha.1",
-  "description": "2019-7-23zhaoyf：提交构件",
+  "description": "客户端规则",
   "homepage": "https://github.com/opensource-vplatform/v-act",
   "repository": {
     "type": "git",
     "url": "https://github.com/opensource-vplatform/v-act.git",
-    "directory": "packages/funcs/WebFunc_VWorkFlowChangeInstanceGraph"
+    "directory": "packages/rules/WebRule_PrdWorkflowChangeFrameDatas"
   },
   "main": "dist/index.js",
   "module": "dist/index.es.js",
