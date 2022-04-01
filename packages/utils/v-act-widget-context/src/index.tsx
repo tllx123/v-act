@@ -63,6 +63,7 @@ interface WidgetContextProps {
   removeRecords?: (params: Record<string, any>) => void
   updateRecords?: (params: Record<string, any>) => void
   setCurrentRecord?: (recordId: string, code: string) => void
+  clearRecords?: (code: string) => void
 }
 
 interface ContextProviderProps {
@@ -104,12 +105,7 @@ const ContextProvider = function (props: ContextProviderProps) {
   const entities: Record<string, any> = {}
   const context = props.context || { position: 'absolute', entities }
   const children = props.children
-
   const [contextTemp, setVal] = useState(context)
-  const [load, setLoad] = useState(0.1)
-
-  console.log('contextTemp')
-  console.log(contextTemp)
 
   /**加载实体
    *  params = {
@@ -139,6 +135,7 @@ const ContextProvider = function (props: ContextProviderProps) {
 
       entity.datas = [...entity.datas, ...records]
       entity._current = entity.datas[0]
+      setVal({ ...contextTemp })
     }
   }
 
@@ -157,9 +154,6 @@ const ContextProvider = function (props: ContextProviderProps) {
       return
     }
 
-    let insertIndex =
-      index < 0 ? 0 : index > records.length ? records.length : index
-
     if (entities) {
       const entity = entities[code]
 
@@ -168,6 +162,11 @@ const ContextProvider = function (props: ContextProviderProps) {
       }
 
       !Array.isArray(entity.datas) && (entity.datas = [])
+
+      let insertIndex = entity.datas.length
+      if (index !== undefined && index !== null) {
+        insertIndex = index < 0 ? 0 : index > insertIndex ? insertIndex : index
+      }
 
       entity.datas.splice(insertIndex, 0, ...records)
       setVal({ ...contextTemp })
@@ -197,15 +196,48 @@ const ContextProvider = function (props: ContextProviderProps) {
 
       !Array.isArray(entity.datas) && (entity.datas = [])
 
-      if (entity.datas.length === 0) {
+      if (entity?.datas?.length === 0) {
         return
       }
 
-      var newDatas = entity.datas.filter((item: any) => {
-        return records.indexOf(item.id) === -1
-      })
+      for (let i = 0; i < entity?.datas?.length; i++) {
+        if (records.includes(entity.datas[i].id)) {
+          entity.datas.splice(i, 1)
+          i--
+        }
+      }
 
-      entity.datas = newDatas
+      if (records.includes(entity?._current?.id)) {
+        entity._current = undefined
+      }
+
+      setVal({ ...contextTemp })
+    }
+  }
+
+  /**清除实体数据
+   * code : string
+   */
+  const clearRecords = (code: string) => {
+    const entities = contextTemp?.entities
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity?.datas?.length === 0) {
+        return
+      }
+
+      entity.datas && (entity.datas = [])
+      entity._current && (entity._current = undefined)
+
+      setVal({ ...contextTemp })
     }
   }
 
@@ -216,7 +248,7 @@ const ContextProvider = function (props: ContextProviderProps) {
    *  }
    */
   const updateRecords = (params: Record<string, any>) => {
-    const entities = context?.entities
+    const entities = contextTemp?.entities
     const { code, records } = params || {}
 
     if (!Array.isArray(records) || records.length === 0) {
@@ -269,6 +301,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       entity._current = entity.datas.find(
         (item: any) => item.id === recordId.toString()
       )
+      setVal({ ...contextTemp })
     }
   }
 
@@ -308,14 +341,14 @@ const ContextProvider = function (props: ContextProviderProps) {
       }
     }
   }
-  if (window != undefined) {
+  /* if (window != undefined) {
     window.contextTemp = contextTemp
     window.loadRecords = loadRecords
     window.insertRecords = insertRecords
     window.removeRecords = removeRecords
     window.updateRecords = updateRecords
     window.setCurrentRecord = setCurrentRecord
-  }
+  } */
 
   return (
     <WidgetContext.Provider
@@ -327,7 +360,8 @@ const ContextProvider = function (props: ContextProviderProps) {
         insertRecords,
         removeRecords,
         updateRecords,
-        setCurrentRecord
+        setCurrentRecord,
+        clearRecords
       }}
     >
       {children}

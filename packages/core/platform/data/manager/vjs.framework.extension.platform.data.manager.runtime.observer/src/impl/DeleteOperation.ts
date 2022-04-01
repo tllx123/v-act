@@ -1,48 +1,34 @@
 import * as utils from '../util/OperationUtils'
-import * as AbstractOperation from './AbstractOperation'
+import AbstractOperation from './AbstractOperation'
 
-let Operation = function (params: any) {
-  // @ts-ignore
-  AbstractOperation.call(this, params)
-}
+class Operation extends AbstractOperation {
+  operationType = 'Delete'
 
-Operation.prototype = {
-  operationType: 'Delete',
+  constructor(params: any) {
+    super(params)
+  }
 
-  initModule: function (sb: any) {
-    // @ts-ignore
-    var initFunc = AbstractOperation.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    // @ts-ignore
-    var prototype = Object.create(AbstractOperation.prototype)
-    prototype.constructor = Operation
-    sb.util.object.extend(prototype, Operation.prototype)
-    Operation.prototype = prototype
-  },
-
-  _combineLoad: function (operation: any) {
+  _combineLoad(operation: any) {
     utils.destroyWhenLoad(this, operation)
-  },
+  }
 
-  _combineDelete: function (operation: any) {
+  _combineDelete(operation: any) {
     utils.combine(this, operation)
-  },
+  }
 
-  _combineInsert: function (operation: any) {
+  _combineInsert(operation: any) {
     utils.destroy(operation, this)
-  },
+  }
 
-  _combineUpdate: function (operation: any) {
+  _combineUpdate(operation: any) {
     utils.destroy(operation, this)
-  },
+  }
 
-  _combineCurrent: function (operation: any) {
+  _combineCurrent(operation: any) {
     utils.destroyCurrent(operation, this)
-  },
+  }
 
-  _combineSelect: function (operation: any) {
+  _combineSelect(operation: any) {
     utils.opSelectWhenDelete(operation, this)
   }
 }

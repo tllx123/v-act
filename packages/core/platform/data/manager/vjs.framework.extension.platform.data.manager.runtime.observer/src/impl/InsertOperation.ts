@@ -1,44 +1,29 @@
 import * as utils from '../util/OperationUtils'
-import * as AbstractOperation from './AbstractOperation'
+import AbstractOperation from './AbstractOperation'
 
-let Operation = function (params: any) {
-  // @ts-ignore
-  AbstractOperation.call(this, params)
-}
-
-Operation.prototype = {
-  operationType: 'Insert',
-
-  initModule: function (sb: any) {
-    // @ts-ignore
-    var initFunc = AbstractOperation.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    // @ts-ignore
-    var prototype = Object.create(AbstractOperation.prototype)
-    prototype.constructor = Operation
-    sb.util.object.extend(prototype, Operation.prototype)
-    Operation.prototype = prototype
-  },
+class Operation extends AbstractOperation {
+  operationType = 'Insert'
+  constructor(params: any) {
+    super(params)
+  }
 
   /**
    * 合并删除
    * 当
    */
-  _combineDelete: function (operation: any) {
+  _combineDelete(operation: any) {
     utils.destroy(this, operation)
-  },
+  }
 
-  _combineLoad: function (operation: any) {
+  _combineLoad(operation: any) {
     utils.destroyWhenLoad(this, operation)
-  },
+  }
 
-  _combineUpdate: function (operation: any) {
+  _combineUpdate(operation: any) {
     utils.opUpdateWhenInsert(this, operation)
-  },
+  }
 
-  _combineInsert: function (operation: any) {
+  _combineInsert(operation: any) {
     utils.combine(this, operation)
   }
 }

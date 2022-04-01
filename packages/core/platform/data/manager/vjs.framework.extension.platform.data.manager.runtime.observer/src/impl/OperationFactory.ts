@@ -1,12 +1,12 @@
-import * as CurrentOperation from './CurrentOperation'
-import * as DeleteOperation from './DeleteOperation'
-import * as FetchedOperation from './FetchedOperation'
-import * as FetchOperation from './FetchOperation'
-import * as InsertOperation from './InsertOperation'
-import * as LoadOperation from './LoadOperation'
-import * as SelectOperation from './SelectOperation'
-import * as UnknowOperation from './UnknowOperation'
-import * as UpdateOperation from './UpdateOperation'
+import CurrentOperation from './CurrentOperation'
+import DeleteOperation from './DeleteOperation'
+import FetchedOperation from './FetchedOperation'
+import FetchOperation from './FetchOperation'
+import InsertOperation from './InsertOperation'
+import LoadOperation from './LoadOperation'
+import SelectOperation from './SelectOperation'
+import UnknowOperation from './UnknowOperation'
+import UpdateOperation from './UpdateOperation'
 
 let contructors = {
   CurrentOperation,
@@ -19,8 +19,6 @@ let contructors = {
   UpdateOperation,
   UnknowOperation
 }
-
-export function initModule(sb: any) {}
 
 const create = function (params: any) {
   let eventName = params.eventName
@@ -39,12 +37,4 @@ const create = function (params: any) {
   return new Contructor(paramObj)
 }
 
-export {
-  // _callAsyncObservers,
-  // addObserver,
-  // addOperation,
-  create
-  // destroy,
-  // fire,
-  // getBindedDatasourceNames
-}
+export { create }

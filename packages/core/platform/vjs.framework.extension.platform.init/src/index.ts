@@ -36,11 +36,23 @@ const init = function (params: {
   } = params
   const query = router.query
   const param = JSON.parse(query.param || '{}')
+
+  const {
+    loadRecords,
+    insertRecords,
+    removeRecords,
+    updateRecords,
+    setCurrentRecord,
+    clearRecords
+  } = context
+
   const entityOperation = {
-    insert: context.insertDataFunc,
-    update: context.updateDataFunc,
-    remove: context.removeDataFunc,
-    clear: context.clearDataFunc
+    loadRecords,
+    insertRecords,
+    removeRecords,
+    updateRecords,
+    setCurrentRecord,
+    clearRecords
   }
   scopeManager.getScope(scopeId).markInited()
   viewLib.init({

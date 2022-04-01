@@ -1,26 +1,13 @@
-import * as AbstractOperation from './AbstractOperation'
+import AbstractOperation from './AbstractOperation'
 
-let Operation = function (params: any) {
-  // @ts-ignore
-  AbstractOperation.call(this, params)
-}
+class Operation extends AbstractOperation {
+  operationType = 'Fetched'
 
-Operation.prototype = {
-  operationType: 'Fetched',
+  constructor(params: any) {
+    super(params)
+  }
 
-  initModule: function (sb: any) {
-    // @ts-ignore
-    var initFunc = AbstractOperation.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    // @ts-ignore
-    var prototype = Object.create(AbstractOperation.prototype)
-    prototype.constructor = Operation
-    sb.util.object.extend(prototype, Operation.prototype)
-    Operation.prototype = prototype
-  },
-  _combineFetch: function (operation: any, isBehind: boolean) {
+  _combineFetch(operation: any, isBehind: boolean) {
     operation.markDestroy()
     this.markDestroy()
   }
