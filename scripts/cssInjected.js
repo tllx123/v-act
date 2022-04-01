@@ -44,7 +44,7 @@ export default function cssInjectedByJsPlugin(
                 temp: cssToInject
               })
               temp.length > 12 && (temp = temp.slice(9, -2))
-              chunk.code = `${topCode}(function(){ try {var elementStyle = document.createElement('style'); elementStyle.innerText = \`${temp}\`; document.head.appendChild(elementStyle);} catch(e) {console.error(e, 'vite-plugin-css-injected-by-js: error when trying to add the style.');} })();${bottomCode}`
+              chunk.code = `${topCode}(function(){if(typeof document != 'undefined'){ try {var elementStyle = document.createElement('style'); elementStyle.innerText = \`${temp}\`; document.head.appendChild(elementStyle);} catch(e) {console.error(e, 'vite-plugin-css-injected-by-js: error when trying to add the style.');} }})();${bottomCode}`
             }
             break
           }

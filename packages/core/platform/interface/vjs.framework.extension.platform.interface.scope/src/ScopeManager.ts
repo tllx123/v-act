@@ -196,10 +196,10 @@ const openScope = function (scopeId: string | null) {
   if (scopeId !== null) {
     //把当前域存到window上，在div中触发事件时可以拿到当前域对象
     //@ts-ignore
-    if (typeof window != 'undefined') {
+    /*if (typeof window != 'undefined') {
       //@ts-ignore
       window.VPlatformScope = VPlatformScope
-    }
+    }*/
     VPlatformScope.push(scopeId)
     scopeStack.push(scopeId)
   } else {
@@ -222,13 +222,14 @@ const getParentScopeId = function (scopeId: string) {
 
 const closeScope = function () {
   //@ts-ignore
-  if (!window.VPlatformScope) {
-    //@ts-ignore
-    window.VPlatformScope = []
-  } else {
-    //@ts-ignore
-    window.VPlatformScope.pop()
-  }
+  // if (typeof window.VPlatformScope) {
+  //   //@ts-ignore
+  //   window.VPlatformScope = []
+  // } else {
+  //   //@ts-ignore
+  //   window.VPlatformScope.pop()
+  // }
+  VPlatformScope.pop()
   scopeStack.pop()
 }
 
