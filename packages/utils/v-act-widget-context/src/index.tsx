@@ -110,7 +110,8 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   const getAll = (code: string, context: any) => {
     const entities = context?.entities
-
+    //const context1 = useContext()
+    //const entities = context1?.entities
     if (entities) {
       if (!entities[code]) {
         entities[code] = {

@@ -15,13 +15,14 @@ import {
 } from '@v-act/widget-utils'
 
 import { JGComponent, JGComponentProps } from './JGComponent'
-import { useContext } from '@v-act/widget-context'
+import { useContext, WidgetContextProps } from '@v-act/widget-context'
 
 const convert = function (
   control: Control,
   render: WidgetRenderer,
   componentCode: string,
-  context: WidgetRenderContext
+  context: WidgetRenderContext,
+  ctx: WidgetContextProps
 ): ReactElement | null {
   const win = control as Window
   const pros = control.properties
@@ -31,7 +32,7 @@ const convert = function (
     padding: pros.padding,
     width: valueofWidth(pros.multiWidth, ReactEnum.Space),
     height: valueofHeight(pros.multiHeight, ReactEnum.Space),
-    entities: toEntities(win.entities)
+    entities: toEntities(ctx, win.entities)
   }
   return (
     <JGComponent {...props}>
@@ -60,7 +61,8 @@ const JsonJGComponent: FunctionComponent<{
     props.control,
     props.render,
     props.componentCode,
-    props.context
+    props.context,
+    ctx
   )
 }
 

@@ -526,7 +526,13 @@ const __fieldValueConverts: { [type: string]: Function } = {
   }
 }
 
-const toEntities = function (entities?: Entity[]): Entities {
+const toEntities = function (
+  context: WidgetContextProps,
+  entities?: Entity[]
+): Entities {
+  if (context.entities) {
+    return context.entities
+  }
   const result: Entities = {}
   if (entities) {
     entities.forEach((entity) => {
