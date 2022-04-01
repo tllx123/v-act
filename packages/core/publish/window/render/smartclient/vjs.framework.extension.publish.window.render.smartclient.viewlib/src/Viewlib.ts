@@ -33,6 +33,7 @@ import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 import eventHandler from './eventHandler'
 import * as initRuleSet from './initRuleSet'
+import * as initComponent from './initComponent'
 
 const _initWindowInfoFromJson = function (params) {
   //TODO 标记appinfo已初始化
@@ -41,6 +42,7 @@ const _initWindowInfoFromJson = function (params) {
   _initVMInfo(params)
   initRuleSet.init(params)
   eventHandler(params)
+  initComponent.init(params)
 }
 
 const _initVMInfo = function (params: Record<string, any>) {

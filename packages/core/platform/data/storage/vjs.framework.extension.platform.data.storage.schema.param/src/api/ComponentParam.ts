@@ -3,6 +3,7 @@ import { ParamConfigFactory } from '@v-act/vjs.framework.extension.platform.inte
 import { ComponentInit as componentInit } from '@v-act/vjs.framework.extension.platform.services.init'
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { Log as logUtil } from '@v-act/vjs.framework.extension.util.logutil'
+import { CollectionUtil } from '@v-act/vjs.framework.extension.util.collection'
 
 let tokenPrefix = 'COMPONENT_SCHEMA_PARAM',
   COMPONENT_VARIANT_INFO_KEY = 'COMPONENT_VARIANT_INFO_KEY',
@@ -41,8 +42,8 @@ let addParamsToStorage = function (
   let params = ParamConfigFactory.unSerialize(configs)
   if (params) {
     let storage = getComponentStorage(componentCode, domain)
-    // @ts-ignore
-    sandbox.util.collections.each(params, function (param: any) {
+
+    CollectionUtil.each(params, function (param: any) {
       storage.put(param.getCode(), param)
     })
   }

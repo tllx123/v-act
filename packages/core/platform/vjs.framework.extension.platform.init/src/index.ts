@@ -20,6 +20,7 @@ const init = function (params: {
   router: any
   stackInfo: any
   scopeId: string
+  componentSchema: any
 }) {
   const {
     componentCode,
@@ -30,7 +31,8 @@ const init = function (params: {
     ruleDefines,
     funcDefines,
     stackInfo,
-    context
+    context,
+    componentSchema
   } = params
   const query = router.query
   const param = JSON.parse(query.param || '{}')
@@ -73,6 +75,7 @@ const init = function (params: {
         param
       )
     },
+    componentSchema,
     winDatas: winJson,
     rendered: (sId: string) => {
       const scope = scopeManager.getScope(sId)
