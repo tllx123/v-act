@@ -254,4 +254,4 @@ var CryptoJS =
   i.HmacSHA1 = m._createHmacHelper(n)
 })()
 
-export { CryptoJS, genHash }
+export { CryptoJS }

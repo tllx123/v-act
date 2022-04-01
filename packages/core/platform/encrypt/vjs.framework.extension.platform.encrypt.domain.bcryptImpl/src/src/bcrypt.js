@@ -20,18 +20,21 @@ var randomFallback = null
  * @inner
  */
 function random(len) {
-  /* node */ if (typeof module !== 'undefined' && module && module['exports'])
+  /* node */
+  if (typeof module !== 'undefined' && module && module['exports'])
     try {
       return require('crypto')['randomBytes'](len)
     } catch (e) {}
-  /* WCA */ try {
+  /* WCA */
+  try {
     var a
     ;(self['crypto'] || self['msCrypto'])['getRandomValues'](
       (a = new Uint32Array(len))
     )
     return Array.prototype.slice.call(a)
   } catch (e) {}
-  /* fallback */ if (!randomFallback)
+  /* fallback */
+  if (!randomFallback)
     throw Error(
       'Neither WebCryptoAPI nor a crypto module is available. Use bcrypt.setRandomFallback to set an alternative'
     )
@@ -945,7 +948,10 @@ function _streamtoword(data, offp) {
   for (var i = 0, word = 0; i < 4; ++i)
     (word = (word << 8) | (data[offp] & 0xff)),
       (offp = (offp + 1) % data.length)
-  return { key: word, offp: offp }
+  return {
+    key: word,
+    offp: offp
+  }
 }
 
 /**
@@ -1211,4 +1217,4 @@ bcrypt.encodeBase64 = base64_encode
  */
 bcrypt.decodeBase64 = base64_decode
 
-export { bcrypt, genHash }
+export { bcrypt }
