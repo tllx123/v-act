@@ -1,4 +1,6 @@
 import type { XMLElementObj } from './parse'
+import { ExpressionEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 const ForInObj = (source: XMLElementObj[], executionRules: Function) => {
   for (let target of source) {
@@ -14,83 +16,11 @@ const filterTagEle = (
 }
 
 export const run = (resources: XMLElementObj[]): Function => {
+  let context = new FunctionContext()
   let codes: string[] = []
 
   // if else状态开关
   let elseMark = false
-
-  const executionRules = async (tagName: string, target: XMLElementObj) => {
-    switch (tagName) {
-      case 'if':
-        parseIf(target)
-        break
-      case 'else':
-        parseElse(target)
-        break
-      case 'foreach':
-        parseForEach(target)
-        break
-      case 'evaluateRule':
-        codes.push(String(target.attrs.code))
-        break
-    }
-
-    function parseIf(target: XMLElementObj) {
-      const define: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'define'
-      )
-      const sequence: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'sequence'
-      )
-      const expression: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>define.children,
-        'expression'
-      )
-
-      if (expression.children[0] === 'True') {
-        ForInObj(<XMLElementObj[]>sequence.children, executionRules)
-      } else {
-        elseMark = true
-      }
-    }
-
-    function parseElse(target: XMLElementObj) {
-      if (elseMark) {
-        elseMark = false
-        const sequence: XMLElementObj = filterTagEle(
-          <XMLElementObj[]>target.children,
-          'sequence'
-        )
-        ForInObj(<XMLElementObj[]>sequence.children, executionRules)
-      }
-    }
-
-    function parseForEach(target: XMLElementObj) {
-      const sequence: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'sequence'
-      )
-      const varCode: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'varCode'
-      )
-      const entityType: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'entityType'
-      )
-      const entityCode: XMLElementObj = filterTagEle(
-        <XMLElementObj[]>target.children,
-        'entityCode'
-      )
-
-      for (let i = 0; i < 3; i++) {
-        ForInObj(<XMLElementObj[]>sequence.children, executionRules)
-      }
-    }
-  }
-  ForInObj(resources, executionRules)
 
   return function (
     ruleEngine: {
@@ -104,6 +34,90 @@ export const run = (resources: XMLElementObj[]): Function => {
     },
     routeRuntime: any
   ) {
+    const executionRules = async (tagName: string, target: XMLElementObj) => {
+      switch (tagName) {
+        case 'if':
+          parseIf(target)
+          break
+        case 'else':
+          parseElse(target)
+          break
+        case 'foreach':
+          parseForEach(target)
+          break
+        case 'evaluateRule':
+          codes.push(String(target.attrs.code))
+          break
+      }
+
+      function parseIf(target: XMLElementObj) {
+        const define: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'define'
+        )
+        const sequence: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'sequence'
+        )
+        const expression: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>define.children,
+          'expression'
+        )
+
+        context.routeContext = routeRuntime
+        let res = ExpressionEngine.execute({
+          context: context,
+          expression: expression.children[0]
+        })
+        console.log(res)
+        if (
+          ExpressionEngine.execute({
+            context: context,
+            expression: expression.children[0]
+          })
+        ) {
+          ForInObj(<XMLElementObj[]>sequence.children, executionRules)
+        } else {
+          elseMark = true
+        }
+      }
+
+      function parseElse(target: XMLElementObj) {
+        if (elseMark) {
+          elseMark = false
+          const sequence: XMLElementObj = filterTagEle(
+            <XMLElementObj[]>target.children,
+            'sequence'
+          )
+          ForInObj(<XMLElementObj[]>sequence.children, executionRules)
+        }
+      }
+
+      function parseForEach(target: XMLElementObj) {
+        const sequence: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'sequence'
+        )
+        const varCode: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'varCode'
+        )
+        const entityType: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'entityType'
+        )
+        const entityCode: XMLElementObj = filterTagEle(
+          <XMLElementObj[]>target.children,
+          'entityCode'
+        )
+
+        for (let i = 0; i < 3; i++) {
+          ForInObj(<XMLElementObj[]>sequence.children, executionRules)
+        }
+      }
+    }
+    ForInObj(resources, executionRules)
+
     function runFun(index: number) {
       if (routeRuntime.isInterrupted()) {
         routeRuntime.fireRouteCallBack()

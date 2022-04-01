@@ -38,7 +38,8 @@ const execute = function (params: IExecuteParams) {
   let result: Function = new Function('context', funMain)
 
   try {
-    return result(context)
+    let res = result(context)
+    return res
   } catch (e) {
     throw new Error(
       '解释表达式【' + expression + '】中的变量出现错误,错误原因：' + e.message

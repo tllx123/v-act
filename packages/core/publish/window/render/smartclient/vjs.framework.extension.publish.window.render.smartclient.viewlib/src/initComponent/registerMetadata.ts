@@ -8,8 +8,8 @@ export default (domains: IDomains) => {
     for (let item of module) {
       if (Array.isArray(item.elements)) {
       } else {
-        item.elements.element.config = JSON.parse(item.elements.element.config)
-        console.log(item.elements.element)
+        // item.elements.element.config = JSON.parse(item.elements.element.config)
+        // console.log(item.elements.element)
       }
     }
   }

@@ -73,4 +73,4 @@ const xml = `<root>
 `
 const dom = parser.parse(xml)
 
-parser.run(dom[0].children)
+console.log(parser.run(dom[0].children))
