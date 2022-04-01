@@ -1,42 +1,28 @@
 import * as utils from '../util/OperationUtils'
-import * as AbstractOperation from './AbstractOperation'
+import AbstractOperation from './AbstractOperation'
 
-let Operation = function (params: any) {
-  // @ts-ignore
-  AbstractOperation.call(this, params)
-  // @ts-ignore
-  let record = this.getParams().currentRecord
-  record.setChangedData(null)
-}
+class Operation extends AbstractOperation {
+  operationType = 'Current'
 
-Operation.prototype = {
-  operationType: 'Current',
+  constructor(params: any) {
+    super(params)
+    let record = this.getParams().currentRecord
+    record.setChangedData(null)
+  }
 
-  initModule: function (sb: any) {
-    // @ts-ignore
-    var initFunc = AbstractOperation.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    } // @ts-ignore
-    var prototype = Object.create(AbstractOperation.prototype)
-    prototype.constructor = Operation
-    sb.util.object.extend(prototype, Operation.prototype)
-    Operation.prototype = prototype
-  },
-
-  _isBefore: function (o: any) {
+  _isBefore(o: any) {
     return o.getOperationPosition() > this.getOperationPosition()
-  },
+  }
 
-  _combineCurrent: function (operation: any) {
+  _combineCurrent(operation: any) {
     if (this._isBefore(operation)) {
       this.markDestroy()
     } else {
       operation.markDestroy()
     }
-  },
+  }
 
-  _combineLoad: function (operation: any) {
+  _combineLoad(operation: any) {
     if (this._isBefore(operation)) {
       let params = operation.getParams()
       let isAppend = params.isAppend
@@ -45,9 +31,9 @@ Operation.prototype = {
         this.markDestroy()
       }
     }
-  },
+  }
 
-  _combineDelete: function (operation: any) {
+  _combineDelete(operation: any) {
     utils.destroyCurrent(this, operation)
   }
 }

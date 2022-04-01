@@ -35,6 +35,7 @@ widgetDefines.JGCollapse = JGCollapse1;
 
 const windowObjs = {{@ windowJsonScript}};
 
+let context = null;
 function Index(props:{instanceId:string}){
     parse();
     const componentSchema = returnComponentSchema()
@@ -53,7 +54,10 @@ function Index(props:{instanceId:string}){
       });
       windowScope = scopeManager.getScope(instanceId);
     }
-    const context = useContext()   
+    const setContext = (ctx)=>{
+      context = ctx
+    }
+    //const context = useContext()   
     useEffect(()=>{
       const initVPlatformWin = async()=>{
         try{
@@ -99,7 +103,7 @@ function Index(props:{instanceId:string}){
               windowSchema: windowObjs,
               widgetDefines,
               windowScope,
-              context: {router,stackInfo}
+              context: {router,stackInfo,setContext}
             })}
         </React.Fragment>   
     );

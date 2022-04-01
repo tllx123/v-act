@@ -1,6 +1,7 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourceUtil as datasourceUtil } from '@v-act/vjs.framework.extension.platform.services.view.logic.datasource'
 import { WidgetAction as widgetAction } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { WidgetProperty as widgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
 
 function DefaultValueGenerator(
   datasourceName: string,
@@ -39,7 +40,8 @@ DefaultValueGenerator.prototype.generate = function () {
       )
       for (var j = 0; j < widgetCodeList.length; j++) {
         var widgetCode = widgetCodeList[j]
-        if (widgetAction.isWidgetActionExist(widgetCode, 'getDefaultValue')) {
+        defaultValue = widgetProperty.get(widgetCode, 'DefaultValue')
+        /*if (widgetAction.isWidgetActionExist(widgetCode, 'getDefaultValue')) {
           var widgetDefaultValue = widgetAction.executeWidgetAction(
             widgetCode,
             'getDefaultValue',
@@ -61,7 +63,7 @@ DefaultValueGenerator.prototype.generate = function () {
               defaultValue = widgetDefaultValue
             }
           }
-        }
+        }*/
       }
       if (undefined == defaultValue || null == defaultValue) {
         return null

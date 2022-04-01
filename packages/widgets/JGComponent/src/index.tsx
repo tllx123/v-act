@@ -15,6 +15,7 @@ import {
 } from '@v-act/widget-utils'
 
 import { JGComponent, JGComponentProps } from './JGComponent'
+import { useContext } from '@v-act/widget-context'
 
 const convert = function (
   control: Control,
@@ -53,6 +54,8 @@ const JsonJGComponent: FunctionComponent<{
   componentCode: string
   context: WidgetRenderContext
 }) {
+  const ctx = useContext()
+  props.context.setContext(ctx)
   return convert(
     props.control,
     props.render,
