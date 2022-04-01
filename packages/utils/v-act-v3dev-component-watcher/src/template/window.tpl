@@ -89,11 +89,11 @@ function Index(props:{instanceId:string}){
         winScope.markIniting();
         initVPlatformWin();
       }
-      return ()=>{
+      /*return ()=>{
         if (scopeManager.getScope(instanceId).isInited()) {
           scopeManager.destroy(instanceId)
         }
-      }
+      }*/
     });
     return (
         <React.Fragment>
