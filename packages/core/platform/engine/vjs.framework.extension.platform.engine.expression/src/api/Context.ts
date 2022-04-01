@@ -136,6 +136,19 @@ export default class Context {
     return null
   }
 
+  //获取foreach循环变量的值
+  //格式：LV.[变量英文名称].[字段名称]
+  evaluateForEachVar(varCode: string, fieldCode: string) {
+    let ctx = this.context.get('expressionContext')
+    let routeContext = ctx.getRouteContext()
+    if (routeContext) {
+      let record = routeContext.getForEachVarValue(varCode)
+      return record.get(fieldCode)
+    } else {
+      return null
+    }
+  }
+
   /**
    * 获取活动集输出实体参数的字段值
    * 格式：BR_OUT_PARENT.[变量英文名称].[字段名称]

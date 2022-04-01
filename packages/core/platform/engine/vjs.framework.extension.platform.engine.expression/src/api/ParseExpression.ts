@@ -118,6 +118,9 @@ const ParseExpression = function (exp: string) {
     },
     printDivideSyntax: function (syntax, print) {
       return `context.evaluateDiv(${syntax.getLeft()},${syntax.getRight()})`
+    },
+    printForeachVarSyntax: function (syntax) {
+      return `context.evaluateForEachVar(${syntax.getVarCode()},${syntax.getFieldCode()})`
     }
   })
 }

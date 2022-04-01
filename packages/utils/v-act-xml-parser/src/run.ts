@@ -65,17 +65,12 @@ export const run = (resources: XMLElementObj[]): Function => {
         )
 
         context.routeContext = routeRuntime
-        let res = ExpressionEngine.execute({
+
+        let judgment = ExpressionEngine.execute({
           context: context,
           expression: expression.children[0]
         })
-        console.log(res)
-        if (
-          ExpressionEngine.execute({
-            context: context,
-            expression: expression.children[0]
-          })
-        ) {
+        if (judgment) {
           ForInObj(<XMLElementObj[]>sequence.children, executionRules)
         } else {
           elseMark = true
