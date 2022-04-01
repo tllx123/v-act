@@ -1,5 +1,4 @@
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 //主入口(必须有)
 let main = function (param: any) {

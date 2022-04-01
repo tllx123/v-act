@@ -1,6 +1,5 @@
 import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
-import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 //主入口(必须有)
 let main = function (param: any) {
