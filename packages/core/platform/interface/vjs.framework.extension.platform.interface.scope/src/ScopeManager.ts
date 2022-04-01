@@ -191,17 +191,16 @@ const getWindowScope = function () {
   }
   return null
 }
-
+const VPlatformScope: string[] = []
 const openScope = function (scopeId: string | null) {
   if (scopeId !== null) {
     //把当前域存到window上，在div中触发事件时可以拿到当前域对象
     //@ts-ignore
-    if (!window.VPlatformScope) {
+    if (typeof window != 'undefined') {
       //@ts-ignore
-      window.VPlatformScope = []
+      window.VPlatformScope = VPlatformScope
     }
-    //@ts-ignore
-    window.VPlatformScope.push(scopeId)
+    VPlatformScope.push(scopeId)
     scopeStack.push(scopeId)
   } else {
     throw Error('scopeId不能为null')

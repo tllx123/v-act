@@ -921,8 +921,49 @@ const parseWindowSchema = function (params: {
     } else {
       return null
     }
-  } catch (err) {
-    console.error(err)
+  } catch (err: any) {
+    console.error('渲染窗体出现错误！错误原因：' + err)
+    if (err.stack) {
+      let stackTrace: string[] = []
+      let stack = err.stack
+      if (typeof stack != 'string') {
+        while (stack) {
+          stackTrace.push(err.name)
+          stackTrace.push(': ')
+          stackTrace.push(err.message)
+          for (let i = 0; i < stack.length; i++) {
+            let frame = stack[i]
+            //@ts-ignore
+            let funcName = frame.getFunctionName()
+              ? //@ts-ignore
+                frame.getFunctionName()
+              : '(anonymous function)'
+            stackTrace.push('\n    at ')
+            stackTrace.push(funcName)
+            stackTrace.push(' ')
+            //@ts-ignore
+            stackTrace.push(frame.getScriptNameOrSourceURL())
+            stackTrace.push(':')
+            //@ts-ignore
+            stackTrace.push(frame.getLineNumber())
+            stackTrace.push(':')
+            //@ts-ignore
+            stackTrace.push(frame.getColumnNumber())
+          }
+          if (err) {
+            //@ts-ignore
+            let preError = err.error
+            stack = preError ? preError.stack : null
+          } else {
+            //@ts-ignore
+            stack = null
+          }
+        }
+      } else {
+        stackTrace.push(stack)
+      }
+      console.error(stackTrace.join(''))
+    }
     return null
   }
 }
