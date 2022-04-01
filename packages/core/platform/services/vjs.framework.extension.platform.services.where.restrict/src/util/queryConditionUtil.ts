@@ -368,11 +368,11 @@ const ExtraConditionNode = function (routeContext) {
       )
       let fieldValue = fieldObj.value
       let isFieldParam = fieldObj.isParam
-
+      let valueObj
       // 取运算符右侧
       if (!isNeedlessParameterized(operation)) {
         //判断是否需要参数，不需要参数，就没必要进入获取参数值
-        let valueObj = this.getCondRight(
+        valueObj = this.getCondRight(
           cond['value'],
           cond['valueType'],
           cond['columnType'],
@@ -380,7 +380,7 @@ const ExtraConditionNode = function (routeContext) {
           valueQueryControlID
         )
       } else {
-        let valueObj = {
+        valueObj = {
           value: 'null',
           isParam: false
         }

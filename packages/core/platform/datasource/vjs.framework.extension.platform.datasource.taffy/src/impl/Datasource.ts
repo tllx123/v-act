@@ -183,7 +183,19 @@ class Datasource {
         isAppend: isAppend
       })
     })
-    this.db._load(datas, isAppend)
+    //this.db._load(datas, isAppend)
+    //v-act:加载实体记录
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+    let paramsTemp = {
+      code: code,
+      records: datas
+    }
+
+    context.loadRecords(paramsTemp)
+
     if (_fireEvent) {
       this._fireEvent({
         eventName: this.Events.LOAD,
@@ -341,16 +353,19 @@ class Datasource {
         }
       }
     }
-    this.db._insert(toInserted, index)
-    debugger
-    const windowScope = scopeManager.getWindowScope()
-    const operations = windowScope.get('dataSourceHandler')
+
+    //v-act:新增实体记录
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
     const code = this.metadata.getDatasourceName()
     let paramsTemp = {
       code: code,
-      records: toInserted
+      //records: toInserted
+      records: toInserted[0]?.changedData
     }
-    operations.insert(paramsTemp)
+
+    context.insertRecords(paramsTemp)
 
     let resultSet = this._r2rs(toInserted)
     this._fireEvent({
@@ -409,14 +424,17 @@ class Datasource {
     if (updated.length > 0) {
       let oDatas = this.db._update(updated)
 
-      const windowScope = scopeManager.getWindowScope()
-      const operations = windowScope.get('dataSourceHandler')
+      //v-act:更新实体记录
+      const scopeId = scopeManager.getCurrentScopeId()
+      const scope = scopeManager.getScope(scopeId)
+      const context = scope.get('dataSourceHandler')
       const code = this.metadata.getDatasourceName()
       let paramsTemp = {
         code: code,
         records: updated
       }
-      operations.update(paramsTemp)
+
+      context.updateRecords(paramsTemp)
 
       let rs = new ResultSet(this.metadata, oDatas)
       this._fireEvent({
@@ -454,14 +472,17 @@ class Datasource {
 
     this.deleteDatas = this.deleteDatas.concat(deleted)
 
-    const windowScope = scopeManager.getWindowScope()
-    const operations = windowScope.get('dataSourceHandler')
+    //v-act:删除实体记录
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
     const code = this.metadata.getDatasourceName()
     let paramsTemp = {
       code: code,
       records: this.deleteDatas
     }
-    operations.remove(paramsTemp)
+
+    context.removeRecords(paramsTemp)
 
     let rs = new ResultSet(this.metadata, datas)
     if (datas.length > 0) {
@@ -495,23 +516,17 @@ class Datasource {
         temp.push(data)
       }
       datas = temp
-      //sc数据源获取所有数据时,返回引用值,删除时会同步删除数组中的数据
-      if (this.db.hasOwnProperty('_clear')) {
-        // @ts-ignore
-        this.db._clear()
-      } else {
-        this.db._remove(ids)
-      }
 
-      const windowScope = scopeManager.getWindowScope()
-      const operations = windowScope.get('dataSourceHandler')
+      //v-act:清除实体记录
+      const scopeId = scopeManager.getCurrentScopeId()
+      const scope = scopeManager.getScope(scopeId)
+      const context = scope.get('dataSourceHandler')
       const code = this.metadata.getDatasourceName()
-      let paramsTemp = {
-        code: code
-      }
-      operations.clear(paramsTemp)
+
+      context.clearRecords(code)
     }
-    this._removeRecords(datas, null, true)
+    //context.clearRecords已经清除实体记录，无需再次执行this._removeRecords
+    //this._removeRecords(datas, null, true)
     this.reset()
     this.selectIds = []
     let snapshot = this._getSnapshot()
@@ -531,7 +546,6 @@ class Datasource {
     this.insertIds = []
     this.updateIds = []
     this.deleteDatas = []
-    //this.db._clearData();
   }
 
   createRecord() {
@@ -868,6 +882,14 @@ class Datasource {
           datasource: this.ds
         })
       }
+
+      //v-act:设置当前行
+      const scopeId = scopeManager.getCurrentScopeId()
+      const scope = scopeManager.getScope(scopeId)
+      const context = scope.get('dataSourceHandler')
+      const code = this.metadata.getDatasourceName()
+
+      context.setCurrentRecord(id, code)
     }
   }
 

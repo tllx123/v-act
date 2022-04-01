@@ -206,4 +206,4 @@ function calcDigest() {
   document.SHAForm.MessageDigest.value = digestM
 }
 
-export { genHash, hex_sha1 }
+export { hex_sha1 }

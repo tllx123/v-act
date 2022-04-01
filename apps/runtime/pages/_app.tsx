@@ -14,7 +14,7 @@ export default class MyApp extends App {
     return { pageProps, level, url: ctx.asPath }
   }
   render() {
-    const { Component, pageProps, url, router } = this.props
+    const { Component, pageProps, router } = this.props
     const query = router.query
     const level = parseInt(query.modal, 10) || 0
     const title = query.title || ''
@@ -22,7 +22,7 @@ export default class MyApp extends App {
     const page = <Component {...pageProps} />
     return (
       <ThemeProvider theme={theme}>
-        <PageManager page={page} level={level} url={url} title={title} />
+        <PageManager page={page} level={level} url={router.asPath} title={title} />
       </ThemeProvider>
     )
   }

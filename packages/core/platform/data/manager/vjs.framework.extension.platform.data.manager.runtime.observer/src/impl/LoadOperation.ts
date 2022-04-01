@@ -1,28 +1,13 @@
 import * as utils from '../util/OperationUtils'
-import * as AbstractOperation from './AbstractOperation'
+import AbstractOperation from './AbstractOperation'
 
-let Operation = function (params: any) {
-  // @ts-ignore
-  AbstractOperation.call(this, params)
-}
+class Operation extends AbstractOperation {
+  operationType = 'Load'
+  constructor(params: any) {
+    super(params)
+  }
 
-Operation.prototype = {
-  operationType: 'Load',
-
-  initModule: function (sb: any) {
-    // @ts-ignore
-    var initFunc = AbstractOperation.prototype.initModule
-    if (initFunc) {
-      initFunc.call(this, sb)
-    }
-    // @ts-ignore
-    var prototype = Object.create(AbstractOperation.prototype)
-    prototype.constructor = Operation
-    sb.util.object.extend(prototype, Operation.prototype)
-    Operation.prototype = prototype
-  },
-
-  _combineLoad: function (operation: any, isBehind: any) {
+  _combineLoad(operation: any, isBehind: any) {
     let params = operation.getParams()
     let isAppend = params.isAppend
     if (!isAppend) {
@@ -31,20 +16,20 @@ Operation.prototype = {
             this.getParams().resultSet.combine(params.resultSet);
             operation.markDestroy();
         }*/
-  },
+  }
 
-  _combineInsert: function (operation: any) {
+  _combineInsert(operation: any) {
     utils.destroyWhenLoad(operation, this)
-  },
+  }
 
-  _combineUpdate: function (operation: any) {
+  _combineUpdate(operation: any) {
     utils.destroyWhenLoad(operation, this)
-  },
+  }
 
-  _combineDelete: function (operation: any) {
+  _combineDelete(operation: any) {
     utils.destroyWhenLoad(operation, this)
-  },
-  _combineCurrent: function (operation: any) {
+  }
+  _combineCurrent(operation: any) {
     let params = operation.getParams()
     let isAppend = params.isAppend
     if (
@@ -53,8 +38,8 @@ Operation.prototype = {
     ) {
       operation.markDestroy()
     }
-  },
-  _combineSelect: function (operation: any) {
+  }
+  _combineSelect(operation: any) {
     utils.destroyWhenLoad(operation, this)
   }
 }

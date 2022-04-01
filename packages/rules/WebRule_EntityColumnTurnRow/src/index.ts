@@ -13,10 +13,7 @@ const main = function (ruleContext: RuleContext) {
       var sourceName: string = cfgParams['sourceName']
       var fieldMapping: any[] = cfgParams['fieldMapping']
       // 获取到来源表的字段结构信息
-      var datasource: {
-        getMetadata: () => any
-        getAllRecords: () => { toArray: () => any[] }
-      } = vds.ds.lookup(sourceName)
+      var datasource: any = vds.ds.lookup(sourceName)
       var metadata: { getFields: () => any } = datasource.getMetadata()
       var srcDataMete: any[] = metadata.getFields()
       // 去获来源表的数据，可以只获取修改过的
@@ -65,10 +62,7 @@ const main = function (ruleContext: RuleContext) {
       }
       // 下面是将转换后的数据写到目标表中
       var insertRecords: any[] = []
-      var destDatasource: {
-        createRecord: () => any
-        insertRecords: (x: any[]) => any
-      } = vds.ds.lookup(destName)
+      var destDatasource: any = vds.ds.lookup(destName)
       for (var i = 0; i < transedData.length; i++) {
         var emptyRecord: Record<string, any> = destDatasource.createRecord()
         for (var j = 0; j < fieldMapping.length; j++) {

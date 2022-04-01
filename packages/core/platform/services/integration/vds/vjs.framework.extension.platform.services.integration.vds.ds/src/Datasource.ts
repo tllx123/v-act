@@ -1,9 +1,12 @@
 import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
 
+import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
+
 import Metadata from './Metadata'
 import Record from './Record'
 import ResultSet from './ResultSet'
 
+const vds = { object }
 /**
  * 数据源定义
  * @constructor

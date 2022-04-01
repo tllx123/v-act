@@ -358,25 +358,17 @@ const JGCheckBoxGroup = function (props: JGCheckBoxGroupProps) {
     value.indexOf(item.id) > -1 && (item.selected = true)
   })
 
-  const [checkboxData, setCheckboxData] = React.useState(constData)
+  let [checkboxData, setCheckboxData] = React.useState(constData)
 
-  const records: Array<{
-    id: string
-    text: string
-    selected?: boolean
-  }> = []
   constData.forEach((constDataItem) => {
-    const record = checkboxData.find((checkboxDataItem) => {
+    checkboxData.find((checkboxDataItem) => {
       if (constDataItem.id === checkboxDataItem.id) {
-        Object.assign(checkboxDataItem, constDataItem)
+        constDataItem.selected = checkboxDataItem.selected
       }
       return constDataItem.id === checkboxDataItem.id
     })
-    if (!record) {
-      records.push(constDataItem)
-    }
   })
-  checkboxData.splice(checkboxData.length, 0, ...records)
+  checkboxData = constData
 
   const handleChange = (event: any, item: any) => {
     const newCheckboxData = checkboxData.map((item) => {

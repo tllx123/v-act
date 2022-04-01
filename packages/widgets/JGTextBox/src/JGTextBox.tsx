@@ -7,6 +7,7 @@ import { Height, Width } from '@v-act/schema-types'
 import { FieldValue, useContext } from '@v-act/widget-context'
 import {
   getFieldValue,
+  setFieldValue,
   isNullOrUnDef,
   toHeight,
   toLabelWidth,
@@ -123,12 +124,22 @@ const JGTextBox = function (props: JGTextBoxProps) {
     return null
   }
   const context = useContext()
-  let val = ''
+  let val = '',
+    handleInput: null | ((val: string) => void) = null
   if (props.tableName && props.columnName) {
     const val1 = getFieldValue(props.tableName, props.columnName, context)
     val = val1 == null || typeof val1 == 'undefined' ? '' : val
+    handleInput = (val: string) => {
+      //@ts-ignore
+      setFieldValue(props.tableName, props.columnName, context, val)
+    }
+  } else {
+    const [value, setValue] = useState<FieldValue>('')
+    val = value + ''
+    handleInput = (val: string) => {
+      setValue(val)
+    }
   }
-  const [value, setValue] = useState<FieldValue>(val)
 
   const width = toWidth(props.multiWidth, context, '235px')
   const height = toHeight(props.multiHeight, context, '26px')
@@ -154,7 +165,11 @@ const JGTextBox = function (props: JGTextBoxProps) {
   }
 
   // 输入框值改变
-  const CustomInputEvent = (event) => setValue(event.target.value)
+  const CustomInputEvent = (event) => {
+    if (handleInput != null) {
+      handleInput(event.target.value)
+    }
+  }
 
   return (
     <div style={wrapStyles}>
@@ -171,7 +186,7 @@ const JGTextBox = function (props: JGTextBoxProps) {
         style={inputStyles}
         disabled={props.disabled}
         placeholder={props.placeholder}
-        value={value}
+        value={val}
         onInput={CustomInputEvent}
       />
     </div>

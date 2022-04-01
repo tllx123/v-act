@@ -6,7 +6,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { StorageManager as storageManager } from '@v-act/vjs.framework.extension.platform.interface.storage'
 
 import * as observerManager from '../api/DatasourceObserverManager'
-import * as DatasourceObserver from '../impl/DatasourceObserver'
+import DatasourceObserver from '../impl/DatasourceObserver'
 import * as operationFactory from '../impl/OperationFactory'
 
 let token = 'WINDOW_INSTANCE_OBSERVER_COMBINE_STORAGE'
@@ -27,7 +27,6 @@ let getDatasourceObserver = function (datasourceName: string) {
   if (storage.containsKey(datasourceName)) {
     return storage.get(datasourceName)
   } else {
-    // @ts-ignore
     let observer = new DatasourceObserver(datasourceName)
     storage.put(datasourceName, observer)
     return observer
@@ -85,11 +84,4 @@ const addOperation = function (params: any) {
   addObserverTask()
 }
 
-export {
-  // _callAsyncObservers,
-  // addObserver,
-  addOperation
-  // destroy,
-  // fire,
-  // getBindedDatasourceNames
-}
+export { addOperation }
