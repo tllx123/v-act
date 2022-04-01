@@ -9,11 +9,17 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 
 //主入口(必须有)
-const main = function (param: any) {
+const main2 = function (param: any) {
   var args = param.getArgs()
   var processDefinitionId = args.length > 0 ? args[0] : null
   var destControlId = args.length > 1 ? args[1] : null
-  var expression = 'VWorkFlowLoadGraphFunc("' + processDefinitionId + '")'
+  var scope = scopeManager.getScope()
+  var currentWindowCode = scope.getWindowCode()
+
+  var expression =
+    'VWorkFlowLoadGraphFunc("' +
+    processDefinitionId +
+    '", "vbase_workflow.v_workflow_df_template", "id")'
   var findParam = {
     expression: expression
   }
@@ -51,4 +57,4 @@ const main = function (param: any) {
   })
 }
 //注册主入口方法(必须有)
-export { main }
+export { main2 }
