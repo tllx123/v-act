@@ -51,7 +51,7 @@ const main = function (ruleContext: RuleContext) {
         var promise = vds.rpc.callCommandSync('FileCertImage', [], {
           isAsync: false,
           isRuleSetCode: false,
-          success: function (datas) {
+          success: function (datas: any) {
             if (datas && datas.success) {
               success()
             } else {
