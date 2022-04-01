@@ -571,7 +571,13 @@ class Datasource {
   }
 
   getRecordById(id: string) {
-    let data = this.db._getById(id)
+    //let data = this.db._getById(id)
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+
+    let data = context.getAll(code, context)
     // @ts-ignore
     return data != null ? new nRecord(this.metadata, data) : null
   }
@@ -589,7 +595,6 @@ class Datasource {
     const context = scope.get('dataSourceHandler')
     const code = this.metadata.getDatasourceName()
 
-    context.clearRecords(code, context)
     let datas = context.getAll(code, context)
     return new ResultSet(this.metadata, datas)
   }
@@ -612,11 +617,25 @@ class Datasource {
   }
 
   _getDatasById(ids: any) {
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+    const entities = context?.entities
+    let mydata: any[] = []
+    if (entities) {
+      mydata = entities[code].datas
+    }
     let datas: any = []
     let ds = this
+    let itemObj
     // @ts-ignore
     each(ids, function (id: any) {
-      datas.push(ds.db._getById(id))
+      //datas.push(ds.db._getById(id))
+      itemObj = mydata.find((item: any) => {
+        return item.id === id
+      })
+      datas.push(itemObj)
     })
     return new ResultSet(this.metadata, datas)
   }
