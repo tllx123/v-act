@@ -168,9 +168,6 @@ const JGComponent = forwardRef<HTMLDivElement, JGComponentProps>(
         setTimeout(() => setPropsChildren(newPropsChildren))
       }
     }
-
-    window.changeComponentByProperties = changeComponentByProperties
-    window.getComponentProperty = getComponentProperty
     if (context.windowScope) {
       context.windowScope.set(
         'changeComponentByProperties',
