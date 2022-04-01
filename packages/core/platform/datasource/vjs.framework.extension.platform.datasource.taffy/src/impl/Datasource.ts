@@ -571,13 +571,7 @@ class Datasource {
   }
 
   getRecordById(id: string) {
-    //let data = this.db._getById(id)
-    const scopeId = scopeManager.getCurrentScopeId()
-    const scope = scopeManager.getScope(scopeId)
-    const context = scope.get('dataSourceHandler')
-    const code = this.metadata.getDatasourceName()
-
-    let data = context.getAll(code, context)
+    let data = this._getDataById(id)
     // @ts-ignore
     return data != null ? new nRecord(this.metadata, data) : null
   }
@@ -616,7 +610,7 @@ class Datasource {
     return new ResultSet(this.metadata, datas)
   }
 
-  _getDatasById(ids: any) {
+  _getDataById(id: string) {
     const scopeId = scopeManager.getCurrentScopeId()
     const scope = scopeManager.getScope(scopeId)
     const context = scope.get('dataSourceHandler')
@@ -626,15 +620,17 @@ class Datasource {
     if (entities) {
       mydata = entities[code].datas
     }
+    return mydata.find((item: any) => {
+      return item.id === id
+    })
+  }
+
+  _getDatasById(ids: any) {
     let datas: any = []
-    let ds = this
-    let itemObj
     // @ts-ignore
-    each(ids, function (id: any) {
+    each(ids, (id: any) => {
       //datas.push(ds.db._getById(id))
-      itemObj = mydata.find((item: any) => {
-        return item.id === id
-      })
+      let itemObj = this._getDataById(id)
       datas.push(itemObj)
     })
     return new ResultSet(this.metadata, datas)
