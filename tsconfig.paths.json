@@ -1381,9 +1381,41 @@
       "@v-act/vjs.framework.extension.platform.init": [
         "packages/core/platform/vjs.framework.extension.platform.init/src"
       ],
-      "@v-act/vjs.framework.extension.vendor.mocha": [
-        "packages/core/vendor/vjs.framework.extension.vendor.mocha/src"
-      ]
+      "@v-act/vjs.framework.extension.vendor.mocha": ["packages/core/vendor/vjs.framework.extension.vendor.mocha/src"],
+      "@v-act/webfunc_prdbizwindowinstance": ["packages/funcs/WebFunc_PrdBizWindowInstance/src"],
+      "@v-act/webfunc_prdgetbizframecurrentrecord": ["packages/funcs/WebFunc_PrdGetBizFrameCurrentRecord/src"],
+      "@v-act/webfunc_prdgetbizwindowsnapshowinfo": ["packages/funcs/WebFunc_PrdGetBizWindowSnapShowInfo/src"],
+      "@v-act/webfunc_prdgetcurrentframewindowtype": ["packages/funcs/WebFunc_PrdGetCurrentFrameWindowType/src"],
+      "@v-act/webfunc_prdgetcurrentwindowsnapshow": ["packages/funcs/WebFunc_PrdGetCurrentWindowSnapShow/src"],
+      "@v-act/webfunc_prdgetprocessapplicationbizinfo": ["packages/funcs/WebFunc_PrdGetProcessApplicationBizInfo/src"],
+      "@v-act/webfunc_prdgetwindowvariable": ["packages/funcs/WebFunc_PrdGetWindowVariable/src"],
+      "@v-act/webfunc_prdsetbizformenablebywindowinstancecode": [
+        "packages/funcs/WebFunc_PrdSetBizFormEnableByWindowInstanceCode/src"
+      ],
+      "@v-act/webfunc_prdsetbizformstateinfo": ["packages/funcs/WebFunc_PrdSetBizFormStateInfo/src"],
+      "@v-act/webfunc_prdsetbizwindowenable": ["packages/funcs/WebFunc_PrdSetBizWindowEnable/src"],
+      "@v-act/webfunc_prdsetframewindowenable": ["packages/funcs/WebFunc_PrdSetFrameWindowEnable/src"],
+      "@v-act/webfunc_prdsetwindowvariable": ["packages/funcs/WebFunc_PrdSetWindowVariable/src"],
+      "@v-act/webfunc_wfcurrentactivityname": ["packages/funcs/WebFunc_WFCurrentActivityName/src"],
+      "@v-act/webfunc_wfcurrenttaskcreatemod": ["packages/funcs/WebFunc_WFCurrentTaskCreateMod/src"],
+      "@v-act/webfunc_wfcurrenttaskownerid": ["packages/funcs/WebFunc_WFCurrentTaskOwnerID/src"],
+      "@v-act/webfunc_wfcurrenttaskownername": ["packages/funcs/WebFunc_WFCurrentTaskOwnerName/src"],
+      "@v-act/webfunc_wffromactivityname": ["packages/funcs/WebFunc_WFFromActivityName/src"],
+      "@v-act/webfunc_wffromtaskownerid": ["packages/funcs/WebFunc_WFFromTaskOwnerID/src"],
+      "@v-act/webfunc_wffromtaskownername": ["packages/funcs/WebFunc_WFFromTaskOwnerName/src"],
+      "@v-act/webfunc_wfsetbizcodevalue": ["packages/funcs/WebFunc_WFSetBizCodeValue/src"],
+      "@v-act/webfunc_wfsetbizstatevalue": ["packages/funcs/WebFunc_WFSetBizStateValue/src"],
+      "@v-act/webrule_execloginmodelselectidentityruleset": [
+        "packages/rules/WebRule_ExecLoginModelSelectIdentityRuleSet/src"
+      ],
+      "@v-act/webrule_prdexecutecheckstrategyrule": ["packages/rules/WebRule_PrdExecuteCheckStrategyRule/src"],
+      "@v-act/webrule_prdopenbizframereturndata": ["packages/rules/WebRule_PrdOpenBizFrameReturnData/src"],
+      "@v-act/webrule_prdopenbizwindowinstance": ["packages/rules/WebRule_PrdOpenBizWindowInstance/src"],
+      "@v-act/webrule_prdopenbizwindowreturndata": ["packages/rules/WebRule_PrdOpenBizWindowReturnData/src"],
+      "@v-act/webrule_prdtriggerbizframeactionchange": ["packages/rules/WebRule_PrdTriggerBizFrameActionChange/src"],
+      "@v-act/webrule_prdworkflowchangeframedatas": ["packages/rules/WebRule_PrdWorkflowChangeFrameDatas/src"],
+      "@v-act/webrule_wfexecuteinspectstrategy": ["packages/rules/WebRule_WFExecuteInspectStrategy/src"],
+      "@v-act/webrule_workflowprocessmenuactionexecute": ["packages/rules/WebRule_WorkFlowProcessMenuActionExecute/src"]
     }
   }
 }
