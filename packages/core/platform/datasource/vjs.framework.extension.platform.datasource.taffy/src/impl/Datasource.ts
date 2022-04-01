@@ -194,7 +194,7 @@ class Datasource {
       records: datas
     }
 
-    context.loadRecords(paramsTemp)
+    context.loadRecords(paramsTemp, context)
 
     if (_fireEvent) {
       this._fireEvent({
@@ -362,10 +362,10 @@ class Datasource {
     let paramsTemp = {
       code: code,
       //records: toInserted
-      records: toInserted[0]?.changedData
+      records: [toInserted[0]?.changedData]
     }
 
-    context.insertRecords(paramsTemp)
+    context.insertRecords(paramsTemp, context)
 
     let resultSet = this._r2rs(toInserted)
     this._fireEvent({
@@ -434,7 +434,7 @@ class Datasource {
         records: updated
       }
 
-      context.updateRecords(paramsTemp)
+      context.updateRecords(paramsTemp, context)
 
       let rs = new ResultSet(this.metadata, oDatas)
       this._fireEvent({
@@ -482,7 +482,7 @@ class Datasource {
       records: this.deleteDatas
     }
 
-    context.removeRecords(paramsTemp)
+    context.removeRecords(paramsTemp, context)
 
     let rs = new ResultSet(this.metadata, datas)
     if (datas.length > 0) {
@@ -518,13 +518,20 @@ class Datasource {
       datas = temp
 
       //v-act:清除实体记录
-      const scopeId = scopeManager.getCurrentScopeId()
+      /*  const scopeId = scopeManager.getCurrentScopeId()
       const scope = scopeManager.getScope(scopeId)
       const context = scope.get('dataSourceHandler')
       const code = this.metadata.getDatasourceName()
 
-      context.clearRecords(code)
+      context.clearRecords(code, context) */
     }
+    //v-act:清除实体记录
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+
+    context.clearRecords(code, context)
     //context.clearRecords已经清除实体记录，无需再次执行this._removeRecords
     //this._removeRecords(datas, null, true)
     this.reset()
@@ -889,7 +896,7 @@ class Datasource {
       const context = scope.get('dataSourceHandler')
       const code = this.metadata.getDatasourceName()
 
-      context.setCurrentRecord(id, code)
+      context.setCurrentRecord(id, code, context)
     }
   }
 
