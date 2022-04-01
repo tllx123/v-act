@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import {ScopeManager as scopeManager} from '@v-act/vjs.framework.extension.platform.interface.scope';
 import {uuid} from '@v-act/vjs.framework.extension.util.uuid'
 import useStackInfo from '../../../src/components/usePageStackInfo';
-import {parse} from '../../../src/componentdefs/{{@ componentCode}}';
+import {parse,returnComponentSchema} from '../../../src/componentdefs/{{@ componentCode}}';
 import {parseWindowSchema} from "@v-act/window-schema-utils";
 const JGComponent1 = dynamic(()=>{return import('@v-act/jgcomponent').then(mod=>mod.JsonJGComponent)});
 const JGSpacer1 = dynamic(()=>{return import('@v-act/jgspacer').then(mod=>mod.JsonJGSpacer)});
@@ -37,6 +37,7 @@ const windowObjs = {{@ windowJsonScript}};
 
 function Index(props:{instanceId:string}){
     parse();
+    const componentSchema = returnComponentSchema()
     const router = useRouter();
     const stackInfo = useStackInfo();
     const {instanceId} = props;
@@ -71,7 +72,8 @@ function Index(props:{instanceId:string}){
             winJson:windowObjs,
             router,
             stackInfo,
-            scopeId:instanceId
+            scopeId:instanceId,
+            componentSchema
           });
           scopeManager.getScope(instanceId).markInited();
         }catch(e){
