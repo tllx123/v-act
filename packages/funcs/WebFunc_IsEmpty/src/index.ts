@@ -9,9 +9,8 @@ import * as object from '@v-act/vjs.framework.extension.platform.services.integr
 
 const vds = { object }
 
-const main = function (param: any) {
-  var args = param.getArgs(),
-    argsLen = args ? args.length : 0,
+const main = function (...args: any[]) {
+  const argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null
 
   return vds.object.isUndefOrNull(str)

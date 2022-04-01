@@ -17,6 +17,9 @@ import { WindowContainerManager as windowContainerManager } from '@v-act/vjs.fra
 import { WidgetContext as widgetContext } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.context'
 import { Mode as disposeUtil } from '@v-act/vjs.framework.extension.platform.services.view.window.dispose.mode.default'
 import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
+import * as ds from '@v-act/vjs.framework.extension.platform.services.integration.vds.ds'
+
+const vds = { ds }
 
 var gelEl = function () {
   var windowScope = scopeManager.getWindowScope()
