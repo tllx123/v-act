@@ -236,7 +236,4 @@ var changeUndefinedToNull = function (params: any) {
   return params
 }
 
-export default {
-  querySenior,
-  query
-}
+export { querySenior, query }
