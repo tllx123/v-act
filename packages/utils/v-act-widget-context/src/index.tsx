@@ -143,21 +143,15 @@ const ContextProvider = function (props: ContextProviderProps) {
     }
 
     if (entities) {
-      if (!entities[code]) {
-        entities[code] = {
-          datas: [],
-          _current: null
+      if (entities[code]) {
+        const entity = entities[code]
+        if (Array.isArray(entity.datas)) {
+          entity.datas.length = 0
+          entity.datas.push(...records)
+          entity._current = entity.datas[0]
+          setVal({ ...context })
         }
       }
-
-      const entity = entities[code]
-
-      !Array.isArray(entity.datas) && (entity.datas = [])
-
-      //entity.datas = [...entity.datas, ...records]
-      entity.datas = [...records]
-      entity._current = entity.datas[0]
-      setVal({ ...context })
     }
   }
 
@@ -305,7 +299,7 @@ const ContextProvider = function (props: ContextProviderProps) {
 
   //设置当前行
   const setCurrentRecord = (recordId: string, code: string, context: any) => {
-    const entities = contextTemp?.entities
+    const entities = context?.entities
 
     if (entities) {
       const entity = entities[code]
@@ -323,7 +317,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       entity._current = entity.datas.find(
         (item: any) => item.id === recordId.toString()
       )
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
