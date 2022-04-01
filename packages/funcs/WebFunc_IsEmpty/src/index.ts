@@ -13,6 +13,6 @@ const main = function (...args: any[]) {
   const argsLen = args ? args.length : 0,
     str = argsLen >= 1 ? args[0] : null
 
-  return vds.object.isUndefOrNull(str)
+  return typeof str == 'string' ? str.length == 0 : false
 }
 export { main }

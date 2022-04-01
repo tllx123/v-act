@@ -124,7 +124,7 @@ const init = function (params: {
           window[renderedCallbackId] = (sId: string) => {
             try {
               if (typeof rendered == 'function') {
-                rendered(scopeId)
+                rendered(sId)
               }
             } finally {
               delete window[renderedCallbackId]
