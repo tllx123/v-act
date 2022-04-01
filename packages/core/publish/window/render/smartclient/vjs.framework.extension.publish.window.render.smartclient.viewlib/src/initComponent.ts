@@ -38,25 +38,43 @@ const addRoute = (componentCode: string, logic: logicType) => {
 }
 
 const init = function ({ componentCode, componentSchema }: IParams) {
+  if (!componentSchema) return
   // 判断是否已经初始化
   if (ComponentInfo.isComponentSchemaInited(componentCode)) return
 
   let { variants, options, logics } = componentSchema
 
-  if (Array.isArray(variants)) {
-    for (let item of variants) {
-      ComponentParam.addVariantDefines(componentCode, parseData(item.variant))
+  if (variants) {
+    if (Array.isArray(variants)) {
+      for (let item of variants) {
+        item.variant &&
+          ComponentParam.addVariantDefines(
+            componentCode,
+            parseData(item.variant)
+          )
+      }
+    } else {
+      variants.variant &&
+        ComponentParam.addVariantDefines(
+          componentCode,
+          parseData(variants.variant)
+        )
     }
-  } else {
-    ComponentParam.addVariantDefines(componentCode, parseData(variants.variant))
   }
 
-  if (Array.isArray(options)) {
-    for (let item of options) {
-      ComponentParam.addOptionDefines(componentCode, parseData(item.option))
+  if (options) {
+    if (Array.isArray(options)) {
+      for (let item of options) {
+        item.option &&
+          ComponentParam.addOptionDefines(componentCode, parseData(item.option))
+      }
+    } else {
+      options.option &&
+        ComponentParam.addOptionDefines(
+          componentCode,
+          parseData(options.option)
+        )
     }
-  } else {
-    ComponentParam.addOptionDefines(componentCode, parseData(options.option))
   }
 
   let { logic } = logics
@@ -70,6 +88,6 @@ const init = function ({ componentCode, componentSchema }: IParams) {
   }
 
   // 标记初始化
-  ComponentInfo.markComponentSchemaInited('vact')
+  ComponentInfo.markComponentSchemaInited(componentCode)
 }
 export { init }

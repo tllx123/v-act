@@ -53,37 +53,44 @@ const init = function (params: {
   let outputVariables = winDatas.windowOutputs.variables
   let inputVariables = winDatas.windowVariants.variables
 
-  if (Array.isArray(outputVariables)) {
-    for (let item of outputVariables) {
-      WindowParam.addOutputDefines(
-        componentCode,
-        windowCode,
-        parseData(item.variable)
-      )
+  if (inputVariables) {
+    if (Array.isArray(outputVariables)) {
+      for (let item of outputVariables) {
+        item.variable &&
+          WindowParam.addOutputDefines(
+            componentCode,
+            windowCode,
+            parseData(item.variable)
+          )
+      }
+    } else {
+      outputVariables.variable &&
+        WindowParam.addOutputDefines(
+          componentCode,
+          windowCode,
+          parseData(outputVariables.variable)
+        )
     }
-  } else {
-    WindowParam.addOutputDefines(
-      componentCode,
-      windowCode,
-      parseData(outputVariables.variable)
-    )
   }
-  if (Array.isArray(inputVariables)) {
-    for (let item of inputVariables) {
-      WindowParam.addInputDefines(
-        componentCode,
-        windowCode,
-        parseData(item.variable)
-      )
+  if (inputVariables) {
+    if (Array.isArray(inputVariables)) {
+      for (let item of inputVariables) {
+        item.variable &&
+          WindowParam.addInputDefines(
+            componentCode,
+            windowCode,
+            parseData(item.variable)
+          )
+      }
+    } else {
+      inputVariables.variable &&
+        WindowParam.addInputDefines(
+          componentCode,
+          windowCode,
+          parseData(inputVariables.variable)
+        )
     }
-  } else {
-    WindowParam.addInputDefines(
-      componentCode,
-      windowCode,
-      parseData(inputVariables.variable)
-    )
   }
-
   let { logic } = winDatas.logics
   // 如果是数组，则添加多个Route
   if (Array.isArray(logic)) {
