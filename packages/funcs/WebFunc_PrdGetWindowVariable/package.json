@@ -14,5 +14,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "@v-act/vjs.framework.extension.platform.services.param.manager": "^1.0.0-alpha.1"
+  }
 }

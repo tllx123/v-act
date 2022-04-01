@@ -20,7 +20,7 @@ import { EncryptUtil as math } from '@v-act/vjs.framework.extension.platform.ser
 import { WindowRenderer as windowRenderer } from '@v-act/vjs.framework.extension.platform.services.view.window.renderer'
 import { DesUtil as desUtil } from '@v-act/vjs.framework.extension.util.des'
 import { ExceptionFactory as exceptionFactory } from '@v-act/vjs.framework.extension.platform.interface.exception'
-import { ExceptionHandler as exceptionHandler } from '@v-act/vjs.framework.extension.platform.interface.exception'
+import { $ } from '@v-act/vjs.framework.extension.vendor.jquery'
 let sandbox: any
 
 const initModule = function (sBox: any) {
@@ -721,7 +721,7 @@ let openDialogWindow = function (
   // 映射关系
   let returnMappingsConfig = returnMappings
   // 关闭窗体回调逻辑
-  let routeCallback = function (output) {
+  let routeCallback = function (output: any) {
     businessRuleResult['isConfirmSelectionOnClose'] = false
     if (output && output['config']) {
       //点击了确定选择
@@ -782,7 +782,7 @@ let openDialogWindow = function (
   } else {
     openWindow()
   }
-  function exeFunc(index) {
+  function exeFunc(index: any) {
     let data = datas[index]
     let dtds = []
     let targetBizComponentCode = data['bizComponentCode']
