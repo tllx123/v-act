@@ -264,7 +264,7 @@ const ContextProvider = function (props: ContextProviderProps) {
    *  }
    */
   const updateRecords = (params: Record<string, any>, context: any) => {
-    const entities = contextTemp?.entities
+    const entities = context?.entities
     const { code, records } = params || {}
 
     if (!Array.isArray(records) || records.length === 0) {
@@ -293,7 +293,7 @@ const ContextProvider = function (props: ContextProviderProps) {
         Object.assign(item, record)
       })
 
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
