@@ -583,9 +583,9 @@ class Exception extends Error {
   }
 }
 
-Error.prepareStackTrace = function (error, stack) {
+/*Error.prepareStackTrace = function (error, stack) {
   return stack
-}
+}*/
 
 export default Exception
 

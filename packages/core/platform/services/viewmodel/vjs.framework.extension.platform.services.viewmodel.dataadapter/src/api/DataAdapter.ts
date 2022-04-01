@@ -643,10 +643,17 @@ let _loadDataToEntity = function (
       let entityName = _modelMapping.targetModelName
       //目标实体类型
       let entityType = _modelMapping.targetModelType
+      let target = _modelMapping.target
       //获取树形结构
       //var treeStruct = daoObj.getModelSchema().modelMapping.treeStruct;
       // 获取实体db对象
-      let dbObj = getDbObjByType(entityName, entityType, routeContext)
+      let dbObj
+      if (entityName) {
+        dbObj = getDbObjByType(entityName, entityType, routeContext)
+      } else if (target) {
+        dbObj = target
+        entityName = dbObj.getMetadata().getDatasourceName()
+      }
       if (_modelMapping.isFieldAutoMapping) {
         let tableName = _modelMapping.sourceModelName
         let soruceFields = rd.metadata['model'][0].fields
