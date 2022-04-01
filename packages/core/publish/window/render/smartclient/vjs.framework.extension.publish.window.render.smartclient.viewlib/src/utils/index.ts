@@ -4,6 +4,7 @@ import {
   ruleInstanceSchema
 } from '../interfase/ruleSetInterFace'
 import { run } from '@v-act/xml-parser'
+import { IVariant, IItem } from '../interfase/initComponentInterface'
 
 const setInstances = (
   instance: ruleInstanceSchema,
@@ -72,9 +73,13 @@ const parseLogic = (logic: logicType): routeParamsSchema | null => {
   }
 }
 
-const parseData = (data: { $: any }[]): any[] => {
+const parseData = (data: IVariant | IItem): any[] => {
   const newArr: any[] = []
-  data.forEach((item) => newArr.push(item['$']))
+  if (Array.isArray(data)) {
+    data.forEach((item: { [x: string]: any }) => newArr.push(item['$']))
+  } else {
+    newArr.push(data['$'])
+  }
   return newArr
 }
 

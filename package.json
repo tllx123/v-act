@@ -24,6 +24,7 @@
     "dev: jgrichtextviewer": "node scripts/index.js build -w -s @v-act/jgrichtextviewer --cp ./apps/runtime",
     "dev: jgtextbox": "node scripts/index.js build -w -s @v-act/jgtextbox --cp ./apps/runtime",
     "dev: schemaTypes": "node scripts/index.js build -w -s @v-act/schema-types --cp ./apps/runtime",
+    "dev: viewlib": "node scripts/index.js build -w -s @v-act/vjs.framework.extension.publish.window.render.smartclient.viewlib",
     "dev: watcher": "node scripts/index.js build -w -s @v-act/v3dev-component-watcher --cp ./apps/runtime",
     "dev: widgetContext": "node scripts/index.js build -w -s @v-act/widget-context --cp ./apps/runtime",
     "dev: widgetUtils": "node scripts/index.js build -w -s @v-act/widget-utils --cp ./apps/runtime",

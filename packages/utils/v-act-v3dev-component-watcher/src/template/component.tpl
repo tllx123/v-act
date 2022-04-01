@@ -4,7 +4,6 @@ const parse = function(){
     parseComponent(componentSchema);
 }
 const returnComponentSchema = function(){
-console.log(1212)
     return componentSchema
 }
 export {parse,returnComponentSchema}
