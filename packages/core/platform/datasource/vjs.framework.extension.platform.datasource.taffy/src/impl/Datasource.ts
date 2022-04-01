@@ -507,6 +507,13 @@ class Datasource {
 
   clear() {
     let datas = this.db._getAll()
+    /* const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+
+    context.clearRecords(code, context)
+    let datas = context.getAll(code, context) */
     if (datas.length > 0) {
       let ids = [],
         temp = []
@@ -518,20 +525,20 @@ class Datasource {
       datas = temp
 
       //v-act:清除实体记录
-      /*  const scopeId = scopeManager.getCurrentScopeId()
+      const scopeId = scopeManager.getCurrentScopeId()
       const scope = scopeManager.getScope(scopeId)
       const context = scope.get('dataSourceHandler')
       const code = this.metadata.getDatasourceName()
 
-      context.clearRecords(code, context) */
+      context.clearRecords(code, context)
     }
     //v-act:清除实体记录
-    const scopeId = scopeManager.getCurrentScopeId()
+    /* const scopeId = scopeManager.getCurrentScopeId()
     const scope = scopeManager.getScope(scopeId)
     const context = scope.get('dataSourceHandler')
     const code = this.metadata.getDatasourceName()
 
-    context.clearRecords(code, context)
+    context.clearRecords(code, context) */
     //context.clearRecords已经清除实体记录，无需再次执行this._removeRecords
     //this._removeRecords(datas, null, true)
     this.reset()
@@ -576,7 +583,14 @@ class Datasource {
   }
 
   getAllRecords() {
-    let datas = this.db._getAll()
+    //let datas = this.db._getAll()
+    const scopeId = scopeManager.getCurrentScopeId()
+    const scope = scopeManager.getScope(scopeId)
+    const context = scope.get('dataSourceHandler')
+    const code = this.metadata.getDatasourceName()
+
+    context.clearRecords(code, context)
+    let datas = context.getAll(code, context)
     return new ResultSet(this.metadata, datas)
   }
 
