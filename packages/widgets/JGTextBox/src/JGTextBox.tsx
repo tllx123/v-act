@@ -128,7 +128,7 @@ const JGTextBox = function (props: JGTextBoxProps) {
     handleInput: null | ((val: string) => void) = null
   if (props.tableName && props.columnName) {
     const val1 = getFieldValue(props.tableName, props.columnName, context)
-    val = val1 == null || typeof val1 == 'undefined' ? '' : val
+    val = val1 == null || typeof val1 == 'undefined' ? '' : val1
     handleInput = (val: string) => {
       //@ts-ignore
       setFieldValue(props.tableName, props.columnName, context, val)
