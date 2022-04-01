@@ -89,6 +89,7 @@ export const run = (resources: XMLElementObj[]): Function => {
       }
 
       function parseForEach(target: XMLElementObj) {
+        console.log('进入for循环')
         const sequence: XMLElementObj = filterTagEle(
           <XMLElementObj[]>target.children,
           'sequence'
