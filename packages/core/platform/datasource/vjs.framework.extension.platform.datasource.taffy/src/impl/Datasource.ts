@@ -611,10 +611,13 @@ class Datasource {
   }
 
   _getDataById(id: string) {
+    const code = this.metadata.getDatasourceName()
+    if (!code) {
+      return null
+    }
     const scopeId = scopeManager.getCurrentScopeId()
     const scope = scopeManager.getScope(scopeId)
     const context = scope.get('dataSourceHandler')
-    const code = this.metadata.getDatasourceName()
     const entities = context?.entities
     let mydata: any[] = []
     if (entities) {
