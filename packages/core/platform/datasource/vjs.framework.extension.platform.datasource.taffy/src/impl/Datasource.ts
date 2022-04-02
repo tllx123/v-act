@@ -423,7 +423,10 @@ class Datasource {
       const { context, code } = this._getDataSourceHandler()
       let paramsTemp = {
         code: code,
-        records: updated
+        //records: updated
+        records: [
+          Object.assign(updated[0]?.orginalData, updated[0].changedData)
+        ]
       }
 
       const oDatas = context.updateRecords(paramsTemp, context)
@@ -668,8 +671,15 @@ class Datasource {
 
   _getCurrentRecordId() {
     let snapshot = this._getSnapshot()
-    // @ts-ignore
-    return snapshot ? snapshot.getCurrentId() : this.currentId
+    if (snapshot) {
+      // @ts-ignore
+      return snapshot.getCurrentId()
+    } else {
+      //return this.currentId
+      const { code, context } = this._getDataSourceHandler()
+      const _current = context.getCurrentRecord(code, context)
+      return _current?.id
+    }
   }
 
   getCurrentRecord() {
