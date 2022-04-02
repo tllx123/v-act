@@ -45,7 +45,7 @@ import { RPC as operation } from '@v-act/vjs.framework.extension.system.rpc'
  * 		success : Function 提交成功后回调
  * }
  */
-export default function save(params: any) {
+const save = function (params: any) {
   var dataSchemas = params.dataSchemas,
     treeStructs = params.treeStructs,
     success = params.success,
@@ -65,3 +65,5 @@ export default function save(params: any) {
     afterResponse: success
   })
 }
+
+export { save }

@@ -1,12 +1,7 @@
-import { ArrayUtil as arrayUtil } from '@v-act/vjs.framework.extension.util.array'
-
-import * as object from '@v-act/vjs.framework.extension.platform.services.integration.vds.object'
-
 import Metadata from './Metadata'
 import Record from './Record'
 import ResultSet from './ResultSet'
 
-const vds = { object }
 /**
  * 数据源定义
  * @constructor
@@ -68,7 +63,7 @@ class Datasource {
   }
 
   _toRe(record: any) {
-    if (arrayUtil.isArray(record)) {
+    if (Array.isArray(record)) {
       var res = []
       for (var i = 0, l = record.length; i < l; i++) {
         if (record[i]._get) res.push(record[i]._get())
@@ -103,7 +98,7 @@ class Datasource {
    * }
    * */
   loadRecords(records: any, params: { isAppend: boolean }) {
-    if (!vds.object.isArray(records) || records.length == 0) {
+    if (!Array.isArray(records) || records.length == 0) {
       return
     }
     var isAppend = params && params.isAppend === true ? true : false

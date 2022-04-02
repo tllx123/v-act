@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import Request from './request'
-const BASEURL = 'http://10.1.28.71:8080/api/vplatform/module-operation!executeMultiOperation'
+const BASEURL = 'http://10.1.28.71:8080/api/vplatform/module-operation!executeOperation'
 let request = new Request(BASEURL)
 
 export default function (req: NextApiRequest, res: NextApiResponse) {

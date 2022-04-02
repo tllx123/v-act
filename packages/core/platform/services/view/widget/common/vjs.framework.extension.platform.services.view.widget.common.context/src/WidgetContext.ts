@@ -157,7 +157,8 @@ let getType = function (widgetId: string) {
  */
 let getStoreType = function (widgetId: string) {
   //_destroy();
-  return get(widgetId, WIDGET_CONTEXT_STORETYPE)
+  //return get(widgetId, WIDGET_CONTEXT_STORETYPE) 新增时会清空实体记录
+  return 'set'
 }
 
 let getWidgetList = function () {

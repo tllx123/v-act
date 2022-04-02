@@ -58,12 +58,13 @@ interface WidgetContextProps {
     context: WidgetContextProps
   ) => void
   inputVal?: any
-  loadRecords?: (params: Record<string, any>) => void
-  insertRecords?: (params: Record<string, any>) => void
-  removeRecords?: (params: Record<string, any>) => void
-  updateRecords?: (params: Record<string, any>) => void
-  setCurrentRecord?: (recordId: string, code: string) => void
-  clearRecords?: (code: string) => void
+  loadRecords?: (params: Record<string, any>, context: any) => void
+  insertRecords?: (params: Record<string, any>, context: any) => void
+  removeRecords?: (params: Record<string, any>, context: any) => void
+  updateRecords?: (params: Record<string, any>, context: any) => void
+  setCurrentRecord?: (recordId: string, code: string, context: any) => void
+  clearRecords?: (code: string, context: any) => void
+  getAll?: (code: string, context: any) => void
 }
 
 interface ContextProviderProps {
@@ -107,20 +108,10 @@ const ContextProvider = function (props: ContextProviderProps) {
   const children = props.children
   const [contextTemp, setVal] = useState(context)
 
-  /**加载实体
-   *  params = {
-   *    code:"",//实体编码
-   *    records:[{...},{...}]
-   *  }
-   */
-  const loadRecords = (params: Record<string, any>) => {
-    const entities = contextTemp?.entities
-    const { code, records } = params || {}
-
-    if (!Array.isArray(records) || records.length === 0) {
-      return
-    }
-
+  const getAll = (code: string, context: any) => {
+    const entities = context?.entities
+    //const context1 = useContext()
+    //const entities = context1?.entities
     if (entities) {
       if (!entities[code]) {
         entities[code] = {
@@ -133,9 +124,34 @@ const ContextProvider = function (props: ContextProviderProps) {
 
       !Array.isArray(entity.datas) && (entity.datas = [])
 
-      entity.datas = [...entity.datas, ...records]
-      entity._current = entity.datas[0]
-      setVal({ ...contextTemp })
+      return entity.datas
+    }
+  }
+
+  /**加载实体
+   *  params = {
+   *    code:"",//实体编码
+   *    records:[{...},{...}]
+   *  }
+   */
+  const loadRecords = (params: Record<string, any>, context: any) => {
+    const entities = context?.entities
+    const { code, records } = params || {}
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return
+    }
+
+    if (entities) {
+      if (entities[code]) {
+        const entity = entities[code]
+        if (Array.isArray(entity.datas)) {
+          entity.datas.length = 0
+          entity.datas.push(...records)
+          entity._current = entity.datas[0]
+          setVal({ ...context })
+        }
+      }
     }
   }
 
@@ -146,8 +162,8 @@ const ContextProvider = function (props: ContextProviderProps) {
    *    index:0
    *  }
    */
-  const insertRecords = (params: Record<string, any>) => {
-    const entities = contextTemp?.entities
+  const insertRecords = (params: Record<string, any>, context: any) => {
+    const entities = context?.entities
     const { code, records, index } = params || {}
 
     if (!Array.isArray(records) || records.length === 0) {
@@ -169,7 +185,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       }
 
       entity.datas.splice(insertIndex, 0, ...records)
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
@@ -179,8 +195,8 @@ const ContextProvider = function (props: ContextProviderProps) {
    *    records:[id1,id2...]
    *  }
    */
-  const removeRecords = (params: Record<string, any>) => {
-    const entities = contextTemp?.entities
+  const removeRecords = (params: Record<string, any>, context: any) => {
+    const entities = context?.entities
     const { code, records } = params || {}
 
     if (!Array.isArray(records) || records.length === 0) {
@@ -211,15 +227,15 @@ const ContextProvider = function (props: ContextProviderProps) {
         entity._current = undefined
       }
 
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
   /**清除实体数据
    * code : string
    */
-  const clearRecords = (code: string) => {
-    const entities = contextTemp?.entities
+  const clearRecords = (code: string, context: any) => {
+    const entities = context?.entities
 
     if (entities) {
       const entity = entities[code]
@@ -237,7 +253,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       entity.datas && (entity.datas = [])
       entity._current && (entity._current = undefined)
 
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
@@ -247,8 +263,8 @@ const ContextProvider = function (props: ContextProviderProps) {
    *    records:[{...},{...},...]
    *  }
    */
-  const updateRecords = (params: Record<string, any>) => {
-    const entities = contextTemp?.entities
+  const updateRecords = (params: Record<string, any>, context: any) => {
+    const entities = context?.entities
     const { code, records } = params || {}
 
     if (!Array.isArray(records) || records.length === 0) {
@@ -277,13 +293,13 @@ const ContextProvider = function (props: ContextProviderProps) {
         Object.assign(item, record)
       })
 
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
   //设置当前行
-  const setCurrentRecord = (recordId: string, code: string) => {
-    const entities = contextTemp?.entities
+  const setCurrentRecord = (recordId: string, code: string, context: any) => {
+    const entities = context?.entities
 
     if (entities) {
       const entity = entities[code]
@@ -301,7 +317,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       entity._current = entity.datas.find(
         (item: any) => item.id === recordId.toString()
       )
-      setVal({ ...contextTemp })
+      setVal({ ...context })
     }
   }
 
@@ -361,7 +377,8 @@ const ContextProvider = function (props: ContextProviderProps) {
         removeRecords,
         updateRecords,
         setCurrentRecord,
-        clearRecords
+        clearRecords,
+        getAll
       }}
     >
       {children}

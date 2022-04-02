@@ -36,8 +36,9 @@ const init = function (params: {
   } = params
   const query = router.query
   const param = JSON.parse(query.param || '{}')
+  const entityOperation = context
 
-  const {
+  /* const {
     loadRecords,
     insertRecords,
     removeRecords,
@@ -53,7 +54,7 @@ const init = function (params: {
     updateRecords,
     setCurrentRecord,
     clearRecords
-  }
+  } */
   scopeManager.getScope(scopeId).markInited()
   viewLib.init({
     paramCfg: {
@@ -123,7 +124,7 @@ const init = function (params: {
           window[renderedCallbackId] = (sId: string) => {
             try {
               if (typeof rendered == 'function') {
-                rendered(scopeId)
+                rendered(sId)
               }
             } finally {
               delete window[renderedCallbackId]

@@ -319,7 +319,7 @@ const JGDataGrid = (props: JGDataGridProps) => {
         }}
         bordered
         columns={dataHeader}
-        dataSource={data}
+        dataSource={[...data]}
         size="small"
         pagination={false}
         // footer={() => 'Footer'}
