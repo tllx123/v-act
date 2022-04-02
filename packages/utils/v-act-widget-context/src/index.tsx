@@ -65,6 +65,7 @@ interface WidgetContextProps {
   setCurrentRecord?: (recordId: string, code: string, context: any) => void
   clearRecords?: (code: string, context: any) => void
   getAll?: (code: string, context: any) => void
+  isCurrentRecord?: (code: string, context: any) => void
 }
 
 interface ContextProviderProps {
@@ -321,6 +322,31 @@ const ContextProvider = function (props: ContextProviderProps) {
     }
   }
 
+  const isCurrentRecord = (recordId: string, code: string, context: any) => {
+    let isCurrentRecord = false
+    const entities = context?.entities
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return isCurrentRecord
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity.datas.length === 0) {
+        return isCurrentRecord
+      }
+
+      isCurrentRecord = entity.datas.some(
+        (item: any) => item.id === recordId.toString()
+      )
+    }
+
+    return isCurrentRecord
+  }
+
   const getFieldValue = (
     tableName: string,
     columnName: string,
@@ -378,7 +404,8 @@ const ContextProvider = function (props: ContextProviderProps) {
         updateRecords,
         setCurrentRecord,
         clearRecords,
-        getAll
+        getAll,
+        isCurrentRecord
       }}
     >
       {children}

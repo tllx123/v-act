@@ -442,13 +442,23 @@ class Datasource {
   removeRecordByIds(params: any) {
     let ids: any = params.ids
     let nextRecordId: any = this.db.getNextRecordId()
-    let datas: any = this.db._remove(ids)
+    //let datas: any = this.db._remove(ids)
+
+    const datas: Array<Record<string, any>> = []
+    if (Array.isArray(ids)) {
+      ids.forEach((item: string) => {
+        const record = this.getRecordById(item)
+        record && datas.push(record.orginalData)
+      })
+    }
+
     return this._removeRecords(datas, nextRecordId, false)
   }
 
   _removeRecords(datas: any, nextRecordId: any, isClear: any) {
     let ds = this
     let deleted: any = []
+    let deletedIds: any = []
     // @ts-ignore
     each(datas, function (data: any) {
       let id = data['id']
@@ -460,6 +470,7 @@ class Datasource {
       arrayUtil.remove(ds.updateIds, id)
       // @ts-ignore
       arrayUtil.remove(ds.selectIds, id)
+      deletedIds.push(id)
     })
 
     this.deleteDatas = this.deleteDatas.concat(deleted)
@@ -468,7 +479,8 @@ class Datasource {
     const { context, code } = this._getDataSourceHandler()
     let paramsTemp = {
       code: code,
-      records: this.deleteDatas
+      //records: this.deleteDatas
+      records: deletedIds
     }
 
     context.removeRecords(paramsTemp, context)
@@ -553,7 +565,11 @@ class Datasource {
   }
 
   getRecordByIndex(index: number) {
-    let data = this.db._getByIndex(index)
+    //let data = this.db._getByIndex(index)
+    const { context, code } = this._getDataSourceHandler()
+
+    let allDatas = context.getAll(code, context)
+    let data = allDatas[index]
     // @ts-ignore
     return data ? new nRecord(this.metadata, data) : null
   }
