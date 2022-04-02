@@ -1,6 +1,8 @@
 import type { XMLElementObj } from './parse'
 import { ExpressionEngine } from '@v-act/vjs.framework.extension.platform.engine.expression'
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
+import { ScopeManager } from '@v-act/vjs.framework.extension.platform.interface.scope'
 
 let context = new FunctionContext()
 
@@ -13,12 +15,14 @@ const filterTagEle = (
 }
 
 export const run = (resources: XMLElementObj[]): Function => {
+  console.log(resources)
   return (ruleEngine: any, routeRuntime: any) => {
     runFun(resources)
     function runFun(resources: XMLElementObj[]) {
       let index = 0
       runTag(resources[0])
       function runTag(resource: XMLElementObj) {
+        console.log('执行，' + resource.tagName, resource)
         // if else状态开关
         let elseMark = false
 
@@ -30,6 +34,7 @@ export const run = (resources: XMLElementObj[]): Function => {
             parseElse(resource)
             break
           case 'foreach':
+            console.log(resource)
             parseForEach(resource)
             break
           case 'evaluateRule':
@@ -86,24 +91,57 @@ export const run = (resources: XMLElementObj[]): Function => {
 
         function parseForEach(target: XMLElementObj) {
           console.log('进入for循环')
+          const define: XMLElementObj = filterTagEle(
+            <XMLElementObj[]>target.children,
+            'define'
+          )
+
           const sequence: XMLElementObj = filterTagEle(
             <XMLElementObj[]>target.children,
             'sequence'
           )
+          console.log('sequence', sequence)
+          console.log('define', define)
           const varCode: XMLElementObj = filterTagEle(
-            <XMLElementObj[]>target.children,
+            <XMLElementObj[]>define.children,
             'varCode'
           )
           const entityType: XMLElementObj = filterTagEle(
-            <XMLElementObj[]>target.children,
+            <XMLElementObj[]>define.children,
             'entityType'
           )
           const entityCode: XMLElementObj = filterTagEle(
-            <XMLElementObj[]>target.children,
+            <XMLElementObj[]>define.children,
             'entityCode'
           )
 
-          for (let i = 0; i < 3; i++) {
+          // 开域
+          ScopeManager.openScope(routeRuntime.__scopeId__)
+
+          let datasource = DatasourceManager.lookup({
+            datasourceName: entityCode.children[0]
+          })
+
+          // 关域
+          ScopeManager.closeScope()
+
+          if (null == datasource) {
+            routeRuntime.handleException(
+              new Error(
+                'Foreach\u7684\u5b9e\u4f53\u3010' +
+                  entityCode.children[0] +
+                  '\u3011\u4e0d\u5b58\u5728'
+              )
+            )
+            return false
+          }
+          let values = datasource.getAllRecords().toArray()
+          for (let i = 0, l = values.length; i < l; i++) {
+            routeRuntime.setForEachVar({
+              code: varCode.children[0],
+              value: values[i],
+              datasource: datasource
+            })
             runFun(<XMLElementObj[]>sequence.children)
           }
         }

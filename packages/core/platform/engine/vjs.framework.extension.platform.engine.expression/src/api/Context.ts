@@ -5,6 +5,7 @@ import {
   ComponentParam
 } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 export default class Context {
@@ -119,7 +120,8 @@ export default class Context {
   getRulesetEntityFieldOut(entityName: string, fieldName: string) {
     let ctx = this.context.get('expressionContext')
     if (this.routeContext) {
-      let datasource = this.routeContext.getOutPutParam(entityName)
+      let datasource = DatasourceManager.lookup({ datasourceName: entityName })
+
       if (datasource) {
         let row
         if (ctx.hasCurrentRecord(entityName))
@@ -127,7 +129,6 @@ export default class Context {
         else if (ctx.hasRecordIndex(entityName))
           row = datasource.getRecordById(ctx.getRecordIndex(entityName))
         else row = datasource.getCurrentRecord()
-
         // 如果上面都取不到记录，则取数据源的第一行记录
         row = row ? row : datasource.getRecordByIndex(0)
         return row ? row.get(fieldName) : null
