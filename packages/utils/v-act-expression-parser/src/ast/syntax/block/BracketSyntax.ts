@@ -138,12 +138,12 @@ class BracketSyntax extends Syntax {
   visit() {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
-
+    let res: boolean | void = true
     if (visitor && visitor.visitBacketSyntax) {
-      const res = visitor.visitBacketSyntax(this)
-      if (res !== false) {
-        this.getBody().visit()
-      }
+      res = visitor.visitBacketSyntax(this)
+    }
+    if (res !== false) {
+      this.getBody().visit()
     }
   }
 }

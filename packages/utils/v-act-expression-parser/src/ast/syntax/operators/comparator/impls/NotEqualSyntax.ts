@@ -36,7 +36,6 @@ class NotEqualSyntax extends ComparatorSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
-
     if (visitor && visitor.visitNotEqualSyntax) {
       visitor.visitNotEqualSyntax(this)
     }

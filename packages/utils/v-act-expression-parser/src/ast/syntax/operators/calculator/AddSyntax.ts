@@ -42,13 +42,13 @@ class AddSyntax extends BinaryExpressionSyntax {
   visit() {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
-
+    let res: boolean | void = true
     if (visitor && visitor.visitAddSyntax) {
-      const res = visitor.visitAddSyntax(this)
-      if (res !== false) {
-        this.getLeft().visit()
-        this.getRight().visit()
-      }
+      res = visitor.visitAddSyntax(this)
+    }
+    if (res !== false) {
+      this.getLeft().visit()
+      this.getRight().visit()
     }
   }
 }

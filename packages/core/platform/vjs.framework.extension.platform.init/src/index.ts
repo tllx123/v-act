@@ -35,7 +35,8 @@ const init = function (params: {
     componentSchema
   } = params
   const query = router.query
-  const param = JSON.parse(query.param || '{}')
+  let param = JSON.parse(query.param || '{}')
+  param = param.variable || {}
   const entityOperation = context
 
   /* const {

@@ -35,12 +35,13 @@ class AndSyntax extends LogicSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
+    let res: boolean | void = true
     if (visitor && visitor.visitAndSyntax) {
-      const res = visitor.visitAndSyntax(this)
-      if (res !== false) {
-        this.getLeft().visit()
-        this.getRight().visit()
-      }
+      res = visitor.visitAndSyntax(this)
+    }
+    if (res !== false) {
+      this.getLeft().visit()
+      this.getRight().visit()
     }
   }
 }
