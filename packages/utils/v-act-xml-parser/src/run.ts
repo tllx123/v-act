@@ -15,17 +15,15 @@ const filterTagEle = (
 }
 
 export const run = (resources: XMLElementObj[]): Function => {
-  console.log(resources)
   return (ruleEngine: any, routeRuntime: any) => {
     runFun(resources)
     function runFun(resources: XMLElementObj[]) {
       let index = 0
+      // if else状态开关
+      let elseMark = false
+
       runTag(resources[0])
       function runTag(resource: XMLElementObj) {
-        console.log('执行，' + resource.tagName, resource)
-        // if else状态开关
-        let elseMark = false
-
         switch (resource.tagName) {
           case 'if':
             parseIf(resource)
@@ -34,7 +32,6 @@ export const run = (resources: XMLElementObj[]): Function => {
             parseElse(resource)
             break
           case 'foreach':
-            console.log(resource)
             parseForEach(resource)
             break
           case 'evaluateRule':
@@ -50,7 +47,6 @@ export const run = (resources: XMLElementObj[]): Function => {
             )
             break
         }
-
         function parseIf(target: XMLElementObj) {
           const define: XMLElementObj = filterTagEle(
             <XMLElementObj[]>target.children,
@@ -75,6 +71,7 @@ export const run = (resources: XMLElementObj[]): Function => {
             runFun(<XMLElementObj[]>sequence.children)
           } else {
             elseMark = true
+            runTag(resources[index++])
           }
         }
 
@@ -90,7 +87,6 @@ export const run = (resources: XMLElementObj[]): Function => {
         }
 
         function parseForEach(target: XMLElementObj) {
-          console.log('进入for循环')
           const define: XMLElementObj = filterTagEle(
             <XMLElementObj[]>target.children,
             'define'
@@ -100,8 +96,6 @@ export const run = (resources: XMLElementObj[]): Function => {
             <XMLElementObj[]>target.children,
             'sequence'
           )
-          console.log('sequence', sequence)
-          console.log('define', define)
           const varCode: XMLElementObj = filterTagEle(
             <XMLElementObj[]>define.children,
             'varCode'
@@ -138,7 +132,7 @@ export const run = (resources: XMLElementObj[]): Function => {
           let values = datasource.getAllRecords().toArray()
           for (let i = 0, l = values.length; i < l; i++) {
             routeRuntime.setForEachVar({
-              code: varCode.children[0],
+              code: varCode.children[0] as string,
               value: values[i],
               datasource: datasource
             })
