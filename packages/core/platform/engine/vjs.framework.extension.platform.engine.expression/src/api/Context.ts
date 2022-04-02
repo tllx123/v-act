@@ -32,21 +32,12 @@ export default class Context {
    * 获取全局变量
    * */
   getRecordValue(entityCode: string, fieldCode: string) {
-    let ctx = this.context.get('expressionContext')
-    if (this.routeContext) {
-      let datasource = DatasourceManager.lookup({ datasourceName: entityCode })
-
-      if (datasource) {
-        let row
-        if (ctx.hasCurrentRecord(entityCode))
-          row = ctx.getCurrentRecord(entityCode)
-        else if (ctx.hasRecordIndex(entityCode))
-          row = datasource.getRecordById(ctx.getRecordIndex(entityCode))
-        else row = datasource.getCurrentRecord()
-        // 如果上面都取不到记录，则取数据源的第一行记录
-        row = row ? row : datasource.getRecordByIndex(0)
-        return row ? row.get(fieldCode) : null
-      }
+    let datasource = DatasourceManager.lookup({ datasourceName: entityCode })
+    if (datasource) {
+      let row = datasource.getCurrentRecord()
+      // 如果上面都取不到记录，则取数据源的第一行记录
+      row = row ? row : datasource.getRecordByIndex(0)
+      return row ? row.get(fieldCode) : null
     }
     return null
   }
