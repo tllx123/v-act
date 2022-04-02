@@ -15,7 +15,7 @@ const init = function ({ componentCode, componentSchema }: IParams) {
   variants && addVariantDefines(componentCode, variants)
   options && addOptionDefines(componentCode, options)
   manifest && addServiceMapping(manifest)
-  domains && registerMetadata(domains)
+  domains && registerMetadata(componentCode, domains)
 
   ComponentInfo.markComponentSchemaInited(componentCode)
 }
