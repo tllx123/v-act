@@ -201,10 +201,7 @@ let openWindowContainer = function (
   if (tmpIsAsyn == false) {
     ruleContext.markRouteExecuteUnAuto()
   }
-  // 若是有权限，需要打开
-  if (privilegeInfo) {
-    privilegeInfo['bizInstance']
-  }
+
   // 标注打开方式为container
   windowInputParams['variable']['formulaOpenMode'] = 'container'
   // 将标签页的ID传入，以提供给退出事件进行关闭
@@ -225,8 +222,9 @@ let openWindowContainer = function (
     let parentScopeId = scopeManager.getParentScopeId(currentScopeId)
     if (privilegeInfo) {
       // 单据窗体权限信息
-      let bizWindowInstanceresourceId = privilegeInfo['bizWindowInstance']
-      if (bizWindowInstanceresourceId) {
+      let isBizWindowInstancePrivilege =
+        privilegeInfo['isBizWindowInstancePrivilege']
+      if (isBizWindowInstancePrivilege == true) {
         widgetAction.executeComponentAction('setReadOnly', windowCode, true)
         // 无单据实例权限,存放信息
         windowParam.setInput({
@@ -470,7 +468,7 @@ let executePermission = function (
               hasBizWindowEditPrivilege == false &&
               hasBizWindowQueryPrivilege == true
             ) {
-              privilegeInfo['bizWindowInstance'] = resourceId
+              privilegeInfo['isBizWindowInstancePrivilege'] = true
             }
             if (datas.length > 0) {
               // 收集动作权限信息

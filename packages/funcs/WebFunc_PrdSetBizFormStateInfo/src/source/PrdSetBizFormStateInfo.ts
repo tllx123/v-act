@@ -8,7 +8,6 @@ let main = function (param: any) {
   //获取函数传入的参数
   let args = param.getArgs()
   //获取路由上下文
-  let routeContext = param.getRouteContext()
   if (args && (args.length < 3 || args.length > 6)) {
     throw new Error('触发流程框架动作数据变化异常，输入传参数异常！')
   }

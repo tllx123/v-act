@@ -1,8 +1,9 @@
 import { ExpressionEngine as expressionEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
 import { ExpressionContext as expressionContext } from '@v-act/vjs.framework.extension.platform.services.engine'
+import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 // 主入口(必须有)
-let main = function (param: any) {
+let main = function (param: FunctionContext) {
   //实体名
   let entityName = 'TEMP_PROCESS_TASK'
   //实体字段名

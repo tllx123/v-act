@@ -256,7 +256,7 @@ export function subscribe(
   return eventService.on.apply(eventService, arguments)
 }
 
-export function publish(serviceName: string, arg: any, callback: any) {
+export function publish(serviceName: string, arg: any, callback?: any) {
   let eventService = eventExtension.getInstance(MEDIATOR_SERVICE)
   //拼装eventEmitter触发事件函数的参数列表
   let param = []
