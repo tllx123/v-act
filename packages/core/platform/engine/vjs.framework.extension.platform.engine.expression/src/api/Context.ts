@@ -5,6 +5,7 @@ import {
   ComponentParam
 } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 import { WidgetProperty } from '@v-act/vjs.framework.extension.platform.services.view.widget.common.action'
+import { DatasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 import { MathUtil } from '@v-act/vjs.framework.extension.util.math'
 
 export default class Context {
@@ -31,22 +32,14 @@ export default class Context {
    * 获取全局变量
    * */
   getRecordValue(entityCode: string, fieldCode: string) {
-    let datasource = this.routeContext.getOutPutParam(entityCode)
-
+    let datasource = DatasourceManager.lookup({ datasourceName: entityCode })
     if (datasource) {
-      var row
-      if (this.routeContext.hasCurrentRecord(entityCode))
-        row = this.routeContext.getCurrentRecord(entityCode)
-      else if (this.routeContext.hasRecordIndex(entityCode))
-        row = datasource.getRecordById(
-          this.routeContext.getRecordIndex(entityCode)
-        )
-      else row = datasource.getCurrentRecord()
-
+      let row = datasource.getCurrentRecord()
       // 如果上面都取不到记录，则取数据源的第一行记录
       row = row ? row : datasource.getRecordByIndex(0)
       return row ? row.get(fieldCode) : null
     }
+    return null
   }
 
   /**
