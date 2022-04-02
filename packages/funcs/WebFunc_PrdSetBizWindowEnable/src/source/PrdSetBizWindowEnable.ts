@@ -4,9 +4,8 @@ import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platf
 import { FunctionContext } from '@v-act/vjs.framework.extension.platform.interface.function'
 
 //主入口(必须有)
-let main = function (param: FunctionContext) {
+let main = function (...args: any[]) {
   //获取函数传入的参数
-  let args = param.getArgs()
   if (!args || args.length == 0) {
     throw new Error(
       '[PrdSetBizWindowEnable.main]设置业务单使能属性异常，PrdSetBizWindowEnable函数需要传入参数！'

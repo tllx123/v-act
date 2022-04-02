@@ -6,9 +6,7 @@ import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.p
 import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
 
 //主入口(必须有)
-let main = function (param: any) {
-  //获取函数传入的参数
-  let args = param.getArgs()
+let main = function (...args: any[]) {
   if (!args || args.length == 0) {
     throw new Error(
       '[PrdSetFrameWindowEnable.main]设置框架窗体使能属性异常，PrdSetFrameWindowEnable函数需要传入参数！'

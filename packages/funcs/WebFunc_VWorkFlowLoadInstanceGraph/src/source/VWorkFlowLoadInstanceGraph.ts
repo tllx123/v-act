@@ -13,8 +13,7 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 
 //主入口(必须有)
-var main2 = function (param: any) {
-  var args = param.getArgs()
+var main2 = function (...args: any[]) {
   var processDefinitionId = args.length > 0 ? args[0] : null
   var processInstanceId = args.length > 1 ? args[1] : null
   var destControlId = args.length > 2 ? args[2] : null

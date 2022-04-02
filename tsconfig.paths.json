@@ -1415,7 +1415,11 @@
       "@v-act/webrule_prdtriggerbizframeactionchange": ["packages/rules/WebRule_PrdTriggerBizFrameActionChange/src"],
       "@v-act/webrule_prdworkflowchangeframedatas": ["packages/rules/WebRule_PrdWorkflowChangeFrameDatas/src"],
       "@v-act/webrule_wfexecuteinspectstrategy": ["packages/rules/WebRule_WFExecuteInspectStrategy/src"],
-      "@v-act/webrule_workflowprocessmenuactionexecute": ["packages/rules/WebRule_WorkFlowProcessMenuActionExecute/src"]
+      "@v-act/webrule_workflowprocessmenuactionexecute": [
+        "packages/rules/WebRule_WorkFlowProcessMenuActionExecute/src"
+      ],
+      "@v-act/webfunc_vworkflowloadgraph": ["packages/funcs/WebFunc_VWorkFlowLoadGraph/src"],
+      "@v-act/webfunc_vworkflowloadinstancegraph": ["packages/funcs/WebFunc_VWorkFlowLoadInstanceGraph/src"]
     }
   }
 }

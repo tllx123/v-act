@@ -3,7 +3,7 @@ import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.ext
 import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platform.services.param.manager'
 
 //主入口(必须有)
-let main = function (param: any) {
+let main = function (...args: any[]) {
   // 获取当前域信息ID
   let currentScopeId = scopeManager.getCurrentScopeId()
   // 当前窗体实例Id
