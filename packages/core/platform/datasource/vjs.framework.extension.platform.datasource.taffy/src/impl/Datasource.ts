@@ -417,7 +417,7 @@ class Datasource {
     })
     let resultSet = this._r2rs(updated)
     if (updated.length > 0) {
-      let oDatas = this.db._update(updated)
+      //let oDatas = this.db._update(updated)
 
       //v-act:更新实体记录
       const { context, code } = this._getDataSourceHandler()
@@ -426,7 +426,7 @@ class Datasource {
         records: updated
       }
 
-      context.updateRecords(paramsTemp, context)
+      const oDatas = context.updateRecords(paramsTemp, context)
 
       let rs = new ResultSet(this.metadata, oDatas)
       this._fireEvent({
