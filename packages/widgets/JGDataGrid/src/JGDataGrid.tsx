@@ -13,6 +13,7 @@ import {
   getEntityDatas,
   getCompEvent
 } from '@v-act/widget-utils'
+import { useState } from 'react'
 interface dataHeader {
   code: string
   name: string
@@ -40,18 +41,9 @@ export interface JGDataGridProps {
   showGridSummary?: boolean
 }
 
-const rowSelection = {
-  onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {},
-  getCheckboxProps: (record: any) => ({
-    name: record.name
-  })
-}
-
 const JGDataGrid = (props: JGDataGridProps) => {
   const context = useContext()
 
-  console.log('context')
-  console.log(context)
   const {
     left,
     top,
@@ -68,6 +60,22 @@ const JGDataGrid = (props: JGDataGridProps) => {
     allowMerge,
     rowsFixedCount
   } = props
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: any) => {
+      if (Array.isArray(selectedRows)) {
+        const selectedId = selectedRows[0].id
+        if (typeof context.setCurrentRecord !== 'undefined') {
+          context.setCurrentRecord(selectedId, tablename as string, context)
+        }
+      }
+    },
+    getCheckboxProps: (record: any) => {
+      return {
+        name: record.name
+      }
+    }
+  }
 
   let dataHeader: Array<any> = []
 
@@ -109,13 +117,10 @@ const JGDataGrid = (props: JGDataGridProps) => {
         }
       })
 
-      console.log('data')
-      console.log(data)
       let data2 = data.filter((item: any) => {
         return item.id !== item.pid
       })
-      console.log('data2')
-      console.log(data2)
+
       // let data3 = deepcopy(data2)
 
       let map = new Map()
@@ -126,16 +131,12 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
       let data3 = [...map.values()]
 
-      console.log('data3')
-      console.log(data3)
-
       let dataTreeA: any = []
       dataTreeA = toTree(data3, {
         parentProperty: 'pid',
         customID: 'id'
       })
-      console.log('dataTreeA')
-      console.log(dataTreeA)
+
       dataTreeA.some((item: any) => {
         dataHeader.push(item)
       })
@@ -157,16 +158,13 @@ const JGDataGrid = (props: JGDataGridProps) => {
           })
           // dataTreeHeader.push(dataTree[0])
         }
-        console.log('data')
-        console.log(data)
 
         let dataTreeA: any = []
         dataTreeA = toTree(data, {
           parentProperty: 'pid',
           customID: 'id'
         })
-        console.log('dataTreeA')
-        console.log(dataTreeA)
+
         dataTreeA.some((item: any) => {
           dataHeader.push(item)
         })
@@ -185,9 +183,6 @@ const JGDataGrid = (props: JGDataGridProps) => {
     })
   }
 
-  console.log('dataHeader-------------------')
-  console.log(dataHeader)
-
   // control.controls.some((item: any, index: any) => {
   //   dataHeader.push({
   //     title: item.properties.labelText,
@@ -197,18 +192,22 @@ const JGDataGrid = (props: JGDataGridProps) => {
   //     ellipsis: adaLineHeight == true ? false : 'enble'
   //   })
   // })
-
+  const _current = context.getCurrentRecord
+    ? context.getCurrentRecord(tablename as string, context) || {}
+    : {}
+  const defaultSelectedRowKeys: Array<any> = []
   let data: any = []
+
   if (tablename) {
     data = getEntityDatas(tablename, context)
-
-    console.log('data-------------------')
-    console.log(data)
   }
 
   if (Array.isArray(data)) {
     data.some((item: any, index: any) => {
       item.key = index + 'grid'
+      if (item.id === _current?.id) {
+        defaultSelectedRowKeys.push(item.key)
+      }
     })
   }
 
@@ -236,8 +235,6 @@ const JGDataGrid = (props: JGDataGridProps) => {
       headerDataLeft[0].controls = []
       headerDataRight[0].controls = []
       control.headerControls[0].controls.some((item: any) => {
-        console.log('item.properties.align')
-        console.log(item.properties.align)
         if (item.properties.align) {
           // item.properties.height = 'auto'
           // item.properties.showBorder = false
@@ -257,6 +254,10 @@ const JGDataGrid = (props: JGDataGridProps) => {
       })
     }
   }
+
+  const [selectionType, setSelectionType] = useState<'checkbox' | 'radio'>(
+    'radio'
+  )
 
   return (
     <Box
@@ -307,6 +308,12 @@ const JGDataGrid = (props: JGDataGridProps) => {
         </Box>
       </Box>
       <Table
+        rowSelection={{
+          type: selectionType,
+          selectedRowKeys: [...defaultSelectedRowKeys],
+          //defaultSelectedRowKeys: [...defaultSelectedRowKeys],
+          ...rowSelection
+        }}
         {...tableProp}
         onRow={(record) => {
           return {
