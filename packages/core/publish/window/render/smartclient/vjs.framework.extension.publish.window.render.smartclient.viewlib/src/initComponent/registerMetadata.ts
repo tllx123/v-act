@@ -18,7 +18,6 @@ export default (componentCode: string, domains: IDomains) => {
     let data = {}
     let code = element['$'].code
 
-    console.log(element.config)
     if (ActionManager === code) {
       // 动作配置列表
       let {
@@ -40,7 +39,99 @@ export default (componentCode: string, domains: IDomains) => {
       } = element
       if (bizWindowInstance && bizWindowInstance.length > 0) {
         for (let instanceItem of bizWindowInstance) {
-          console.log(JSON.stringify(instanceItem, null, 2))
+          let windows = []
+          for (let window of instanceItem.bizWindowInfos) {
+            // 取出group
+            let groups = []
+            for (let group of window.frameAction) {
+              // 取出action
+              let actions = []
+              for (let action of group.frameGroupAction) {
+                let a = {
+                  actionSPIComponentCode: action.actionSPIComponentCode,
+                  groupId: '8a819cc77fda1245017fde6e55952db3',
+                  actionSPI: action.actionSPI,
+                  actionAPIComponentCode: action.actionAPIComponentCode,
+                  isVisible: action.isVisible,
+                  actionType: 'common',
+                  instanceId: `${componentCode}_${instanceItem.code}`,
+                  actionAPI: action.actionAPI,
+                  actionAPIType: action.actionAPIType,
+                  isEnabled: action.isEnabled,
+                  actionCode: action.actionCode,
+                  id: '8a819cc77fda1245017fde6e55952db4',
+                  actionOrder: action.actionOrder,
+                  actionName: action.actionName
+                }
+                actions.push(a)
+              }
+
+              let g = {
+                instanceBizId: `${componentCode}_${instanceItem.code}`,
+                groupName: group.frameGroupName,
+                instanceId: `${componentCode}_${instanceItem.code}`,
+                pid: null,
+                id: '8a819cc77fda1245017fde6e55952db3',
+                isLeaf: false,
+                groupCode: group.frameGroupCode,
+                groupControlType: group.frameGroupControlType,
+                order: group.frameGroupOrder,
+                actions
+              }
+
+              for (let subGroup of group.subFrameGroup) {
+                let subActs = []
+                for (let subAction of subGroup.frameGroupAction) {
+                  let a = {
+                    actionSPIComponentCode: subAction.actionSPIComponentCode,
+                    groupId: '8a819cc77fda1245017fde6e55952db3',
+                    actionSPI: subAction.actionSPI,
+                    actionAPIComponentCode: subAction.actionAPIComponentCode,
+                    isVisible: subAction.isVisible,
+                    actionType: 'common',
+                    instanceId: `${componentCode}_${instanceItem.code}`,
+                    actionAPI: subAction.actionAPI,
+                    actionAPIType: subAction.actionAPIType,
+                    isEnabled: subAction.isEnabled,
+                    actionCode: subAction.actionCode,
+                    id: '8a819cc77fda1245017fde6e55952db4',
+                    actionOrder: subAction.actionOrder,
+                    actionName: subAction.actionName
+                  }
+                  subActs.push(a)
+                }
+                let g = {
+                  instanceBizId: `${componentCode}_${instanceItem.code}`,
+                  groupName: subGroup.frameGroupName,
+                  instanceId: `${componentCode}_${instanceItem.code}`,
+                  pid: null,
+                  id: '8a819cc77fda1245017fde6e55952db3',
+                  isLeaf: false,
+                  groupCode: subGroup.frameGroupCode,
+                  groupControlType: subGroup.frameGroupControlType,
+                  order: subGroup.frameGroupOrder,
+                  actions: subActs
+                }
+                groups.push(g)
+              }
+
+              groups.push(g)
+            }
+
+            let w = {
+              bizWindowCode: instanceItem.code,
+              isDefaultSelected: window.isDefaultSelected,
+              bizComponentCode: window.code.split('.')[0],
+              instanceId: `${componentCode}_${instanceItem.code}`,
+              id: '8a819cc77fda1245017fde6e55952db2',
+              bizWindowName: window.name,
+              bizWindowTitle: window.title,
+              bizWindowOrder: 1,
+              groups
+            }
+            windows.push(w)
+          }
+
           data[instanceItem.code] = {
             instanceCode: instanceItem.code,
             instanceName: instanceItem.name,
@@ -53,151 +144,16 @@ export default (componentCode: string, domains: IDomains) => {
               ? instanceItem.frameWindowInfo.code.split('.')[1]
               : '',
             instanceIcon: instanceItem.iconImage,
-            windows: [
-              {
-                bizWindowCode: 'batchEditOrg',
-                isDefaultSelected: true,
-                bizComponentCode: 'vbase_prd_org',
-                instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                groups: [
-                  {
-                    instanceBizId: 'vbase_prd_org_inst_batchEditOrg',
-                    groupName: '功能区',
-                    instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                    pid: null,
-                    id: '8a819cc77fda1245017fde6e55952db3',
-                    isLeaf: false,
-                    actions: [
-                      {
-                        actionSPIComponentCode: 'vbase_prd_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db3',
-                        actionSPI: 'SPI_BasicSaveDataAction',
-                        actionAPIComponentCode: 'vbase_prd_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_BasicSaveDataAction',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'SaveAction',
-                        id: '8a819cc77fda1245017fde6e55952db4',
-                        actionOrder: 1,
-                        actionName: '保存'
-                      },
-                      {
-                        actionSPIComponentCode: 'vbase_prd_org_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db3',
-                        actionSPI: 'SPI_ShowCustomizedColumnAction',
-                        actionAPIComponentCode: 'vbase_prd_org_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_ShowCustomizedColumnAction',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'ShowCustomizedColumnAction',
-                        id: '8a819cc77fda1245017fde6e55952db5',
-                        actionOrder: 2,
-                        actionName: '显示定制列'
-                      }
-                    ],
-                    groupCode: 'frameGroupCode',
-                    groupControlType: '',
-                    order: 1
-                  },
-                  {
-                    instanceBizId: 'vbase_prd_org_inst_batchEditOrg',
-                    groupName: '\u6279\u91cf\u64cd\u4f5c',
-                    instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                    pid: '8a819cc77fda1245017fde6e55952db3',
-                    id: '8a819cc77fda1245017fde6e55952db6',
-                    isLeaf: false,
-                    actions: [
-                      {
-                        actionSPIComponentCode: 'vbase_prd_org_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db6',
-                        actionSPI: 'SPI_BatchAdjustSuperiorAction',
-                        actionAPIComponentCode: 'vbase_prd_org_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_BatchAdjustSuperiorAction',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'BatchAdjustSuperiorAction',
-                        id: '8a819cc77fda1245017fde6e55952db7',
-                        actionOrder: 1,
-                        actionName: '\u6279\u91cf\u8c03\u6574\u4e0a\u7ea7'
-                      },
-                      {
-                        actionSPIComponentCode: 'vbase_prd_org_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db6',
-                        actionSPI: 'SPI_BatchEnable',
-                        actionAPIComponentCode: 'vbase_prd_org_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_BatchEnable',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'BatchEnable',
-                        id: '8a819cc77fda1245017fde6e55952db8',
-                        actionOrder: 2,
-                        actionName: '\u6279\u91cf\u542f\u7528'
-                      },
-                      {
-                        actionSPIComponentCode: 'vbase_prd_org_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db6',
-                        actionSPI: 'SPI_BatchDisable',
-                        actionAPIComponentCode: 'vbase_prd_org_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_BatchDisable',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'BatchDisable',
-                        id: '8a819cc77fda1245017fde6e55952db9',
-                        actionOrder: 3,
-                        actionName: '\u6279\u91cf\u505c\u7528'
-                      },
-                      {
-                        actionSPIComponentCode: 'vbase_prd_action',
-                        groupId: '8a819cc77fda1245017fde6e55952db6',
-                        actionSPI: 'SPI_BasicBatchDeleteDataAction',
-                        actionAPIComponentCode: 'vbase_prd_action',
-                        isVisible: true,
-                        actionType: 'common',
-                        instanceId: 'vbase_prd_org_inst_batchEditOrg',
-                        actionAPI: 'API_BasicBatchDeleteDataAction',
-                        actionAPIType: 'Client',
-                        isEnabled: true,
-                        actionCode: 'BatchDeleteAction',
-                        id: '8a819cc77fda1245017fde6e55952dba',
-                        actionOrder: 4,
-                        actionName: '\u6279\u91cf\u5220\u9664'
-                      }
-                    ],
-                    groupCode: 'BatchOperate',
-                    groupControlType: '',
-                    order: 3
-                  }
-                ],
-                id: '8a819cc77fda1245017fde6e55952db2',
-                bizWindowName:
-                  '\u6279\u91cf\u7f16\u8f91\u90e8\u95e8\u4fe1\u606f',
-                bizWindowTitle:
-                  '\u6279\u91cf\u7f16\u8f91\u90e8\u95e8\u4fe1\u606f',
-                bizWindowOrder: 1
-              }
-            ],
             instanceIconType: instanceItem.iconSourceType,
-            frameWindowName: instanceItem.frameWindowInfo.name
+            frameWindowName: instanceItem.frameWindowInfo.name,
+            windows
           }
+          console.log('data', data)
           return
         }
       }
     }
+    console.log(data)
     metadatas.push({ domain: code, data: data })
   }
 
@@ -208,7 +164,7 @@ export default (componentCode: string, domains: IDomains) => {
   }
 
   if (metadatas.length === 0) return
-  console.log(metadatas)
+  // console.log(metadatas)
   for (let i = 0, len = metadatas.length; i < len; i++) {
     let metadata = metadatas[i]
     ComponentParam.registerMetadata(
