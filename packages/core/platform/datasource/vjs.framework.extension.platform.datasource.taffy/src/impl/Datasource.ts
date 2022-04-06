@@ -34,7 +34,6 @@ interface Position {
 }
 
 let primaryKey = 'id'
-const initModule = function (sb: any) {}
 
 let each: any = CollectionUtil.each
 let find: any = CollectionUtil.find
@@ -52,11 +51,7 @@ class Datasource {
   public isDefaultSel: boolean
   public dataAmount = 0
   public _eventPool = {}
-  public insertIds: string[]
-  public updateIds: string[]
-  public deleteDatas = []
-  public selectIds: string[]
-  public currentId: string
+  public currentId: string | null
   public dataAccessObject: any
   public snapshotHandler: () => void
   public bindWidgets: any
@@ -72,10 +67,6 @@ class Datasource {
     this.isDefaultSel = true
     this.dataAmount = 0
     this._eventPool = {}
-    this.insertIds = []
-    this.updateIds = []
-    this.deleteDatas = []
-    this.selectIds = []
     this.currentId = ''
     this.dataAccessObject = null
     this.snapshotHandler = () => {}
@@ -160,15 +151,11 @@ class Datasource {
     let isAppend = params.isAppend
     if (!isAppend) {
       //如果已覆盖的方式加载数据,则清空原有状态数据
-      this.insertIds = []
-      this.updateIds = []
-      this.deleteDatas = []
-      this.selectIds = []
+      //this.deleteDatas = []
       let snapshot: any = this._getSnapshot()
       if (snapshot) {
         snapshot.clearCurrentRecord()
       }
-      // @ts-ignore
       this.currentId = null
     }
     let rs = new ResultSet(this.metadata, datas)
@@ -186,12 +173,10 @@ class Datasource {
     //this.db._load(datas, isAppend)
     //v-act:加载实体记录
     const { context, code } = this._getDataSourceHandler()
-
     let paramsTemp = {
       code: code,
       records: datas
     }
-
     context.loadRecords(paramsTemp, context)
 
     if (_fireEvent) {
@@ -302,7 +287,7 @@ class Datasource {
       typeof params.resetCurrent == 'boolean' ? params.resetCurrent : true
     let toInserted: any = []
     let _this = this
-    // @ts-ignore
+
     each(records, function (record: any) {
       let id = record.getSysId()
       if (_this.getRecordById(id)) {
@@ -312,7 +297,7 @@ class Datasource {
             '记录，无法新增，请检查！'
         )
       }
-      _this.insertIds.push(id)
+
       toInserted.push(record)
       _this._fireEvent({
         eventName: _this.Events.RECORDPROCESS,
@@ -354,12 +339,11 @@ class Datasource {
 
     //v-act:新增实体记录
     const { context, code } = this._getDataSourceHandler()
+
     let paramsTemp = {
       code: code,
-      //records: toInserted
       records: [toInserted[0]?.changedData]
     }
-
     context.insertRecords(paramsTemp, context)
 
     let resultSet = this._r2rs(toInserted)
@@ -369,9 +353,9 @@ class Datasource {
       datasource: this.ds,
       position: position
     })
-    let currentId = this.currentId
-    // @ts-ignore
-    let current = find(toInserted, function (record) {
+    //let currentId = this.currentId
+    let currentId = this._getCurrentRecordId()
+    let current = find(toInserted, function (record: any) {
       return record.getSysId() == currentId
     })
     if (!current && resetCurrent) {
@@ -387,20 +371,22 @@ class Datasource {
     return resultSet
   }
 
-  updateRecords(params: any) {
+  updateRecords(params: Record<string, any>) {
     let records = params.records
     let updated: any = []
     let ds = this
-    // @ts-ignore
+
+    let insertIds = this.getArrayDataFromContextEntity('insertIds')
+    let updateIds = this.getArrayDataFromContextEntity('updateIds')
     each(records, function (record: any) {
       let diffData = record.getDiff()
-      // @ts-ignore
+
       if (diffData && !ObjectUtil.isEmpty(diffData)) {
         updated.push(record)
         let id = record.getSysId()
-        // @ts-ignore
-        if (!(contains(ds.updateIds, id) || contains(ds.insertIds, id))) {
-          ds.updateIds.push(id)
+
+        if (!(contains(updateIds, id) || contains(insertIds, id))) {
+          updateIds.push(id)
         }
         let changedFieldCodes = []
         for (let changeFieldCode in diffData) {
@@ -423,7 +409,6 @@ class Datasource {
       const { context, code } = this._getDataSourceHandler()
       let paramsTemp = {
         code: code,
-        //records: updated
         records: [
           Object.assign(updated[0]?.orginalData, updated[0].changedData)
         ]
@@ -459,30 +444,30 @@ class Datasource {
   }
 
   _removeRecords(datas: any, nextRecordId: any, isClear: any) {
-    let ds = this
     let deleted: any = []
     let deletedIds: any = []
-    // @ts-ignore
-    each(datas, function (data: any) {
+
+    each(datas, (data: any) => {
       let id = data['id']
-      // @ts-ignore
-      if (!arrayUtil.remove(ds.insertIds, id)) {
+
+      if (
+        !arrayUtil.remove(this.getArrayDataFromContextEntity('insertIds'), id)
+      ) {
         deleted.push(data)
       }
-      // @ts-ignore
-      arrayUtil.remove(ds.updateIds, id)
-      // @ts-ignore
-      arrayUtil.remove(ds.selectIds, id)
+
+      arrayUtil.remove(this.getArrayDataFromContextEntity('updateIds'), id)
+
+      arrayUtil.remove(this.getArrayDataFromContextEntity('selectIds'), id)
       deletedIds.push(id)
     })
 
-    this.deleteDatas = this.deleteDatas.concat(deleted)
+    this.getArrayDataFromContextEntity('deleteDatas').push(...deleted)
 
     //v-act:删除实体记录
     const { context, code } = this._getDataSourceHandler()
     let paramsTemp = {
       code: code,
-      //records: this.deleteDatas
       records: deletedIds
     }
 
@@ -526,36 +511,43 @@ class Datasource {
 
       //v-act:清除实体记录
       const { context, code } = this._getDataSourceHandler()
-
       context.clearRecords(code, context)
     }
 
     //context.clearRecords已经清除实体记录，无需再次执行this._removeRecords
     //this._removeRecords(datas, null, true)
     this.reset()
-    this.selectIds = []
     let snapshot = this._getSnapshot()
     if (snapshot) {
-      // @ts-ignore
+      //@ts-ignore
       snapshot.clearCurrentRecord()
     }
-    // @ts-ignore
     this.currentId = null
   }
 
   clearRemoveDatas() {
-    this.deleteDatas = []
+    this.getArrayDataFromContextEntity('deleteDatas').length = 0
   }
 
   reset() {
-    this.insertIds = []
-    this.updateIds = []
-    this.deleteDatas = []
+    const { context, code } = this._getDataSourceHandler()
+    const entities = context?.entities
+
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return
+      }
+      Array.isArray(entity.insertIds) && (entity.insertIds.length = 0)
+      Array.isArray(entity.updateIds) && (entity.updateIds.length = 0)
+      Array.isArray(entity.deleteDatas) && (entity.deleteDatas.length = 0)
+      Array.isArray(entity.selectIds) && (entity.selectIds.length = 0)
+    }
   }
 
   createRecord() {
     let metadata = this.getMetadata()
-    // @ts-ignore
     let record = new nRecord(metadata, null)
     record.set(primaryKey, uuid.generate())
     return record
@@ -563,36 +555,30 @@ class Datasource {
 
   getRecordById(id: string) {
     let data = this._getDataById(id)
-    // @ts-ignore
     return data != null ? new nRecord(this.metadata, data) : null
   }
 
   getRecordByIndex(index: number) {
-    //let data = this.db._getByIndex(index)
     const { context, code } = this._getDataSourceHandler()
 
     let allDatas = context.getAll(code, context)
     let data = allDatas[index]
-    // @ts-ignore
     return data ? new nRecord(this.metadata, data) : null
   }
 
   getAllRecords() {
-    //let datas = this.db._getAll()
     const { context, code } = this._getDataSourceHandler()
-
     let datas = context.getAll(code, context)
     return new ResultSet(this.metadata, datas)
   }
 
   isEmpty() {
-    // @ts-ignore
     return this.db.isEmpty()
   }
 
   _getModifyRecords(state: any) {
     // @ts-ignore
-    let records = this.db.getChangedData(state)
+    let records: any = this.db.getChangedData(state)
     let datas = []
     if (records && records.length > 0) {
       for (let i = 0, len = records.length; i < len; i++) {
@@ -633,7 +619,7 @@ class Datasource {
 
   _getDatasById(ids: any) {
     let datas: any = []
-    // @ts-ignore
+
     each(ids, (id: any) => {
       //datas.push(ds.db._getById(id))
       let itemObj = this._getDataById(id)
@@ -643,15 +629,18 @@ class Datasource {
   }
 
   getInsertedRecords() {
-    return this._getDatasById(this.insertIds)
+    return this._getDatasById(this.getArrayDataFromContextEntity('insertIds'))
   }
 
   getUpdatedRecords() {
-    return this._getDatasById(this.updateIds)
+    return this._getDatasById(this.getArrayDataFromContextEntity('updateIds'))
   }
 
   getDeletedRecords() {
-    return new ResultSet(this.metadata, this.deleteDatas)
+    return new ResultSet(
+      this.metadata,
+      this.getArrayDataFromContextEntity('deleteDatas')
+    )
   }
 
   getSelectedRecords() {
@@ -661,7 +650,24 @@ class Datasource {
       let datas = rd ? [rd] : []
       return this._r2rs(datas)
     }
-    return this._getDatasById(this.selectIds)
+    return this._getDatasById(this.getArrayDataFromContextEntity('selectIds'))
+  }
+
+  //从v-act的context entity上获取数组数据
+  getArrayDataFromContextEntity(key: string) {
+    const { context, code } = this._getDataSourceHandler()
+    const entities = context?.entities
+    let arrayData: Array<any> = []
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return arrayData
+      }
+      let keyStr = key || '$invalidKey'
+      Array.isArray(entity[keyStr]) && (arrayData = entity[keyStr])
+    }
+    return arrayData
   }
 
   _hasCurrentRecord() {
@@ -678,7 +684,7 @@ class Datasource {
       //return this.currentId
       const { code, context } = this._getDataSourceHandler()
       const _current = context.getCurrentRecord(code, context)
-      return _current?.id
+      return _current?.id || this.currentId
     }
   }
 
@@ -689,9 +695,10 @@ class Datasource {
   isSelectedRecord(params: any) {
     let record = params.record
     if (record) {
-      let selectedIds = this.selectIds
-      // @ts-ignore
-      return contains(selectedIds, record.getSysId())
+      return contains(
+        this.getArrayDataFromContextEntity('selectIds'),
+        record.getSysId()
+      )
     }
     return false
   }
@@ -705,7 +712,8 @@ class Datasource {
     }
     let record = params.record
     if (record) {
-      let id = this.currentId
+      //let id = this.currentId
+      let id = this._getCurrentRecordId()
       return id == record.get('id')
     }
     return false
@@ -713,12 +721,11 @@ class Datasource {
 
   isDeletedRecord(params: any) {
     let record = params.record
-    let datas = this.deleteDatas
+    let datas = this.getArrayDataFromContextEntity('deleteDatas')
     let metadata = this.getMetadata()
     let flag = false
-    // @ts-ignore
+
     each(datas, function (data: any) {
-      // @ts-ignore
       let rd = new nRecord(metadata, data)
       if (rd.getSysId() == record.getSysId()) {
         flag = true
@@ -739,7 +746,7 @@ class Datasource {
   updateSelectedRecords(params: any) {
     let rds = params.records,
       ids = params.ids,
-      selectedIds = this.selectIds
+      selectedIds = this.getArrayDataFromContextEntity('selectIds')
     let iter: any = []
     if (rds) {
       iter = iter.concat(rds)
@@ -756,11 +763,12 @@ class Datasource {
           let record = snapshot.getCurrentRecord()
           currentId = record.getSysId()
         } else {
-          currentId = this.currentId
+          //currentId = this.currentId
+          currentId = this._getCurrentRecordId()
         }
         if (currentId != null) {
           let rd = this.getRecordById(currentId)
-          // @ts-ignore
+
           this.currentId = null
           if (snapshot) {
             snapshot.clearCurrentRecord()
@@ -776,13 +784,12 @@ class Datasource {
       } else {
         let rd = iter[iter.length - 1],
           unSelected: any = []
-        // @ts-ignore
         rd = rd instanceof nRecord ? rd : this.getRecordById(rd)
         this.setCurrentRecord({ record: rd })
         let id = rd.getSysId()
         let isSel = false
         let db = this
-        // @ts-ignore
+
         each(selectedIds, function (selectedId: any) {
           if (selectedId == id) {
             isSel = true
@@ -790,7 +797,9 @@ class Datasource {
             unSelected.push(db.getRecordById(selectedId))
           }
         })
-        this.selectIds = [id]
+        selectedIds.length = 0
+        selectedIds.push(id)
+
         if (!isSel) {
           let resultSet = this._ids2rs([id])
           this._fireEvent({
@@ -811,17 +820,15 @@ class Datasource {
         }
       }
     } else {
-      // @ts-ignore
       each(iter, function (record: any, index: any) {
-        // @ts-ignore
         let id = record instanceof nRecord ? record.getSysId() : record
         iter[index] = id
       })
-      // @ts-ignore
+
       let toSel = arrayUtil.difference(iter, selectedIds),
-        // @ts-ignore
         unSel = arrayUtil.difference(selectedIds, iter)
-      this.selectIds = iter
+      selectedIds.splice(0, selectedIds.length, ...iter)
+
       if (unSel && unSel.length > 0) {
         this._fireEvent({
           eventName: this.Events.SELECT,
@@ -848,7 +855,7 @@ class Datasource {
     if (records.length < 1) {
       return this._r2rs([])
     }
-    let selectedIds: any = this.selectIds
+    let selectedIds: any = this.getArrayDataFromContextEntity('selectIds')
     if (isSelect && !this.isMultipleSelect()) {
       let unSelected: any = []
       let record = records[records.length - 1]
@@ -856,7 +863,7 @@ class Datasource {
       let id = record.getSysId()
       let isSel = false
       let db = this
-      // @ts-ignore
+
       each(selectedIds, function (selectedId: any) {
         if (selectedId == id) {
           isSel = true
@@ -865,7 +872,7 @@ class Datasource {
         }
       })
       if (!isSel) {
-        this.selectIds = [id]
+        selectedIds.splice(0, selectedIds.length, id)
         selectRecords.push(record)
       }
       if (unSelected.length > 0) {
@@ -878,17 +885,13 @@ class Datasource {
         })
       }
     } else {
-      // @ts-ignore
       each(records, function (record: any) {
         let id = record.getSysId()
-        // @ts-ignore
         if (isSelect && !contains(selectedIds, id)) {
           //选中记录
           selectedIds.push(id)
           selectRecords.push(record)
-          // @ts-ignore
         } else if (!isSelect && contains(selectedIds, id)) {
-          // @ts-ignore
           arrayUtil.remove(selectedIds, id)
           selectRecords.push(record)
         }
@@ -909,37 +912,39 @@ class Datasource {
   setCurrentRecord(params: any) {
     let snapshot: any = this._getSnapshot()
     if (snapshot) {
-      //TODO
       snapshot.setCurrentRecord(params)
     }
     let record = params.record
     if (record) {
       let id = record.getSysId()
-      if (this.currentId != id) {
-        // @ts-ignore
-        let preRecord = this.getRecordById(this.currentId)
-        this.currentId = id
-        if (!this.isMultipleSelect()) {
-          //单选db，当前行和选中行同步
-          this.updateSelectedRecords({ records: [record] })
+      //if (this.currentId != id) {
+      //let currentId = this._getCurrentRecordId()//会死循环
+      let currentId = this.currentId || ''
+      if (currentId != id) {
+        if (this.currentId != id) {
+          let preRecord = this.getRecordById(currentId)
+          this.currentId = id
+          if (!this.isMultipleSelect()) {
+            //单选db，当前行和选中行同步
+            this.updateSelectedRecords({ records: [record] })
+          }
+          //注意：需要放置在选择记录之后，否则造成记录变更事件中无法获取已选中记录
+          this._fireEvent({
+            eventName: this.Events.CURRENT,
+            currentRecord: record,
+            preCurrentRecord: preRecord,
+            datasource: this.ds
+          })
         }
-        //注意：需要放置在选择记录之后，否则造成记录变更事件中无法获取已选中记录
-        this._fireEvent({
-          eventName: this.Events.CURRENT,
-          currentRecord: record,
-          preCurrentRecord: preRecord,
-          datasource: this.ds
-        })
+
+        //v-act:设置当前行
+        const { context, code } = this._getDataSourceHandler()
+        context.setCurrentRecord(id, code, context)
       }
-
-      //v-act:设置当前行
-      const { context, code } = this._getDataSourceHandler()
-
-      context.setCurrentRecord(id, code, context)
     }
   }
 
-  on(params: any) {
+  on(params: Record<string, any>) {
     let eName = params.eventName
     let handler = params.handler
     let handlers = []
@@ -963,13 +968,15 @@ class Datasource {
   }
   _selectionChangedDeal() {
     //标记当前行为选中状态
-    if (this.currentId && this.currentId != '') {
-      if (this.selectIds.indexOf(this.currentId) == -1) {
-        this.selectIds.push(this.currentId)
+    let currentId = this._getCurrentRecordId()
+    if (currentId && currentId != '') {
+      let selectIds = this.getArrayDataFromContextEntity('selectIds')
+      if (selectIds.indexOf(currentId) == -1) {
+        selectIds.push(currentId)
       }
       this._fireEvent({
         eventName: this.Events.SELECT,
-        resultSet: this._ids2rs([this.currentId]),
+        resultSet: this._ids2rs([currentId]),
         isSelect: true,
         datasource: this.ds
       })
@@ -1063,7 +1070,32 @@ class Datasource {
    * @return Integer
    */
   getIndexById(id: string) {
-    return this.db._getIndex(id)
+    //return this.db._getIndex(id)
+    const { context, code } = this._getDataSourceHandler()
+    const recordId = id
+    const entities = context?.entities
+    let outputIndex = -1
+    if (entities) {
+      const entity = entities[code]
+
+      if (!entity) {
+        return outputIndex
+      }
+
+      !Array.isArray(entity.datas) && (entity.datas = [])
+
+      if (entity.datas.length === 0) {
+        return outputIndex
+      }
+
+      entity.datas.find((item: any, index: number) => {
+        if (item.id === recordId.toString()) {
+          outputIndex = index
+          return true
+        }
+      })
+    }
+    return outputIndex
   }
 
   /**

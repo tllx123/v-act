@@ -151,6 +151,8 @@ class TaffyDB {
   getNextRecordId() {
     return null
   }
+
+  isEmpty() {}
 }
 
 /**

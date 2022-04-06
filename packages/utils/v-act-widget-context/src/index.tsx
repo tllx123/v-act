@@ -153,6 +153,12 @@ const ContextProvider = function (props: ContextProviderProps) {
           entity._current = entity.datas[0]
           setVal({ ...context })
         }
+
+        Array.isArray(entity.insertIds) && (entity.insertIds.length = 0)
+        Array.isArray(entity.updateIds) && (entity.updateIds.length = 0)
+        Array.isArray(entity.selectIds) && (entity.selectIds.length = 0)
+        Array.isArray(entity.deleteIds) && (entity.deleteIds.length = 0)
+        Array.isArray(entity.deleteDatas) && (entity.deleteDatas.length = 0)
       }
     }
   }
@@ -179,14 +185,21 @@ const ContextProvider = function (props: ContextProviderProps) {
         return
       }
 
-      !Array.isArray(entity.datas) && (entity.datas = [])
+      Array.isArray(entity.datas) || (entity.datas = [])
+      Array.isArray(entity.insertIds) || (entity.insertIds = [])
 
       let insertIndex = entity.datas.length
       if (index !== undefined && index !== null) {
         insertIndex = index < 0 ? 0 : index > insertIndex ? insertIndex : index
       }
 
-      entity.datas.splice(insertIndex, 0, ...records)
+      //entity.datas.splice(insertIndex, 0, ...records)
+      records.forEach((item) => {
+        entity.datas.splice(insertIndex, 0, item)
+        insertIndex++
+        entity.insertIds.push(item?.id)
+      })
+
       setVal({ ...context })
     }
   }
@@ -218,8 +231,13 @@ const ContextProvider = function (props: ContextProviderProps) {
         return
       }
 
+      Array.isArray(entity.deleteIds) || (entity.deleteIds = [])
+      Array.isArray(entity.deleteDatas) || (entity.deleteDatas = [])
+
       for (let i = 0; i < entity?.datas?.length; i++) {
         if (records.includes(entity.datas[i].id)) {
+          entity.deleteIds.push(entity?.datas[i].id)
+          entity.deleteDatas.push(entity?.datas[i])
           entity.datas.splice(i, 1)
           i--
         }
@@ -285,7 +303,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       if (entity.datas.length === 0) {
         return {}
       }
-
+      Array.isArray(entity.updateIds) || (entity.updateIds = [])
       entity.datas.forEach((item: any) => {
         record =
           records.find((record: any) => {
@@ -293,6 +311,7 @@ const ContextProvider = function (props: ContextProviderProps) {
           }) || {}
 
         Object.assign(item, record)
+        entity.updateIds.push(record.id)
       })
 
       setVal({ ...context })
@@ -392,19 +411,16 @@ const ContextProvider = function (props: ContextProviderProps) {
         const current = entity._current
         if (current) {
           current[columnName] = val
+          Array.isArray(entity.updateIds) || (entity.updateIds = [])
+          if (!entity.updateIds.includes(current.id)) {
+            entity.updateIds.push(current.id)
+          }
+
           setVal(context)
         }
       }
     }
   }
-  /* if (window != undefined) {
-    window.contextTemp = contextTemp
-    window.loadRecords = loadRecords
-    window.insertRecords = insertRecords
-    window.removeRecords = removeRecords
-    window.updateRecords = updateRecords
-    window.setCurrentRecord = setCurrentRecord
-  } */
 
   return (
     <WidgetContext.Provider
