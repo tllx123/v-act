@@ -1,5 +1,6 @@
 import { ComponentParam } from '@v-act/vjs.framework.extension.platform.data.storage.schema.param'
 import { IDomains } from '../interfase/initComponentInterface'
+import { uuid } from '@v-act/vjs.framework.extension.util.uuid'
 
 // 动作
 const ActionManager = 'ActionManager'
@@ -49,7 +50,7 @@ export default (componentCode: string, domains: IDomains) => {
               for (let action of group.frameGroupAction) {
                 let a = {
                   actionSPIComponentCode: action.actionSPIComponentCode,
-                  groupId: '8a819cc77fda1245017fde6e55952db3',
+                  groupId: uuid.generate(),
                   actionSPI: action.actionSPI,
                   actionAPIComponentCode: action.actionAPIComponentCode,
                   isVisible: action.isVisible,
@@ -59,7 +60,7 @@ export default (componentCode: string, domains: IDomains) => {
                   actionAPIType: action.actionAPIType,
                   isEnabled: action.isEnabled,
                   actionCode: action.actionCode,
-                  id: '8a819cc77fda1245017fde6e55952db4',
+                  id: uuid.generate(),
                   actionOrder: action.actionOrder,
                   actionName: action.actionName
                 }
@@ -70,8 +71,8 @@ export default (componentCode: string, domains: IDomains) => {
                 instanceBizId: `${componentCode}_${instanceItem.code}`,
                 groupName: group.frameGroupName,
                 instanceId: `${componentCode}_${instanceItem.code}`,
-                pid: null,
-                id: '8a819cc77fda1245017fde6e55952db3',
+                pid: uuid.generate(),
+                id: uuid.generate(),
                 isLeaf: false,
                 groupCode: group.frameGroupCode,
                 groupControlType: group.frameGroupControlType,
@@ -84,7 +85,7 @@ export default (componentCode: string, domains: IDomains) => {
                 for (let subAction of subGroup.frameGroupAction) {
                   let a = {
                     actionSPIComponentCode: subAction.actionSPIComponentCode,
-                    groupId: '8a819cc77fda1245017fde6e55952db3',
+                    groupId: uuid.generate(),
                     actionSPI: subAction.actionSPI,
                     actionAPIComponentCode: subAction.actionAPIComponentCode,
                     isVisible: subAction.isVisible,
@@ -94,7 +95,7 @@ export default (componentCode: string, domains: IDomains) => {
                     actionAPIType: subAction.actionAPIType,
                     isEnabled: subAction.isEnabled,
                     actionCode: subAction.actionCode,
-                    id: '8a819cc77fda1245017fde6e55952db4',
+                    id: uuid.generate(),
                     actionOrder: subAction.actionOrder,
                     actionName: subAction.actionName
                   }
@@ -104,8 +105,8 @@ export default (componentCode: string, domains: IDomains) => {
                   instanceBizId: `${componentCode}_${instanceItem.code}`,
                   groupName: subGroup.frameGroupName,
                   instanceId: `${componentCode}_${instanceItem.code}`,
-                  pid: null,
-                  id: '8a819cc77fda1245017fde6e55952db3',
+                  pid: uuid.generate(),
+                  id: uuid.generate(),
                   isLeaf: false,
                   groupCode: subGroup.frameGroupCode,
                   groupControlType: subGroup.frameGroupControlType,
@@ -123,7 +124,7 @@ export default (componentCode: string, domains: IDomains) => {
               isDefaultSelected: window.isDefaultSelected,
               bizComponentCode: window.code.split('.')[0],
               instanceId: `${componentCode}_${instanceItem.code}`,
-              id: '8a819cc77fda1245017fde6e55952db2',
+              id: uuid.generate(),
               bizWindowName: window.name,
               bizWindowTitle: window.title,
               bizWindowOrder: 1,
@@ -148,8 +149,6 @@ export default (componentCode: string, domains: IDomains) => {
             frameWindowName: instanceItem.frameWindowInfo.name,
             windows
           }
-          console.log('data', data)
-          return
         }
       }
     }

@@ -38,19 +38,17 @@ interface ILogic {
   }
 }
 
-type ILogics = { logic: ILogic } | ILogic[]
-type IVariants = { variant: IVariant } | IVariant[]
-type IOptions = { option: IVariant } | IOption[]
+type ILogics = { logic: ILogic | ILogic[] }
+type IVariants = { variant: IVariant | IVariant[] }
+type IOptions = { option: IVariant | IOption[] }
 
 type IManifest = null | {
   serviceRegistration: {
     serviceMapping: {
       extensionPoint: IExtension
-      extensions:
-        | {
-            extension: IExtension
-          }
-        | IExtension[]
+      extensions: {
+        extension: IExtension | IExtension[]
+      }
     }
   }
 }

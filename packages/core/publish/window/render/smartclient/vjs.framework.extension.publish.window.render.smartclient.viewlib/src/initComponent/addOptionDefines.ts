@@ -3,8 +3,8 @@ import { ComponentParam } from '@v-act/vjs.framework.extension.platform.data.sto
 import { parseData } from '../utils'
 
 export default (componentCode: string, options: IOptions) => {
-  if (Array.isArray(options)) {
-    for (let item of options) {
+  if (Array.isArray(options.option)) {
+    for (let item of options.option) {
       item && ComponentParam.addVariantDefines(componentCode, parseData(item))
     }
   } else {

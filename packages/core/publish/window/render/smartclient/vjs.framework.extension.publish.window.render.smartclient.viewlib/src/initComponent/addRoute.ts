@@ -34,8 +34,8 @@ const addRoute = (componentCode: string, logic: ILogic) => {
 }
 
 export default (componentCode: string, logics: ILogics) => {
-  if (Array.isArray(logics)) {
-    for (let item of logics) {
+  if (Array.isArray(logics.logic)) {
+    for (let item of logics.logic) {
       addRoute(componentCode, item)
     }
   } else {

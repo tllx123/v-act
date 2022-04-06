@@ -18,8 +18,8 @@ export default (manifest: IManifest) => {
   if (!extensions && !extensionPoint) return
 
   let impls = []
-  if (Array.isArray(extensions)) {
-    for (let item of extensions) {
+  if (Array.isArray(extensions.extension)) {
+    for (let item of extensions.extension) {
       impls.push(parseExtension(item))
     }
   } else {

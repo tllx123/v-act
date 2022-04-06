@@ -4,8 +4,8 @@ import { parseData } from '../utils'
 
 export default (componentCode: string, variants: IVariants) => {
   if (!variants) return
-  if (Array.isArray(variants)) {
-    for (let item of variants) {
+  if (Array.isArray(variants.variant)) {
+    for (let item of variants.variant) {
       item && ComponentParam.addVariantDefines(componentCode, parseData(item))
     }
   } else {
