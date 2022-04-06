@@ -579,6 +579,7 @@ let executePermission = function (
     privilegeInfo['__functionResource__'] = functionResource
     let hasQueryBizWindowInstancePrivilege
     let hasEditBizWindowInstancePrivilege
+    let currentWindowInputParams
     if (isSettingPrivilege == true) {
       if (isLogined === false) {
         let e = exceptionFactory.create({
@@ -655,7 +656,7 @@ let executePermission = function (
             '|' +
             'privilegeType'
         ] = 'bizWindowInstance'
-        let currentWindowInputParams = {
+        currentWindowInputParams = {
           variable: variable
         }
         instanceComponentCode = 'vbase_prd_perm_inst'
@@ -760,6 +761,8 @@ let openDialogWindow = function (
   // 卡住规则链
   ruleContext.markRouteExecuteUnAuto()
   let isOpenMaximize = false
+  let datas: any
+  let records: any
   // 若是宽高为空的情况下考虑
   if (
     width == null ||
@@ -768,11 +771,11 @@ let openDialogWindow = function (
     height == undefined
   ) {
     // 判断该业务单窗体信息
-    let records = frameInputParams.frameBizWindow.getAllRecords()
+    records = frameInputParams.frameBizWindow.getAllRecords()
     let designerWidth = -1
     let designerHeigth = -1
     if (records && records['datas']) {
-      let datas = records['datas']
+      datas = records['datas']
       scopeManager.createScopeHandler({
         handler: exeFunc(0)
       })()
@@ -1006,7 +1009,7 @@ let getFrameInputParams = function (
   windowInputParams: any,
   frameWindowNameMap: any,
   scopeComponentCode: string,
-  scopeMetaCode
+  scopeMetaCode: any
 ) {
   let frameInputParams = {}
   let frameBizWindowInsatnceValues = new Array()
@@ -1727,12 +1730,7 @@ let setRouteCallBack = function (ruleContext: any, businessRuleResult: any) {
       //有返回输出值
       if (output['config']['isReturnValues'] == true) {
         let windowReturnValue = output['values']
-        let returnMappings = returnMappingsConfig
-        handleOpenWindowReturnValues(
-          ruleContext,
-          windowReturnValue,
-          returnMappings
-        )
+        handleOpenWindowReturnValues(ruleContext, windowReturnValue, null)
       }
     }
 

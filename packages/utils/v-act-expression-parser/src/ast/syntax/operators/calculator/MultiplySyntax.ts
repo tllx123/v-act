@@ -40,12 +40,13 @@ class MultiplySyntax extends BinaryExpressionSyntax {
   visit() {
     const ctx = this.getContext(),
       visitor = ctx.getVisitor()
+    let res: boolean | void = true
     if (visitor && visitor.visitMultiplySyntax) {
-      let res = visitor.visitMultiplySyntax(this)
-      if (res !== false) {
-        this.getLeft().visit()
-        this.getRight().visit()
-      }
+      res = visitor.visitMultiplySyntax(this)
+    }
+    if (res !== false) {
+      this.getLeft().visit()
+      this.getRight().visit()
     }
   }
 }

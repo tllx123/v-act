@@ -4,9 +4,7 @@ import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platf
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
 //主入口(必须有)
-let main = function (param: any) {
-  //获取函数传入的参数
-  let args = param.getArgs()
+let main = function (...args: any[]) {
   if (args.length != 3) {
     throw new Error(
       '[PrdSetBizFormEnableByWindowInstanceCode.main]设置业务单使能属性异常，输入参数为空！'

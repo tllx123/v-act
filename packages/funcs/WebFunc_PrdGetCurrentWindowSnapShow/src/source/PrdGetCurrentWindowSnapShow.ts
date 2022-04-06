@@ -3,9 +3,7 @@ import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.ext
 import { jsonUtil } from '@v-act/vjs.framework.extension.util.jsonutil'
 
 //主入口(必须有)
-let main = function (param: any) {
-  //获取函数传入的参数
-  let args = param.getArgs()
+let main = function (...args: any[]) {
   // 获取当前域信息ID
   let currentScopeId = scopeManager.getCurrentScopeId()
   // 当前窗体实例Id

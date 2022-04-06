@@ -2,9 +2,7 @@ import { ScopeManager as scopeManager } from '@v-act/vjs.framework.extension.pla
 import { DatasourceManager as datasourceManager } from '@v-act/vjs.framework.extension.platform.services.model.manager.datasource'
 
 //主入口(必须有)
-let main = function (param: any) {
-  //获取函数传入的参数
-  let args = param.getArgs()
+let main = function (...args: any[]) {
   // 获取参数
   let isCurrentScope = args.length > 0 ? args[0] : true
   // 获取当前域信息ID

@@ -9,8 +9,7 @@ import {
 } from '@v-act/vjs.framework.extension.platform.services.domain.datasource'
 
 //主入口(必须有)
-const main = function (param: any) {
-  var args = param.getArgs()
+const main = function (...args: any[]) {
   var processDefinitionId = args.length > 0 ? args[0] : null
   var destControlId = args.length > 1 ? args[1] : null
   var expression = 'VWorkFlowLoadGraphFunc("' + processDefinitionId + '")'

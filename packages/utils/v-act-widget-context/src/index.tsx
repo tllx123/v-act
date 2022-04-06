@@ -61,11 +61,12 @@ interface WidgetContextProps {
   loadRecords?: (params: Record<string, any>, context: any) => void
   insertRecords?: (params: Record<string, any>, context: any) => void
   removeRecords?: (params: Record<string, any>, context: any) => void
-  updateRecords?: (params: Record<string, any>, context: any) => void
+  updateRecords?: (params: Record<string, any>, context: any) => any
   setCurrentRecord?: (recordId: string, code: string, context: any) => void
   clearRecords?: (code: string, context: any) => void
   getAll?: (code: string, context: any) => void
-  isCurrentRecord?: (code: string, context: any) => void
+  isCurrentRecord?: (recordId: string, code: string, context: any) => void
+  getCurrentRecord?: (code: string, context: any) => any
 }
 
 interface ContextProviderProps {
@@ -267,26 +268,26 @@ const ContextProvider = function (props: ContextProviderProps) {
   const updateRecords = (params: Record<string, any>, context: any) => {
     const entities = context?.entities
     const { code, records } = params || {}
-
+    let record: any
     if (!Array.isArray(records) || records.length === 0) {
-      return
+      return {}
     }
 
     if (entities) {
       const entity = entities[code]
 
       if (!entity) {
-        return
+        return {}
       }
 
       !Array.isArray(entity.datas) && (entity.datas = [])
 
       if (entity.datas.length === 0) {
-        return
+        return {}
       }
 
       entity.datas.forEach((item: any) => {
-        var record =
+        record =
           records.find((record: any) => {
             return record.id === item.id
           }) || {}
@@ -295,6 +296,7 @@ const ContextProvider = function (props: ContextProviderProps) {
       })
 
       setVal({ ...context })
+      return record || {}
     }
   }
 
@@ -322,6 +324,18 @@ const ContextProvider = function (props: ContextProviderProps) {
     }
   }
 
+  const getCurrentRecord = (code: string, context: any) => {
+    const entities = context?.entities
+    let currentRecord: any
+    if (entities) {
+      const entity = entities[code]
+      currentRecord = entity?._current
+    }
+
+    return currentRecord
+  }
+
+  //判断是否是当前行
   const isCurrentRecord = (recordId: string, code: string, context: any) => {
     let isCurrentRecord = false
     const entities = context?.entities
@@ -405,7 +419,8 @@ const ContextProvider = function (props: ContextProviderProps) {
         setCurrentRecord,
         clearRecords,
         getAll,
-        isCurrentRecord
+        isCurrentRecord,
+        getCurrentRecord
       }}
     >
       {children}

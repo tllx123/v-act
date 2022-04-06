@@ -194,15 +194,16 @@ class FunctionSyntax extends Syntax {
   visit() {
     const ctx = this.getContext()
     const visitor = ctx.getVisitor()
+    let res: boolean | void = true
     if (visitor && visitor.visitFunctionSyntax) {
-      const res = visitor.visitFunctionSyntax(this)
-      if (res !== false) {
-        let args = this.getArgs()
-        if (args && args.length > 0) {
-          args.forEach((arg) => {
-            arg.visit()
-          })
-        }
+      res = visitor.visitFunctionSyntax(this)
+    }
+    if (res !== false) {
+      let args = this.getArgs()
+      if (args && args.length > 0) {
+        args.forEach((arg) => {
+          arg.visit()
+        })
       }
     }
   }

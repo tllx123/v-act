@@ -2,8 +2,7 @@ import { DatasourceFactory as DBFactory } from '@v-act/vjs.framework.extension.p
 import { RouteEngine as routeEngine } from '@v-act/vjs.framework.extension.platform.services.engine'
 
 //主入口(必须有)
-let main = function (param: any) {
-  let args = param.getArgs()
+let main = function (...args: any[]) {
   if (args && args.length > 0) {
     let bizState = args[0]
     let frameParams = new Array()
