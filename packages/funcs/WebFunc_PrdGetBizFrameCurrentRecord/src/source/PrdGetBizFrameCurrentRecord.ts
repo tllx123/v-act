@@ -6,8 +6,7 @@ import { WindowParam as windowParam } from '@v-act/vjs.framework.extension.platf
 let expressionEngine
 
 // 主入口(必须有)
-let main = function (ruleContext: any) {
-  let args = ruleContext.getArgs()
+let main = function (...args: any[]) {
   let argsLen = args.length
   if (argsLen == 0) {
     log.error('[PrdGetBizFrameCurrentRecord]参数为空')

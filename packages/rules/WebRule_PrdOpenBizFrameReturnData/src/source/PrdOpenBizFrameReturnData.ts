@@ -785,7 +785,7 @@ let openDialogWindow = function (
   } else {
     openWindow()
   }
-  function exeFunc(index: any) {
+  function exeFunc(index: any): any {
     let data = datas[index]
     let dtds = []
     let targetBizComponentCode = data['bizComponentCode']
@@ -840,6 +840,7 @@ let openDialogWindow = function (
       .fail(function (e: any) {
         ruleContext.handleException(e)
       })
+    return
   }
   function openWindow() {
     let windowInstanceCode = browser.showModalModule({
@@ -1817,22 +1818,22 @@ let openIemsHomeTabContainer = function (
   }
 
   let newScopeId: any = null
-  let destroyScopeListener = function (scopeId: string) {
-    let winScope = scopeManager.getWindowScope()
-    //不需要关闭的场景：框架窗体用模态打开另一个窗体
-    if (
-      newScopeId &&
-      winScope &&
-      newScopeId == scopeManager.getParentScopeId(winScope.getInstanceId()) &&
-      winScope.getOpenMode() != 'dialog'
-    ) {
-      let output = winScope.getOutput()
-      if (output && output.config && output.config.isSelectionConfirm)
-        scopeManager.getScope(newScopeId).markSelectionConfirmed()
-      scopeManager.un(scopeManager.EVENTS.DESTROY, destroyScopeListener)
-      scopeManager.destroy(newScopeId)
-    }
-  }
+  // let destroyScopeListener = function (scopeId: string) {
+  //   let winScope = scopeManager.getWindowScope()
+  //   //不需要关闭的场景：框架窗体用模态打开另一个窗体
+  //   if (
+  //     newScopeId &&
+  //     winScope &&
+  //     newScopeId == scopeManager.getParentScopeId(winScope.getInstanceId()) &&
+  //     winScope.getOpenMode() != 'dialog'
+  //   ) {
+  //     let output = winScope.getOutput()
+  //     if (output && output.config && output.config.isSelectionConfirm)
+  //       scopeManager.getScope(newScopeId).markSelectionConfirmed()
+  //     scopeManager.un(scopeManager.EVENTS.DESTROY,destroyScopeListener)
+  //     scopeManager.destroy(newScopeId)
+  //   }
+  // }
   // let renderer = sandbox.getService(
   //   'vjs.framework.extension.platform.services.view.window.render.mode',
   //   {
